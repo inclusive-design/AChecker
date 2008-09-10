@@ -1580,7 +1580,6 @@ a:active,a:hover,a:focus{
 code.input {
   margin-bottom: 2ex;
   background-color: white;
-  float: left;
 }
 
 code.input strong {
