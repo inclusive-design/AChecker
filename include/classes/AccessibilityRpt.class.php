@@ -142,7 +142,7 @@ class AccessibilityRpt {
 		
 		// only display first 100 chars of $html_code
 		if (strlen($html_code) > 100)
-			$html_code = substr($html_code, 0, 100) . "...";
+			$html_code = substr($html_code, 0, 100) . " ...";
 			
 		return str_replace(array("{MSG_TYPE}", "{IMG_SRC}", "{IMG_TYPE}", "{LINE_NUMBER}", "{COL_NUMBER}", "{HTML_CODE}", "{ERROR}", "{BASE_HREF}", "{CHECK_ID}"),
 		                   array($msg_type, $img_src, $img_type, $line_number, $col_number, htmlentities($html_code), $error, AT_BASE_HREF, $check_id),

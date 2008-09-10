@@ -64,12 +64,6 @@ class AccessibilityValidator {
 	{
 		// set arrays of check_id, prerequisite check_id, next check_id
 		$this->prepare_check_arrays($this->guidelines);
-//		$this->check_array = array("input"=>array(211));
-//		$this->prerequisite_check_array = array();
-//		$this->next_check_array = array();
-//		debug($this->check_array);
-//		debug($this->prerequisite_check_array);
-//		debug($this->next_check_array);
 
 		// dom of the content to be validated
 		$this->content_dom = $this->get_simple_html_dom($this->validate_content);
@@ -437,7 +431,7 @@ class AccessibilityValidator {
 
 	/**
 	* public 
-	* return error validation report in html
+	* return array of all checks that have been done, including successful and failed ones
 	*/
 	function getValidationErrorRpt()
 	{
@@ -445,20 +439,38 @@ class AccessibilityValidator {
 	}
 	
 
-	// public 
+	/**
+	* public 
+	* return number of errors
+	*/
 	function getNumOfValidateError()
 	{
 		return $this->num_of_errors;
 	}
 
-	// public 
-	function getOneResult($line_number, $check_id)
+	/**
+	* public 
+	* return array of all checks that have been done by check id, including successful and failed ones
+	*/
+	function getResultsByCheckID($check_id)
 	{
 		$rtn = array();
 		foreach ($this->result as $oneResult)
-//			if ($oneResult["line_number"] == $line_number && $oneResult["check_id"] == $check_id)
-//				return $oneResult["result"];
 			if ($oneResult["check_id"] == $check_id)
+				array_push($rtn, array("line_number"=>$oneResult["line_number"], "col_number"=>$oneResult["col_number"], "check_id"=>$oneResult["check_id"], "result"=>$oneResult["result"]));
+	
+		return $rtn;
+	}
+
+	/**
+	* public 
+	* return array of all checks that have been done by line number, including successful and failed ones
+	*/
+	function getResultsByLine($line_number)
+	{
+		$rtn = array();
+		foreach ($this->result as $oneResult)
+			if ($oneResult["line_number"] == $line_number)
 				array_push($rtn, array("line_number"=>$oneResult["line_number"], "col_number"=>$oneResult["col_number"], "check_id"=>$oneResult["check_id"], "result"=>$oneResult["result"]));
 	
 		return $rtn;

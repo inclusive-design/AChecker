@@ -69,7 +69,7 @@ class Checks {
 
 	public static function check_8($e, $content_dom)
 	{
-		if (!file_exists($e->attr["src"])) return !isset($e->attr['longdesc']);
+		if (!file_exists($e->attr["src"])) return isset($e->attr['longdesc']);
 		
 		$dimensions = getimagesize($e->attr["src"]);
 		
@@ -83,12 +83,14 @@ class Checks {
 
 	public static function check_10($e, $content_dom)
 	{
+		if (substr(trim($e->attr['src']), -4) == ".gif" && !file_exists($e->attr['src'])) return false;
+		
 		return !(substr(trim($e->attr['src']), -4) == ".gif" && intval($e->attr['width']) > 25 && intval($e->attr['height']) > 25);
 	}
 
 	public static function check_11($e, $content_dom)
 	{
-		if (!file_exists($e->attr["src"])) return true;
+		if (!file_exists($e->attr["src"])) return false;
 		
 		$dimensions = getimagesize($e->attr["src"]);
 		
@@ -156,7 +158,7 @@ class Checks {
 
 	public static function check_14($e, $content_dom)
 	{
-		if (!file_exists($e->attr["src"])) return true;
+		if (!file_exists($e->attr["src"])) return false;
 
 		$dimensions = getimagesize($e->attr["src"]);
 		
@@ -1596,6 +1598,8 @@ class Checks {
 
 	public static function check_243($e, $content_dom)
 	{
+		if (trim($e->attr["summary"]) == "") return true;
+		
 		foreach($e->children() as $child)
 			if ($child->tag == "caption") $caption = strtolower(trim($child->plaintext));
 			
