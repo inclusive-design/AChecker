@@ -53,7 +53,7 @@ $not_as_good = FALSE;
 			<td><?php if (file_exists('../include/classes/AccessibilityValidator.class.php') && file_exists('../include/classes/accessibilityvalidator.class.php')) {
 						echo 'Ignored</td><td align="center">';
 						echo $good;
-					} else if (file_exists('../include/classes/CSVExport.class.php')) {
+					} else if (file_exists('../include/classes/AccessibilityValidator.class.php')) {
 						echo 'Enforced</td><td align="center">';
 						echo $good;
 					} else {
