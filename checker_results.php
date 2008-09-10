@@ -43,10 +43,10 @@ if (isset($htmlValidator))
 
 	<div id="topnavlistcontainer">
 		<ul id="topnavlist">
-				<li><a href="index.php#errors" accesskey="1" title="Errors Alt+1" id="menu_errors" onClick="showDiv('errors');">Errors <span class="small_font">(<?php echo $num_of_errors; ?>)</span></a></li>
-				<li><a href="index.php#likely_problems" accesskey="2" title="Likely Problems Alt+2" id="menu_likely_problems" onClick="showDiv('likely_problems');">Likely Problems <span class="small_font">(<?php echo $num_of_likely_problems; ?>)</span></a></li>
-				<li><a href="index.php#potential_problems" accesskey="3" title="Potential Problems Alt+3" id="menu_potential_problems" onClick="showDiv('potential_problems');">Potential Problems <span class="small_font">(<?php echo $num_of_potential_problems; ?>)</span></a></li>
-				<li><a href="index.php#html_validation_result" accesskey="4" title="HTML Markup Validation Results Alt+4" id="menu_html_validation_result" onClick="showDiv('html_validation_result');">HTML Markup Validation Results <span class="small_font">(<?php echo $num_of_html_errors; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="1" title="Errors Alt+1" id="menu_errors" onClick="showDiv('errors');">Errors <span class="small_font">(<?php echo $num_of_errors; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="2" title="Likely Problems Alt+2" id="menu_likely_problems" onClick="showDiv('likely_problems');">Likely Problems <span class="small_font">(<?php echo $num_of_likely_problems; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="3" title="Potential Problems Alt+3" id="menu_potential_problems" onClick="showDiv('potential_problems');">Potential Problems <span class="small_font">(<?php echo $num_of_potential_problems; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="4" title="HTML Markup Validation Results Alt+4" id="menu_html_validation_result" onClick="showDiv('html_validation_result');">HTML Markup Validation Results <span class="small_font">(<?php echo $num_of_html_errors; ?>)</span></a></li>
 		</ul>
 	</div>
 
