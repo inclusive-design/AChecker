@@ -14,19 +14,19 @@ if (!defined('AT_INCLUDE_PATH')) { exit; }
 
 $lang_charset = "UTF-8";
 
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 TRANSITIONAL//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
 
 <head>
 	<title>ATRC Web Accessibility Checker</title>
-	<meta http-equiv="Content-Type" content="text/html; charset="<?php echo $lang_charset; ?>" />
+	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $lang_charset; ?>" />
 	<meta name="Generator" content="Checker - Copyright 2008 by http://checker.atrc.utoronto.ca" />
 	<base href="<?php echo AT_BASE_HREF; ?>" />
 	<link rel="stylesheet" href="forms.css" type="text/css" />
 	<link rel="stylesheet" href="styles.css" type="text/css" />
 
-	<script language="javascript" type="text/javascript">
+	<script type="text/javascript">
 	//<!--
 	var newwindow;
 	function popup(url) 
@@ -58,10 +58,10 @@ $lang_charset = "UTF-8";
 
 </head>
 
-<body onLoad="initial();">
+<body onload="initial();">
 
 	<div id="banner" style="padding-top:4px;padding-left:4px; vertical-align:middle;">
-		<a href="http://www.atutor.ca/achecker/"><img width="145" src="images/header_logo_checker.gif" height="43" alt="AChecker" border="0"/></a>
+		<a href="http://www.atutor.ca/achecker/"><img width="145" src="images/header_logo_checker.gif" height="43" alt="AChecker" style="border:none;" /></a>
 		<h1 style="vertical-align:super; ">Web Accessibility Checker<span id="versioninfo">Version 0.1 Beta</span>
 		</h1>
 	</div>

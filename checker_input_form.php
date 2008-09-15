@@ -18,27 +18,27 @@ $default_guideline = 8;      // default guideline to check html accessibility if
 if (!isset($_POST["gid"])) $_POST["gid"] = array($default_guideline);
 ?>
 
-<FORM NAME="input_form" ENCTYPE="multipart/form-data" METHOD="POST" ACTION="<?php echo $_SERVER['PHP_SELF']; ?>" >
+<form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 	
 <div class="input-form">
 	<fieldset class="group_form"><legend class="group_form">Input</legend>
-		<div class="row"><h4>Validate by URI </h4></div>
+		<div class="row"><h4><label for="checkuri">Check Accessibility by URI </label></h4></div>
 
 		<div class="row">
-			<INPUT TYPE="text" NAME="uri" VALUE="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $default_uri_value; ?>" SIZE="50" />
+			<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $default_uri_value; ?>" size="50" />
 			<p class="submit_button">
-				<INPUT TYPE="submit" name="validate_uri" size="100" value="Validate" onClick="return validate_this_uri();" class="submit" />
+				<input type="submit" name="validate_uri" size="100" value="Check It" onclick="return validate_this_uri();" class="submit" />
 			</p>
 		</div>
 
-		<div class="row"><h4>Validate by File Upload <h4></div>
+		<div class="row"><h4><label for="checkfile">Check Accessibility by File Upload </h4></div>
 
 		<div class="row">
-			<INPUT TYPE="hidden" name="MAX_FILE_SIZE" VALUE="52428800">
-			<INPUT TYPE="file" NAME="uploadfile"  SIZE="50">
+			<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
+			<input type="file" id="checkfile" name="uploadfile" size="50" />
 		
 			<p class="submit_button">
-				<INPUT TYPE="submit" name="validate_file" value="Validate" onClick="return validate_filename();" class="submit" />
+				<input type="submit" name="validate_file" value="Check It." onclick="return validate_filename();" class="submit" />
 			</p>
 		</div>
 
@@ -46,42 +46,43 @@ if (!isset($_POST["gid"])) $_POST["gid"] = array($default_guideline);
 
 		<table class="data static">
 			<tr>
-				<td><input type="checkbox" name="gid[]" value="4" <?php foreach($_POST["gid"] as $gid) if ($gid == 4) echo "checked"; ?> />
+				<td><input type="checkbox" name="gid[]" value="4" <?php foreach($_POST["gid"] as $gid) if ($gid == 4) echo 'checked="checked"'; ?> />
 				WCAG 1.0 (Level A)</td>
 
-				<td><input type="checkbox" name="gid[]" value="5" <?php foreach($_POST["gid"] as $gid) if ($gid == 5) echo "checked"; ?> />
+				<td><input type="checkbox" name="gid[]" value="5" <?php foreach($_POST["gid"] as $gid) if ($gid == 5) echo  'checked="checked"'; ?> />
 				WCAG 1.0 (Level AA)</td>
 
-				<td><input type="checkbox" name="gid[]" value="6" <?php foreach($_POST["gid"] as $gid) if ($gid == 6) echo "checked"; ?> />
+				<td><input type="checkbox" name="gid[]" value="6" <?php foreach($_POST["gid"] as $gid) if ($gid == 6) echo  'checked="checked"'; ?> />
 				WCAG 1.0 (Level AAA)</td>
 			</tr>
 			<tr>
-				<td><input type="checkbox" name="gid[]" value="7" <?php foreach($_POST["gid"] as $gid) if ($gid == 7) echo "checked"; ?> />
+				<td><input type="checkbox" name="gid[]" value="7" <?php foreach($_POST["gid"] as $gid) if ($gid == 7) echo  'checked="checked"'; ?> />
 				WCAG 2.0 (Level A)</td>
 
-				<td><input type="checkbox" name="gid[]" value="8" <?php foreach($_POST["gid"] as $gid) if ($gid == 8) echo "checked"; ?> />
+				<td><input type="checkbox" name="gid[]" value="8" <?php foreach($_POST["gid"] as $gid) if ($gid == 8) echo  'checked="checked"'; ?> />
 				WCAG 2.0 (Level AA)</td>
 
-				<td><input type="checkbox" name="gid[]" value="9" <?php foreach($_POST["gid"] as $gid) if ($gid == 9) echo "checked"; ?> />
+				<td><input type="checkbox" name="gid[]" value="9" <?php foreach($_POST["gid"] as $gid) if ($gid == 9) echo  'checked="checked"'; ?> />
 				WCAG 2.0 (Level AAA)</td>
 			</tr>
 
 			<tr>
-				<td><input type="checkbox" name="gid[]" value="1" <?php foreach($_POST["gid"] as $gid) if ($gid == 1) echo "checked"; ?> />
+				<td><input type="checkbox" name="gid[]" value="1" <?php foreach($_POST["gid"] as $gid) if ($gid == 1) echo  'checked="checked"'; ?> />
 				BITV 1.0 (Level 2)</td>
 
-				<td><input type="checkbox" name="gid[]" value="2" <?php foreach($_POST["gid"] as $gid) if ($gid == 2) echo "checked"; ?> />
+				<td><input type="checkbox" name="gid[]" value="2" <?php foreach($_POST["gid"] as $gid) if ($gid == 2) echo  'checked="checked"'; ?> />
 				Section 508</td>
 
-				<td><input type="checkbox" name="gid[]" value="3" <?php foreach($_POST["gid"] as $gid) if ($gid == 3) echo "checked"; ?> />
+				<td><input type="checkbox" name="gid[]" value="3" <?php foreach($_POST["gid"] as $gid) if ($gid == 3) echo  'checked="checked"'; ?> />
 				Stanca Act</td>
 			</tr>
 		</table>
+	</fieldset>
 	</div>
 
 </form>
 
-<SCRIPT LANGUAGE="JavaScript">
+<script type="text/JavaScript">
 <!--
 
 String.prototype.trim = function() {
