@@ -54,7 +54,8 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-size: 160%;
-	color: #FFF;
+	color: #000;
+
 }
 
 h2 {
@@ -483,10 +484,13 @@ table.tabbed-table a, table.tabbed-table a:visited, table.tabbed-table a:hover {
 }
 
 #banner h1 {
-	display: inline; font-size: 130%;
+	display: inline; 
+	font-size: 130%;
 }
 #banner {
-	background: #365D95 bottom right no-repeat;
+
+text-align:middle;
+border: thin #365D95 solid;
 
 	margin: 1.5em 2em;
 	border-bottom: black 1px solid; 
