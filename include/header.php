@@ -60,9 +60,8 @@ $lang_charset = "UTF-8";
 
 <body onLoad="initial();">
 
-	<div id="banner">
-		<h1 id="title" class="page-title">
-			<a href="http://atrc.utoronto.ca"><img width="82" src="images/atrclogo.gif" height="52" alt="ATRC Home Page" /></a>
-			<a href="./">Web Accessibility Checker</a><span id="versioninfo">Version 0.1 Beta</span>
+	<div id="banner" style="padding-top:4px;padding-left:4px; vertical-align:middle;">
+		<a href="http://www.atutor.ca/achecker/"><img width="145" src="images/header_logo_checker.gif" height="43" alt="AChecker" border="0"/></a>
+		<h1 style="vertical-align:super; ">Web Accessibility Checker<span id="versioninfo">Version 0.1 Beta</span>
 		</h1>
 	</div>
