@@ -440,6 +440,7 @@ class simple_html_dom {
         'dd'=>array('dd'=>1, 'dt'=>1),
         'p'=>array('p'=>1),
     );
+    protected $new_line_array = array("\n\r", "\r\n", "\n", "\r");
 
     // load html from string
     function load($str, $lowercase=true) {
@@ -547,11 +548,13 @@ class simple_html_dom {
     // find new line character used in html
     function find_new_line()
     {
-        $new_line_array = array("\n", "\r", "\n\r", "\r\n");
-
-        foreach ($new_line_array as $new_line)
+        foreach ($this->new_line_array as $new_line)
         {
-            if (preg_match('/'.preg_quote($new_line).'/', $this->html) > 0)   $used_new_line = $new_line;
+            if (preg_match('/'.preg_quote($new_line).'/', $this->html) > 0)  
+            {
+            	$used_new_line = $new_line;
+              break;
+            }
         }
         
         return $used_new_line;
@@ -743,20 +746,40 @@ class simple_html_dom {
     }
 
     /* customized by UOT, ATRC, cindy Li */
+    // return the number of all new line characters in given $text
     protected function count_line_number($text)
     {
-        return preg_match_all('/'.preg_quote($this->new_line).'/s', $text, $matches) + 1;
+        $num_of_line_number = 0;
+        
+        foreach ($this->new_line_array as $new_line)
+        {
+          $text = preg_replace('/'.preg_quote($new_line).'/s', '', $text, -1, $count);
+          $num_of_line_number += $count;
+        }
+        
+        return $num_of_line_number + 1;
     }
 
+    // return the position of the last characters in its line
     protected function count_col_number($text)
     {
-//        print $text;
-//        preg_match_all('/'.preg_quote($this->new_line).'/s', $text, $matches, PREG_SET_ORDER);
-        preg_match('/.*'.preg_quote($this->new_line).'(.*)$/s', $text, $matches);
-//        print_r($matches);
-//
-//        return strlen($matches[1]);
+        $pattern = $this->generate_new_line_pattern();
+
+        preg_match('/.*'.$pattern.'(.*)$/s', $text, $matches);
+
         return strrpos($matches[1], '<') + 1;
+    }
+    
+    protected function generate_new_line_pattern()
+    {
+      $pattern = "[";
+      
+      foreach ($this->new_line_array as $one_new_line)
+        $pattern .= preg_quote($one_new_line)."|";
+      
+      $pattern .= "]";
+      
+      return $pattern;
     }
     /* end of customized by UOT, ATRC, cindy Li */
     
