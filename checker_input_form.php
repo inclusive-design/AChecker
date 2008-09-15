@@ -14,8 +14,14 @@ if (!defined("AT_INCLUDE_PATH")) die("Error: AT_INCLUDE_PATH is not defined in c
 
 $default_uri_value = "http://";
 $default_guideline = 8;      // default guideline to check html accessibility if the guidelines are not given in $_POST
+$num_of_guidelines_per_row = 3;  // default number of guidelines to display in a row on the page
 
 if (!isset($_POST["gid"])) $_POST["gid"] = array($default_guideline);
+
+$sql = "select guideline_id, title
+				from ". TABLE_PREFIX ."guidelines
+				order by title";
+$result	= mysql_query($sql, $db) or die(mysql_error());
 ?>
 
 <form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
@@ -31,7 +37,7 @@ if (!isset($_POST["gid"])) $_POST["gid"] = array($default_guideline);
 			</p>
 		</div>
 
-		<div class="row"><h4><label for="checkfile">Check Accessibility by File Upload </h4></div>
+		<div class="row"><h4><label for="checkfile">Check Accessibility by File Upload</label></h4></div>
 
 		<div class="row">
 			<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
@@ -45,37 +51,27 @@ if (!isset($_POST["gid"])) $_POST["gid"] = array($default_guideline);
 		<div class="row"><h5>Guidelines to Validate Against </h5></div>
 
 		<table class="data static">
-			<tr>
-				<td><input type="checkbox" name="gid[]" value="4" <?php foreach($_POST["gid"] as $gid) if ($gid == 4) echo 'checked="checked"'; ?> />
-				WCAG 1.0 (Level A)</td>
+<?php
+$count_guidelines_in_current_row = 0;
 
-				<td><input type="checkbox" name="gid[]" value="5" <?php foreach($_POST["gid"] as $gid) if ($gid == 5) echo  'checked="checked"'; ?> />
-				WCAG 1.0 (Level AA)</td>
+while ($row = mysql_fetch_assoc($result))
+{
+	if ($count_guidelines_in_current_row == 0 || $count_guidelines_in_current_row == $num_of_guidelines_per_row)
+	{
+		$count_guidelines_in_current_row = 0;
+		echo "			<tr>\n";
+	}
+?>
+				<td><input type="checkbox" name="gid[]" id='gid_<?php echo $row["guideline_id"]; ?>' value='<?php echo $row["guideline_id"]; ?>' <?php foreach($_POST["gid"] as $gid) if ($gid == $row["guideline_id"]) echo 'checked="checked"'; ?> />
+				<label for='gid_<?php echo $row["guideline_id"]; ?>'><?php echo $row["title"]; ?></label></td>
+<?php
+	$count_guidelines_in_current_row++;
 
-				<td><input type="checkbox" name="gid[]" value="6" <?php foreach($_POST["gid"] as $gid) if ($gid == 6) echo  'checked="checked"'; ?> />
-				WCAG 1.0 (Level AAA)</td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" name="gid[]" value="7" <?php foreach($_POST["gid"] as $gid) if ($gid == 7) echo  'checked="checked"'; ?> />
-				WCAG 2.0 (Level A)</td>
+	if ($count_guidelines_in_current_row == $num_of_guidelines_per_row)
+		echo "			</tr>\n";
 
-				<td><input type="checkbox" name="gid[]" value="8" <?php foreach($_POST["gid"] as $gid) if ($gid == 8) echo  'checked="checked"'; ?> />
-				WCAG 2.0 (Level AA)</td>
-
-				<td><input type="checkbox" name="gid[]" value="9" <?php foreach($_POST["gid"] as $gid) if ($gid == 9) echo  'checked="checked"'; ?> />
-				WCAG 2.0 (Level AAA)</td>
-			</tr>
-
-			<tr>
-				<td><input type="checkbox" name="gid[]" value="1" <?php foreach($_POST["gid"] as $gid) if ($gid == 1) echo  'checked="checked"'; ?> />
-				BITV 1.0 (Level 2)</td>
-
-				<td><input type="checkbox" name="gid[]" value="2" <?php foreach($_POST["gid"] as $gid) if ($gid == 2) echo  'checked="checked"'; ?> />
-				Section 508</td>
-
-				<td><input type="checkbox" name="gid[]" value="3" <?php foreach($_POST["gid"] as $gid) if ($gid == 3) echo  'checked="checked"'; ?> />
-				Stanca Act</td>
-			</tr>
+}
+?>
 		</table>
 	</fieldset>
 	</div>
