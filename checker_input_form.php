@@ -44,7 +44,7 @@ $result	= mysql_query($sql, $db) or die(mysql_error());
 			<input type="file" id="checkfile" name="uploadfile" size="50" />
 		
 			<p class="submit_button">
-				<input type="submit" name="validate_file" value="Check It." onclick="return validate_filename();" class="submit" />
+				<input type="submit" name="validate_file" value="Check It" onclick="return validate_filename();" class="submit" />
 			</p>
 		</div>
 
