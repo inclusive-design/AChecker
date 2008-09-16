@@ -488,10 +488,7 @@ table.tabbed-table a, table.tabbed-table a:visited, table.tabbed-table a:hover {
 	font-size: 130%;
 }
 #banner {
-
-text-align:middle;
-border: thin #365D95 solid;
-
+	border: thin #365D95 solid;
 	margin: 1.5em 2em;
 	border-bottom: black 1px solid; 
 }
