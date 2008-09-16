@@ -23,11 +23,6 @@
 * @package checker
 */
 
-/**
-* questioned ids: [83, 84 (how to check there's ascii art)], 
-* 101, [96, 122, 123, 124, 125, 209, 211 (reason: lable positioned close)]
-*/
-
 if (!defined("AT_INCLUDE_PATH")) die("Error: AT_INCLUDE_PATH is not defined.");
 include (AT_INCLUDE_PATH . "classes/BasicChecks.class.php");
 
@@ -294,27 +289,52 @@ class Checks {
 
 	public static function check_37($e, $content_dom)
 	{
-		return BasicChecks::check_next_header_not_in($e, array("h1", "h2"));
+		global $next_header_not_in;
+		
+		$next_header_not_in = true;
+		BasicChecks::check_next_header_not_in($content_dom->find("html"), $e->linenumber, $e->colnumber, array("h1", "h2"));
+
+		return $next_header_not_in;
 	}
 
 	public static function check_38($e, $content_dom)
 	{
-		return BasicChecks::check_next_header_not_in($e, array("h1", "h2", "h3"));
+		global $next_header_not_in;
+		
+		$next_header_not_in = true;
+		BasicChecks::check_next_header_not_in($content_dom->find("html"), $e->linenumber, $e->colnumber, array("h1", "h2", "h3"));
+
+		return $next_header_not_in;
 	}
 
 	public static function check_39($e, $content_dom)
 	{
-		return BasicChecks::check_next_header_not_in($e, array("h1", "h2", "h3", "h4"));
+		global $next_header_not_in;
+		
+		$next_header_not_in = true;
+		BasicChecks::check_next_header_not_in($content_dom->find("html"), $e->linenumber, $e->colnumber, array("h1", "h2", "h3", "h4"));
+		
+		return $next_header_not_in;
 	}
 
 	public static function check_40($e, $content_dom)
 	{
-		return BasicChecks::check_next_header_not_in($e, array("h1", "h2", "h3", "h4", "h5"));
+		global $next_header_not_in;
+		
+		$next_header_not_in = true;
+		BasicChecks::check_next_header_not_in($content_dom->find("html"), $e->linenumber, $e->colnumber, array("h1", "h2", "h3", "h4", "h5"));
+		
+		return $next_header_not_in;
 	}
 
 	public static function check_41($e, $content_dom)
 	{
-		return BasicChecks::check_next_header_not_in($e, array("h1", "h2", "h3", "h4", "h5", "h6"));
+		global $next_header_not_in;
+		
+		$next_header_not_in = true;
+		BasicChecks::check_next_header_not_in($content_dom->find("html"), $e->linenumber, $e->colnumber, array("h1", "h2", "h3", "h4", "h5", "h6"));
+		
+		return $next_header_not_in;
 	}
 
 	public static function check_42($e, $content_dom)
@@ -408,7 +428,7 @@ class Checks {
 	{
 		if (trim($e->attr["type"]) <> "text") return true;
 
-		return BasicChecks::has_associated_label($e);
+		return BasicChecks::has_associated_label($e, $content_dom);
 	}
 
 	public static function check_58($e, $content_dom)
@@ -486,7 +506,7 @@ class Checks {
 	public static function check_68($e, $content_dom)
 	{
 		$target_val = strtolower(trim($e->attr["target"]));
-		debug($target_val);
+
 		return (isset($e->attr["target"]) && ($target_val == "_self" || $target_val == "_top" || $target_val == "_parent"));
 	}
 
@@ -628,7 +648,7 @@ class Checks {
 
 	public static function check_91($e, $content_dom)
 	{
-		return BasicChecks::has_associated_label($e);
+		return BasicChecks::has_associated_label($e, $content_dom);
 	}
 
 	public static function check_92($e, $content_dom)
@@ -648,7 +668,7 @@ class Checks {
 
 	public static function check_95($e, $content_dom)
 	{
-		return BasicChecks::has_associated_label($e);
+		return BasicChecks::has_associated_label($e, $content_dom);
 	}
 
 	public static function check_96($e, $content_dom)
@@ -809,28 +829,28 @@ class Checks {
 	{
 		if (strtolower(trim($e->attr["type"]))<>"password") return true;
 
-		return BasicChecks::has_associated_label($e);
+		return BasicChecks::has_associated_label($e, $content_dom);
 	}
 
 	public static function check_119($e, $content_dom)
 	{
 		if (strtolower(trim($e->attr["type"]))<>"checkbox") return true;
 
-		return BasicChecks::has_associated_label($e);
+		return BasicChecks::has_associated_label($e, $content_dom);
 	}
 
 	public static function check_120($e, $content_dom)
 	{
 		if (strtolower(trim($e->attr["type"]))<>"file") return true;
 
-		return BasicChecks::has_associated_label($e);
+		return BasicChecks::has_associated_label($e, $content_dom);
 	}
 	
 	public static function check_121($e, $content_dom)
 	{
 		if (strtolower(trim($e->attr["type"]))<>"radio") return true;
 
-		return BasicChecks::has_associated_label($e);
+		return BasicChecks::has_associated_label($e, $content_dom);
 	}
 	
 	public static function check_122($e, $content_dom)
@@ -1087,39 +1107,18 @@ class Checks {
 	
 	public static function check_168($e, $content_dom)
 	{
-		// find if there are radio buttons with same name
-		$children = $e->children();
-		$num_of_children = count($children);
+		global $is_radio_buttons_grouped;
 		
-		foreach ($children as $i => $child)
-		{
-			if (strtolower(trim($child->attr["type"])) == "radio")
-			{
-				$this_name = strtolower(trim($child->attr["name"]));
-				
-				for($j=$i+1; $j <=$num_of_children; $j++)
-					// if there are radio buttons with same name,
-					// check if they are contained in "fieldset" and "legend" elements
-					if (strtolower(trim($children[$j]->attr["name"])) == $this_name)
-						if (BasicChecks::has_parent($e, "fieldset"))
-							return BasicChecks::has_parent($e, "legend");
-						else
-							return false;
-			}
-			else
-				return Checks::check_168($child, $content_dom);
-		}
+		$is_radio_buttons_grouped = true;
+		BasicChecks::is_radio_buttons_grouped($e);
 		
-		return true;
+		return $is_radio_buttons_grouped;
 	}
 	
 	public static function check_169($e, $content_dom)
 	{
 		$num_of_options = BasicChecks::count_children_by_tag($e, "option");
 		$num_of_optgroups = BasicChecks::count_children_by_tag($e, "optgroup");
-		
-		debug($num_of_options);
-		debug($num_of_optgroups);
 		
 		return !($num_of_options > 3 && $num_of_optgroups < 2);
 	}
@@ -1228,7 +1227,7 @@ class Checks {
 	
 	public static function check_188($e, $content_dom)
 	{
-		return BasicChecks::associated_label_has_text($e);
+		return BasicChecks::associated_label_has_text($e, $content_dom);
 	}
 	
 	public static function check_189($e, $content_dom)
@@ -1309,7 +1308,7 @@ class Checks {
 
 	public static function check_204($e, $content_dom)
 	{
-		return !(strtolower(trim($e->attr["type"]))=="radio" && !BasicChecks::associated_label_has_text($e));
+		return !(strtolower(trim($e->attr["type"]))=="radio" && !BasicChecks::associated_label_has_text($e, $content_dom));
 	}
 
 	public static function check_205($e, $content_dom)
@@ -1319,17 +1318,17 @@ class Checks {
 
 	public static function check_206($e, $content_dom)
 	{
-		return !(strtolower(trim($e->attr["type"]))=="checkbox" && !BasicChecks::associated_label_has_text($e));
+		return !(strtolower(trim($e->attr["type"]))=="checkbox" && !BasicChecks::associated_label_has_text($e, $content_dom));
 	}
 
 	public static function check_207($e, $content_dom)
 	{
-		return !(strtolower(trim($e->attr["type"]))=="password" && !BasicChecks::associated_label_has_text($e));
+		return !(strtolower(trim($e->attr["type"]))=="password" && !BasicChecks::associated_label_has_text($e, $content_dom));
 	}
 
 	public static function check_208($e, $content_dom)
 	{
-		return BasicChecks::associated_label_has_text($e);
+		return BasicChecks::associated_label_has_text($e, $content_dom);
 	}
 
 	public static function check_209($e, $content_dom)
@@ -1349,12 +1348,12 @@ class Checks {
 
 	public static function check_212($e, $content_dom)
 	{
-		return BasicChecks::associated_label_has_text($e);
+		return BasicChecks::associated_label_has_text($e, $content_dom);
 	}
 
 	public static function check_213($e, $content_dom)
 	{
-		return !(strtolower(trim($e->attr["type"]))=="text" && !BasicChecks::associated_label_has_text($e));
+		return !(strtolower(trim($e->attr["type"]))=="text" && !BasicChecks::associated_label_has_text($e, $content_dom));
 	}
 
 	public static function check_214($e, $content_dom)
@@ -1364,7 +1363,7 @@ class Checks {
 
 	public static function check_216($e, $content_dom)
 	{
-		return !(strtolower(trim($e->attr["type"]))=="file" && !BasicChecks::associated_label_has_text($e));
+		return !(strtolower(trim($e->attr["type"]))=="file" && !BasicChecks::associated_label_has_text($e, $content_dom));
 	}
 
 	public static function check_217($e, $content_dom)

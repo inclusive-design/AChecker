@@ -27,22 +27,26 @@ class BasicChecks {
 	* check if the next head tag, (for example: <h1>, <h2>..) is not in $not_in_array
 	* return true if not in, otherwise, return false
 	*/
-	public static function check_next_header_not_in ($e, $not_in_array)
+	public static function check_next_header_not_in ($element_array, $line_number, $col_number, $not_in_array)
 	{
-		$next_sibling = $e->next_sibling();
+		global $next_header_not_in;
 		
-		if ($next_sibling == NULL)
-			return true;
-		else
-			$next_tag = trim($next_sibling->tag);
-			
-		if (substr($next_tag, 0, 1) == "h")
-			if (!in_array($next_tag, $not_in_array))
-				return false;
+		foreach ($element_array as $e)
+		{
+			if (substr($e->tag, 0, 1) == "h" and intval(substr($e->tag, 1)) <> 0 and ($e->linenumber > $line_number || ($e->linenumber == $line_number && $e->colnumber > $col_number)))
+				if (in_array($e->tag, $not_in_array))
+				{
+					$next_header_not_in = true;
+					return;
+				}
+				else
+				{
+					$next_header_not_in = false;
+					return;
+				}
 			else
-				return true;
-		else
-			return BasicChecks::check_next_header_not_in($next_sibling, $not_in_array);
+				BasicChecks::check_next_header_not_in($e->children(), $line_number, $col_number, $not_in_array);
+		}
 	}
 	
 	/**
@@ -141,7 +145,7 @@ class BasicChecks {
 	* check if $e has associated label
 	* return true if has, otherwise, return false
 	*/
-	public static function has_associated_label($e)
+	public static function has_associated_label($e, $content_dom)
 	{
 		// 1. The element $e is contained by a "label" element
 		// 2. The element $e has a "title" attribute
@@ -152,20 +156,18 @@ class BasicChecks {
 		
 		if ($input_id == "") return false;  // attribute "id" must exist
 		
-		foreach ($e->parent()->children() as $sibling)
-		{
-			if ($sibling->tag == "label" && $sibling->attr["for"] == $input_id)
-				return true;
-		}
-		
-		return false;
+		foreach ($content_dom->find("label") as $e_label)
+		  if (strtolower(trim($e_label->attr["for"])) == strtolower(trim($e->attr["id"])))
+		    return true;
+	  
+	  return false;
 	}
 
 	/**
 	* check if associated label of $e has text
 	* return true if has, otherwise, return false
 	*/
-	public static function associated_label_has_text($e)
+	public static function associated_label_has_text($e, $content_dom)
 	{
 		// 1. The element $e has a "title" attribute
 		if (trim($e->attr["title"]) <> "") return true;
@@ -183,16 +185,16 @@ class BasicChecks {
 		
 		if ($input_id == "") return false;  // attribute "id" must exist
 		
-		foreach ($e->parent()->children() as $sibling)
+		foreach ($content_dom->find("label") as $e_label)
 		{
-			if ($sibling->tag == "label" && $sibling->attr["for"] == $input_id)
+			if ($e_label->attr["for"] == $input_id)
 			{
 				// label contains text
-				if (trim($sibling->plaintext) <> "") return true;
+				if (trim($e_label->plaintext) <> "") return true;
 				
 				// label contains an image with alt text
-				foreach ($sibling->children as $sibling_child)
-					if ($sibling_child->tag == "img" && strlen(trim($sibling_child->attr["alt"])) > 0)
+				foreach ($e_label->children as $e_label_child)
+					if ($e_label_child->tag == "img" && strlen(trim($e_label_child->attr["alt"])) > 0)
 						return true;
 			}
 		}
@@ -200,6 +202,38 @@ class BasicChecks {
 		return false;
 	}
 
+	/**
+	* Check radio button groups are marked using "fieldset" and "legend" elements
+	* Return: use global variable $is_radio_buttons_grouped to return true (grouped properly) or false (not grouped)
+	*/
+	public static function is_radio_buttons_grouped($e)
+	{
+		global $is_radio_buttons_grouped;
+		
+		// find if there are radio buttons with same name
+		$children = $e->children();
+		$num_of_children = count($children);
+		
+		foreach ($children as $i => $child)
+		{
+			if (strtolower(trim($child->attr["type"])) == "radio")
+			{
+				$this_name = strtolower(trim($child->attr["name"]));
+				
+				for($j=$i+1; $j <=$num_of_children; $j++)
+					// if there are radio buttons with same name,
+					// check if they are contained in "fieldset" and "legend" elements
+					if (strtolower(trim($children[$j]->attr["name"])) == $this_name)
+						if (BasicChecks::has_parent($e, "fieldset"))
+							$is_radio_buttons_grouped = BasicChecks::has_parent($e, "legend");
+						else
+							$is_radio_buttons_grouped = false;
+			}
+			else
+				BasicChecks::is_radio_buttons_grouped($child);
+		}
+	}
+	
 	/**
 	* Check recursively to find the number of children in $e with tag $child_tag
 	* return number of qualified children
