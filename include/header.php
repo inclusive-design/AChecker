@@ -23,6 +23,7 @@ $lang_charset = "UTF-8";
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $lang_charset; ?>" />
 	<meta name="Generator" content="Checker - Copyright 2008 by http://checker.atrc.utoronto.ca" />
 	<base href="<?php echo AT_BASE_HREF; ?>" />
+	<link rel="shortcut icon" href="<?php echo $_base_href; ?>images/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="forms.css" type="text/css" />
 	<link rel="stylesheet" href="styles.css" type="text/css" />
 
