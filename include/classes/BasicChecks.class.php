@@ -208,30 +208,25 @@ class BasicChecks {
 	*/
 	public static function is_radio_buttons_grouped($e)
 	{
-		global $is_radio_buttons_grouped;
+		$radio_buttons = array();
 		
-		// find if there are radio buttons with same name
-		$children = $e->children();
-		$num_of_children = count($children);
-		
-		foreach ($children as $i => $child)
+		foreach ($e->find("input") as $e_input)
 		{
-			if (strtolower(trim($child->attr["type"])) == "radio")
-			{
-				$this_name = strtolower(trim($child->attr["name"]));
-				
-				for($j=$i+1; $j <=$num_of_children; $j++)
-					// if there are radio buttons with same name,
-					// check if they are contained in "fieldset" and "legend" elements
-					if (strtolower(trim($children[$j]->attr["name"])) == $this_name)
-						if (BasicChecks::has_parent($e, "fieldset"))
-							$is_radio_buttons_grouped = BasicChecks::has_parent($e, "legend");
-						else
-							$is_radio_buttons_grouped = false;
-			}
-			else
-				BasicChecks::is_radio_buttons_grouped($child);
+			if (strtolower(trim($e_input->attr["type"])) == "radio")
+				array_push($radio_buttons, $e_input);
 		}
+
+		for ($i=0; $i < count($radio_buttons); $i++)
+		{
+		  for ($j=0; $j < count($radio_buttons); $j++)
+		  {
+		    if ($i <> $j && strtolower(trim($radio_buttons[$i]->attr["name"])) == strtolower(trim($radio_buttons[$j]->attr["name"]))
+		        && !BasicChecks::has_parent($radio_buttons[$i], "fieldset") && !BasicChecks::has_parent($radio_buttons[$i], "legend"))
+		      return false;
+		  }
+		}
+		
+		return true;
 	}
 	
 	/**

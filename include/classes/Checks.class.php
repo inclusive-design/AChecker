@@ -1107,12 +1107,7 @@ class Checks {
 	
 	public static function check_168($e, $content_dom)
 	{
-		global $is_radio_buttons_grouped;
-		
-		$is_radio_buttons_grouped = true;
-		BasicChecks::is_radio_buttons_grouped($e);
-		
-		return $is_radio_buttons_grouped;
+		return BasicChecks::is_radio_buttons_grouped($e);
 	}
 	
 	public static function check_169($e, $content_dom)
