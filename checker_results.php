@@ -38,15 +38,15 @@ if (isset($htmlValidator))
 ?>
 
 <div id="output_div" class="output-form">
-	<fieldset class="group_form"><legend class="group_form">Validation Output</legend>
-	<h3 class="indent">Validation Output</h3>
+	<fieldset class="group_form"><legend class="group_form">Accessibility Review</legend>
+	<h3 class="indent">Review Output</h3>
 
 	<div id="topnavlistcontainer">
 		<ul id="topnavlist">
-				<li><a href="index.php#output_div" accesskey="1" title="Errors Alt+1" id="menu_errors" onClick="showDiv('errors');">Errors <span class="small_font">(<?php echo $num_of_errors; ?>)</span></a></li>
-				<li><a href="index.php#output_div" accesskey="2" title="Likely Problems Alt+2" id="menu_likely_problems" onClick="showDiv('likely_problems');">Likely Problems <span class="small_font">(<?php echo $num_of_likely_problems; ?>)</span></a></li>
-				<li><a href="index.php#output_div" accesskey="3" title="Potential Problems Alt+3" id="menu_potential_problems" onClick="showDiv('potential_problems');">Potential Problems <span class="small_font">(<?php echo $num_of_potential_problems; ?>)</span></a></li>
-				<li><a href="index.php#output_div" accesskey="4" title="HTML Markup Validation Results Alt+4" id="menu_html_validation_result" onClick="showDiv('html_validation_result');">HTML Markup Validation Results <span class="small_font">(<?php echo $num_of_html_errors; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="1" title="Known Problems Alt+1" id="menu_errors" onclick="showDiv('errors');">Known Problems <span class="small_font">(<?php echo $num_of_errors; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="2" title="Likely Problems Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');">Likely Problems <span class="small_font">(<?php echo $num_of_likely_problems; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="3" title="Potential Problems Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');">Potential Problems <span class="small_font">(<?php echo $num_of_potential_problems; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="4" title="HTML Markup Validation Results Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');">HTML Markup Validation Results <span class="small_font">(<?php echo $num_of_html_errors; ?>)</span></a></li>
 		</ul>
 	</div>
 
@@ -58,7 +58,7 @@ if (isset($aValidator))
 	if ($num_of_errors > 0)
 		echo $a_rpt->getErrorRpt();
 	else
-		echo "<span class='congrats_msg'><img src='images/feedback.gif' />  Congratulations! No errors.</span>";
+		echo "<span class='congrats_msg'><img src='images/feedback.gif' />  Congratulations! No known  problems.</span>";
 }
 
 ?>
@@ -112,7 +112,7 @@ if (isset($htmlValidator))
 
 </div>
 
-<SCRIPT LANGUAGE="JavaScript">
+<script language="JavaScript" type="text/javascript">
 <!--
 
 // show and highlight the given div, hide other output divs. 

@@ -48,7 +48,7 @@ $result	= mysql_query($sql, $db) or die(mysql_error());
 			</p>
 		</div>
 
-		<div class="row"><h3>Guidelines to Validate Against </h3></div>
+		<div class="row"><h3>Guidelines to Check Against </h3></div>
 
 		<table class="data static">
 <?php
