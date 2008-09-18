@@ -308,7 +308,7 @@ class BasicChecks {
 	*/
 	public static function is_label_closed($e)
 	{
-		return false;
+		return true;
 	}
 	
 	/**
