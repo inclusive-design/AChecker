@@ -13,7 +13,7 @@
 if (!defined('AT_INCLUDE_PATH')) { exit; }
 
 ?>
-<div style="margin-left:auto; margin-right:auto; width:18em;">
+<div style="margin-left:auto; margin-right:auto; width:20em;">
 	<small>Web site engine's code is copyright &copy; 2008</small><br />
 	<div style="margin-left:auto; margin-right:auto; width:84px;"><a href="http://www.atutor.ca/achecker/"><img width="84" src="images/atrclogo.gif" height="52" alt="Adaptive Technology Resource Centre" style="border:none;"/></a></div>
 </div>

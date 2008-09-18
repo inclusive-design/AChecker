@@ -48,8 +48,15 @@ $result	= mysql_query($sql, $db) or die(mysql_error());
 			</p>
 		</div>
 
-		<div class="row"><h3>Guidelines to Check Against </h3></div>
+		<div class="row">
+			<h3>
+				<a href="javascript:toggleToc('div_guidelines')">
+					<img src="images/arrow-closed.png" alt="Expand" title="Expand Getting Started" id="toggle_image" border="0" /> Guidelines to Check Against 
+				</a>
+			</h3>
+		</div>
 
+		<div id="div_guidelines">
 		<table class="data static">
 <?php
 $count_guidelines_in_current_row = 0;
@@ -73,6 +80,7 @@ while ($row = mysql_fetch_assoc($result))
 }
 ?>
 		</table>
+		</div>
 	</fieldset>
 	</div>
 

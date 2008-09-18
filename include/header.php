@@ -40,6 +40,9 @@ $lang_charset = "UTF-8";
 	{
 		document.input_form.uri.focus();
 		
+		// hide guideline div
+		document.getElementById("div_guidelines").style.display = 'none';
+		
 		var div_error = document.getElementById("errors");
 		
 		if (div_error != null)
@@ -52,6 +55,26 @@ $lang_charset = "UTF-8";
 
 			// highlight tab "errors"
 			document.getElementById("menu_errors").className = 'active';
+		}
+	}
+	
+	function toggleToc(objId) {
+		var toc = document.getElementById(objId);
+		if (toc == null) return;
+
+		if (toc.style.display == 'none')
+		{
+			toc.style.display = '';
+			document.getElementById("toggle_image").src = "images/arrow-open.png";
+			document.getElementById("toggle_image").alt = "Collapse";
+			document.getElementById("toggle_image").title = "Collapse Getting Started";
+		}
+		else
+		{
+			toc.style.display = 'none';
+			document.getElementById("toggle_image").src = "images/arrow-closed.png";
+			document.getElementById("toggle_image").alt = "Expand";
+			document.getElementById("toggle_image").title = "Expand Getting Started";
 		}
 	}
 	//-->
