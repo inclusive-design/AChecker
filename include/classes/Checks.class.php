@@ -34,7 +34,8 @@ class Checks {
 
 	public static function check_2($e, $content_dom)
 	{
-		return (trim($e->attr['alt']) <> trim($e->attr['src']));
+		if (!isset($e->attr['alt']) || !isset($e->attr['src'])) return true;
+		else return (trim($e->attr['alt']) <> trim($e->attr['src']));
 	}
 
 	public static function check_3($e, $content_dom)
