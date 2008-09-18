@@ -59,14 +59,10 @@ h1 {
 }
 
 h2 {
-    margin: 1em 0em 0em 0em;
-    font-size: 150%;
-}
-h2.sidebox{
-    font-size: 110%;
+    font-size: 120%;
 }
 h3 {
-    font-size: 130%;
+    font-size: 100%;
 }
 
 h4 {
@@ -1548,10 +1544,9 @@ dl.browse-course dd {
 /*  form fields grouping for WCAG 2.0 conformance*/
 
 fieldset.group_form{
-	margin:2em;
+	margin:1em;
 	border:thin #6D7B8D solid;
    	min-height: 170px;
-	padding:.5em;
 }
 
 legend.group_form{

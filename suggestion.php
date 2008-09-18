@@ -25,10 +25,10 @@ $row = mysql_fetch_assoc($result);
 ?>
 <div class="output-form">
 	
-<h4>Requirement</h4>
+<h2>Requirement</h2>
 <span class="msg"><?php echo $row["name"]; ?></span>
 
-<h4>Error</h4>
+<h2>Error</h2>
 <span class="msg"><?php echo $row["err"]; ?></span>
 
 <?php
@@ -36,7 +36,7 @@ if ($row["description"] <> "")
 {
 ?>
 
-<h4>Description</h4>
+<h2>Description</h2>
 <span class="msg"><?php echo $row["description"]; ?></span>
 
 <?php
@@ -48,7 +48,7 @@ if ($row["rationale"] <> "")
 {
 ?>
 
-<h4>Rationale</h4>
+<h2>Rationale</h2>
 <span class="msg"><?php echo $row["rationale"]; ?></span>
 
 <?php
@@ -60,7 +60,7 @@ if ($row["how_to_repair"] <> "")
 {
 ?>
 
-<h4>How to Repair</h4>
+<h2>How to Repair</h2>
 <span class="msg"><?php echo $row["how_to_repair"]; ?></span>
 
 <?php
@@ -72,7 +72,7 @@ if ($row["repair_example"] <> "")
 {
 ?>
 
-<h4>Repair Example</h4>
+<h2>Repair Example</h2>
 <span class="msg"><pre><?php echo htmlentities($row["repair_example"]); ?></pre></span>
 
 <?php
@@ -84,7 +84,7 @@ if ($row["question"] <> "")
 {
 ?>
 
-<h4>How to Determine</h4>
+<h2>How to Determine</h2>
 <table>
 	<tr>
 		<th align="left">Question</th>
@@ -113,14 +113,14 @@ if (mysql_num_rows($result) > 0)
 {
 ?>
 
-<h4>Steps to Check</h4>
-	<h5>Procedure</h5>
+<h2>Steps to Check</h2>
+	<h3>Procedure</h3>
 <?php
 }
 
 while ($row = mysql_fetch_assoc($result))
 {
-	echo '<span class="msg">'.intval($row["step_id"] + 1)  . ". " . $row["step"]. "</span><br>";
+	echo '<span class="msg">'.intval($row["step_id"] + 1)  . ". " . $row["step"]. "</span><br />";
 }
 
 $sql = "SELECT step_id, step
@@ -133,13 +133,13 @@ if (mysql_num_rows($result) > 0)
 {
 ?>
 
-	<h5>Expected Result</h5>
+	<h3>Expected Result</h3>
 <?php
 }
 
 while ($row = mysql_fetch_assoc($result))
 {
-	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . $row["step"]. "</span><br>";
+	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . $row["step"]. "</span><br />";
 }
 
 $sql = "SELECT step_id, step
@@ -152,13 +152,13 @@ if (mysql_num_rows($result) > 0)
 {
 ?>
 
-	<h5>Failed Result</h5>
+	<h3>Failed Result</h3>
 <?php
 }
 
 while ($row = mysql_fetch_assoc($result))
 {
-	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . $row["step"]. "</span><br>";
+	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . $row["step"]. "</span><br />";
 }
 ?>
 </div>

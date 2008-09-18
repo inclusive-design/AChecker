@@ -289,52 +289,27 @@ class Checks {
 
 	public static function check_37($e, $content_dom)
 	{
-		global $next_header_not_in;
-		
-		$next_header_not_in = true;
-		BasicChecks::check_next_header_not_in($content_dom->find("html"), $e->linenumber, $e->colnumber, array("h1", "h2"));
-
-		return $next_header_not_in;
+		return BasicChecks::check_next_header_not_in($content_dom, $e->linenumber, $e->colnumber, array("h1", "h2"));
 	}
 
 	public static function check_38($e, $content_dom)
 	{
-		global $next_header_not_in;
-		
-		$next_header_not_in = true;
-		BasicChecks::check_next_header_not_in($content_dom->find("html"), $e->linenumber, $e->colnumber, array("h1", "h2", "h3"));
-
-		return $next_header_not_in;
+		return BasicChecks::check_next_header_not_in($content_dom, $e->linenumber, $e->colnumber, array("h1", "h2", "h3"));
 	}
 
 	public static function check_39($e, $content_dom)
 	{
-		global $next_header_not_in;
-		
-		$next_header_not_in = true;
-		BasicChecks::check_next_header_not_in($content_dom->find("html"), $e->linenumber, $e->colnumber, array("h1", "h2", "h3", "h4"));
-		
-		return $next_header_not_in;
+		return BasicChecks::check_next_header_not_in($content_dom, $e->linenumber, $e->colnumber, array("h1", "h2", "h3", "h4"));
 	}
 
 	public static function check_40($e, $content_dom)
 	{
-		global $next_header_not_in;
-		
-		$next_header_not_in = true;
-		BasicChecks::check_next_header_not_in($content_dom->find("html"), $e->linenumber, $e->colnumber, array("h1", "h2", "h3", "h4", "h5"));
-		
-		return $next_header_not_in;
+		return BasicChecks::check_next_header_not_in($content_dom, $e->linenumber, $e->colnumber, array("h1", "h2", "h3", "h4", "h5"));
 	}
 
 	public static function check_41($e, $content_dom)
 	{
-		global $next_header_not_in;
-		
-		$next_header_not_in = true;
-		BasicChecks::check_next_header_not_in($content_dom->find("html"), $e->linenumber, $e->colnumber, array("h1", "h2", "h3", "h4", "h5", "h6"));
-		
-		return $next_header_not_in;
+		return BasicChecks::check_next_header_not_in($content_dom, $e->linenumber, $e->colnumber, array("h1", "h2", "h3", "h4", "h5", "h6"));
 	}
 
 	public static function check_42($e, $content_dom)

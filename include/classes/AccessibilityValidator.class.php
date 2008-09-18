@@ -38,9 +38,10 @@ class AccessibilityValidator {
 	var $result = array();               // all check results, including success ones and failed ones
 	var $error_result = array();         // failed check results
 	
-	var $check_array;                    // array of the to-be-checked check_ids 
-	var $prerequisite_check_array;       // array of prerequisite check_ids of the to-be-checked check_ids 
-	var $next_check_array;               // array of the next check_ids of the to-be-checked check_ids 
+	var $check_for_all_elements_array = array(); // array of the to-be-checked check_ids 
+	var $check_for_tag_array = array();          // array of the to-be-checked check_ids 
+	var $prerequisite_check_array = array();     // array of prerequisite check_ids of the to-be-checked check_ids 
+	var $next_check_array = array();             // array of the next check_ids of the to-be-checked check_ids 
 		
 	var $content_dom;                    // dom of $validate_content
 
@@ -153,11 +154,9 @@ class AccessibilityValidator {
 							order by c.html_tag";
 			$result	= mysql_query($sql, $db) or die(mysql_error());
 			
-			$check_for_all_elements_array = array();
-			
 			$count = 0;
 			while ($row = mysql_fetch_assoc($result))
-				$check_for_all_elements_array[$count++] = $row["check_id"];
+				$this->check_for_all_elements_array[$count++] = $row["check_id"];
 			
 			// generate array of check_id
 			$sql = "select distinct gc.check_id, c.html_tag
@@ -175,25 +174,14 @@ class AccessibilityValidator {
 							order by c.html_tag";
 			$result	= mysql_query($sql, $db) or die(mysql_error());
 			
-			$check_array = array();
-			
 			while ($row = mysql_fetch_assoc($result))
 			{
-				if ($row["html_tag"] <> $prev_html_tag && $prev_html_tag <> "")  
-				{
-					$count = 0;
-					$check_array[$prev_html_tag] = array_merge($check_array[$prev_html_tag], $check_for_all_elements_array);
-				}
+				if ($row["html_tag"] <> $prev_html_tag && $prev_html_tag <> "") $count = 0;
 				
-				$check_array[$row["html_tag"]][$count++] = $row["check_id"];
+				$this->check_for_tag_array[$row["html_tag"]][$count++] = $row["check_id"];
 				
 				$prev_html_tag = $row["html_tag"];
 			}
-			// handle the last html_tag
-			if ($prev_html_tag <> "")
-				$check_array[$prev_html_tag] = array_merge($check_array[$prev_html_tag], $check_for_all_elements_array);
-			
-			$this->check_array = $check_array;
 			
 			// generate array of prerequisite check_ids
 			$sql = "select distinct c.check_id, cp.prerequisite_check_id
@@ -212,8 +200,6 @@ class AccessibilityValidator {
 						order by c.check_id, cp.prerequisite_check_id";
 
 			$result	= mysql_query($sql, $db) or die(mysql_error());
-			
-			$prerequisite_check_array = array();
 			
 			while ($row = mysql_fetch_assoc($result))
 			{
@@ -243,8 +229,6 @@ class AccessibilityValidator {
 
 			$result	= mysql_query($sql, $db) or die(mysql_error());
 			
-			$next_check_array = array();
-			
 			while ($row = mysql_fetch_assoc($result))
 			{
 				if ($row["check_id"] <> $prev_check_id)  $next_check_array[$row["check_id"]] = array();
@@ -267,41 +251,44 @@ class AccessibilityValidator {
 	{
 		foreach($element_array as $e)
 		{
-			if (is_array($this->check_array[$e->tag]))
+			// generate array of checks for the html tag of this element
+			if (is_array($this->check_for_tag_array[$e->tag]))
+				$check_array[$e->tag] = array_merge($this->check_for_tag_array[$e->tag], $this->check_for_all_elements_array);
+			else
+				$check_array[$e->tag] = $this->check_for_all_elements_array;
+				
+			foreach ($check_array[$e->tag] as $check_id)
 			{
-				foreach ($this->check_array[$e->tag] as $check_id)
-				{
-					// check prerequisite ids first, if fails, report failure and don't need to proceed with $check_id
-					$prerequisite_failed = false;
+				// check prerequisite ids first, if fails, report failure and don't need to proceed with $check_id
+				$prerequisite_failed = false;
 
-					if (is_array($this->prerequisite_check_array[$check_id]))
+				if (is_array($this->prerequisite_check_array[$check_id]))
+				{
+					foreach ($this->prerequisite_check_array[$check_id] as $prerequisite_check_id)
 					{
-						foreach ($this->prerequisite_check_array[$check_id] as $prerequisite_check_id)
+						$check_result = $this->check($e, $prerequisite_check_id);
+						
+						if ($check_result == "fail")
 						{
-							$check_result = $this->check($e, $prerequisite_check_id);
-							
-							if ($check_result == "fail")
-							{
-								$prerequisite_failed = true;
-								break;
-							}
+							$prerequisite_failed = true;
+							break;
 						}
 					}
+				}
 
-					// if prerequisite check passes, proceed with current check_id
-					if (!$prerequisite_failed)
+				// if prerequisite check passes, proceed with current check_id
+				if (!$prerequisite_failed)
+				{
+					$check_result = $this->check($e, $check_id);
+					
+					// if check_id passes, proceed with next checks
+					if ($check_result == SUCCESS_RESULT)
 					{
-						$check_result = $this->check($e, $check_id);
-						
-						// if check_id passes, proceed with next checks
-						if ($check_result == SUCCESS_RESULT)
-						{
-							if (is_array($this->next_check_array[$check_id]))
-								foreach ($this->next_check_array[$check_id] as $next_check_id)
-								{
-									$this->check($e, $next_check_id);
-								}
-						}
+						if (is_array($this->next_check_array[$check_id]))
+							foreach ($this->next_check_array[$check_id] as $next_check_id)
+							{
+								$this->check($e, $next_check_id);
+							}
 					}
 				}
 			}

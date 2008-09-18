@@ -28,7 +28,7 @@ $result	= mysql_query($sql, $db) or die(mysql_error());
 	
 <div class="input-form">
 	<fieldset class="group_form"><legend class="group_form">Input</legend>
-		<div class="row"><h4><label for="checkuri">Check Accessibility by URI </label></h4></div>
+		<div class="row"><h2><label for="checkuri">Check Accessibility by URI </label></h2></div>
 
 		<div class="row">
 			<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $default_uri_value; ?>" size="50" />
@@ -37,7 +37,7 @@ $result	= mysql_query($sql, $db) or die(mysql_error());
 			</p>
 		</div>
 
-		<div class="row"><h4><label for="checkfile">Check Accessibility by File Upload</label></h4></div>
+		<div class="row"><h2><label for="checkfile">Check Accessibility by File Upload</label></h2></div>
 
 		<div class="row">
 			<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
@@ -48,7 +48,7 @@ $result	= mysql_query($sql, $db) or die(mysql_error());
 			</p>
 		</div>
 
-		<div class="row"><h5>Guidelines to Validate Against </h5></div>
+		<div class="row"><h3>Guidelines to Validate Against </h3></div>
 
 		<table class="data static">
 <?php

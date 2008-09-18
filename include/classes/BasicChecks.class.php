@@ -27,26 +27,40 @@ class BasicChecks {
 	* check if the next head tag, (for example: <h1>, <h2>..) is not in $not_in_array
 	* return true if not in, otherwise, return false
 	*/
-	public static function check_next_header_not_in ($element_array, $line_number, $col_number, $not_in_array)
+	public static function check_next_header_not_in ($content_dom, $line_number, $col_number, $not_in_array)
 	{
-		global $next_header_not_in;
+		$header_array = array();
+		$header_array = BasicChecks::find_all_headers($content_dom->find("html"), &$header_array);
 		
-		foreach ($element_array as $e)
+		// find the next header after $line_number, $col_number
+		foreach ($header_array as $e)
 		{
-			if (substr($e->tag, 0, 1) == "h" and intval(substr($e->tag, 1)) <> 0 and ($e->linenumber > $line_number || ($e->linenumber == $line_number && $e->colnumber > $col_number)))
-				if (in_array($e->tag, $not_in_array))
-				{
-					$next_header_not_in = true;
-					return;
-				}
-				else
-				{
-					$next_header_not_in = false;
-					return;
-				}
-			else
-				BasicChecks::check_next_header_not_in($e->children(), $line_number, $col_number, $not_in_array);
+			if ($e->linenumber > $line_number || ($e->linenumber == $line_number && $e->colnumber > $col_number))
+			{
+				if (!isset($next_header)) 
+					$next_header = $e;
+				else if ($e->linenumber < $next_header->line_number || ($e->linenumber == $next_header->line_number && $e->colnumber > $next_header->col_number))
+					$next_header = $e;
+			}
 		}
+
+		if (isset($next_header) && !in_array($next_header->tag, $not_in_array))
+			return false;
+		else
+			return true;
+	}
+	
+	public static function find_all_headers($elements, &$header_array)
+	{
+		foreach ($elements as $e)
+		{
+			if (substr($e->tag, 0, 1) == "h" and intval(substr($e->tag, 1)) <> 0)
+				array_push($header_array, $e);
+			
+			BasicChecks::find_all_headers($e->children(), &$header_array);
+		}
+		
+		return $header_array;
 	}
 	
 	/**
