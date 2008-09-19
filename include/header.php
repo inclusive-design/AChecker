@@ -38,8 +38,6 @@ $lang_charset = "UTF-8";
 	
 	function initial()
 	{
-		document.input_form.uri.focus();
-		
 		// hide guideline div
 		document.getElementById("div_guidelines").style.display = 'none';
 		
@@ -56,6 +54,8 @@ $lang_charset = "UTF-8";
 			// highlight tab "errors"
 			document.getElementById("menu_errors").className = 'active';
 		}
+		else
+			document.input_form.uri.focus();
 	}
 	
 	function toggleToc(objId) {
@@ -66,15 +66,15 @@ $lang_charset = "UTF-8";
 		{
 			toc.style.display = '';
 			document.getElementById("toggle_image").src = "images/arrow-open.png";
-			document.getElementById("toggle_image").alt = "Collapse";
-			document.getElementById("toggle_image").title = "Collapse Getting Started";
+			document.getElementById("toggle_image").alt = "Collapse Guidelines";
+			document.getElementById("toggle_image").title = "Collapse Guidelines Getting Started";
 		}
 		else
 		{
 			toc.style.display = 'none';
 			document.getElementById("toggle_image").src = "images/arrow-closed.png";
-			document.getElementById("toggle_image").alt = "Expand";
-			document.getElementById("toggle_image").title = "Expand Getting Started";
+			document.getElementById("toggle_image").alt = "Expand Guidelines";
+			document.getElementById("toggle_image").title = "Expand Guidelines Getting Started";
 		}
 	}
 	//-->

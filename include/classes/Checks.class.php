@@ -24,7 +24,7 @@
 */
 
 if (!defined("AT_INCLUDE_PATH")) die("Error: AT_INCLUDE_PATH is not defined.");
-include (AT_INCLUDE_PATH . "classes/BasicChecks.class.php");
+include_once (AT_INCLUDE_PATH . "classes/BasicChecks.class.php");
 
 class Checks {
 	public static function check_1($e, $content_dom)

@@ -16,6 +16,22 @@ if (!isset($aValidator) && !isset($htmlValidator)) die("Error: Validation instan
 
 if (isset($aValidator))
 {
+	// find out selected guidelines
+	foreach ($_POST["gid"] as $gid)
+		$gids .= $gid . ",";
+	
+	$sql = "select title
+					from ". TABLE_PREFIX ."guidelines
+					where guideline_id in (" . substr($gids, 0, -1) . ")
+					order by title";
+	$result	= mysql_query($sql, $db) or die(mysql_error());
+	
+	while ($row = mysql_fetch_assoc($result))
+	{
+		$guidelines .= $row["title"]. ", ";
+	}
+	$guidelines = substr($guidelines, 0, -2); // remove ending space and ,
+	
 	$num_of_total_a_errors = $aValidator->getNumOfValidateError();
 
 	if ($num_of_total_a_errors > 0)
@@ -39,7 +55,7 @@ if (isset($htmlValidator))
 
 <div id="output_div" class="output-form">
 	<fieldset class="group_form"><legend class="group_form">Accessibility Review</legend>
-	<h3 class="indent">Review Output</h3>
+	<h3 class="indent">Review Output (Guidelines: <?php echo $guidelines; ?>)</h3>
 
 	<div id="topnavlistcontainer">
 		<ul id="topnavlist">

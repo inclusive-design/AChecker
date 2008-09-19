@@ -12,8 +12,8 @@
 
 /**
 * AccessibilityRpt
-* Class for accessibility validate
-* This class returns accessibility validation report
+* Class for outputing accessibility validation report in html
+* This class returns accessibility validation report in html
 * @access	public
 * @author	Cindy Qi Li
 * @package checker
@@ -42,11 +42,12 @@ class AccessibilityRpt {
 '      <li class="{MSG_TYPE}">
          <span class="err_type"><img src="images/{IMG_SRC}" alt="{IMG_TYPE}" title="{IMG_TYPE}" width="15" height="15" /></span>
          <em>Line {LINE_NUMBER}, Column {COL_NUMBER}</em>:
-         <span class="msg">{ERROR}</span>
+         <span class="msg">
+            <a href="javascript: popup(\'{BASE_HREF}suggestion.php?id={CHECK_ID}\')" 
+               title="Suggest improvements on this error message">{ERROR}</a>
+         </span>
          <pre><code class="input">{HTML_CODE}</code></pre>
          <p class="helpwanted">
-            <a href="javascript: popup(\'{BASE_HREF}suggestion.php?id={CHECK_ID}\')" 
-               title="Suggest improvements on this error message">&#x2709;</a>
          </p>
        </li>
 ';
@@ -79,6 +80,11 @@ class AccessibilityRpt {
 	function generateDisplay()
 	{
 		global $db;
+		
+		// initialize each section
+		$this->rpt_errors = "<h2>Known Problems</h2><br />";
+		$this->rpt_likely_problems = "<h2>Likely Problems</h2><br />";
+		$this->rpt_potential_problems = "<h2>Potential Problems</h2><br />";
 		
 		// generate section details
 		foreach ($this->errors as $error)

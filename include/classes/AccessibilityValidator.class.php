@@ -22,6 +22,7 @@ if (!defined("AT_INCLUDE_PATH")) die("Error: AT_INCLUDE_PATH is not defined.");
 
 include (AT_INCLUDE_PATH . "lib/simple_html_dom.php");
 include (AT_INCLUDE_PATH . "classes/Checks.class.php");
+include_once (AT_INCLUDE_PATH . "classes/BasicChecks.class.php");
 
 define("SUCCESS_RESULT", "success");
 define("FAIL_RESULT", "fail");
@@ -63,17 +64,33 @@ class AccessibilityValidator {
 	// private
 	function validate()
 	{
-		// set arrays of check_id, prerequisite check_id, next check_id
-		$this->prepare_check_arrays($this->guidelines);
-
 		// dom of the content to be validated
 		$this->content_dom = $this->get_simple_html_dom($this->validate_content);
+
+		// prepare gobal vars used in BasicChecks.class.php to fasten the validation
+		$this->prepare_global_vars();
+		
+		// set arrays of check_id, prerequisite check_id, next check_id
+		$this->prepare_check_arrays($this->guidelines);
 
 		$this->validate_element($this->content_dom->find('html'));
 		
 		$this->finalize();
 
 		// end of validation process
+	}
+	
+	/** private
+	* set global vars used in Checks.class.php and BasicChecks.class.php
+	* to fasten the validation process.
+	* return nothing.
+	*/
+	function prepare_global_vars()
+	{
+		global $header_array;
+		$header_array = array();
+
+		$header_array = BasicChecks::find_all_headers($this->content_dom->find("html"), &$header_array);
 	}
 	
 	/** private

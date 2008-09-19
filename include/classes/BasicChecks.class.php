@@ -29,8 +29,7 @@ class BasicChecks {
 	*/
 	public static function check_next_header_not_in ($content_dom, $line_number, $col_number, $not_in_array)
 	{
-		$header_array = array();
-		$header_array = BasicChecks::find_all_headers($content_dom->find("html"), &$header_array);
+		global $header_array;
 		
 		// find the next header after $line_number, $col_number
 		foreach ($header_array as $e)

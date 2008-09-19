@@ -50,9 +50,8 @@ $result	= mysql_query($sql, $db) or die(mysql_error());
 
 		<div class="row">
 			<h3>
-				<a href="javascript:toggleToc('div_guidelines')">
-					<img src="images/arrow-closed.png" alt="Expand" title="Expand Getting Started" id="toggle_image" border="0" /> Guidelines to Check Against 
-				</a>
+				<img src="images/arrow-closed.png" alt="Expand Guidelines" title="Expand Guidelines Getting Started" id="toggle_image" border="0" />
+				<a href="javascript:toggleToc('div_guidelines')"> Guidelines to Check Against </a>
 			</h3>
 		</div>
 
