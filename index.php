@@ -24,8 +24,9 @@ $error_happen = false;
 if ($_POST["validate_uri"] || $_POST["validate_file"])
 {
 	// validate html
-	include(AT_INCLUDE_PATH. "classes/HTMLValidator.class.php");
-	
+	if (isset($_POST["enable_html_validation"]))
+		include(AT_INCLUDE_PATH. "classes/HTMLValidator.class.php");
+
 	if ($_POST["validate_uri"])
 	{
 		$uri = $_POST["uri"];
@@ -36,14 +37,17 @@ if ($_POST["validate_uri"] || $_POST["validate_file"])
 		else
 		{
 			$validate_content = @file_get_contents($uri);
-			$htmlValidator = new HTMLValidator("uri", $uri);
+			if (isset($_POST["enable_html_validation"]))
+				$htmlValidator = new HTMLValidator("uri", $uri);
 		}
 	}
 
 	if ($_POST["validate_file"])
 	{
 		$validate_content = file_get_contents($_FILES['uploadfile']['tmp_name']);
-		$htmlValidator = new HTMLValidator("fragment", $validate_content);
+
+		if (isset($_POST["enable_html_validation"]))
+			$htmlValidator = new HTMLValidator("fragment", $validate_content);
 	}
 	// end of validating html
 

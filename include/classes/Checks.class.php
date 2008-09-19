@@ -1105,7 +1105,7 @@ class Checks {
 		foreach ($e->children() as $child)
 			if ($child->tag == "img") $len_of_img_alt = strlen(trim($child->attr["alt"]));
 			
-		return (isset($e->attr["href"]) && (strlen(trim($e->plaintext)) > 0 || strlen(trim($e->attr["title"])) > 0 || $len_of_img_alt > 0));
+		return (strlen(trim($e->plaintext)) > 0 || strlen(trim($e->attr["title"])) > 0 || $len_of_img_alt > 0);
 	}
 	
 	public static function check_175($e, $content_dom)
@@ -1489,6 +1489,8 @@ class Checks {
 	{
 		global $htmlValidator;
 
+		if (!isset($htmlValidator)) return false;
+		
 		return ($htmlValidator->getNumOfValidateError() == 0);
 	}
 

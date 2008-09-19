@@ -144,6 +144,14 @@ span.congrats_msg{
   font-weight: bold;
 }
 
+span.info_msg{
+  line-height: 120%;
+  color: blue;
+  padding: 1em 1em;
+  font-size: large;
+  font-weight: bold;
+}
+
 em {
 	font-weight: bold;
 }
@@ -642,10 +650,11 @@ a#editor-link.on {
 /* for data tables */
 table.data {
 	clear:right;
-	width: 90%; 
+	width: 60%; 
 	margin-left: auto; 
 	margin-right: auto;
 	text-align: left;
+	white-space: nowrap;
 } 
 
 table.data th {
@@ -704,10 +713,9 @@ table.data tfoot tr:first-child td {
 
 table.data.static tfoot td, table.data.static tfoot tr:first-child td {
 	border-top: 1px solid #B8AE9C;
-	padding: 5px;
+	padding: 15px;
 	background-image: none;
 	padding-left: 0px;
-
 }
 
 /*buttons*/

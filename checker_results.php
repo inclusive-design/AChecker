@@ -62,7 +62,7 @@ if (isset($htmlValidator))
 				<li><a href="index.php#output_div" accesskey="1" title="Known Problems Alt+1" id="menu_errors" onclick="showDiv('errors');">Known Problems <span class="small_font">(<?php echo $num_of_errors; ?>)</span></a></li>
 				<li><a href="index.php#output_div" accesskey="2" title="Likely Problems Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');">Likely Problems <span class="small_font">(<?php echo $num_of_likely_problems; ?>)</span></a></li>
 				<li><a href="index.php#output_div" accesskey="3" title="Potential Problems Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');">Potential Problems <span class="small_font">(<?php echo $num_of_potential_problems; ?>)</span></a></li>
-				<li><a href="index.php#output_div" accesskey="4" title="HTML Markup Validation Results Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');">HTML Markup Validation Results <span class="small_font">(<?php echo $num_of_html_errors; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="4" title="HTML Markup Validation Results Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');">HTML Markup Validation Results <span class="small_font"><?php if (isset($_POST["enable_html_validation"])) echo "(".$num_of_html_errors.")"; ?></span></a></li>
 		</ul>
 	</div>
 
@@ -109,10 +109,11 @@ if (isset($aValidator))
 	</div>
 
 	<div id="html_validation_result">
-		<ol><li class="msg_err"><strong>Note: Results are provided by http://validator.w3.org/</strong></li></ol>
 <?php
 if (isset($htmlValidator))
 {
+	echo '		<ol><li class="msg_err"><strong>Note: Results are provided by http://validator.w3.org/</strong></li></ol>'. "\n";
+	
 	if ($htmlValidator->containErrors())
 		echo $htmlValidator->getErrorMsg();
 	else
@@ -123,6 +124,8 @@ if (isset($htmlValidator))
 			echo "<span class='congrats_msg'><img src='images/feedback.gif' />  Congratulations! Passed HTML Validation.</span>";
 	}
 }
+else
+	echo '<span class="info_msg"><img src="images/info.png" width="15" height="15"/>  HTML Validator is disabled. Enable it in "Options".</span>';
 ?>
 	</div>
 

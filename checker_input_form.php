@@ -49,13 +49,23 @@ $result	= mysql_query($sql, $db) or die(mysql_error());
 		</div>
 
 		<div class="row">
-			<h3>
+			<h2>
 				<img src="images/arrow-closed.png" alt="Expand Guidelines" title="Expand Guidelines Getting Started" id="toggle_image" border="0" />
-				<a href="javascript:toggleToc('div_guidelines')"> Guidelines to Check Against </a>
-			</h3>
+				<a href="javascript:toggleToc('div_options')"> Options </a>
+			</h2>
 		</div>
 
-		<div id="div_guidelines">
+		<div id="div_options">
+
+		<div class="row">
+			<input type="checkbox" name="enable_html_validation" id="enable_html_validation" value="1" <?php if (isset($_POST["enable_html_validation"])) echo 'checked="checked"'; ?> />
+				<label for='enable_html_validation'>Enable HTML Validator</label>
+		</div>
+
+		<div class="row">
+			<h3>Guidelines to Check Against</h3>
+		</div>
+
 		<table class="data static">
 <?php
 $count_guidelines_in_current_row = 0;

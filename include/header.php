@@ -14,6 +14,13 @@ if (!defined('AT_INCLUDE_PATH')) { exit; }
 
 $lang_charset = "UTF-8";
 
+//Timer
+$mtime = microtime(); 
+$mtime = explode(' ', $mtime); 
+$mtime = $mtime[1] + $mtime[0]; 
+$starttime = $mtime; 
+//Timer Ends
+
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 TRANSITIONAL//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
@@ -39,7 +46,7 @@ $lang_charset = "UTF-8";
 	function initial()
 	{
 		// hide guideline div
-		document.getElementById("div_guidelines").style.display = 'none';
+		document.getElementById("div_options").style.display = 'none';
 		
 		var div_error = document.getElementById("errors");
 		

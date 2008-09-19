@@ -19,3 +19,15 @@ if (!defined('AT_INCLUDE_PATH')) { exit; }
 </div>
 </body>
 </html>
+
+<?php
+// Timer
+$mtime = microtime(); 
+$mtime = explode(" ", $mtime); 
+$mtime = $mtime[1] + $mtime[0]; 
+$endtime = $mtime; 
+$totaltime = ($endtime - $starttime); 
+debug ($totaltime. ' seconds.', "TIME USED"); 
+// Timer Ends
+
+?>
