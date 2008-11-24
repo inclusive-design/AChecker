@@ -58,6 +58,7 @@ if(isset($_POST['submit'])) {
 			
 			/* @See include/classes/dbmanager.php */
 			queryFromFile('db/achecker_schema.sql');
+			queryFromFile('db/language_text.sql');
 
 			if (!$errors) {
 				print_progress($step);

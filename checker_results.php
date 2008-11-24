@@ -12,7 +12,7 @@
 
 if (!defined("AT_INCLUDE_PATH")) die("Error: AT_INCLUDE_PATH is not defined in checker_input_form.php.");
 
-if (!isset($aValidator) && !isset($htmlValidator)) die("Error: Validation instances are not found.");
+if (!isset($aValidator) && !isset($htmlValidator)) die(_AC("no_instance"));
 
 if (isset($aValidator))
 {
@@ -54,15 +54,15 @@ if (isset($htmlValidator))
 ?>
 
 <div id="output_div" class="output-form">
-	<fieldset class="group_form"><legend class="group_form">Accessibility Review</legend>
-	<h3 class="indent">Review Output (Guidelines: <?php echo $guidelines; ?>)</h3>
+	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("accessibility_review"); ?></legend>
+	<h3 class="indent"><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$guidelines. ')'; ?></h3>
 
 	<div id="topnavlistcontainer">
 		<ul id="topnavlist">
-				<li><a href="index.php#output_div" accesskey="1" title="Known Problems Alt+1" id="menu_errors" onclick="showDiv('errors');">Known Problems <span class="small_font">(<?php echo $num_of_errors; ?>)</span></a></li>
-				<li><a href="index.php#output_div" accesskey="2" title="Likely Problems Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');">Likely Problems <span class="small_font">(<?php echo $num_of_likely_problems; ?>)</span></a></li>
-				<li><a href="index.php#output_div" accesskey="3" title="Potential Problems Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');">Potential Problems <span class="small_font">(<?php echo $num_of_potential_problems; ?>)</span></a></li>
-				<li><a href="index.php#output_div" accesskey="4" title="HTML Markup Validation Results Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');">HTML Markup Validation Results <span class="small_font"><?php if (isset($_POST["enable_html_validation"])) echo "(".$num_of_html_errors.")"; ?></span></a></li>
+				<li><a href="index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="showDiv('errors');"><?php echo _AC("known_problems"); ?> <span class="small_font">(<?php echo $num_of_errors; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');"><?php echo _AC("likely_problems"); ?> <span class="small_font">(<?php echo $num_of_likely_problems; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');"><?php echo _AC("potential_problems"); ?> <span class="small_font">(<?php echo $num_of_potential_problems; ?>)</span></a></li>
+				<li><a href="index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');"><?php echo _AC("html_validation_result"); ?> <span class="small_font"><?php if (isset($_POST["enable_html_validation"])) echo "(".$num_of_html_errors.")"; ?></span></a></li>
 		</ul>
 	</div>
 
@@ -74,7 +74,7 @@ if (isset($aValidator))
 	if ($num_of_errors > 0)
 		echo $a_rpt->getErrorRpt();
 	else
-		echo "<span class='congrats_msg'><img src='images/feedback.gif' />  Congratulations! No known  problems.</span>";
+		echo "<span class='congrats_msg'><img src='images/feedback.gif' />  ". _AC("congrats_no_known") ."</span>";
 }
 
 ?>
@@ -88,7 +88,7 @@ if (isset($aValidator))
 	if ($num_of_likely_problems > 0)
 		echo $a_rpt->getLikelyProblemRpt();
 	else
-		echo "<span class='congrats_msg'><img src='images/feedback.gif' />  Congratulations! No likely problems.</span>";
+		echo "<span class='congrats_msg'><img src='images/feedback.gif' />  ". _AC("congrats_no_likely") ."</span>";
 }
 
 ?>
@@ -102,7 +102,7 @@ if (isset($aValidator))
 	if ($num_of_potential_problems > 0)
 		echo $a_rpt->getPotentialProblemRpt();
 	else
-		echo "<span class='congrats_msg'><img src='images/feedback.gif' />  Congratulations! No potential problems.</span>";
+		echo "<span class='congrats_msg'><img src='images/feedback.gif' />  ". _AC("congrats_no_potential") ."</span>";
 }
 
 ?>
@@ -112,7 +112,7 @@ if (isset($aValidator))
 <?php
 if (isset($htmlValidator))
 {
-	echo '		<ol><li class="msg_err"><strong>Note: Results are provided by http://validator.w3.org/</strong></li></ol>'. "\n";
+	echo '		<ol><li class="msg_err">'. _AC("html_validator_provided_by") .'</li></ol>'. "\n";
 	
 	if ($htmlValidator->containErrors())
 		echo $htmlValidator->getErrorMsg();
@@ -121,11 +121,11 @@ if (isset($htmlValidator))
 		if ($num_of_html_errors > 0)
 			echo $htmlValidator->getValidationRpt();
 		else
-			echo "<span class='congrats_msg'><img src='images/feedback.gif' />  Congratulations! Passed HTML Validation.</span>";
+			echo "<span class='congrats_msg'><img src='images/feedback.gif' />  ". _AC("congrats_html_validation") ."</span>";
 	}
 }
 else
-	echo '<span class="info_msg"><img src="images/info.png" width="15" height="15"/>  HTML Validator is disabled. Enable it in "Options".</span>';
+	echo '<span class="info_msg"><img src="images/info.png" width="15" height="15"/>  '._AC("html_validator_disabled").'</span>';
 ?>
 	</div>
 

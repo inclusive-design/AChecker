@@ -27,31 +27,31 @@ $result	= mysql_query($sql, $db) or die(mysql_error());
 <form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 	
 <div class="input-form">
-	<fieldset class="group_form"><legend class="group_form">Input</legend>
-		<div class="row"><h2><label for="checkuri">Check Accessibility by URI </label></h2></div>
+	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("input"); ?></legend>
+		<div class="row"><h2><label for="checkuri"><?php echo _AC("check_by_uri"); ?></label></h2></div>
 
 		<div class="row">
 			<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $default_uri_value; ?>" size="50" />
 			<p class="submit_button">
-				<input type="submit" name="validate_uri" size="100" value="Check It" onclick="return validate_this_uri();" class="submit" />
+				<input type="submit" name="validate_uri" size="100" value="<?php echo _AC("check_it"); ?>" onclick="return validate_this_uri();" class="submit" />
 			</p>
 		</div>
 
-		<div class="row"><h2><label for="checkfile">Check Accessibility by File Upload</label></h2></div>
+		<div class="row"><h2><label for="checkfile"><?php echo _AC("check_by_upload"); ?></label></h2></div>
 
 		<div class="row">
 			<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
 			<input type="file" id="checkfile" name="uploadfile" size="50" />
 		
 			<p class="submit_button">
-				<input type="submit" name="validate_file" value="Check It" onclick="return validate_filename();" class="submit" />
+				<input type="submit" name="validate_file" value="<?php echo _AC("check_it"); ?>" onclick="return validate_filename();" class="submit" />
 			</p>
 		</div>
 
 		<div class="row">
 			<h2>
-				<img src="images/arrow-closed.png" alt="Expand Guidelines" title="Expand Guidelines Getting Started" id="toggle_image" border="0" />
-				<a href="javascript:toggleToc('div_options')"> Options </a>
+				<img src="images/arrow-closed.png" alt="<?php echo _AC("expand_guidelines"); ?>" title="<?php echo _AC("expand_guidelines"); ?>" id="toggle_image" border="0" />
+				<a href="javascript:toggleToc('div_options')"><?php echo _AC("options"); ?></a>
 			</h2>
 		</div>
 
@@ -59,11 +59,11 @@ $result	= mysql_query($sql, $db) or die(mysql_error());
 
 		<div class="row">
 			<input type="checkbox" name="enable_html_validation" id="enable_html_validation" value="1" <?php if (isset($_POST["enable_html_validation"])) echo 'checked="checked"'; ?> />
-				<label for='enable_html_validation'>Enable HTML Validator</label>
+				<label for='enable_html_validation'><?php echo _AC("enable_html_validator"); ?></label>
 		</div>
 
 		<div class="row">
-			<h3>Guidelines to Check Against</h3>
+			<h3><?php echo _AC("guidelins_to_check"); ?></h3>
 		</div>
 
 		<table class="data static">

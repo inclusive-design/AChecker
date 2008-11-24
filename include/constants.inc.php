@@ -18,6 +18,11 @@ if (!defined('AT_INCLUDE_PATH')) { exit; }
  
 define('VERSION',		'0.1');
 
+// check confidence
+define('KNOWN', 0);
+define('LIKELY', 1);
+define('POTENTIAL', 2);
+
 /* how long cache objects can persist	*/
 /* in seconds. should be low initially, but doesn't really matter. */
 /* in practice should be 0 (ie. INF)    */

@@ -12,7 +12,7 @@
 
 if (!defined('AT_INCLUDE_PATH')) { exit; }
 
-define('AT_DEVEL', 0);
+define('AT_DEVEL', 1);
 define('AT_ERROR_REPORTING', E_ALL ^ E_NOTICE); // default is E_ALL ^ E_NOTICE, use E_ALL or E_ALL + E_STRICT for developing
 
 // Emulate register_globals off. src: http://php.net/manual/en/faq.misc.php#faq.misc.registerglobals
@@ -81,6 +81,39 @@ function unregister_GLOBALS() {
 if (!defined('AT_REDIRECT_LOADED')){
 	require_once(AT_INCLUDE_PATH.'lib/mysql_connect.inc.php');
 }
+/***** end database connection ****/
+
+/***** 4. start language block *****/
+	// set current language
+	require(AT_INCLUDE_PATH . 'classes/Language/LanguageManager.class.php');
+	$languageManager =& new LanguageManager();
+
+	$myLang =& $languageManager->getMyLanguage();
+
+	if ($myLang === FALSE) {
+		echo 'There are no languages installed!';
+		exit;
+	}
+	$myLang->saveToSession();
+//	if (isset($_GET['lang']) && $_SESSION['valid_user']) {
+//		if ($_SESSION['course_id'] == -1) {
+//			$myLang->saveToPreferences($_SESSION['login'], 1);	//1 for admin			
+//		} else {
+//			$myLang->saveToPreferences($_SESSION['member_id'], 0);	//0 for non-admin
+//		}
+//	}
+//	$myLang->sendContentTypeHeader();
+
+	/* set right-to-left language */
+	$rtl = '';
+	if ($myLang->isRTL()) {
+		$rtl = 'rtl_'; /* basically the prefix to a rtl variant directory/filename. eg. rtl_tree */
+	}
+/***** end language block ****/
+
+/* 5. load common libraries */
+	require(AT_INCLUDE_PATH.'lib/output.inc.php');           /* output functions */
+/***** end load common libraries ****/
 
  /**
  * This function is used for printing variables for debugging.
@@ -113,7 +146,6 @@ function debug($var, $title='') {
 	echo $str;
 	echo '</pre>';
 }
-
 
  /**
  * This function is used for checking if the given $uri is valid.

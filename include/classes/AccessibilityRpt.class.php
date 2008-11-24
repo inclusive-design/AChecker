@@ -44,7 +44,7 @@ class AccessibilityRpt {
          <em>Line {LINE_NUMBER}, Column {COL_NUMBER}</em>:
          <span class="msg">
             <a href="javascript: popup(\'{BASE_HREF}suggestion.php?id={CHECK_ID}\')" 
-               title="Suggest improvements on this error message">{ERROR}</a>
+               title="{TITLE}">{ERROR}</a>
          </span>
          <pre><code class="input">{HTML_CODE}</code></pre>
          <p class="helpwanted">
@@ -82,9 +82,9 @@ class AccessibilityRpt {
 		global $db;
 		
 		// initialize each section
-		$this->rpt_errors = "<h2>Known Problems</h2><br />";
-		$this->rpt_likely_problems = "<h2>Likely Problems</h2><br />";
-		$this->rpt_potential_problems = "<h2>Potential Problems</h2><br />";
+		$this->rpt_errors = "<h2>". _AC("known_problems") ."</h2><br />";
+		$this->rpt_likely_problems = "<h2>". _AC("likely_problems") ."</h2><br />";
+		$this->rpt_potential_problems = "<h2>". _AC("potential_problems") ."</h2><br />";
 		
 		// generate section details
 		foreach ($this->errors as $error)
@@ -94,23 +94,23 @@ class AccessibilityRpt {
 
 			while ($row = mysql_fetch_assoc($result))
 			{
-				if ($row["confidence"] == "Known")
+				if ($row["confidence"] == KNOWN)
 				{
 					$this->num_of_errors++;
 					
-					$this->rpt_errors .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $row["err"], IS_ERROR);
+					$this->rpt_errors .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_ERROR);
 				}
-				else if ($row["confidence"] == "Likely")
+				else if ($row["confidence"] == LIKELY)
 				{
 					$this->num_of_likely_problems++;
 					
-					$this->rpt_likely_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $row["err"], IS_WARNING);
+					$this->rpt_likely_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_WARNING);
 				}
-				else if ($row["confidence"] == "Potential")
+				else if ($row["confidence"] == POTENTIAL)
 				{
 					$this->num_of_potential_problems++;
 					
-					$this->rpt_potential_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $row["err"], IS_INFO);
+					$this->rpt_potential_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_INFO);
 				}
 			}
 		}
@@ -150,8 +150,8 @@ class AccessibilityRpt {
 		if (strlen($html_code) > 100)
 			$html_code = substr($html_code, 0, 100) . " ...";
 			
-		return str_replace(array("{MSG_TYPE}", "{IMG_SRC}", "{IMG_TYPE}", "{LINE_NUMBER}", "{COL_NUMBER}", "{HTML_CODE}", "{ERROR}", "{BASE_HREF}", "{CHECK_ID}"),
-		                   array($msg_type, $img_src, $img_type, $line_number, $col_number, htmlentities($html_code), $error, AT_BASE_HREF, $check_id),
+		return str_replace(array("{MSG_TYPE}", "{IMG_SRC}", "{IMG_TYPE}", "{LINE_NUMBER}", "{COL_NUMBER}", "{HTML_CODE}", "{ERROR}", "{BASE_HREF}", "{CHECK_ID}", "{TITLE}"),
+		                   array($msg_type, $img_src, $img_type, $line_number, $col_number, htmlentities($html_code), $error, AT_BASE_HREF, $check_id, _AC("suggest_improvements")),
 		                   $this->cell_html);
 	}
 	
