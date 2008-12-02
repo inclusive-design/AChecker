@@ -26,7 +26,7 @@ $result	= mysql_query($sql, $db) or die(mysql_error());
 
 <form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 	
-<div class="input-form">
+<div class="center-input-form">
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("input"); ?></legend>
 		<div class="row"><h2><label for="checkuri"><?php echo _AC("check_by_uri"); ?></label></h2></div>
 

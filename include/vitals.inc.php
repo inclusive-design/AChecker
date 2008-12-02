@@ -12,10 +12,13 @@
 
 if (!defined('AT_INCLUDE_PATH')) { exit; }
 
+require(AT_INCLUDE_PATH.'phpCache/phpCache.inc.php'); // cache library
+
 define('AT_DEVEL', 1);
 define('AT_ERROR_REPORTING', E_ALL ^ E_NOTICE); // default is E_ALL ^ E_NOTICE, use E_ALL or E_ALL + E_STRICT for developing
 
 // Emulate register_globals off. src: http://php.net/manual/en/faq.misc.php#faq.misc.registerglobals
+unset($_SESSION);
 function unregister_GLOBALS() {
    if (!ini_get('register_globals')) { return; }
 
@@ -94,7 +97,9 @@ if (!defined('AT_REDIRECT_LOADED')){
 		echo 'There are no languages installed!';
 		exit;
 	}
+
 	$myLang->saveToSession();
+
 //	if (isset($_GET['lang']) && $_SESSION['valid_user']) {
 //		if ($_SESSION['course_id'] == -1) {
 //			$myLang->saveToPreferences($_SESSION['login'], 1);	//1 for admin			
@@ -163,6 +168,46 @@ function is_uri_valid($uri)
 		return true;
 }
 
+/****************************************************/
+/* compute the $_my_uri variable					*/
+	$bits	  = explode(SEP, getenv('QUERY_STRING'));
+	$num_bits = count($bits);
+	$_my_uri  = '';
+
+	for ($i=0; $i<$num_bits; $i++) {
+//		if (	(strpos($bits[$i], 'enable=')	=== 0) 
+//			||	(strpos($bits[$i], 'disable=')	=== 0)
+//			||	(strpos($bits[$i], 'expand=')	=== 0)
+//			||	(strpos($bits[$i], 'collapse=')	=== 0)
+//			||	(strpos($bits[$i], 'lang=')		=== 0)
+//			) {
+		if (	(strpos($bits[$i], 'lang=')		=== 0)
+			) {
+			/* we don't want this variable added to $_my_uri */
+			continue;
+		}
+
+		if (($_my_uri == '') && ($bits[$i] != '')) {
+			$_my_uri .= '?';
+		} else if ($bits[$i] != ''){
+			$_my_uri .= SEP;
+		}
+		$_my_uri .= $bits[$i];
+	}
+	if ($_my_uri == '') {
+		$_my_uri .= '?';
+	} else {
+		$_my_uri .= SEP;
+	}
+	$_my_uri = $_SERVER['PHP_SELF'].$_my_uri;
+
+function my_add_null_slashes( $string ) {
+    return mysql_real_escape_string(stripslashes($string));
+}
+
+function my_null_slashes($string) {
+	return $string;
+}
 
 if ( get_magic_quotes_gpc() == 1 ) {
 	$addslashes   = 'my_add_null_slashes';

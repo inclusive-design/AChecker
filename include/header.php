@@ -33,7 +33,7 @@ $starttime = $mtime;
 	<link rel="shortcut icon" href="<?php echo $_base_href; ?>images/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="forms.css" type="text/css" />
 	<link rel="stylesheet" href="styles.css" type="text/css" />
-
+	<?php echo $_custom_head; ?>
 	<script type="text/javascript">
 	//<!--
 	var newwindow;
@@ -91,8 +91,13 @@ $starttime = $mtime;
 
 <body onload="initial();">
 
-	<div id="banner" style="padding-top:4px;padding-left:4px; vertical-align:middle;">
+	<div id="banner">
 		<a href="http://www.atutor.ca/achecker/"><img width="145" src="images/header_logo_checker.gif" height="43" alt="AChecker" style="border:none;" /></a>
-		<h1 style="vertical-align:super; ">Web Accessibility Checker<span id="versioninfo">Version 0.1 Beta</span>
+		<h1 style="vertical-align:super;"><?php echo _AC("web_accessibility_checker"); ?>
+			<span id="versioninfo">
+				<a href="<?php echo AT_BASE_HREF; ?>translator.php" target="_blank"><?php echo _AC('help_with_translate'); ?></a>
+				&nbsp;
+				Version 0.1 Beta
+			</span>
 		</h1>
 	</div>

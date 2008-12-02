@@ -9,7 +9,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-div.input-form {
+div.center-input-form {
 	width: 90%; 
 	margin-left:auto; 
 	margin-right:auto;
@@ -20,12 +20,33 @@ div.input-form {
 	text-align: center;
 }
 
-div.input-form div.row h3 {
-	margin-left: 0px;
+div.center-input-form div.row {
+	background-color: #F8F8F8;
+}
+
+div.center-input-form p.submit_button
+{
+	background: url(../images/double.png) left top repeat-x;
+	text-align: center;
+}
+
+div.input-form {
+	width: 90%; 
+	margin-left:auto; 
+	margin-right:auto;
+	border: thin #CCCCCC solid;
+	margin-bottom: 20px;
+	line-height:150%;
+	background-color: #F8F8F8;
 }
 
 div.input-form div.row {
 	background-color: #F8F8F8;
+	padding:8px;
+}
+
+div.input-form div.row h3 {
+	margin-left: 0px;
 }
 
 div.input-form .footer {
@@ -63,12 +84,6 @@ input[type=checkbox]{
 	text-align:center;
 }
 
-div.input-form p.submit_button
-{
-	background: url(../images/double.png) left top repeat-x;
-	text-align: center;
-}
-
 div.input-form div.buttons {
 	text-align: right;
 	padding:8px;
@@ -79,10 +94,6 @@ div.input-form div.buttons input {
 	border:  #AAA  solid 1px;
 }
 .formfield:focus{
-	background-color: #FFDAB9;
-}
-
-#ot:focus{
 	background-color: #FFDAB9;
 }
 

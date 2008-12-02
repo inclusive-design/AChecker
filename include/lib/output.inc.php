@@ -1,16 +1,15 @@
 <?php
-/****************************************************************/
-/* ATutor														*/
-/****************************************************************/
-/* Copyright (c) 2002-2008 by Greg Gay & Joel Kronenberg        */
-/* Adaptive Technology Resource Centre / University of Toronto  */
-/* http://atutor.ca												*/
-/*                                                              */
-/* This program is free software. You can redistribute it and/or*/
-/* modify it under the terms of the GNU General Public License  */
-/* as published by the Free Software Foundation.				*/
-/****************************************************************/
-// $Id: output.inc.php 8212 2008-11-12 09:31:56Z silvia $
+/************************************************************************/
+/* AChecker                                                             */
+/************************************************************************/
+/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
+/* Adaptive Technology Resource Centre / University of Toronto			    */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or        */
+/* modify it under the terms of the GNU General Public License          */
+/* as published by the Free Software Foundation.                        */
+/************************************************************************/
+
 if (!defined('AT_INCLUDE_PATH')) { exit; }
 
 /**********************************************************************************/
@@ -21,6 +20,133 @@ if (!defined('AT_INCLUDE_PATH')) { exit; }
 /**********************************************************************************/
 
 /**
+* Converts language code to actual language message, caches them according to page url
+* @access	public
+* @param	args				unlimited number of arguments allowed but first arg MUST be name of the language variable/term
+*								i.e		$args[0] = the term to the format string $_template[term]
+*										$args[1..x] = optional arguments to the formatting string 
+* @return	string|array		full resulting message
+* @see		$db			        in include/vitals.inc.php
+* @see		cache()				in include/phpCache/phpCache.inc.php
+* @see		cache_variable()	in include/phpCache/phpCache.inc.php
+* @author	Joel Kronenberg
+*/
+function _AC() {
+	global $_cache_template, $lang_et, $_rel_url;
+	static $_template;
+	
+	$args = func_get_args();
+	
+	// a feedback msg
+	if (!is_array($args[0])) {
+		/**
+		 * Added functionality for translating language code String (AT_ERROR|AT_INFOS|AT_WARNING|AT_FEEDBACK|AT_HELP).*
+		 * to its text and returning the result. No caching needed.
+		 * @author Jacek Materna
+		 */
+
+		// Check for specific language prefix, extendible as needed
+		// 0002767:  a substring+in_array test should be faster than a preg_match test.
+		// replaced the preg_match with a test of the substring.
+		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AT_HELP)
+		if (in_array($sub_arg, array('AT_ERRO','AT_INFO','AT_WARN','AT_FEED','AT_HELP','AT_CONF'))) {
+			global $db;
+			global $_base_path, $addslashes;
+
+			$args[0] = $addslashes($args[0]);
+					
+			/* get $_msgs_new from the DB */
+			$sql	= 'SELECT text FROM '.TABLE_PREFIX.'language_text WHERE term="' . $args[0] . '" AND (variable="_msgs" OR variable="_c_msgs") AND language_code="'.$_SESSION['lang'].'" ORDER BY variable ASC LIMIT 1';
+
+			$result	= @mysql_query($sql, $db);
+			$i = 1;
+			$msgs = '';
+					
+			if ($row = @mysql_fetch_assoc($result)) {
+				// do not cache key as a digit (no contstant(), use string)
+				$msgs = str_replace('SITE_URL/', $_base_path, $row['text']);
+				if (defined('AT_DEVEL') && AT_DEVEL) {
+					$msgs .= ' <small><small>('. $args[0] .')</small></small>';
+				}
+			}
+
+			return $msgs;
+		}
+	}
+	
+	// a template variable
+	if (!isset($_template)) {
+		$url_parts = parse_url(AT_BASE_HREF);
+		$name = substr($_SERVER['PHP_SELF'], strlen($url_parts['path'])-1);
+
+		if ( !($lang_et = cache(120, 'lang', $_SESSION['lang'].'_'.$name)) ) {
+			global $db;
+
+			/* get $_template from the DB */
+			
+			$sql = "SELECT * FROM ".TABLE_PREFIX."language_text WHERE language_code='".$_SESSION['lang']."' AND variable='_template' ORDER BY variable ASC";
+			$result	= mysql_query($sql, $db);
+			while ($row = mysql_fetch_assoc($result)) {
+				//Do not overwrite the variable that existed in the cache_template already.
+				//The edited terms (_c_template) will always be at the top of the resultset
+				//0003279
+				if (isset($_cache_template[$row['term']])){
+					continue;
+				}
+
+				// saves us from doing an ORDER BY
+				if ($row['language_code'] == $_SESSION['lang']) {
+					$_cache_template[$row['term']] = stripslashes($row['text']);
+				} else if (!isset($_cache_template[$row['term']])) {
+					$_cache_template[$row['term']] = stripslashes($row['text']);
+				}
+			}
+		
+			cache_variable('_cache_template');
+			endcache(true, false);
+		}
+		$_template = $_cache_template;
+	}
+
+	$num_args = func_num_args();
+	if (is_array($args[0])) {
+		$args = $args[0];
+		$num_args = count($args);
+	}
+	$format	  = array_shift($args);
+
+	if (isset($_template[$format])) {
+		$outString	= vsprintf($_template[$format], $args);
+		$str = ob_get_contents();
+	} else {
+		$outString = '';
+	}
+
+	if ($outString === false) {
+		return ('[Error parsing language. Variable: <code>'.$format.'</code>. Language: <code>'.$_SESSION['lang'].'</code> ]');
+	}
+
+	if (empty($outString)) {
+		global $db;
+		$sql	= 'SELECT L.* FROM '.TABLE_PREFIX.'language_text L WHERE L.language_code="'.$_SESSION['lang'].'" AND L.variable<>"_msgs" AND L.term="'.$format.'"';
+
+		$result	= mysql_query($sql, $db);
+		$row = mysql_fetch_assoc($result);
+
+		$_template[$row['term']] = stripslashes($row['text']);
+		$outString = $_template[$row['term']];
+
+		if (empty($outString)) {
+			return ('[ '.$format.' ]');
+		}
+		$outString = $_template[$row['term']];
+		$outString = vsprintf($outString, $args);
+	}
+
+	return $outString;
+}
+
+/**
 * Converts language term to actual language message
 * @access	public
 * @param	$term = the term to the format string $_template[term]
@@ -28,7 +154,7 @@ if (!defined('AT_INCLUDE_PATH')) { exit; }
 * @see		$db			        in include/vitals.inc.php
 * @author	Cindy Li
 */
-function _AC($term, $variable = '_template')
+function _AC_old($term, $variable = '_template')
 {
 	global $db;
 	

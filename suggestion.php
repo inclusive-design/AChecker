@@ -26,10 +26,10 @@ $row = mysql_fetch_assoc($result);
 <div class="output-form">
 	
 <h2><? echo _AC("requirement"); ?></h2>
-<span class="msg"><?php echo _AC($row["name"], "_check"); ?></span>
+<span class="msg"><?php echo _AC($row["name"]); ?></span>
 
 <h2><? echo _AC("error"); ?></h2>
-<span class="msg"><?php echo _AC($row["err"], "_check"); ?></span>
+<span class="msg"><?php echo _AC($row["err"]); ?></span>
 
 <?php
 if ($row["description"] <> "")
@@ -37,7 +37,7 @@ if ($row["description"] <> "")
 ?>
 
 <h2><? echo _AC("description"); ?></h2>
-<span class="msg"><?php echo _AC($row["description"], "_check"); ?></span>
+<span class="msg"><?php echo _AC($row["description"]); ?></span>
 
 <?php
 }
@@ -49,7 +49,7 @@ if ($row["rationale"] <> "")
 ?>
 
 <h2><? echo _AC("rationale"); ?></h2>
-<span class="msg"><?php echo _AC($row["rationale"], "_check"); ?></span>
+<span class="msg"><?php echo _AC($row["rationale"]); ?></span>
 
 <?php
 }
@@ -61,7 +61,7 @@ if ($row["how_to_repair"] <> "")
 ?>
 
 <h2><? echo _AC("how_to_repair"); ?></h2>
-<span class="msg"><?php echo _AC($row["how_to_repair"], "_check"); ?></span>
+<span class="msg"><?php echo _AC($row["how_to_repair"]); ?></span>
 
 <?php
 }
@@ -73,7 +73,7 @@ if ($row["repair_example"] <> "")
 ?>
 
 <h2><? echo _AC("repair_example"); ?></h2>
-<span class="msg"><pre><?php echo htmlentities(_AC($row["repair_example"], "_check")); ?></pre></span>
+<span class="msg"><pre><?php echo htmlentities(_AC($row["repair_example"])); ?></pre></span>
 
 <?php
 }
@@ -88,15 +88,15 @@ if ($row["question"] <> "")
 <table>
 	<tr>
 		<th align="left"><? echo _AC("question"); ?></th>
-		<td><span class="msg"><?php echo _AC($row["question"], "_check"); ?></span></td>
+		<td><span class="msg"><?php echo _AC($row["question"]); ?></span></td>
 	</tr>
 	<tr>
 		<th align="left"><? echo _AC("pass"); ?></th>
-		<td><span class="msg"><?php echo _AC($row["decision_pass"], "_check"); ?></span></td>
+		<td><span class="msg"><?php echo _AC($row["decision_pass"]); ?></span></td>
 	</tr>
 	<tr>
 		<th align="left"><? echo _AC("fail"); ?></th>
-		<td><span class="msg"><?php echo _AC($row["decision_fail"], "_check"); ?></span></td>
+		<td><span class="msg"><?php echo _AC($row["decision_fail"]); ?></span></td>
 	</tr>
 </table>
 
@@ -120,7 +120,7 @@ if (mysql_num_rows($result) > 0)
 
 while ($row = mysql_fetch_assoc($result))
 {
-	echo '<span class="msg">'.intval($row["step_id"] + 1)  . ". " . _AC($row["step"], "_test"). "</span><br />";
+	echo '<span class="msg">'.intval($row["step_id"] + 1)  . ". " . _AC($row["step"]). "</span><br />";
 }
 
 $sql = "SELECT step_id, step
@@ -139,7 +139,7 @@ if (mysql_num_rows($result) > 0)
 
 while ($row = mysql_fetch_assoc($result))
 {
-	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . _AC($row["step"], "_test"). "</span><br />";
+	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . _AC($row["step"]). "</span><br />";
 }
 
 $sql = "SELECT step_id, step
@@ -158,7 +158,7 @@ if (mysql_num_rows($result) > 0)
 
 while ($row = mysql_fetch_assoc($result))
 {
-	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . _AC($row["step"], "_test"). "</span><br />";
+	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . _AC($row["step"]). "</span><br />";
 }
 ?>
 </div>
