@@ -358,7 +358,7 @@ function _AT() {
 			$args[0] = $addslashes($args[0]);
 					
 			/* get $_msgs_new from the DB */
-			$sql	= 'SELECT text FROM '.TABLE_PREFIX.'language_text WHERE term="' . $args[0] . '" AND (variable="_msgs" OR variable="_c_msgs") AND language_code="'.$_SESSION['lang'].'" ORDER BY variable ASC LIMIT 1';
+			$sql	= 'SELECT text FROM '.TABLE_PREFIX.'language_text WHERE term="' . $args[0] . '" AND variable="_msgs" AND language_code="'.$_SESSION['lang'].'" ORDER BY variable ASC LIMIT 1';
 
 			$result	= @mysql_query($sql, $db);
 			$i = 1;
@@ -389,7 +389,7 @@ function _AT() {
 
 			/* get $_template from the DB */
 			
-			$sql = "SELECT L.* FROM ".TABLE_PREFIX."language_text L, ".TABLE_PREFIX."language_pages P WHERE L.language_code='{$_SESSION['lang']}' AND L.variable<>'_msgs' AND L.term=P.term AND P.page='$_rel_url' ORDER BY L.variable ASC";
+			$sql = "SELECT * FROM ".TABLE_PREFIX."language_text WHERE language_code='{$_SESSION['lang']}' AND variable<>'_msgs' ORDER BY variable ASC";
 			$result	= mysql_query($sql, $db);
 			while ($row = mysql_fetch_assoc($result)) {
 				//Do not overwrite the variable that existed in the cache_template already.

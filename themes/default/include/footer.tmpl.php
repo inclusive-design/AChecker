@@ -37,13 +37,16 @@ if($languageManager->getNumLanguages() > 1)
 
 <div style="margin-left:auto; margin-right:auto; width:20em;">
 	<small>Web site engine's code is copyright &copy; 2008</small><br />
-	<div style="margin-left:auto; margin-right:auto; width:84px;"><a href="http://atrc.utoronto.ca/"><img width="84" src="images/atrclogo.gif" height="52" alt="Adaptive Technology Resource Centre" style="border:none;"/></a></div>
+	<div style="margin-left:auto; margin-right:auto; width:84px;">
+		<a href="http://atrc.utoronto.ca/"><img width="84" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/atrclogo.gif" height="52" alt="Adaptive Technology Resource Centre" style="border:none;"/></a>
+	</div>
 </div>
 </body>
 </html>
 
 <?php
-// Timer
+// Timer, calculate how much time to load the page
+// starttime is in include/header.inc.php
 $mtime = microtime(); 
 $mtime = explode(" ", $mtime); 
 $mtime = $mtime[1] + $mtime[0]; 

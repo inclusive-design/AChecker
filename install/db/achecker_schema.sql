@@ -2,7 +2,9 @@
 # Database setup SQL for a new install of AChecker
 #####################################################
 
--- Table structure for table `checks`
+# --------------------------------------------------------
+# Table structure for table `checks`
+# since 0.1
 
 CREATE TABLE `checks` (
   `check_id` mediumint(8) unsigned NOT NULL,
@@ -22,7 +24,186 @@ CREATE TABLE `checks` (
   PRIMARY KEY  (`check_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- Dumping data for table `checks`
+
+# --------------------------------------------------------
+# Table structure for table `check_prerequisites`
+# since 0.1
+
+CREATE TABLE `check_prerequisites` (
+  `check_id` mediumint(8) unsigned NOT NULL,
+  `prerequisite_check_id` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY  (`check_id`,`prerequisite_check_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `color_mapping`
+# since 0.1
+
+CREATE TABLE `color_mapping` (
+  `color_name` varchar(50) NOT NULL default '',
+  `color_code` varchar(6) default NULL,
+  PRIMARY KEY  (`color_name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `guidelines`
+# since 0.1
+
+CREATE TABLE `guidelines` (
+  `guideline_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `title` varchar(255) default NULL,
+  `abbr` varchar(100) default NULL,
+  `long_name` varchar(255) default NULL,
+  `published_date` date default NULL,
+  `status` text,
+  `earlid` varchar(255) default NULL,
+  `preamble` text,
+  PRIMARY KEY  (`guideline_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+
+# --------------------------------------------------------
+# Table structure for table `guideline_groups`
+# since 0.1
+
+CREATE TABLE `guideline_groups` (
+  `group_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `guideline_id` mediumint(8) unsigned default NULL,
+  `name` varchar(255) default NULL,
+  `abbr` varchar(100) default NULL,
+  `principle` varchar(100) default NULL,
+  PRIMARY KEY  (`group_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=86 ;
+
+# --------------------------------------------------------
+# Table structure for table `guideline_subgroups`
+# since 0.1
+
+CREATE TABLE `guideline_subgroups` (
+  `subgroup_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `group_id` mediumint(8) unsigned default NULL,
+  `name` varchar(255) default NULL,
+  `abbr` varchar(100) default NULL,
+  PRIMARY KEY  (`subgroup_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=330 ;
+
+# --------------------------------------------------------
+# Table structure for table `languages`
+# since 0.1
+
+CREATE TABLE `languages` (
+  `language_code` varchar(20) NOT NULL default '',
+  `char_set` varchar(80) NOT NULL default '',
+  `direction` varchar(16) NOT NULL default '',
+  `reg_exp` varchar(124) NOT NULL default '',
+  `native_name` varchar(80) NOT NULL default '',
+  `english_name` varchar(80) NOT NULL default '',
+  `status` tinyint(3) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`language_code`,`char_set`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `lang_codes`
+# since 0.1
+
+CREATE TABLE `lang_codes` (
+  `code_3letters` varchar(3) NOT NULL default '',
+  `code_2letters` varchar(2) default NULL,
+  `description` varchar(50) default NULL,
+  PRIMARY KEY  (`code_3letters`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `subgroup_checks`
+# since 0.1
+
+CREATE TABLE `subgroup_checks` (
+  `subgroup_id` mediumint(8) unsigned NOT NULL default '0',
+  `check_id` mediumint(8) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`subgroup_id`,`check_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `techniques`
+# since 0.1
+
+CREATE TABLE `techniques` (
+  `subgroup_id` mediumint(8) unsigned NOT NULL default '0',
+  `check_id` mediumint(8) unsigned NOT NULL default '0',
+  `technique` varchar(50) NOT NULL default '',
+  PRIMARY KEY  (`subgroup_id`,`check_id`,`technique`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `test_expected`
+# since 0.1
+
+CREATE TABLE `test_expected` (
+  `check_id` mediumint(8) unsigned NOT NULL,
+  `step_id` mediumint(8) unsigned NOT NULL,
+  `step` text,
+  PRIMARY KEY  (`check_id`,`step_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `test_fail`
+# since 0.1
+
+CREATE TABLE `test_fail` (
+  `check_id` mediumint(8) unsigned NOT NULL,
+  `step_id` mediumint(8) unsigned NOT NULL,
+  `step` text,
+  PRIMARY KEY  (`check_id`,`step_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `test_files`
+# since 0.1
+
+CREATE TABLE `test_files` (
+  `check_id` mediumint(8) unsigned NOT NULL,
+  `file_id` mediumint(8) unsigned NOT NULL,
+  `file_type` varchar(50) default NULL COMMENT 'Values: pass, fail',
+  `source` varchar(100) default NULL COMMENT 'Name of the source file',
+  `description` text,
+  PRIMARY KEY  (`check_id`,`file_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `test_pass`
+# since 0.1
+
+CREATE TABLE `test_pass` (
+  `check_id` mediumint(8) unsigned NOT NULL,
+  `next_check_id` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY  (`check_id`,`next_check_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `test_procedure`
+# since 0.1
+
+CREATE TABLE `test_procedure` (
+  `check_id` mediumint(8) unsigned NOT NULL,
+  `step_id` mediumint(8) unsigned NOT NULL,
+  `step` text,
+  PRIMARY KEY  (`check_id`,`step_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `themes`
+# since 0.1
+
+CREATE TABLE `themes` (
+  `title` varchar(80) NOT NULL default '',
+  `version` varchar(10) NOT NULL default '',
+  `dir_name` varchar(20) NOT NULL default '',
+  `last_updated` date NOT NULL default '0000-00-00',
+  `extra_info` TEXT NOT NULL ,
+  `status` tinyint(3) unsigned NOT NULL default '1',
+  PRIMARY KEY  (`title`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# Dumping data for table `checks`
 
 INSERT INTO `checks` (`check_id`, `html_tag`, `confidence`, `status`, `note`, `name`, `err`, `description`, `rationale`, `how_to_repair`, `repair_example`, `question`, `decision_pass`, `decision_fail`) VALUES
 (1, 'img', '0', 5, '', '_NAME_1', '_ERR_1', '_DESC_1', '_RATIONALE_1', '_HOWTOREPAIR_1', '_REPAIREXAMPLE_1', '', '', ''),
@@ -293,14 +474,6 @@ INSERT INTO `checks` (`check_id`, `html_tag`, `confidence`, `status`, `note`, `n
 (275, 'body', '2', 3, '', '_NAME_275', '_ERR_275', '_DESC_275', '', '', '', '_QUESTION_275', '_DECISIONPASS_275', '_DECISIONFAIL_275'),
 (276, 'body', '2', 3, '', '_NAME_276', '_ERR_276', '_DESC_276', '', '', '', '_QUESTION_276', '_DECISIONPASS_276', '_DECISIONFAIL_276');
 
--- Table structure for table `check_prerequisites`
-
-CREATE TABLE `check_prerequisites` (
-  `check_id` mediumint(8) unsigned NOT NULL,
-  `prerequisite_check_id` mediumint(8) unsigned NOT NULL,
-  PRIMARY KEY  (`check_id`,`prerequisite_check_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 -- Dumping data for table `check_prerequisites`
 
 INSERT INTO `check_prerequisites` (`check_id`, `prerequisite_check_id`) VALUES
@@ -354,14 +527,6 @@ INSERT INTO `check_prerequisites` (`check_id`, `prerequisite_check_id`) VALUES
 (220, 204),
 (240, 145),
 (273, 49);
-
--- Table structure for table `color_mapping`
-
-CREATE TABLE `color_mapping` (
-  `color_name` varchar(50) NOT NULL default '',
-  `color_code` varchar(6) default NULL,
-  PRIMARY KEY  (`color_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Dumping data for table `color_mapping`
 
@@ -507,20 +672,6 @@ INSERT INTO `color_mapping` (`color_name`, `color_code`) VALUES
 ('yellow', 'FFFF00'),
 ('yellowgreen', '9ACD32');
 
--- Table structure for table `guidelines`
-
-CREATE TABLE `guidelines` (
-  `guideline_id` mediumint(8) unsigned NOT NULL auto_increment,
-  `title` varchar(255) default NULL,
-  `abbr` varchar(100) default NULL,
-  `long_name` varchar(255) default NULL,
-  `published_date` date default NULL,
-  `status` text,
-  `earlid` varchar(255) default NULL,
-  `preamble` text,
-  PRIMARY KEY  (`guideline_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
-
 -- Dumping data for table `guidelines`
 
 INSERT INTO `guidelines` (`guideline_id`, `title`, `abbr`, `long_name`, `published_date`, `status`, `earlid`, `preamble`) VALUES
@@ -533,17 +684,6 @@ INSERT INTO `guidelines` (`guideline_id`, `title`, `abbr`, `long_name`, `publish
 (7, 'WCAG 2.0 L1', 'WCAG2-L1', '_NAME_7', '2006-06-19', NULL, 'http://www.w3.org/TR/WCAG20/#a', NULL),
 (8, 'WCAG 2.0 L2', 'WCAG2-L2', '_NAME_8', '2006-06-19', NULL, 'http://www.w3.org/TR/WCAG20/#aa', NULL),
 (9, 'WCAG 2.0 L3', 'WCAG2-L3', '_NAME_9', '2006-06-19', NULL, 'http://www.w3.org/TR/WCAG20/#aaa', NULL);
-
--- Table structure for table `guideline_groups`
-
-CREATE TABLE `guideline_groups` (
-  `group_id` mediumint(8) unsigned NOT NULL auto_increment,
-  `guideline_id` mediumint(8) unsigned default NULL,
-  `name` varchar(255) default NULL,
-  `abbr` varchar(100) default NULL,
-  `principle` varchar(100) default NULL,
-  PRIMARY KEY  (`group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=86 ;
 
 -- Dumping data for table `guideline_groups`
 
@@ -633,16 +773,6 @@ INSERT INTO `guideline_groups` (`group_id`, `guideline_id`, `name`, `abbr`, `pri
 (83, 9, '_GROUPNAME_83', '', 'Understandable'),
 (84, 9, '_GROUPNAME_84', '', 'Robust'),
 (85, 9, '_GROUPNAME_85', '', 'Robust');
-
--- Table structure for table `guideline_subgroups`
-
-CREATE TABLE `guideline_subgroups` (
-  `subgroup_id` mediumint(8) unsigned NOT NULL auto_increment,
-  `group_id` mediumint(8) unsigned default NULL,
-  `name` varchar(255) default NULL,
-  `abbr` varchar(100) default NULL,
-  PRIMARY KEY  (`subgroup_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=330 ;
 
 -- Dumping data for table `guideline_subgroups`
 
@@ -977,32 +1107,10 @@ INSERT INTO `guideline_subgroups` (`subgroup_id`, `group_id`, `name`, `abbr`) VA
 (328, 85, '_SUBGROUPNAME_85', 'L2'),
 (329, 85, '_SUBGROUPNAME_85', 'L3');
 
--- Table structure for table `languages`
-
-CREATE TABLE `languages` (
-  `language_code` varchar(20) NOT NULL default '',
-  `char_set` varchar(80) NOT NULL default '',
-  `direction` varchar(16) NOT NULL default '',
-  `reg_exp` varchar(124) NOT NULL default '',
-  `native_name` varchar(80) NOT NULL default '',
-  `english_name` varchar(80) NOT NULL default '',
-  `status` tinyint(3) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`language_code`,`char_set`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 -- Dumping data for table `languages`
 
 INSERT INTO `languages` (`language_code`, `char_set`, `direction`, `reg_exp`, `native_name`, `english_name`, `status`) VALUES
 ('en', 'utf-8', 'ltr', 'en([-_][[:alpha:]]{2})?|english', 'English', 'English', 3);
-
--- Table structure for table `lang_codes`
-
-CREATE TABLE `lang_codes` (
-  `code_3letters` varchar(3) NOT NULL default '',
-  `code_2letters` varchar(2) default NULL,
-  `description` varchar(50) default NULL,
-  PRIMARY KEY  (`code_3letters`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Dumping data for table `lang_codes`
 
@@ -1504,14 +1612,6 @@ INSERT INTO `lang_codes` (`code_3letters`, `code_2letters`, `description`) VALUE
 ('zul', 'zu', 'Zulu'),
 ('zun', '', 'Zuni'),
 ('zxx', '', 'Nolinguisticcontent');
-
--- Table structure for table `subgroup_checks`
-
-CREATE TABLE `subgroup_checks` (
-  `subgroup_id` mediumint(8) unsigned NOT NULL default '0',
-  `check_id` mediumint(8) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`subgroup_id`,`check_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Dumping data for table `subgroup_checks`
 
@@ -2399,16 +2499,6 @@ INSERT INTO `subgroup_checks` (`subgroup_id`, `check_id`) VALUES
 (321, 274),
 (322, 276);
 
--- Table structure for table `techniques`
-
-CREATE TABLE `techniques` (
-  `subgroup_id` mediumint(8) unsigned NOT NULL default '0',
-  `check_id` mediumint(8) unsigned NOT NULL default '0',
-  `technique` varchar(50) NOT NULL default '',
-  PRIMARY KEY  (`subgroup_id`,`check_id`,`technique`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
 -- Dumping data for table `techniques`
 
 INSERT INTO `techniques` (`subgroup_id`, `check_id`, `technique`) VALUES
@@ -2795,15 +2885,6 @@ INSERT INTO `techniques` (`subgroup_id`, `check_id`, `technique`) VALUES
 (322, 276, 'G61');
 
 
--- Table structure for table `test_expected`
-
-CREATE TABLE `test_expected` (
-  `check_id` mediumint(8) unsigned NOT NULL,
-  `step_id` mediumint(8) unsigned NOT NULL,
-  `step` text,
-  PRIMARY KEY  (`check_id`,`step_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 -- Dumping data for table `test_expected`
 
 INSERT INTO `test_expected` (`check_id`, `step_id`, `step`) VALUES
@@ -3082,15 +3163,6 @@ INSERT INTO `test_expected` (`check_id`, `step_id`, `step`) VALUES
 (275, 0, '_EXPECTEDSTEP_275_0'),
 (276, 0, '_EXPECTEDSTEP_276_0');
 
-
--- Table structure for table `test_fail`
-
-CREATE TABLE `test_fail` (
-  `check_id` mediumint(8) unsigned NOT NULL,
-  `step_id` mediumint(8) unsigned NOT NULL,
-  `step` text,
-  PRIMARY KEY  (`check_id`,`step_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Dumping data for table `test_fail`
 
@@ -3412,17 +3484,6 @@ INSERT INTO `test_fail` (`check_id`, `step_id`, `step`) VALUES
 (275, 0, '_FAILSTEP_275_0'),
 (276, 0, '_FAILSTEP_276_0');
 
-
--- Table structure for table `test_files`
-
-CREATE TABLE `test_files` (
-  `check_id` mediumint(8) unsigned NOT NULL,
-  `file_id` mediumint(8) unsigned NOT NULL,
-  `file_type` varchar(50) default NULL COMMENT 'Values: pass, fail',
-  `source` varchar(100) default NULL COMMENT 'Name of the source file',
-  `description` text,
-  PRIMARY KEY  (`check_id`,`file_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Dumping data for table `test_files`
 
@@ -4104,14 +4165,6 @@ INSERT INTO `test_files` (`check_id`, `file_id`, `file_type`, `source`, `descrip
 (276, 2, 'positive', '276-3.html', '_FILEDESC_276_2');
 
 
--- Table structure for table `test_pass`
-
-CREATE TABLE `test_pass` (
-  `check_id` mediumint(8) unsigned NOT NULL,
-  `next_check_id` mediumint(8) unsigned NOT NULL,
-  PRIMARY KEY  (`check_id`,`next_check_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 -- Dumping data for table `test_pass`
 
 INSERT INTO `test_pass` (`check_id`, `next_check_id`) VALUES
@@ -4155,15 +4208,6 @@ INSERT INTO `test_pass` (`check_id`, `next_check_id`) VALUES
 (255, 223),
 (256, 224);
 
-
--- Table structure for table `test_procedure`
-
-CREATE TABLE `test_procedure` (
-  `check_id` mediumint(8) unsigned NOT NULL,
-  `step_id` mediumint(8) unsigned NOT NULL,
-  `step` text,
-  PRIMARY KEY  (`check_id`,`step_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Dumping data for table `test_procedure`
 
@@ -4889,3 +4933,7 @@ INSERT INTO `test_procedure` (`check_id`, `step_id`, `step`) VALUES
 (275, 2, '_PROCEDURESTEP_275_2'),
 (276, 0, '_PROCEDURESTEP_276_0'),
 (276, 1, '_PROCEDURESTEP_276_1');
+
+# insert the default theme
+INSERT INTO `themes` VALUES ('AChecker', '0.1', 'default', NOW(), 'This is the default AChecker theme and cannot be deleted as other themes inherit from it. Please do not alter this theme directly as it would complicate upgrading. Instead, create a new theme derived from this one.', 2);
+

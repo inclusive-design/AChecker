@@ -26,14 +26,14 @@ $starttime = $mtime;
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
 
 <head>
-	<title>ATRC Web Accessibility Checker</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $lang_charset; ?>" />
+	<title><?php echo SITE_NAME; ?></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $this->lang_charset; ?>" />
 	<meta name="Generator" content="Checker - Copyright 2008 by http://checker.atrc.utoronto.ca" />
-	<base href="<?php echo AT_BASE_HREF; ?>" />
-	<link rel="shortcut icon" href="<?php echo $_base_href; ?>images/favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="forms.css" type="text/css" />
-	<link rel="stylesheet" href="styles.css" type="text/css" />
-	<?php echo $_custom_head; ?>
+	<base href="<?php echo $this->base_path; ?>" />
+	<link rel="shortcut icon" href="<?php echo $this->base_path; ?>images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/forms.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/styles.css" type="text/css" />
+	<?php echo $this->custom_head; ?>
 	<script type="text/javascript">
 	//<!--
 	var newwindow;
@@ -89,10 +89,10 @@ $starttime = $mtime;
 
 </head>
 
-<body onload="initial();">
+<body onload="initial(); <?php echo $this->onload; ?>">
 
 	<div id="banner">
-		<a href="http://www.atutor.ca/achecker/"><img width="145" src="images/header_logo_checker.gif" height="43" alt="AChecker" style="border:none;" /></a>
+		<a href="http://www.atutor.ca/achecker/"><img width="145" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/checker_logo.gif" height="43" alt="AChecker" style="border:none;" /></a>
 		<h1 style="vertical-align:super;"><?php echo _AC("web_accessibility_checker"); ?>
 			<span id="versioninfo">
 				<a href="<?php echo AT_BASE_HREF; ?>translator.php" target="_blank"><?php echo _AC('help_with_translate'); ?></a>

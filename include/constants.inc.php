@@ -15,7 +15,8 @@ if (!defined('AT_INCLUDE_PATH')) { exit; }
 /**
  * constants
  **/
- 
+
+define('SITE_NAME', 'ATRC Web Accessibility Checker');
 define('VERSION',		'0.1');
 
 $_config['default_language']          = 'en';

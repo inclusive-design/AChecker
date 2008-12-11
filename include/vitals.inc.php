@@ -41,6 +41,9 @@ function unregister_GLOBALS() {
  * 1. load constants
  * 2. initilize session
  * 3. initilize db connection
+ * 4. start language block
+ * 5. load common libraries
+ * 6. initialize theme and template management
  ***/
 
 /**** 0. start system configuration options block ****/
@@ -119,6 +122,44 @@ if (!defined('AT_REDIRECT_LOADED')){
 /* 5. load common libraries */
 	require(AT_INCLUDE_PATH.'lib/output.inc.php');           /* output functions */
 /***** end load common libraries ****/
+
+/* 6. initialize theme and template management */
+	require(AT_INCLUDE_PATH.'classes/Savant2/Savant2.php');
+
+	// set default template paths:
+	$savant =& new Savant2();
+
+	if (isset($_SESSION['prefs']['PREF_THEME']) && file_exists(AT_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']) && isset($_SESSION['valid_user']) && $_SESSION['valid_user']) 
+	{
+		if (!is_dir(AT_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']))
+		{
+			$_SESSION['prefs']['PREF_THEME'] = 'default';
+		} 
+		else 
+		{
+			//check if enabled
+			$sql    = "SELECT status FROM ".TABLE_PREFIX."themes WHERE dir_name = '".$_SESSION['prefs']['PREF_THEME']."'";
+			$result = mysql_query($sql, $db);
+			$row = mysql_fetch_assoc($result);
+			if ($row['status'] == 0) 
+			{
+				// get default
+				$_SESSION['prefs']['PREF_THEME'] = get_default_theme();
+			}
+		}
+	} else 
+	{
+		$_SESSION['prefs']['PREF_THEME'] = get_default_theme();
+	}
+
+	$savant->addPath('template', AT_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/');
+
+	require(AT_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/theme.cfg.php');
+
+	require(AT_INCLUDE_PATH.'classes/Message/Message.class.php');
+	$msg = new Message($savant);
+
+/* end of initialize theme and template management */
 
  /**
  * This function is used for printing variables for debugging.
@@ -215,6 +256,19 @@ if ( get_magic_quotes_gpc() == 1 ) {
 } else {
 	$addslashes   = 'mysql_real_escape_string';
 	$stripslashes = 'my_null_slashes';
+}
+
+function get_default_theme() {
+	global $db;
+
+	$sql	= "SELECT dir_name FROM ".TABLE_PREFIX."themes WHERE status=2";
+	$result = mysql_query($sql, $db);
+	$row = mysql_fetch_assoc($result);
+
+	if (!is_dir(AT_INCLUDE_PATH . '../themes/' . $row['dir_name']))
+		return 'default';
+	else
+		return $row['dir_name'];
 }
 
 ?>

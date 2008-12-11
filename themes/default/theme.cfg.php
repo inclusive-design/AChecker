@@ -10,21 +10,20 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-define('AT_INCLUDE_PATH', 'include/');
-error_reporting(E_ALL ^ E_NOTICE);
+/* This is the default configuration file for the default theme. */
 
-require('../include/constants.inc.php');
+/* The theme's name. */
+	$_theme['name'] = 'Default 0.1';
 
-$new_version = VERSION;
+/* The theme's version number. */
+	$_theme['version'] = '0.1';
 
-header('Cache-Control: no-store, no-cache, must-revalidate');
-header('Pragma: no-cache');
+/* Which version of ATutor is this theme intended for. */
+	$_theme['achecker-version'] = '0.1';
 
-require(AT_INCLUDE_PATH.'header.inc.php');
+/* author information */
+	$_theme['author_name']  = 'AChecker';
+	$_theme['author_url']   = 'http://www.atutor.ca/achecker/demo/';
+	$_theme['author_email'] = '';
+
 ?>
-
-
-<p>AChecker does not appear to be installed. <a href="index.php">Continue on to the installation</a>.</p>
-
-
-<?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>

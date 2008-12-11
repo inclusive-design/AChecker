@@ -17,7 +17,7 @@ include(AT_INCLUDE_PATH.'vitals.inc.php');
 global $_custom_head;
 $_custom_head = '<link rel="stylesheet" href="style_popup.css" type="text/css" />';
 
-include(AT_INCLUDE_PATH.'header.php');
+include(AT_INCLUDE_PATH.'header.inc.php');
 
 if (isset($_REQUEST['reset_filter'])) unset($_REQUEST);
 
@@ -285,5 +285,5 @@ if ($num_results > 0)
 	echo '</div>'."\n";
 }
 
-include(AT_INCLUDE_PATH.'footer.php'); 
+include(AT_INCLUDE_PATH.'footer.inc.php'); 
 ?>

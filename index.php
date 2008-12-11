@@ -13,7 +13,6 @@
 define('AT_INCLUDE_PATH', 'include/');
 
 include(AT_INCLUDE_PATH.'vitals.inc.php');
-include(AT_INCLUDE_PATH.'header.php');
 
 // display initial validation form: input URI or upload a html file 
 include ("checker_input_form.php");
@@ -53,6 +52,7 @@ if ($_POST["validate_uri"] || $_POST["validate_file"])
 
 	// check accessibility
 	include(AT_INCLUDE_PATH. "classes/AccessibilityValidator.class.php");
+
 	if (isset($validate_content))
 	{
 		$aValidator = new AccessibilityValidator($validate_content, $_POST["gid"]);
@@ -67,6 +67,6 @@ if ($_POST["validate_uri"] || $_POST["validate_file"])
 }
 
 // display footer
-include(AT_INCLUDE_PATH.'footer.php');
+include(AT_INCLUDE_PATH.'footer.inc.php');
 
 ?>

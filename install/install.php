@@ -27,7 +27,7 @@ if ($_POST['submit'] == 'I Disagree'){
 	Header ("Location: index.php");
 }
 
-require(AT_INCLUDE_PATH.'header.php');
+require(AT_INCLUDE_PATH.'header.inc.php');
 
 /* agree to terms of use */
 if ($step == 1) {
@@ -54,5 +54,5 @@ if ($step == 5) {
 	require(AT_INCLUDE_PATH.'step5.php');
 }
 
-require(AT_INCLUDE_PATH.'footer.php');
+require(AT_INCLUDE_PATH.'footer.inc.php');
 ?>
