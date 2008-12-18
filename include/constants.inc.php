@@ -26,6 +26,11 @@ define('KNOWN', 0);
 define('LIKELY', 1);
 define('POTENTIAL', 2);
 
+/* User groups */
+define('ADMIN_GROUP_ID', 1);
+define('USER_GROUP_ID', 2);
+define('GUIDELINE_CHECK_CREATOR_GROUP_ID', 3);
+
 /* how long cache objects can persist	*/
 /* in seconds. should be low initially, but doesn't really matter. */
 /* in practice should be 0 (ie. INF)    */
@@ -59,5 +64,37 @@ define('AT_BASE_HREF', $_base_href);
 
 /* relative uri */
 $_rel_url = '/'.implode('/', array_slice($url_parts, count($url_parts) - $dir_deep-1));
+
+/* $_pages sections */
+define('AC_NAV_PUBLIC', 'AC_NAV_PUBLIC');  // public menus, when no user login
+define('AC_NAV_TOP', 'AC_NAV_TOP');        // top tab menus
+
+/**
+ * define all the pages that used in each priviledge section. 
+ * section id (1-5) must be same as according privileges.privilege_id 
+ * Note that 1st item in each section pages array is not set. It's dynamically set in script.
+ **/
+define('PRIV_WEB_ACCESSIBILITY_CHECKER', 1);
+define('PRIV_USER_MANAGE', 2);
+define('PRIV_GUIDELINE_MANAGE', 3);
+define('PRIV_CHECK_MANAGE', 4);
+define('PRIV_LANGUAGE_MANAGE', 5);
+
+$_section_pages[PRIV_WEB_ACCESSIBILITY_CHECKER] = array('index.php' => array('title_var'=>'web_accessibility_checker')
+                          );
+
+$_section_pages[PRIV_USER_MANAGE] = array('user/index.php' => array('title_var'=>'user_manage')
+                          );
+
+$_section_pages[PRIV_GUIDELINE_MANAGE] = array('guideline/index.php' => array('title_var'=>'guideline_manage')
+                          );
+
+$_section_pages[PRIV_CHECK_MANAGE] = array('check/index.php' => array('title_var'=>'check_manage')
+                          );
+
+$_section_pages[PRIV_LANGUAGE_MANAGE] = array('language/index.php' => array('title_var'=>'language_manage')
+                          );
+
+$_pages_constant[AC_NAV_PUBLIC] = $_section_pages[1];
 
 ?>

@@ -39,19 +39,24 @@ if ($step == 2) {
 	require(AT_INCLUDE_PATH.'step2.php');
 }
 
-/* directory permissions and generating the config.inc.php file */
+/* create admin accounts and sytem preference */
 if ($step == 3) {	
 	require(AT_INCLUDE_PATH.'step3.php');
 }
 
-/* anonymous data collection */
+/* directory permissions and generating the config.inc.php file */
 if ($step == 4) {	
 	require(AT_INCLUDE_PATH.'step4.php');
 }
 
-/* done! */
+/* anonymous data collection */
 if ($step == 5) {	
 	require(AT_INCLUDE_PATH.'step5.php');
+}
+
+/* done! */
+if ($step == 6) {	
+	require(AT_INCLUDE_PATH.'step6.php');
 }
 
 require(AT_INCLUDE_PATH.'footer.inc.php');

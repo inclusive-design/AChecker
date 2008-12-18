@@ -101,3 +101,43 @@ $starttime = $mtime;
 			</span>
 		</h1>
 	</div>
+
+<?php 
+if (count($this->top_level_pages) > 1) 
+{
+?>
+	<div id="topnavlistcontainer">
+	<!-- the main navigation. in our case, tabs -->
+		<ul id="topnavlist">
+			<?php foreach ($this->top_level_pages as $page): ?>
+				<?php $accesscounter = 0; //initialize ?>
+				<?php ++$accesscounter; $accesscounter = ($accesscounter == 10 ? 0 : $accesscounter); ?>
+				<?php $accesskey_text = ($accesscounter < 10 ? 'accesskey="'.$accesscounter.'"' : ''); ?>
+				<?php $accesskey_title = ($accesscounter < 10 ? ' Alt+'.$accesscounter : ''); ?>
+				<?php if ($page['url'] == $this->current_top_level_page): ?>
+					<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>" class="active"><?php echo $page['title']; ?></a></li>
+				<?php else: ?>
+					<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>"><?php echo $page['title']; ?></a></li>
+				<?php endif; ?>
+				<?php $accesscounter = ($accesscounter == 0 ? 11 : $accesscounter); ?>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+<?php 
+}
+?>
+
+<div>
+	<!-- the bread crumbs -->
+	<div id="breadcrumbs">
+		<?php foreach ($this->path as $page){ ?>
+			<a href="<?php echo $page['url']; ?>"><?php echo $page['title']; ?></a> > 
+		<?php } echo $this->page_title; ?>
+	</div>
+
+	<?php if (isset($this->guide)) {?>
+		<a href="<?php echo $this->guide; ?>" id="guide" onclick="poptastic('<?php echo $this->guide; ?>'); return false;" target="_new"><em><?php echo $this->page_title; ?></em></a>
+	<?php } ?>
+</div>
+
+<?php global $msg; $msg->printAll(); ?>

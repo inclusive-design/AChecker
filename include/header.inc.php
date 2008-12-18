@@ -24,6 +24,74 @@ global $savant;
 global $onload;
 global $_custom_css;
 global $_custom_head;
+global $_base_path;
+global $_pages;
+
+//require(AT_INCLUDE_PATH . 'lib/menu_pages.php');
+//
+//$current_page = substr($_SERVER['PHP_SELF'], strlen($_base_path));
+//
+//if (!isset($_pages[$current_page])) 
+//{
+//	// re-direct to first $_pages URL 
+//	$cnt = 0;
+//	
+//	foreach ($_pages[AC_NAV_TOP] as $url)
+//	{
+//		$cnt++;
+//		if ($current_page != $url)
+//		{
+//			header('location: '.AT_BASE_HREF. $url);
+//			// reset current_page after re-direction
+//			$current_page = substr($_SERVER['PHP_SELF'], strlen($_base_path));
+//		}
+//		
+//		if ($cnt == 1) break;
+//	}
+//}
+//
+//$_top_level_pages        = get_main_navigation($current_page);
+//
+//$_current_top_level_page = get_current_main_page($current_page);
+//
+//$_sub_level_pages        = get_sub_navigation($current_page);
+//
+//$_current_sub_level_page = get_current_sub_navigation_page($current_page);
+//
+//$_path = get_path($current_page);
+//debug($_top_level_pages);
+include(AT_INCLUDE_PATH.'classes/Menu.class.php');
+
+$menu =new Menu();
+$_top_level_pages = $menu->get_top_pages();
+
+$_all_pages =  $menu->get_all_pages();
+
+$_current_root_page = $menu->get_root_page();
+
+$_breadcrumb_path = $menu->get_breadcrumb_path();
+
+$current_page = $menu->get_current_page();
+//debug($_top_level_pages);
+//exit;
+
+$savant->assign('top_level_pages', $_top_level_pages);
+$savant->assign('current_top_level_page', $_current_root_page);
+$savant->assign('path', $_breadcrumb_path);
+
+$savant->assign('page_title', _AC($_all_pages[$current_page]['title_var']));
+
+//if (empty($_top_level_pages)) {
+//	if (!$_SESSION['member_id'] && !$_SESSION['course_id']) {
+//		$_top_level_pages = get_main_navigation($_pages[AT_NAV_PUBLIC][0]);
+//	} else if ($_SESSION['course_id'] < 0) {
+//		$_top_level_pages = get_main_navigation($_pages[AT_NAV_ADMIN][0]);
+//	} else if (!$_SESSION['course_id']) {
+//		$_top_level_pages = get_main_navigation($_pages[AT_NAV_START][0]);
+//	} else {
+//		$_top_level_pages = get_main_navigation($_pages[AT_NAV_COURSE][0]);
+//	}
+//}
 
 $savant->assign('lang_code', $_SESSION['lang']);
 $savant->assign('lang_charset', $myLang->getCharacterSet());

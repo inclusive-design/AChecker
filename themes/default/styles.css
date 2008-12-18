@@ -510,7 +510,16 @@ table.tabbed-table a, table.tabbed-table a:visited, table.tabbed-table a:hover {
 	color: white; background-color: #365D95
 }
 #banner #versioninfo {
-font-size: 8pt; margin-right: 10px; margin-top: 2px; position: absolute; right: 0px; top: 0px; color: black; background-color: white; padding-left: 5px; padding-right: 5px;
+	font-size: 8pt; 
+	margin-right: 10px; 
+	margin-top: 2px; 
+	position: absolute; 
+	right: 0px; 
+	top: 0px; 
+	color: black; 
+	background-color: white; 
+	padding-left: 5px; 
+	padding-right: 5px;
 }
 
 h2 #title {
@@ -536,10 +545,9 @@ a#back-to {
 
 div#breadcrumbs {
     /* The path bar, including breadcrumbs and add to favorites */
-	clear:both;
-    font-size: 0.85em;
-	padding:3px;
-	float:left;
+  font-size: 0.85em;
+	margin: 0em 2em 1em 2em;
+	padding-left:4px; 
 }
 h2.page-title {
 	clear:right;

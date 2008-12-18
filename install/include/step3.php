@@ -1,97 +1,173 @@
 <?php
 /************************************************************************/
-/* AChecker                                                             */
+/* ATutor																*/
 /************************************************************************/
-/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
-/*                                                                      */
-/* This program is free software. You can redistribute it and/or        */
-/* modify it under the terms of the GNU General Public License          */
-/* as published by the Free Software Foundation.                        */
+/* Copyright (c) 2002-2008 by Greg Gay, Joel Kronenberg, Heidi Hazelton	*/
+/* http://atutor.ca														*/
+/*																		*/
+/* This program is free software. You can redistribute it and/or		*/
+/* modify it under the terms of the GNU General Public License			*/
+/* as published by the Free Software Foundation.						*/
 /************************************************************************/
+// $Id: step3.php 7634 2008-06-23 18:21:51Z hwong $
 
 if (!defined('AT_INCLUDE_PATH')) { exit; }
 
-if (isset($_POST['submit']) && ($_POST['action'] == 'process')) {
-	unset($_POST['submit']);
-	unset($action);
-	store_steps($step);
-	$step++;
-	debug("return out 3");
-	return;
-}
+if(isset($_POST['submit']) && ($_POST['action'] == 'process')) {
+	unset($errors);
 
-$file = '../include/config.inc.php';
+	$_POST['admin_username'] = trim($_POST['admin_username']);
+	$_POST['admin_email']    = trim($_POST['admin_email']);
+	$_POST['site_name']      = trim($_POST['site_name']);
+	$_POST['email']	         = trim($_POST['email']);
 
-unset($errors);
-unset($progress);
-
-if ( file_exists($file) ) {
-	@chmod($file, 0666);
-	if (!is_writeable($file)) {
-		$errors[] = '<strong>' . $file . '</strong> is not writeable.';
-	}else{
-		$progress[] = '<strong>' . $file . '</strong> is writeable.';
+	/* Super Administrator Account checking: */
+	if ($_POST['admin_username'] == ''){
+		$errors[] = 'Administrator username cannot be empty.';
+	} else {
+		/* check for special characters */
+		if (!(eregi("^[a-zA-Z0-9_]([a-zA-Z0-9_])*$", $_POST['admin_username']))){
+			$errors[] = 'Administrator username is not valid.';
+		}
 	}
-} else {
-	$errors[] = '<strong>' . $file . '</strong> does not exist.';
-}
+	if ($_POST['form_admin_password_hidden'] == '') {
+		$errors[] = 'Administrator password cannot be empty.';
+	}
+	if ($_POST['admin_email'] == '') {
+		$errors[] = 'Administrator email cannot be empty.';
+	} else if (!eregi("^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$", $_POST['admin_email'])) {
+		$errors[] = 'Administrator email is not valid.';
+	}
+
+	/* System Preferences checking: */
+	if ($_POST['site_name'] == '') {
+		$errors[] = 'Site name cannot be empty.';
+	}
+	if ($_POST['email'] == '') {
+		$errors[] = 'Contact email cannot be empty.';
+	} else if (!eregi("^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$", $_POST['email'])) {
+		$errors[] = 'Contact email is not valid.';
+	}
+
+	if (!isset($errors)) {
+		$db = @mysql_connect($_POST['step2']['db_host'] . ':' . $_POST['step2']['db_port'], $_POST['step2']['db_login'], urldecode($_POST['step2']['db_password']));
+		@mysql_select_db($_POST['step2']['db_name'], $db);
+
+		$status = 3; // for instructor account
+
+		$sql = "INSERT INTO ".$_POST['step2']['tb_prefix']."users (login, password, user_group_id, email, create_date)
+		VALUES ('$_POST[admin_username]', '$_POST[form_admin_password_hidden]', 1, '$_POST[admin_email]', NOW())";
+		$result= mysql_query($sql, $db);
+
+		$_POST['site_name'] = $addslashes($_POST['site_name']);
+		$sql = "INSERT INTO ".$_POST['step2']['tb_prefix']."config (name, value) VALUES ('site_name', '$_POST[site_name]')";
+		$result = mysql_query($sql ,$db);
+
+		$_POST['email'] = $addslashes($_POST['email']);
+		$sql = "INSERT INTO ".$_POST['step2']['tb_prefix']."config (name, value) VALUES ('contact_email', '$_POST[email]')";
+		$result = mysql_query($sql ,$db);
+
+		unset($_POST['admin_username']);
+		unset($_POST['form_admin_password_hidden']);
+		unset($_POST['admin_email']);
+		unset($_POST['email']);
+		unset($_POST['site_name']);
+
+		unset($errors);
+		unset($_POST['submit']);
+		unset($action);
+		store_steps($step);
+		$step++;
+		return;
+	}
+}	
 
 print_progress($step);
 
-echo '<form action="'.$_SERVER['PHP_SELF'].'" method="post" name="form">';
-echo '	<input type="hidden" name="action" value="process" />';
-
 if (isset($errors)) {
-	if (isset($progress)) {
-		print_feedback($progress);
-	}
 	print_errors($errors);
+}
 
-	echo'<input type="hidden" name="step" value="'.$step.'" />';
+if (isset($_POST['step1']['old_version']) && $_POST['upgrade_action']) {
+	$defaults['admin_username'] = urldecode($_POST['step1']['admin_username']);
+	$defaults['admin_email']    = urldecode($_POST['step1']['admin_email']);
 
-	unset($_POST['step']);
-	unset($_POST['action']);
-	unset($errors);
-	print_hidden($step);
-
-	echo '<p><strong>Note:</strong> To change permissions on Unix use <kbd>chmod a+rw</kbd> then the file name.</p>';
-
-	echo '<p align="center"><input type="submit" class="button" value=" Try Again " name="retry" />';
-
+	$defaults['site_name']   = urldecode($_POST['step1']['site_name']);
+	$defaults['header_img']  = urldecode($_POST['step1']['header_img']);
+	$defaults['header_logo'] = urldecode($_POST['step1']['header_logo']);
+	$defaults['home_url']    = urldecode($_POST['step1']['home_url']);
 } else {
-	require('include/config_template.php');
-		
-	$comments = '/*'.str_pad(' This file was generated by the AChecker '.$new_version. 'installation script.', 70, ' ').'*/
-/*'.str_pad(' File generated '.date('Y-m-d H:m:s'), 70, ' ').'*/';
-
-	if (!write_config_file('../include/config.inc.php', $comments)) {
-		echo '<input type="hidden" name="step" value="'.$step.'" />';
-
-		print_feedback($progress);
-
-		$errors[] = 'include/config.inc.php cannot be written! Please verify that the file exists and is writeable. On Unix issue the command <kbd>chmod a+rw include/config.inc.php</kbd> to make the file writeable. On Windows edit the file\'s properties ensuring that the <kbd>Read-only</kbd> attribute is <em>not</em> checked and that <kbd>Everyone</kbd> access permissions are given to that file.';
-		print_errors($errors);
-
-		echo '<p><strong>Note:</strong> To change permissions on Unix use <kbd>chmod a+rw</kbd> then the file name.</p>';
-
-		echo '<p align="center"><input type="submit" class="button" value=" Try Again " name="retry" />';
-
-	} else {
-		echo '<input type="hidden" name="step" value="'.$step.'" />';
-		print_hidden($step);
-
-		$progress[] =  'Data has been saved successfully.';
-
-		@chmod('../include/config.inc.php', 0444);
-
-		print_feedback($progress);
-
-		echo '<p align="center"><input type="submit" class="button" value=" Next &raquo; " name="submit" /></p>';
-		
-	}
+	$defaults = $_defaults;
 }
 
 ?>
+<script language="JavaScript" src="<?php echo AT_INCLUDE_PATH; ?>../../jscripts/sha-1factory.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+function encrypt_password()
+{
+	document.form.form_admin_password_hidden.value = hex_sha1(document.form.admin_password.value);
+	document.form.admin_password.value = "";
+}
+</script>
+
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="form">
+	<input type="hidden" name="action" value="process" />
+	<input type="hidden" name="form_admin_password_hidden" value="" />
+	<input type="hidden" name="form_account_password_hidden" value="" />
+	<input type="hidden" name="step" value="<?php echo $step; ?>" />
+	<?php print_hidden($step); ?>
+
+	<?php
+		/* detect mail settings. if sendmail_path is empty then use SMTP. */
+		if (@ini_get('sendmail_path') == '') { 
+			echo '<input type="hidden" name="smtp" value="true" />';
+		} else {
+			echo '<input type="hidden" name="smtp" value="false" />';
+		}
+	?>
+	<br />
+		<table width="70%" class="tableborder" cellspacing="0" cellpadding="1" align="center">
+		<tr>
+			<th colspan="2">Super Administrator Account</th>
+		</tr>
+		<tr>
+			<td colspan="2" class="row1">The Super Administrator account is used for managing AChecker. The Super Administrator can also create additional Administrators each with their own privileges and roles. </td>
+		</tr>
+		<tr>
+			<td class="row1"><div class="required" title="Required Field">*</div><b><label for="username">Administrator Username:</label></b><br />
+			May contain only letters, numbers, or underscores.</td>
+			<td class="row1"><input type="text" name="admin_username" id="username" maxlength="20" size="20" value="<?php if (!empty($_POST['admin_username'])) { echo stripslashes(htmlspecialchars($_POST['admin_username'])); } else { echo $defaults['admin_username']; } ?>" class="formfield" /></td>
+		</tr>
+		<tr>
+			<td class="row1"><div class="required" title="Required Field">*</div><b><label for="password">Administrator Password:</label></b></td>
+			<td class="row1"><input type="text" name="admin_password" id="password" maxlength="15" size="15" class="formfield" /></td>
+		</tr>
+		<tr>
+			<td class="row1"><div class="required" title="Required Field">*</div><b><label for="email">Administrator Email:</label></b></td>
+			<td class="row1"><input type="text" name="admin_email" id="email" size="40" value="<?php if (!empty($_POST['admin_email'])) { echo stripslashes(htmlspecialchars($_POST['admin_email'])); } else { echo $defaults['admin_email']; } ?>" class="formfield" /></td>
+		</tr>
+		</table>
+
+	<br />
+
+		<table width="70%" class="tableborder" cellspacing="0" cellpadding="1" align="center">
+		<tr>
+			<th colspan="2">System Preferences</th>
+		</tr>
+		<tr>
+			<td class="row1"><div class="required" title="Required Field">*</div><b><label for="sitename">Site Name:</label></b><br />
+			The name of your course server website.<br />Default: <kbd><?php echo $defaults['site_name']; ?></kbd></td>
+			<td class="row1"><input type="text" name="site_name" size="28" maxlength="60" id="sitename" value="<?php if (!empty($_POST['site_name'])) { echo stripslashes(htmlspecialchars($_POST['site_name'])); } else { echo $defaults['site_name']; } ?>" class="formfield" /></td>
+		</tr>
+		<tr>
+			<td class="row1"><div class="required" title="Required Field">*</div><b><label for="cemail">Contact Email:</label></b><br />
+			The email that will be used as the return email when needed.</td>
+			<td class="row1"><input type="text" name="email" id="cemail" size="40" value="<?php if (!empty($_POST['email'])) { echo stripslashes(htmlspecialchars($_POST['email'])); } else { echo $defaults['email']; } ?>" class="formfield" /></td>
+		</tr>
+		</table>
+
+	<br />
+	<br />
+	<div align="center"><input type="submit" class="button" value=" Next &raquo;" name="submit" onclick="return encrypt_password();" /></div>
 </form>

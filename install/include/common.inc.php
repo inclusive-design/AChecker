@@ -15,11 +15,11 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 /* atutor default configuration options */
 /* used on: ustep1.php, step3.php, step5.php */
-$_defaults['admin_username'] = ($_POST['old_path'] ? 'admin' : '');
+$_defaults['admin_username'] = 'admin';
 $_defaults['admin_password'] = '';
 $_defaults['admin_email'] = '';
 
-$_defaults['site_name'] = 'Course Server';
+$_defaults['site_name'] = 'Web Accessibility Checker';
 $_defaults['header_img'] = '';
 $_defaults['header_logo'] = '';
 $_defaults['home_url'] = '';

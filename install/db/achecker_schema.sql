@@ -46,6 +46,16 @@ CREATE TABLE `color_mapping` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
+# Table structure for table `config`
+# since 0.1
+
+CREATE TABLE `config` (
+  `name` CHAR( 30 ) NOT NULL default '',
+  `value` CHAR( 255 ) NOT NULL default '',
+  PRIMARY KEY ( `name` )
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
 # Table structure for table `guidelines`
 # since 0.1
 
@@ -111,6 +121,21 @@ CREATE TABLE `lang_codes` (
   `description` varchar(50) default NULL,
   PRIMARY KEY  (`code_3letters`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `privileges`
+# since 0.1
+
+CREATE TABLE `privileges` (
+  `privilege_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `title_var` varchar(255) NOT NULL DEFAULT '',
+  `description` text NOT NULL DEFAULT '',
+  `create_date` datetime NOT NULL,
+  `last_update` datetime,
+  `link` varchar(255) NOT NULL DEFAULT '',
+  `menu_sequence` tinyint(4) NOT NULL,
+  PRIMARY KEY  (`privilege_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 # --------------------------------------------------------
 # Table structure for table `subgroup_checks`
@@ -201,6 +226,48 @@ CREATE TABLE `themes` (
   `extra_info` TEXT NOT NULL ,
   `status` tinyint(3) unsigned NOT NULL default '1',
   PRIMARY KEY  (`title`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `users`
+# since 0.1
+CREATE TABLE `users` (
+  `user_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `login` varchar(20) NOT NULL,
+  `password` varchar(40) NOT NULL,
+  `user_group_id` mediumint(8) NOT NULL,
+  `first_name` varchar(100),
+  `last_name` varchar(100),
+  `email` varchar(50),
+  `create_date` datetime NOT NULL,
+  `last_login` datetime,
+  `preferences` text,
+  PRIMARY KEY  (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+# --------------------------------------------------------
+# Table structure for table `user_groups`
+# since 0.1
+
+CREATE TABLE `user_groups` (
+  `user_group_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `description` text NOT NULL DEFAULT '',
+  `create_date` datetime NOT NULL,
+  `last_update` datetime,
+  PRIMARY KEY  (`user_group_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+# --------------------------------------------------------
+# Table structure for table `user_group_privilege`
+# since 0.1
+
+CREATE TABLE `user_group_privilege` (
+  `user_group_id` mediumint(8) unsigned NOT NULL,
+  `privilege_id` mediumint(8) unsigned NOT NULL,
+  `create_date` datetime NOT NULL,
+  `last_update` datetime,
+  PRIMARY KEY  (`user_group_id`, `privilege_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # Dumping data for table `checks`
@@ -4937,3 +5004,23 @@ INSERT INTO `test_procedure` (`check_id`, `step_id`, `step`) VALUES
 # insert the default theme
 INSERT INTO `themes` VALUES ('AChecker', '0.1', 'default', NOW(), 'This is the default AChecker theme and cannot be deleted as other themes inherit from it. Please do not alter this theme directly as it would complicate upgrading. Instead, create a new theme derived from this one.', 2);
 
+# insert privileges, user groups and user group privileges
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`) VALUES (1, 'web_accessibility_checker', 'Web accessibility checker', NOW(), 'index.php', 1);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`) VALUES (2, 'user_manage', 'Create, edit, delete users.', NOW(), 'user/index.php', 2);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`) VALUES (3, 'guideline_manage', 'Create, edit, delete, enable, disable guidelines.', NOW(), 'guideline/index.php', 3);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`) VALUES (4, 'check_manage', 'Create, edit, delete, enable, disable checks.', NOW(), 'check/index.php', 4);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`) VALUES (5, 'language_manage', 'Create, edit, delete, enable, disable languages.', NOW(), 'language/index.php', 5);
+
+INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (1, 'Administrator', 'Administrate guidelines, checks, users, languages.', now());
+INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (2, 'User', 'Regular user. Can make decision on likely and potential problems. When a user revisits a report, decisions previously made for Likely and Potential problems will be restored for the matching URL. Regular users can create custom guidelines.', now());
+INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (3, 'Guideline/Check creator', 'Create, edit, delete custom checks and guidelines.', now());
+
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (1, 2, now());
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (1, 3, now());
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (1, 4, now());
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (1, 5, now());
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (2, 1, now());
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (2, 3, now());
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (3, 1, now());
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (3, 2, now());
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (3, 3, now());
