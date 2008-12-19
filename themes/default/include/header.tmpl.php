@@ -26,7 +26,7 @@ $starttime = $mtime;
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
 
 <head>
-	<title><?php echo SITE_NAME; ?></title>
+	<title><?php echo SITE_NAME; ?> : <?php echo $this->page_title; ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $this->lang_charset; ?>" />
 	<meta name="Generator" content="Checker - Copyright 2008 by http://checker.atrc.utoronto.ca" />
 	<base href="<?php echo $this->base_path; ?>" />
@@ -34,6 +34,9 @@ $starttime = $mtime;
 	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/forms.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/styles.css" type="text/css" />
 	<?php echo $this->custom_head; ?>
+
+  <script language="JavaScript" src="jscripts/sha-1factory.js" type="text/javascript"></script>
+
 	<script type="text/javascript">
 	//<!--
 	var newwindow;
@@ -84,6 +87,15 @@ $starttime = $mtime;
 			document.getElementById("toggle_image").title = "Expand Guidelines Getting Started";
 		}
 	}
+
+  /* 
+   * Encrypt login password with sha1
+   */
+  function encrypt_password() {
+  	document.form.form_password_hidden.value = hex_sha1(hex_sha1(document.form.form_password.value) + "<?php echo $_SESSION['token']; ?>");
+  	document.form.form_password.value = "";
+  	return true;
+  }
 	//-->
 	</script>
 
@@ -94,6 +106,20 @@ $starttime = $mtime;
 	<div id="banner">
 		<a href="http://www.atutor.ca/achecker/"><img width="145" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/checker_logo.gif" height="43" alt="AChecker" style="border:none;" /></a>
 		<h1 style="vertical-align:super;"><?php echo _AC("web_accessibility_checker"); ?>
+			<span id="logininfo">
+        <?php
+        if (isset($this->user_name))
+          echo _AC('welcome'). ' '.$this->user_name;
+        else
+        {
+        ?>
+				<a href="<?php echo AT_BASE_HREF; ?>login.php" ><?php echo _AC('login'); ?></a>
+				&nbsp;&nbsp;
+				<a href="<?php echo AT_BASE_HREF; ?>register.php" ><?php echo _AC('register'); ?></a>
+        <?php
+        }
+        ?>
+			</span>
 			<span id="versioninfo">
 				<a href="<?php echo AT_BASE_HREF; ?>translator.php" target="_blank"><?php echo _AC('help_with_translate'); ?></a>
 				&nbsp;

@@ -30,7 +30,7 @@ class Menu {
 	var $breadcrumb_path = array();           // array of breadcrumb path
 
 	/**
-	* Constructor: Initialization 
+	* Constructor: Initialize top pages (tab menu), all pages accessible by current user, current page.
 	* Generate top tab menu items based on session user_id. If no user login in (public view), use public menu
 	* @access  public
 	* @param   None
@@ -39,22 +39,22 @@ class Menu {
 	function Menu()
 	{
 		$this->pages[AC_NAV_TOP] = array();        // top tab pages
-//		unset($_SESSION['user_id']);
-		$_SESSION['user_id'] = 2;
+		unset($_SESSION['user_id']);
+//		$_SESSION['user_id'] = 1;
 		
 		if (isset($_SESSION['user_id']) && $_SESSION['user_id'] <> 0) 
 		{
-			$this->set_top_pages($_SESSION['user_id']);    // set top pages based on user id
+			$this->setTopPages($_SESSION['user_id']);    // set top pages based on user id
 		}
 		else
 		{
-			$this->set_top_pages_to_public();
+			$this->setTopPagesToPublic();
 		}
 		
 		// decide current page.
 		// if the page that user tries to access is from one of the public link 
 		// but not define in user's priviledge pages, re-direct to the first $this->pages[AC_NAV_TOP]
-		$this->set_current_page();
+		$this->setCurrentPage();
 	}
 
 	/**
@@ -64,7 +64,7 @@ class Menu {
 	* @return  true
 	* @author  Cindy Qi Li
 	*/
-	function set_top_pages($user_id)
+	function setTopPages($user_id)
 	{
 		global $db, $_section_pages, $_base_path;
 		
@@ -83,7 +83,7 @@ class Menu {
 			$this->pages[AC_NAV_TOP][] = array('url' => $_base_path.$row['link'], 'title' => _AC($row['title_var']));
 	
 			// add section pages
-			$this->pages = array_merge($this->pages, $this->set_parent($_section_pages[$row['privilege_id']], AC_NAV_TOP));
+			$this->pages = array_merge($this->pages, $this->setParent($_section_pages[$row['privilege_id']], AC_NAV_TOP));
 		}
 		
 		return true;
@@ -95,7 +95,7 @@ class Menu {
 	* @return  true
 	* @author  Cindy Qi Li
 	*/
-	function set_top_pages_to_public()
+	function setTopPagesToPublic()
 	{
 		global $_pages_constant, $_base_path;
 		
@@ -104,7 +104,7 @@ class Menu {
 			foreach ($_pages_constant[AC_NAV_PUBLIC] as $url => $title_var)
 				$this->pages[AC_NAV_TOP][] = array('url' => $_base_path.$url, 'title' => _AC($title_var));
 			
-			$this->pages = array_merge($this->pages, $this->set_parent($_pages_constant[AC_NAV_PUBLIC], AC_NAV_TOP));
+			$this->pages = array_merge($this->pages, $this->setParent($_pages_constant[AC_NAV_PUBLIC], AC_NAV_TOP));
 		}
 		
 		return true;
@@ -118,7 +118,7 @@ class Menu {
 	* @return  true
 	* @author  Cindy Qi Li
 	*/
-	function set_parent($page_array, $parent)
+	function setParent($page_array, $parent)
 	{
 		$cnt = 0;
 		foreach ($page_array as &$page)
@@ -139,7 +139,7 @@ class Menu {
 	* @return  true
 	* @author  Cindy Qi Li
 	*/
-	function set_current_page()
+	function setCurrentPage()
 	{
 		global $_base_path, $msg;
 		
@@ -147,7 +147,7 @@ class Menu {
 		
 		if (!isset($this->pages[$this->current_page])) 
 		{
-			if (!$this->is_public_link($this->current_page))  // report error if the link is not from a public link
+			if (!$this->isPublicLink($this->current_page))  // report error if the link is not from a public link
 			{
 				$msg->addError('PAGE_NOT_FOUND'); 
 			}
@@ -178,7 +178,7 @@ class Menu {
 	*          false if not a pre-defined public link
 	* @author  Cindy Qi Li
 	*/
-	function is_public_link($url)
+	function isPublicLink($url)
 	{
 		global $_pages_constant;
 		
@@ -195,7 +195,7 @@ class Menu {
 	* @return  all pages array
 	* @author  Cindy Qi Li
 	*/
-	function get_all_pages()
+	function getAllPages()
 	{
 		return $this->pages;
 	}
@@ -206,7 +206,7 @@ class Menu {
 	* @return  top tab menu item array
 	* @author  Cindy Qi Li
 	*/
-	function get_top_pages()
+	function getTopPages()
 	{
 		return $this->pages[AC_NAV_TOP];
 	}
@@ -217,7 +217,7 @@ class Menu {
 	* @return  top tab menu item array
 	* @author  Cindy Qi Li
 	*/
-	function get_current_page()
+	function getCurrentPage()
 	{
 		return $this->current_page;
 	}
@@ -228,7 +228,7 @@ class Menu {
 	* @return  root page
 	* @author  Cindy Qi Li
 	*/
-	function get_root_page()
+	function getRootPage()
 	{
 		global $_base_path;
 	
@@ -240,7 +240,7 @@ class Menu {
 		} 
 		else if (isset($parent_page)) 
 		{
-			return $this->get_root_page($parent_page);
+			return $this->getRootPage($parent_page);
 		}
 		else
 		{
@@ -254,10 +254,10 @@ class Menu {
 	* @return  array of breadcrumb path
 	* @author  Cindy Qi Li
 	*/
-	function get_breadcrumb_path()
+	function getBreadcrumbPath()
 	{
 		global $_base_path;
-	
+
 		$parent_page = $this->pages[$this->current_page]['parent'];
 	
 		if (isset($this->pages[$this->current_page]['title']))

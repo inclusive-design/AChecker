@@ -509,6 +509,18 @@ table.tabbed-table a, table.tabbed-table a:visited, table.tabbed-table a:hover {
 #banner a:active {
 	color: white; background-color: #365D95
 }
+#banner #logininfo {
+	font-size: 8pt; 
+	margin-left: 10px; 
+	margin-top: 2px; 
+	position: absolute; 
+	left: 0px; 
+	top: 0px; 
+	color: black; 
+	background-color: white; 
+	padding-left: 5px; 
+	padding-right: 5px;
+}
 #banner #versioninfo {
 	font-size: 8pt; 
 	margin-right: 10px; 

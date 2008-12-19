@@ -63,23 +63,29 @@ global $_pages;
 include(AT_INCLUDE_PATH.'classes/Menu.class.php');
 
 $menu =new Menu();
-$_top_level_pages = $menu->get_top_pages();
+$_top_level_pages = $menu->getTopPages();
 
-$_all_pages =  $menu->get_all_pages();
+$_all_pages =  $menu->getAllPages();
 
-$_current_root_page = $menu->get_root_page();
+$_current_root_page = $menu->getRootPage();
 
-$_breadcrumb_path = $menu->get_breadcrumb_path();
+$_breadcrumb_path = $menu->getBreadcrumbPath();
 
-$current_page = $menu->get_current_page();
-//debug($_top_level_pages);
-//exit;
+$current_page = $menu->getCurrentPage();
 
 $savant->assign('top_level_pages', $_top_level_pages);
 $savant->assign('current_top_level_page', $_current_root_page);
 $savant->assign('path', $_breadcrumb_path);
 
 $savant->assign('page_title', _AC($_all_pages[$current_page]['title_var']));
+
+if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
+{
+  include(AT_INCLUDE_PATH.'classes/User.class.php');
+  $user = new User();
+  $user->setUserID($_SESSION['user_id']);
+  $savant->assign('user_name', $user->getUserName());
+}
 
 //if (empty($_top_level_pages)) {
 //	if (!$_SESSION['member_id'] && !$_SESSION['course_id']) {

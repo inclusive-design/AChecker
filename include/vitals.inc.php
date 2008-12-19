@@ -41,9 +41,10 @@ function unregister_GLOBALS() {
  * 1. load constants
  * 2. initilize session
  * 3. initilize db connection
- * 4. start language block
- * 5. load common libraries
- * 6. initialize theme and template management
+ * 4. load $_config from table 'config'
+ * 5. start language block
+ * 6. load common libraries
+ * 7. initialize theme and template management
  ***/
 
 /**** 0. start system configuration options block ****/
@@ -83,13 +84,25 @@ function unregister_GLOBALS() {
 
 /***** end session initilization block ****/
 
-/* 3. database connection */
+/***** 3. database connection *****/
 if (!defined('AT_REDIRECT_LOADED')){
 	require_once(AT_INCLUDE_PATH.'lib/mysql_connect.inc.php');
 }
 /***** end database connection ****/
 
-/***** 4. start language block *****/
+/***** 4. load $_config from table 'config' *****/
+$sql    = "SELECT * FROM ".TABLE_PREFIX."config";
+$result = mysql_query($sql, $db);
+while ($row = mysql_fetch_assoc($result)) { 
+	$_config[$row['name']] = $row['value'];
+}
+
+// define as constants. more constants are defined in include/constants.inc.php
+define('EMAIL',                     $_config['contact_email']);
+define('SITE_NAME',                 $_config['site_name']);
+/***** end loading $_config *****/
+
+/***** 5. start language block *****/
 	// set current language
 	require(AT_INCLUDE_PATH . 'classes/Language/LanguageManager.class.php');
 	$languageManager =& new LanguageManager();
@@ -119,11 +132,11 @@ if (!defined('AT_REDIRECT_LOADED')){
 	}
 /***** end language block ****/
 
-/* 5. load common libraries */
+/***** 6. load common libraries *****/
 	require(AT_INCLUDE_PATH.'lib/output.inc.php');           /* output functions */
 /***** end load common libraries ****/
 
-/* 6. initialize theme and template management */
+/***** 7. initialize theme and template management *****/
 	require(AT_INCLUDE_PATH.'classes/Savant2/Savant2.php');
 
 	// set default template paths:
@@ -159,7 +172,7 @@ if (!defined('AT_REDIRECT_LOADED')){
 	require(AT_INCLUDE_PATH.'classes/Message/Message.class.php');
 	$msg = new Message($savant);
 
-/* end of initialize theme and template management */
+/***** end of initialize theme and template management *****/
 
  /**
  * This function is used for printing variables for debugging.

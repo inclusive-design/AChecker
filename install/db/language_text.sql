@@ -1831,6 +1831,9 @@ INSERT INTO `language_text` VALUES ('en', '_guideline','_SUBGROUPNAME_7','3.1 Wh
 INSERT INTO `language_text` VALUES ('en', '_guideline','_SUBGROUPNAME_8','3.2 Create documents that validate to published formal grammars.','2008-11-24 13:03:29','');
 INSERT INTO `language_text` VALUES ('en', '_guideline','_SUBGROUPNAME_9','3.3 Use style sheets to control layout and presentation.','2008-11-24 13:03:29','');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AT_ERROR_PAGE_NOT_FOUND','Page cannot be found','2008-12-12 13:28:09','');
+INSERT INTO `language_text` VALUES ('en', '_template','login','Login',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','register','Register',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','welcome','Welcome',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','accessibility_review','Accessibility Review','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('en', '_template','all','All','2008-11-27 09:49:41','');
 INSERT INTO `language_text` VALUES ('en', '_template','check_by_upload','Check Accessibility by File Upload','2008-11-21 14:25:37','');

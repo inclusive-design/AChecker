@@ -13,10 +13,9 @@
 if (!defined('AT_INCLUDE_PATH')) { exit; }
 
 /**
- * constants
+ * constants, some more constants are loaded from table 'config' @ include/vitals.inc.php
  **/
 
-define('SITE_NAME', 'ATRC Web Accessibility Checker');
 define('VERSION',		'0.1');
 
 $_config['default_language']          = 'en';
