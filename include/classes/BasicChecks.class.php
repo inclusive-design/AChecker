@@ -20,7 +20,7 @@
 * @package checker
 */
 
-if (!defined("AT_INCLUDE_PATH")) die("Error: AT_INCLUDE_PATH is not defined.");
+if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
 class BasicChecks {
 	/**
@@ -317,7 +317,7 @@ class BasicChecks {
 	*/
 	public static function get_luminosity_contrast_ratio($color1, $color2)
 	{
-		include_once (AT_INCLUDE_PATH . "classes/ColorValue.class.php");
+		include_once (AC_INCLUDE_PATH . "classes/ColorValue.class.php");
 
 		$color1 = new ColorValue($color1);
 		$color2 = new ColorValue($color2);
@@ -366,7 +366,7 @@ class BasicChecks {
 	*/
 	public static function has_good_contrast_waiert($color1, $color2)
 	{
-		include_once (AT_INCLUDE_PATH . "classes/ColorValue.class.php");
+		include_once (AC_INCLUDE_PATH . "classes/ColorValue.class.php");
 
 		$color1 = new ColorValue($color1);
 		$color2 = new ColorValue($color2);

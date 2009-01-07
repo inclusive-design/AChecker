@@ -10,7 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-if (!defined("AT_INCLUDE_PATH")) die("Error: AT_INCLUDE_PATH is not defined in checker_input_form.php.");
+if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined in checker_input_form.php.");
 
 if (!isset($aValidator) && !isset($htmlValidator)) die(_AC("no_instance"));
 
@@ -36,7 +36,7 @@ if (isset($aValidator))
 
 	if ($num_of_total_a_errors > 0)
 	{
-		include(AT_INCLUDE_PATH. "classes/AccessibilityRpt.class.php");
+		include(AC_INCLUDE_PATH. "classes/AccessibilityRpt.class.php");
 
 		$a_rpt = new AccessibilityRpt($aValidator->getValidationErrorRpt());
 		

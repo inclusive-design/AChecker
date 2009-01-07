@@ -1830,7 +1830,7 @@ INSERT INTO `language_text` VALUES ('en', '_guideline','_SUBGROUPNAME_61','14.3 
 INSERT INTO `language_text` VALUES ('en', '_guideline','_SUBGROUPNAME_7','3.1 When an appropriate markup language exists, use markup rather than images to convey information.','2008-11-24 13:03:29','');
 INSERT INTO `language_text` VALUES ('en', '_guideline','_SUBGROUPNAME_8','3.2 Create documents that validate to published formal grammars.','2008-11-24 13:03:29','');
 INSERT INTO `language_text` VALUES ('en', '_guideline','_SUBGROUPNAME_9','3.3 Use style sheets to control layout and presentation.','2008-11-24 13:03:29','');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AT_ERROR_PAGE_NOT_FOUND','Page cannot be found','2008-12-12 13:28:09','');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_PAGE_NOT_FOUND','Page cannot be found','2008-12-12 13:28:09','');
 INSERT INTO `language_text` VALUES ('en', '_template','login','Login',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','register','Register',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','welcome','Welcome',now(),'');
@@ -1905,6 +1905,9 @@ INSERT INTO `language_text` VALUES ('en', '_template','translate_to','Translate 
 INSERT INTO `language_text` VALUES ('en', '_template','updated_terms','Updated Terms','2008-12-02 09:16:45','');
 INSERT INTO `language_text` VALUES ('en', '_template','user_manage','User Management','2008-12-02 11:06:56','');
 INSERT INTO `language_text` VALUES ('en', '_template','web_accessibility_checker','Web Accessibility Checker','2008-12-01 13:19:43','');
+INSERT INTO `language_text` VALUES ('en', '_template','translator','Translator',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','login','Login',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','password_reminder','Password Reminder',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_test','_EXPECTEDSTEP_100_0','All text contained by the <code>blockquote</code> element is a quote.','2008-11-24 13:03:35','');
 INSERT INTO `language_text` VALUES ('en', '_test','_EXPECTEDSTEP_100_1','The <code>blockquote</code> element should not be used to simply indent text.','2008-11-24 13:03:35','');
 INSERT INTO `language_text` VALUES ('en', '_test','_EXPECTEDSTEP_101_0','TODO.','2008-11-24 13:03:35','');

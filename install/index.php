@@ -10,7 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-define('AT_INCLUDE_PATH', 'include/');
+define('AC_INCLUDE_PATH', 'include/');
 error_reporting(E_ALL ^ E_NOTICE);
 
 require('../include/constants.inc.php');
@@ -28,7 +28,7 @@ $session_error = ob_get_contents();
 ob_end_clean();
 error_reporting(E_ALL ^ E_NOTICE);
 
-require(AT_INCLUDE_PATH.'header.inc.php');
+require(AC_INCLUDE_PATH.'header.inc.php');
 $bad  = '<img src="images/bad.gif" width="14" height="13" border="0" alt="Bad" title="Bad" />';
 $good = '<img src="images/feedback.gif" width="16" height="13" border="0" alt="Good" title="Good" />';
 
@@ -290,4 +290,4 @@ $not_as_good = FALSE;
 	//-->
 <?php endif; ?>
 
-<?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>
+<?php require(AC_INCLUDE_PATH.'footer.inc.php'); ?>

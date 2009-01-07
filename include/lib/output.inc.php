@@ -10,7 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-if (!defined('AT_INCLUDE_PATH')) { exit; }
+if (!defined('AC_INCLUDE_PATH')) { exit; }
 
 /**********************************************************************************/
 /* Output functions found in this file, in order:
@@ -40,7 +40,7 @@ function _AC() {
 	// a feedback msg
 	if (!is_array($args[0])) {
 		/**
-		 * Added functionality for translating language code String (AT_ERROR|AT_INFOS|AT_WARNING|AT_FEEDBACK|AT_HELP).*
+		 * Added functionality for translating language code String (AC_ERROR|AC_INFOS|AC_WARNING|AC_FEEDBACK|AC_HELP).*
 		 * to its text and returning the result. No caching needed.
 		 * @author Jacek Materna
 		 */
@@ -48,8 +48,8 @@ function _AC() {
 		// Check for specific language prefix, extendible as needed
 		// 0002767:  a substring+in_array test should be faster than a preg_match test.
 		// replaced the preg_match with a test of the substring.
-		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AT_HELP)
-		if (in_array($sub_arg, array('AT_ERRO','AT_INFO','AT_WARN','AT_FEED','AT_HELP','AT_CONF'))) {
+		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AC_HELP)
+		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_HELP','AC_CONF'))) {
 			global $db;
 			global $_base_path, $addslashes;
 
@@ -65,7 +65,7 @@ function _AC() {
 			if ($row = @mysql_fetch_assoc($result)) {
 				// do not cache key as a digit (no contstant(), use string)
 				$msgs = str_replace('SITE_URL/', $_base_path, $row['text']);
-				if (defined('AT_DEVEL') && AT_DEVEL) {
+				if (defined('AC_DEVEL') && AC_DEVEL) {
 					$msgs .= ' <small><small>('. $args[0] .')</small></small>';
 				}
 			}
@@ -76,7 +76,7 @@ function _AC() {
 	
 	// a template variable
 	if (!isset($_template)) {
-		$url_parts = parse_url(AT_BASE_HREF);
+		$url_parts = parse_url(AC_BASE_HREF);
 		$name = substr($_SERVER['PHP_SELF'], strlen($url_parts['path'])-1);
 
 		if ( !($lang_et = cache(120, 'lang', $_SESSION['lang'].'_'.$name)) ) {
@@ -183,13 +183,13 @@ function _AC_old($term, $variable = '_template')
 	?? %a: Lowercase Ante meridiem and Post meridiem am or pm 
 	?? %A: Uppercase Ante meridiem and Post meridiem AM or PM 
 
-	valid format_types:
-	AT_DATE_MYSQL_DATETIME:		YYYY-MM-DD HH:MM:SS
-	AT_DATE_MYSQL_TIMESTAMP_14:	YYYYMMDDHHMMSS
-	AT_DATE_UNIX_TIMESTAMP:		seconds since epoch
-	AT_DATE_INDEX_VALUE:		0-x, index into a date array
+	valid formAC_types:
+	AC_DATE_MYSQL_DATETIME:		YYYY-MM-DD HH:MM:SS
+	AC_DATE_MYSQL_TIMESTAMP_14:	YYYYMMDDHHMMSS
+	AC_DATE_UNIX_TIMESTAMP:		seconds since epoch
+	AC_DATE_INDEX_VALUE:		0-x, index into a date array
 */
-function AT_date($format='%Y-%M-%d', $timestamp = '', $format_type=AT_DATE_MYSQL_DATETIME) {	
+function AC_date($format='%Y-%M-%d', $timestamp = '', $formAC_type=AC_DATE_MYSQL_DATETIME) {	
 	static $day_name_ext, $day_name_con, $month_name_ext, $month_name_con;
 	global $_config;
 
@@ -237,7 +237,7 @@ function AT_date($format='%Y-%M-%d', $timestamp = '', $format_type=AT_DATE_MYSQL
 								'date_dec');
 	}
 
-	if ($format_type == AT_DATE_INDEX_VALUE) {
+	if ($formAC_type == AC_DATE_INDEX_VALUE) {
 		// apply timezone offset
 		apply_timezone($timestamp);
 	
@@ -254,11 +254,11 @@ function AT_date($format='%Y-%M-%d', $timestamp = '', $format_type=AT_DATE_MYSQL
 
 	if ($timestamp == '') {
 		$timestamp = time();
-		$format_type = AT_DATE_UNIX_TIMESTAMP;
+		$formAC_type = AC_DATE_UNIX_TIMESTAMP;
 	}
 
 	/* convert the date to a Unix timestamp before we do anything with it */
-	if ($format_type == AT_DATE_MYSQL_DATETIME) {
+	if ($formAC_type == AC_DATE_MYSQL_DATETIME) {
 		$year	= substr($timestamp,0,4);
 		$month	= substr($timestamp,5,2);
 		$day	= substr($timestamp,8,2);
@@ -267,7 +267,7 @@ function AT_date($format='%Y-%M-%d', $timestamp = '', $format_type=AT_DATE_MYSQL
 		$sec	= substr($timestamp,17,2);
 	    $timestamp	= mktime($hour, $min, $sec, $month, $day, $year);
 
-	} else if ($format_type == AT_DATE_MYSQL_TIMESTAMP_14) {
+	} else if ($formAC_type == AC_DATE_MYSQL_TIMESTAMP_14) {
 	    $year		= substr($timestamp,0,4);
 	    $month		= substr($timestamp,4,2);
 	    $day		= substr($timestamp,6,2);
@@ -342,7 +342,7 @@ function _AT() {
 	// a feedback msg
 	if (!is_array($args[0])) {
 		/**
-		 * Added functionality for translating language code String (AT_ERROR|AT_INFOS|AT_WARNING|AT_FEEDBACK|AT_HELP).*
+		 * Added functionality for translating language code String (AC_ERROR|AC_INFOS|AC_WARNING|AC_FEEDBACK|AC_HELP).*
 		 * to its text and returning the result. No caching needed.
 		 * @author Jacek Materna
 		 */
@@ -350,8 +350,8 @@ function _AT() {
 		// Check for specific language prefix, extendible as needed
 		// 0002767:  a substring+in_array test should be faster than a preg_match test.
 		// replaced the preg_match with a test of the substring.
-		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AT_HELP)
-		if (in_array($sub_arg, array('AT_ERRO','AT_INFO','AT_WARN','AT_FEED','AT_HELP','AT_CONF'))) {
+		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AC_HELP)
+		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_HELP','AC_CONF'))) {
 			global $db;
 			global $_base_path, $addslashes;
 
@@ -367,7 +367,7 @@ function _AT() {
 			if ($row = @mysql_fetch_assoc($result)) {
 				// do not cache key as a digit (no contstant(), use string)
 				$msgs = str_replace('SITE_URL/', $_base_path, $row['text']);
-				if (defined('AT_DEVEL') && AT_DEVEL) {
+				if (defined('AC_DEVEL') && AC_DEVEL) {
 					$msgs .= ' <small><small>('. $args[0] .')</small></small>';
 				}
 			}
@@ -381,7 +381,7 @@ function _AT() {
 	
 	// a template variable
 	if (!isset($_template)) {
-		$url_parts = parse_url(AT_BASE_HREF);
+		$url_parts = parse_url(AC_BASE_HREF);
 		$name = substr($_SERVER['PHP_SELF'], strlen($url_parts['path'])-1);
 
 		if ( !($lang_et = cache(120, 'lang', $_SESSION['lang'].'_'.$name)) ) {
@@ -464,10 +464,10 @@ function _AT() {
 	/**
 	* 	Transforms text based on formatting preferences.  Original $input is also changed (passed by reference).
 	*	Can be called as:
-	*	1) $output = AT_print($input, $name);
+	*	1) $output = AC_print($input, $name);
 	*	   echo $output;
 	*
-	*	2) echo AT_print($input, $name); // prefered method
+	*	2) echo AC_print($input, $name); // prefered method
 	*
 	* @access	public
 	* @param	string $input			text being transformed
@@ -475,11 +475,11 @@ function _AT() {
 	* @param	boolean $runtime_html	forcefully disables html formatting for $input (only used by fields that 
 	*									have the 'formatting' option
 	* @return	string					transformed $input
-	* @see		AT_FORMAT constants		in include/lib/constants.inc.php
+	* @see		AC_FORMAT constants		in include/lib/constants.inc.php
 	* @see		query_bit()				in include/vitals.inc.php
 	* @author	Joel Kronenberg
 	*/
-	function AT_print($input, $name, $runtime_html = true) {
+	function AC_print($input, $name, $runtime_html = true) {
 		global $_field_formatting;
 
 		if (!isset($_field_formatting[$name])) {
@@ -491,44 +491,44 @@ function _AT() {
 				$name = $parts[0].'.*';
 			} else {
 				/* field not set, and there's no global setting */
-				/* same as AT_FORMAT_NONE */
+				/* same as AC_FORMAC_NONE */
 				return $input;
 			}
 		}
 
-		if (query_bit($_field_formatting[$name], AT_FORMAT_QUOTES)) {
+		if (query_bit($_field_formatting[$name], AC_FORMAC_QUOTES)) {
 			$input = str_replace('"', '&quot;', $input);
 		}
 
-		if (query_bit($_field_formatting[$name], AT_FORMAT_CONTENT_DIR)) {
+		if (query_bit($_field_formatting[$name], AC_FORMAC_CONTENT_DIR)) {
 			$input = str_replace('CONTENT_DIR/', '', $input);
 		}
 
-		if (query_bit($_field_formatting[$name], AT_FORMAT_HTML) && $runtime_html) {
+		if (query_bit($_field_formatting[$name], AC_FORMAC_HTML) && $runtime_html) {
 			/* what special things do we have to do if this is HTML ? remove unwanted HTML? validate? */
 		} else {
 			$input = str_replace('<', '&lt;', $input);
 			$input = nl2br($input);
 		}
 
-		/* this has to be here, only because AT_FORMAT_HTML is the only check that has an else-block */
-		if ($_field_formatting[$name] === AT_FORMAT_NONE) {
+		/* this has to be here, only because AC_FORMAC_HTML is the only check that has an else-block */
+		if ($_field_formatting[$name] === AC_FORMAC_NONE) {
 			return $input;
 		}
 
-		if (query_bit($_field_formatting[$name], AT_FORMAT_EMOTICONS)) {
+		if (query_bit($_field_formatting[$name], AC_FORMAC_EMOTICONS)) {
 			$input = smile_replace($input);
 		}
 
-		if (query_bit($_field_formatting[$name], AT_FORMAT_ATCODES)) {
+		if (query_bit($_field_formatting[$name], AC_FORMAC_ATCODES)) {
 			$input = trim(myCodes(' ' . $input . ' '));
 		}
 
-		if (query_bit($_field_formatting[$name], AT_FORMAT_LINKS)) {
+		if (query_bit($_field_formatting[$name], AC_FORMAC_LINKS)) {
 			$input = trim(make_clickable(' ' . $input . ' '));
 		}
 
-		if (query_bit($_field_formatting[$name], AT_FORMAT_IMAGES)) {
+		if (query_bit($_field_formatting[$name], AC_FORMAC_IMAGES)) {
 			$input = trim(image_replace(' ' . $input . ' '));
 		}
 
@@ -855,7 +855,7 @@ function image_replace($text) {
 	return $text;
 }
 
-function format_final_output($text, $nl2br = true) {
+function formAC_final_output($text, $nl2br = true) {
 	global $_base_path;
 
 	$text = str_replace('CONTENT_DIR/', '', $text);
@@ -895,7 +895,7 @@ function highlight($input, $var) {//$input is the string, $var is the text to be
 
 
 /* @See: ./index.php */
-function format_content($input, $html = 0, $glossary, $simple = false) {
+function formAC_content($input, $html = 0, $glossary, $simple = false) {
 	global $_base_path, $_config_defaults;
 
 	if (!$html) {
@@ -947,11 +947,11 @@ function format_content($input, $html = 0, $glossary, $simple = false) {
 	}
 
 	if ($html) {
-		$x = format_final_output($input, false);
+		$x = formAC_final_output($input, false);
 		return $x;
 	}
 
-	$output = format_final_output($input);
+	$output = formAC_final_output($input);
 
 	$output = '<p>'.$output.'</p>';
 
@@ -1025,7 +1025,7 @@ function getTranslatedCodeStr($codes) {
 			while ($row = @mysql_fetch_assoc($result)) {
 				// do not cache key as a digit (no contstant(), use string)
 				$_cache_msgs_new[$row['term']] = str_replace('SITE_URL/', $_base_path, $row['text']);
-				if (AT_DEVEL) {
+				if (AC_DEVEL) {
 					$_cache_msgs_new[$row['term']] .= ' <small><small>('.$row['term'].')</small></small>';
 				}
 			}

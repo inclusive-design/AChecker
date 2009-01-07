@@ -19,7 +19,7 @@
 * @package	User
 */
 
-define('AT_INCLUDE_PATH', '../../include/');
+define('AC_INCLUDE_PATH', '../../include/');
 
 class User {
 

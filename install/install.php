@@ -10,8 +10,8 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-define('AT_INCLUDE_PATH', 'include/');
-require(AT_INCLUDE_PATH.'common.inc.php');
+define('AC_INCLUDE_PATH', 'include/');
+require(AC_INCLUDE_PATH.'common.inc.php');
 
 if (!$new_version = $_POST['new_version']) {
 	$new_version = $_POST['step2']['new_version'];
@@ -27,37 +27,37 @@ if ($_POST['submit'] == 'I Disagree'){
 	Header ("Location: index.php");
 }
 
-require(AT_INCLUDE_PATH.'header.inc.php');
+require(AC_INCLUDE_PATH.'header.inc.php');
 
 /* agree to terms of use */
 if ($step == 1) {
-	require(AT_INCLUDE_PATH.'step1.php');
+	require(AC_INCLUDE_PATH.'step1.php');
 }
 
 /* db */
 if ($step == 2) {
-	require(AT_INCLUDE_PATH.'step2.php');
+	require(AC_INCLUDE_PATH.'step2.php');
 }
 
 /* create admin accounts and sytem preference */
 if ($step == 3) {	
-	require(AT_INCLUDE_PATH.'step3.php');
+	require(AC_INCLUDE_PATH.'step3.php');
 }
 
 /* directory permissions and generating the config.inc.php file */
 if ($step == 4) {	
-	require(AT_INCLUDE_PATH.'step4.php');
+	require(AC_INCLUDE_PATH.'step4.php');
 }
 
 /* anonymous data collection */
 if ($step == 5) {	
-	require(AT_INCLUDE_PATH.'step5.php');
+	require(AC_INCLUDE_PATH.'step5.php');
 }
 
 /* done! */
 if ($step == 6) {	
-	require(AT_INCLUDE_PATH.'step6.php');
+	require(AC_INCLUDE_PATH.'step6.php');
 }
 
-require(AT_INCLUDE_PATH.'footer.inc.php');
+require(AC_INCLUDE_PATH.'footer.inc.php');
 ?>

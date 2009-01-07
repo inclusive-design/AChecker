@@ -48,12 +48,12 @@ class Message {
 	* @see /include/lib/lang_constant.inc.php
 	* @var array	
 	*/
-	var $prefix = array( 'error'  =>'AT_ERROR_',
-						'feedback' => 'AT_FEEDBACK_',
-						'warning' => 'AT_WARNING_',
-						'info' => 'AT_INFOS_',
-						'help' => 'AT_HELP_',
-						'confirm' => 'AT_CONFIRM_'
+	var $prefix = array( 'error'  =>'AC_ERROR_',
+						'feedback' => 'AC_FEEDBACK_',
+						'warning' => 'AC_WARNING_',
+						'info' => 'AC_INFOS_',
+						'help' => 'AC_HELP_',
+						'confirm' => 'AC_CONFIRM_'
 				  );
 	
 	/**

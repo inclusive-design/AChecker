@@ -10,7 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-if (!defined('AT_INCLUDE_PATH')) { exit; }
+if (!defined('AC_INCLUDE_PATH')) { exit; }
 
 //Timer, to display "Time Spent" in footer, debug information
 $mtime = microtime(); 
@@ -27,7 +27,7 @@ global $_custom_head;
 global $_base_path;
 global $_pages;
 
-//require(AT_INCLUDE_PATH . 'lib/menu_pages.php');
+//require(AC_INCLUDE_PATH . 'lib/menu_pages.php');
 //
 //$current_page = substr($_SERVER['PHP_SELF'], strlen($_base_path));
 //
@@ -41,7 +41,7 @@ global $_pages;
 //		$cnt++;
 //		if ($current_page != $url)
 //		{
-//			header('location: '.AT_BASE_HREF. $url);
+//			header('location: '.AC_BASE_HREF. $url);
 //			// reset current_page after re-direction
 //			$current_page = substr($_SERVER['PHP_SELF'], strlen($_base_path));
 //		}
@@ -60,7 +60,7 @@ global $_pages;
 //
 //$_path = get_path($current_page);
 //debug($_top_level_pages);
-include(AT_INCLUDE_PATH.'classes/Menu.class.php');
+include(AC_INCLUDE_PATH.'classes/Menu.class.php');
 
 $menu =new Menu();
 $_top_level_pages = $menu->getTopPages();
@@ -72,7 +72,10 @@ $_current_root_page = $menu->getRootPage();
 $_breadcrumb_path = $menu->getBreadcrumbPath();
 
 $current_page = $menu->getCurrentPage();
-
+//debug($_top_level_pages);
+//debug($_all_pages);
+//debug($_current_root_page);
+//debug($_current_page);
 $savant->assign('top_level_pages', $_top_level_pages);
 $savant->assign('current_top_level_page', $_current_root_page);
 $savant->assign('path', $_breadcrumb_path);
@@ -81,7 +84,7 @@ $savant->assign('page_title', _AC($_all_pages[$current_page]['title_var']));
 
 if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
 {
-  include(AT_INCLUDE_PATH.'classes/User.class.php');
+  include(AC_INCLUDE_PATH.'classes/User.class.php');
   $user = new User();
   $user->setUserID($_SESSION['user_id']);
   $savant->assign('user_name', $user->getUserName());
@@ -89,19 +92,19 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
 
 //if (empty($_top_level_pages)) {
 //	if (!$_SESSION['member_id'] && !$_SESSION['course_id']) {
-//		$_top_level_pages = get_main_navigation($_pages[AT_NAV_PUBLIC][0]);
+//		$_top_level_pages = get_main_navigation($_pages[AC_NAV_PUBLIC][0]);
 //	} else if ($_SESSION['course_id'] < 0) {
-//		$_top_level_pages = get_main_navigation($_pages[AT_NAV_ADMIN][0]);
+//		$_top_level_pages = get_main_navigation($_pages[AC_NAV_ADMIN][0]);
 //	} else if (!$_SESSION['course_id']) {
-//		$_top_level_pages = get_main_navigation($_pages[AT_NAV_START][0]);
+//		$_top_level_pages = get_main_navigation($_pages[AC_NAV_START][0]);
 //	} else {
-//		$_top_level_pages = get_main_navigation($_pages[AT_NAV_COURSE][0]);
+//		$_top_level_pages = get_main_navigation($_pages[AC_NAV_COURSE][0]);
 //	}
 //}
 
 $savant->assign('lang_code', $_SESSION['lang']);
 $savant->assign('lang_charset', $myLang->getCharacterSet());
-$savant->assign('base_path', AT_BASE_HREF);
+$savant->assign('base_path', AC_BASE_HREF);
 $savant->assign('theme', $_SESSION['prefs']['PREF_THEME']);
 
 $theme_img  = $_base_path . 'themes/'. $_SESSION['prefs']['PREF_THEME'] . '/images/';

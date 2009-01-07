@@ -10,12 +10,12 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-if (!defined('AT_INCLUDE_PATH')) { exit; }
+if (!defined('AC_INCLUDE_PATH')) { exit; }
 
-require(AT_INCLUDE_PATH.'phpCache/phpCache.inc.php'); // cache library
+require(AC_INCLUDE_PATH.'phpCache/phpCache.inc.php'); // cache library
 
-define('AT_DEVEL', 1);
-define('AT_ERROR_REPORTING', E_ALL ^ E_NOTICE); // default is E_ALL ^ E_NOTICE, use E_ALL or E_ALL + E_STRICT for developing
+define('AC_DEVEL', 1);
+define('AC_ERROR_REPORTING', E_ALL ^ E_NOTICE); // default is E_ALL ^ E_NOTICE, use E_ALL or E_ALL + E_STRICT for developing
 
 // Emulate register_globals off. src: http://php.net/manual/en/faq.misc.php#faq.misc.registerglobals
 unset($_SESSION);
@@ -38,9 +38,9 @@ function unregister_GLOBALS() {
  * structure of this document (in order):
  *
  * 0. load config.inc.php
- * 1. load constants
- * 2. initilize session
- * 3. initilize db connection
+ * 1. initilize db connection
+ * 2. load constants
+ * 3. initilize session
  * 4. load $_config from table 'config'
  * 5. start language block
  * 6. load common libraries
@@ -49,31 +49,37 @@ function unregister_GLOBALS() {
 
 /**** 0. start system configuration options block ****/
 	error_reporting(0);
-	if (!defined('AT_REDIRECT_LOADED')){
-		include_once(AT_INCLUDE_PATH.'config.inc.php');
+	if (!defined('AC_REDIRECT_LOADED')){
+		include_once(AC_INCLUDE_PATH.'config.inc.php');
 	}
-	error_reporting(AT_ERROR_REPORTING);
+	error_reporting(AC_ERROR_REPORTING);
 
-	if (!defined('AT_INSTALL') || !AT_INSTALL) {
+	if (!defined('AC_INSTALL') || !AC_INSTALL) {
 		header('Cache-Control: no-store, no-cache, must-revalidate');
 		header('Pragma: no-cache');
 
-		$relative_path = substr(AT_INCLUDE_PATH, 0, -strlen('include/'));
+		$relative_path = substr(AC_INCLUDE_PATH, 0, -strlen('include/'));
 		header('Location: ' . $relative_path . 'install/not_installed.php');
 		exit;
 	}
 /*** end system config block ****/
 
-/*** 1. constants ***/
-	require_once(AT_INCLUDE_PATH.'constants.inc.php');
+/***** 1. database connection *****/
+if (!defined('AC_REDIRECT_LOADED')){
+	require_once(AC_INCLUDE_PATH.'lib/mysql_connect.inc.php');
+}
+/***** end database connection ****/
 
-/*** 2. initilize session ***/
+/*** 2. constants ***/
+	require_once(AC_INCLUDE_PATH.'constants.inc.php');
+
+/*** 3. initilize session ***/
 	@set_time_limit(0);
 	@ini_set('session.gc_maxlifetime', '36000'); /* 10 hours */
 	@session_cache_limiter('private, must-revalidate');
 
 	session_name('CheckerID');
-	error_reporting(AT_ERROR_REPORTING);
+	error_reporting(AC_ERROR_REPORTING);
 
 	ob_start();
 	session_set_cookie_params(0, $_base_path);
@@ -83,12 +89,6 @@ function unregister_GLOBALS() {
 	unregister_GLOBALS();
 
 /***** end session initilization block ****/
-
-/***** 3. database connection *****/
-if (!defined('AT_REDIRECT_LOADED')){
-	require_once(AT_INCLUDE_PATH.'lib/mysql_connect.inc.php');
-}
-/***** end database connection ****/
 
 /***** 4. load $_config from table 'config' *****/
 $sql    = "SELECT * FROM ".TABLE_PREFIX."config";
@@ -104,7 +104,7 @@ define('SITE_NAME',                 $_config['site_name']);
 
 /***** 5. start language block *****/
 	// set current language
-	require(AT_INCLUDE_PATH . 'classes/Language/LanguageManager.class.php');
+	require(AC_INCLUDE_PATH . 'classes/Language/LanguageManager.class.php');
 	$languageManager =& new LanguageManager();
 
 	$myLang =& $languageManager->getMyLanguage();
@@ -116,15 +116,6 @@ define('SITE_NAME',                 $_config['site_name']);
 
 	$myLang->saveToSession();
 
-//	if (isset($_GET['lang']) && $_SESSION['valid_user']) {
-//		if ($_SESSION['course_id'] == -1) {
-//			$myLang->saveToPreferences($_SESSION['login'], 1);	//1 for admin			
-//		} else {
-//			$myLang->saveToPreferences($_SESSION['member_id'], 0);	//0 for non-admin
-//		}
-//	}
-//	$myLang->sendContentTypeHeader();
-
 	/* set right-to-left language */
 	$rtl = '';
 	if ($myLang->isRTL()) {
@@ -133,18 +124,18 @@ define('SITE_NAME',                 $_config['site_name']);
 /***** end language block ****/
 
 /***** 6. load common libraries *****/
-	require(AT_INCLUDE_PATH.'lib/output.inc.php');           /* output functions */
+	require(AC_INCLUDE_PATH.'lib/output.inc.php');           /* output functions */
 /***** end load common libraries ****/
 
 /***** 7. initialize theme and template management *****/
-	require(AT_INCLUDE_PATH.'classes/Savant2/Savant2.php');
+	require(AC_INCLUDE_PATH.'classes/Savant2/Savant2.php');
 
 	// set default template paths:
 	$savant =& new Savant2();
 
-	if (isset($_SESSION['prefs']['PREF_THEME']) && file_exists(AT_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']) && isset($_SESSION['valid_user']) && $_SESSION['valid_user']) 
+	if (isset($_SESSION['prefs']['PREF_THEME']) && file_exists(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']) && isset($_SESSION['valid_user']) && $_SESSION['valid_user']) 
 	{
-		if (!is_dir(AT_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']))
+		if (!is_dir(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']))
 		{
 			$_SESSION['prefs']['PREF_THEME'] = 'default';
 		} 
@@ -165,11 +156,11 @@ define('SITE_NAME',                 $_config['site_name']);
 		$_SESSION['prefs']['PREF_THEME'] = get_default_theme();
 	}
 
-	$savant->addPath('template', AT_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/');
+	$savant->addPath('template', AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/');
 
-	require(AT_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/theme.cfg.php');
+	require(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/theme.cfg.php');
 
-	require(AT_INCLUDE_PATH.'classes/Message/Message.class.php');
+	require(AC_INCLUDE_PATH.'classes/Message/Message.class.php');
 	$msg = new Message($savant);
 
 /***** end of initialize theme and template management *****/
@@ -182,7 +173,7 @@ define('SITE_NAME',                 $_config['site_name']);
  * @author  Joel Kronenberg
  */
 function debug($var, $title='') {
-	if (!defined('AT_DEVEL') || !AT_DEVEL) {
+	if (!defined('AC_DEVEL') || !AC_DEVEL) {
 		return;
 	}
 	
@@ -278,7 +269,7 @@ function get_default_theme() {
 	$result = mysql_query($sql, $db);
 	$row = mysql_fetch_assoc($result);
 
-	if (!is_dir(AT_INCLUDE_PATH . '../themes/' . $row['dir_name']))
+	if (!is_dir(AC_INCLUDE_PATH . '../themes/' . $row['dir_name']))
 		return 'default';
 	else
 		return $row['dir_name'];

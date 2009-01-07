@@ -11,7 +11,7 @@
 /************************************************************************/
 // $Id: step3.php 7634 2008-06-23 18:21:51Z hwong $
 
-if (!defined('AT_INCLUDE_PATH')) { exit; }
+if (!defined('AC_INCLUDE_PATH')) { exit; }
 
 if(isset($_POST['submit']) && ($_POST['action'] == 'process')) {
 	unset($errors);
@@ -101,7 +101,7 @@ if (isset($_POST['step1']['old_version']) && $_POST['upgrade_action']) {
 }
 
 ?>
-<script language="JavaScript" src="<?php echo AT_INCLUDE_PATH; ?>../../jscripts/sha-1factory.js" type="text/javascript"></script>
+<script language="JavaScript" src="<?php echo AC_INCLUDE_PATH; ?>../../jscripts/sha-1factory.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 function encrypt_password()

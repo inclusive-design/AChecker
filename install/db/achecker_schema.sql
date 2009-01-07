@@ -134,6 +134,7 @@ CREATE TABLE `privileges` (
   `last_update` datetime,
   `link` varchar(255) NOT NULL DEFAULT '',
   `menu_sequence` tinyint(4) NOT NULL,
+  `open_to_public` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY  (`privilege_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -5005,11 +5006,11 @@ INSERT INTO `test_procedure` (`check_id`, `step_id`, `step`) VALUES
 INSERT INTO `themes` VALUES ('AChecker', '0.1', 'default', NOW(), 'This is the default AChecker theme and cannot be deleted as other themes inherit from it. Please do not alter this theme directly as it would complicate upgrading. Instead, create a new theme derived from this one.', 2);
 
 # insert privileges, user groups and user group privileges
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`) VALUES (1, 'web_accessibility_checker', 'Web accessibility checker', NOW(), 'index.php', 1);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`) VALUES (2, 'user_manage', 'Create, edit, delete users.', NOW(), 'user/index.php', 2);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`) VALUES (3, 'guideline_manage', 'Create, edit, delete, enable, disable guidelines.', NOW(), 'guideline/index.php', 3);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`) VALUES (4, 'check_manage', 'Create, edit, delete, enable, disable checks.', NOW(), 'check/index.php', 4);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`) VALUES (5, 'language_manage', 'Create, edit, delete, enable, disable languages.', NOW(), 'language/index.php', 5);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (1, 'web_accessibility_checker', 'Web accessibility checker', NOW(), 'checker/index.php', 1, 1);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (2, 'user_manage', 'Create, edit, delete users.', NOW(), 'user/index.php', 2, 0);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (3, 'guideline_manage', 'Create, edit, delete, enable, disable guidelines.', NOW(), 'guideline/index.php', 3, 0);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (4, 'check_manage', 'Create, edit, delete, enable, disable checks.', NOW(), 'check/index.php', 4, 0);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (5, 'language_manage', 'Create, edit, delete, enable, disable languages.', NOW(), 'language/index.php', 5, 0);
 
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (1, 'Administrator', 'Administrate guidelines, checks, users, languages.', now());
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (2, 'User', 'Regular user. Can make decision on likely and potential problems. When a user revisits a report, decisions previously made for Likely and Potential problems will be restored for the matching URL. Regular users can create custom guidelines.', now());

@@ -14,10 +14,10 @@
 
 require_once(dirname(__FILE__) . '/Language.class.php');
 
-define('AT_LANG_STATUS_EMPTY',       0);
-define('AT_LANG_STATUS_INCOMPLETE',  1);
-define('AT_LANG_STATUS_COMPLETE',    2);
-define('AT_LANG_STATUS_PUBLISHED',   3);
+define('AC_LANG_STATUS_EMPTY',       0);
+define('AC_LANG_STATUS_INCOMPLETE',  1);
+define('AC_LANG_STATUS_COMPLETE',    2);
+define('AC_LANG_STATUS_PUBLISHED',   3);
 
 /**
 * LanguageManager
@@ -71,8 +71,8 @@ class LanguageManager {
 		$sql	= 'SELECT * FROM '.TABLE_PREFIX.'languages ORDER BY native_name';
 		$result = mysql_query($sql, $db);
 		while($row = mysql_fetch_assoc($result)) {
-			if (defined('AT_DEVEL_TRANSLATE') && AT_DEVEL_TRANSLATE) {
-				$row['status'] = AT_LANG_STATUS_PUBLISHED; // b/c the print drop down checks for it.				
+			if (defined('AC_DEVEL_TRANSLATE') && AC_DEVEL_TRANSLATE) {
+				$row['status'] = AC_LANG_STATUS_PUBLISHED; // b/c the print drop down checks for it.				
 			}
 			$this->availableLanguages[$row['language_code']][$row['char_set']] =& new Language($row);
 		}
@@ -217,7 +217,7 @@ class LanguageManager {
 
 		foreach ($this->availableLanguages as $codes) {
 			$language = current($codes);
-			if ((defined('AT_DEVEL_TRANSLATE') && AT_DEVEL_TRANSLATE) || ($language->getStatus() == AT_LANG_STATUS_PUBLISHED)) {
+			if ((defined('AC_DEVEL_TRANSLATE') && AC_DEVEL_TRANSLATE) || ($language->getStatus() == AC_LANG_STATUS_PUBLISHED)) {
 				echo '<option value="'.$language->getCode().'"';
 				if ($language->getCode() == $current_language) {
 					echo ' selected="selected"';
@@ -235,7 +235,7 @@ class LanguageManager {
 		foreach ($this->availableLanguages as $codes) {
 			$language = current($codes);
 
-			if ($language->getStatus() == AT_LANG_STATUS_PUBLISHED) {
+			if ($language->getStatus() == AC_LANG_STATUS_PUBLISHED) {
 
 				if ($delim){
 					echo ' | ';
@@ -261,7 +261,7 @@ class LanguageManager {
 	// checks whether or not the language exists/is available
 	function exists($code, $locale = '') {
 		if ($locale) {
-			return isset($this->availableLanguages[$code . AT_LANGUAGE_LOCALE_SEP . $locale]);
+			return isset($this->availableLanguages[$code . AC_LANGUAGE_LOCALE_SEP . $locale]);
 		}
 		return isset($this->availableLanguages[$code]);
 	}
@@ -271,7 +271,7 @@ class LanguageManager {
 	function import($filename) {
 		global $languageManager, $msg;
 
-		$import_path = AT_CONTENT_DIR . 'import/';
+		$import_path = AC_CONTENT_DIR . 'import/';
 
 		$archive = new PclZip($filename);
 		if ($archive->extract(	PCLZIP_OPT_PATH,	$import_path) == 0) {
@@ -285,14 +285,14 @@ class LanguageManager {
 		$languageEditor =& $languageParser->getLanguageEditor(0);
 
 		if (($languageEditor->getAtutorVersion() != VERSION) 
-			&& (!defined('AT_DEVEL_TRANSLATE') || !AT_DEVEL_TRANSLATE)) 
+			&& (!defined('AC_DEVEL_TRANSLATE') || !AC_DEVEL_TRANSLATE)) 
 			{
 				$msg->addError('LANG_WRONG_VERSION');
 		}
 
-		if (($languageEditor->getStatus() != AT_LANG_STATUS_PUBLISHED) 
-			&& ($languageEditor->getStatus() != AT_LANG_STATUS_COMPLETE) 
-			&& (!defined('AT_DEVEL_TRANSLATE') || !AT_DEVEL_TRANSLATE)) 
+		if (($languageEditor->getStatus() != AC_LANG_STATUS_PUBLISHED) 
+			&& ($languageEditor->getStatus() != AC_LANG_STATUS_COMPLETE) 
+			&& (!defined('AC_DEVEL_TRANSLATE') || !AC_DEVEL_TRANSLATE)) 
 			{
 				$msg->addError('LANG_NOT_COMPLETE');
 		}
@@ -318,9 +318,9 @@ class LanguageManager {
 	function liveImport($language_code) {
 		global $db;
 
-		$tmp_lang_db = mysql_connect(AT_LANG_DB_HOST, AT_LANG_DB_USER, AT_LANG_DB_PASS);
+		$tmp_lang_db = mysql_connect(AC_LANG_DB_HOST, AC_LANG_DB_USER, AC_LANG_DB_PASS);
 		if (!$tmp_lang_db) {
-			/* AT_ERROR_NO_DB_CONNECT */
+			/* AC_ERROR_NO_DB_CONNECT */
 			echo 'Unable to connect to db.';
 			exit;
 		}

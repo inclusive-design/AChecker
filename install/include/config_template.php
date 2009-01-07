@@ -10,7 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-if (!defined('AT_INCLUDE_PATH')) { exit; }
+if (!defined('AC_INCLUDE_PATH')) { exit; }
 
 function write_config_file($filename, $comments) {
 	global $config_template;
@@ -77,11 +77,11 @@ define('DB_PORT',                      '{PORT}');
 define('DB_NAME',                      '{DBNAME}');
 
 /* The prefix to add to table names to avoid conflicts with existing    */
-/* tables. Default: AT_                                                 */
+/* tables. Default: AC_                                                 */
 define('TABLE_PREFIX',                 '{TABLE_PREFIX}');
 
 /* DO NOT ALTER THIS LAST LINE                                          */
-define('AT_INSTALL', TRUE);
+define('AC_INSTALL', TRUE);
 
 ?".">";
 

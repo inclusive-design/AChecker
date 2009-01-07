@@ -10,10 +10,10 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-define('AT_INCLUDE_PATH', 'include/');
+define('AC_INCLUDE_PATH', '../include/');
 
-include(AT_INCLUDE_PATH.'vitals.inc.php');
-include(AT_INCLUDE_PATH.'header.inc.php');
+include(AC_INCLUDE_PATH.'vitals.inc.php');
+include(AC_INCLUDE_PATH.'header.inc.php');
 
 $check_id = intval($_GET["id"]);
 
@@ -164,6 +164,6 @@ while ($row = mysql_fetch_assoc($result))
 </div>
 <?php
 // display footer
-include(AT_INCLUDE_PATH.'footer.inc.php');
+include(AC_INCLUDE_PATH.'footer.inc.php');
 
 ?>

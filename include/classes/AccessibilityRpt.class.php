@@ -18,7 +18,7 @@
 * @author	Cindy Qi Li
 * @package checker
 */
-if (!defined("AT_INCLUDE_PATH")) die("Error: AT_INCLUDE_PATH is not defined.");
+if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
 define(IS_ERROR, 1);
 define(IS_WARNING, 2);
@@ -151,7 +151,7 @@ class AccessibilityRpt {
 			$html_code = substr($html_code, 0, 100) . " ...";
 			
 		return str_replace(array("{MSG_TYPE}", "{IMG_SRC}", "{IMG_TYPE}", "{LINE_NUMBER}", "{COL_NUMBER}", "{HTML_CODE}", "{ERROR}", "{BASE_HREF}", "{CHECK_ID}", "{TITLE}"),
-		                   array($msg_type, $img_src, $img_type, $line_number, $col_number, htmlentities($html_code), $error, AT_BASE_HREF, $check_id, _AC("suggest_improvements")),
+		                   array($msg_type, $img_src, $img_type, $line_number, $col_number, htmlentities($html_code), $error, AC_BASE_HREF, $check_id, _AC("suggest_improvements")),
 		                   $this->cell_html);
 	}
 	

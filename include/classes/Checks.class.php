@@ -23,8 +23,8 @@
 * @package checker
 */
 
-if (!defined("AT_INCLUDE_PATH")) die("Error: AT_INCLUDE_PATH is not defined.");
-include_once (AT_INCLUDE_PATH . "classes/BasicChecks.class.php");
+if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
+include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
 
 class Checks {
 	public static function check_1($e, $content_dom)

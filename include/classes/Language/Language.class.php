@@ -12,7 +12,7 @@
 /************************************************************************/
 // $Id: Language.class.php 7214 2008-01-10 15:24:23Z hwong $
 
-define('AT_LANGUAGE_LOCALE_SEP', '-');
+define('AC_LANGUAGE_LOCALE_SEP', '-');
 
 /**
 * Language
@@ -162,7 +162,7 @@ class Language {
 		if (!$code && isset($this)) {
 			$code = $this->code;
 		}
-		$peices = explode(AT_LANGUAGE_LOCALE_SEP, $code, 2);
+		$peices = explode(AC_LANGUAGE_LOCALE_SEP, $code, 2);
 		return $peices[0];
 	}
 
@@ -172,7 +172,7 @@ class Language {
 		if (!$code && isset($this)) {
 			$code = $this->code;
 		}
-		$peices = explode(AT_LANGUAGE_LOCALE_SEP, $code, 2);
+		$peices = explode(AC_LANGUAGE_LOCALE_SEP, $code, 2);
 		return $peices[1];
 	}
 

@@ -10,7 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-include(AT_INCLUDE_PATH.'header.inc.php');
+include(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 
 <form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >

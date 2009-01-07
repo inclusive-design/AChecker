@@ -10,7 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-define('AT_INCLUDE_PATH', 'include/');
+define('AC_INCLUDE_PATH', 'include/');
 error_reporting(E_ALL ^ E_NOTICE);
 
 require('../include/constants.inc.php');
@@ -20,11 +20,11 @@ $new_version = VERSION;
 header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Pragma: no-cache');
 
-require(AT_INCLUDE_PATH.'header.inc.php');
+require(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 
 
 <p>AChecker does not appear to be installed. <a href="index.php">Continue on to the installation</a>.</p>
 
 
-<?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>
+<?php require(AC_INCLUDE_PATH.'footer.inc.php'); ?>

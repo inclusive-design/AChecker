@@ -10,7 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-if (!defined('AT_INCLUDE_PATH')) { exit; }
+if (!defined('AC_INCLUDE_PATH')) { exit; }
 
 /**
  * constants, some more constants are loaded from table 'config' @ include/vitals.inc.php
@@ -49,7 +49,7 @@ if (isset($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) == 'on')) {
 	$server_protocol = 'http://';
 }
 
-$dir_deep	 = substr_count(AT_INCLUDE_PATH, '..');
+$dir_deep	 = substr_count(AC_INCLUDE_PATH, '..');
 $url_parts	 = explode('/', $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
 $_base_href	 = array_slice($url_parts, 0, count($url_parts) - $dir_deep-1);
 $_base_href	 = $server_protocol . implode('/', $_base_href).'/';
@@ -59,41 +59,24 @@ $endpos = strlen($_base_href);
 $_base_href	 = substr($_base_href, 0, $endpos);
 $_base_path  = substr($_base_href, strlen($server_protocol . $_SERVER['HTTP_HOST']));
 
-define('AT_BASE_HREF', $_base_href);
+define('AC_BASE_HREF', $_base_href);
 
 /* relative uri */
 $_rel_url = '/'.implode('/', array_slice($url_parts, count($url_parts) - $dir_deep-1));
 
-/* $_pages sections */
+/* constants used for menu item generation. Used in class Menu (include/classes/Menu.class.php) */
 define('AC_NAV_PUBLIC', 'AC_NAV_PUBLIC');  // public menus, when no user login
 define('AC_NAV_TOP', 'AC_NAV_TOP');        // top tab menus
 
-/**
- * define all the pages that used in each priviledge section. 
- * section id (1-5) must be same as according privileges.privilege_id 
- * Note that 1st item in each section pages array is not set. It's dynamically set in script.
- **/
-define('PRIV_WEB_ACCESSIBILITY_CHECKER', 1);
-define('PRIV_USER_MANAGE', 2);
-define('PRIV_GUIDELINE_MANAGE', 3);
-define('PRIV_CHECK_MANAGE', 4);
-define('PRIV_LANGUAGE_MANAGE', 5);
+/* define all accessible pages */
+$_pages['translator.php']['title_var'] = 'translator';
+$_pages['translator.php']['parent']    = AC_NAV_PUBLIC;
 
-$_section_pages[PRIV_WEB_ACCESSIBILITY_CHECKER] = array('index.php' => array('title_var'=>'web_accessibility_checker')
-                          );
+$_pages['login.php']['title_var'] = 'login';
+$_pages['login.php']['parent']    = AC_NAV_PUBLIC;
+$_pages['login.php']['children']  = array_merge(array('password_reminder.php'), isset($_pages['login.php']['children']) ? $_pages['login.php']['children'] : array());
 
-$_section_pages[PRIV_USER_MANAGE] = array('user/index.php' => array('title_var'=>'user_manage')
-                          );
-
-$_section_pages[PRIV_GUIDELINE_MANAGE] = array('guideline/index.php' => array('title_var'=>'guideline_manage')
-                          );
-
-$_section_pages[PRIV_CHECK_MANAGE] = array('check/index.php' => array('title_var'=>'check_manage')
-                          );
-
-$_section_pages[PRIV_LANGUAGE_MANAGE] = array('language/index.php' => array('title_var'=>'language_manage')
-                          );
-
-$_pages_constant[AC_NAV_PUBLIC] = $_section_pages[1];
+$_pages['password_reminder.php']['title_var'] = 'password_reminder';
+$_pages['password_reminder.php']['parent']    = 'login.php';
 
 ?>

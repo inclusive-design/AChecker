@@ -1,7 +1,7 @@
 <?php
 
-//define(AT_INCLUDE_PATH, 'include/');
-//include(AT_INCLUDE_PATH.'vitals.inc.php');
+//define(AC_INCLUDE_PATH, 'include/');
+//include(AC_INCLUDE_PATH.'vitals.inc.php');
 
 $lang_db = mysql_connect('localhost:3306', 'root', '');
 mysql_select_db('achecker', $lang_db);

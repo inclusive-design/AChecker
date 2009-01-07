@@ -10,7 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-if (!defined('AT_INCLUDE_PATH')) { exit; }
+if (!defined('AC_INCLUDE_PATH')) { exit; }
 
 $lang_charset = "UTF-8";
 
@@ -113,15 +113,15 @@ $starttime = $mtime;
         else
         {
         ?>
-				<a href="<?php echo AT_BASE_HREF; ?>login.php" ><?php echo _AC('login'); ?></a>
+				<a href="<?php echo AC_BASE_HREF; ?>login.php" ><?php echo _AC('login'); ?></a>
 				&nbsp;&nbsp;
-				<a href="<?php echo AT_BASE_HREF; ?>register.php" ><?php echo _AC('register'); ?></a>
+				<a href="<?php echo AC_BASE_HREF; ?>register.php" ><?php echo _AC('register'); ?></a>
         <?php
         }
         ?>
 			</span>
 			<span id="versioninfo">
-				<a href="<?php echo AT_BASE_HREF; ?>translator.php" target="_blank"><?php echo _AC('help_with_translate'); ?></a>
+				<a href="<?php echo AC_BASE_HREF; ?>translator.php" target="_blank"><?php echo _AC('help_with_translate'); ?></a>
 				&nbsp;
 				Version 0.1 Beta
 			</span>

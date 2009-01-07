@@ -19,7 +19,7 @@
 * @package	Menu
 */
 
-define('AT_INCLUDE_PATH', '../../include/');
+define('AC_INCLUDE_PATH', '../../include/');
 
 class Menu {
 
@@ -42,14 +42,8 @@ class Menu {
 		unset($_SESSION['user_id']);
 //		$_SESSION['user_id'] = 1;
 		
-		if (isset($_SESSION['user_id']) && $_SESSION['user_id'] <> 0) 
-		{
-			$this->setTopPages($_SESSION['user_id']);    // set top pages based on user id
-		}
-		else
-		{
-			$this->setTopPagesToPublic();
-		}
+		$this->init();
+		$this->setTopPages();    // set top pages based on user id
 		
 		// decide current page.
 		// if the page that user tries to access is from one of the public link 
@@ -58,23 +52,61 @@ class Menu {
 	}
 
 	/**
-	* Set top pages array based on user's priviledge
+	* initialize: public accessible items ($this->pages[AC_NAV_PUBLIC]); all accessible pages ($this->pages)
 	* @access  private
 	* @param   user id
 	* @return  true
 	* @author  Cindy Qi Li
 	*/
-	function setTopPages($user_id)
+	function init()
 	{
-		global $db, $_section_pages, $_base_path;
+		// $_pages is defined in include/constants.inc.php
+		global $_pages, $db, $_base_path;
 		
-		$sql = 'SELECT p.privilege_id, p.title_var, p.link 
-						FROM '.TABLE_PREFIX.'users u, '.TABLE_PREFIX.'user_groups ug, '.TABLE_PREFIX.'user_group_privilege ugp, '.TABLE_PREFIX.'privileges p
-						WHERE u.user_id = '.$user_id.'
-						AND u.user_group_id = ug.user_group_id
-						AND ug.user_group_id = ugp.user_group_id
-						AND ugp.privilege_id = p.privilege_id
+		$this->pages = $_pages;
+		
+		$sql = 'SELECT privilege_id, title_var, link 
+						FROM '.TABLE_PREFIX.'privileges p
+						WHERE open_to_public = 1
 						ORDER BY p.menu_sequence';
+		$result	= mysql_query($sql, $db) or die(mysql_error());
+	
+		while ($row = mysql_fetch_assoc($result))
+		{
+			$this->pages[AC_NAV_PUBLIC][] = array($row['link'] => array('title_var'=>$row['title_var'], 'parent'=>AC_NAV_TOP));
+		}
+
+		return true;
+	}
+
+	/**
+	* Set top pages array based on login user's priviledge. If there's no login user, use priviledges that are open to public.
+	* @access  private
+	* @param   none
+	* @return  true
+	* @author  Cindy Qi Li
+	*/
+	function setTopPages()
+	{
+		global $db, $_base_path;
+		
+		if (isset($_SESSION['user_id']) && $_SESSION['user_id'] <> 0)
+		{
+			$sql = 'SELECT p.privilege_id, p.title_var, p.link 
+							FROM '.TABLE_PREFIX.'users u, '.TABLE_PREFIX.'user_groups ug, '.TABLE_PREFIX.'user_group_privilege ugp, '.TABLE_PREFIX.'privileges p
+							WHERE u.user_id = '.$_SESSION['user_id'].'
+							AND u.user_group_id = ug.user_group_id
+							AND ug.user_group_id = ugp.user_group_id
+							AND ugp.privilege_id = p.privilege_id
+							ORDER BY p.menu_sequence';
+		}
+		else // public pages
+		{
+			$sql = 'SELECT privilege_id, title_var, link 
+							FROM '.TABLE_PREFIX.'privileges p
+							WHERE open_to_public = 1
+							ORDER BY p.menu_sequence';
+		}
 	
 		$result	= mysql_query($sql, $db) or die(mysql_error());
 	
@@ -83,52 +115,10 @@ class Menu {
 			$this->pages[AC_NAV_TOP][] = array('url' => $_base_path.$row['link'], 'title' => _AC($row['title_var']));
 	
 			// add section pages
-			$this->pages = array_merge($this->pages, $this->setParent($_section_pages[$row['privilege_id']], AC_NAV_TOP));
+			$this->pages = array_merge($this->pages, array($row['link'] => array('title_var'=>$row['title_var'], 'parent'=>AC_NAV_TOP)));
 		}
-		
+
 		return true;
-	}
-
-	/**
-	* Set top pages array to pre-defined public menu array
-	* @access  private
-	* @return  true
-	* @author  Cindy Qi Li
-	*/
-	function setTopPagesToPublic()
-	{
-		global $_pages_constant, $_base_path;
-		
-		if (is_array($_pages_constant[AC_NAV_PUBLIC]))
-		{
-			foreach ($_pages_constant[AC_NAV_PUBLIC] as $url => $title_var)
-				$this->pages[AC_NAV_TOP][] = array('url' => $_base_path.$url, 'title' => _AC($title_var));
-			
-			$this->pages = array_merge($this->pages, $this->setParent($_pages_constant[AC_NAV_PUBLIC], AC_NAV_TOP));
-		}
-		
-		return true;
-	}
-
-	/**
-	* Set parent of the 1st item in section page array to
-	* @access  private
-	* @param   $page_array   page array
-	*          $parent       parent to set
-	* @return  true
-	* @author  Cindy Qi Li
-	*/
-	function setParent($page_array, $parent)
-	{
-		$cnt = 0;
-		foreach ($page_array as &$page)
-		{
-			$page['parent'] = $parent;
-			
-			if (++$cnt == 1) break;
-		}
-
-		return $page_array;
 	}
 
 	/**
@@ -149,7 +139,7 @@ class Menu {
 		{
 			if (!$this->isPublicLink($this->current_page))  // report error if the link is not from a public link
 			{
-				$msg->addError('PAGE_NOT_FOUND'); 
+				$msg->addError('PAGE_NOT_FOUND');
 			}
 			
 			// re-direct to first $_pages URL 
@@ -180,9 +170,7 @@ class Menu {
 	*/
 	function isPublicLink($url)
 	{
-		global $_pages_constant;
-		
-		foreach ($_pages_constant[AC_NAV_PUBLIC] as $page => $garbage)
+		foreach ($this->pages[AC_NAV_PUBLIC] as $page => $garbage)
 		{
 			if ($page == $url) return true;
 		}
@@ -233,8 +221,8 @@ class Menu {
 		global $_base_path;
 	
 		$parent_page = $this->pages[$this->current_page]['parent'];
-	
-		if (isset($parent_page) && defined($parent_page)) 
+
+		if (isset($parent_page) && defined($parent_page)) // check if $parent_page is 
 		{
 			return $_base_path . $this->current_page;
 		} 

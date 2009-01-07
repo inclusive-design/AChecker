@@ -48,7 +48,7 @@ class HTMLValidator {
 			
 		if ($this->validate_type == "uri")
 		{
-			require_once(AT_INCLUDE_PATH.'vitals.inc.php');
+			require_once(AC_INCLUDE_PATH.'vitals.inc.php');
 
 			if (!is_uri_valid($this->validate_content))
 			{

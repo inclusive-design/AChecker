@@ -10,14 +10,14 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-if (!defined('AT_INCLUDE_PATH')) { exit; }
+if (!defined('AC_INCLUDE_PATH')) { exit; }
 error_reporting(E_ALL ^ E_NOTICE);
 
 if ($step < 3) {
 	error_reporting(0);
 	include('../include/config.inc.php');
 	error_reporting(E_ALL ^ E_NOTICE);
-	if (defined('AT_INSTALL')) {
+	if (defined('AC_INSTALL')) {
 		echo 'AChecker appears to have been installed already.';
 		exit;
 	}

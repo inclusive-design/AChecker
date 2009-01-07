@@ -18,11 +18,11 @@
 * @author	Cindy Qi Li
 * @package checker
 */
-if (!defined("AT_INCLUDE_PATH")) die("Error: AT_INCLUDE_PATH is not defined.");
+if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
-include (AT_INCLUDE_PATH . "lib/simple_html_dom.php");
-include (AT_INCLUDE_PATH . "classes/Checks.class.php");
-include_once (AT_INCLUDE_PATH . "classes/BasicChecks.class.php");
+include (AC_INCLUDE_PATH . "lib/simple_html_dom.php");
+include (AC_INCLUDE_PATH . "classes/Checks.class.php");
+include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
 
 define("SUCCESS_RESULT", "success");
 define("FAIL_RESULT", "fail");
