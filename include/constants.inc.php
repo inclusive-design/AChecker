@@ -25,10 +25,14 @@ define('KNOWN', 0);
 define('LIKELY', 1);
 define('POTENTIAL', 2);
 
-/* User groups */
-define('ADMIN_GROUP_ID', 1);
-define('USER_GROUP_ID', 2);
-define('GUIDELINE_CHECK_CREATOR_GROUP_ID', 3);
+/* User group type */
+define('AC_USER_GROUP_ADMIN', 1);
+define('AC_USER_GROUP_USER', 2);
+
+/* User status */
+define('AC_STATUS_DISABLED', 0);
+define('AC_STATUS_ENABLED', 1);
+define('AC_STATUS_UNCONFIRMED', 2);
 
 /* how long cache objects can persist	*/
 /* in seconds. should be low initially, but doesn't really matter. */
@@ -68,13 +72,22 @@ $_rel_url = '/'.implode('/', array_slice($url_parts, count($url_parts) - $dir_de
 define('AC_NAV_PUBLIC', 'AC_NAV_PUBLIC');  // public menus, when no user login
 define('AC_NAV_TOP', 'AC_NAV_TOP');        // top tab menus
 
+/* initialize pages accessed by public */
+$_pages[AC_NAV_PUBLIC] = array('index.php' => array('parent'=>AC_NAV_PUBLIC));
+
 /* define all accessible pages */
 $_pages['translator.php']['title_var'] = 'translator';
 $_pages['translator.php']['parent']    = AC_NAV_PUBLIC;
 
+$_pages['register.php']['title_var'] = 'registration';
+$_pages['register.php']['parent']    = AC_NAV_PUBLIC;
+
 $_pages['login.php']['title_var'] = 'login';
 $_pages['login.php']['parent']    = AC_NAV_PUBLIC;
 $_pages['login.php']['children']  = array_merge(array('password_reminder.php'), isset($_pages['login.php']['children']) ? $_pages['login.php']['children'] : array());
+
+$_pages['logout.php']['title_var'] = 'logout';
+$_pages['logout.php']['parent']    = AC_NAV_PUBLIC;
 
 $_pages['password_reminder.php']['title_var'] = 'password_reminder';
 $_pages['password_reminder.php']['parent']    = 'login.php';

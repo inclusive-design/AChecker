@@ -46,28 +46,6 @@ $starttime = $mtime;
 		if (window.focus) {newwindow.focus()}
 	}
 	
-	function initial()
-	{
-		// hide guideline div
-		document.getElementById("div_options").style.display = 'none';
-		
-		var div_error = document.getElementById("errors");
-		
-		if (div_error != null)
-		{
-			// show tab "errors", hide other tabs
-			div_error.style.display = 'block';
-			document.getElementById("likely_problems").style.display = 'none';
-			document.getElementById("potential_problems").style.display = 'none';
-			document.getElementById("html_validation_result").style.display = 'none';
-
-			// highlight tab "errors"
-			document.getElementById("menu_errors").className = 'active';
-		}
-		else
-			document.input_form.uri.focus();
-	}
-	
 	function toggleToc(objId) {
 		var toc = document.getElementById(objId);
 		if (toc == null) return;
@@ -101,7 +79,7 @@ $starttime = $mtime;
 
 </head>
 
-<body onload="initial(); <?php echo $this->onload; ?>">
+<body onload="<?php echo $this->onload; ?>">
 
 	<div id="banner">
 		<a href="http://www.atutor.ca/achecker/"><img width="145" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/checker_logo.gif" height="43" alt="AChecker" style="border:none;" /></a>
@@ -109,7 +87,13 @@ $starttime = $mtime;
 			<span id="logininfo">
         <?php
         if (isset($this->user_name))
+        {
           echo _AC('welcome'). ' '.$this->user_name;
+        ?>
+				&nbsp;&nbsp;
+				<a href="<?php echo AC_BASE_HREF; ?>logout.php" ><?php echo _AC('logout'); ?></a>
+        <?php
+        }
         else
         {
         ?>
@@ -166,4 +150,4 @@ if (count($this->top_level_pages) > 1)
 	<?php } ?>
 </div>
 
-<?php global $msg; $msg->printAll(); ?>
+<?php global $msg; $msg->printAll();?>

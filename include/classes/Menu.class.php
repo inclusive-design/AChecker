@@ -39,10 +39,10 @@ class Menu {
 	function Menu()
 	{
 		$this->pages[AC_NAV_TOP] = array();        // top tab pages
-		unset($_SESSION['user_id']);
-//		$_SESSION['user_id'] = 1;
+//		unset($_SESSION['user_id']);
+//		$_SESSION['user_id'] = 2;
 		
-		$this->init();
+		$this->init();           // Initialize $this->pages[AC_NAV_PUBLIC] & $this->pages
 		$this->setTopPages();    // set top pages based on user id
 		
 		// decide current page.
@@ -63,7 +63,12 @@ class Menu {
 		// $_pages is defined in include/constants.inc.php
 		global $_pages, $db, $_base_path;
 		
+		// initialize $this->pages
 		$this->pages = $_pages;
+		// end of initializing $this->pages
+		
+		// initialize $this->pages[AC_NAV_PUBLIC]
+		$this->pages[AC_NAV_PUBLIC] = $_pages[AC_NAV_PUBLIC];
 		
 		$sql = 'SELECT privilege_id, title_var, link 
 						FROM '.TABLE_PREFIX.'privileges p
@@ -73,9 +78,10 @@ class Menu {
 	
 		while ($row = mysql_fetch_assoc($result))
 		{
-			$this->pages[AC_NAV_PUBLIC][] = array($row['link'] => array('title_var'=>$row['title_var'], 'parent'=>AC_NAV_TOP));
+			$this->pages[AC_NAV_PUBLIC] = array_merge($this->pages[AC_NAV_PUBLIC], array($row['link'] => array('title_var'=>$row['title_var'], 'parent'=>AC_NAV_TOP)));
 		}
-
+		// end of initializing $this->pages[AC_NAV_PUBLIC]
+		
 		return true;
 	}
 
@@ -131,7 +137,7 @@ class Menu {
 	*/
 	function setCurrentPage()
 	{
-		global $_base_path, $msg;
+		global $_base_path, $_base_href, $msg;
 		
 		$this->current_page = substr($_SERVER['PHP_SELF'], strlen($_base_path));
 		
@@ -139,12 +145,10 @@ class Menu {
 		{
 			if (!$this->isPublicLink($this->current_page))  // report error if the link is not from a public link
 			{
-				$msg->addError('PAGE_NOT_FOUND');
+				$msg->addError(array('PAGE_NOT_FOUND', $_base_href.$this->current_page));
 			}
-			
+
 			// re-direct to first $_pages URL 
-			$cnt = 0;
-			
 			foreach ($this->pages[AC_NAV_TOP] as $page)
 			{
 				if ($_base_path.$this->current_page != $page['url'])
@@ -153,9 +157,11 @@ class Menu {
 					
 					// reset current_page after re-direction
 					$this->current_page = substr($_SERVER['PHP_SELF'], strlen($_base_path));
+					
+					// Note: must exit. otherwise, the rest of includeheader.inc.php proceeds and prints out all messages
+					// which is not going to be displayed at re-directed page.
+					exit;      
 				}
-				
-				if (++$cnt == 1) break;
 			}
 		}
 	}
@@ -174,6 +180,7 @@ class Menu {
 		{
 			if ($page == $url) return true;
 		}
+
 		return false;
 	}
 	

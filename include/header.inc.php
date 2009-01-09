@@ -26,6 +26,7 @@ global $_custom_css;
 global $_custom_head;
 global $_base_path;
 global $_pages;
+global $user;
 
 //require(AC_INCLUDE_PATH . 'lib/menu_pages.php');
 //
@@ -72,6 +73,7 @@ $_current_root_page = $menu->getRootPage();
 $_breadcrumb_path = $menu->getBreadcrumbPath();
 
 $current_page = $menu->getCurrentPage();
+
 //debug($_top_level_pages);
 //debug($_all_pages);
 //debug($_current_root_page);
@@ -84,8 +86,6 @@ $savant->assign('page_title', _AC($_all_pages[$current_page]['title_var']));
 
 if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
 {
-  include(AC_INCLUDE_PATH.'classes/User.class.php');
-  $user = new User();
   $user->setUserID($_SESSION['user_id']);
   $savant->assign('user_name', $user->getUserName());
 }

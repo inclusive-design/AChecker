@@ -10,6 +10,9 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
+global $onload;
+$onload="initial()";
+
 include(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 
@@ -86,6 +89,28 @@ while ($row = mysql_fetch_assoc($this->result))
 
 <script type="text/JavaScript">
 <!--
+
+function initial()
+{
+	// hide guideline div
+	document.getElementById("div_options").style.display = 'none';
+	
+	var div_error = document.getElementById("errors");
+	
+	if (div_error != null)
+	{
+		// show tab "errors", hide other tabs
+		div_error.style.display = 'block';
+		document.getElementById("likely_problems").style.display = 'none';
+		document.getElementById("potential_problems").style.display = 'none';
+		document.getElementById("html_validation_result").style.display = 'none';
+
+		// highlight tab "errors"
+		document.getElementById("menu_errors").className = 'active';
+	}
+	else
+		document.input_form.uri.focus();
+}
 
 String.prototype.trim = function() {
 	return this.replace(/^\s+|\s+$/g,"");

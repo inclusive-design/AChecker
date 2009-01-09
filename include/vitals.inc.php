@@ -45,6 +45,8 @@ function unregister_GLOBALS() {
  * 5. start language block
  * 6. load common libraries
  * 7. initialize theme and template management
+ * 8. initialize a user instance without user id. 
+ *    if $_SESSION['user_id'] is set, it's assigned to instance in include/header.inc.php
  ***/
 
 /**** 0. start system configuration options block ****/
@@ -164,6 +166,13 @@ define('SITE_NAME',                 $_config['site_name']);
 	$msg = new Message($savant);
 
 /***** end of initialize theme and template management *****/
+
+/***** 8. initialize user instance *****/
+// used as global var
+include(AC_INCLUDE_PATH.'classes/User.class.php');
+$user = new User();
+
+/***** end of initialize user instance *****/
 
  /**
  * This function is used for printing variables for debugging.

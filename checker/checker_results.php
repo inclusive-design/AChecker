@@ -63,5 +63,5 @@ if (isset($htmlValidator))
 	$savant->assign('num_of_html_errors', $num_of_html_errors);
 }
 
-$savant->display('checker_results.tmpl.php');
+$savant->display('checker/checker_results.tmpl.php');
 ?>

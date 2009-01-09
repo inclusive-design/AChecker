@@ -123,6 +123,22 @@ CREATE TABLE `lang_codes` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
+# Table structure for table `mail_queue`
+# since 0.2
+
+CREATE TABLE `mail_queue` (
+  `mail_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `to_email` VARCHAR( 50 ) NOT NULL default '',
+  `to_name` VARCHAR( 50 ) NOT NULL default '',
+  `from_email` VARCHAR( 50 ) NOT NULL default '',
+  `from_name` VARCHAR( 50 ) NOT NULL default '',
+  `char_set` VARCHAR( 20 ) NOT NULL default '',
+  `subject` VARCHAR(255) NOT NULL ,
+  `body` TEXT NOT NULL ,
+  PRIMARY KEY ( `mail_id` )
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
 # Table structure for table `privileges`
 # since 0.1
 
@@ -240,6 +256,7 @@ CREATE TABLE `users` (
   `first_name` varchar(100),
   `last_name` varchar(100),
   `email` varchar(50),
+  `status` tinyint(3) NOT NULL default '1',
   `create_date` datetime NOT NULL,
   `last_login` datetime,
   `preferences` text,

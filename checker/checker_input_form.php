@@ -28,5 +28,5 @@ $savant->assign('default_guideline', $default_guideline);
 $savant->assign('num_of_guidelines_per_row', $num_of_guidelines_per_row);
 $savant->assign('result', $result);
 
-$savant->display('checker_input_form.tmpl.php');
+$savant->display('checker/checker_input_form.tmpl.php');
 ?>
