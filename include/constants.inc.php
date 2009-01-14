@@ -83,6 +83,9 @@ $_pages['translator.php']['parent']    = AC_NAV_PUBLIC;
 $_pages['register.php']['title_var'] = 'registration';
 $_pages['register.php']['parent']    = AC_NAV_PUBLIC;
 
+$_pages['confirm.php']['title_var'] = 'confirm';
+$_pages['confirm.php']['parent']    = AC_NAV_PUBLIC;
+
 $_pages['login.php']['title_var'] = 'login';
 $_pages['login.php']['parent']    = AC_NAV_PUBLIC;
 $_pages['login.php']['children']  = array_merge(array('password_reminder.php'), isset($_pages['login.php']['children']) ? $_pages['login.php']['children'] : array());
