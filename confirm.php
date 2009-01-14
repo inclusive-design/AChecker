@@ -54,6 +54,7 @@ if (isset($_GET['id'], $_GET['m']))
 else if (isset($_POST['submit'])) {
 	$_POST['email'] = $addslashes($_POST['email']);
 
+	$usersDAO = new UsersDAO();
 	$row = $usersDAO->getUserByEmail($_POST['email']);
 
 	if ($row) 
