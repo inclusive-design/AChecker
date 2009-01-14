@@ -10,21 +10,35 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-if (AC_INCLUDE_PATH !== 'NULL') {
-	$db = @mysql_connect(DB_HOST . ':' . DB_PORT, DB_USER, DB_PASSWORD);
-	if (!$db) {
-		/* AC_ERROR_NO_DB_CONNECT */
-		require_once(AC_INCLUDE_PATH . 'classes/ErrorHandler/ErrorHandler.class.php');
-		$err =& new ErrorHandler();
-		trigger_error('VITAL#Unable to connect to db.', E_USER_ERROR);
-		exit;
-	}
-	if (!@mysql_select_db(DB_NAME, $db)) {
-		require_once(AC_INCLUDE_PATH . 'classes/ErrorHandler/ErrorHandler.class.php');
-		$err =& new ErrorHandler();
-		trigger_error('VITAL#DB connection established, but database "'.DB_NAME.'" cannot be selected.',
-						E_USER_ERROR);
-		exit;
-	}
+/**
+* DAO for "test_fail" table
+* @access	public
+* @author	Cindy Qi Li
+* @package	DAO
+*/
+
+if (!defined('AC_INCLUDE_PATH')) exit;
+
+require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
+
+class TestFailDAO extends DAO {
+
+	/**
+	* Return check info of given check id
+	* @access  public
+	* @param   $checkID : check id
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function getFailStepsByID($checkID)
+	{
+		$sql = "SELECT step_id, step
+						FROM ". TABLE_PREFIX ."test_fail 
+						WHERE check_id=". $checkID ."
+						ORDER BY step_id";
+
+    return $this->execute($sql);
+  }
+
 }
 ?>

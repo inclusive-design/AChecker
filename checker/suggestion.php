@@ -14,13 +14,15 @@ define('AC_INCLUDE_PATH', '../include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include(AC_INCLUDE_PATH.'header.inc.php');
+include(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
+include(AC_INCLUDE_PATH.'classes/DAO/TestProcedureDAO.class.php');
+include(AC_INCLUDE_PATH.'classes/DAO/TestExpectedDAO.class.php');
+include(AC_INCLUDE_PATH.'classes/DAO/TestFailDAO.class.php');
 
 $check_id = intval($_GET["id"]);
 
-$sql = "SELECT name, err, description, rationale, how_to_repair, repair_example, question, decision_pass, decision_fail
-				FROM ". TABLE_PREFIX ."checks WHERE check_id=". $check_id;
-$result	= mysql_query($sql, $db) or die(mysql_error());
-$row = mysql_fetch_assoc($result);
+$checksDAO = new ChecksDAO();
+$row = $checksDAO->getCheckByID($check_id);
 
 ?>
 <div class="output-form">
@@ -103,13 +105,16 @@ if ($row["question"] <> "")
 <?php
 }
 
-$sql = "SELECT step_id, step
-				FROM ". TABLE_PREFIX ."test_procedure 
-				WHERE check_id=". $check_id ."
-				ORDER BY step_id";
-$result	= mysql_query($sql, $db) or die(mysql_error());
+//$sql = "SELECT step_id, step
+//				FROM ". TABLE_PREFIX ."test_procedure 
+//				WHERE check_id=". $check_id ."
+//				ORDER BY step_id";
+//$result	= mysql_query($sql, $db) or die(mysql_error());
 
-if (mysql_num_rows($result) > 0)
+$testProcedureDAO = new TestProcedureDAO();
+$rows = $testProcedureDAO->getProcedureByID($check_id);
+
+if (is_array($rows) > 0)
 {
 ?>
 
@@ -118,18 +123,21 @@ if (mysql_num_rows($result) > 0)
 <?php
 }
 
-while ($row = mysql_fetch_assoc($result))
+foreach ($rows as $id => $row)
 {
 	echo '<span class="msg">'.intval($row["step_id"] + 1)  . ". " . _AC($row["step"]). "</span><br />";
 }
 
-$sql = "SELECT step_id, step
-				FROM ". TABLE_PREFIX ."test_expected 
-				WHERE check_id=". $check_id ."
-				ORDER BY step_id";
-$result	= mysql_query($sql, $db) or die(mysql_error());
+//$sql = "SELECT step_id, step
+//				FROM ". TABLE_PREFIX ."test_expected 
+//				WHERE check_id=". $check_id ."
+//				ORDER BY step_id";
+//$result	= mysql_query($sql, $db) or die(mysql_error());
 
-if (mysql_num_rows($result) > 0)
+$testExpectedDAO = new TestExpectedDAO();
+$rows = $testExpectedDAO->getExpectedStepsByID($check_id);
+
+if (is_array($rows) > 0)
 {
 ?>
 
@@ -137,18 +145,21 @@ if (mysql_num_rows($result) > 0)
 <?php
 }
 
-while ($row = mysql_fetch_assoc($result))
+foreach ($rows as $id => $row)
 {
 	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . _AC($row["step"]). "</span><br />";
 }
 
-$sql = "SELECT step_id, step
-				FROM ". TABLE_PREFIX ."test_fail 
-				WHERE check_id=". $check_id ."
-				ORDER BY step_id";
-$result	= mysql_query($sql, $db) or die(mysql_error());
+//$sql = "SELECT step_id, step
+//				FROM ". TABLE_PREFIX ."test_fail 
+//				WHERE check_id=". $check_id ."
+//				ORDER BY step_id";
+//$result	= mysql_query($sql, $db) or die(mysql_error());
 
-if (mysql_num_rows($result) > 0)
+$testFailDAO = new TestFailDAO();
+$rows = $testFailDAO->getFailStepsByID($check_id);
+
+if (is_array($rows) > 0)
 {
 ?>
 
@@ -156,7 +167,7 @@ if (mysql_num_rows($result) > 0)
 <?php
 }
 
-while ($row = mysql_fetch_assoc($result))
+foreach ($rows as $id => $row)
 {
 	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . _AC($row["step"]). "</span><br />";
 }

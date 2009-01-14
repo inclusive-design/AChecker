@@ -26,41 +26,8 @@ global $_custom_css;
 global $_custom_head;
 global $_base_path;
 global $_pages;
-global $user;
+global $_current_user;
 
-//require(AC_INCLUDE_PATH . 'lib/menu_pages.php');
-//
-//$current_page = substr($_SERVER['PHP_SELF'], strlen($_base_path));
-//
-//if (!isset($_pages[$current_page])) 
-//{
-//	// re-direct to first $_pages URL 
-//	$cnt = 0;
-//	
-//	foreach ($_pages[AC_NAV_TOP] as $url)
-//	{
-//		$cnt++;
-//		if ($current_page != $url)
-//		{
-//			header('location: '.AC_BASE_HREF. $url);
-//			// reset current_page after re-direction
-//			$current_page = substr($_SERVER['PHP_SELF'], strlen($_base_path));
-//		}
-//		
-//		if ($cnt == 1) break;
-//	}
-//}
-//
-//$_top_level_pages        = get_main_navigation($current_page);
-//
-//$_current_top_level_page = get_current_main_page($current_page);
-//
-//$_sub_level_pages        = get_sub_navigation($current_page);
-//
-//$_current_sub_level_page = get_current_sub_navigation_page($current_page);
-//
-//$_path = get_path($current_page);
-//debug($_top_level_pages);
 include(AC_INCLUDE_PATH.'classes/Menu.class.php');
 
 $menu =new Menu();
@@ -84,10 +51,9 @@ $savant->assign('path', $_breadcrumb_path);
 
 $savant->assign('page_title', _AC($_all_pages[$current_page]['title_var']));
 
-if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
+if (isset($_current_user))
 {
-  $user->setUserID($_SESSION['user_id']);
-  $savant->assign('user_name', $user->getUserName());
+  $savant->assign('user_name', $_current_user->getUserName());
 }
 
 //if (empty($_top_level_pages)) {

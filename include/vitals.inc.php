@@ -13,12 +13,13 @@
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 
 require(AC_INCLUDE_PATH.'phpCache/phpCache.inc.php'); // cache library
+require(AC_INCLUDE_PATH.'classes/DAO/ThemesDAO.class.php');
+require(AC_INCLUDE_PATH.'classes/DAO/ConfigDAO.class.php');
 
 define('AC_DEVEL', 1);
 define('AC_ERROR_REPORTING', E_ALL ^ E_NOTICE); // default is E_ALL ^ E_NOTICE, use E_ALL or E_ALL + E_STRICT for developing
 
 // Emulate register_globals off. src: http://php.net/manual/en/faq.misc.php#faq.misc.registerglobals
-unset($_SESSION);
 function unregister_GLOBALS() {
    if (!ini_get('register_globals')) { return; }
 
@@ -51,9 +52,7 @@ function unregister_GLOBALS() {
 
 /**** 0. start system configuration options block ****/
 	error_reporting(0);
-	if (!defined('AC_REDIRECT_LOADED')){
-		include_once(AC_INCLUDE_PATH.'config.inc.php');
-	}
+	include_once(AC_INCLUDE_PATH.'config.inc.php');
 	error_reporting(AC_ERROR_REPORTING);
 
 	if (!defined('AC_INSTALL') || !AC_INSTALL) {
@@ -67,9 +66,9 @@ function unregister_GLOBALS() {
 /*** end system config block ****/
 
 /***** 1. database connection *****/
-if (!defined('AC_REDIRECT_LOADED')){
-	require_once(AC_INCLUDE_PATH.'lib/mysql_connect.inc.php');
-}
+//if (!defined('AC_REDIRECT_LOADED')){
+//	require_once(AC_INCLUDE_PATH.'lib/mysql_connect.inc.php');
+//}
 /***** end database connection ****/
 
 /*** 2. constants ***/
@@ -93,9 +92,10 @@ if (!defined('AC_REDIRECT_LOADED')){
 /***** end session initilization block ****/
 
 /***** 4. load $_config from table 'config' *****/
-$sql    = "SELECT * FROM ".TABLE_PREFIX."config";
-$result = mysql_query($sql, $db);
-while ($row = mysql_fetch_assoc($result)) { 
+$configDAO = new ConfigDAO();
+$rows = $configDAO->getAll();
+foreach ($rows as $id => $row)
+{
 	$_config[$row['name']] = $row['value'];
 }
 
@@ -144,9 +144,9 @@ define('SITE_NAME',                 $_config['site_name']);
 		else 
 		{
 			//check if enabled
-			$sql    = "SELECT status FROM ".TABLE_PREFIX."themes WHERE dir_name = '".$_SESSION['prefs']['PREF_THEME']."'";
-			$result = mysql_query($sql, $db);
-			$row = mysql_fetch_assoc($result);
+			$themesDAO = new ThemesDAO();
+			$row = $themesDAO->getByID($_SESSION['prefs']['PREF_THEME']);
+
 			if ($row['status'] == 0) 
 			{
 				// get default
@@ -169,8 +169,11 @@ define('SITE_NAME',                 $_config['site_name']);
 
 /***** 8. initialize user instance *****/
 // used as global var
-include(AC_INCLUDE_PATH.'classes/User.class.php');
-$user = new User();
+if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
+{
+	include(AC_INCLUDE_PATH.'classes/User.class.php');
+	$_current_user = new User($_SESSION['user_id']);
+}
 
 /***** end of initialize user instance *****/
 
@@ -272,16 +275,14 @@ if ( get_magic_quotes_gpc() == 1 ) {
 }
 
 function get_default_theme() {
-	global $db;
+	$themesDAO = new ThemesDAO();
+	
+	$rows = $themesDAO->getDefaultTheme();
 
-	$sql	= "SELECT dir_name FROM ".TABLE_PREFIX."themes WHERE status=2";
-	$result = mysql_query($sql, $db);
-	$row = mysql_fetch_assoc($result);
-
-	if (!is_dir(AC_INCLUDE_PATH . '../themes/' . $row['dir_name']))
+	if (!is_dir(AC_INCLUDE_PATH . '../themes/' . $rows[0]['dir_name']))
 		return 'default';
 	else
-		return $row['dir_name'];
+		return $rows[0]['dir_name'];
 }
 
 ?>

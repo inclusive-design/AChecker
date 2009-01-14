@@ -32,7 +32,8 @@ define('AC_USER_GROUP_USER', 2);
 /* User status */
 define('AC_STATUS_DISABLED', 0);
 define('AC_STATUS_ENABLED', 1);
-define('AC_STATUS_UNCONFIRMED', 2);
+define('AC_STATUS_DEFAULT', 2);
+define('AC_STATUS_UNCONFIRMED', 3);
 
 /* how long cache objects can persist	*/
 /* in seconds. should be low initially, but doesn't really matter. */
@@ -91,5 +92,8 @@ $_pages['logout.php']['parent']    = AC_NAV_PUBLIC;
 
 $_pages['password_reminder.php']['title_var'] = 'password_reminder';
 $_pages['password_reminder.php']['parent']    = 'login.php';
+
+$_pages['checker/suggestion.php']['title_var'] = 'Suggestion';
+$_pages['checker/suggestion.php']['parent']    = AC_NAV_PUBLIC;
 
 ?>

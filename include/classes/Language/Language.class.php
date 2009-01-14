@@ -34,13 +34,8 @@ class Language {
 	var $status;
 	var $atutor_version;
 
-	var $db;
-
 	// constructor
 	function Language($language_row) {
-		global $db;
-
-		$this->db = $db;
 
 		if (is_array($language_row)) {
 			$this->code              = $language_row['language_code'];

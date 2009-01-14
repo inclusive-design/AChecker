@@ -18,15 +18,13 @@ $num_of_guidelines_per_row = 3;  // default number of guidelines to display in a
 
 if (!isset($_POST["gid"])) $_POST["gid"] = array($default_guideline);
 
-$sql = "select guideline_id, title
-				from ". TABLE_PREFIX ."guidelines
-				order by title";
-$result	= mysql_query($sql, $db) or die(mysql_error());
+$guidelinesDAO = new GuidelinesDAO();
+$rows = $guidelinesDAO->getAllGuidelines();
 
 $savant->assign('default_uri_value', $default_uri_value);
 $savant->assign('default_guideline', $default_guideline);
 $savant->assign('num_of_guidelines_per_row', $num_of_guidelines_per_row);
-$savant->assign('result', $result);
+$savant->assign('rows', $rows);
 
 $savant->display('checker/checker_input_form.tmpl.php');
 ?>

@@ -10,6 +10,9 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
+if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
+include(AC_INCLUDE_PATH. 'classes/DAO/ColorMappingDAO.class.php');
+
 /**
 * ColorValue.class.php
 * Class for accessibility validate
@@ -32,8 +35,6 @@ class ColorValue {
 
 	function ColorValue($color)
 	{
-		global $db;
-		
 	  $color = str_replace(" ", "", $color);  // remove whitespaces
 	  
 	  if ($color[0] == '#') $color = substr($color, 1);
@@ -54,15 +55,17 @@ class ColorValue {
 	  }
 	  else  // color name
 	  {
-			$sql = "SELECT color_code FROM ". TABLE_PREFIX ."color_mapping WHERE color_name='".$color."'";
+			$colorMappingDAO = new ColorMappingDAO();
+			$rows = $ColorMappingDAO->GetByColorName($color);
+
+//			$sql = "SELECT color_code FROM ". TABLE_PREFIX ."color_mapping WHERE color_name='".$color."'";
+//			$result	= mysql_query($sql, $db) or die(mysql_error());
 			
-			$result	= mysql_query($sql, $db) or die(mysql_error());
-			
-			if (mysql_num_rows($result) == 0)
+			if (!is_array($rows) == 0)
 				$this->isValid = false;
 			else
 			{
-				$row = mysql_fetch_assoc($result);
+				$row = $rows[0];
 				$colorCode = $row["color_code"];
 
 		    list($r, $g, $b) = array($colorCode[0].$colorCode[1],

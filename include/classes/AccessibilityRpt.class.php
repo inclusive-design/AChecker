@@ -43,7 +43,7 @@ class AccessibilityRpt {
          <span class="err_type"><img src="images/{IMG_SRC}" alt="{IMG_TYPE}" title="{IMG_TYPE}" width="15" height="15" /></span>
          <em>Line {LINE_NUMBER}, Column {COL_NUMBER}</em>:
          <span class="msg">
-            <a href="javascript: popup(\'{BASE_HREF}suggestion.php?id={CHECK_ID}\')" 
+            <a href="javascript: popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\')" 
                title="{TITLE}">{ERROR}</a>
          </span>
          <pre><code class="input">{HTML_CODE}</code></pre>
@@ -79,8 +79,6 @@ class AccessibilityRpt {
 	*/
 	function generateDisplay()
 	{
-		global $db;
-		
 		// initialize each section
 		$this->rpt_errors = "<h2>". _AC("known_problems") ."</h2><br />";
 		$this->rpt_likely_problems = "<h2>". _AC("likely_problems") ."</h2><br />";
@@ -89,28 +87,33 @@ class AccessibilityRpt {
 		// generate section details
 		foreach ($this->errors as $error)
 		{
-			$sql = "SELECT confidence, err FROM ". TABLE_PREFIX ."checks WHERE check_id=". $error["check_id"];
-			$result	= mysql_query($sql, $db) or die(mysql_error());
+			$checksDAO = new ChecksDAO();
+			$rows = $checksDAO->getCheckByID($error["check_id"]);
+//			$sql = "SELECT confidence, err FROM ". TABLE_PREFIX ."checks WHERE check_id=". $error["check_id"];
+//			$result	= mysql_query($sql, $db) or die(mysql_error());
 
-			while ($row = mysql_fetch_assoc($result))
+			if (is_array($rows))
 			{
-				if ($row["confidence"] == KNOWN)
+				foreach ($rows as $id => $row)
 				{
-					$this->num_of_errors++;
-					
-					$this->rpt_errors .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_ERROR);
-				}
-				else if ($row["confidence"] == LIKELY)
-				{
-					$this->num_of_likely_problems++;
-					
-					$this->rpt_likely_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_WARNING);
-				}
-				else if ($row["confidence"] == POTENTIAL)
-				{
-					$this->num_of_potential_problems++;
-					
-					$this->rpt_potential_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_INFO);
+					if ($row["confidence"] == KNOWN)
+					{
+						$this->num_of_errors++;
+						
+						$this->rpt_errors .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_ERROR);
+					}
+					else if ($row["confidence"] == LIKELY)
+					{
+						$this->num_of_likely_problems++;
+						
+						$this->rpt_likely_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_WARNING);
+					}
+					else if ($row["confidence"] == POTENTIAL)
+					{
+						$this->num_of_potential_problems++;
+						
+						$this->rpt_potential_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_INFO);
+					}
 				}
 			}
 		}

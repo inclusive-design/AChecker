@@ -13,6 +13,8 @@
 define('AC_INCLUDE_PATH', '../include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
+include(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
+include(AC_INCLUDE_PATH. 'classes/DAO/ChecksDAO.class.php');
 
 // display initial validation form: input URI or upload a html file 
 include ("checker_input_form.php");

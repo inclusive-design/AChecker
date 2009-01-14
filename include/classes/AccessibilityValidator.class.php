@@ -148,114 +148,135 @@ class AccessibilityValidator {
 	*/
 	function prepare_check_arrays($guidelines)
 	{
-		global $db;
 		
 		if (!($guideline_query = $this->convert_array_to_string($guidelines, ',')))
 			return false;
 		// validation process
 		else  
 		{
+			$checksDAO = new ChecksDAO();
+			
 			// generate array of "all element"
-			$sql = "select distinct gc.check_id, c.html_tag
-							from ". TABLE_PREFIX ."guidelines g, 
-									". TABLE_PREFIX ."guideline_groups gg, 
-									". TABLE_PREFIX ."guideline_subgroups gs, 
-									". TABLE_PREFIX ."subgroup_checks gc,
-									". TABLE_PREFIX ."checks c
-							where g.guideline_id in (".$guideline_query.")
-								and g.guideline_id = gg.guideline_id
-								and gg.group_id = gs.group_id
-								and gs.subgroup_id = gc.subgroup_id
-								and gc.check_id = c.check_id
-								and c.html_tag = 'all elements'
-							order by c.html_tag";
-			$result	= mysql_query($sql, $db) or die(mysql_error());
+//			$sql = "select distinct gc.check_id, c.html_tag
+//							from ". TABLE_PREFIX ."guidelines g, 
+//									". TABLE_PREFIX ."guideline_groups gg, 
+//									". TABLE_PREFIX ."guideline_subgroups gs, 
+//									". TABLE_PREFIX ."subgroup_checks gc,
+//									". TABLE_PREFIX ."checks c
+//							where g.guideline_id in (".$guideline_query.")
+//								and g.guideline_id = gg.guideline_id
+//								and gg.group_id = gs.group_id
+//								and gs.subgroup_id = gc.subgroup_id
+//								and gc.check_id = c.check_id
+//								and c.html_tag = 'all elements'
+//							order by c.html_tag";
+//			$result	= mysql_query($sql, $db) or die(mysql_error());
+			
+			$rows = $checksDAO->getChecksForAllByGuidelineIDs($guideline_query);
 			
 			$count = 0;
-			while ($row = mysql_fetch_assoc($result))
-				$this->check_for_all_elements_array[$count++] = $row["check_id"];
+			if (is_array($rows))
+			{
+				foreach ($rows as $id => $row)
+					$this->check_for_all_elements_array[$count++] = $row["check_id"];
+			}
 			
 			// generate array of check_id
-			$sql = "select distinct gc.check_id, c.html_tag
-							from ". TABLE_PREFIX ."guidelines g, 
-									". TABLE_PREFIX ."guideline_groups gg, 
-									". TABLE_PREFIX ."guideline_subgroups gs, 
-									". TABLE_PREFIX ."subgroup_checks gc,
-									". TABLE_PREFIX ."checks c
-							where g.guideline_id in (".$guideline_query.")
-								and g.guideline_id = gg.guideline_id
-								and gg.group_id = gs.group_id
-								and gs.subgroup_id = gc.subgroup_id
-								and gc.check_id = c.check_id
-								and c.html_tag <> 'all elements'
-							order by c.html_tag";
-			$result	= mysql_query($sql, $db) or die(mysql_error());
+//			$sql = "select distinct gc.check_id, c.html_tag
+//							from ". TABLE_PREFIX ."guidelines g, 
+//									". TABLE_PREFIX ."guideline_groups gg, 
+//									". TABLE_PREFIX ."guideline_subgroups gs, 
+//									". TABLE_PREFIX ."subgroup_checks gc,
+//									". TABLE_PREFIX ."checks c
+//							where g.guideline_id in (".$guideline_query.")
+//								and g.guideline_id = gg.guideline_id
+//								and gg.group_id = gs.group_id
+//								and gs.subgroup_id = gc.subgroup_id
+//								and gc.check_id = c.check_id
+//								and c.html_tag <> 'all elements'
+//							order by c.html_tag";
+//			$result	= mysql_query($sql, $db) or die(mysql_error());
 			
-			while ($row = mysql_fetch_assoc($result))
+			$rows = $checksDAO->getChecksNotForAllByGuidelineIDs($guideline_query);
+
+			if (is_array($rows))
 			{
-				if ($row["html_tag"] <> $prev_html_tag && $prev_html_tag <> "") $count = 0;
-				
-				$this->check_for_tag_array[$row["html_tag"]][$count++] = $row["check_id"];
-				
-				$prev_html_tag = $row["html_tag"];
+				foreach ($rows as $id => $row)
+				{
+					if ($row["html_tag"] <> $prev_html_tag && $prev_html_tag <> "") $count = 0;
+					
+					$this->check_for_tag_array[$row["html_tag"]][$count++] = $row["check_id"];
+					
+					$prev_html_tag = $row["html_tag"];
+				}
 			}
 			
 			// generate array of prerequisite check_ids
-			$sql = "select distinct c.check_id, cp.prerequisite_check_id
-						from ". TABLE_PREFIX ."guidelines g, 
-						     ". TABLE_PREFIX ."guideline_groups gg, 
-						     ". TABLE_PREFIX ."guideline_subgroups gs, 
-						     ". TABLE_PREFIX ."subgroup_checks gc,
-						     ". TABLE_PREFIX ."checks c,
-						     ". TABLE_PREFIX ."check_prerequisites cp
-						where g.guideline_id in (".$guideline_query.")
-						  and g.guideline_id = gg.guideline_id
-						  and gg.group_id = gs.group_id
-						  and gs.subgroup_id = gc.subgroup_id
-						  and gc.check_id = c.check_id
-						  and c.check_id = cp.check_id
-						order by c.check_id, cp.prerequisite_check_id";
-
-			$result	= mysql_query($sql, $db) or die(mysql_error());
+//			$sql = "select distinct c.check_id, cp.prerequisite_check_id
+//						from ". TABLE_PREFIX ."guidelines g, 
+//						     ". TABLE_PREFIX ."guideline_groups gg, 
+//						     ". TABLE_PREFIX ."guideline_subgroups gs, 
+//						     ". TABLE_PREFIX ."subgroup_checks gc,
+//						     ". TABLE_PREFIX ."checks c,
+//						     ". TABLE_PREFIX ."check_prerequisites cp
+//						where g.guideline_id in (".$guideline_query.")
+//						  and g.guideline_id = gg.guideline_id
+//						  and gg.group_id = gs.group_id
+//						  and gs.subgroup_id = gc.subgroup_id
+//						  and gc.check_id = c.check_id
+//						  and c.check_id = cp.check_id
+//						order by c.check_id, cp.prerequisite_check_id";
+//
+//			$result	= mysql_query($sql, $db) or die(mysql_error());
 			
-			while ($row = mysql_fetch_assoc($result))
+			$rows = $checksDAO->getPreChecksByGuidelineIDs($guideline_query);
+
+			if (is_array($rows))
 			{
-				if ($row["check_id"] <> $prev_check_id)  $prerequisite_check_array[$row["check_id"]] = array();
-				
-				array_push($prerequisite_check_array[$row["check_id"]], $row["prerequisite_check_id"]);
-				
-				$prev_check_id = $row["check_id"];
+				foreach ($rows as $id => $row)
+				{
+					if ($row["check_id"] <> $prev_check_id)  $prerequisite_check_array[$row["check_id"]] = array();
+					
+					array_push($prerequisite_check_array[$row["check_id"]], $row["prerequisite_check_id"]);
+					
+					$prev_check_id = $row["check_id"];
+				}
 			}
 			$this->prerequisite_check_array = $prerequisite_check_array;
-			
-			// generate array of next check_ids
-			$sql = "select distinct c.check_id, tp.next_check_id
-								from ". TABLE_PREFIX ."guidelines g, 
-								     ". TABLE_PREFIX ."guideline_groups gg, 
-								     ". TABLE_PREFIX ."guideline_subgroups gs, 
-								     ". TABLE_PREFIX ."subgroup_checks gc,
-								     ". TABLE_PREFIX ."checks c,
-								     ". TABLE_PREFIX ."test_pass tp
-								where g.guideline_id in (".$guideline_query.")
-								  and g.guideline_id = gg.guideline_id
-								  and gg.group_id = gs.group_id
-								  and gs.subgroup_id = gc.subgroup_id
-								  and gc.check_id = c.check_id
-								  and c.check_id = tp.check_id
-								order by c.check_id, tp.next_check_id";
 
-			$result	= mysql_query($sql, $db) or die(mysql_error());
+			// generate array of next check_ids
+//			$sql = "select distinct c.check_id, tp.next_check_id
+//								from ". TABLE_PREFIX ."guidelines g, 
+//								     ". TABLE_PREFIX ."guideline_groups gg, 
+//								     ". TABLE_PREFIX ."guideline_subgroups gs, 
+//								     ". TABLE_PREFIX ."subgroup_checks gc,
+//								     ". TABLE_PREFIX ."checks c,
+//								     ". TABLE_PREFIX ."test_pass tp
+//								where g.guideline_id in (".$guideline_query.")
+//								  and g.guideline_id = gg.guideline_id
+//								  and gg.group_id = gs.group_id
+//								  and gs.subgroup_id = gc.subgroup_id
+//								  and gc.check_id = c.check_id
+//								  and c.check_id = tp.check_id
+//								order by c.check_id, tp.next_check_id";
+//
+//			$result	= mysql_query($sql, $db) or die(mysql_error());
 			
-			while ($row = mysql_fetch_assoc($result))
+			$rows = $checksDAO->getNextChecksByGuidelineIDs($guideline_query);
+
+			if (is_array($rows))
 			{
-				if ($row["check_id"] <> $prev_check_id)  $next_check_array[$row["check_id"]] = array();
-				
-				array_push($next_check_array[$row["check_id"]], $row["next_check_id"]);
-				
-				$prev_check_id = $row["check_id"];
+				foreach ($rows as $id => $row)
+				{
+					if ($row["check_id"] <> $prev_check_id)  $next_check_array[$row["check_id"]] = array();
+					
+					array_push($next_check_array[$row["check_id"]], $row["next_check_id"]);
+					
+					$prev_check_id = $row["check_id"];
+				}
 			}
 			$this->next_check_array = $next_check_array;
-			
+//			debug($this->next_check_array);
 			return true;
 		}
 	}
@@ -278,7 +299,9 @@ class AccessibilityValidator {
 			{
 				// check prerequisite ids first, if fails, report failure and don't need to proceed with $check_id
 				$prerequisite_failed = false;
-
+//debug($check_id);
+//debug($this->prerequisite_check_array[$check_id]);
+//debug($this->next_check_array[$check_id]);
 				if (is_array($this->prerequisite_check_array[$check_id]))
 				{
 					foreach ($this->prerequisite_check_array[$check_id] as $prerequisite_check_id)
@@ -326,13 +349,13 @@ class AccessibilityValidator {
 	function check($e, $check_id)
 	{
 		$result = $this->get_check_result($e->linenumber, $e->colnumber, $check_id);
-		
+
 		// has not been checked
 		if (!$result)
 		{
 			// run function for $check_id
 			eval("\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom);");
-			
+
 			if ($check_result)  // success
 			{
 				$result = SUCCESS_RESULT;
@@ -379,6 +402,7 @@ class AccessibilityValidator {
 	*/
 	function save_result($line_number, $col_number, $html_code, $check_id, $result)
 	{
+//		debug($result);
 		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result));
 		
 		return true;

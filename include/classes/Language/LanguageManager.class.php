@@ -66,11 +66,11 @@ class LanguageManager {
 	* Initializes availableLanguages and numLanguages.
 	*/
 	function LanguageManager() {
-		global $db;
-
-		$sql	= 'SELECT * FROM '.TABLE_PREFIX.'languages ORDER BY native_name';
-		$result = mysql_query($sql, $db);
-		while($row = mysql_fetch_assoc($result)) {
+		require_once(AC_INCLUDE_PATH. 'classes/DAO/LanguagesDAO.class.php');
+		$languagesDAO = new LanguagesDAO();
+		
+		$rows = $languagesDAO->getAll();
+		foreach ($rows as $i => $row) {
 			if (defined('AC_DEVEL_TRANSLATE') && AC_DEVEL_TRANSLATE) {
 				$row['status'] = AC_LANG_STATUS_PUBLISHED; // b/c the print drop down checks for it.				
 			}
@@ -354,37 +354,6 @@ class LanguageManager {
 		}
 	}
 	
-	function getXML() {
-		global $db;
-
-		$lang_xml = '<?xml version="1.0" encoding="iso-8859-1"?>
-		<!-- These are ATutor language packs - http://www.atutor.ca-->
-
-		<!DOCTYPE languages [
-		   <!ELEMENT language (atutor-version, code, charset, direction, reg-exp, native-name, english-name )>
-		   <!ELEMENT atutor-version (#PCDATA)>
-		   <!ELEMENT code (#PCDATA)>
-		   <!ELEMENT charset (#PCDATA)>
-		   <!ELEMENT direction (#PCDATA)>
-		   <!ELEMENT reg-exp (#PCDATA)>
-		   <!ELEMENT native-name (#PCDATA)>
-		   <!ELEMENT english-name (#PCDATA)>
-		   <!ELEMENT status (#PCDATA)>
-		   <!ATTLIST language code ID #REQUIRED>
-		]>
-
-		<languages>';
-
-		foreach ($this->availableLanguages as $codes) {
-			foreach ($codes as $language) {
-				$lang_xml .= $language->getXML(TRUE);
-			}
-		}
-
-		$lang_xml .= "\r\n".'</languages>';
-
-		return $lang_xml;
-	}
 }
 
 

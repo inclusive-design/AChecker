@@ -99,7 +99,7 @@ class Message {
 			
 				/* this is an array with terms to replace */
 				$first = array_shift($item);
-				$result = _AT($first); // lets translate the code
+				$result = _AC($first); // lets translate the code
 				
 				if ($result == '') { // if the code is not in the db lets just print out the code for easier trackdown
 					$result = '[' . $first . ']';
@@ -111,7 +111,7 @@ class Message {
 				$result = vsprintf($result, $terms);
 				
 			} else {
-				$result = _AT($item);
+				$result = _AC($item);
 				if ($result == '') // if the code is not in the db lets just print out the code for easier trackdown
 					$result = '[' . $item . ']';
 			}
@@ -292,8 +292,8 @@ class Message {
 			$code = array($code);
 		}
 		$code[] = $hidden_vars_string;
-		$code[] = ($button_yes_text == '') ? _AT("submit_yes") : $button_yes_text;
-		$code[] = ($button_no_text == '') ? _AT("submit_no") : $button_no_text;
+		$code[] = ($button_yes_text == '') ? _AC("submit_yes") : $button_yes_text;
+		$code[] = ($button_no_text == '') ? _AC("submit_no") : $button_no_text;
 		$code[] = $hide_button_no;
 		
 		$this->addAbstract('confirm', $code);

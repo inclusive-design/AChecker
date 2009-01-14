@@ -19,7 +19,9 @@
 * @package	Menu
 */
 
-define('AC_INCLUDE_PATH', '../../include/');
+if (!defined('AC_INCLUDE_PATH')) exit;
+
+require(AC_INCLUDE_PATH. 'classes/DAO/PrivilegesDAO.class.php');
 
 class Menu {
 
@@ -39,8 +41,6 @@ class Menu {
 	function Menu()
 	{
 		$this->pages[AC_NAV_TOP] = array();        // top tab pages
-//		unset($_SESSION['user_id']);
-//		$_SESSION['user_id'] = 2;
 		
 		$this->init();           // Initialize $this->pages[AC_NAV_PUBLIC] & $this->pages
 		$this->setTopPages();    // set top pages based on user id
@@ -61,7 +61,7 @@ class Menu {
 	function init()
 	{
 		// $_pages is defined in include/constants.inc.php
-		global $_pages, $db, $_base_path;
+		global $_pages, $_base_path;
 		
 		// initialize $this->pages
 		$this->pages = $_pages;
@@ -70,15 +70,15 @@ class Menu {
 		// initialize $this->pages[AC_NAV_PUBLIC]
 		$this->pages[AC_NAV_PUBLIC] = $_pages[AC_NAV_PUBLIC];
 		
-		$sql = 'SELECT privilege_id, title_var, link 
-						FROM '.TABLE_PREFIX.'privileges p
-						WHERE open_to_public = 1
-						ORDER BY p.menu_sequence';
-		$result	= mysql_query($sql, $db) or die(mysql_error());
+		$priviledgesDAO = new PrivilegesDAO();
+		$rows = $priviledgesDAO->getPublicPrivileges();
 	
-		while ($row = mysql_fetch_assoc($result))
+		if (is_array($rows))
 		{
-			$this->pages[AC_NAV_PUBLIC] = array_merge($this->pages[AC_NAV_PUBLIC], array($row['link'] => array('title_var'=>$row['title_var'], 'parent'=>AC_NAV_TOP)));
+			foreach ($rows as $id => $row)
+			{
+				$this->pages[AC_NAV_PUBLIC] = array_merge($this->pages[AC_NAV_PUBLIC], array($row['link'] => array('title_var'=>$row['title_var'], 'parent'=>AC_NAV_TOP)));
+			}
 		}
 		// end of initializing $this->pages[AC_NAV_PUBLIC]
 		
@@ -94,34 +94,28 @@ class Menu {
 	*/
 	function setTopPages()
 	{
-		global $db, $_base_path;
+		global $_base_path;
+		
+		$priviledgesDAO = new PrivilegesDAO();
 		
 		if (isset($_SESSION['user_id']) && $_SESSION['user_id'] <> 0)
 		{
-			$sql = 'SELECT p.privilege_id, p.title_var, p.link 
-							FROM '.TABLE_PREFIX.'users u, '.TABLE_PREFIX.'user_groups ug, '.TABLE_PREFIX.'user_group_privilege ugp, '.TABLE_PREFIX.'privileges p
-							WHERE u.user_id = '.$_SESSION['user_id'].'
-							AND u.user_group_id = ug.user_group_id
-							AND ug.user_group_id = ugp.user_group_id
-							AND ugp.privilege_id = p.privilege_id
-							ORDER BY p.menu_sequence';
+			$rows = $priviledgesDAO->getUserPrivileges($_SESSION['user_id']);
 		}
 		else // public pages
 		{
-			$sql = 'SELECT privilege_id, title_var, link 
-							FROM '.TABLE_PREFIX.'privileges p
-							WHERE open_to_public = 1
-							ORDER BY p.menu_sequence';
+			$rows = $priviledgesDAO->getPublicPrivileges();
 		}
 	
-		$result	= mysql_query($sql, $db) or die(mysql_error());
-	
-		while ($row = mysql_fetch_assoc($result))
+		if (is_array($rows))
 		{
-			$this->pages[AC_NAV_TOP][] = array('url' => $_base_path.$row['link'], 'title' => _AC($row['title_var']));
-	
-			// add section pages
-			$this->pages = array_merge($this->pages, array($row['link'] => array('title_var'=>$row['title_var'], 'parent'=>AC_NAV_TOP)));
+			foreach ($rows as $id => $row)
+			{
+				$this->pages[AC_NAV_TOP][] = array('url' => $_base_path.$row['link'], 'title' => _AC($row['title_var']));
+		
+				// add section pages
+				$this->pages = array_merge($this->pages, array($row['link'] => array('title_var'=>$row['title_var'], 'parent'=>AC_NAV_TOP)));
+			}
 		}
 
 		return true;

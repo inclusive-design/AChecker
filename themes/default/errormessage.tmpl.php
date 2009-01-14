@@ -10,7 +10,7 @@
 // header
 ?>
 <div id="error">
-	<h4><?php echo _AT('the_follow_errors_occurred'); ?></h4>
+	<h4><?php echo _AC('the_follow_errors_occurred'); ?></h4>
 	<?php if (is_array($this->item)) : ?>
 		<ul>
 		<?php foreach($this->item as $e) : ?>

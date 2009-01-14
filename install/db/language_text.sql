@@ -1873,7 +1873,7 @@ INSERT INTO `language_text` VALUES ('en', '_template','15_max_chars','8 characte
 INSERT INTO `language_text` VALUES ('en', '_template','cancel','Cancel',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','sent_via_achecker','Sent via an AChecker system at %s',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','achecker_home','AChecker Home',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','Suggestion','suggestion',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 
 INSERT INTO `language_text` VALUES ('en', '_template','required_field','Required Field',now(),'');

@@ -62,22 +62,25 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <?php
 $count_guidelines_in_current_row = 0;
 
-while ($row = mysql_fetch_assoc($this->result))
+if (is_array($this->rows))
 {
-	if ($count_guidelines_in_current_row == 0 || $count_guidelines_in_current_row == $this->num_of_guidelines_per_row)
+	foreach ($this->rows as $id => $row)
 	{
-		$count_guidelines_in_current_row = 0;
-		echo "			<tr>\n";
-	}
+		if ($count_guidelines_in_current_row == 0 || $count_guidelines_in_current_row == $this->num_of_guidelines_per_row)
+		{
+			$count_guidelines_in_current_row = 0;
+			echo "			<tr>\n";
+		}
 ?>
 				<td><input type="checkbox" name="gid[]" id='gid_<?php echo $row["guideline_id"]; ?>' value='<?php echo $row["guideline_id"]; ?>' <?php foreach($_POST["gid"] as $gid) if ($gid == $row["guideline_id"]) echo 'checked="checked"'; ?> />
 				<label for='gid_<?php echo $row["guideline_id"]; ?>'><?php echo $row["title"]; ?></label></td>
 <?php
-	$count_guidelines_in_current_row++;
-
-	if ($count_guidelines_in_current_row == $this->num_of_guidelines_per_row)
-		echo "			</tr>\n";
-
+		$count_guidelines_in_current_row++;
+	
+		if ($count_guidelines_in_current_row == $this->num_of_guidelines_per_row)
+			echo "			</tr>\n";
+	
+	}
 }
 ?>
 		</table>

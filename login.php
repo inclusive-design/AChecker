@@ -13,7 +13,9 @@
 define('AC_INCLUDE_PATH', 'include/');
 require (AC_INCLUDE_PATH.'vitals.inc.php');
 
-global $user;
+require(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
+
+$usersDAO = new UsersDAO();
 
 // $_SESSION['token'] is used to encrypt the password from web form
 if (!isset($_SESSION['token']))
@@ -21,21 +23,21 @@ if (!isset($_SESSION['token']))
 
 if (isset($_POST['submit']))
 {
-	$user_id = $user->Validate($addslashes($_POST['form_login']), $addslashes($_POST['form_password_hidden']));
-	
+	$user_id = $usersDAO->Validate($addslashes($_POST['form_login']), $addslashes($_POST['form_password_hidden']));
+
 	if (!$user_id)
 	{
 		$msg->addError('INVALID_LOGIN');
 	}
 	else
 	{
-		if ($user->getStatus($user_id) == AC_STATUS_DISABLED)
+		if ($usersDAO->getStatus($user_id) == AC_STATUS_DISABLED)
 		{
 			$msg->addError('ACCOUNT_DISABLED');
 		}
 		else
 		{
-			$user->updateLastLoginTime($user_id);
+			$usersDAO->setLastLogin($user_id);
 			$_SESSION['user_id'] = $user_id;
 			$msg->addFeedback('LOGIN_SUCCESS');
 			header('Location: index.php');

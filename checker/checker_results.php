@@ -20,15 +20,15 @@ if (isset($aValidator))
 	foreach ($_POST["gid"] as $gid)
 		$gids .= $gid . ",";
 	
-	$sql = "select title
-					from ". TABLE_PREFIX ."guidelines
-					where guideline_id in (" . substr($gids, 0, -1) . ")
-					order by title";
-	$result	= mysql_query($sql, $db) or die(mysql_error());
+	$guidelinesDAO = new GuidelinesDAO();
+	$rows = $guidelinesDAO->getGuidelineByIDs(substr($gids, 0, -1));
 	
-	while ($row = mysql_fetch_assoc($result))
+	if (is_array($rows))
 	{
-		$guidelines .= $row["title"]. ", ";
+		foreach ($rows as $id => $row)
+		{
+			$guidelines .= $row["title"]. ", ";
+		}
 	}
 	$guidelines = substr($guidelines, 0, -2); // remove ending space and ,
 	

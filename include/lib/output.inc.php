@@ -11,6 +11,7 @@
 /************************************************************************/
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
+require(AC_INCLUDE_PATH . 'classes/DAO/LanguageTextDAO.class.php');
 
 /**********************************************************************************/
 /* Output functions found in this file, in order:
@@ -34,8 +35,10 @@ if (!defined('AC_INCLUDE_PATH')) { exit; }
 function _AC() {
 	global $_cache_template, $lang_et, $_rel_url;
 	static $_template;
-	
+
 	$args = func_get_args();
+	
+	$languageTextDAO = new LanguageTextDAO();
 	
 	// a feedback msg
 	if (!is_array($args[0])) {
@@ -50,19 +53,21 @@ function _AC() {
 		// replaced the preg_match with a test of the substring.
 		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AC_HELP)
 		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_HELP','AC_CONF'))) {
-			global $db;
 			global $_base_path, $addslashes;
 
 			$args[0] = $addslashes($args[0]);
 					
 			/* get $_msgs_new from the DB */
-			$sql	= 'SELECT text FROM '.TABLE_PREFIX.'language_text WHERE term="' . $args[0] . '" AND (variable="_msgs" OR variable="_c_msgs") AND language_code="'.$_SESSION['lang'].'" ORDER BY variable ASC LIMIT 1';
-
-			$result	= @mysql_query($sql, $db);
-			$i = 1;
+			$rows = $languageTextDAO->getMsgByTermAndLang($args[0], $_SESSION['lang']);
+//			$sql	= 'SELECT text FROM '.TABLE_PREFIX.'language_text WHERE term="' . $args[0] . '" AND (variable="_msgs" OR variable="_c_msgs") AND language_code="'.$_SESSION['lang'].'" ORDER BY variable ASC LIMIT 1';
+//
+//			$result	= @mysql_query($sql, $db);
+//			$i = 1;
 			$msgs = '';
 					
-			if ($row = @mysql_fetch_assoc($result)) {
+			if (is_array($rows)) 
+			{
+				$row = $rows[0];
 				// do not cache key as a digit (no contstant(), use string)
 				$msgs = str_replace('SITE_URL/', $_base_path, $row['text']);
 				if (defined('AC_DEVEL') && AC_DEVEL) {
@@ -80,25 +85,29 @@ function _AC() {
 		$name = substr($_SERVER['PHP_SELF'], strlen($url_parts['path'])-1);
 
 		if ( !($lang_et = cache(120, 'lang', $_SESSION['lang'].'_'.$name)) ) {
-			global $db;
-
 			/* get $_template from the DB */
+			$rows = $languageTextDAO->getAllTemplateByLang($_SESSION['lang']);
 			
-			$sql = "SELECT * FROM ".TABLE_PREFIX."language_text WHERE language_code='".$_SESSION['lang']."' AND variable='_template' ORDER BY variable ASC";
-			$result	= mysql_query($sql, $db);
-			while ($row = mysql_fetch_assoc($result)) {
-				//Do not overwrite the variable that existed in the cache_template already.
-				//The edited terms (_c_template) will always be at the top of the resultset
-				//0003279
-				if (isset($_cache_template[$row['term']])){
-					continue;
-				}
+//			$sql = "SELECT * FROM ".TABLE_PREFIX."language_text WHERE language_code='".$_SESSION['lang']."' AND variable='_template' ORDER BY variable ASC";
+//			$result	= mysql_query($sql, $db);
 
-				// saves us from doing an ORDER BY
-				if ($row['language_code'] == $_SESSION['lang']) {
-					$_cache_template[$row['term']] = stripslashes($row['text']);
-				} else if (!isset($_cache_template[$row['term']])) {
-					$_cache_template[$row['term']] = stripslashes($row['text']);
+			if (is_array($rows))
+			{
+				foreach ($rows as $id => $row) 
+				{
+					//Do not overwrite the variable that existed in the cache_template already.
+					//The edited terms (_c_template) will always be at the top of the resultset
+					//0003279
+					if (isset($_cache_template[$row['term']])){
+						continue;
+					}
+	
+					// saves us from doing an ORDER BY
+					if ($row['language_code'] == $_SESSION['lang']) {
+						$_cache_template[$row['term']] = stripslashes($row['text']);
+					} else if (!isset($_cache_template[$row['term']])) {
+						$_cache_template[$row['term']] = stripslashes($row['text']);
+					}
 				}
 			}
 		
@@ -127,48 +136,29 @@ function _AC() {
 	}
 
 	if (empty($outString)) {
-		global $db;
-		$sql	= 'SELECT L.* FROM '.TABLE_PREFIX.'language_text L WHERE L.language_code="'.$_SESSION['lang'].'" AND L.variable<>"_msgs" AND L.term="'.$format.'"';
+//		global $db;
+//		$sql	= 'SELECT L.* FROM '.TABLE_PREFIX.'language_text L WHERE L.language_code="'.$_SESSION['lang'].'" AND L.variable<>"_msgs" AND L.term="'.$format.'"';
+//
+//		$result	= mysql_query($sql, $db);
+//		$row = mysql_fetch_assoc($result);
 
-		$result	= mysql_query($sql, $db);
-		$row = mysql_fetch_assoc($result);
+		$rows = $languageTextDAO->getByTermAndLang($format, $_SESSION['lang']);
+		if (is_array($rows))
+		{
+			$row = $rows[0];
+			$_template[$row['term']] = stripslashes($row['text']);
+			$outString = $_template[$row['term']];
 
-		$_template[$row['term']] = stripslashes($row['text']);
-		$outString = $_template[$row['term']];
+//			$outString = $_template[$row['term']];
+//			$outString = vsprintf($outString, $args);
+		}
 
 		if (empty($outString)) {
 			return ('[ '.$format.' ]');
 		}
-		$outString = $_template[$row['term']];
-		$outString = vsprintf($outString, $args);
 	}
 
 	return $outString;
-}
-
-/**
-* Converts language term to actual language message
-* @access	public
-* @param	$term = the term to the format string $_template[term]
-* @return	string		full resulting message
-* @see		$db			        in include/vitals.inc.php
-* @author	Cindy Li
-*/
-function _AC_old($term, $variable = '_template')
-{
-	global $db;
-	
-	if ($term == '') return '';
-	
-	$sql	= "SELECT text FROM ".TABLE_PREFIX."language_text WHERE term='" . $term . "' AND variable='".$variable."' AND language_code='".$_SESSION['lang']."' ORDER BY variable ASC LIMIT 1";
-	$result	= mysql_query($sql, $db) or die(mysql_error());
-	$row = mysql_fetch_assoc($result);
-	
-	$out = $row["text"];
-	
-	if ($out == "") return '[ '.$term.' ]';
-	
-	return $out;
 }
 
 /* 
@@ -319,145 +309,6 @@ function AC_date($format='%Y-%M-%d', $timestamp = '', $formAC_type=AC_DATE_MYSQL
 	}
 
 	return $output;
-}
-
-/**
-* Converts language code to actual language message, caches them according to page url
-* @access	public
-* @param	args				unlimited number of arguments allowed but first arg MUST be name of the language variable/term
-*								i.e		$args[0] = the term to the format string $_template[term]
-*										$args[1..x] = optional arguments to the formatting string 
-* @return	string|array		full resulting message
-* @see		$db			        in include/vitals.inc.php
-* @see		cache()				in include/phpCache/phpCache.inc.php
-* @see		cache_variable()	in include/phpCache/phpCache.inc.php
-* @author	Joel Kronenberg
-*/
-function _AT() {
-	global $_cache_template, $lang_et, $_rel_url;
-	static $_template;
-	
-	$args = func_get_args();
-	
-	// a feedback msg
-	if (!is_array($args[0])) {
-		/**
-		 * Added functionality for translating language code String (AC_ERROR|AC_INFOS|AC_WARNING|AC_FEEDBACK|AC_HELP).*
-		 * to its text and returning the result. No caching needed.
-		 * @author Jacek Materna
-		 */
-
-		// Check for specific language prefix, extendible as needed
-		// 0002767:  a substring+in_array test should be faster than a preg_match test.
-		// replaced the preg_match with a test of the substring.
-		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AC_HELP)
-		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_HELP','AC_CONF'))) {
-			global $db;
-			global $_base_path, $addslashes;
-
-			$args[0] = $addslashes($args[0]);
-					
-			/* get $_msgs_new from the DB */
-			$sql	= 'SELECT text FROM '.TABLE_PREFIX.'language_text WHERE term="' . $args[0] . '" AND variable="_msgs" AND language_code="'.$_SESSION['lang'].'" ORDER BY variable ASC LIMIT 1';
-
-			$result	= @mysql_query($sql, $db);
-			$i = 1;
-			$msgs = '';
-					
-			if ($row = @mysql_fetch_assoc($result)) {
-				// do not cache key as a digit (no contstant(), use string)
-				$msgs = str_replace('SITE_URL/', $_base_path, $row['text']);
-				if (defined('AC_DEVEL') && AC_DEVEL) {
-					$msgs .= ' <small><small>('. $args[0] .')</small></small>';
-				}
-			}
-
-			$sql = 'INSERT INTO '.TABLE_PREFIX.'language_pages (`term`, `page`) VALUES ("'.$args[0].'", "'.$_rel_url.'")';
-			mysql_query($sql, $db);
-
-			return $msgs;
-		}
-	}
-	
-	// a template variable
-	if (!isset($_template)) {
-		$url_parts = parse_url(AC_BASE_HREF);
-		$name = substr($_SERVER['PHP_SELF'], strlen($url_parts['path'])-1);
-
-		if ( !($lang_et = cache(120, 'lang', $_SESSION['lang'].'_'.$name)) ) {
-			global $db;
-
-			/* get $_template from the DB */
-			
-			$sql = "SELECT * FROM ".TABLE_PREFIX."language_text WHERE language_code='{$_SESSION['lang']}' AND variable<>'_msgs' ORDER BY variable ASC";
-			$result	= mysql_query($sql, $db);
-			while ($row = mysql_fetch_assoc($result)) {
-				//Do not overwrite the variable that existed in the cache_template already.
-				//The edited terms (_c_template) will always be at the top of the resultset
-				//0003279
-				if (isset($_cache_template[$row['term']])){
-					continue;
-				}
-
-				// saves us from doing an ORDER BY
-				if ($row['language_code'] == $_SESSION['lang']) {
-					$_cache_template[$row['term']] = stripslashes($row['text']);
-				} else if (!isset($_cache_template[$row['term']])) {
-					$_cache_template[$row['term']] = stripslashes($row['text']);
-				}
-			}
-		
-			cache_variable('_cache_template');
-			endcache(true, false);
-		}
-		$_template = $_cache_template;
-	}
-	$num_args = func_num_args();
-	if (is_array($args[0])) {
-		$args = $args[0];
-		$num_args = count($args);
-	}
-	$format	  = array_shift($args);
-
-	if (isset($_template[$format])) {
-		/*
-		var_dump($_template);
-		var_dump($format);
-		var_dump($args);
-		exit;
-		*/
-		$outString	= vsprintf($_template[$format], $args);
-		$str = ob_get_contents();
-	} else {
-		$outString = '';
-	}
-
-
-	if ($outString === false) {
-		return ('[Error parsing language. Variable: <code>'.$format.'</code>. Language: <code>'.$_SESSION['lang'].'</code> ]');
-	}
-
-	if (empty($outString)) {
-		global $db;
-		$sql	= 'SELECT L.* FROM '.TABLE_PREFIX.'language_text L WHERE L.language_code="'.$_SESSION['lang'].'" AND L.variable<>"_msgs" AND L.term="'.$format.'"';
-
-		$result	= mysql_query($sql, $db);
-		$row = mysql_fetch_assoc($result);
-
-		$_template[$row['term']] = stripslashes($row['text']);
-		$outString = $_template[$row['term']];
-		if (empty($outString)) {
-			return ('[ '.$format.' ]');
-		}
-		$outString = $_template[$row['term']];
-		$outString = vsprintf($outString, $args);
-
-		/* update the locations */
-		$sql = 'INSERT INTO '.TABLE_PREFIX.'language_pages (`term`, `page`) VALUES ("'.$format.'", "'.$_rel_url.'")';
-		mysql_query($sql, $db);
-	}
-
-	return $outString;
 }
 
 /**********************************************************************************************************/
@@ -958,41 +809,6 @@ function formAC_content($input, $html = 0, $glossary, $simple = false) {
 	return $output;
 }
 
-function get_content_table($content)
-{
-	preg_match_all("/<(h[\d]+)[^>]*>(.*)<\/\\1>/i", $content, $found_headers, PREG_SET_ORDER);
-	
-	if (count($found_headers) == 0) return array("", $content);
-	else
-	{
-		$num_of_headers = 0;
-
-		for ($i = 0; $i < count($found_headers); $i++)
-		{
-			$div_id = "_header_" . $num_of_headers++;
-			
-			if ($i == 0)
-			{
-				$content_table = "<div id=\"toc\">\n<fieldset id=\"toc\"><legend>". _AT("table_of_contents")."</legend>\n";
-			}
-
-			$content = str_replace($found_headers[$i][0], '<div id="'.$div_id.'">'.$found_headers[$i][0].'</div>', $content);
-			$content_table .= '<a href="'.$_SERVER["REQUEST_URI"].'#'.$div_id.'" class="'.$found_headers[$i][1].'">'. $found_headers[$i][2]."</a>\n";
-
-			if ($i == count($found_headers) - 1)
-			{
-				$content_table .= "</fieldset></div><br />";
-			}
-		}
-		return array($content_table, $content);
-	}
-}
-
-function find_terms($find_text) {
-	preg_match_all("/(\[\?\])(.[^\?]*)(\[\/\?\])/i", $find_text, $found_terms, PREG_PATTERN_ORDER);
-	return $found_terms;
-}
-
 /***********************************************************************
 	@See /include/Classes/Message/Message.class.php
 	Jacek Materna
@@ -1115,445 +931,6 @@ function print_paginator($current_page, $num_rows, $request_args, $rows_per_page
 	}
 }
 
-
-/**
-* According to user's preferences, it provides appropriated resources in the content page.
-* @access	public
-* @param	$cid: 				content id.
-* @param	$content_page: 		the original content page ($content_row['text'], from content.php).
-* @return	string|array		$content: the content page with the appropriated resources.
-* @see		$db			        in include/vitals.inc.php
-* @author	Silvia Mirri
-*/
-function provide_alternatives($cid, $content_page){
-	global $db;
-	
-	$vidoe_exts = array("mpg", "avi", "wmv", "mov", "swf", "mp3", "wav", "ogg", "mid");
-
-	$content = $content_page;
-	
-	if (($_SESSION['prefs']['PREF_USE_ALTERNATIVE_TO_TEXT']==0) && ($_SESSION['prefs']['PREF_USE_ALTERNATIVE_TO_AUDIO']==0) && ($_SESSION['prefs']['PREF_USE_ALTERNATIVE_TO_VISUAL']==0)) 
-	{
-		//No user's preferences related to content format are declared
-		return $content;
-	}
-	/*else if ($_SESSION['prefs']['PREF_USE_ALTERNATIVE_TO_TEXT']==1){
-
-		$sql_primary = "SELECT * FROM ".TABLE_PREFIX."primary_resources WHERE content_id=".$cid." and resource='".mysql_real_escape_string($content_page)."'";
-
-		$result = mysql_query($sql_primary, $db);
-		if (mysql_num_rows($result) > 0) {
-			while ($row = mysql_fetch_assoc($result)) {
-			$sql_type 	 = "SELECT * FROM ".TABLE_PREFIX."primary_resources_types WHERE primary_resource_id=$row[primary_resource_id]";	
-			$result_type = mysql_query($sql_type, $db);
-				if (mysql_num_rows($result_type) > 0) {
-					while ($row_type = mysql_fetch_assoc($result_type)){
-						if (($_SESSION['prefs']['PREF_USE_ALTERNATIVE_TEXT']==1) && ($row_type[type_id]==3)){
-								$sql_text	  = "SELECT * FROM ".TABLE_PREFIX."secondary_resources WHERE primary_resource_id=$row[primary_resource_id] and language_code='".$_SESSION['prefs']['PREF_ALT_TEXT_PREFER_LANG']."'";	
-							$result_text = mysql_query($sql_text, $db);
-							if (mysql_num_rows($result_text) > 0) {
-								while ($row_text = mysql_fetch_assoc($result_text)){
-									$sql_text_alt 	  = "SELECT * FROM ".TABLE_PREFIX."secondary_resources_types WHERE secondary_resource_id=$row_text[secondary_resource_id]";	
-									$result_text_alt = mysql_query($sql_text_alt, $db);
-									if (mysql_num_rows($result_text_alt) > 0) {
-										while ($row_text_alt = mysql_fetch_assoc($result_text_alt)){
-											if ((($_SESSION['prefs']['PREF_ALT_TO_TEXT']==visual) && ($row_text_alt[type_id]==4)) || (($_SESSION['prefs']['PREF_ALT_TO_TEXT']==audio) && ($row_audio_alt[type_id]==1)) || (($_SESSION['prefs']['PREF_ALT_TO_TEXT']==sign_lang) && ($row_text_alt[type_id]==2))) {
-												if (($_SESSION['prefs']['PREF_ALT_TO_TEXT_APPEND_OR_REPLACE']=='replace'))
-													$content = $row_text_alt['secondary_resource'];
-												else 
-													$content = $content.'<br/>'.$row_text_alt['secondary_resource'];
-											}
-										}	
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-
-		}
-		return $content;								
-	}*/
-	else
-	{
-	$sql_primary = "SELECT * FROM ".TABLE_PREFIX."primary_resources WHERE content_id=".$cid." ORDER BY primary_resource_id";
-	$result		 = mysql_query($sql_primary, $db);
-	
-	if (mysql_num_rows($result) > 0) 
-	{
-		while ($row = mysql_fetch_assoc($result)) 
-		{
-			$sql_type 	 = "SELECT * FROM ".TABLE_PREFIX."primary_resources_types WHERE primary_resource_id=$row[primary_resource_id]";	
-			$result_type = mysql_query($sql_type, $db);
-			
-			if (mysql_num_rows($result_type) > 0) 
-			{
-				while ($row_type = mysql_fetch_assoc($result_type))
-				{
-					if (($_SESSION['prefs']['PREF_USE_ALTERNATIVE_TO_AUDIO']==1) && ($row_type[type_id]==1))
-					{
-						$sql_audio	  = "SELECT * FROM ".TABLE_PREFIX."secondary_resources WHERE primary_resource_id=$row[primary_resource_id] and language_code='".$_SESSION['prefs']['PREF_ALT_AUDIO_PREFER_LANG']."'";	
-						$result_audio = mysql_query($sql_audio, $db);
-						if (mysql_num_rows($result_audio) > 0) 
-						{
-							while ($row_audio = mysql_fetch_assoc($result_audio))
-							{
-								$sql_audio_alt 	  = "SELECT * FROM ".TABLE_PREFIX."secondary_resources_types WHERE secondary_resource_id=$row_audio[secondary_resource_id]";	
-								$result_audio_alt = mysql_query($sql_audio_alt, $db);
-								if (mysql_num_rows($result_audio_alt) > 0) 
-								{
-									while ($row_audio_alt = mysql_fetch_assoc($result_audio_alt))
-									{
-										if ((($_SESSION['prefs']['PREF_ALT_TO_AUDIO']=="visual") && ($row_audio_alt[type_id]==4)) || (($_SESSION['prefs']['PREF_ALT_TO_AUDIO']==text) && ($row_audio_alt[type_id]==3)) || (($_SESSION['prefs']['PREF_ALT_TO_AUDIO']==sign_lang) && ($row_audio_alt[type_id]==2))) 
-										{
-											if (($_SESSION['prefs']['PREF_ALT_TO_AUDIO_APPEND_OR_REPLACE']=='replace'))
-											{
-												$before  = split($row['resource'], $content);
-												$last_c  = substr($before[0], -1, 1);
-												if ($last_c=="]")
-													$shift   = strripos($before[0], '[');
-												else
-													$shift   = strripos($before[0], '<');
-
-												$len     = strlen($before[0]);
-												$shift   = $len-$shift;
-												$first   = substr($before[0], 0, -$shift);
-												$ext     = substr($row_audio['secondary_resource'], -3);
-												if (in_array($ext, $vidoe_exts))
-												{
-													$content = $first.'[media]'.$row_audio['secondary_resource'];
-													if ($last_c=="]")
-													{
-														$after 	 = substr($before[1], 8);
-														$after   = '[/media]'.$after;
-													}
-													else
-													{
-														$shift 	 = strpos($before[1], '</');
-														$after 	 = substr($before[1], $shift);
-														$after 	 = substr($after, 4);
-														$after 	 = '[/media]'.$after;
-													}
-												}
-												else
-												{
-													$new 	 = '<a href="';
-													$content = $first.$new.$row_audio['secondary_resource'].'">'.$row_audio['secondary_resource'];
-													if ($last_c=="]")
-													{
-														$after 	 = substr($before[1], 8);
-														$after   = '</a>'.$after;
-													}
-													else
-													{
-														$shift 	 = strpos($before[1], '</');
-														$after 	 = substr($before[1], $shift);
-													}
-												}
-												$content = $content.$after;
-											}
-											else
-											{
-												$before    = split($row['resource'], $content);
-												$content   = $before[0].$row['resource'];
-												$last_c  = substr($before[0], -1, 1);
-												$ext     = substr($row_audio['secondary_resource'], -3);
-												if (in_array($ext, $vidoe_exts))
-												{
-													if ($last_c=="]")
-													{
-														$after 	   = substr($before[1], 8);
-														$content   = $content.'[/media][media]'.$row_audio['secondary_resource'].'[/media]'.$after;
-													}
-													else
-													{
-														$shift 	   = strpos($before[1], '</a>');
-														$alt_shift = $len-$shift;
-														$res       = substr($before[1], 0, -$alt_shift);
-														$shift     = $shift+4;
-														$after 	   = substr($before[1], $shift);
-														$content   = $content.$res.'</a><br/>[media]'.$row_audio['secondary_resource'].'[/media]'.$after;
-													}
-												}
-												else 
-												{
-													if ($last_c=="]")
-													{
-														$after 	   = substr($before[1], 8);
-														$content   = $content.'[/media]'.'<p><a href="'.$row_audio['secondary_resource'].'">'.$row_audio['secondary_resource'].'</a></p>'.$after;
-													}
-													else
-													{
-														$shift 	   = strpos($before[1], '</a>');
-														$alt_shift = $len-$shift;
-														$res       = substr($before[1], 0, -$alt_shift);
-														$shift     = $shift+4;
-														$after 	   = substr($before[1], $shift);
-														$content   = $content.$res.'</a><p><a href="'.$row_audio['secondary_resource'].'">'.$row_audio['secondary_resource'].'</a></p>'.$after;
-													}
-												}	
-											}
-										}
-									}	
-								}
-							}
-						}
-					}
-					if (($_SESSION['prefs']['PREF_USE_ALTERNATIVE_TO_TEXT']==1) && ($row_type[type_id]==3))
-					{
-						$sql_text	   = "SELECT * FROM ".TABLE_PREFIX."secondary_resources WHERE primary_resource_id=$row[primary_resource_id] and language_code='".$_SESSION['prefs']['PREF_ALT_VISUAL_PREFER_LANG']."'";	
-						$result_text = mysql_query($sql_text, $db);
-						if (mysql_num_rows($result_text) > 0) 
-						{
-							while ($row_text = mysql_fetch_assoc($result_text))
-							{
-								$sql_text_alt 	 = "SELECT * FROM ".TABLE_PREFIX."secondary_resources_types WHERE secondary_resource_id=$row_text[secondary_resource_id]";	
-								$result_text_alt	 = mysql_query($sql_text_alt, $db);
-								if (mysql_num_rows($result_text_alt) > 0) 
-								{
-									while ($row_text_alt = mysql_fetch_assoc($result_text_alt))
-									{
-										if ((($_SESSION['prefs']['PREF_ALT_TO_TEXT']==audio) && ($row_text_alt[type_id]==1)) || 
-										    (($_SESSION['prefs']['PREF_ALT_TO_TEXT']==visual) && ($row_text_alt[type_id]==4)) || 
-										    (($_SESSION['prefs']['PREF_ALT_TO_TEXT']==sign_lang) && ($row_text_alt[type_id]==2)))
-										{
-											if ($_SESSION['prefs']['PREF_ALT_TO_TEXT_APPEND_OR_REPLACE']=='replace')
-											{
-												$before  = split($row['resource'], $content);
-												$shift   = strripos($before[0], '<');
-												$len     = strlen($before[0]);
-												$shift   = $len-$shift;
-												$first   = substr($before[0], 0, -$shift);
-												$ext     = substr($row_text['secondary_resource'], -3);
-												if (in_array($ext, $vidoe_exts))
-												{
-													$content = $first.'[media]'.$row_text['secondary_resource'];
-													if ($last_c=="]")
-													{
-														$after 	 = substr($before[1], 8);
-														$after   = '[/media]'.$after;
-													}
-													else
-													{
-														$shift 	 = strpos($before[1], '</');
-														$after 	 = substr($before[1], $shift);
-														$after 	 = substr($after, 4);
-														$after 	 = '[/media]'.$after;
-													}
-												}
-												else
-												{
-													if (($_SESSION['prefs']['PREF_ALT_TO_TEXT']==visual) && ($row_text_alt[type_id]==4))
-													{
-														$new     = '<img border="0" alt="Alternate Text" src="';
-														$content = $first.$new.$row_text['secondary_resource'].'"/>';
-														$shift 	 = strpos($before[1], '</');
-														$after 	 = substr($before[1], $shift);
-														$media	 = substr($after, 0, 8);
-														if ($media == '[/media]')
-															$after 	 = substr($after, 8);
-														else
-															$after 	 = substr($after, 4);
-													}
-													else
-													{
-														$new 	 = '<a href="';
-														$content = $first.$new.$row_text['secondary_resource'].'">'.$row_text['secondary_resource'];
-														$shift 	 = strpos($before[1], '</');
-														$after 	 = substr($before[1], $shift);
-													}
-												}
-												$content = $content.$after;
-											}
-											else 
-											{
-												$before    = split($row['resource'], $content);
-												$content   = $before[0].$row['resource'];
-												$ext       = substr($row_text['secondary_resource'], -3);
-												if (in_array($ext, $vidoe_exts))
-												{
-//													$shift 	   = strpos($before[1], '</a>');
-													$shift 	   = strpos($before[1], '>') + 1;
-													$alt_shift = $len-$shift;
-													$res       = substr($before[1], 0, -$alt_shift);
-													//$shift     = $shift;
-													$after 	   = substr($before[1], $shift);
-													$af 	   = strpos($after, '<');
-													$str       = substr($after, $af, 4);
-													if ($str != '</a>')
-														$content   = $content.$res.'<br/>[media]'.$row_text['secondary_resource'].'[/media]'.$after;
-													else 
-													{
-														$shift 	   = strpos($before[1], '</a>');
-														$alt_shift = $len-$shift;
-														$res       = substr($before[1], 0, -$alt_shift);
-														$shift     = $shift+4;
-														$after 	   = substr($before[1], $shift);
-														$content   = $content.$res.'</a><br/>[media]'.$row_text['secondary_resource'].'[/media]'.$after;
-													}
-												}
-												else 
-												{
-													if (($_SESSION['prefs']['PREF_ALT_TO_TEXT']==visual) && ($row_text_alt[type_id]==4))
-													{
-														$shift 	   = strpos($before[1], '</a>');
-														$alt_shift = $len-$shift;
-														$res       = substr($before[1], 0, -$alt_shift);
-														$shift     = $shift+4;
-														$after 	   = substr($before[1], $shift);
-														$content   = $content.$res.'</a><img border="0" alt="Alternate Text" src="'.$row_text['secondary_resource'].'"/>'.$after;
-													}
-													else 
-													{
-														$shift 	   = strpos($before[1], '</a>');
-														$alt_shift = $len-$shift;
-														$res       = substr($before[1], 0, -$alt_shift);
-														$shift     = $shift+4;
-														$after 	   = substr($before[1], $shift);
-														$content   = $content.$res.'</a><p><a href="'.$row_text['secondary_resource'].'">'.$row_text['secondary_resource'].'</a></p>'.$after;
-													}
-												}
-											}
-										}
-									}
-								} 
-							}
-						}
-					}
-					if (($_SESSION['prefs']['PREF_USE_ALTERNATIVE_TO_VISUAL']==1) && ($row_type[type_id]==4))
-					{
-						$sql_visual	   = "SELECT * FROM ".TABLE_PREFIX."secondary_resources WHERE primary_resource_id=$row[primary_resource_id] and language_code='".$_SESSION['prefs']['PREF_ALT_VISUAL_PREFER_LANG']."'";	
-						$result_visual = mysql_query($sql_visual, $db);
-						
-						if (mysql_num_rows($result_visual) > 0) 
-						{
-							while ($row_visual = mysql_fetch_assoc($result_visual))
-							{
-								$sql_visual_alt 	 = "SELECT * FROM ".TABLE_PREFIX."secondary_resources_types WHERE secondary_resource_id=$row_visual[secondary_resource_id]";	
-								$result_visual_alt	 = mysql_query($sql_visual_alt, $db);
-								
-								if (mysql_num_rows($result_visual_alt) > 0) 
-								{
-									while ($row_visual_alt = mysql_fetch_assoc($result_visual_alt))
-									{
-										if ((($_SESSION['prefs']['PREF_ALT_TO_VISUAL']==audio) && ($row_visual_alt[type_id]==1)) || 
-										    (($_SESSION['prefs']['PREF_ALT_TO_VISUAL']==text) && ($row_visual_alt[type_id]==3)) || 
-										    (($_SESSION['prefs']['PREF_ALT_TO_VISUAL']==sign_lang) && ($row_visual_alt[type_id]==2)))
-										{
-											if ($_SESSION['prefs']['PREF_ALT_TO_VISUAL_APPEND_OR_REPLACE']=='replace')
-											{
-												$before  = split($row['resource'], $content);
-												$last_c  = substr($before[0], -1, 1);
-												if ($last_c=="]"){
-													$shift   = strripos($before[0], '[');
-												}
-												else
-												{
-													$shift   = strripos($before[0], '<');
-												}
-												$len     = strlen($before[0]);
-												$shift   = $len-$shift;
-												$first   = substr($before[0], 0, -$shift);
-												$ext     = substr($row_visual['secondary_resource'], -3);
-												if (in_array($ext, $vidoe_exts))
-												{
-													$content = $first.'[media]'.$row_visual['secondary_resource'];
-													if ($last_c=="]")
-													{
-														$after 	 = substr($before[1], 8);
-														$after   = '[/media]'.$after;
-													}
-													else
-													{
-														$shift 	 = strpos($before[1], '/>');
-														$after 	 = substr($before[1], $shift);
-														$after 	 = substr($after, 2);
-														$after 	 = '[/media]'.$after;
-													}
-												}
-												else
-												{
-													$new 	 = '<a href="';
-													$content = $first.$new.$row_visual['secondary_resource'].'">'.$row_visual['secondary_resource'].'</a>';
-													if ($last_c=="]")
-													{
-														$after 	 = substr($before[1], 8);
-														$content = $content.$after;
-													}
-													else
-													{
-														$shift 	   = strpos($before[1], '/>');
-														$alt_shift = $len-$shift;
-														$res       = substr($before[1], 0, -$alt_shift);
-														$shift     = $shift+2;
-														$after 	   = substr($before[1], $shift);
-													}
-												}
-												$content = $content.$after;
-											}
-											else 
-											{
-												$before    = split($row['resource'], $content);
-												$content   = $before[0].$row['resource'];
-												$last_c    = substr($before[0], -1, 1);
- 												$ext       = substr($row_visual['secondary_resource'], -3);
-												if (in_array($ext, $vidoe_exts))
-												{
-													if ($last_c=="]")
-													{
-														$after 	   = substr($before[1], 8);
-														$content   = $content.'[/media][media]'.$row_visual['secondary_resource'].'[/media]'.$after;
-													}
-													else
-													{
-														$shift 	   = strpos($before[1], '/>');
-														$alt_shift = $len-$shift;
-														$res       = substr($before[1], 0, -$alt_shift);
-														$shift     = $shift+2;
-														$after 	   = substr($before[1], $shift);
-														$content   = $content.$res.'/>[media]'.$row_visual['secondary_resource'].'[/media]'.$after;
-													}
-												}
-												else 
-												{
-													if ($last_c=="]")
-													{
-														$after 	   = substr($before[1], 8);
-														$content   = $content.'[/media]'.'<p><a href="'.$row_visual['secondary_resource'].'">'.$row_visual['secondary_resource'].'</a></p>'.$after;
-													}
-													else
-													{
-														$shift 	   = strpos($before[1], '/>');
-														$alt_shift = $len-$shift;
-														$res       = substr($before[1], 0, -$alt_shift);
-														$shift     = $shift+2;
-														$after 	   = substr($before[1], $shift);
-														$content   = $content.$res.'/><p><a href="'.$row_visual['secondary_resource'].'">'.$row_visual['secondary_resource'].'</a></p>'.$after;
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		return $content;
-		}
-		else 
-		{
-			//No alternatives are declared by content authors
-			$content=$content_page;
-			return $content;
-		}
-	}
-}	
-	
 /**
 * apply_timezone
 * converts a unix timestamp into another UNIX timestamp with timezone offset added up.

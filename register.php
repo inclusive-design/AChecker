@@ -1,17 +1,14 @@
 <?php
-/****************************************************************/
-/* ATutor                                                       */
-/****************************************************************/
-/* Copyright (c) 2002-2008 by Greg Gay & Joel Kronenberg        */
-/* Adaptive Technology Resource Centre / University of Toronto  */
-/* http://atutor.ca                                             */
-/*                                                              */
-/* This program is free software. You can redistribute it and/or*/
-/* modify it under the terms of the GNU General Public License  */
-/* as published by the Free Software Foundation.				*/
-/****************************************************************/
-// $Id: registration.php 7865 2008-09-10 18:26:14Z greg $
-$_user_location	= 'public';
+/************************************************************************/
+/* AChecker                                                             */
+/************************************************************************/
+/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
+/* Adaptive Technology Resource Centre / University of Toronto			    */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or        */
+/* modify it under the terms of the GNU General Public License          */
+/* as published by the Free Software Foundation.                        */
+/************************************************************************/
 
 define('AC_INCLUDE_PATH', 'include/');
 require (AC_INCLUDE_PATH.'vitals.inc.php');
@@ -20,7 +17,8 @@ if (isset($_POST['cancel'])) {
 	header('Location: index.php');
 	exit;
 } else if (isset($_POST['submit'])) {
-	global $user;
+	require(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
+	$usersDAO = new UsersDAO();
 	
 	/* password check: password is verified front end by javascript. here is to handle the errors from javascript */
 	if ($_POST['password_error'] <> "")
@@ -37,7 +35,7 @@ if (isset($_POST['cancel'])) {
 	}
 	else
 	{
-		$user_id = $user->Create(AC_USER_GROUP_USER,
+		$user_id = $usersDAO->Create(AC_USER_GROUP_USER,
                   $_POST['login'],
 		              $_POST['form_password_hidden'],
 		              $_POST['email'],
@@ -67,7 +65,7 @@ if (isset($_POST['cancel'])) {
 			else 
 			{
 				// auto login
-				$user->updateLastLoginTime($user_id);
+				$usersDAO->setLastLogin($user_id);
 				$_SESSION['user_id'] = $user_id;
 				$msg->addFeedback('LOGIN_SUCCESS');
 				header('Location: index.php');

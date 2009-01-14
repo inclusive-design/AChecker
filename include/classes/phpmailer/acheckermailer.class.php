@@ -10,7 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-if (!defined('AT_INCLUDE_PATH')) { exit; }
+if (!defined('AC_INCLUDE_PATH')) { exit; }
 
 require(dirname(__FILE__) . '/class.phpmailer.php');
 
@@ -67,40 +67,30 @@ class ACheckerMailer extends PHPMailer {
 
 		// attach the AChecker footer to the body first:
 		$this->Body .= 	"\n\n".'----------------------------------------------'."\n";
-		$this->Body .= _AT('sent_via_achecker', AT_BASE_HREF);
+		$this->Body .= _AC('sent_via_achecker', AC_BASE_HREF);
 
-		$this->Body .= "\n"._AT('achecker_home').': http://atutor.ca';
+		$this->Body .= "\n"._AC('achecker_home').': http://atutor.ca';
 
 		// if this email has been queued then don't send it. instead insert it in the db
 		// for each bcc or to or cc
 		if ($_config['enable_mail_queue'] && !$this->attachment) {
-			global $db;
+//			global $db;
+			include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php')
+			$mailQueueDAO = new MailQueueDAO();
+			
 			for ($i = 0; $i < count($this->to); $i++) {
-				$this->QueueMail(addslashes($this->to[$i][0]), addslashes($this->to[$i][1]), addslashes($this->From), addslashes($this->FromName), addslashes($this->Subject), addslashes($this->Body));
+				$mailQueueDAO->Create(addslashes($this->to[$i][0]), addslashes($this->to[$i][1]), addslashes($this->From), addslashes($this->FromName), addslashes($this->Subject), addslashes($this->Body), addslashes($this->CharSet));
 			}
 			for($i = 0; $i < count($this->cc); $i++) {
-				$this->QueueMail(addslashes($this->cc[$i][0]), addslashes($this->cc[$i][1]), addslashes($this->From), addslashes($this->FromName), addslashes($this->Subject), addslashes($this->Body));
+				$mailQueueDAO->Create(addslashes($this->cc[$i][0]), addslashes($this->cc[$i][1]), addslashes($this->From), addslashes($this->FromName), addslashes($this->Subject), addslashes($this->Body), addslashes($this->CharSet));
 			}
 			for($i = 0; $i < count($this->bcc); $i++) {
-				$this->QueueMail(addslashes($this->bcc[$i][0]), addslashes($this->bcc[$i][1]), addslashes($this->From), addslashes($this->FromName), addslashes($this->Subject), addslashes($this->Body));
+				$mailQueueDAO->Create(addslashes($this->bcc[$i][0]), addslashes($this->bcc[$i][1]), addslashes($this->From), addslashes($this->FromName), addslashes($this->Subject), addslashes($this->Body), addslashes($this->CharSet));
 			}
 			return true;
 		} else {
 			return parent::Send();
 		}
-	}
-
-	/**
-	* Adds the mail to the queue.
-	* @access private
-	* @return boolean whether the mail was queued successfully.
-	* @since  AChecker 0.2
-	* @author Joel Kronenberg
-	*/
-	function QueueMail($to_email, $to_name, $from_email, $from_name, $subject, $body) {
-		global $db;
-		$sql = "INSERT INTO ".TABLE_PREFIX."mail_queue VALUES (NULL, '$to_email', '$to_name', '$from_email', '$from_name', '".addslashes($this->CharSet)."', '$subject', '$body')";
-		return mysql_query($sql, $db);
 	}
 
 	/**
@@ -131,9 +121,13 @@ class ACheckerMailer extends PHPMailer {
 			$mail_ids .= $row['mail_id'].',';
 		}
 		if ($mail_ids) {
+			include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php')
+			$mailQueueDAO = new MailQueueDAO();
+
 			$mail_ids = substr($mail_ids, 0, -1); // remove the last comma
-			$sql = "DELETE FROM ".TABLE_PREFIX."mail_queue WHERE mail_id IN ($mail_ids)";
-			mysql_query($sql, $db);
+			$mailQueueDAO->DeleteByIDs($mail_ids);
+//			$sql = "DELETE FROM ".TABLE_PREFIX."mail_queue WHERE mail_id IN ($mail_ids)";
+//			mysql_query($sql, $db);
 		}
 	}
 
