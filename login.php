@@ -13,7 +13,7 @@
 define('AC_INCLUDE_PATH', 'include/');
 require (AC_INCLUDE_PATH.'vitals.inc.php');
 
-require(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
+require_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
 
 $usersDAO = new UsersDAO();
 

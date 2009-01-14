@@ -18,7 +18,7 @@ if (isset($_POST['cancel'])) {
 	header('Location: index.php');
 	exit;
 } else if (isset($_POST['submit'])) {
-	require(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
+	require_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
 	$usersDAO = new UsersDAO();
 	
 	/* password check: password is verified front end by javascript. here is to handle the errors from javascript */

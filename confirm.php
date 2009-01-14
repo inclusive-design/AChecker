@@ -14,7 +14,7 @@ $_user_location = 'public';
 
 define('AC_INCLUDE_PATH', 'include/');
 require(AC_INCLUDE_PATH.'vitals.inc.php');
-require(AC_INCLUDE_PATH.'classes/DAO/UsersDAO.class.php');
+require_once(AC_INCLUDE_PATH.'classes/DAO/UsersDAO.class.php');
 
 if (isset($_POST['cancel'])) {
 	$msg->addFeedback('CANCELLED');

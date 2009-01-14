@@ -47,7 +47,7 @@ class User {
 	*/
 	function getUserName()
 	{
-    require(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
+    require_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
     $usersDAO = new UsersDAO();
     
     $row = $usersDAO->getUserByID($this->userID);
