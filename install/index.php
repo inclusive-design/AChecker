@@ -239,7 +239,7 @@ $not_as_good = FALSE;
 		<div id=''>
 			<form action="install.php" method="post" name="form">
 			<input type="hidden" name="new_version" value="<?php echo $new_version; ?>" />
-			<input type="submit" class="button" value="  Install  " name="next" disabled="true" />
+			<input type="submit" class="button" value="  Install  " name="next" disabled="disabled" />
 			</form>
 		</div>
 		</td>
@@ -258,8 +258,8 @@ $not_as_good = FALSE;
 	<tr>
 		<td align="right" class="row1" nowrap="nowrap"><strong>Upgrade an Existing Installation &raquo;</strong></td>
 		<td class="row1" width="150" align="center">
-		<input type="button" class="button" value="Upgrade" name="next" disabled="true"/>
-		</form></td>
+			<input type="button" class="button" value="Upgrade" name="next" disabled="disabled"/>
+		</td>
 	</tr>
 	</table>
 <?php else: ?>

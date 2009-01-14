@@ -75,7 +75,7 @@ class ACheckerMailer extends PHPMailer {
 		// for each bcc or to or cc
 		if ($_config['enable_mail_queue'] && !$this->attachment) {
 //			global $db;
-			include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php')
+			include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
 			$mailQueueDAO = new MailQueueDAO();
 			
 			for ($i = 0; $i < count($this->to); $i++) {
@@ -121,7 +121,7 @@ class ACheckerMailer extends PHPMailer {
 			$mail_ids .= $row['mail_id'].',';
 		}
 		if ($mail_ids) {
-			include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php')
+			include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
 			$mailQueueDAO = new MailQueueDAO();
 
 			$mail_ids = substr($mail_ids, 0, -1); // remove the last comma

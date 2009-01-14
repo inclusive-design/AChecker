@@ -50,7 +50,7 @@ function encrypt_password() {
 
 				<tr>
 					<td colspan="2"><p class="submit_button">
-						<input type="submit" name="submit" align="center" value="<?php echo _AC('login'); ?>" class="submit" onclick="return encrypt_password();" /> 
+						<input type="submit" name="submit" value="<?php echo _AC('login'); ?>" class="submit" onclick="return encrypt_password();" /> 
 					</td>
 				</tr>
 			</table>

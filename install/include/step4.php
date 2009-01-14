@@ -92,6 +92,5 @@ if (isset($errors)) {
 	}
 }
 
+echo '</form>';
 ?>
-
-</form>

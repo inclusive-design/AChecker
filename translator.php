@@ -153,7 +153,6 @@ if (isset($_REQUEST["save"]))
 		<div class="row">
 			<input type="submit" name="search" value="<?php echo _AC('search_phase'); ?>" class="submit" /> 
 		</div>
-	</div>
 	</fieldset>
 </form>
 
