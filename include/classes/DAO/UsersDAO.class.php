@@ -222,7 +222,7 @@ class UsersDAO extends DAO {
 	*/
 	function getUserByEmail($email)
 	{
-    $sql = 'SELECT * FROM '.TABLE_PREFIX.'users WHERE email='.$email;
+    $sql = "SELECT * FROM ".TABLE_PREFIX."users WHERE email='".$email."'";
     if ($rows = $this->execute($sql))
     {
     	return $rows[0];
