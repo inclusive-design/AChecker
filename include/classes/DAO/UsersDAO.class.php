@@ -214,6 +214,22 @@ class UsersDAO extends DAO {
   }
 
 	/**
+	* Return user information by given email
+	* @access  public
+	* @param   email
+	* @return  user row
+	* @author  Cindy Qi Li
+	*/
+	function getUserByEmail($email)
+	{
+    $sql = 'SELECT * FROM '.TABLE_PREFIX.'users WHERE email='.$email;
+    if ($rows = $this->execute($sql))
+    {
+    	return $rows[0];
+    }
+  }
+
+  /**
 	* Return given user's status
 	* @access  public
 	* @param   user id

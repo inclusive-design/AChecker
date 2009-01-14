@@ -1847,7 +1847,12 @@ INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_PASSWORD_MISMATCH','
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_PASSWORD_LENGTH','Password must be at least 8 characters long.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_PASSWORD_CHARS','The password must contain letters, numbers, and symbols.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_REG_THANKS_CONFIRM','Thank-you for registering. Please follow the instructions in the email we sent you on how to confirm your account. You will need to confirm your account before you can login.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AT_FEEDBACK_CANCELLED','Successfully cancelled without any changes.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AT_FEEDBACK_CONFIRM_GOOD','Your email address has been confirmed successfully.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AT_ERROR_CONFIRM_BAD','Your email address and account could not be confirmed.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AT_FEEDBACK_CONFIRMATION_SENT','An email confirmation message has been sent.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AT_FEEDBACK_ACCOUNT_CONFIRMED','Account has been confirmed.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AT_ERROR_EMAIL_NOT_FOUND','No account found with that email address.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
@@ -1874,6 +1879,10 @@ INSERT INTO `language_text` VALUES ('en', '_template','cancel','Cancel',now(),''
 INSERT INTO `language_text` VALUES ('en', '_template','sent_via_achecker','Sent via an AChecker system at %s',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','achecker_home','AChecker Home',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','Suggestion','suggestion',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','email_confirmation_subject','Email Confirmation',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','email_confirmation_message','You have registered for an account on %1s. Please finish the registration process by confirming your email address by using the following link: %2s .',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','send_confirmation','Enter your email address below and the account confirmation message will be resent.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','send','Send',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 
 INSERT INTO `language_text` VALUES ('en', '_template','required_field','Required Field',now(),'');

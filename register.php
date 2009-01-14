@@ -13,6 +13,7 @@
 define('AC_INCLUDE_PATH', 'include/');
 require (AC_INCLUDE_PATH.'vitals.inc.php');
 
+define ('AC_EMAIL_CONFIRMATION', 1);
 if (isset($_POST['cancel'])) {
 	header('Location: index.php');
 	exit;
@@ -47,9 +48,9 @@ if (isset($_POST['cancel'])) {
 			if (defined('AC_EMAIL_CONFIRMATION') && AC_EMAIL_CONFIRMATION) {
 				$msg->addFeedback('REG_THANKS_CONFIRM');
 	
-				$code = substr(md5($_POST['email'] . $now . $m_id), 0, 10);
+				$code = substr(md5($_POST['email'] . $now . $user_id), 0, 10);
 				
-				$confirmation_link = $_base_href . 'confirm.php?id='.$m_id.SEP.'m='.$code;
+				$confirmation_link = $_base_href . 'confirm.php?id='.$user_id.SEP.'m='.$code;
 	
 				/* send the email confirmation message: */
 				require(AC_INCLUDE_PATH . 'classes/phpmailer/acheckermailer.class.php');
@@ -58,7 +59,7 @@ if (isset($_POST['cancel'])) {
 				$mail->From     = $_config['contact_email'];
 				$mail->AddAddress($_POST['email']);
 				$mail->Subject = SITE_NAME . ' - ' . _AC('email_confirmation_subject');
-				$mail->Body    = _AC('email_confirmation_message', SITE_NAME, $confirmation_link);
+				$mail->Body    = _AC('email_confirmation_message', SITE_NAME, $confirmation_link)."\n\n";
 	
 				$mail->Send();
 			} 
