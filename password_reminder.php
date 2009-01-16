@@ -85,8 +85,6 @@ else if (isset($_POST['form_password_reminder']))
 	/* check if already visited (possibley add a "last login" field to members table)... if password was changed, won't work anyway. do later. */
 
 	//check for valid hash
-	$sql	= "SELECT password, email FROM ".TABLE_PREFIX."members WHERE member_id=".intval($_REQUEST['id']);
-	$result = mysql_query($sql,$db);
 	if ($row = $usersDAO->getUserByID(intval($_REQUEST['id']))) 
 	{
 		$email = $row['email'];
