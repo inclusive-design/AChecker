@@ -1917,7 +1917,7 @@ The link will become invalid after %3$s days.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','password_forgot','Forgot Password',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','password_change_confirm','Your password on %s has been changed successfully. Go to %s to login.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','password_blurb','Enter your account\'s email address below and an email with instructions on retrieving your password will be sent to you. The email address must be the same as the one you used for registration.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','password_new_blurb','Enter a new password for your account.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 
 INSERT INTO `language_text` VALUES ('en', '_template','required_field','Required Field',now(),'');

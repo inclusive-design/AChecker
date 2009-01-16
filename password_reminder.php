@@ -102,7 +102,7 @@ else if (isset($_POST['form_password_reminder']))
 			$savant->assign('id', $_REQUEST['id']);
 			$savant->assign('g', $_REQUEST['g']);
 			$savant->assign('h', $_REQUEST['h']);
-			$savant->display('password_change.tmpl.php');
+			$savant->display('change_password.tmpl.php');
 		}
 	} 
 	else 
