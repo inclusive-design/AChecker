@@ -100,7 +100,7 @@ if (isset($_POST['submit']))
 
 				$msg->addFeedback('CONFIRM_EMAIL');
 			} else {
-				$msg->addFeedback('CANCELLED');
+				$msg->addFeedback('CHANGE_TO_SAME_EMAIL');
 			}
 		} else {
 

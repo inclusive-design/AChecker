@@ -1858,6 +1858,10 @@ INSERT INTO `language_text` VALUES ('en', '_msgs','AC_INFOS_INVALID_USER','You m
 INSERT INTO `language_text` VALUES ('en', '_INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_PASSWORD_CHANGED','Password changed successfully.',now(),'');
 msgs','AC_ERROR_WRONG_PASSWORD','Incorrect password.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_CONFIRM_EMAIL','An email message has been sent to the new email address you specified. You must follow the instructions in that email for the changes to take effect.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_ACTION_COMPLETED_SUCCESSFULLY','Action completed successfully.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 
