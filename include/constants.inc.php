@@ -35,6 +35,9 @@ define('AC_STATUS_ENABLED', 1);
 define('AC_STATUS_DEFAULT', 2);
 define('AC_STATUS_UNCONFIRMED', 3);
 
+/* how many days until the password reminder link expires */
+define('AC_PASSWORD_REMINDER_EXPIRY', 2);
+
 /* how long cache objects can persist	*/
 /* in seconds. should be low initially, but doesn't really matter. */
 /* in practice should be 0 (ie. INF)    */
