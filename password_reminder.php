@@ -32,10 +32,10 @@ else if (isset($_POST['form_password_reminder']))
 		//date link was generated (# days since epoch)
 		$gen = intval(((time()/60)/60)/24);
 
-		$hash = sha1($row['member_id'] + $gen + $row['password']);
+		$hash = sha1($row['user_id'] + $gen + $row['password']);
 		$hash_bit = substr($hash, 5, 15);
 		
-		$change_link = $_base_href.'password_reminder.php?id='.$row['member_id'].'&g='.$gen.'&h='.$hash_bit;
+		$change_link = $_base_href.'password_reminder.php?id='.$row['user_id'].'&g='.$gen.'&h='.$hash_bit;
 		if($row['first_name'] != ''){
 			$reply_name = $row['first_name'];
 		}else{
