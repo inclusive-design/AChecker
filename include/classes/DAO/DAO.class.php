@@ -60,8 +60,6 @@ class DAO {
 		$sql = trim($sql);
 		$result = mysql_query($sql, $this->db) or die(mysql_error());
 
-		if (mysql_affected_rows() == 0) return false;
-		
 		// for 'select' SQL, return retrieved rows
 		if (strtolower(substr($sql, 0, 6)) == 'select' && mysql_num_rows($result) > 0) 
 		{
@@ -72,7 +70,7 @@ class DAO {
 
 			return $rows;
 		}
-		
+
 		return true;
 	}
 

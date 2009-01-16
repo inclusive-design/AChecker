@@ -47,7 +47,21 @@ class MailQueueDAO extends DAO {
 	}
 
 	/**
-	* Create a record
+	* Return all records
+	* @access  public
+	* @param   none
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function GetAll()
+	{
+		$sql = "SELECT * FROM ".TABLE_PREFIX."mail_queue"; 
+		
+		return $this->execute($sql);
+	}
+
+	/**
+	* Delete a record by mail ids
 	* @access  public
 	* @param   $mids : mail IDs, for example: "1, 2, 3"
 	* @return  true: if successful

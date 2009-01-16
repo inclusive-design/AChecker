@@ -99,4 +99,16 @@ $_pages['password_reminder.php']['parent']    = 'login.php';
 $_pages['checker/suggestion.php']['title_var'] = 'Suggestion';
 $_pages['checker/suggestion.php']['parent']    = AC_NAV_PUBLIC;
 
+$_pages['profile/index.php']['title_var'] = 'Profile';
+$_pages['profile/index.php']['parent']    = AC_NAV_TOP;
+$_pages['profile/index.php']['children']  = array_merge(array('profile/change_password.php', 
+                                                              'profile/change_email.php'), 
+                                                        isset($_pages['profile/index.php']['children']) ? $_pages['profile/index.php']['children'] : array());
+
+$_pages['profile/change_password.php']['title_var'] = 'change_password';
+$_pages['profile/change_password.php']['parent']    = 'profile/index.php';
+
+$_pages['profile/change_email.php']['title_var'] = 'change_email';
+$_pages['profile/change_email.php']['parent']    = 'profile/index.php';
+
 ?>

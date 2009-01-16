@@ -11,6 +11,46 @@
 /************************************************************************/
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
+/* available header.tmpl.php variables:
+ * $this->lang_code			the ISO language code
+ * SITE_NAME				the site name from the config file
+ * $this->page_title		the name of this page to use in the <title>
+ * top_level_pages           array(array('url', 'title'))     the top level pages. ATutor default creates tabs.
+ * current_top_level_page    string                           full url to the current top level page in "top_leve_pages"
+ * path                      array(array('url', 'title'))     the breadcrumb path to the current page.
+ * sub_menus                 array(array('url', 'title'))     the sub level menus.
+ * current_page              string                           full url to the current sub level page in the "sub_level_pages"
+ * section_title             string                           the name of the current section. either name of the course, administration, my start page, etc.
+ * page_title                string                           the title of the current page.
+ * user_name                 string                           name of login user
+ * $this->lang_charset		the ISO language character set
+ * $this->base_path			the absolute path to this atutor installation
+ * $this->theme				the directory name of the current theme
+ * $this->img				the theme image
+ * $this->custom_head		the custom head script used in <head> section
+ * $this->$onload			the html body onload event
+
+ * $this->content_base_href	the <base href> to use for this page
+ * $this->rtl_css			if set, the path to the RTL style sheet
+ * $this->icon			the path to a course icon
+ * $this->banner_style		-deprecated-
+ * $this->base_href			the full url to this atutor installation
+ * $this->onload			javascript onload() calls
+ * $this->img				the absolute path to this theme's images/ directory
+ * $this->sequence_links	associative array of 'previous', 'next', and/or 'resume' links
+ * $this->path				associative array of path to this page: aka bread crumbs
+ * $this->rel_url			the relative url from the installation root to this page
+ * $this->nav_courses		associative array of this user's enrolled courses
+ * $this->section_title		the title of this section (course, public, admin, my start page)
+ * $this->top_level_pages	associative array of the top level navigation
+ * $this->current_top_level_page	the full path to the current top level page with file name
+ * $this->sub_level_pages			associate array of sub level navigation
+ * $this->back_to_page				if set, the path and file name to the part of this page (if parent is not a top level nav)
+ * $this->current_sub_level_page	the full path to the current sub level page with file name
+ * $this->guide				the full path and file name to the guide page
+ * ======================================
+ * back_to_page              array('url', 'title')            the link back to the part of the current page, if needed.
+ */
 
 $lang_charset = "UTF-8";
 
@@ -112,10 +152,6 @@ $starttime = $mtime;
 		</h1>
 	</div>
 
-<?php 
-if (count($this->top_level_pages) > 1) 
-{
-?>
 	<div id="topnavlistcontainer">
 	<!-- the main navigation. in our case, tabs -->
 		<ul id="topnavlist">
@@ -133,12 +169,32 @@ if (count($this->top_level_pages) > 1)
 			<?php endforeach; ?>
 		</ul>
 	</div>
-<?php 
-}
-?>
 
-<div>
-	<!-- the bread crumbs -->
+	<!-- the sub navigation -->
+	<div id="sub-navigation">
+	<?php if ($this->sub_menus): ?>
+		<?php if (isset($this->back_to_page)): ?>
+			<a href="<?php echo $this->back_to_page['url']; ?>" id="back-to"><?php echo _AC('back_to').' '.$this->back_to_page['title']; ?></a> | 
+		<?php endif; ?>
+
+		<?php $num_pages = count($this->sub_menus); ?>
+		<?php for ($i=0; $i<$num_pages; $i++): ?>
+			<?php if ($this->sub_menus[$i]['url'] == $this->current_page): ?>
+				<strong><?php echo $this->sub_menus[$i]['title']; ?></strong>
+			<?php else: ?>
+				<a href="<?php echo $this->sub_menus[$i]['url']; ?>"><?php echo $this->sub_menus[$i]['title']; ?></a>
+			<?php endif; ?>
+			<?php if ($i < $num_pages-1): ?>
+				|
+			<?php endif; ?>
+		<?php endfor; ?>
+	<?php else: ?>
+		&nbsp;
+	<?php endif; ?>
+	</div>
+
+<!--<div>
+	 the bread crumbs 
 	<div id="breadcrumbs">
 		<?php foreach ($this->path as $page){ ?>
 			<a href="<?php echo $page['url']; ?>"><?php echo $page['title']; ?></a> > 
@@ -149,5 +205,6 @@ if (count($this->top_level_pages) > 1)
 		<a href="<?php echo $this->guide; ?>" id="guide" onclick="poptastic('<?php echo $this->guide; ?>'); return false;" target="_new"><em><?php echo $this->page_title; ?></em></a>
 	<?php } ?>
 </div>
+-->
 
 <?php global $msg; $msg->printAll();?>

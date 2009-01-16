@@ -37,17 +37,26 @@ $_all_pages =  $menu->getAllPages();
 
 $_current_root_page = $menu->getRootPage();
 
-$_breadcrumb_path = $menu->getBreadcrumbPath();
+//$_breadcrumb_path = $menu->getBreadcrumbPath();
 
 $current_page = $menu->getCurrentPage();
+
+$_sub_menus = $menu->getSubMenus();
+//debug($_base_path.$current_page);
+//debug($_sub_menus);
+//exit;
 
 //debug($_top_level_pages);
 //debug($_all_pages);
 //debug($_current_root_page);
 //debug($_current_page);
+
+//$savant->assign('path', $_breadcrumb_path);
 $savant->assign('top_level_pages', $_top_level_pages);
 $savant->assign('current_top_level_page', $_current_root_page);
-$savant->assign('path', $_breadcrumb_path);
+$savant->assign('sub_menus', $_sub_menus);
+$savant->assign('back_to_page', $menu->getBackToPage());
+$savant->assign('current_page', $_base_path.$current_page);
 
 $savant->assign('page_title', _AC($_all_pages[$current_page]['title_var']));
 

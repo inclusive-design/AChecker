@@ -1847,14 +1847,17 @@ INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_PASSWORD_MISMATCH','
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_PASSWORD_LENGTH','Password must be at least 8 characters long.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_PASSWORD_CHARS','The password must contain letters, numbers, and symbols.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_REG_THANKS_CONFIRM','Thank-you for registering. Please follow the instructions in the email we sent you on how to confirm your account. You will need to confirm your account before you can login.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AT_FEEDBACK_CANCELLED','Successfully cancelled without any changes.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AT_FEEDBACK_CONFIRM_GOOD','Your email address has been confirmed successfully.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AT_ERROR_CONFIRM_BAD','Your email address and account could not be confirmed.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AT_FEEDBACK_CONFIRMATION_SENT','An email confirmation message has been sent.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AT_FEEDBACK_ACCOUNT_CONFIRMED','Account has been confirmed.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AT_ERROR_EMAIL_NOT_FOUND','No account found with that email address.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_CANCELLED','Successfully cancelled without any changes.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_CONFIRM_GOOD','Your email address has been confirmed successfully.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_CONFIRM_BAD','Your email address and account could not be confirmed.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_CONFIRMATION_SENT','An email confirmation message has been sent.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_ACCOUNT_CONFIRMED','Account has been confirmed.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_EMAIL_NOT_FOUND','No account found with that email address.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_PROFILE_UPDATED','Your Profile was successfully updated.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_INFOS_INVALID_USER','You must <a href="login.php">login</a> to use this section.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_PASSWORD_CHANGED','Password changed successfully.',now(),'');
+msgs','AC_ERROR_WRONG_PASSWORD','Incorrect password.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_CONFIRM_EMAIL','An email message has been sent to the new email address you specified. You must follow the instructions in that email for the changes to take effect.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 
@@ -1864,9 +1867,10 @@ INSERT INTO `language_text` VALUES ('en', '_template','register','Register',now(
 INSERT INTO `language_text` VALUES ('en', '_template','welcome','Welcome',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','login_text','Enter the Login Name (or email) and Password you chose at registration.<br /><br /><br />Not registered yet? <a href="register.php" >Register</a><br /><br />',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','login_name_or_email','Login Name or Email',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_template','password','Password',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','login_name','Login Name',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_template','password_again','Password Again',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','password','Password',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','new_password','New Password',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','password_again','New Password Again',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','email_address','Email Address',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','first_name','First Name',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','last_name','Last Name',now(),'');
@@ -1883,6 +1887,15 @@ INSERT INTO `language_text` VALUES ('en', '_template','email_confirmation_subjec
 INSERT INTO `language_text` VALUES ('en', '_template','email_confirmation_message','You have registered for an account on %1s. Please finish the registration process by confirming your email address by using the following link: %2s .',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','send_confirmation','Enter your email address below and the account confirmation message will be resent.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','send','Send',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','profile','Profile',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','edit_profile','Edit Profile',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','save','Save',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','change_password','Change Password',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','change_email','Change Email',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','back_to','Back To: ',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','password_old','Old Password',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','email_confirmation_message2','To finish changing your account\'s email address on %1s, please confirm your email address by using the following link: %2s .',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 
 INSERT INTO `language_text` VALUES ('en', '_template','required_field','Required Field',now(),'');

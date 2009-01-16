@@ -13,7 +13,6 @@
 define('AC_INCLUDE_PATH', 'include/');
 require (AC_INCLUDE_PATH.'vitals.inc.php');
 
-define ('AC_EMAIL_CONFIRMATION', 1);
 if (isset($_POST['cancel'])) {
 	header('Location: index.php');
 	exit;

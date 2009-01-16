@@ -572,9 +572,14 @@ h1 {
 }
 
 div#sub-navigation {
-	padding: 3px;
 	color: #555;
-	float:left;
+	background-color:#E6E6E6; 
+	padding-left: 4em;
+	padding-top: 5px; 
+	font-size:0.85em; 
+	border-bottom:1px solid black;
+	margin-bottom: 1em; 
+	height:2em;
 }
 
 div#sub-navigation strong {
@@ -1442,7 +1447,6 @@ div#topnavlistcontainer {
 	margin-left:auto; 
 	margin-right:auto;
 	border: thin #CCCCCC solid;
-	margin-bottom: 20px;
 	line-height:100%;
 	background-color: #365D95;
 /*  background-color: #1D2326;*/

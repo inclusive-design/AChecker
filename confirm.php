@@ -22,7 +22,37 @@ if (isset($_POST['cancel'])) {
 	exit;
 }
 
-if (isset($_GET['id'], $_GET['m'])) 
+if (isset($_GET['e'], $_GET['id'], $_GET['m'])) 
+{
+	$id = intval($_GET['id']);
+	$m  = $_GET['m'];
+	$e  = $addslashes($_GET['e']);
+
+	$usersDAO = new UsersDAO();
+	
+	if ($row = $usersDAO->getUserByID($id)) 
+	{
+		$code = substr(md5($_GET['e'] . $row['creation_date'] . $id), 0, 10);
+
+		if ($code == $m) 
+		{
+			$usersDAO->setEmail($id, $e);
+			$msg->addFeedback('CONFIRM_GOOD');
+
+			header('Location: '.$_base_href.'index.php');
+			exit;
+		} 
+		else 
+		{
+			$msg->addError('CONFIRM_BAD');
+		}
+	} 
+	else 
+	{
+		$msg->addError('CONFIRM_BAD');
+	}
+}
+else if (isset($_GET['id'], $_GET['m'])) 
 {
 	$id = intval($_GET['id']);
 	$m  = $_GET['m'];
@@ -39,7 +69,8 @@ if (isset($_GET['id'], $_GET['m']))
 			$usersDAO->setStatus($id, AC_STATUS_ENABLED);
 
 			$msg->addFeedback('CONFIRM_GOOD');
-			$_REQUEST["user_id"] = $id;
+			header('Location: '.$_base_href.'login.php');
+			exit;
 		} 
 		else 
 		{

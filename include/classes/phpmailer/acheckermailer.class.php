@@ -73,9 +73,9 @@ class ACheckerMailer extends PHPMailer {
 
 		// if this email has been queued then don't send it. instead insert it in the db
 		// for each bcc or to or cc
-		if ($_config['enable_mail_queue'] && !$this->attachment) {
-//			global $db;
-			include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
+		if ($_config['enable_mail_queue'] && !$this->attachment) 
+		{
+			require_once(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
 			$mailQueueDAO = new MailQueueDAO();
 			
 			for ($i = 0; $i < count($this->to); $i++) {
@@ -103,31 +103,37 @@ class ACheckerMailer extends PHPMailer {
 	function SendQueue() {
 		global $db;
 
+		require_once(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
+		$mailQueueDAO = new MailQueueDAO();
+		$rows = $mailQueueDAO->getAll();
+
 		$mail_ids = '';
-		$sql = "SELECT * FROM ".TABLE_PREFIX."mail_queue";
-		$result = mysql_query($sql, $db);
-		while ($row = mysql_fetch_assoc($result)) {
-			$this->ClearAllRecipients();
-
-			$this->AddAddress($row['to_email'], $row['to_name']);
-			$this->From     = $row['from_email'];
-			$this->FromName = $row['from_name'];
-			$this->CharSet  = $row['char_set'];
-			$this->Subject  = $row['subject'];
-			$this->Body     = $row['body'];
-
-			parent::Send();
-
-			$mail_ids .= $row['mail_id'].',';
-		}
-		if ($mail_ids) {
-			include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
-			$mailQueueDAO = new MailQueueDAO();
-
-			$mail_ids = substr($mail_ids, 0, -1); // remove the last comma
-			$mailQueueDAO->DeleteByIDs($mail_ids);
-//			$sql = "DELETE FROM ".TABLE_PREFIX."mail_queue WHERE mail_id IN ($mail_ids)";
-//			mysql_query($sql, $db);
+		
+		if (is_array($rows))
+		{
+			foreach ($rows as $id => $row) 
+			{
+				$this->ClearAllRecipients();
+	
+				$this->AddAddress($row['to_email'], $row['to_name']);
+				$this->From     = $row['from_email'];
+				$this->FromName = $row['from_name'];
+				$this->CharSet  = $row['char_set'];
+				$this->Subject  = $row['subject'];
+				$this->Body     = $row['body'];
+	
+				parent::Send();
+	
+				$mail_ids .= $row['mail_id'].',';
+			}
+			if ($mail_ids) 
+			{
+				include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
+				$mailQueueDAO = new MailQueueDAO();
+	
+				$mail_ids = substr($mail_ids, 0, -1); // remove the last comma
+				$mailQueueDAO->DeleteByIDs($mail_ids);
+			}
 		}
 	}
 

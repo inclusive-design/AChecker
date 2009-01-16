@@ -3,7 +3,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
+/* Adaptive Technology Resource Centre / University of Toronto          */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -174,7 +174,6 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
 	include(AC_INCLUDE_PATH.'classes/User.class.php');
 	$_current_user = new User($_SESSION['user_id']);
 }
-
 /***** end of initialize user instance *****/
 
  /**

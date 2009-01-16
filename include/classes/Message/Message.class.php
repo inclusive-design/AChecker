@@ -121,7 +121,7 @@ class Message {
 		
 		if (count($_result) > 0) {
 			$this->savant->assign('item', $_result);	// pass translated payload to savant var for processing
-
+			
 			if ($type == 'confirm') {
 				$this->savant->assign('hidden_vars', $hidden_vars);
 				$this->savant->assign('button_yes_text', $button_yes_text);
