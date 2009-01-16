@@ -493,7 +493,7 @@ table.tabbed-table a, table.tabbed-table a:visited, table.tabbed-table a:hover {
 }
 #banner {
 	border: thin #365D95 solid;
-	margin: 1.5em 2em;
+	margin: 1.5em 1em 0em 1em;
 	border-bottom: black 1px solid; 
 	padding-top:4px;
 	padding-left:4px; 
