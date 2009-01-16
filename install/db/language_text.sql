@@ -1859,7 +1859,11 @@ INSERT INTO `language_text` VALUES ('en', '_INSERT INTO `language_text` VALUES (
 msgs','AC_ERROR_WRONG_PASSWORD','Incorrect password.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_CONFIRM_EMAIL','An email message has been sent to the new email address you specified. You must follow the instructions in that email for the changes to take effect.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_ACTION_COMPLETED_SUCCESSFULLY','Action completed successfully.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_CHANGE_TO_SAME_EMAIL','The email address is same as what you currently have.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_SENDING_ERROR','There was an error sending the email message.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_CONFIRM_EMAIL2','An email with instructions on retrieving your password has been sent.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_INVALID_LINK','The link is either invalid or expired.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_PASSWORD_CHANGED','Password changed successfully. You may now login using the new password.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
@@ -1899,6 +1903,20 @@ INSERT INTO `language_text` VALUES ('en', '_template','change_email','Change Ema
 INSERT INTO `language_text` VALUES ('en', '_template','back_to','Back To: ',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','password_old','Old Password',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','email_confirmation_message2','To finish changing your account\'s email address on %1s, please confirm your email address by using the following link: %2s .',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','password_request2','Dear %1$s,
+
+Your login name is %1$s.
+
+To set a new password, follow the link below.
+
+%4$s
+
+(If this link does not take you to the site, copy and paste it into the address bar of your internet browser)
+
+The link will become invalid after %3$s days.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','password_forgot','Forgot Password',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','password_change_confirm','Your password on %s has been changed successfully. Go to %s to login.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','password_blurb','Enter your account\'s email address below and an email with instructions on retrieving your password will be sent to you. The email address must be the same as the one you used for registration.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 
