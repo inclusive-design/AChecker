@@ -1452,7 +1452,7 @@ INSERT INTO `language_text` VALUES ('en', '_guideline','_GNAME_3','Stanca Act (I
 INSERT INTO `language_text` VALUES ('en', '_guideline','_GNAME_4','Web Content Accessibility Guidelines (WCAG), Version 1.0, Level A','2008-11-24 13:02:53','');
 INSERT INTO `language_text` VALUES ('en', '_guideline','_GNAME_5','Web Content Accessibility Guidelines (WCAG), Version 1.0, Level AA','2008-11-24 13:02:53','');
 INSERT INTO `language_text` VALUES ('en', '_guideline','_GNAME_6','Web Content Accessibility Guidelines (WCAG), Version 1.0, Level AAA','2008-11-24 13:02:53','');
-INSERT INTO `language_text` VALUES ('en', '_guideline','_GNAME_7','Web Content Accessibility Guidelines (WCAG), Version 2.0, Level 2','2008-11-24 13:02:53','');
+INSERT INTO `language_text` VALUES ('en', '_guideline','_GNAME_7','Web Content Accessibility Guidelines (WCAG), Version 2.0, Level 1','2008-11-24 13:02:53','');
 INSERT INTO `language_text` VALUES ('en', '_guideline','_GNAME_8','Web Content Accessibility Guidelines (WCAG), Version 2.0, Level 2','2008-11-24 13:02:53','');
 INSERT INTO `language_text` VALUES ('en', '_guideline','_GNAME_9','Web Content Accessibility Guidelines (WCAG), Version 2.0, Level 3','2008-11-24 13:02:53','');
 INSERT INTO `language_text` VALUES ('en', '_guideline','_GROUPNAME_1','Level 1','2008-11-24 13:03:22','');
@@ -1864,7 +1864,7 @@ INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_SENDING_ERROR','Ther
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_CONFIRM_EMAIL2','An email with instructions on retrieving your password has been sent.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_INVALID_LINK','The link is either invalid or expired.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_PASSWORD_CHANGED','Password changed successfully. You may now login using the new password.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_GUIDELINE_NOT_FOUND','Guideline not found.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
@@ -1918,6 +1918,38 @@ INSERT INTO `language_text` VALUES ('en', '_template','password_forgot','Forgot 
 INSERT INTO `language_text` VALUES ('en', '_template','password_change_confirm','Your password on %s has been changed successfully. Go to %s to login.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','password_blurb','Enter your account\'s email address below and an email with instructions on retrieving your password will be sent to you. The email address must be the same as the one you used for registration.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','password_new_blurb','Enter a new password for your account.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','standard_guidelines','Standard Guidelines',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','my_guidelines','My Guidelines',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','enabled','Enabled',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','disabled','Disabled',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','title','Title',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','status','Status',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','enable','Enable',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','disable','Disable',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','view','View',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','create_guideline','Create Guideline',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','view_guideline','View Guideline',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','abbr','Abbreviation',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','long_name','Long Name',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','published_date','Published Date',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','earlid','URL',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','open_to_public','Open To Public',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','yes','Yes',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','no','No',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','checks','Checks',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','html_tag','HTML Tag To Check',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','error_type','Error Type',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','status','Status',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','yyyy-mm-dd','yyyy-mm-dd',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','none_found','None Found.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','add_checks','Add Checks',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','expand_add_checks','Expand Add Checks',now(),'');
+
+INSERT INTO `language_text` VALUES ('en', '_template','edit','Edit',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','delete','Delete',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 
 INSERT INTO `language_text` VALUES ('en', '_template','required_field','Required Field',now(),'');

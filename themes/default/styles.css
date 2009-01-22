@@ -678,11 +678,10 @@ a#editor-link.on {
 /* for data tables */
 table.data {
 	clear:right;
-	width: 60%; 
+	width: 90%; 
 	margin-left: auto; 
 	margin-right: auto;
 	text-align: left;
-	white-space: nowrap;
 } 
 
 table.data th {

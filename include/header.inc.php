@@ -37,11 +37,13 @@ $_all_pages =  $menu->getAllPages();
 
 $_current_root_page = $menu->getRootPage();
 
-//$_breadcrumb_path = $menu->getBreadcrumbPath();
+//$_breadcrumb_path = $menu->getPath();
 
 $current_page = $menu->getCurrentPage();
 
 $_sub_menus = $menu->getSubMenus();
+$back_to_page = $menu->getBackToPage();
+
 //debug($_base_path.$current_page);
 //debug($_sub_menus);
 //exit;
@@ -55,7 +57,7 @@ $_sub_menus = $menu->getSubMenus();
 $savant->assign('top_level_pages', $_top_level_pages);
 $savant->assign('current_top_level_page', $_current_root_page);
 $savant->assign('sub_menus', $_sub_menus);
-$savant->assign('back_to_page', $menu->getBackToPage());
+$savant->assign('back_to_page', $back_to_page);
 $savant->assign('current_page', $_base_path.$current_page);
 
 $savant->assign('page_title', _AC($_all_pages[$current_page]['title_var']));

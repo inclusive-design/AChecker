@@ -24,6 +24,24 @@ require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
 class LanguageTextDAO extends DAO {
 
 	/**
+	* Create a new entry
+	* @access  public
+	* @param   term : language term
+	*          lang : language code
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function Create($language_code, $variable, $term, $text, $context)
+	{
+		$sql = "INSERT INTO ".TABLE_PREFIX."language_text
+		        (`language_code`, `variable`, `term`, `text`, `revised_date`, `context`)
+		        VALUES
+		        ('".$language_code."', '".$variable."', '".$term."', '".$text."', now(), '".$context."')";
+
+		return $this->execute($sql);
+	}
+
+	/**
 	* Return message text of given term and language
 	* @access  public
 	* @param   term : language term

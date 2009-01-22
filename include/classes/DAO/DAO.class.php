@@ -58,7 +58,7 @@ class DAO {
 	{
 //		debug($sql);
 		$sql = trim($sql);
-		$result = mysql_query($sql, $this->db) or die(mysql_error());
+		$result = mysql_query($sql, $this->db) or die($sql . "<br />". mysql_error());
 
 		// for 'select' SQL, return retrieved rows
 		if (strtolower(substr($sql, 0, 6)) == 'select' && mysql_num_rows($result) > 0) 

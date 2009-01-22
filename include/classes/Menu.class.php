@@ -35,6 +35,7 @@ class Menu {
 	var $root_page;                           // root page relative to current page
 	var $breadcrumb_path = array();           // array of breadcrumb path
 	var $sub_menus;                           // array of sub-menus of current page
+	var $path;                                // array of all parent pages to current page, used for breadcrumb path and generating back to page
 	var $back_to_page;                        // string of parent page to go back to
 
 	/**
@@ -57,7 +58,8 @@ class Menu {
 		$this->setCurrentPage();
 		$this->sub_menus = $this->setSubMenus($this->current_page);   // loop recursively to set $this->submenus to the top parent of $this->current_page
 		$this->root_page = $this->setRootPage($this->current_page);  
-		$this->setBackToPage();  
+		$this->path = $this->setPath($this->current_page);
+		$this->back_to_page = $this->setBackToPage();  
 	}
 
 	/**
@@ -216,14 +218,16 @@ class Menu {
 	*/
 	private function setBackToPage() 
 	{
-		global $_base_path;
-
-		$parent_page = $this->pages[$this->current_page]['parent'];
-		
-		if (isset($parent_page) && !defined($parent_page))
-		{
-			$this->back_to_page = array('url' => $_base_path . $parent_page, 'title' => $this->getPageTitle($parent_page));
+		unset($this->path[0]);
+		if (isset($this->path[2]['url'], $this->sub_menus[0]['url']) && $this->path[2]['url'] == $this->sub_menus[0]['url']) {
+			$back_to_page = $this->path[3];
+		} else if (isset($this->path[1]['url'], $this->sub_menus[0]['url']) && $this->path[1]['url'] == $this->sub_menus[0]['url']) {
+			$back_to_page = isset($this->path[2]) ? $this->path[2] : null;
+		} else if (isset($this->path[1])) {
+			$back_to_page = $this->path[1];
 		}
+		
+		return $back_to_page;
 	}
 	
 	/**
@@ -359,33 +363,45 @@ class Menu {
 	}
 	
 	/**
-	 * Return array of breadcrumb path
-	 * @access  public
+	 * Return array of all parent items path to current page
+	 * this array is used to determine back to page 
+	 * @access  private
 	 * @return  array of breadcrumb path
 	 * @author  Cindy Qi Li
 	 */
-	public function getBreadcrumbPath()
+	public function setPath($page)
 	{
 		global $_base_path;
 
-		$parent_page = $this->pages[$this->current_page]['parent'];
+		$parent_page = $this->pages[$page]['parent'];
 
-		$page_title = $this->getPageTitle($this->current_page);
+		$page_title = $this->getPageTitle($page);
 
 		if (isset($parent_page) && defined($parent_page))
 		{
-			$path[] = array('url' => $_base_path . $this->current_page, 'title' => $page_title);
+			$path[] = array('url' => $_base_path . $page, 'title' => $page_title);
 		}
 		else if (isset($parent_page))
 		{
-			$path[] = array('url' => $_base_path . $this->current_page, 'title' => $page_title);
-			$path = array_merge((array) $path, get_path($parent_page));
+			$path[] = array('url' => $_base_path . $page, 'title' => $page_title);
+			$path = array_merge((array) $path, $this->setPath($parent_page));
 		} else {
-			$path[] = array('url' => $_base_path . $this->current_page, 'title' => $page_title);
+			$path[] = array('url' => $_base_path . $page, 'title' => $page_title);
 		}
 
 		return $path;
 	}
 
+	/**
+	 * Return breadcrumb path
+	 * @access  public
+	 * @return  root page
+	 * @author  Cindy Qi Li
+	 */
+	public function getPath()
+	{
+		return $this->path;
+	}
+	
 }
 ?>

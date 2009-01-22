@@ -13,7 +13,8 @@
 define('AC_INCLUDE_PATH', 'include/');
 require(AC_INCLUDE_PATH.'vitals.inc.php');
 
-unset($_SESSION['user_id']);
+// unset all session variables
+$_SESSION = array();
 
 $msg->addFeedback('LOGOUT');
 header('Location: index.php');

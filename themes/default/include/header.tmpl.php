@@ -75,8 +75,6 @@ $starttime = $mtime;
 	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/styles.css" type="text/css" />
 	<?php echo $this->custom_head; ?>
 
-  <script language="JavaScript" src="jscripts/sha-1factory.js" type="text/javascript"></script>
-
 	<script type="text/javascript">
 	//<!--
 	var newwindow;

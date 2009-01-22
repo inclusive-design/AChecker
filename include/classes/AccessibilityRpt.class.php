@@ -88,33 +88,25 @@ class AccessibilityRpt {
 		foreach ($this->errors as $error)
 		{
 			$checksDAO = new ChecksDAO();
-			$rows = $checksDAO->getCheckByID($error["check_id"]);
-//			$sql = "SELECT confidence, err FROM ". TABLE_PREFIX ."checks WHERE check_id=". $error["check_id"];
-//			$result	= mysql_query($sql, $db) or die(mysql_error());
+			$row = $checksDAO->getCheckByID($error["check_id"]);
 
-			if (is_array($rows))
+			if ($row["confidence"] == KNOWN)
 			{
-				foreach ($rows as $id => $row)
-				{
-					if ($row["confidence"] == KNOWN)
-					{
-						$this->num_of_errors++;
-						
-						$this->rpt_errors .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_ERROR);
-					}
-					else if ($row["confidence"] == LIKELY)
-					{
-						$this->num_of_likely_problems++;
-						
-						$this->rpt_likely_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_WARNING);
-					}
-					else if ($row["confidence"] == POTENTIAL)
-					{
-						$this->num_of_potential_problems++;
-						
-						$this->rpt_potential_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"], "_check"), IS_INFO);
-					}
-				}
+				$this->num_of_errors++;
+				
+				$this->rpt_errors .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"]), IS_ERROR);
+			}
+			else if ($row["confidence"] == LIKELY)
+			{
+				$this->num_of_likely_problems++;
+				
+				$this->rpt_likely_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"]), IS_WARNING);
+			}
+			else if ($row["confidence"] == POTENTIAL)
+			{
+				$this->num_of_potential_problems++;
+				
+				$this->rpt_potential_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"]), IS_INFO);
 			}
 		}
 	}

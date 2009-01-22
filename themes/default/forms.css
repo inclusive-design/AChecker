@@ -101,7 +101,7 @@ div.output-form {
 	width: 90%; 
 	margin-left:auto; 
 	margin-right:auto;
-	padding-bottom: 20px;
+	padding: 10px 10px 20px 10px;
 	border: thin #CCCCCC solid;
 	margin-bottom: 30px;
 	line-height:100%;

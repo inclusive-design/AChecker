@@ -14,10 +14,10 @@ define('AC_INCLUDE_PATH', '../include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include(AC_INCLUDE_PATH.'header.inc.php');
-include(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
-include(AC_INCLUDE_PATH.'classes/DAO/TestProcedureDAO.class.php');
-include(AC_INCLUDE_PATH.'classes/DAO/TestExpectedDAO.class.php');
-include(AC_INCLUDE_PATH.'classes/DAO/TestFailDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/TestProcedureDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/TestExpectedDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/TestFailDAO.class.php');
 
 $check_id = intval($_GET["id"]);
 
