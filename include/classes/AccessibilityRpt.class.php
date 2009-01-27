@@ -43,8 +43,9 @@ class AccessibilityRpt {
          <span class="err_type"><img src="images/{IMG_SRC}" alt="{IMG_TYPE}" title="{IMG_TYPE}" width="15" height="15" /></span>
          <em>Line {LINE_NUMBER}, Column {COL_NUMBER}</em>:
          <span class="msg">
-            <a href="javascript: popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\')" 
-               title="{TITLE}">{ERROR}</a>
+            <a href="{BASE_HREF}checker/suggestion.php?id={CHECK_ID}"
+               onclick="popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\'); return false;" 
+               title="{TITLE}" target="_new">{ERROR}</a>
          </span>
          <pre><code class="input">{HTML_CODE}</code></pre>
          <p class="helpwanted">

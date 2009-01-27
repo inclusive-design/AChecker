@@ -23,6 +23,7 @@ if (isset($aValidator))
 	$guidelinesDAO = new GuidelinesDAO();
 	$rows = $guidelinesDAO->getGuidelineByIDs(substr($gids, 0, -1));
 	
+	unset($guidelines);
 	if (is_array($rows))
 	{
 		foreach ($rows as $id => $row)
@@ -31,7 +32,7 @@ if (isset($aValidator))
 		}
 	}
 	$guidelines = substr($guidelines, 0, -2); // remove ending space and ,
-	
+
 	$num_of_total_a_errors = $aValidator->getNumOfValidateError();
 
 	if ($num_of_total_a_errors > 0)

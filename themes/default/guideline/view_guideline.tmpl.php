@@ -78,7 +78,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<tr>
 			<td><?php echo $checks_row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($checks_row['confidence']); ?></td>
-			<td><span class="msg"><a target="_blank" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $checks_row["check_id"]; ?>"><?php echo _AC($checks_row['name']); ?></a></span></td>
+			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $checks_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $checks_row["check_id"]; ?>'); return false;"><?php echo _AC($checks_row['name']); ?></a></span></td>
 		</tr>
 	<?php } // end of foreach?>
 		</tbody>

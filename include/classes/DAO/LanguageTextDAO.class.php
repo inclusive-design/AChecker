@@ -75,8 +75,8 @@ class LanguageTextDAO extends DAO {
 						AND language_code="'.$lang.'" 
 						ORDER BY variable';
 
-    return $this->execute($sql);
-  }
+	    return $this->execute($sql);
+  	}
 
 	/**
 	* Return all template info of given language
@@ -91,6 +91,28 @@ class LanguageTextDAO extends DAO {
 						WHERE language_code='".$_SESSION['lang']."' 
 						AND variable='_template' 
 						ORDER BY variable ASC";
+
+    return $this->execute($sql);
+  }
+
+	/**
+	* Update text based on given primary key
+	* @access  public
+	* @param   $languageCode : language_text.language_code
+	*          $variable : language_text.variable
+	*          $term : language_text.term
+	*          $text : text to update into language_text.text
+	* @return  true : if successful
+	*          false: if unsuccessful
+	* @author  Cindy Qi Li
+	*/
+	function setText($languageCode, $variable, $term, $text)
+	{
+		$sql = "UPDATE ".TABLE_PREFIX."language_text 
+		           SET text='".$text."'
+		         WHERE language_code = '".$_SESSION['lang']."' 
+		           AND variable='_template' 
+		           AND term = '".$term."'";
 
     return $this->execute($sql);
   }

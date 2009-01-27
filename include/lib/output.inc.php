@@ -38,6 +38,8 @@ function _AC() {
 
 	$args = func_get_args();
 	
+	if ($args[0] == "") return "";
+	
 	$languageTextDAO = new LanguageTextDAO();
 	
 	// a feedback msg

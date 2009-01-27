@@ -17,7 +17,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 <script type='text/javascript' src='jscripts/calendar.js'></script>
 
-<form name="input_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+<form name="input_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?><?php if (isset($_GET["id"])) echo '?id='.$_GET["id"]; ?>" >
 
 <div class="input-form">
 	<table>
@@ -37,7 +37,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><label for="long_name"><?php echo _AC('long_name'); ?></label></th>
-			<td><textarea cols="3" name="long_name" id="long_name"><?php if (isset($_POST['long_name'])) echo $_POST['long_name']; else echo $this->row["long_name"]; ?></textarea></td>
+			<td><textarea cols="3" name="long_name" id="long_name"><?php if (isset($_POST['long_name'])) echo $_POST['long_name']; else echo _AC($this->row["long_name"]); ?></textarea></td>
 		</tr>
 
 		<tr>
@@ -56,13 +56,62 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<tr>
 			<th align="left"><? echo _AC("status"); ?></th>
 			<td>
-				<input type="radio" name="status" id="statusD" value="0" <?php if ((isset($_POST['status']) && $_POST['status']==0) || (!isset($_POST['status']) && $row['status']==0)) echo 'checked="checked"'; ?> /><label for="statusD"><?php echo _AC('disabled'); ?></label> 
-				<input type="radio" name="status" id="statusE" value="1" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $row['status']==1)) echo 'checked="checked"'; ?> /><label for="statusE"><?php echo _AC('enabled'); ?></label>
+				<input type="radio" name="status" id="statusD" value="0" <?php if ((isset($_POST['status']) && $_POST['status']==0) || (!isset($_POST['status']) && $this->row['status']==0)) echo 'checked="checked"'; ?> /><label for="statusD"><?php echo _AC('disabled'); ?></label> 
+				<input type="radio" name="status" id="statusE" value="1" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $this->row['status']==1)) echo 'checked="checked"'; ?> /><label for="statusE"><?php echo _AC('enabled'); ?></label>
 			</td>
 		</tr>
 			
+		<?php if ($this->is_admin) {?>
+		<tr>
+			<th align="left"><? echo _AC("open_to_public"); ?></th>
+			<td>
+				<input type="radio" name="open_to_public" id="open_to_publicN" value="0" <?php if ((isset($_POST['open_to_public']) && $_POST['open_to_public']==0) || (!isset($_POST['open_to_public']) && $this->row['open_to_public']==0)) echo 'checked="checked"'; ?> /><label for="open_to_publicN"><?php echo _AC('no'); ?></label> 
+				<input type="radio" name="open_to_public" id="open_to_publicY" value="1" <?php if ((isset($_POST['open_to_public']) && $_POST['open_to_public']==1) || (!isset($_POST['open_to_public']) && $this->row['open_to_public']==1)) echo 'checked="checked"'; ?> /><label for="open_to_publicY"><?php echo _AC('yes'); ?></label>
+			</td>
+		</tr>
+		<?php } else {?>
+		<tr>
+			<td><input type="hidden" name="open_to_public" value="<?php if (isset($this->row["open_to_public"])) echo $this->row["open_to_public"]; else echo "0"; ?>" /></td>
+		</tr>
+		<?php }?>
 	</table>
+		
 	
+	<!-- section of displaying existing checks in current guideline -->
+	<?php if (is_array($this->checks_rows)) { ?>
+		<h2><?php echo _AC('checks');?></h2>
+		<table class="data" summary="" rules="rows" >
+			<thead>
+			<tr>
+				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_delchecks" onclick="CheckAll('del_checks_id[]','selectall_delchecks');" /></th>
+				<th align="center"><?php echo _AC('html_tag'); ?></th>
+				<th align="center"><?php echo _AC('error_type'); ?></th>
+				<th align="center"><?php echo _AC('description'); ?></th>
+			</tr>
+			</thead>
+			
+			<tfoot>
+				<tr>
+					<td colspan="4">
+						<input type="submit" name="remove" value="<?php echo _AC('remove'); ?>" />
+					</td>
+				</tr>
+			</tfoot>
+
+			<tbody>
+	<?php foreach ($this->checks_rows as $checks_row) { ?>
+			<tr onmousedown="document.input_form['del_checks_<?php echo $checks_row['check_id']; ?>'].checked = !document.input_form['del_checks_<?php echo $checks_row['check_id']; ?>'].checked; togglerowhighlight(this, 'del_checks_<?php echo $checks_row['check_id']; ?>');" id="rdel_checks_<?php echo $checks_row['check_id']; ?>">
+				<td><input type="checkbox" name="del_checks_id[]" value="<?php echo $checks_row['check_id']; ?>" id="del_checks_<?php echo $checks_row['check_id']; ?>" onmouseup="this.checked=!this.checked" <?php if (is_array($_POST['del_checks_id']) && in_array($checks_row['check_id'], $_POST['del_checks_id'])) echo 'checked="checked"';?> /></td>
+				<td><?php echo $checks_row['html_tag']; ?></td>
+				<td><?php echo get_confidence_by_code($checks_row['confidence']); ?></td>
+				<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $checks_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $checks_row["check_id"]; ?>'); return false;"><?php echo _AC($checks_row['name']); ?></a></span></td>
+			</tr>
+	<?php } // end of foreach?>
+			</tbody>
+		</table>
+	<?php } ?>
+
+	<!-- section of displaying checks to add -->
 	<div class="row">
 		<h2>
 			<img src="images/arrow-closed.png" alt="<?php echo _AC("expand_add_checks"); ?>" title="<?php echo _AC("expand_add_checks"); ?>" id="toggle_image" border="0" />
@@ -70,7 +119,6 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		</h2>
 	</div>
 	
-	<!-- section of adding checks -->
 	<div id="div_add_checks">
 	<?php 
 	if (!is_array($this->checks_to_add_rows)){ 
@@ -80,7 +128,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<table class="data" summary="" rules="rows" >
 			<thead>
 			<tr>
-				<th>&nbsp;</th>
+				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_addchecks" onclick="CheckAll('add_checks_id[]','selectall_addchecks');" /></th>
 				<th align="center"><?php echo _AC('html_tag'); ?></th>
 				<th align="center"><?php echo _AC('error_type'); ?></th>
 				<th align="center"><?php echo _AC('description'); ?></th>
@@ -89,7 +137,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			
 			<tbody>
 	<?php foreach ($this->checks_to_add_rows as $checks_to_add_row) { ?>
-			<tr onmousedown="document.input_form['add_checks_<?php echo $checks_to_add_row['check_id']; ?>'].checked = !document.input_form['add_checks_<?php echo $checks_to_add_row['check_id']; ?>'].checked; togglerowhighlight(this, 'add_checks_<?php echo $checks_to_add_row['check_id']; ?>');" id="c_add_checks_<?php echo $checks_to_add_row['check_id']; ?>">
+			<tr onmousedown="document.input_form['add_checks_<?php echo $checks_to_add_row['check_id']; ?>'].checked = !document.input_form['add_checks_<?php echo $checks_to_add_row['check_id']; ?>'].checked; togglerowhighlight(this, 'add_checks_<?php echo $checks_to_add_row['check_id']; ?>');" id="radd_checks_<?php echo $checks_to_add_row['check_id']; ?>">
 				<td><input type="checkbox" name="add_checks_id[]" value="<?php echo $checks_to_add_row['check_id']; ?>" id="add_checks_<?php echo $checks_to_add_row['check_id']; ?>" onmouseup="this.checked=!this.checked" <?php if (is_array($_POST['add_checks_id']) && in_array($checks_to_add_row['check_id'], $_POST['add_checks_id'])) echo 'checked="checked"';?> /></td>
 				<td><?php echo $checks_to_add_row['html_tag']; ?></td>
 				<td><?php echo get_confidence_by_code($checks_to_add_row['confidence']); ?></td>
@@ -106,17 +154,36 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	</div>
 </div>
 </form>
-	<script type="text/JavaScript">
-<!--
+
+<script type="text/JavaScript">
+//<!--
 
 function initial()
 {
 	// hide guideline div
 	document.getElementById("div_add_checks").style.display = 'none';
-	
+
+	// set cursor focus
 	document.input_form.title.focus();
 }
 
+function CheckAll(element_name, selectall_checkbox_name) {
+	for (var i=0;i<document.input_form.elements.length;i++)	{
+		var e = document.input_form.elements[i];
+		if ((e.name == element_name) && (e.type=='checkbox')) {
+			e.checked = document.input_form[selectall_checkbox_name].checked;
+			togglerowhighlight(document.getElementById("r" + e.id), e.id);
+		}
+	}
+}
+
+function togglerowhighlight(obj, boxid) {
+	if (document.getElementById(boxid).checked) {
+		obj.className = 'selected';
+	} else {
+		obj.className = '';
+	}
+}
 //  End -->
 //-->
 </script>

@@ -1865,7 +1865,7 @@ INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_CONFIRM_EMAIL2','
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_INVALID_LINK','The link is either invalid or expired.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_FEEDBACK_PASSWORD_CHANGED','Password changed successfully. You may now login using the new password.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_GUIDELINE_NOT_FOUND','Guideline not found.',now(),'');
-INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_msgs','Ac_CONFIRM_DELETE_GUIDELINE','Are you sure you want to delete the guideline <strong><em>%s</em></strong>?',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_msgs','AC_ERROR_','.',now(),'');
 
@@ -1920,6 +1920,7 @@ INSERT INTO `language_text` VALUES ('en', '_template','password_blurb','Enter yo
 INSERT INTO `language_text` VALUES ('en', '_template','password_new_blurb','Enter a new password for your account.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','standard_guidelines','Standard Guidelines',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','my_guidelines','My Guidelines',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','customized_guidelines','Customized Guidelines',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','enabled','Enabled',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','disabled','Disabled',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','title','Title',now(),'');
@@ -1934,6 +1935,7 @@ INSERT INTO `language_text` VALUES ('en', '_template','long_name','Long Name',no
 INSERT INTO `language_text` VALUES ('en', '_template','published_date','Published Date',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','earlid','URL',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','open_to_public','Open To Public',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','close_from_public','Close From Public',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','yes','Yes',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','no','No',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','checks','Checks',now(),'');
@@ -1944,9 +1946,15 @@ INSERT INTO `language_text` VALUES ('en', '_template','yyyy-mm-dd','yyyy-mm-dd',
 INSERT INTO `language_text` VALUES ('en', '_template','none_found','None Found.',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','add_checks','Add Checks',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','expand_add_checks','Expand Add Checks',now(),'');
-
 INSERT INTO `language_text` VALUES ('en', '_template','edit','Edit',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','delete','Delete',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','delete_guideline','Delete Guideline',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','submit_no','No',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','submit_yes','Yes',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','remove','Remove',now(),'');
+INSERT INTO `language_text` VALUES ('en', '_template','select_all','select/unselect all',now(),'');
+
+INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');
 INSERT INTO `language_text` VALUES ('en', '_template','','',now(),'');

@@ -82,6 +82,24 @@ class User {
 	}
 
 	/**
+	 * Check if user is admin 
+	 * @access  public
+	 * @param   none
+	 * @return  true : if is an admin
+	 *          false : if not an admin
+	 * @author  Cindy Qi Li
+	 */
+	public function isAdmin()
+	{
+		$row = $this->userDAO->getUserByID($this->userID);
+		
+		if ($row['user_group_id'] == AC_USER_GROUP_ADMIN)
+			return true;
+		else
+			return false;
+	}
+
+	/**
 	 * Update user's first, last name
 	 * @access  public
 	 * @param   $firstName : first name

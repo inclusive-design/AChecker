@@ -571,15 +571,24 @@ h1 {
 	margin-bottom: 5px;
 }
 
-div#sub-navigation {
+div#sub-menu {
 	color: #555;
 	background-color:#E6E6E6; 
-	padding-left: 4em;
 	padding-top: 5px; 
 	font-size:0.85em; 
 	border-bottom:1px solid black;
 	margin-bottom: 1em; 
 	height:2em;
+}
+
+div#sub-navigation {
+	padding: 3px;
+	float:left;
+}
+
+div#guide {
+	padding-right: 5px;
+	float:right;
 }
 
 div#sub-navigation strong {

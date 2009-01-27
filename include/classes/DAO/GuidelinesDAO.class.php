@@ -35,7 +35,7 @@ class GuidelinesDAO extends DAO {
 	*          $preamble
 	*          $status
 	*          $open_to_public
-	* @return  guideline_id : if successful
+	* @return  guidelineID : if successful
 	*          false : if not successful
 	* @author  Cindy Qi Li
 	*/
@@ -55,47 +55,97 @@ class GuidelinesDAO extends DAO {
 		}
 		else
 		{
-			$guideline_id = mysql_insert_id();
+			$guidelineID = mysql_insert_id();
 			
 			if ($long_name <> '')
 			{
-				$term = LANG_PREFIX_GUIDELINES_LONG_NAME.$guideline_id;
+				$term = LANG_PREFIX_GUIDELINES_LONG_NAME.$guidelineID;
 				
 				require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 				$langTextDAO = new LanguageTextDAO();
 				
-				if ($langTextDAO->Create('en', '_template',$term,$long_name,''))
+				if ($langTextDAO->Create($_SESSION['lang'], '_template',$term,$long_name,''))
 				{
-					$sql = "UPDATE ".TABLE_PREFIX."guidelines SET long_name='".$term."' WHERE guideline_id=".$guideline_id;
+					$sql = "UPDATE ".TABLE_PREFIX."guidelines SET long_name='".$term."' WHERE guideline_id=".$guidelineID;
 					$this->execute($sql);
 				}
 			}
-			return $guideline_id;
+			return $guidelineID;
+		}
+	}
+	
+	/**
+	* Create a new guideline
+	* @access  public
+	* @param   $userID : user id
+	*          $title
+	*          $abbr
+	*          $long_name
+	*          $published_date
+	*          $earlid
+	*          $preamble
+	*          $status
+	*          $open_to_public
+	* @return  guidelineID : if successful
+	*          false : if not successful
+	* @author  Cindy Qi Li
+	*/
+	public function update($guidelineID, $userID, $title, $abbr, $long_name, $published_date, $earlid, $preamble, $status, $open_to_public)
+	{
+		$sql = "UPDATE ".TABLE_PREFIX."guidelines
+				   SET `user_id`=".$userID.", 
+				       `title` = '".$title."', 
+				       `abbr` = '".$abbr."', 
+				       `published_date` = '".$published_date."',  
+				       `earlid` = '".$earlid."', 
+				       `preamble` = '".$preamble."', 
+				       `status` = ".$status.", 
+				       `open_to_public` = ".$open_to_public." 
+				 WHERE guideline_id = ".$guidelineID;
+
+		if (!$this->execute($sql))
+		{
+			$msg->addError('DB_NOT_UPDATED');
+			return false;
+		}
+		else
+		{
+			// find language term to update	
+			$rows = $this->getGuidelineByIDs($guidelineID);
+			$term = $rows[0]['term'];
+			
+			require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
+			$langTextDAO = new LanguageTextDAO();
+			
+			if ($langTextDAO->setText($_SESSION['lang'],'_template',$term,$long_name))
+				return true;
+			else
+				return false;
 		}
 	}
 	
 	/**
 	* Add checks into guideline
 	* @access  public
-	* @param   $gid : guideline id
+	* @param   $guidelineID : guideline id
 	*          $cids : array of check ids to be added into guideline
 	* @return  true : if successful
 	*          false : if unsuccessful
 	* @author  Cindy Qi Li
 	*/
-	public function addChecks($gid, $cids)
+	public function addChecks($guidelineID, $cids)
 	{
 		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
 		
 		$guidelineGroupsDAO = new GuidelineGroupsDAO();
-		$groups = $guidelineGroupsDAO->getGroupByGuidelineID($gid);
+		$groups = $guidelineGroupsDAO->getGroupByGuidelineID($guidelineID);
 		
 		if (is_array($groups))
 			$group_id = $groups[0]['group_id'];
 		else
-			$group_id = $guidelineGroupsDAO->Create($gid, '','','');
+			$group_id = $guidelineGroupsDAO->Create($guidelineID, '','','');
 		
 		if ($group_id)
 		{
@@ -111,8 +161,11 @@ class GuidelinesDAO extends DAO {
 			{
 				$subgroupChecksDAO = new SubgroupChecksDAO();
 				
-				foreach ($cids as $cid)
-					$subgroupChecksDAO->Create($subgroup_id, $cid);
+				if (is_array($cids))
+				{
+					foreach ($cids as $cid)
+						$subgroupChecksDAO->Create($subgroup_id, $cid);
+				}
 			}
 			else return false;
 		}
@@ -124,27 +177,39 @@ class GuidelinesDAO extends DAO {
 	/**
 	* Delete guideline by ID
 	* @access  public
-	* @param   $guideline_id : guideline id
+	* @param   $guidelineID : guideline id
 	* @return  true : if successful
 	*          false : if unsuccessful
 	* @author  Cindy Qi Li
 	*/
-	public function Delete($guideline_id)
+	public function Delete($guidelineID)
 	{
-		$sql = "DELETE FROM ".TABLE_PREFIX."guidelines WHERE guideline_id=".$guideline_id;
-		
-		return $this->execute($sql);
+		if ($this->deleteAllChecks($guidelineID))
+		{
+			// delete language for long name
+			$sql = "DELETE FROM ".TABLE_PREFIX."language_text 
+			         WHERE variable='_template' 
+			           AND term=(SELECT long_name 
+			                       FROM ".TABLE_PREFIX."guidelines
+			                      WHERE guideline_id=".$guidelineID.")";
+			$this->execute($sql);
+			
+			$sql = "DELETE FROM ".TABLE_PREFIX."guidelines WHERE guideline_id=".$guidelineID;
+			
+			return $this->execute($sql);
+		}
+		else return false;
 	}
 	
 	/**
 	* Delete all checks from guideline
 	* @access  public
-	* @param   $gid : guideline id
+	* @param   $guidelineID : guideline id
 	* @return  true : if successful
 	*          false : if unsuccessful
 	* @author  Cindy Qi Li
 	*/
-	public function deleteAllChecks($gid)
+	public function deleteAllChecks($guidelineID)
 	{
 		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
@@ -152,13 +217,13 @@ class GuidelinesDAO extends DAO {
 		
 		$subgroupChecksDAO = new SubgroupChecksDAO();
 		
-		if ($subgroupChecksDAO->Delete($gid))
+		if ($subgroupChecksDAO->Delete($guidelineID))
 		{
 			$guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
-			if ($guidelineSubgroupsDAO->Delete($gid))
+			if ($guidelineSubgroupsDAO->Delete($guidelineID))
 			{
 				$guidelineGroupsDAO = new GuidelineGroupsDAO();
-				if ($guidelineGroupsDAO->Delete($gid))
+				if ($guidelineGroupsDAO->Delete($guidelineID))
 					return true;
 				else
 					return false;
@@ -175,26 +240,45 @@ class GuidelinesDAO extends DAO {
 	}
 	
 	/**
+	* Delete given check, identified by check ID, from given guideline
+	* @access  public
+	* @param   $guidelineID : guideline id
+	*          $checkID : check ID to delete
+	* @return  true : if successful
+	*          false : if unsuccessful
+	* @author  Cindy Qi Li
+	*/
+	public function deleteCheckByID($guidelineID, $checkID)
+	{
+		$sql = "DELETE FROM ".TABLE_PREFIX."subgroup_checks
+		         WHERE subgroup_id in (SELECT distinct subgroup_id 
+		                                 FROM ".TABLE_PREFIX."guidelines g, "
+		                                       .TABLE_PREFIX."guideline_groups gg, "
+		                                       .TABLE_PREFIX."guideline_subgroups gs
+		                                 WHERE g.guideline_id=".$guidelineID."
+		                                   AND g.guideline_id = gg.guideline_id
+		                                   AND gg.group_id = gs.group_id)
+		           AND check_id = ".$checkID;
+		
+		return $this->execute($sql);
+	}
+	
+	/**
 	* Return guideline info by given guideline id
 	* @access  public
-	* @param   $gids : a string of all guideline ids, for example: 1, 2, 3
+	* @param   $guidelineIDs : a string of all guideline ids, for example: 1, 2, 3
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	public function getGuidelineByIDs($gids)
+	public function getGuidelineByIDs($guidelineIDs)
 	{
 		$sql = "select *
 						from ". TABLE_PREFIX ."guidelines
-						where guideline_id in (" . $gids . ")
+						where guideline_id in (" . $guidelineIDs . ")
 						order by title";
 
     
-		$rows = $this->execute($sql);
-		
-		if (is_array($rows))
-			return $rows[0];
-		else
-			return false;
+		return $this->execute($sql);
   	}
 
 	/**
@@ -286,17 +370,17 @@ class GuidelinesDAO extends DAO {
   	/**
 	* set guideline status
 	* @access  public
-	* @param   $gid : guideline ID
+	* @param   $guidelineID : guideline ID
 	*          $status : guideline status
 	* @return  true : if successful
 	*          false : if not successful
 	* @author  Cindy Qi Li
 	*/
-	public function setStatus($gid, $status)
+	public function setStatus($guidelineID, $status)
 	{
 		$sql = "update ". TABLE_PREFIX ."guidelines
 				set status = " . $status . "
-				where guideline_id=".$gid;
+				where guideline_id=".$guidelineID;
 
     return $this->execute($sql);
   }
@@ -304,17 +388,17 @@ class GuidelinesDAO extends DAO {
 	/**
 	* set open_to_public
 	* @access  public
-	* @param   $gid : guideline ID
+	* @param   $guidelineID : guideline ID
 	*          $open_to_public : open to public flag
 	* @return  true : if successful
 	*          false : if not successful
 	* @author  Cindy Qi Li
 	*/
-	public function setOpenToPublicFlag($gid, $open_to_public)
+	public function setOpenToPublicFlag($guidelineID, $open_to_public)
 	{
 		$sql = "update ". TABLE_PREFIX ."guidelines
 				set open_to_public = " . $open_to_public . "
-				where guideline_id=".$gid;
+				where guideline_id=".$guidelineID;
 
     return $this->execute($sql);
   }

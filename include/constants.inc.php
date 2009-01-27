@@ -130,6 +130,7 @@ $_base_href	 = substr($_base_href, 0, $endpos);
 $_base_path  = substr($_base_href, strlen($server_protocol . $_SERVER['HTTP_HOST']));
 
 define('AC_BASE_HREF', $_base_href);
+define('Ac_GUIDES_PATH', $_base_path . 'documentation/');
 
 /* relative uri */
 $_rel_url = '/'.implode('/', array_slice($url_parts, count($url_parts) - $dir_deep-1));
@@ -186,9 +187,13 @@ $_pages['guideline/index.php']['children']  = array_merge(array('guideline/creat
 
 $_pages['guideline/create_edit_guideline.php']['title_var'] = 'create_guideline';
 $_pages['guideline/create_edit_guideline.php']['parent']    = 'guideline/index.php';
+$_pages['guideline/create_edit_guideline.php']['guide']    = 'guideline/?p=index.php';
 
 $_pages['guideline/view_guideline.php']['title_var'] = 'view_guideline';
 $_pages['guideline/view_guideline.php']['parent']    = 'guideline/index.php';
+
+$_pages['guideline/delete_guideline.php']['title_var'] = 'delete_guideline';
+$_pages['guideline/delete_guideline.php']['parent']    = 'guideline/index.php';
 
 // 4. user pages
 ?>

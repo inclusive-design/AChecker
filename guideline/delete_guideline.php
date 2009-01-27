@@ -16,23 +16,33 @@ include(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/guidelinesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 
-$gid = intval($_GET["id"]);
-
 $guidelinesDAO = new GuidelinesDAO();
-$rows = $guidelinesDAO->getGuidelineByIDs($gid);
 
-if (!$rows)
+if (isset($_POST['submit_no'])) 
 {
-	global $msg;
-	
-	$msg->addError('GUIDELINE_NOT_FOUND');
-	header('Location: index.php');	
-}
-else
+	$msg->addFeedback('CANCELLED');
+	header('Location: index.php');
+	exit;
+} 
+else if (isset($_POST['submit_yes']))
 {
-	$checksDAO = new ChecksDAO();
-	$savant->assign('row', $rows[0]);
-	$savant->assign('checks_rows', $checksDAO->getChecksByGuidelineID($gid));
-	$savant->display('guideline/view_guideline.tmpl.php');
+	if ($guidelinesDAO->Delete($_POST['id']))
+	{
+		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
+		header('Location: index.php');
+		exit;
+	}
 }
+
+$rows = $guidelinesDAO->getGuidelineByIDs($_GET['id']);
+
+unset($hidden_vars);
+$hidden_vars['id'] = $_GET['id'];
+
+require(AC_INCLUDE_PATH.'header.inc.php');
+
+$msg->addConfirm(array('DELETE_GUIDELINE', $rows[0]['title']), $hidden_vars);
+$msg->printConfirm();
+
+require(AC_INCLUDE_PATH.'footer.inc.php');
 ?>

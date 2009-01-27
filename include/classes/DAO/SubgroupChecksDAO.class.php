@@ -63,8 +63,8 @@ class SubgroupChecksDAO extends DAO {
 		$sql = "DELETE FROM ".TABLE_PREFIX."subgroup_checks
 				WHERE subgroup_id IN (SELECT distinct s.subgroup_id 
 				                     FROM ".TABLE_PREFIX."guideline_subgroups s, ".TABLE_PREFIX."guideline_groups g
-				                    WHERE s.subgroup_id = g.subgroup_id
-				                      AND g.guideline_id = ".$guidelineID;
+				                    WHERE s.group_id = g.group_id
+				                      AND g.guideline_id = ".$guidelineID.")";
 
 		if (!$this->execute($sql))
 		{

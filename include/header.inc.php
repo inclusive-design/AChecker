@@ -96,6 +96,11 @@ if (isset($_custom_head)) {
 ' . $_custom_head;
 }
 
+if (isset($_pages[$current_page]['guide'])) 
+{
+	$savant->assign('guide', AC_GUIDES_PATH . $_pages[$current_page]['guide']);
+}
+
 $savant->assign('custom_head', $custom_head);
 
 if ($onload)	$savant->assign('onload', $onload);

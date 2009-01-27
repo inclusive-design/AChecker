@@ -79,7 +79,7 @@ class GuidelineGroupsDAO extends DAO {
 	public function Delete($guidelineID)
 	{
 		$sql = "DELETE FROM ".TABLE_PREFIX."guideline_groups
-                 WHERE guideline_id = ".$guidelineID.")";
+                 WHERE guideline_id = ".$guidelineID;
 
 		if (!$this->execute($sql))
 		{

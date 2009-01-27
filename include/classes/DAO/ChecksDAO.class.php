@@ -50,6 +50,26 @@ class ChecksDAO extends DAO {
 	}
 
 	/**
+	* Return all open-to-public checks except the check ids in given string  
+	* @access  public
+	* @param   $checkIDs : a string of check ids separated by comma. for example: 1, 2, 3
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function getAllOpenChecksExceptListed($checkIDs)
+	{
+		if (trim($checkIDs) == '')
+			return $this->getAllOpenChecks();
+		else
+		{
+			$sql = "SELECT * FROM ". TABLE_PREFIX ."checks 
+			         WHERE open_to_public=1
+			           AND check_id NOT IN (".$checkIDs.")";
+			return $this->execute($sql);
+		}
+	}
+	
+	/**
 	* Return check info of given check id
 	* @access  public
 	* @param   $checkID : check id

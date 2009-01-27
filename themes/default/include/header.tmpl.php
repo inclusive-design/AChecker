@@ -92,26 +92,18 @@ $starttime = $mtime;
 		{
 			toc.style.display = '';
 			document.getElementById("toggle_image").src = "images/arrow-open.png";
-			document.getElementById("toggle_image").alt = "Collapse Guidelines";
-			document.getElementById("toggle_image").title = "Collapse Guidelines Getting Started";
+			document.getElementById("toggle_image").alt = "Collapse";
+			document.getElementById("toggle_image").title = "Collapse";
 		}
 		else
 		{
 			toc.style.display = 'none';
 			document.getElementById("toggle_image").src = "images/arrow-closed.png";
-			document.getElementById("toggle_image").alt = "Expand Guidelines";
-			document.getElementById("toggle_image").title = "Expand Guidelines Getting Started";
+			document.getElementById("toggle_image").alt = "Expand";
+			document.getElementById("toggle_image").title = "Expand";
 		}
 	}
 
-  /* 
-   * Encrypt login password with sha1
-   */
-  function encrypt_password() {
-  	document.form.form_password_hidden.value = hex_sha1(hex_sha1(document.form.form_password.value) + "<?php echo $_SESSION['token']; ?>");
-  	document.form.form_password.value = "";
-  	return true;
-  }
 	//-->
 	</script>
 
@@ -168,27 +160,37 @@ $starttime = $mtime;
 		</ul>
 	</div>
 
-	<!-- the sub navigation -->
-	<div id="sub-navigation">
-	<?php if ($this->sub_menus): ?>
-		<?php if (isset($this->back_to_page)): ?>
-			<a href="<?php echo $this->back_to_page['url']; ?>" id="back-to"><?php echo _AC('back_to').' '.$this->back_to_page['title']; ?></a> | 
-		<?php endif; ?>
+	<!-- the sub navigation and guide -->
+	<div id="sub-menu">
+		<!-- guide -->
+		<?php if (isset($this->guide)) {?>
+		<div id="guide">
+			<a href="<?php echo $this->guide; ?>" id="guide" onclick="popup('<?php echo $this->guide; ?>'); return false;" target="_new"><em><?php echo $this->page_title; ?></em></a>
+		</div>
+		<?php }?>
 
-		<?php $num_pages = count($this->sub_menus); ?>
-		<?php for ($i=0; $i<$num_pages; $i++): ?>
-			<?php if ($this->sub_menus[$i]['url'] == $this->current_page): ?>
-				<strong><?php echo $this->sub_menus[$i]['title']; ?></strong>
-			<?php else: ?>
-				<a href="<?php echo $this->sub_menus[$i]['url']; ?>"><?php echo $this->sub_menus[$i]['title']; ?></a>
+		<!-- the sub navigation -->
+		<div id="sub-navigation">
+		<?php if ($this->sub_menus): ?>
+			<?php if (isset($this->back_to_page)): ?>
+				<a href="<?php echo $this->back_to_page['url']; ?>" id="back-to"><?php echo _AC('back_to').' '.$this->back_to_page['title']; ?></a> | 
 			<?php endif; ?>
-			<?php if ($i < $num_pages-1): ?>
-				|
-			<?php endif; ?>
-		<?php endfor; ?>
-	<?php else: ?>
-		&nbsp;
-	<?php endif; ?>
+	
+			<?php $num_pages = count($this->sub_menus); ?>
+			<?php for ($i=0; $i<$num_pages; $i++): ?>
+				<?php if ($this->sub_menus[$i]['url'] == $this->current_page): ?>
+					<strong><?php echo $this->sub_menus[$i]['title']; ?></strong>
+				<?php else: ?>
+					<a href="<?php echo $this->sub_menus[$i]['url']; ?>"><?php echo $this->sub_menus[$i]['title']; ?></a>
+				<?php endif; ?>
+				<?php if ($i < $num_pages-1): ?>
+					|
+				<?php endif; ?>
+			<?php endfor; ?>
+		<?php else: ?>
+			&nbsp;
+		<?php endif; ?>
+		</div>
 	</div>
 
 <!--<div>
