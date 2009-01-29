@@ -25,7 +25,7 @@
 
 if (!defined('AC_INCLUDE_PATH')) exit;
 
-require(AC_INCLUDE_PATH. 'classes/DAO/PrivilegesDAO.class.php');
+require_once(AC_INCLUDE_PATH. 'classes/DAO/PrivilegesDAO.class.php');
 
 class Menu {
 
@@ -78,9 +78,6 @@ class Menu {
 		$this->pages = $_pages;
 		// end of initializing $this->pages
 		
-		// initialize $this->pages[AC_NAV_PUBLIC]
-		$this->pages[AC_NAV_PUBLIC] = $_pages[AC_NAV_PUBLIC];
-
 		$priviledgesDAO = new PrivilegesDAO();
 		$rows = $priviledgesDAO->getPublicPrivileges();
 
@@ -88,8 +85,7 @@ class Menu {
 		{
 			foreach ($rows as $id => $row)
 			{
-				$this->pages[AC_NAV_PUBLIC] = array_merge($this->pages[AC_NAV_PUBLIC], 
-				                                          array($row['link'] => array('title_var'=>$row['title_var'], 'parent'=>AC_NAV_TOP)));
+				$this->pages[AC_NAV_PUBLIC][] = array($row['link'] => array('title_var'=>$row['title_var'], 'parent'=>AC_NAV_TOP));
 			}
 		}
 		// end of initializing $this->pages[AC_NAV_PUBLIC]

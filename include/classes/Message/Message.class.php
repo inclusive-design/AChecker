@@ -38,7 +38,6 @@ class Message {
 						'feedback' => 'feedbackmessage.tmpl.php',
 						'warning' => 'warningmessage.tmpl.php',
 						'info' => 'infomessage.tmpl.php',
-						'help' => 'helpmessage.tmpl.php',
 						'confirm' => 'confirmmessage.tmpl.php'
 				);
 	

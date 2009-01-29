@@ -48,21 +48,22 @@ function unregister_GLOBALS() {
  * 7. initialize theme and template management
  * 8. initialize a user instance without user id. 
  *    if $_SESSION['user_id'] is set, it's assigned to instance in include/header.inc.php
+ * 9. register pages based on current user's priviledge 
  ***/
 
 /**** 0. start system configuration options block ****/
-	error_reporting(0);
-	include_once(AC_INCLUDE_PATH.'config.inc.php');
-	error_reporting(AC_ERROR_REPORTING);
+error_reporting(0);
+include_once(AC_INCLUDE_PATH.'config.inc.php');
+error_reporting(AC_ERROR_REPORTING);
 
-	if (!defined('AC_INSTALL') || !AC_INSTALL) {
-		header('Cache-Control: no-store, no-cache, must-revalidate');
-		header('Pragma: no-cache');
+if (!defined('AC_INSTALL') || !AC_INSTALL) {
+	header('Cache-Control: no-store, no-cache, must-revalidate');
+	header('Pragma: no-cache');
 
-		$relative_path = substr(AC_INCLUDE_PATH, 0, -strlen('include/'));
-		header('Location: ' . $relative_path . 'install/not_installed.php');
-		exit;
-	}
+	$relative_path = substr(AC_INCLUDE_PATH, 0, -strlen('include/'));
+	header('Location: ' . $relative_path . 'install/not_installed.php');
+	exit;
+}
 /*** end system config block ****/
 
 /***** 1. database connection *****/
@@ -72,7 +73,7 @@ function unregister_GLOBALS() {
 /***** end database connection ****/
 
 /*** 2. constants ***/
-	require_once(AC_INCLUDE_PATH.'constants.inc.php');
+require_once(AC_INCLUDE_PATH.'constants.inc.php');
 
 /*** 3. initilize session ***/
 	@set_time_limit(0);
@@ -176,7 +177,10 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
 }
 /***** end of initialize user instance *****/
 
- /**
+/*** 9. register pages based on user's priviledge ***/
+require_once(AC_INCLUDE_PATH.'page_constants.inc.php');
+
+/**
  * This function is used for printing variables for debugging.
  * @access  public
  * @param   mixed $var	The variable to output

@@ -3,7 +3,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
+/* Adaptive Technology Resource Centre / University of Toronto          */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -98,7 +98,8 @@ if (isset($_custom_head)) {
 
 if (isset($_pages[$current_page]['guide'])) 
 {
-	$savant->assign('guide', AC_GUIDES_PATH . $_pages[$current_page]['guide']);
+	$script_name = substr($_SERVER['PHP_SELF'], strlen($_base_path));
+	$savant->assign('guide', AC_GUIDES_PATH .'index.php?p='. htmlentities($script_name));
 }
 
 $savant->assign('custom_head', $custom_head);

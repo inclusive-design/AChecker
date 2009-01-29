@@ -79,6 +79,25 @@ class LanguageTextDAO extends DAO {
   	}
 
 	/**
+	* Return rows of handbook rows by matching given text and language
+	* @access  public
+	* @param   term : language term
+	*          lang : language code
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function getHelpByMatchingText($text, $lang)
+	{
+		$sql	= "SELECT * FROM ".TABLE_PREFIX."language_text 
+						WHERE term like 'AC_HELP_%'
+						AND lower(cast(text as char)) like '%".strtolower($text)."%' 
+						AND language_code='".$lang."' 
+						ORDER BY variable";
+
+	    return $this->execute($sql);
+  	}
+
+  	/**
 	* Return all template info of given language
 	* @access  public
 	* @param   lang : language code
@@ -88,7 +107,7 @@ class LanguageTextDAO extends DAO {
 	function getAllTemplateByLang($lang)
 	{
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
-						WHERE language_code='".$_SESSION['lang']."' 
+						WHERE language_code='".$lang."' 
 						AND variable='_template' 
 						ORDER BY variable ASC";
 

@@ -16,7 +16,7 @@ if (!defined('AC_INCLUDE_PATH')) { exit; }
  * constants, some more constants are loaded from table 'config' @ include/vitals.inc.php
  **/
 
-define('VERSION',		'0.1');
+define('VERSION',		'0.2');
 
 $_config['default_language']          = 'en';
 
@@ -130,70 +130,9 @@ $_base_href	 = substr($_base_href, 0, $endpos);
 $_base_path  = substr($_base_href, strlen($server_protocol . $_SERVER['HTTP_HOST']));
 
 define('AC_BASE_HREF', $_base_href);
-define('Ac_GUIDES_PATH', $_base_path . 'documentation/');
+define('AC_GUIDES_PATH', $_base_path . 'documentation/');
 
 /* relative uri */
 $_rel_url = '/'.implode('/', array_slice($url_parts, count($url_parts) - $dir_deep-1));
 
-/* constants used for menu item generation. Used in class Menu (include/classes/Menu.class.php) */
-define('AC_NAV_PUBLIC', 'AC_NAV_PUBLIC');  // public menus, when no user login
-define('AC_NAV_TOP', 'AC_NAV_TOP');        // top tab menus
-
-/* initialize pages accessed by public */
-$_pages[AC_NAV_PUBLIC] = array('index.php' => array('parent'=>AC_NAV_PUBLIC));
-
-/* define all accessible pages */
-// 1. public pages
-$_pages['translator.php']['title_var'] = 'translator';
-$_pages['translator.php']['parent']    = AC_NAV_PUBLIC;
-
-$_pages['register.php']['title_var'] = 'registration';
-$_pages['register.php']['parent']    = AC_NAV_PUBLIC;
-
-$_pages['confirm.php']['title_var'] = 'confirm';
-$_pages['confirm.php']['parent']    = AC_NAV_PUBLIC;
-
-$_pages['login.php']['title_var'] = 'login';
-$_pages['login.php']['parent']    = AC_NAV_PUBLIC;
-$_pages['login.php']['children']  = array_merge(array('password_reminder.php'), isset($_pages['login.php']['children']) ? $_pages['login.php']['children'] : array());
-
-$_pages['logout.php']['title_var'] = 'logout';
-$_pages['logout.php']['parent']    = AC_NAV_PUBLIC;
-
-$_pages['password_reminder.php']['title_var'] = 'password_reminder';
-$_pages['password_reminder.php']['parent']    = 'login.php';
-
-$_pages['checker/suggestion.php']['title_var'] = 'Suggestion';
-$_pages['checker/suggestion.php']['parent']    = AC_NAV_PUBLIC;
-
-// 2. profile pages
-$_pages['profile/index.php']['title_var'] = 'Profile';
-$_pages['profile/index.php']['parent']    = AC_NAV_TOP;
-$_pages['profile/index.php']['children']  = array_merge(array('profile/change_password.php', 
-                                                              'profile/change_email.php'), 
-                                                        isset($_pages['profile/index.php']['children']) ? $_pages['profile/index.php']['children'] : array());
-
-$_pages['profile/change_password.php']['title_var'] = 'change_password';
-$_pages['profile/change_password.php']['parent']    = 'profile/index.php';
-
-$_pages['profile/change_email.php']['title_var'] = 'change_email';
-$_pages['profile/change_email.php']['parent']    = 'profile/index.php';
-
-// 3. guideline pages
-$_pages['guideline/index.php']['title_var'] = 'guideline_manage';
-$_pages['guideline/index.php']['parent']    = AC_NAV_TOP;
-$_pages['guideline/index.php']['children']  = array_merge(array('guideline/create_edit_guideline.php'), 
-                                                        isset($_pages['guideline/index.php']['children']) ? $_pages['guideline/index.php']['children'] : array());
-
-$_pages['guideline/create_edit_guideline.php']['title_var'] = 'create_guideline';
-$_pages['guideline/create_edit_guideline.php']['parent']    = 'guideline/index.php';
-$_pages['guideline/create_edit_guideline.php']['guide']    = 'guideline/?p=index.php';
-
-$_pages['guideline/view_guideline.php']['title_var'] = 'view_guideline';
-$_pages['guideline/view_guideline.php']['parent']    = 'guideline/index.php';
-
-$_pages['guideline/delete_guideline.php']['title_var'] = 'delete_guideline';
-$_pages['guideline/delete_guideline.php']['parent']    = 'guideline/index.php';
-
-// 4. user pages
 ?>

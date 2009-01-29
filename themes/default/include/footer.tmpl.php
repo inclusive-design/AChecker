@@ -44,6 +44,27 @@ if($languageManager->getNumLanguages() > 1)
 </body>
 </html>
 
+<script language="javascript" type="text/javascript">
+//<!--
+var selected;
+function rowselect(obj) {
+	obj.className = 'selected';
+	if (selected && selected != obj.id)
+		document.getElementById(selected).className = '';
+	selected = obj.id;
+}
+function rowselectbox(obj, checked, handler) {
+	var functionDemo = new Function(handler + ";");
+	functionDemo();
+
+	if (checked)
+		obj.className = 'selected';
+	else
+		obj.className = '';
+}
+//-->
+</script>
+
 <?php
 // Timer, calculate how much time to load the page
 // starttime is in include/header.inc.php

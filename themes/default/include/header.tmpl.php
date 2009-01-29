@@ -3,7 +3,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
+/* Adaptive Technology Resource Centre / University of Toronto          */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -135,9 +135,9 @@ $starttime = $mtime;
         ?>
 			</span>
 			<span id="versioninfo">
-				<a href="<?php echo AC_BASE_HREF; ?>translator.php" target="_blank"><?php echo _AC('help_with_translate'); ?></a>
+				<!--<a href="<?php echo AC_BASE_HREF; ?>translator.php" target="_blank"><?php echo _AC('help_with_translate'); ?></a>-->
 				&nbsp;
-				Version 0.1 Beta
+				Version <?php echo VERSION; ?> Beta
 			</span>
 		</h1>
 	</div>

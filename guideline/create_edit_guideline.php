@@ -109,7 +109,7 @@ else
 	$savant->assign('checks_to_add_rows', $checksDAO->getAllOpenChecksExceptListed($str_existing_checks));
 }
 
-$savant->assign('is_admin', $_current_user->isAdmin());
+if (isset($_current_user)) $savant->assign('is_admin', $_current_user->isAdmin());
 
 $savant->display('guideline/create_edit_guideline.tmpl.php');
 ?>

@@ -45,7 +45,7 @@ function _AC() {
 	// a feedback msg
 	if (!is_array($args[0])) {
 		/**
-		 * Added functionality for translating language code String (AC_ERROR|AC_INFOS|AC_WARNING|AC_FEEDBACK|AC_HELP).*
+		 * Added functionality for translating language code String (AC_ERROR|AC_INFOS|AC_WARNING|AC_FEEDBACK).*
 		 * to its text and returning the result. No caching needed.
 		 * @author Jacek Materna
 		 */
@@ -53,8 +53,8 @@ function _AC() {
 		// Check for specific language prefix, extendible as needed
 		// 0002767:  a substring+in_array test should be faster than a preg_match test.
 		// replaced the preg_match with a test of the substring.
-		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AC_HELP)
-		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_HELP','AC_CONF'))) {
+		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AC_INFO)
+		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_CONF'))) {
 			global $_base_path, $addslashes;
 
 			$args[0] = $addslashes($args[0]);
