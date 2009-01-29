@@ -172,8 +172,18 @@ define('SITE_NAME',                 $_config['site_name']);
 // used as global var
 if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
 {
-	include(AC_INCLUDE_PATH.'classes/User.class.php');
-	$_current_user = new User($_SESSION['user_id']);
+	// check if $_SESSION['user_id'] is valid
+	include_once(AC_INCLUDE_PATH.'classes/DAO/UsersDAO.class.php');
+	$usersDAO = new UsersDAO();
+	$user = $usersDAO->getUserByID($_SESSION['user_id']);
+	
+	if (!$user)  // invalid user
+		unset($_SESSION['user_id']);
+	else
+	{
+		include_once(AC_INCLUDE_PATH.'classes/User.class.php');
+		$_current_user = new User($_SESSION['user_id']);
+	}
 }
 /***** end of initialize user instance *****/
 

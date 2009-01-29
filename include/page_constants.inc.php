@@ -22,6 +22,7 @@ else
 {
 	$rows = $priviledgesDAO->getPublicPrivileges();
 }
+
 foreach ($rows as $row)
 	$privs[] = $row['privilege_id'];
 
