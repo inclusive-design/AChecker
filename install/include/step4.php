@@ -28,9 +28,9 @@ unset($progress);
 if ( file_exists($file) ) {
 	@chmod($file, 0666);
 	if (!is_writeable($file)) {
-		$errors[] = '<strong>' . $file . '</strong> is not writeable.';
+		$errors[] = '<strong>' . realpath($file) . '</strong> is not writeable.';
 	}else{
-		$progress[] = '<strong>' . $file . '</strong> is writeable.';
+		$progress[] = '<strong>' . realpath($file) . '</strong> is writeable.';
 	}
 } else {
 	$errors[] = '<strong>' . $file . '</strong> does not exist.';
