@@ -73,8 +73,14 @@ $mtime = explode(" ", $mtime);
 $mtime = $mtime[1] + $mtime[0]; 
 $endtime = $mtime; 
 $totaltime = ($endtime - $starttime); 
-debug($totaltime. ' seconds.', "TIME USED"); 
-debug($_SESSION);
+
+if (defined('AC_DEVEL') && AC_DEVEL) 
+{
+	debug(TABLE_PREFIX, 'TABLE_PREFIX');
+	debug(DB_NAME, 'DB_NAME');
+	debug($totaltime. ' seconds.', "TIME USED"); 
+	debug($_SESSION);
+}
 // Timer Ends
 
 ?>
