@@ -13,7 +13,7 @@
 define('AC_INCLUDE_PATH', '../include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
-include_once(AC_INCLUDE_PATH.'classes/DAO/guidelinesDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 
 $guidelinesDAO = new GuidelinesDAO();

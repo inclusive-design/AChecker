@@ -25,7 +25,7 @@
 		</ul>
 	</div>
 
-	<div id="errors">
+	<div id="errors" style="margin-top:1em">
 <?php
 
 if (isset($this->aValidator))
@@ -39,7 +39,7 @@ if (isset($this->aValidator))
 ?>
 	</div>
 
-	<div id="likely_problems">
+	<div id="likely_problems" style="margin-top:1em">
 <?php
 
 if (isset($this->aValidator))
@@ -53,7 +53,7 @@ if (isset($this->aValidator))
 ?>
 	</div>
 
-	<div id="potential_problems">
+	<div id="potential_problems" style="margin-top:1em">
 <?php
 
 if (isset($this->aValidator))
@@ -67,7 +67,7 @@ if (isset($this->aValidator))
 ?>
 	</div>
 
-	<div id="html_validation_result">
+	<div id="html_validation_result" style="margin-top:1em">
 <?php
 if (isset($this->htmlValidator))
 {

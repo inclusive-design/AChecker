@@ -145,7 +145,7 @@ span.congrats_msg{
 }
 
 span.info_msg{
-  line-height: 120%;
+  line-height: 100%;
   color: blue;
   padding: 1em 1em;
   font-size: large;
