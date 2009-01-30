@@ -63,7 +63,6 @@ if (is_array($my_guidelines))
 	$savant->assign('buttons', array('edit', 'delete'));
 	$savant->assign('showStatus', true);
 	$savant->assign('formName', 'myGuideline');
-	$savant->assign('isAdmin', $_current_user->isAdmin());
 	$savant->display('guideline/index.tmpl.php');
 }
 
@@ -81,6 +80,7 @@ $savant->assign('title', _AC('standard_guidelines'));
 $savant->assign('rows', $guidelinesDAO->getStandardGuidelines());
 $savant->assign('showStatus', false);
 $savant->assign('formName', 'standardGuideline');
+$savant->assign('isAdmin', $_current_user->isAdmin());
 $savant->display('guideline/index.tmpl.php');
 
 
