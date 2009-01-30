@@ -293,7 +293,7 @@ CREATE TABLE `user_group_privilege` (
 
 # Dumping data for table `checks`
 
-INSERT INTO `ac_checks` (`check_id`, `html_tag`, `confidence`, `status`, `note`, `name`, `err`, `description`, `rationale`, `how_to_repair`, `repair_example`, `question`, `decision_pass`, `decision_fail`, `open_to_public`) VALUES
+INSERT INTO `checks` (`check_id`, `html_tag`, `confidence`, `status`, `note`, `name`, `err`, `description`, `rationale`, `how_to_repair`, `repair_example`, `question`, `decision_pass`, `decision_fail`, `open_to_public`) VALUES
 (1, 'img', '0', 5, '', '_CNAME_1', '_ERR_1', '_DESC_1', '_RATIONALE_1', '_HOWTOREPAIR_1', '_REPAIREXAMPLE_1', '', '', '', 1),
 (2, 'img', '1', 6, '_NOTE_2', '_CNAME_2', '_ERR_2', '_DESC_2', '_RATIONALE_2', '', '', '_QUESTION_2', '_DECISIONPASS_2', '_DECISIONFAIL_2', 1),
 (3, 'img', '1', 5, '', '_CNAME_3', '_ERR_3', '_DESC_3', '_RATIONALE_3', '', '', '_QUESTION_3', '_DECISIONPASS_3', '_DECISIONFAIL_3', 1),
