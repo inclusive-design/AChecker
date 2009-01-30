@@ -17,7 +17,6 @@ if (isset($_POST['submit']) && ($_POST['action'] == 'process')) {
 	unset($action);
 	store_steps($step);
 	$step++;
-	debug("return out 3");
 	return;
 }
 

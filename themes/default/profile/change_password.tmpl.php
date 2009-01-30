@@ -17,7 +17,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 
 <script
-	language="JavaScript" src="sha-1factory.js" type="text/javascript"></script>
+	language="JavaScript" src="jscripts/sha-1factory.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 function encrypt_password()
