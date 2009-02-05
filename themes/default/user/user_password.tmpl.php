@@ -39,23 +39,13 @@ function encrypt_password()
 </script>
 
 <div class="center-input-form">
-<fieldset class="group_form"><legend class="group_form"><?php echo _AC('password_reminder'); ?></legend>
+<fieldset class="group_form"><legend class="group_form"><?php echo _AC('change_password'); ?></legend>
 
-	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="form">
-		<input type="hidden" name="form_change" value="true" />
-		<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
-		<input type="hidden" name="g" value="<?php echo $this->g; ?>" />
-		<input type="hidden" name="h" value="<?php echo $this->h; ?>" />
+	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?id=<?php echo $_GET['id']; ?>" method="post" name="form">
 		<input type="hidden" name="form_password_hidden" value="" />
 		<input type="hidden" name="password_error" value="" />
 
-		<table align="center" width="60%">
-			<tr>
-				<td colspan="2" align="left"><?php echo _AC('password_new_blurb'); ?></td>
-			</tr>
-			
-			<tr><td><br /></td></tr>
-
+		<table align="center">
 			<tr>
 				<td align="left">
 					<div class="required" title="<?php echo _AC('required_field'); ?>">*</div>

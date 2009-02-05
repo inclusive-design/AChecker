@@ -20,6 +20,8 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <form name="input_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?><?php if (isset($_GET["id"])) echo '?id='.$_GET["id"]; ?>" >
 
 <div class="input-form">
+
+<fieldset class="group_form"><legend class="group_form"><?php echo _AC('create_edit_guideline'); ?></legend>
 	<table>
 		<tr>
 			<td colspan="2" align="left"><p><?php echo _AC('required_field_text') ;?><br /><br /></p></td>
@@ -152,6 +154,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	<div class="row">
 		<input type="submit" name="save" value="<?php echo _AC('save'); ?>" />
 	</div>
+</fieldset>
 </div>
 </form>
 

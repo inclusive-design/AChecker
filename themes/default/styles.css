@@ -684,6 +684,23 @@ a#editor-link.on {
 }
 
 
+/* for filter tables */
+table.filter {
+	clear:left;
+	margin-left: auto; 
+	margin-right: auto;
+	text-align: left;
+} 
+
+table.filter th {
+	font-weight: bold;
+}
+
+table.filter td {
+	padding: 5px;
+	white-space: nowrap;
+}
+
 /* for data tables */
 table.data {
 	clear:right;

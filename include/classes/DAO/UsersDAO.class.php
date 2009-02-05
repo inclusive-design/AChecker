@@ -34,7 +34,9 @@ class UsersDAO extends DAO {
 	 */
 	public function Validate($login, $pwd)
 	{
-		$sql = "SELECT user_id FROM ".TABLE_PREFIX."users WHERE (login='".$login."' OR email='".$login."') AND SHA1(CONCAT(password, '".$_SESSION[token]."'))='".$pwd."'";
+		$sql = "SELECT user_id FROM ".TABLE_PREFIX."users 
+		         WHERE (login='".$login."' OR email='".$login."') 
+		           AND SHA1(CONCAT(password, '".$_SESSION[token]."'))='".$pwd."'";
 
 		$rows = $this->execute($sql);
 		if (is_array($rows))
@@ -60,11 +62,9 @@ class UsersDAO extends DAO {
 	 *          false and add error into global var $msg, if unsuccessful
 	 * @author  Cindy Qi Li
 	 */
-	public function Create($user_group_id, $login, $pwd, $email, $first_name, $last_name)
+	public function Create($user_group_id, $login, $pwd, $email, $first_name, $last_name, $status)
 	{
-		global $addslashes, $msg;
-
-		$missing_fields = array();
+		global $addslashes;
 
 		/* email check */
 		$login = $addslashes(strtolower(trim($login)));
@@ -72,75 +72,17 @@ class UsersDAO extends DAO {
 		$first_name = $addslashes(str_replace('<', '', trim($first_name)));
 		$last_name = $addslashes(str_replace('<', '', trim($last_name)));
 
-		/* login name check */
-		if ($login == '')
+		if ($this->isFieldsValid('new', $user_group_id,$login, $email,$first_name, $last_name))
 		{
-			$missing_fields[] = _AC('login_name');
-		}
-		else
-		{
-			/* check for special characters */
-			if (!(eregi("^[a-zA-Z0-9_.-]([a-zA-Z0-9_.-])*$", $login)))
+			if ($status == "")
 			{
-				$msg->addError('LOGIN_CHARS');
-			}
-			else
-			{
-				$sql = "SELECT * FROM ".TABLE_PREFIX."users WHERE login='".$login."'";
-
-				if (is_array($this->execute($sql)))
+				if (defined('AC_EMAIL_CONFIRMATION') && AC_EMAIL_CONFIRMATION)
 				{
-					$msg->addError('LOGIN_EXISTS');
+					$status = AC_STATUS_UNCONFIRMED;
+				} else
+				{
+					$status = AC_STATUS_ENABLED;
 				}
-			}
-		}
-
-		if ($email == '')
-		{
-			$missing_fields[] = _AC('email');
-		}
-		else if (!eregi("^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$", $email))
-		{
-			$msg->addError('EMAIL_INVALID');
-		}
-		$sql = "SELECT * FROM ".TABLE_PREFIX."users WHERE email='".$email."'";
-
-		if (is_array($this->execute($sql)))
-		{
-			$msg->addError('EMAIL_EXISTS');
-		}
-
-		if (!$first_name) {
-			$missing_fields[] = _AC('first_name');
-		}
-
-		if (!$last_name) {
-			$missing_fields[] = _AC('last_name');
-		}
-
-		// check if first+last is unique
-		if ($first_name && $last_name)
-		{
-			if ($this->getUserByName($first_name, $last_name))
-			{
-				$msg->addError('FIRST_LAST_NAME_UNIQUE');
-			}
-		}
-
-		if ($missing_fields)
-		{
-			$missing_fields = implode(', ', $missing_fields);
-			$msg->addError(array('EMPTY_FIELDS', $missing_fields));
-		}
-
-		if (!$msg->containsErrors())
-		{
-			if (defined('AC_EMAIL_CONFIRMATION') && AC_EMAIL_CONFIRMATION)
-			{
-				$status = AC_STATUS_UNCONFIRMED;
-			} else
-			{
-				$status = AC_STATUS_ENABLED;
 			}
 
 			/* insert into the db */
@@ -177,6 +119,45 @@ class UsersDAO extends DAO {
 		else
 		{
 			return false;
+		}
+	}
+
+	/**
+	 * Create new user
+	 * @access  public
+	 * @param   user_group_id: user group ID (1 [admin] or 2 [user])
+	 *          login: login name
+	 *          pwd: password
+	 *          email: email
+	 *          first_name: first name
+	 *          last_name: last name
+	 * @return  user id, if successful
+	 *          false and add error into global var $msg, if unsuccessful
+	 * @author  Cindy Qi Li
+	 */
+	public function Update($user_id, $user_group_id, $login, $email, $first_name, $last_name, $status)
+	{
+		global $addslashes, $msg;
+
+		/* email check */
+		$login = $addslashes(strtolower(trim($login)));
+		$email = $addslashes(trim($email));
+		$first_name = $addslashes(str_replace('<', '', trim($first_name)));
+		$last_name = $addslashes(str_replace('<', '', trim($last_name)));
+
+		if ($this->isFieldsValid('update', $user_group_id,$login, $email,$first_name, $last_name))
+		{
+			/* insert into the db */
+			$sql = "UPDATE ".TABLE_PREFIX."users
+			           SET login = '".$login."',
+			               user_group_id = '".$user_group_id."',
+			               first_name = '".$first_name."',
+			               last_name = '".$last_name."',
+			               email = '".$email."',
+			               status = '".$status."'
+			         WHERE user_id = ".$user_id;
+
+			return $this->execute($sql);
 		}
 	}
 
@@ -345,6 +326,102 @@ class UsersDAO extends DAO {
 	{
 		$sql = "Update ".TABLE_PREFIX."users SET email='".$email."' WHERE user_id='".$userID."'";
 		return $this->execute($sql);
+	}
+
+	/**
+	 * Validate fields preparing for insert and update
+	 * @access  private
+	 * @param   $validate_type : new/update. When validating for update, don't check if the login, email, name are unique  
+	 *          $user_group_id : user ID
+	 *          $login
+	 *          $email
+	 *          $first_name
+	 *          $last_name
+	 * @return  true    if update successfully
+	 *          false   if update unsuccessful
+	 * @author  Cindy Qi Li
+	 */
+	private function isFieldsValid($validate_type, $user_group_id, $login, $email, $first_name, $last_name)
+	{
+		global $msg;
+		
+		$missing_fields = array();
+		/* login name check */
+		if ($login == '')
+		{
+			$missing_fields[] = _AC('login_name');
+		}
+		else
+		{
+			/* check for special characters */
+			if (!(eregi("^[a-zA-Z0-9_.-]([a-zA-Z0-9_.-])*$", $login)))
+			{
+				$msg->addError('LOGIN_CHARS');
+			}
+			else
+			{
+				if ($validate_type == 'new')
+				{
+					$sql = "SELECT * FROM ".TABLE_PREFIX."users WHERE login='".$login."'";
+	
+					if (is_array($this->execute($sql)))
+					{
+						$msg->addError('LOGIN_EXISTS');
+					}
+				}
+			}
+		}
+
+		if ($user_group_id == '' || $user_group_id <= 0)
+		{
+			$missing_fields[] = _AC('user_group');
+		}
+		if ($email == '')
+		{
+			$missing_fields[] = _AC('email');
+		}
+		else if (!eregi("^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$", $email))
+		{
+			$msg->addError('EMAIL_INVALID');
+		}
+
+		if ($validate_type == 'new')
+		{
+			$sql = "SELECT * FROM ".TABLE_PREFIX."users WHERE email='".$email."'";
+	
+			if (is_array($this->execute($sql)))
+			{
+				$msg->addError('EMAIL_EXISTS');
+			}
+		}
+
+		if (!$first_name) {
+			$missing_fields[] = _AC('first_name');
+		}
+
+		if (!$last_name) {
+			$missing_fields[] = _AC('last_name');
+		}
+
+		// check if first+last is unique
+		if (($first_name || $last_name) && $validate_type == 'new')
+		{
+			if ($this->getUserByName($first_name, $last_name))
+			{
+				$msg->addError('FIRST_LAST_NAME_UNIQUE');
+			}
+		}
+
+		if ($missing_fields)
+		{
+			$missing_fields = implode(', ', $missing_fields);
+			$msg->addError(array('EMPTY_FIELDS', $missing_fields));
+		}
+		
+		if (!$msg->containsErrors())
+			return true;
+		else
+			return false;
 	}
 }
 ?>

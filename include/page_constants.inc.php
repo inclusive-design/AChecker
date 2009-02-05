@@ -108,5 +108,18 @@ if (in_array(AC_PRIV_GUIDELINE_MANAGEMENT, $privs))
 // 4. user pages
 if (in_array(AC_PRIV_USER_MANAGEMENT, $privs))
 {
+	$_pages['user/index.php']['title_var'] = 'user_manage';
+	$_pages['user/index.php']['parent']    = AC_NAV_TOP;
+	$_pages['user/index.php']['children']  = array_merge(array('user/user_create_edit.php'), 
+	                                                     isset($_pages['user/index.php']['children']) ? $_pages['user/index.php']['children'] : array());
+	$_pages['user/index.php']['guide']    = 'AC_HELP_USER';
+
+	$_pages['user/user_create_edit.php']['title_var'] = 'create_user';
+	$_pages['user/user_create_edit.php']['parent']    = 'user/index.php';
+	$_pages['user/user_create_edit.php']['guide']    = 'AC_HELP_CREATE_EDIT_USER';
+	
+	$_pages['user/user_password.php']['title_var'] = 'change_password';
+	$_pages['user/user_password.php']['parent']    = 'user/index.php';
+	$_pages['user/user_password.php']['guide']    = 'AC_HELP_USER_PASSWORD';
 }
 ?>

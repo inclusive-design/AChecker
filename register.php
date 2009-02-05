@@ -40,7 +40,8 @@ if (isset($_POST['cancel'])) {
 		              $_POST['form_password_hidden'],
 		              $_POST['email'],
 		              $_POST['first_name'],
-		              $_POST['last_name']);
+		              $_POST['last_name'],
+		              '');
 		
 		if (is_int($user_id) && $user_id > 0)
 		{
@@ -80,6 +81,12 @@ if (isset($_POST['cancel'])) {
 
 global $onload;
 $onload = 'document.form.login.focus();';
+
+$savant->assign('title', _AC('registration'));
+$savant->assign('submit_button_text', _AC('register'));
+$savant->assign('show_user_group', false);
+$savant->assign('show_status', false);
+$savant->assign('show_password', true);
 
 $savant->display('register.tmpl.php');
 
