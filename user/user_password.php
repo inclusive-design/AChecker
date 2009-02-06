@@ -51,24 +51,29 @@ if (isset($_POST['submit'])) {
 
 		// send email to user
 		$user_row = $usersDAO->getUserByID($_GET['id']);
-		
+
 		$tmp_message  = _AC('password_change_msg')."\n\n";
 		$tmp_message .= _AC('web_site').' : '.AC_BASE_HREF."\n";
-		$tmp_message .= _AC('login_name').' : '.$user_row->login."\n";
+		$tmp_message .= _AC('login_name').' : '.$user_row['login']."\n";
 		
 		require(AC_INCLUDE_PATH . 'classes/phpmailer/acheckermailer.class.php');
 		$mail = new ACheckerMailer;
 		$mail->From     = $_config['contact_email'];
-		$mail->AddAddress($user_row->email);
+		$mail->AddAddress($user_row['email']);
 		$mail->Subject = $_config['site_name'] . ': ' . _AC('password_changed');
 		$mail->Body    = $tmp_message;
 
-		if(!$mail->Send()) {
+		if(!$mail->Send()) 
+		{
 		   $msg->addError('SENDING_ERROR');
-		   exit;
+		}
+		else
+		{
+			$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 		}
 		
-		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
+		header('Location: index.php');
+		exit;
 	}
 }
 
