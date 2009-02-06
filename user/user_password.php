@@ -41,7 +41,7 @@ if (isset($_POST['submit'])) {
 		
 		$usersDAO = new UsersDAO();
 
-		if (!$usersDAO->ssetPassword($_GET['id'], $password)) 
+		if (!$usersDAO->setPassword($_GET['id'], $password)) 
 		{
 			require(AC_INCLUDE_PATH.'header.inc.php');
 			$msg->printErrors('DB_NOT_UPDATED');
