@@ -52,9 +52,9 @@ if (isset($_POST['submit'])) {
 		// send email to user
 		$user_row = $usersDAO->getUserByID($_GET['id']);
 		
-		$tmp_message  = _AT('password_change_msg')."\n\n";
-		$tmp_message .= _AT('web_site').' : '.AT_BASE_HREF."\n";
-		$tmp_message .= _AT('login_name').' : '.$user_row->login."\n";
+		$tmp_message  = _AC('password_change_msg')."\n\n";
+		$tmp_message .= _AC('web_site').' : '.AC_BASE_HREF."\n";
+		$tmp_message .= _AC('login_name').' : '.$user_row->login."\n";
 		
 		require(AC_INCLUDE_PATH . 'classes/phpmailer/acheckermailer.class.php');
 		$mail = new ACheckerMailer;
