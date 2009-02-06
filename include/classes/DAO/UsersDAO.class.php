@@ -135,7 +135,7 @@ class UsersDAO extends DAO {
 	 *          false and add error into global var $msg, if unsuccessful
 	 * @author  Cindy Qi Li
 	 */
-	public function Update($user_id, $user_group_id, $login, $email, $first_name, $last_name, $status)
+	public function Update($userID, $user_group_id, $login, $email, $first_name, $last_name, $status)
 	{
 		global $addslashes, $msg;
 
@@ -155,10 +155,54 @@ class UsersDAO extends DAO {
 			               last_name = '".$last_name."',
 			               email = '".$email."',
 			               status = '".$status."'
-			         WHERE user_id = ".$user_id;
+			         WHERE user_id = ".$userID;
 
 			return $this->execute($sql);
 		}
+	}
+
+	/**
+	 * Delete user
+	 * @access  public
+	 * @param   user_id
+	 * @return  true, if successful
+	 *          false and add error into global var $msg, if unsuccessful
+	 * @author  Cindy Qi Li
+	 */
+	public function Delete($userID)
+	{
+		// delete customized guidelines created by user but yet open to public
+		include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
+		$guidelinesDAO = new GuidelinesDAO();
+		$guidelines = $guidelinesDAO->getGuidelineByUserID($userID);
+		
+		if (is_array($guidelines))
+		{
+			foreach($guidelines as $guideline)
+			{
+				if ($guideline['open_to_pulic'] == 0)
+					$guidelinesDAO->Delete($guideline['guideline_id']);
+			}
+		}
+
+		// delete customized checks created by user but yet open to public
+		include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
+		$checksDAO = new ChecksDAO();
+		$checks = $checksDAO->getCheckByUserID($userID);
+		
+		if (is_array($checks))
+		{
+			foreach($checks as $check)
+			{
+				if ($check['open_to_pulic'] == 0)
+					$check->Delete($check['check_id']);
+			}
+		}
+		
+		$sql = "DELETE FROM ".TABLE_PREFIX."users
+		         WHERE user_id = ".$userID;
+
+		return $this->execute($sql);
 	}
 
 	/**
@@ -181,9 +225,9 @@ class UsersDAO extends DAO {
 	 * @return  user row
 	 * @author  Cindy Qi Li
 	 */
-	public function getUserByID($user_id)
+	public function getUserByID($userID)
 	{
-		$sql = 'SELECT * FROM '.TABLE_PREFIX.'users WHERE user_id='.$user_id;
+		$sql = 'SELECT * FROM '.TABLE_PREFIX.'users WHERE user_id='.$userID;
 		if ($rows = $this->execute($sql))
 		{
 			return $rows[0];
@@ -236,15 +280,46 @@ class UsersDAO extends DAO {
 	}
 
 	/**
+	 * Based on this->userID, return (first name, last name), if first name, last name not exists, return login name
+	 * @access  public
+	 * @param   $userID
+	 * @return  first name, last name. if not exists, return login name
+	 * @author  Cindy Qi Li
+	 */
+	public function getUserName($userID)
+	{
+		$row = $this->getUserByID($userID);
+		
+		if (!$row) return false;
+		
+		if ($row['first_name'] <> '' && $row['last_name'] <> '')
+		{
+			return $row['first_name']. ', '.$row['last_name'];
+		}
+		else if ($row['first_name'] <> '')
+		{
+			return $row['first_name'];
+		}
+		else if ($row['last_name'] <> '')
+		{
+			return $row['last_name'];
+		}
+		else
+		{
+			return $row['login'];
+		}
+	}
+	
+	/**
 	 * Return given user's status
 	 * @access  public
 	 * @param   user id
 	 * @return  user's status
 	 * @author  Cindy Qi Li
 	 */
-	public function getStatus($user_id)
+	public function getStatus($userID)
 	{
-		$sql = "SELECT status FROM ".TABLE_PREFIX."users WHERE user_id='".$user_id."'";
+		$sql = "SELECT status FROM ".TABLE_PREFIX."users WHERE user_id='".$userID."'";
 		$rows = $this->execute($sql);
 
 		if ($rows)
@@ -262,9 +337,9 @@ class UsersDAO extends DAO {
 	 *          false   if unsuccessful
 	 * @author  Cindy Qi Li
 	 */
-	public function setStatus($user_id, $status)
+	public function setStatus($userID, $status)
 	{
-		$sql = "Update ".TABLE_PREFIX."users SET status='".$status."' WHERE user_id='".$user_id."'";
+		$sql = "Update ".TABLE_PREFIX."users SET status='".$status."' WHERE user_id='".$userID."'";
 		return $this->execute($sql);
 	}
 
@@ -276,9 +351,9 @@ class UsersDAO extends DAO {
 	 *          false   if update unsuccessful
 	 * @author  Cindy Qi Li
 	 */
-	public function setLastLogin($user_id)
+	public function setLastLogin($userID)
 	{
-		$sql = "Update ".TABLE_PREFIX."users SET last_login=now() WHERE user_id='".$user_id."'";
+		$sql = "Update ".TABLE_PREFIX."users SET last_login=now() WHERE user_id='".$userID."'";
 		return $this->execute($sql);
 	}
 

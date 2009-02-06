@@ -49,24 +49,7 @@ class User {
 	 */
 	public function getUserName()
 	{
-		$row = $this->userDAO->getUserByID($this->userID);
-		 
-		if ($row['first_name'] <> '' && $row['last_name'] <> '')
-		{
-			return $row['first_name']. ', '.$row['last_name'];
-		}
-		else if ($row['first_name'] <> '')
-		{
-			return $row['first_name'];
-		}
-		else if ($row['last_name'] <> '')
-		{
-			return $row['last_name'];
-		}
-		else
-		{
-			return $row['login'];
-		}
+		return $this->userDAO->getUserName($this->userID);
 	}
 
 	/**

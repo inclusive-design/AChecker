@@ -18,6 +18,9 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <script type='text/javascript' src='jscripts/calendar.js'></script>
 
 <form name="input_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?><?php if (isset($_GET["id"])) echo '?id='.$_GET["id"]; ?>" >
+<?php if (isset($this->row["user_id"])) {?>
+<input type="hidden" name="user_id" value="<?php echo $this->row["user_id"]; ?>" />"
+<?php }?>
 
 <div class="input-form">
 
@@ -31,6 +34,13 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="title"><?php echo _AC('title'); ?></label></th>
 			<td><input type="text" name="title" size="100" id="title" value="<?php if (isset($_POST['title'])) echo $_POST['title']; else echo $this->row["title"]; ?>" /></td>
 		</tr>
+
+		<?php if ($this->is_admin) {?>
+		<tr>
+			<th align="left"><? echo _AC("author"); ?></th>
+			<td><?php echo $this->author; ?></td>
+		</tr>
+		<?php } ?>
 
 		<tr>
 			<th align="left"><label for="abbr"><?php echo _AC('abbr'); ?></label></th>
@@ -153,6 +163,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	
 	<div class="row">
 		<input type="submit" name="save" value="<?php echo _AC('save'); ?>" />
+		<input type="submit" name="cancel" value="<?php echo _AC('cancel'); ?>" />
 	</div>
 </fieldset>
 </div>

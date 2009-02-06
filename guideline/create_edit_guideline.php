@@ -15,6 +15,7 @@ define('AC_INCLUDE_PATH', '../include/');
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/UsersDAO.class.php');
 
 global $_current_user;
 
@@ -23,7 +24,13 @@ if (isset($_GET["id"])) $gid = intval($_GET["id"]);
 $guidelinesDAO = new GuidelinesDAO();
 
 // handle submits
-if (isset($_POST['save']))
+if (isset($_POST['cancel'])) 
+{
+	$msg->addFeedback('CANCELLED');
+	header('Location: index.php');
+	exit;
+} 
+else if (isset($_POST['save']))
 {
 	$title = $addslashes(trim($_POST['title']));	
 	
@@ -37,7 +44,7 @@ if (isset($_POST['save']))
 		if (isset($gid))  // edit existing guideline
 		{
 			$guidelinesDAO->update($gid,
-			                       $_SESSION['user_id'], 
+			                       $_POST['user_id'], 
 			                       $title, 
 			                       $addslashes(trim($_POST['abbr'])),
 			                       $addslashes(trim($_POST['long_name'])),
@@ -91,10 +98,16 @@ if (!isset($gid))
 else
 {
 	// edit existing guideline
-	$rows = $guidelinesDAO->getGuidelineByIDs($gid);
 	$checksDAO = new ChecksDAO();
+	$rows = $guidelinesDAO->getGuidelineByIDs($gid);
 	$checks_rows = $checksDAO->getChecksByGuidelineID($gid);
 
+	// get author name
+	$usersDAO = new UsersDAO();
+	$user_name = $usersDAO->getUserName($rows[0]['user_id']);
+
+	if (!$user_name) $user_name = _AC('author_not_exist');
+	
 	// get checks that are open to public and not in guideline
 	unset($str_existing_checks);
 	if (is_array($checks_rows))
@@ -105,6 +118,7 @@ else
 	}
 	
 	$savant->assign('row', $rows[0]);
+	$savant->assign('author', $user_name);
 	$savant->assign('checks_rows', $checks_rows);
 	$savant->assign('checks_to_add_rows', $checksDAO->getAllOpenChecksExceptListed($str_existing_checks));
 }

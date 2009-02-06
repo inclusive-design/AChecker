@@ -30,6 +30,19 @@ class ChecksDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
+	function Delete($checkID)
+	{
+		$sql = "DELETE FROM ". TABLE_PREFIX ."checks WHERE check_id=".$checkID;
+		return $this->execute($sql);
+	}
+
+	/**
+	* Return all checks' info
+	* @access  public
+	* @param   none
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
 	function getAll()
 	{
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."checks";
@@ -86,6 +99,19 @@ class ChecksDAO extends DAO {
 	    else
 	    	return false;
 	  }
+
+	/**
+	* Return check info of given check id
+	* @access  public
+	* @param   $userID
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function getCheckByUserID($userID)
+	{
+		$sql = "SELECT * FROM ". TABLE_PREFIX ."checks WHERE user_id=". $userID;
+		return $this->execute($sql);
+	}
 
 	/**
 	* Return checks for all html elements by given guideline ids

@@ -121,5 +121,9 @@ if (in_array(AC_PRIV_USER_MANAGEMENT, $privs))
 	$_pages['user/user_password.php']['title_var'] = 'change_password';
 	$_pages['user/user_password.php']['parent']    = 'user/index.php';
 	$_pages['user/user_password.php']['guide']    = 'AC_HELP_USER_PASSWORD';
+
+	$_pages['user/user_delete.php']['title_var'] = 'delete_user';
+	$_pages['user/user_delete.php']['parent']    = 'user/index.php';
+	$_pages['user/user_delete.php']['guide']    = 'AC_HELP_USER_DELETE';
 }
 ?>

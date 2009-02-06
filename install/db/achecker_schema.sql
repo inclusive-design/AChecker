@@ -7,7 +7,8 @@
 # since 0.1
 
 CREATE TABLE `checks` (
-  `check_id` mediumint(8) unsigned NOT NULL,
+  `check_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `user_id` mediumint(8) unsigned NOT NULL default 0,
   `html_tag` varchar(50) default NULL,
   `confidence` varchar(50) default NULL COMMENT 'Values: Known, Likely, Potetial',
   `status` mediumint(8) unsigned default NULL,

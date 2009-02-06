@@ -63,6 +63,7 @@ if (is_array($my_guidelines))
 	$savant->assign('buttons', array('edit', 'delete'));
 	$savant->assign('showStatus', true);
 	$savant->assign('formName', 'myGuideline');
+	$savant->assign('isAdmin', $_current_user->isAdmin());
 	$savant->display('guideline/index.tmpl.php');
 }
 
