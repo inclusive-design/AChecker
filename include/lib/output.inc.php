@@ -61,10 +61,6 @@ function _AC() {
 					
 			/* get $_msgs_new from the DB */
 			$rows = $languageTextDAO->getMsgByTermAndLang($args[0], $_SESSION['lang']);
-//			$sql	= 'SELECT text FROM '.TABLE_PREFIX.'language_text WHERE term="' . $args[0] . '" AND (variable="_msgs" OR variable="_c_msgs") AND language_code="'.$_SESSION['lang'].'" ORDER BY variable ASC LIMIT 1';
-//
-//			$result	= @mysql_query($sql, $db);
-//			$i = 1;
 			$msgs = '';
 					
 			if (is_array($rows)) 
@@ -90,9 +86,6 @@ function _AC() {
 			/* get $_template from the DB */
 			$rows = $languageTextDAO->getAllTemplateByLang($_SESSION['lang']);
 			
-//			$sql = "SELECT * FROM ".TABLE_PREFIX."language_text WHERE language_code='".$_SESSION['lang']."' AND variable='_template' ORDER BY variable ASC";
-//			$result	= mysql_query($sql, $db);
-
 			if (is_array($rows))
 			{
 				foreach ($rows as $id => $row) 
@@ -138,11 +131,6 @@ function _AC() {
 	}
 
 	if (empty($outString)) {
-//		global $db;
-//		$sql	= 'SELECT L.* FROM '.TABLE_PREFIX.'language_text L WHERE L.language_code="'.$_SESSION['lang'].'" AND L.variable<>"_msgs" AND L.term="'.$format.'"';
-//
-//		$result	= mysql_query($sql, $db);
-//		$row = mysql_fetch_assoc($result);
 
 		$rows = $languageTextDAO->getByTermAndLang($format, $_SESSION['lang']);
 		if (is_array($rows))
@@ -150,9 +138,6 @@ function _AC() {
 			$row = $rows[0];
 			$_template[$row['term']] = stripslashes($row['text']);
 			$outString = $_template[$row['term']];
-
-//			$outString = $_template[$row['term']];
-//			$outString = vsprintf($outString, $args);
 		}
 
 		if (empty($outString)) {
