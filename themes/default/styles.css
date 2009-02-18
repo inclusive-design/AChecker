@@ -1659,3 +1659,32 @@ p.helpwanted a {
   text-decoration: none;
 }
 
+.selected {
+ font-family : Arial, Helvetica, Arial Cyr, Arial Ua, sans-serif;
+  font-size : 14px;
+  color : black;
+  background: #E6E6E6;
+  font-weight : bold;
+  padding: 2px;
+  width: 45%;
+}
+
+th.box {
+	border-bottom: #006699 solid 1px;
+	color: white;
+  background-color: #006699;
+}
+
+table.box {
+	background-color: white;
+	border-right: #006699 solid 1px;
+	border-left: #006699 solid 1px;
+	border-top: #006699 solid 1px;
+	margin-right: 500px;
+	margin-bottom: 10px;
+}
+
+table.box th, table.box td {
+	border-bottom: #006699 solid 1px;
+	font-size: smaller;
+}

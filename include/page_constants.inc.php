@@ -110,7 +110,8 @@ if (in_array(AC_PRIV_USER_MANAGEMENT, $privs))
 {
 	$_pages['user/index.php']['title_var'] = 'user_manage';
 	$_pages['user/index.php']['parent']    = AC_NAV_TOP;
-	$_pages['user/index.php']['children']  = array_merge(array('user/user_create_edit.php'), 
+	$_pages['user/index.php']['children']  = array_merge(array('user/user_create_edit.php',
+	                                                           'user/user_group.php'), 
 	                                                     isset($_pages['user/index.php']['children']) ? $_pages['user/index.php']['children'] : array());
 	$_pages['user/index.php']['guide']    = 'AC_HELP_USER';
 
@@ -125,5 +126,19 @@ if (in_array(AC_PRIV_USER_MANAGEMENT, $privs))
 	$_pages['user/user_delete.php']['title_var'] = 'delete_user';
 	$_pages['user/user_delete.php']['parent']    = 'user/index.php';
 	$_pages['user/user_delete.php']['guide']    = 'AC_HELP_USER_DELETE';
+
+	$_pages['user/user_group.php']['title_var'] = 'user_group';
+	$_pages['user/user_group.php']['parent']    = 'user/index.php';
+	$_pages['user/user_group.php']['children']  = array_merge(array('user/user_group_create_edit.php'), 
+	                                                     isset($_pages['user/user_group.php']['children']) ? $_pages['user/user_group.php']['children'] : array());
+	$_pages['user/user_group.php']['guide']    = 'AC_HELP_USER_GROUP';
+	
+	$_pages['user/user_group_create_edit.php']['title_var'] = 'create_edit_user_group';
+	$_pages['user/user_group_create_edit.php']['parent']    = 'user/user_group.php';
+	$_pages['user/user_group_create_edit.php']['guide']    = 'AC_HELP_CREATE_EDIT_USER_GROUP';
+	
+	$_pages['user/user_group_delete.php']['title_var'] = 'delete_user_group';
+	$_pages['user/user_group_delete.php']['parent']    = 'user/user_group.php';
+	
 }
 ?>

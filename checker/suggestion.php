@@ -150,12 +150,6 @@ foreach ($rows as $id => $row)
 	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . _AC($row["step"]). "</span><br />";
 }
 
-//$sql = "SELECT step_id, step
-//				FROM ". TABLE_PREFIX ."test_fail 
-//				WHERE check_id=". $check_id ."
-//				ORDER BY step_id";
-//$result	= mysql_query($sql, $db) or die(mysql_error());
-
 $testFailDAO = new TestFailDAO();
 $rows = $testFailDAO->getFailStepsByID($check_id);
 

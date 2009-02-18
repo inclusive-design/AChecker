@@ -294,7 +294,7 @@ class UsersDAO extends DAO {
 		
 		if ($row['first_name'] <> '' && $row['last_name'] <> '')
 		{
-			return $row['first_name']. ', '.$row['last_name'];
+			return $row['first_name']. ' '.$row['last_name'];
 		}
 		else if ($row['first_name'] <> '')
 		{

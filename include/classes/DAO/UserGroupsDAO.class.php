@@ -129,14 +129,22 @@ class UserGroupsDAO extends DAO {
 	/**
 	 * delete user group by given user id
 	 * @access  public
-	 * @param   user group ids
-	 * @return  user row
+	 * @param   user group id
+	 * @return  true / false
 	 * @author  Cindy Qi Li
 	 */
-	public function deleteUserGroupByIDs($user_group_ids)
+	public function Delete($userGroupID)
 	{
-		$sql = 'DELETE FROM '.TABLE_PREFIX.'user_groups WHERE user_group_id in ('.$user_group_ids.')';
-		return $rows = $this->execute($sql);
+		// delete user_group_privilege
+		include_once(AC_INCLUDE_PATH.'classes/DAO/UserGroupPrivilegeDAO.class.php');
+		
+		$userGroupPrivilegeDAO = new UserGroupPrivilegeDAO();
+		$userGroupPrivilegeDAO->DeleteByUserGroupID($userGroupID);
+		
+		// delete user_groups
+		$sql = 'DELETE FROM '.TABLE_PREFIX.'user_groups WHERE user_group_id = '.$userGroupID;
+		
+		return $this->execute($sql);
 	}
 	
 	/**

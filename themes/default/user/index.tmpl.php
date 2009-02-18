@@ -113,13 +113,13 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <tr>
 	<th scope="col" align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall" onclick="CheckAll();" /></th>
 
-	<th scope="col"><a href="admin/users.php?<?php echo $this->orders[$this->order]; ?>=login<?php echo $page_string; ?>"><?php echo _AC('login_name');      ?></a></th>
-	<th scope="col"><a href="admin/users.php?<?php echo $this->orders[$this->order]; ?>=first_name<?php echo $page_string; ?>"><?php echo _AC('first_name'); ?></a></th>
-	<th scope="col"><a href="admin/users.php?<?php echo $this->orders[$this->order]; ?>=last_name<?php echo $page_string; ?>"><?php echo _AC('last_name');   ?></a></th>
-	<th scope="col"><a href="admin/users.php?<?php echo $this->orders[$this->order]; ?>=user_group<?php echo $page_string; ?>"><?php echo _AC('user_group'); ?></a></th>
-	<th scope="col"><a href="admin/users.php?<?php echo $this->orders[$this->order]; ?>=email<?php echo $page_string; ?>"><?php echo _AC('email');           ?></a></th>
-	<th scope="col"><a href="admin/users.php?<?php echo $this->orders[$this->order]; ?>=status<?php echo $page_string; ?>"><?php echo _AC('user_status'); ?></a></th>
-	<th scope="col"><a href="admin/users.php?<?php echo $this->orders[$this->order]; ?>=last_login<?php echo $page_string; ?>"><?php echo _AC('last_login'); ?></a></th>
+	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=login<?php echo $page_string; ?>"><?php echo _AC('login_name');      ?></a></th>
+	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=first_name<?php echo $page_string; ?>"><?php echo _AC('first_name'); ?></a></th>
+	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=last_name<?php echo $page_string; ?>"><?php echo _AC('last_name');   ?></a></th>
+	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=user_group<?php echo $page_string; ?>"><?php echo _AC('user_group'); ?></a></th>
+	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=email<?php echo $page_string; ?>"><?php echo _AC('email');           ?></a></th>
+	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=status<?php echo $page_string; ?>"><?php echo _AC('user_status'); ?></a></th>
+	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=last_login<?php echo $page_string; ?>"><?php echo _AC('last_login'); ?></a></th>
 </tr>
 
 </thead>
@@ -149,9 +149,6 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 					<?php else: ?>
 						<?php 
 						echo $row['last_login'];
-//						$startend_date_longs_format=_AC('startend_date_longs_format');
-						//echo AC_date('%d/%m/%y - %H:%i', $row['last_login'], AC_DATE_MYSQL_TIMESTAMP_14);
-//						echo AC_date($startend_date_longs_format, $row['last_login'], AC_DATE_MYSQL_TIMESTAMP_14);
 					?>
 					<?php endif; ?>
 				</td>

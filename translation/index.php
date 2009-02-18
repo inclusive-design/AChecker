@@ -3,21 +3,25 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
+/* Adaptive Technology Resource Centre / University of Toronto          */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-define('AC_INCLUDE_PATH', 'include/');
+define('AC_INCLUDE_PATH', '../include/');
 
-include(AC_INCLUDE_PATH.'vitals.inc.php');
+include_once(AC_INCLUDE_PATH.'vitals.inc.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/DAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/LanguagesDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 
-global $_custom_head;
-$_custom_head = '<link rel="stylesheet" href="style_popup.css" type="text/css" />';
+global $msg;
 
-include(AC_INCLUDE_PATH.'header.inc.php');
+$dao = new DAO();
+$languagesDAO = new LanguagesDAO();
+$languageTextDAO = new LanguageTextDAO();
 
 if (isset($_REQUEST['reset_filter'])) unset($_REQUEST);
 
@@ -34,7 +38,7 @@ if (isset($_REQUEST['submit']) || isset($_REQUEST['search']))
 		
 		if (isset($_REQUEST['new_or_translated']) && ($_REQUEST['new_or_translated'] == 1 || $_REQUEST['new_or_translated'] == 2))
 		{
-			$subquery = "(SELECT * FROM ".TABLE_PREFIX."language_text
+			$subquery = "(SELECT term FROM ".TABLE_PREFIX."language_text
 										WHERE language_code='".$_REQUEST['lang_code']."'
 										  AND text <> '')";
 			
@@ -60,10 +64,10 @@ if (isset($_REQUEST['submit']) || isset($_REQUEST['search']))
 						  AND lower(term) like '%".mysql_real_escape_string(strtolower(trim($_REQUEST['search_phase'])))."%'";
 	}
 	
-	$result = mysql_query($sql, $db) or die(mysql_error());
-	$num_results = mysql_num_rows($result);
-//	while ($row = mysql_fetch_assoc($result))
-//		debug($row['term']);
+	$rows = $dao->execute($sql);
+	
+	if (is_array($rows)) $num_results = count($rows);
+	else $num_results = 0;
 }
 
 if (isset($_REQUEST["save"]))
@@ -74,15 +78,26 @@ if (isset($_REQUEST["save"]))
 	$trans = array_flip($trans);
 	$sql_save = strtr($sql_save, $trans);
 
-	$result_save = mysql_query($sql_save, $db);
+//	$result_save = mysql_query($sql_save, $db);
 	
-	if (!$result_save) {
-		echo mysql_error($db);
+	if (!$dao->execute($sql_save)) {
 		$success_error = '<div class="error">Error: changes not saved!</div>';
 	}
 	else {
 		$success_error = '<div class="feedback2"">Success: changes saved.</div>';
 	}
+}
+
+$rows_lang = $languagesDAO->getAllExceptLangCode('en');				
+				
+include(AC_INCLUDE_PATH.'header.inc.php');
+
+if (!is_array($rows_lang))
+{
+	$msg->addFeedback('ONLY_ENGLISH');
+	$msg->printAll();
+	include(AC_INCLUDE_PATH.'footer.inc.php'); 
+	exit;
 }
 ?>
 
@@ -92,21 +107,13 @@ if (isset($_REQUEST["save"]))
 			<div class="required" title="<?php echo _AC('required_field'); ?>">*</div>
 			<?php echo _AC('choose_lang'); ?>:
 			<select name="lang_code"> 
-<?php
-				$sql_lang = "SELECT language_code, english_name FROM ".TABLE_PREFIX."languages WHERE language_code <> 'en'";
-				$result_lang	= mysql_query($sql_lang, $db);
-				
-				if (mysql_num_rows($result_lang) == 0)
-					echo _AC("only_english_defined");  // no foreign lang to translate
-				else
-				{
-					while ($row_lang	= mysql_fetch_assoc($result_lang))
-					{
+<?php 
+	foreach ($rows_lang as $row_lang)
+	{
 ?>
 				<option value="<?php echo $row_lang['language_code']; ?>" <?php if ($_REQUEST["lang_code"] == $row_lang['language_code'] || $row_lang['language_code'] == $_SESSION['lang']) echo 'selected="selected"'; ?>><?php echo $row_lang["english_name"]; ?></option>
 <?php
-					}
-				}
+	}
 ?>
 			</select>
 		</div>
@@ -154,6 +161,8 @@ if (isset($_REQUEST["save"]))
 			<input type="submit" name="search" value="<?php echo _AC('search_phase'); ?>" class="submit" /> 
 		</div>
 	</fieldset>
+	
+	</div>
 </form>
 
 <?php 
@@ -161,26 +170,25 @@ if (isset($_REQUEST['selected_term']))
 {
 	$sql_english	= "SELECT * FROM ".TABLE_PREFIX."language_text WHERE language_code='en' AND term='".$_REQUEST["selected_term"]."'";
 	if ($_REQUEST["term_type"] <> "") $sql_english .= " AND variable='".$_REQUEST["term_type"]."' ";
-	$result_english = mysql_query($sql_english, $db) or die(mysql_error());
-	$row_english = mysql_fetch_assoc($result_english);
 
-	$sql_selected	= "SELECT * FROM ".TABLE_PREFIX."language_text WHERE language_code='".$_REQUEST["lang_code"]."' AND term='".$_REQUEST["selected_term"]."'";
-	$result_selected	= mysql_query($sql_selected, $db);
+	$rows_english = $dao->execute($sql_english);
+	$row_english = $rows_english[0];
 
+	$rows_selected = $languageTextDAO->getByTermAndLang($_REQUEST["selected_term"], $_REQUEST["lang_code"]);
+	
 function trans_form() {
-	global $row_english;
-	global $result_selected;
+	global $row_english, $rows_selected;
 	global $langs;
 	global $success_error;
 	global $db;
 	global $addslashes;
 	global $stripslashes;
 
-	if (mysql_num_rows($result_selected) == 0) // add new term
+	if (!is_array($rows_selected)) // add new term
 		$add_new = true;
 	else // update existing one
 	{
-		$row_selected = mysql_fetch_assoc($result_selected) or die(mysql_error());
+		$row_selected = $rows_selected[0];
 		$add_new = false;
 	}
 ?>
@@ -239,46 +247,48 @@ function trans_form() {
 if ($num_results > 0)
 {
 	echo '<h3 class="indent">'. _AC("result") .'</h3>'."\n";
-	echo '<div class="output-form" style="padding-right: 20px">'."\n";
+	echo '<div class="input-form">'."\n";
 	echo '<br /><ul>'."\n";
-	while ($row = mysql_fetch_assoc($result)) 
+	if (is_array($rows))
 	{
-		if ($row['term'] == $_REQUEST["selected_term"])
-			echo '<a name="anchor"></a>'."\n".'<li>'."\n";
-		else
-			echo '<li>'."\n";
-
-		if (isset($_REQUEST["submit"]))
-			$submits = SEP."submit=1";
-		if (isset($_REQUEST["search"]))
-			$submits .= SEP."search=1";
-
-		if ($row['term'] != $_REQUEST["search_phase"]) {
-			echo '<a href="'.$_SERVER['PHP_SELF'].'?selected_term='.$row['term'].SEP.'lang_code='.$_REQUEST['lang_code'].SEP.'new_or_translated='.$_REQUEST["new_or_translated"].SEP.'term_type='.$_REQUEST["term_type"].SEP.'search_phase='.$_REQUEST["search_phase"].$submits.'#anchor" ';
-			if ($row['term'] == $_REQUEST["selected_term"]) echo 'class="selected"';
-			echo '>';
-			echo $row['term'];
-			echo '</a>'."\n";
-		} 
-
-		// display if the term is new or translated
-		$sql_check = "SELECT text, revised_date FROM ".TABLE_PREFIX."language_text WHERE language_code='".$_REQUEST['lang_code']."' AND term = '".$row['term']."'";
-		$result_check = mysql_query($sql_check, $db);
-		$row_check = mysql_fetch_assoc($result_check);
-		
-		// check if the term is new
-		if ($row_check['text'] == '')
-			echo '&nbsp;<small>*New*</small>'."\n";
-		
-		// compare revised_date to see if the term is updated since last translation
-		if ($row_check['revised_date'] <> '' && $row['revised_date'] > $row_check['revised_date'])
-			echo '&nbsp;<small>*Updated*</small>'."\n";
+		foreach ($rows as $row) 
+		{
+			if ($row['term'] == $_REQUEST["selected_term"])
+				echo '<a name="anchor"></a>'."\n".'<li>'."\n";
+			else
+				echo '<li>'."\n";
+	
+			if (isset($_REQUEST["submit"]))
+				$submits = SEP."submit=1";
+			if (isset($_REQUEST["search"]))
+				$submits .= SEP."search=1";
+	
+			if ($row['term'] != $_REQUEST["search_phase"]) {
+				echo '<a href="'.$_SERVER['PHP_SELF'].'?selected_term='.$row['term'].SEP.'lang_code='.$_REQUEST['lang_code'].SEP.'new_or_translated='.$_REQUEST["new_or_translated"].SEP.'term_type='.$_REQUEST["term_type"].SEP.'search_phase='.$_REQUEST["search_phase"].$submits.'#anchor" ';
+				if ($row['term'] == $_REQUEST["selected_term"]) echo 'class="selected"';
+				echo '>';
+				echo $row['term'];
+				echo '</a>'."\n";
+			} 
+	
+			// display if the term is new or translated
+			$rows_check = $languageTextDAO->getByTermAndLang($row['term'], $_REQUEST['lang_code']);
+			$row_check = $rows_check[0];
 			
-		echo '<br />';
-		// display translation form
-		if ($row['term'] == $_REQUEST["selected_term"]) trans_form();
-		
-		echo '</li><br />'."\n";
+			// check if the term is new
+			if ($row_check['text'] == '')
+				echo '&nbsp;<small>*New*</small>'."\n";
+			
+			// compare revised_date to see if the term is updated since last translation
+			if ($row_check['revised_date'] <> '' && $row['revised_date'] > $row_check['revised_date'])
+				echo '&nbsp;<small>*Updated*</small>'."\n";
+				
+			echo '<br />';
+			// display translation form
+			if ($row['term'] == $_REQUEST["selected_term"]) trans_form();
+			
+			echo '</li><br />'."\n";
+		}
 	}
 	echo '</ul>'."\n";
 	echo '</div>'."\n";

@@ -268,6 +268,19 @@ CREATE TABLE `users` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 # --------------------------------------------------------
+# Table structure for table `user_decisions`
+# since 0.2
+CREATE TABLE `user_decisions` (
+  `user_link_id` mediumint(8) NOT NULL,
+  `line_num` int(10) NOT NULL,
+  `column_num` int(10) NOT NULL,
+  `check_id` mediumint(8) NOT NULL,
+  `decision` mediumint(8),
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY  (`user_id`, `line_num`, `column_num`, `check_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+# --------------------------------------------------------
 # Table structure for table `user_groups`
 # since 0.1
 
@@ -287,10 +300,19 @@ CREATE TABLE `user_groups` (
 CREATE TABLE `user_group_privilege` (
   `user_group_id` mediumint(8) unsigned NOT NULL,
   `privilege_id` mediumint(8) unsigned NOT NULL,
-  `create_date` datetime NOT NULL,
-  `last_update` datetime,
   PRIMARY KEY  (`user_group_id`, `privilege_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
+# Table structure for table `user_decisions`
+# since 0.2
+CREATE TABLE `user_links` (
+  `user_link_id` mediumint(8) NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `link` int(10) NOT NULL,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY  (`user_link_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 # Dumping data for table `checks`
 
@@ -5033,20 +5055,24 @@ INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_da
 INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (4, 'check_manage', 'Create, edit, delete, enable, disable checks.', NOW(), 'check/index.php', 4, 0);
 INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (5, 'language_manage', 'Create, edit, delete, enable, disable languages.', NOW(), 'language/index.php', 5, 0);
 INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (6, 'profile', 'Edit Profile. Change password or email.', NOW(), 'profile/index.php', 6, 0);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (7, 'translation', 'Translate all terms used in AChecker into a foreign language.', NOW(), 'translation/index.php', 7, 0);
 
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (1, 'Administrator', 'Administrate guidelines, checks, users, languages.', now());
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (2, 'User', 'Regular user. Can make decision on likely and potential problems. When a user revisits a report, decisions previously made for Likely and Potential problems will be restored for the matching URL. Regular users can create custom guidelines.', now());
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (3, 'Guideline/Check creator', 'Create, edit, delete custom checks and guidelines.', now());
+INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (4, 'Translator', 'Translate AChecker terms into a foreign lanugage.', now());
 
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (1, 2, now());
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (1, 3, now());
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (1, 4, now());
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (1, 5, now());
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (1, 6, now());
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (2, 1, now());
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (2, 3, now());
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (2, 6, now());
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (3, 1, now());
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (3, 2, now());
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (3, 3, now());
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`, `create_date`) VALUES (3, 6, now());
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 2);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 3);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 4);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 5);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 6);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 1);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 3);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 6);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 1);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 2);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 3);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 6);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (4, 1);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (4, 7);

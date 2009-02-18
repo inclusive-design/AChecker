@@ -24,7 +24,7 @@ require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
 class LanguagesDAO extends DAO {
 
 	/**
-	* Return all config' information
+	* Return all languages
 	* @access  public
 	* @param   none
 	* @return  table rows
@@ -32,9 +32,43 @@ class LanguagesDAO extends DAO {
 	*/
 	function getAll()
 	{
-    $sql = 'SELECT * FROM '.TABLE_PREFIX.'languages ORDER BY native_name';
-    return $this->execute($sql);
-  }
+	    $sql = "SELECT * FROM ".TABLE_PREFIX."languages ORDER BY native_name";
+	    return $this->execute($sql);
+	}
 
+	/**
+	* Return language with given language code
+	* @access  public
+	* @param   $langCode
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function getByLangCode($langCode)
+	{
+	    $sql = "SELECT * FROM ".TABLE_PREFIX."languages 
+	             WHERE language_code = '".$langCode."'
+	             ORDER BY native_name";
+	    return $this->execute($sql);
+	}
+
+	/**
+	* Return all languages except the ones with language code in the given string 
+	* @access  public
+	* @param   $langCode : one language codes, for example: en
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function getAllExceptLangCode($langCode)
+	{
+		if (trim($langCode) == '')
+			return $this->getAll();
+		else
+		{
+			$sql = "SELECT * FROM ".TABLE_PREFIX."languages 
+			         WHERE language_code <> '".$langCode."' 
+			         ORDER BY native_name";
+		    return $this->execute($sql);
+		}
+	}
 }
 ?>

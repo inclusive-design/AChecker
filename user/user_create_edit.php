@@ -40,7 +40,7 @@ if (isset($_POST['cancel'])) {
 	{
 		if (!isset($_GET['id']))  // create new user
 		{
-			$user_id = $usersDAO->Create($user_group_id,
+			$user_id = $usersDAO->Create($_POST['user_group_id'],
 	                  $_POST['login'],
 			              $_POST['form_password_hidden'],
 			              $_POST['email'],
