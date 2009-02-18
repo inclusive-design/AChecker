@@ -5,7 +5,8 @@ define('AC_PRIV_USER_MANAGEMENT', 2);
 define('AC_PRIV_GUIDELINE_MANAGEMENT', 3);
 define('AC_PRIV_CHECK_MANAGEMENT', 4);
 define('AC_PRIV_LANGUAGE_MANAGEMENT', 5);
-define('AC_PRIV_PROFILE', 6);
+define('AC_PRIV_TRANSLATION', 6);
+define('AC_PRIV_PROFILE', 7);
 
 /* constants used for menu item generation. Used in class Menu (include/classes/Menu.class.php) */
 define('AC_NAV_PUBLIC', 'AC_NAV_PUBLIC');  // public menus, when no user login
@@ -66,25 +67,6 @@ if (in_array(AC_PRIV_CHECKER, $privs))
 	$_pages['checker/suggestion.php']['guide']    = 'AC_HELP_SUGGESTION';
 }
 
-// 2. profile pages
-if (in_array(AC_PRIV_PROFILE, $privs))
-{
-	$_pages['profile/index.php']['title_var'] = 'profile';
-	$_pages['profile/index.php']['parent']    = AC_NAV_TOP;
-	$_pages['profile/index.php']['guide']    = 'AC_HELP_PROFILE';
-	$_pages['profile/index.php']['children']  = array_merge(array('profile/change_password.php', 
-	                                                              'profile/change_email.php'), 
-	                                                        isset($_pages['profile/index.php']['children']) ? $_pages['profile/index.php']['children'] : array());
-	
-	$_pages['profile/change_password.php']['title_var'] = 'change_password';
-	$_pages['profile/change_password.php']['parent']    = 'profile/index.php';
-	$_pages['profile/change_password.php']['guide']    = 'AC_HELP_CHANGE_PASSWORD';
-	
-	$_pages['profile/change_email.php']['title_var'] = 'change_email';
-	$_pages['profile/change_email.php']['parent']    = 'profile/index.php';
-	$_pages['profile/change_email.php']['guide']    = 'AC_HELP_CHANGE_EMAIL';
-}
-
 // 3. guideline pages
 if (in_array(AC_PRIV_GUIDELINE_MANAGEMENT, $privs))
 {
@@ -105,6 +87,7 @@ if (in_array(AC_PRIV_GUIDELINE_MANAGEMENT, $privs))
 	$_pages['guideline/delete_guideline.php']['title_var'] = 'delete_guideline';
 	$_pages['guideline/delete_guideline.php']['parent']    = 'guideline/index.php';
 }
+
 // 4. user pages
 if (in_array(AC_PRIV_USER_MANAGEMENT, $privs))
 {
@@ -125,7 +108,6 @@ if (in_array(AC_PRIV_USER_MANAGEMENT, $privs))
 
 	$_pages['user/user_delete.php']['title_var'] = 'delete_user';
 	$_pages['user/user_delete.php']['parent']    = 'user/index.php';
-	$_pages['user/user_delete.php']['guide']    = 'AC_HELP_USER_DELETE';
 
 	$_pages['user/user_group.php']['title_var'] = 'user_group';
 	$_pages['user/user_group.php']['parent']    = 'user/index.php';
@@ -139,6 +121,56 @@ if (in_array(AC_PRIV_USER_MANAGEMENT, $privs))
 	
 	$_pages['user/user_group_delete.php']['title_var'] = 'delete_user_group';
 	$_pages['user/user_group_delete.php']['parent']    = 'user/user_group.php';
-	
 }
+
+// 5. language pages
+if (in_array(AC_PRIV_LANGUAGE_MANAGEMENT, $privs))
+{
+	$_pages['language/index.php']['title_var'] = 'language_manage';
+	$_pages['language/index.php']['parent']    = AC_NAV_TOP;
+	$_pages['language/index.php']['children']  = array_merge(array('language/language_add_edit.php',
+	                                                           'language/language_import.php'), 
+	                                                     isset($_pages['language/index.php']['children']) ? $_pages['language/index.php']['children'] : array());
+	$_pages['language/index.php']['guide']    = 'AC_HELP_LANGUAGE';
+
+	$_pages['language/language_add_edit.php']['title_var'] = 'add_language';
+	$_pages['language/language_add_edit.php']['parent']    = 'language/index.php';
+	$_pages['language/language_add_edit.php']['guide']    = 'AC_HELP_ADD_EDIT_LANGUAGE';
+	
+	$_pages['language/language_import.php']['title_var'] = 'import';
+	$_pages['language/language_import.php']['parent']    = 'language/index.php';
+	$_pages['language/language_import.php']['guide']    = 'AC_HELP_IMPORT_LANGUAGE';
+
+	$_pages['language/language_delete.php']['title_var'] = 'delete_language';
+	$_pages['language/language_delete.php']['guide']    = 'AC_HELP_LANGUAGE_DELETE';
+
+}
+
+// 6. translation
+if (in_array(AC_PRIV_TRANSLATION, $privs))
+{
+	$_pages['translation/index.php']['title_var'] = 'translation';
+	$_pages['translation/index.php']['parent']    = AC_NAV_TOP;
+	$_pages['translation/index.php']['guide']    = 'AC_HELP_TRANSLATION';
+}
+
+// 7. profile pages
+if (in_array(AC_PRIV_PROFILE, $privs))
+{
+	$_pages['profile/index.php']['title_var'] = 'profile';
+	$_pages['profile/index.php']['parent']    = AC_NAV_TOP;
+	$_pages['profile/index.php']['guide']    = 'AC_HELP_PROFILE';
+	$_pages['profile/index.php']['children']  = array_merge(array('profile/change_password.php', 
+	                                                              'profile/change_email.php'), 
+	                                                        isset($_pages['profile/index.php']['children']) ? $_pages['profile/index.php']['children'] : array());
+	
+	$_pages['profile/change_password.php']['title_var'] = 'change_password';
+	$_pages['profile/change_password.php']['parent']    = 'profile/index.php';
+	$_pages['profile/change_password.php']['guide']    = 'AC_HELP_CHANGE_PASSWORD';
+	
+	$_pages['profile/change_email.php']['title_var'] = 'change_email';
+	$_pages['profile/change_email.php']['parent']    = 'profile/index.php';
+	$_pages['profile/change_email.php']['guide']    = 'AC_HELP_CHANGE_EMAIL';
+}
+
 ?>
