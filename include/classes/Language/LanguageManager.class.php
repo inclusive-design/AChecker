@@ -42,7 +42,7 @@ class LanguageManager {
 	* @access private
 	* @var string
 	*/
-	var $default_lang = 'en';
+	var $default_lang = 'eng';
 
 	/**
 	* The fallback charachter set if the DEFAULT_CHARSET isn't defined.

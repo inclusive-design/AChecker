@@ -73,6 +73,7 @@ $starttime = $mtime;
 	<link rel="shortcut icon" href="<?php echo $this->base_path; ?>images/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/forms.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/styles.css" type="text/css" />
+	<?php echo $this->rtl_css; ?>
 	<?php echo $this->custom_head; ?>
 
 	<script type="text/javascript">

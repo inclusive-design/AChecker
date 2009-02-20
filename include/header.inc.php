@@ -78,6 +78,12 @@ if (isset($_current_user))
 //		$_top_level_pages = get_main_navigation($_pages[AC_NAV_COURSE][0]);
 //	}
 //}
+debug($myLang->isRTL());
+if ($myLang->isRTL()) {
+	$savant->assign('rtl_css', '<link rel="stylesheet" href="'.$_base_path.'themes/'.$_SESSION['prefs']['PREF_THEME'].'/rtl.css" type="text/css" />');
+} else {
+	$savant->assign('rtl_css', '');
+}
 
 $savant->assign('lang_code', $_SESSION['lang']);
 $savant->assign('lang_charset', $myLang->getCharacterSet());
