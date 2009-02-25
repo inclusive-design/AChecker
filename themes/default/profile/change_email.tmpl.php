@@ -32,7 +32,7 @@ function encrypt_password()
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="form">
 		<input type="hidden" name="form_password_hidden" value="" />
 	
-		<table align="center">
+		<table class="form-data" align="center">
 			<tr>
 				<td align="left">
 					<div class="required" title="<?php echo _AC('required_field'); ?>">*</div>

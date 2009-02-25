@@ -12,7 +12,7 @@
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html lang="en">
+<html lang="<?php echo DEFAULT_LANGUAGE_CODE; ?>">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?php _AC('atutor_documentation'); ?></title>

@@ -128,8 +128,7 @@ if (in_array(AC_PRIV_LANGUAGE_MANAGEMENT, $privs))
 {
 	$_pages['language/index.php']['title_var'] = 'language_manage';
 	$_pages['language/index.php']['parent']    = AC_NAV_TOP;
-	$_pages['language/index.php']['children']  = array_merge(array('language/language_add_edit.php',
-	                                                           'language/language_import.php'), 
+	$_pages['language/index.php']['children']  = array_merge(array('language/language_add_edit.php'), 
 	                                                     isset($_pages['language/index.php']['children']) ? $_pages['language/index.php']['children'] : array());
 	$_pages['language/index.php']['guide']    = 'AC_HELP_LANGUAGE';
 
@@ -137,10 +136,6 @@ if (in_array(AC_PRIV_LANGUAGE_MANAGEMENT, $privs))
 	$_pages['language/language_add_edit.php']['parent']    = 'language/index.php';
 	$_pages['language/language_add_edit.php']['guide']    = 'AC_HELP_ADD_EDIT_LANGUAGE';
 	
-	$_pages['language/language_import.php']['title_var'] = 'import';
-	$_pages['language/language_import.php']['parent']    = 'language/index.php';
-	$_pages['language/language_import.php']['guide']    = 'AC_HELP_IMPORT_LANGUAGE';
-
 	$_pages['language/language_delete.php']['title_var'] = 'delete_language';
 	$_pages['language/language_delete.php']['guide']    = 'AC_HELP_LANGUAGE_DELETE';
 

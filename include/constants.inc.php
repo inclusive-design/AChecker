@@ -18,7 +18,11 @@ if (!defined('AC_INCLUDE_PATH')) { exit; }
 
 define('VERSION',		'0.2');
 
-$_config['default_language']          = 'en';
+// language constants
+define('DEFAULT_LANGUAGE_CODE', 'eng');
+define('DEFAULT_CHARSET', 'utf-8');
+define('AC_LANGUAGE_LOCALE_SEP', '-');
+$_config['default_language'] = DEFAULT_LANGUAGE_CODE;
 
 // check confidence
 define('KNOWN', 0);

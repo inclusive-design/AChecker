@@ -44,19 +44,24 @@ if ($step == 3) {
 	require(AC_INCLUDE_PATH.'step3.php');
 }
 
-/* directory permissions and generating the config.inc.php file */
+/* accounts & preferences */
 if ($step == 4) {	
 	require(AC_INCLUDE_PATH.'step4.php');
 }
 
-/* anonymous data collection */
+/* directory permissions and generating the config.inc.php file */
 if ($step == 5) {	
 	require(AC_INCLUDE_PATH.'step5.php');
 }
 
-/* done! */
+/* anonymous data collection */
 if ($step == 6) {	
 	require(AC_INCLUDE_PATH.'step6.php');
+}
+
+/* done! */
+if ($step == 7) {	
+	require(AC_INCLUDE_PATH.'step7.php');
 }
 
 require(AC_INCLUDE_PATH.'footer.inc.php');

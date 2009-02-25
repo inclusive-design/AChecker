@@ -52,7 +52,7 @@ function encrypt_password()
 		<input type="hidden" name="form_old_password_hidden" value="" /> 
 		<input type="hidden" name="form_password_hidden" value="" />
 
-		<table align="center">
+		<table class="form-data" align="center">
 			<tr>
 				<td align="left">
 					<div class="required" title="<?php echo _AC('required_field'); ?>">*</div>

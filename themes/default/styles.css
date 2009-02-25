@@ -1669,6 +1669,10 @@ p.helpwanted a {
   width: 45%;
 }
 
+table.form-data th,table.form-data td {
+	padding: 4px;
+}
+
 th.box {
 	border-bottom: #006699 solid 1px;
 	color: white;

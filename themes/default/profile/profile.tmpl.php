@@ -20,7 +20,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 <div class="center-input-form">
 <fieldset class="group_form"><legend class="group_form"><?php echo _AC('edit_profile'); ?></legend>
 
-	<table align="center">
+	<table class="form-data" align="center">
 		<tr>
 			<td colspan="2" align="left"><p><?php echo _AC('required_field_text') ;?><br /><br /><br /></p></td>
 		</tr>

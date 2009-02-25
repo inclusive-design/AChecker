@@ -15,7 +15,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <div class="output-form">
 	<h2><?php echo $this->row["title"]; ?></h2>
 	
-	<table>
+	<table class="form-data">
 	<?php if ($this->row["abbr"] <> "") { ?>
 		<tr>
 			<th align="left"><? echo _AC("abbr"); ?></th>

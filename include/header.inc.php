@@ -67,18 +67,6 @@ if (isset($_current_user))
   $savant->assign('user_name', $_current_user->getUserName());
 }
 
-//if (empty($_top_level_pages)) {
-//	if (!$_SESSION['member_id'] && !$_SESSION['course_id']) {
-//		$_top_level_pages = get_main_navigation($_pages[AC_NAV_PUBLIC][0]);
-//	} else if ($_SESSION['course_id'] < 0) {
-//		$_top_level_pages = get_main_navigation($_pages[AC_NAV_ADMIN][0]);
-//	} else if (!$_SESSION['course_id']) {
-//		$_top_level_pages = get_main_navigation($_pages[AC_NAV_START][0]);
-//	} else {
-//		$_top_level_pages = get_main_navigation($_pages[AC_NAV_COURSE][0]);
-//	}
-//}
-debug($myLang->isRTL());
 if ($myLang->isRTL()) {
 	$savant->assign('rtl_css', '<link rel="stylesheet" href="'.$_base_path.'themes/'.$_SESSION['prefs']['PREF_THEME'].'/rtl.css" type="text/css" />');
 } else {

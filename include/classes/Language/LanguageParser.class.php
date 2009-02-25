@@ -1,16 +1,14 @@
 <?php
 /************************************************************************/
-/* ATutor																*/
+/* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2002-2008 by Greg Gay, Joel Kronenberg & Heidi Hazelton*/
-/* Adaptive Technology Resource Centre / University of Toronto			*/
-/* http://atutor.ca														*/
-/*																		*/
-/* This program is free software. You can redistribute it and/or		*/
-/* modify it under the terms of the GNU General Public License			*/
-/* as published by the Free Software Foundation.						*/
+/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
+/* Adaptive Technology Resource Centre / University of Toronto          */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or        */
+/* modify it under the terms of the GNU General Public License          */
+/* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: LanguageParser.class.php 7208 2008-01-09 16:07:24Z greg $
 
 /**
 * LanguageParser
@@ -53,7 +51,7 @@ class LanguageParser {
 
 	// public
 	function getLanguageEditor($row_num) {
-		require_once(AT_INCLUDE_PATH.'classes/Language/LanguageEditor.class.php');
+		require_once(AC_INCLUDE_PATH.'classes/Language/LanguageEditor.class.php');
 		return new LanguageEditor($this->language_rows[$row_num]);
 	}
 
@@ -70,14 +68,11 @@ class LanguageParser {
 	/* called when an element ends */
 	/* removed the current element from the $path */
 	function endElement($parser, $name) {
-		if ($this->element_path == array('language', 'atutor-version')) {
+		if ($this->element_path == array('language', 'achecker-version')) {
 			$this->language_rows[$this->row_num]['version'] = trim($this->character_data);
 
 		} else if ($this->element_path === array('language', 'charset')) {
-			$this->language_rows[$this->row_num]['char_set'] = trim($this->character_data);
-
-		} else if ($this->element_path === array('language', 'direction')) {
-			$this->language_rows[$this->row_num]['direction'] = trim($this->character_data);
+			$this->language_rows[$this->row_num]['charset'] = trim($this->character_data);
 
 		} else if ($this->element_path === array('language', 'reg-exp')) {
 			$this->language_rows[$this->row_num]['reg_exp'] = trim($this->character_data);

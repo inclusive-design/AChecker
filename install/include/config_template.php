@@ -21,6 +21,7 @@ function write_config_file($filename, $comments) {
 					'{PORT}',
 					'{DBNAME}',
 					'{TABLE_PREFIX}',
+					'{TEMP_DIR}',
 					'{GENERATED_COMMENTS}',
 				);
 
@@ -30,6 +31,7 @@ function write_config_file($filename, $comments) {
 					$_POST['step2']['db_port'],
 					$_POST['step2']['db_name'],
 					$_POST['step2']['tb_prefix'],
+					addslashes(urldecode($_POST['step4']['content_dir'])),
 					$comments,
 				);
 
@@ -79,6 +81,12 @@ define('DB_NAME',                      '{DBNAME}');
 /* The prefix to add to table names to avoid conflicts with existing    */
 /* tables. Default: AC_                                                 */
 define('TABLE_PREFIX',                 '{TABLE_PREFIX}');
+
+/* Where the temporary files are located.  This includes all file       */
+/* manager and imported files.  If security is a concern, it is         */
+/* recommended that the temporary directory be moved outside of the web	*/
+/* accessible area.														*/
+define('AC_TEMP_DIR', '{TEMP_DIR}');
 
 /* DO NOT ALTER THIS LAST LINE                                          */
 define('AC_INSTALL', TRUE);

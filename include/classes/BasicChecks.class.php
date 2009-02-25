@@ -21,7 +21,7 @@
 */
 
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
-include(AC_INCLUDE_PATH. 'classes/DAO/LangCodesDAO.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/DAO/LangCodesDAO.class.php');
 
 class BasicChecks {
 	/**
@@ -108,22 +108,13 @@ class BasicChecks {
 		$code = BasicChecks::cut_out_lang_code($code);
 		$langCodesDAO = new LangCodesDAO();
 
-//		$sql = "SELECT COUNT(*) cnt FROM ". TABLE_PREFIX ."lang_codes WHERE ";
-//		
-//		$result	= mysql_query($sql, $db) or die(mysql_error());
-//		$row = mysql_fetch_assoc($result);
-//
-//		if (strlen($code) == 2) $sql .= "code_2letters = '".$code ."'";
-//		else if (strlen($code) == 3) $sql .= "code_3letters = '".$code ."'";
-//		else return false;
-
 		if (strlen($code) == 2) 
 		{
-			$langCodesDAO->GetLangCodeBy2LetterCode($code);
+			$rows = $langCodesDAO->GetLangCodeBy2LetterCode($code);
 		}
 		else if (strlen($code) == 3)
 		{
-			$langCodesDAO->GetLangCodeBy3LetterCode($code);
+			$rows = $langCodesDAO->GetLangCodeBy3LetterCode($code);
 		}
 		else 
 		{

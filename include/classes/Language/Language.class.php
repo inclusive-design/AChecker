@@ -1,18 +1,14 @@
 <?php
 /************************************************************************/
-/* ATutor																*/
+/* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2002-2008 by Greg Gay, Joel Kronenberg & Heidi Hazelton*/
-/* Adaptive Technology Resource Centre / University of Toronto			*/
-/* http://atutor.ca														*/
-/*																		*/
-/* This program is free software. You can redistribute it and/or		*/
-/* modify it under the terms of the GNU General Public License			*/
-/* as published by the Free Software Foundation.						*/
+/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
+/* Adaptive Technology Resource Centre / University of Toronto          */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or        */
+/* modify it under the terms of the GNU General Public License          */
+/* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: Language.class.php 7214 2008-01-10 15:24:23Z hwong $
-
-define('AC_LANGUAGE_LOCALE_SEP', '-');
 
 /**
 * Language
@@ -23,6 +19,8 @@ define('AC_LANGUAGE_LOCALE_SEP', '-');
 * @see		LanguageManager::getMyLanguage()
 * @package	Language
 */
+include_once(AC_INCLUDE_PATH.'classes/DAO/LangCodesDAO.class.php');
+
 class Language {
 	// all private
 	var $code;
@@ -32,21 +30,25 @@ class Language {
 	var $nativeName;
 	var $englishName;
 	var $status;
-	var $atutor_version;
+	var $achecker_version;
 
 	// constructor
 	function Language($language_row) {
 
 		if (is_array($language_row)) {
 			$this->code              = $language_row['language_code'];
-			$this->characterSet      = $language_row['char_set'];
-			$this->direction         = $language_row['direction'];
+			$this->characterSet      = $language_row['charset'];
 			$this->regularExpression = $language_row['reg_exp'];
 			$this->nativeName        = $language_row['native_name'];
 			$this->englishName       = $language_row['english_name'];
 			$this->status            = $language_row['status'];
-			$this->atutor_version    = isset($language_row['version']) ? $language_row['version'] : VERSION;
+			$this->achecker_version    = isset($language_row['version']) ? $language_row['version'] : VERSION;
 
+			$langCodesDAO = new LangCodesDAO();
+			$row_langCodes = $langCodesDAO->GetLangCodeBy3LetterCode($this->getParentCode($language_row['language_code']));
+
+			$this->direction = $row_langCodes['direction'];
+			
 		} else if (is_object($language_row)) {
 			$this->cloneThis($language_row);
 		}
@@ -88,8 +90,8 @@ class Language {
 		return $this->regularExpression;
 	}
 
-	function getAtutorVersion() {
-		return $this->atutor_version;
+	function getACheckerVersion() {
+		return $this->achecker_version;
 	}
 
 	function getTranslatedName() {
@@ -146,18 +148,16 @@ class Language {
 	function isRTL() {
 		if ($this->direction == 'rtl') {
 			return true;
-		} // else:
+		}
 
 		return false;
 	}
 
-	// public
-	// can be called staticly
 	function getParentCode($code = '') {
 		if (!$code && isset($this)) {
 			$code = $this->code;
 		}
-		$peices = explode(AC_LANGUAGE_LOCALE_SEP, $code, 2);
+		$peices = explode(AT_LANGUAGE_LOCALE_SEP, $code, 2);
 		return $peices[0];
 	}
 
@@ -167,30 +167,18 @@ class Language {
 		if (!$code && isset($this)) {
 			$code = $this->code;
 		}
-		$peices = explode(AC_LANGUAGE_LOCALE_SEP, $code, 2);
+		$peices = explode(AT_LANGUAGE_LOCALE_SEP, $code, 2);
 		return $peices[1];
 	}
-
 	
-	// public
-	function getTerm($term) {
-		$sql = "SELECT *, UNIX_TIMESTAMP(L.revised_date) AS revised_date_unix FROM ".TABLE_PREFIX."language_text L WHERE L.language_code='".$this->getCode()."' AND L.variable='_template' AND L.term='$term'";
-
-		$result = mysql_query($sql, $this->db);
-		$row = mysql_fetch_assoc($result);
-		return $row;
-	}
-
 	function getXML($part=FALSE) {
 		if (!$part) {
 			$xml = '<?xml version="1.0" encoding="iso-8859-1"?>
-			<!-- This is an ATutor language pack - http://www.atutor.ca-->
+			<!-- This is an AChecker language pack -->
 
 			<!DOCTYPE language [
-			   <!ELEMENT atutor-version (#PCDATA)>
-			   <!ELEMENT code (#PCDATA)>
+			   <!ELEMENT achecker-version (#PCDATA)>
 			   <!ELEMENT charset (#PCDATA)>
-			   <!ELEMENT direction (#PCDATA)>
 			   <!ELEMENT reg-exp (#PCDATA)>
 			   <!ELEMENT native-name (#PCDATA)>
 			   <!ELEMENT english-name (#PCDATA)>
@@ -201,9 +189,8 @@ class Language {
 		} 
 
 		$xml .= '<language code="'.$this->code.'">
-			<atutor-version>'.VERSION.'</atutor-version>
+			<achecker-version>'.VERSION.'</achecker-version>
 			<charset>'.$this->characterSet.'</charset>
-			<direction>'.$this->direction.'</direction>
 			<reg-exp>'.$this->regularExpression.'</reg-exp>
 			<native-name>'.$this->nativeName.'</native-name>
 			<english-name>'.$this->englishName.'</english-name>

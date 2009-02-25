@@ -1,16 +1,14 @@
 <?php
 /************************************************************************/
-/* ATutor																*/
+/* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2002-2008 by Greg Gay, Joel Kronenberg & Heidi Hazelton*/
-/* Adaptive Technology Resource Centre / University of Toronto			*/
-/* http://atutor.ca														*/
-/*																		*/
-/* This program is free software. You can redistribute it and/or		*/
-/* modify it under the terms of the GNU General Public License			*/
-/* as published by the Free Software Foundation.						*/
+/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
+/* Adaptive Technology Resource Centre / University of Toronto          */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or        */
+/* modify it under the terms of the GNU General Public License          */
+/* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: RemoteLanguageManager.class.php 7208 2008-01-09 16:07:24Z greg $
 
 /**
 * RemoteLanguageManager
@@ -67,7 +65,7 @@ class RemoteLanguageManager extends LanguageManager {
 	}
 
 	function import($language_code) {
-		$filename = tempnam(AT_CONTENT_DIR . 'import', $language_code);
+		$filename = tempnam(AC_TEMP_DIR . 'import', $language_code);
 		if ($this->fetchLanguage($language_code, $filename)) {
 			parent::import($filename);
 		}

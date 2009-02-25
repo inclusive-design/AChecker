@@ -33,7 +33,7 @@ function encrypt_password() {
 
 	<div class="center-input-form">
 		<fieldset class="group_form"><legend class="group_form"><?php echo _AC('login') ;?></legend>
-			<table align="center">
+			<table class="form-data" align="center">
 				<tr>
 					<td colspan="2" align="left"><p><?php echo _AC('login_text'). _AC('required_field_text') ;?><br /><br /><br /></p></td>
 				</tr>

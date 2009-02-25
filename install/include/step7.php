@@ -3,34 +3,27 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto          */
+/* Adaptive Technology Resource Centre / University of Toronto			    */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
-require_once(dirname(__FILE__) . '/LanguageParser.class.php');
+if (!defined('AC_INCLUDE_PATH')) { exit; }
 
-/**
-* LanguagesParser
-* Class for parsing XML languages info and returning a Language Objects
-* @access	public
-* @author	Joel Kronenberg
-* @package	Language
-*/
-class LanguagesParser extends LanguageParser {
-
-	// private
-	function startElement($parser, $name, $attributes) {
-		if ($name == 'languages') {
-			// strip off the initial 'languages'
-			$this->element_path = array();
-		} else {
-			parent::startElement($this->parser, $name, $attributes);
-		}
-   }
- 
-}
+print_progress($step);
 
 ?>
+<p><strong>Congratulations on your installation of AChecker <?php echo $new_version; ?><i>!</i></strong></p>
+
+<p>For security reasons once you have confirmed that AChecker has installed correctly, you should delete the <kbd>install/</kbd> directory,
+and reset the permissions on the config.inc.php file to read only.</p>
+
+<br />
+
+<form method="get" action="../index.php">
+	<div align="center">
+		<input type="submit" name="submit" value="&raquo; Go To AChecker!" class="button" />
+	</div>
+</form>

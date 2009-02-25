@@ -14,7 +14,7 @@ if (!defined('AC_INCLUDE_PATH')) { exit; }
 error_reporting(E_ALL ^ E_NOTICE);
 
 /* atutor default configuration options */
-/* used on: ustep1.php, step3.php, step5.php */
+/* used on: step3.php, step4.php, step5.php */
 $_defaults['admin_username'] = 'admin';
 $_defaults['admin_password'] = '';
 $_defaults['admin_email'] = '';
@@ -36,9 +36,7 @@ $_defaults['ill_ext'] = 'exe, asp, php, php3, bat, cgi, pl, com, vbs, reg, pcd, 
 $_defaults['cache_dir'] = '';
 
 $_defaults['theme_categories'] = 'FALSE';
-$_defaults['content_dir'] = realpath('../').DIRECTORY_SEPARATOR.'content';
-
-$_defaults['course_backups'] = 5;
+$_defaults['content_dir'] = realpath('../').DIRECTORY_SEPARATOR.'temp';
 
 require('include/classes/sqlutility.php');
 

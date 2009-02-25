@@ -14,14 +14,14 @@ if (!defined('AC_INCLUDE_PATH')) { exit; }
 
 global $languageManager, $_my_uri;
 
-if($languageManager->getNumLanguages() > 1)
+if($languageManager->getNumEnabledLanguages() > 1)
 {
 ?>
 
 <div align="center" id="lang" style="clear: left"><br />
 <?php
 
-	if ($languageManager->getNumLanguages() > 5) {
+	if ($languageManager->getNumEnabledLanguages() > 5) {
 		echo '<form method="get" action="'.htmlspecialchars($_my_uri, ENT_QUOTES).'">';
 		echo '<label for="lang" style="display:none;">'._AC('translate_to').' </label>';
 		$languageManager->printDropdown($_SESSION['lang'], 'lang', 'lang');

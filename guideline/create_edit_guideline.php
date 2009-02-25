@@ -93,6 +93,7 @@ if (!isset($gid))
 	// create guideline
 	$checksDAO = new ChecksDAO();
 	
+	$savant->assign('author', $_current_user->getUserName());
 	$savant->assign('checks_to_add_rows', $checksDAO->getAllOpenChecks());
 }
 else

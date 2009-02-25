@@ -24,6 +24,20 @@ require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
 class LangCodesDAO extends DAO {
 
 	/**
+	* Return all rows
+	* @access  public
+	* @param   none
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function GetAll()
+	{
+		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes ORDER BY description";
+		
+		return $this->execute($sql);
+	}
+	
+	/**
 	* Return lang code info of the given 2 letters code
 	* @access  public
 	* @param   $code : 2 letters code
@@ -50,7 +64,12 @@ class LangCodesDAO extends DAO {
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
 					WHERE code_3letters = '".$code ."'";
 		
-		return $this->execute($sql);
+		if ($rows = $this->execute($sql))
+		{
+			return $rows[0];
+		}
+		else
+			return false;
 	}
 
 }

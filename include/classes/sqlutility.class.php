@@ -148,6 +148,9 @@ class SqlUtility
 	function queryFromFile($sql_file_path, $table_prefix){
 		global $db, $progress, $errors;
 		
+		include_once(AC_INCLUDE_PATH.'classes/DAO/DAO.class.php');
+		$dao = new DAO();
+		
 		$tables = array();
 
         if (!file_exists($sql_file_path)) {
@@ -171,7 +174,7 @@ class SqlUtility
 			if ($prefixed_query != false ) {
                 $table = $table_prefix.$prefixed_query[4];
                 if($prefixed_query[1] == 'CREATE TABLE'){
-                    if (mysql_query($prefixed_query[0],$db) !== false) {
+                    if ($dao->execute($prefixed_query[0]) !== false) {
 						$progress[] = 'Table <b>'.$table . '</b> created successfully.';
                     } else {
 						if (mysql_errno($db) == 1050) {
@@ -182,11 +185,11 @@ class SqlUtility
                     }
                 }
                 elseif($prefixed_query[1] == 'INSERT INTO'){
-					mysql_query($prefixed_query[0],$db);
+					$dao->execute($prefixed_query[0]);
                 }elseif($prefixed_query[1] == 'ALTER TABLE'){
-                    mysql_query($prefixed_query[0],$db);
+                    $dao->execute($prefixed_query[0]);
                 }elseif($prefixed_query[1] == 'DROP TABLE'){
-                    mysql_query($prefixed_query[1] . ' ' .$table,$db);
+                    $dao->execute($prefixed_query[1] . ' ' .$table);
                 }
             }
 		}

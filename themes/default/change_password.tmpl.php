@@ -49,7 +49,7 @@ function encrypt_password()
 		<input type="hidden" name="form_password_hidden" value="" />
 		<input type="hidden" name="password_error" value="" />
 
-		<table align="center" width="60%">
+		<table class="form-data" align="center" width="60%">
 			<tr>
 				<td colspan="2" align="left"><?php echo _AC('password_new_blurb'); ?></td>
 			</tr>

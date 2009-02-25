@@ -32,7 +32,7 @@ if (isset($_REQUEST['submit']) || isset($_REQUEST['search']))
 		if (isset($_REQUEST['term_type']) && $_REQUEST['term_type'] <> '') $term_type = $_REQUEST['term_type'];
 		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
-						WHERE language_code='en'";
+						WHERE language_code='".DEFAULT_LANGUAGE_CODE."'";
 		
 		if ($term_type <> '') $sql .= " AND variable = '".$term_type."'";
 		
@@ -49,7 +49,7 @@ if (isset($_REQUEST['submit']) || isset($_REQUEST['search']))
 		if (isset($_REQUEST['new_or_translated']) && $_REQUEST['new_or_translated'] == 3)
 		{
 			$sql = "select * from ".TABLE_PREFIX."language_text a 
-							where language_code='en' 
+							where language_code='".DEFAULT_LANGUAGE_CODE."' 
 								and exists (select 1 from ".TABLE_PREFIX."language_text b 
 														where language_code = '".$_REQUEST['lang_code']."' 
 															and a.term = b.term 
@@ -60,7 +60,7 @@ if (isset($_REQUEST['submit']) || isset($_REQUEST['search']))
 	if (isset($_REQUEST['search']))
 	{
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
-						WHERE language_code='en'
+						WHERE language_code='".DEFAULT_LANGUAGE_CODE."'
 						  AND lower(term) like '%".mysql_real_escape_string(strtolower(trim($_REQUEST['search_phase'])))."%'";
 	}
 	
@@ -78,8 +78,6 @@ if (isset($_REQUEST["save"]))
 	$trans = array_flip($trans);
 	$sql_save = strtr($sql_save, $trans);
 
-//	$result_save = mysql_query($sql_save, $db);
-	
 	if (!$dao->execute($sql_save)) {
 		$success_error = '<div class="error">Error: changes not saved!</div>';
 	}
@@ -88,7 +86,7 @@ if (isset($_REQUEST["save"]))
 	}
 }
 
-$rows_lang = $languagesDAO->getAllExceptLangCode('en');				
+$rows_lang = $languagesDAO->getAllExceptLangCode(DEFAULT_LANGUAGE_CODE);				
 				
 include(AC_INCLUDE_PATH.'header.inc.php');
 
@@ -168,7 +166,7 @@ if (!is_array($rows_lang))
 <?php 
 if (isset($_REQUEST['selected_term'])) 
 {
-	$sql_english	= "SELECT * FROM ".TABLE_PREFIX."language_text WHERE language_code='en' AND term='".$_REQUEST["selected_term"]."'";
+	$sql_english	= "SELECT * FROM ".TABLE_PREFIX."language_text WHERE language_code='".DEFAULT_LANGUAGE_CODE."' AND term='".$_REQUEST["selected_term"]."'";
 	if ($_REQUEST["term_type"] <> "") $sql_english .= " AND variable='".$_REQUEST["term_type"]."' ";
 
 	$rows_english = $dao->execute($sql_english);

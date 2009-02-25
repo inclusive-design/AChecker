@@ -139,6 +139,22 @@ class LanguageTextDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
+	function getAllByLang($lang)
+	{
+		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
+						WHERE language_code='".$lang."' 
+						ORDER BY variable, term ASC";
+
+		return $this->execute($sql);
+	}
+
+  	/**
+	* Return all template info of given language
+	* @access  public
+	* @param   lang : language code
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
 	function getAllTemplateByLang($lang)
 	{
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
@@ -146,8 +162,8 @@ class LanguageTextDAO extends DAO {
 						AND variable='_template' 
 						ORDER BY variable ASC";
 
-    return $this->execute($sql);
-  }
+    	return $this->execute($sql);
+	}
 
 	/**
 	* Update text based on given primary key

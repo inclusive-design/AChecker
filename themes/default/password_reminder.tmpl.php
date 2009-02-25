@@ -22,7 +22,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="form">
 		<input type="hidden" name="form_password_reminder" value="true" />
 
-		<table align="center" width="60%">
+		<table class="form-data" align="center" width="60%">
 			<tr>
 				<td colspan="2" align="left"><?php echo _AC('password_blurb'); ?></td>
 			</tr>

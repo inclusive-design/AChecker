@@ -19,13 +19,13 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <form name="input_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?><?php if (isset($_GET["id"])) echo '?id='.$_GET["id"]; ?>" >
 <?php if (isset($this->row["user_id"])) {?>
-<input type="hidden" name="user_id" value="<?php echo $this->row["user_id"]; ?>" />"
+<input type="hidden" name="user_id" value="<?php echo $this->row["user_id"]; ?>" />
 <?php }?>
 
 <div class="input-form">
 
 <fieldset class="group_form"><legend class="group_form"><?php echo _AC('create_edit_guideline'); ?></legend>
-	<table>
+	<table class="form-data">
 		<tr>
 			<td colspan="2" align="left"><p><?php echo _AC('required_field_text') ;?><br /><br /></p></td>
 		</tr>
