@@ -46,23 +46,25 @@ class AccessibilityValidator {
 		
 	var $content_dom;                    // dom of $validate_content
 
+	var $line_offset;                    // 1. ignore the problems on the lines before the line of $line_offset
+	                                     // 2. report line_number = real_line_number - $line_offset 
 	
 	/**
-	* public
-	* $content: string, html content to check
-	* $guidelines: array, guidelines to check on
-	*/
+	 * public
+	 * $content: string, html content to check
+	 * $guidelines: array, guidelines to check on
+	 */
 	function AccessibilityValidator($content, $guidelines)
 	{
 		$this->validate_content = $content;
 		$this->guidelines = $guidelines;
-		
-		// validation process
-		$this->validate();
+		$this->line_offset = 0;
 	}
 	
-	// private
-	function validate()
+	/* public
+	 * Validation
+	 */
+	public function validate()
 	{
 		// dom of the content to be validated
 		$this->content_dom = $this->get_simple_html_dom($this->validate_content);
@@ -81,11 +83,11 @@ class AccessibilityValidator {
 	}
 	
 	/** private
-	* set global vars used in Checks.class.php and BasicChecks.class.php
-	* to fasten the validation process.
-	* return nothing.
-	*/
-	function prepare_global_vars()
+	 * set global vars used in Checks.class.php and BasicChecks.class.php
+	 * to fasten the validation process.
+	 * return nothing.
+	 */
+	private function prepare_global_vars()
 	{
 		global $header_array;
 		$header_array = array();
@@ -94,12 +96,12 @@ class AccessibilityValidator {
 	}
 	
 	/** private
-	* return a simple_html_dom on the given content.
-	* Because accessibility check is based on the root html element <html>,
-	* check if dom has html tag <html>, if no, add it and the end tag to the content
-	* and return the dom on modified content.
-	*/
-	function get_simple_html_dom($content)
+	 * return a simple_html_dom on the given content.
+	 * Because accessibility check is based on the root html element <html>,
+	 * check if dom has html tag <html>, if no, add it and the end tag to the content
+	 * and return the dom on modified content.
+	 */
+	private function get_simple_html_dom($content)
 	{
 		$dom = str_get_dom($content);
 		
@@ -110,43 +112,43 @@ class AccessibilityValidator {
 	}
 	
 	/**
-	* private
-	* generate arrays of check ids, prerequisite check ids, next check ids
-	* array structure:
-	check_array
-	(
-    [html_tag] => Array
-        (
-            [0] => check_id 1
-            [1] => check_id 2
-            ...
-        )
-    ...
-  )
+	 * private
+	 * generate arrays of check ids, prerequisite check ids, next check ids
+	 * array structure:
+	 check_array
+	 (
+	 [html_tag] => Array
+	 (
+	 [0] => check_id 1
+	 [1] => check_id 2
+	 ...
+	 )
+	 ...
+	 )
 
-	prerequisite_check_array
-	(
-    [check_id] => Array
-        (
-            [0] => prerequisite_check_id 1
-            [1] => prerequisite_check_id 2
-            ...
-        )
-    ...
-  )
+	 prerequisite_check_array
+	 (
+	 [check_id] => Array
+	 (
+	 [0] => prerequisite_check_id 1
+	 [1] => prerequisite_check_id 2
+	 ...
+	 )
+	 ...
+	 )
 
-	next_check_array
-	(
-    [check_id] => Array
-        (
-            [0] => next_check_id 1
-            [1] => next_check_id 2
-            ...
-        )
-    ...
-  )
-	*/
-	function prepare_check_arrays($guidelines)
+	 next_check_array
+	 (
+	 [check_id] => Array
+	 (
+	 [0] => next_check_id 1
+	 [1] => next_check_id 2
+	 ...
+	 )
+	 ...
+	 )
+	 */
+	private function prepare_check_arrays($guidelines)
 	{
 		
 		if (!($guideline_query = $this->convert_array_to_string($guidelines, ',')))
@@ -157,21 +159,6 @@ class AccessibilityValidator {
 			$checksDAO = new ChecksDAO();
 			
 			// generate array of "all element"
-//			$sql = "select distinct gc.check_id, c.html_tag
-//							from ". TABLE_PREFIX ."guidelines g, 
-//									". TABLE_PREFIX ."guideline_groups gg, 
-//									". TABLE_PREFIX ."guideline_subgroups gs, 
-//									". TABLE_PREFIX ."subgroup_checks gc,
-//									". TABLE_PREFIX ."checks c
-//							where g.guideline_id in (".$guideline_query.")
-//								and g.guideline_id = gg.guideline_id
-//								and gg.group_id = gs.group_id
-//								and gs.subgroup_id = gc.subgroup_id
-//								and gc.check_id = c.check_id
-//								and c.html_tag = 'all elements'
-//							order by c.html_tag";
-//			$result	= mysql_query($sql, $db) or die(mysql_error());
-			
 			$rows = $checksDAO->getChecksForAllByGuidelineIDs($guideline_query);
 			
 			$count = 0;
@@ -182,21 +169,6 @@ class AccessibilityValidator {
 			}
 			
 			// generate array of check_id
-//			$sql = "select distinct gc.check_id, c.html_tag
-//							from ". TABLE_PREFIX ."guidelines g, 
-//									". TABLE_PREFIX ."guideline_groups gg, 
-//									". TABLE_PREFIX ."guideline_subgroups gs, 
-//									". TABLE_PREFIX ."subgroup_checks gc,
-//									". TABLE_PREFIX ."checks c
-//							where g.guideline_id in (".$guideline_query.")
-//								and g.guideline_id = gg.guideline_id
-//								and gg.group_id = gs.group_id
-//								and gs.subgroup_id = gc.subgroup_id
-//								and gc.check_id = c.check_id
-//								and c.html_tag <> 'all elements'
-//							order by c.html_tag";
-//			$result	= mysql_query($sql, $db) or die(mysql_error());
-			
 			$rows = $checksDAO->getChecksNotForAllByGuidelineIDs($guideline_query);
 
 			if (is_array($rows))
@@ -212,22 +184,6 @@ class AccessibilityValidator {
 			}
 			
 			// generate array of prerequisite check_ids
-//			$sql = "select distinct c.check_id, cp.prerequisite_check_id
-//						from ". TABLE_PREFIX ."guidelines g, 
-//						     ". TABLE_PREFIX ."guideline_groups gg, 
-//						     ". TABLE_PREFIX ."guideline_subgroups gs, 
-//						     ". TABLE_PREFIX ."subgroup_checks gc,
-//						     ". TABLE_PREFIX ."checks c,
-//						     ". TABLE_PREFIX ."check_prerequisites cp
-//						where g.guideline_id in (".$guideline_query.")
-//						  and g.guideline_id = gg.guideline_id
-//						  and gg.group_id = gs.group_id
-//						  and gs.subgroup_id = gc.subgroup_id
-//						  and gc.check_id = c.check_id
-//						  and c.check_id = cp.check_id
-//						order by c.check_id, cp.prerequisite_check_id";
-//
-//			$result	= mysql_query($sql, $db) or die(mysql_error());
 			
 			$rows = $checksDAO->getPreChecksByGuidelineIDs($guideline_query);
 
@@ -245,23 +201,6 @@ class AccessibilityValidator {
 			$this->prerequisite_check_array = $prerequisite_check_array;
 
 			// generate array of next check_ids
-//			$sql = "select distinct c.check_id, tp.next_check_id
-//								from ". TABLE_PREFIX ."guidelines g, 
-//								     ". TABLE_PREFIX ."guideline_groups gg, 
-//								     ". TABLE_PREFIX ."guideline_subgroups gs, 
-//								     ". TABLE_PREFIX ."subgroup_checks gc,
-//								     ". TABLE_PREFIX ."checks c,
-//								     ". TABLE_PREFIX ."test_pass tp
-//								where g.guideline_id in (".$guideline_query.")
-//								  and g.guideline_id = gg.guideline_id
-//								  and gg.group_id = gs.group_id
-//								  and gs.subgroup_id = gc.subgroup_id
-//								  and gc.check_id = c.check_id
-//								  and c.check_id = tp.check_id
-//								order by c.check_id, tp.next_check_id";
-//
-//			$result	= mysql_query($sql, $db) or die(mysql_error());
-			
 			$rows = $checksDAO->getNextChecksByGuidelineIDs($guideline_query);
 
 			if (is_array($rows))
@@ -282,10 +221,10 @@ class AccessibilityValidator {
 	}
 
 	/**
-	* private
-	* Recursive function to validate html elements
-	*/
-	function validate_element($element_array)
+	 * private
+	 * Recursive function to validate html elements
+	 */
+	private function validate_element($element_array)
 	{
 		foreach($element_array as $e)
 		{
@@ -338,16 +277,19 @@ class AccessibilityValidator {
 	}
 
 	/**
-	* private
-	* check given html dom node for given check_id, save result into $this->result
-	* parameters:
-	* $e: simple html dom node
-	* $check_id: check id
-	*
-	* return "success" or "fail"
-	*/
-	function check($e, $check_id)
+	 * private
+	 * check given html dom node for given check_id, save result into $this->result
+	 * parameters:
+	 * $e: simple html dom node
+	 * $check_id: check id
+	 *
+	 * return "success" or "fail"
+	 */
+	private function check($e, $check_id)
 	{
+		// don't check the lines before $line_offset
+		if ($e->linenumber <= $this->line_offset) return;
+		
 		$result = $this->get_check_result($e->linenumber, $e->colnumber, $check_id);
 
 		// has not been checked
@@ -368,20 +310,21 @@ class AccessibilityValidator {
 			// find out checked html tag code
 			$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
 
-			$this->save_result($e->linenumber, $e->colnumber, $html_code, $check_id, $result);
+			// minus out the $line_offset from $linenumber 
+			$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result);
 		}
 		
 		return $result;
 	}
 	
 	/**
-	* private
-	* get check result from $result. Return false if the result is not found.
-	* Parameters:
-	* $line_number: line number in the content for this check
-	* $check_id: check id
-	*/
-	function get_check_result($line_number, $col_number, $check_id)
+	 * private
+	 * get check result from $result. Return false if the result is not found.
+	 * Parameters:
+	 * $line_number: line number in the content for this check
+	 * $check_id: check id
+	 */
+	private function get_check_result($line_number, $col_number, $check_id)
 	{
 		foreach($this->result as $one_result)
 		{
@@ -393,14 +336,14 @@ class AccessibilityValidator {
 	}
 
 	/**
-	* private
-	* save each check result
-	* Parameters:
-	* $line_number: line number in the content for this check
-	* $check_id: check id
-	* $result: result to save
-	*/
-	function save_result($line_number, $col_number, $html_code, $check_id, $result)
+	 * private
+	 * save each check result
+	 * Parameters:
+	 * $line_number: line number in the content for this check
+	 * $check_id: check id
+	 * $result: result to save
+	 */
+	private function save_result($line_number, $col_number, $html_code, $check_id, $result)
 	{
 //		debug($result);
 		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result));
@@ -409,14 +352,14 @@ class AccessibilityValidator {
 	}
 	
 	/**
-	* private
-	* convert the given array to a string of the array elements separated by the given delimiter.
-	* For example:
-	* array ([0] => 7, [1] => 8)
-	* delimiter: ,
-	* is converted to string "7, 8"
-	*/
-	function convert_array_to_string($in_array, $delimiter)
+	 * private
+	 * convert the given array to a string of the array elements separated by the given delimiter.
+	 * For example:
+	 * array ([0] => 7, [1] => 8)
+	 * delimiter: ,
+	 * is converted to string "7, 8"
+	 */
+	private function convert_array_to_string($in_array, $delimiter)
 	{
 		$count = 0;
 		if (is_array($in_array))
@@ -435,9 +378,10 @@ class AccessibilityValidator {
 	}
 	
 	/**
-	* generate class value: array of error results, number of errors
-	*/
-	function finalize()
+	 * private 
+	 * generate class value: array of error results, number of errors
+	 */
+	private function finalize()
 	{
 		function errorRpt($one_result)
 		{
@@ -449,38 +393,56 @@ class AccessibilityValidator {
 	}
 	
 	/**
-	* public 
-	* return validation report in html
-	*/
-	function getValidationFullRpt()
+	 * public 
+	 * set line offset
+	 */
+	public function setLineOffset($lineOffset)
+	{
+		$this->line_offset = $lineOffset;
+	}
+	
+	/**
+	 * public 
+	 * return line offset
+	 */
+	public function getLineOffset()
+	{
+		return $this->line_offset;
+	}
+	
+	/**
+	 * public 
+	 * return validation report in html
+	 */
+	public function getValidationFullRpt()
 	{
 		return $this->result;
 	}
 
 	/**
-	* public 
-	* return array of all checks that have been done, including successful and failed ones
-	*/
-	function getValidationErrorRpt()
+	 * public 
+	 * return array of all checks that have been done, including successful and failed ones
+	 */
+	public function getValidationErrorRpt()
 	{
 		return $this->error_result;
 	}
 	
 
 	/**
-	* public 
-	* return number of errors
-	*/
-	function getNumOfValidateError()
+	 * public 
+	 * return number of errors
+	 */
+	public function getNumOfValidateError()
 	{
 		return $this->num_of_errors;
 	}
 
 	/**
-	* public 
-	* return array of all checks that have been done by check id, including successful and failed ones
-	*/
-	function getResultsByCheckID($check_id)
+	 * public 
+	 * return array of all checks that have been done by check id, including successful and failed ones
+	 */
+	public function getResultsByCheckID($check_id)
 	{
 		$rtn = array();
 		foreach ($this->result as $oneResult)
@@ -491,10 +453,10 @@ class AccessibilityValidator {
 	}
 
 	/**
-	* public 
-	* return array of all checks that have been done by line number, including successful and failed ones
-	*/
-	function getResultsByLine($line_number)
+	 * public 
+	 * return array of all checks that have been done by line number, including successful and failed ones
+	 */
+	public function getResultsByLine($line_number)
 	{
 		$rtn = array();
 		foreach ($this->result as $oneResult)

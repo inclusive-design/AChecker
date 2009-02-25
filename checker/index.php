@@ -58,6 +58,8 @@ if ($_POST["validate_uri"] || $_POST["validate_file"])
 	if (isset($validate_content))
 	{
 		$aValidator = new AccessibilityValidator($validate_content, $_POST["gid"]);
+		$aValidator->setLineOffset(10);
+		$aValidator->validate();
 	}
 	// end of checking accessibility
 
