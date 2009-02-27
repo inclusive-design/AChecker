@@ -19,6 +19,7 @@
 * @package checker
 */
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
+include_once(AC_INCLUDE_PATH.'classes/HTMLRpt.class.php');
 
 define(IS_ERROR, 1);
 define(IS_WARNING, 2);
@@ -28,7 +29,9 @@ class AccessibilityRpt {
 
 	// all private
 	var $errors;                         // an array, output of AccessibilityValidator -> getValidationErrorRpt
-	var $display_type;                   // how to display. defaul to "html"
+	var $user_link_id;                   // user_links.user_link_id; default to ''
+	var $format;                         // display format. default to "html". Could be "html", "rest"
+	var $show_decision;                  // 'true' or 'false'. default to 'false'. show decision choices or not.
 	
 	var $num_of_errors;                  // Number of known errors. (db: checks.confidence = "Known")
 	var $num_of_likely_problems;         // Number of likely errors. (db: checks.confidence = "Likely")
@@ -38,30 +41,17 @@ class AccessibilityRpt {
 	var $rpt_likely_problems;            // <DIV> section of likely problems
 	var $rpt_potential_problems;         // <DIV> section of potential problems
 	
-	var $cell_html =
-'      <li class="{MSG_TYPE}">
-         <span class="err_type"><img src="images/{IMG_SRC}" alt="{IMG_TYPE}" title="{IMG_TYPE}" width="15" height="15" /></span>
-         <em>Line {LINE_NUMBER}, Column {COL_NUMBER}</em>:
-         <span class="msg">
-            <a href="{BASE_HREF}checker/suggestion.php?id={CHECK_ID}"
-               onclick="popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\'); return false;" 
-               title="{TITLE}" target="_new">{ERROR}</a>
-         </span>
-         <pre><code class="input">{HTML_CODE}</code></pre>
-         <p class="helpwanted">
-         </p>
-       </li>
-';
-
 	/**
 	* public
 	* $errors: an array, output of AccessibilityValidator -> getValidationErrorRpt
 	* $type: html
 	*/
-	function AccessibilityRpt($errors, $type = "html")
+	function AccessibilityRpt($errors, $user_link_id = '')
 	{
 		$this->errors = $errors;
-		$this->display_type = $type;
+		$this->user_link_id = $user_link_id;
+		$this->format = 'html';                 // set default display format to html
+		$this->show_decision = 'false';           // set default "show decision choices" to false
 		
 		$this->num_of_errors = 0;
 		$this->num_of_likely_problems = 0;
@@ -70,92 +60,68 @@ class AccessibilityRpt {
 		$this->rpt_errors = "";
 		$this->rpt_likely_problems = "";
 		$this->rpt_potential_problems = "";
-
-		// Generate display based on $this->display_type
-		$this->generateDisplay();
 	}
 	
 	/**
-	* private
+	* public
+	* generate report in html format
 	*/
-	function generateDisplay()
+	public function generateRpt()
 	{
-		// initialize each section
-		$this->rpt_errors = "<h2>". _AC("known_problems") ."</h2><br />";
-		$this->rpt_likely_problems = "<h2>". _AC("likely_problems") ."</h2><br />";
-		$this->rpt_potential_problems = "<h2>". _AC("potential_problems") ."</h2><br />";
-		
-		// generate section details
-		foreach ($this->errors as $error)
+		if ($this->format == 'html')
 		{
-			$checksDAO = new ChecksDAO();
-			$row = $checksDAO->getCheckByID($error["check_id"]);
+			$htmlRpt = new HTMLRpt($this->errors, $this->user_link_id, $this->show_decision);
+			$this->num_of_errors = $htmlRpt->getNumOfErrors();
+			$this->num_of_likely_problems = $htmlRpt->getNumOfLikelyProblems();
+			$this->num_of_potential_problems = $htmlRpt->getNumOfPotentialProblems();
 
-			if ($row["confidence"] == KNOWN)
-			{
-				$this->num_of_errors++;
-				
-				$this->rpt_errors .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"]), IS_ERROR);
-			}
-			else if ($row["confidence"] == LIKELY)
-			{
-				$this->num_of_likely_problems++;
-				
-				$this->rpt_likely_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"]), IS_WARNING);
-			}
-			else if ($row["confidence"] == POTENTIAL)
-			{
-				$this->num_of_potential_problems++;
-				
-				$this->rpt_potential_problems .= $this->generate_cell($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"]), IS_INFO);
-			}
+			$this->rpt_errors = $htmlRpt->getErrorRpt();
+			$this->rpt_likely_problems = $htmlRpt->getLikelyProblemRpt();
+			$this->rpt_potential_problems = $htmlRpt->getPotentialProblemRpt();
 		}
-	}
-	
-	/** 
-	* private
-	* return check detail in html
-	* parameters:
-	* $line_number: line number that the error happens
-	* $col_number: column number that the error happens
-	* $html_tag: html tag that the error happens
-	* $description: error description
-	*/
-	function generate_cell($check_id, $line_number, $col_number, $html_code, $error, $error_type)
-	{
-		if ($error_type == IS_ERROR)
-		{
-			$msg_type = "msg_err";
-			$img_type = "Error";
-			$img_src = "error.png";
-		}
-		else if ($error_type == IS_WARNING)
-		{
-			$msg_type = "msg_info";
-			$img_type = "Info";
-			$img_src = "warning.png";
-		}
-		else if ($error_type == IS_INFO)
-		{
-			$msg_type = "msg_info";
-			$img_type = "Info";
-			$img_src = "info.png";
-		}
-		
-		// only display first 100 chars of $html_code
-		if (strlen($html_code) > 100)
-			$html_code = substr($html_code, 0, 100) . " ...";
-			
-		return str_replace(array("{MSG_TYPE}", "{IMG_SRC}", "{IMG_TYPE}", "{LINE_NUMBER}", "{COL_NUMBER}", "{HTML_CODE}", "{ERROR}", "{BASE_HREF}", "{CHECK_ID}", "{TITLE}"),
-		                   array($msg_type, $img_src, $img_type, $line_number, $col_number, htmlentities($html_code), $error, AC_BASE_HREF, $check_id, _AC("suggest_improvements")),
-		                   $this->cell_html);
 	}
 	
 	/**
 	* public 
+	* set display format
+	*/
+	public function setFormat($format)
+	{
+		$this->format = $format;
+	}
+
+	/**
+	* public 
+	* set display format
+	*/
+	public function getFormat()
+	{
+		return $this->format;
+	}
+
+	/**
+	* public 
+	* set show decision choices
+	*/
+	public function setShowDecisions($showDecisions)
+	{
+		$this->show_decision = $showDecisions;
+	}
+
+	/**
+	* public 
+	* set display format
+	*/
+	public function getShowDecisions()
+	{
+		return $this->show_decision;
+	}
+
+	/**
+	* public 
 	* return validation error report in html
 	*/
-	function getErrorRpt()
+	public function getErrorRpt()
 	{
 		return $this->rpt_errors;
 	}
@@ -164,7 +130,7 @@ class AccessibilityRpt {
 	* public 
 	* return validation likely problem report in html
 	*/
-	function getLikelyProblemRpt()
+	public function getLikelyProblemRpt()
 	{
 		return $this->rpt_likely_problems;
 	}
@@ -173,7 +139,7 @@ class AccessibilityRpt {
 	* public 
 	* return validation error report in html
 	*/
-	function getPotentialProblemRpt()
+	public function getPotentialProblemRpt()
 	{
 		return $this->rpt_potential_problems;
 	}
@@ -182,7 +148,7 @@ class AccessibilityRpt {
 	* public 
 	* return number of known errors
 	*/
-	function getNumOfErrors()
+	public function getNumOfErrors()
 	{
 		return $this->num_of_errors;
 	}
@@ -191,7 +157,7 @@ class AccessibilityRpt {
 	* public 
 	* return number of known errors
 	*/
-	function getNumOfLikelyProblems()
+	public function getNumOfLikelyProblems()
 	{
 		return $this->num_of_likely_problems;
 	}
@@ -200,7 +166,7 @@ class AccessibilityRpt {
 	* public 
 	* return number of known errors
 	*/
-	function getNumOfPotentialProblems()
+	public function getNumOfPotentialProblems()
 	{
 		return $this->num_of_potential_problems;
 	}

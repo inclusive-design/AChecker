@@ -78,26 +78,32 @@ define('LANG_PREFIX_CHECKS_QUESTION', '_QUESTION_');
 define('LANG_PREFIX_CHECKS_DECISION_PASS', '_DECISIONPASS_');
 define('LANG_PREFIX_CHECKS_DECISION_FAIL', '_DECISIONFAIL_');
 
-// table "guidelines"
+// used in table "guidelines"
 define('LANG_PREFIX_GUIDELINES_LONG_NAME', '_GNAME_');
 
-// table "guideline_groups"
+// used in table "guideline_groups"
 define('LANG_PREFIX_GUIDELINE_GROUPS_NAME', '_GROUPNAME_');
 
-// table "guideline_subgroups"
+// used in table "guideline_subgroups"
 define('LANG_PREFIX_GUIDELINE_SUBGROUPS_NAME', '_SUBGROUPNAME_');
 
-// table "test_expected"
+// used in table "test_expected"
 define('LANG_PREFIX_TEST_EXPECTED_STEP', '_EXPECTEDSTEP_');
 
-// table "test_fail"
+// used in table "test_fail"
 define('LANG_PREFIX_TEST_FAIL_STEP', '_FAILSTEP_');
 
-// table "test_files"
+// used in table "test_files"
 define('LANG_PREFIX_TEST_FILES_DESC', '_FILEDESC_');
 
-// table "test_procedure"
+// used in table "test_procedure"
 define('LANG_PREFIX_TEST_PROCEDURE_STEP', '_PROCEDURESTEP_');
+
+// constant of user decision on pass, fail, no decision.
+// data is saved in table 'user_decisions.decision'
+define('AC_DECISION_PASS', 'P');
+define('AC_DECISION_FAIL', 'F');
+define('AC_NO_DECISION', 'N');
 
 /* end of language text prefix */
 

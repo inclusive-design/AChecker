@@ -14,14 +14,19 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined in c
 
 if (!isset($aValidator) && !isset($htmlValidator)) die(_AC("no_instance"));
 
+include_once(AC_INCLUDE_PATH. "classes/AccessibilityRpt.class.php");
+include_once(AC_INCLUDE_PATH. "classes/DAO/UserLinksDAO.class.php");
+include_once(AC_INCLUDE_PATH. "classes/DAO/UserDecisionsDAO.class.php");
+
 if (isset($aValidator))
 {
 	// find out selected guidelines
 	foreach ($_POST["gid"] as $gid)
 		$gids .= $gid . ",";
 	
+	$gids = substr($gids, 0, -1);
 	$guidelinesDAO = new GuidelinesDAO();
-	$rows = $guidelinesDAO->getGuidelineByIDs(substr($gids, 0, -1));
+	$rows = $guidelinesDAO->getGuidelineByIDs($gids);
 	
 	unset($guidelines);
 	if (is_array($rows))
@@ -37,9 +42,29 @@ if (isset($aValidator))
 
 	if ($num_of_total_a_errors > 0)
 	{
-		include(AC_INCLUDE_PATH. "classes/AccessibilityRpt.class.php");
+		$errors = $aValidator->getValidationErrorRpt();
+		
+		// if it's a LOGIN user validates URI, save into database for user to make decision.
+		// Note that results of validating uploaded files are not saved
+		$user_link_id = '';
+		
+		if (isset($_SESSION['user_id']) && isset($_POST['uri']))
+		{
+//			debug($errors);exit;
+			// save errors into user_links
+			$userLinksDAO = new UserLinksDAO();
+			$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_POST['uri'], $gids);
+			
+			// save errors into user_decisions 
+			$userDecisionsDAO = new UserDecisionsDAO();
+			$userDecisionsDAO->saveErrors($user_link_id, $errors);
+			
+			$show_decision = 'true';
+		}
 
-		$a_rpt = new AccessibilityRpt($aValidator->getValidationErrorRpt());
+		$a_rpt = new AccessibilityRpt($errors, $user_link_id);
+		$a_rpt->setShowDecisions($show_decision);
+		$a_rpt->generateRpt();
 		
 		$num_of_errors = $a_rpt->getNumOfErrors();
 		$num_of_likely_problems = $a_rpt->getNumOfLikelyProblems();

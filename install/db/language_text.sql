@@ -1850,6 +1850,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_LANG_EXISTS','The l
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_LANG_WRONG_VERSION','The language pack you are trying to import is not compatible with this version of AChecker.','2009-02-24 13:58:25','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_LOGIN_CHARS','Your Login Name must only contain letters, numbers, periods, or underscores (_\'s).','2009-01-09 11:34:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_LOGIN_EXISTS','That login already exists, please choose another.','2009-01-09 11:34:42','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_NONE_USER_LINK','USER_LINK_ID cannot be null at creating user decision section.','2009-02-27 09:16:25','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_NO_ACTION_SELECTED','No action selected.','2009-02-04 15:31:02','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_NO_ITEM_SELECTED','You must select an item before using a button.','2009-02-04 15:31:02','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PAGE_NOT_FOUND','Page (%s) cannot be found','2008-12-12 13:28:09','');
@@ -1927,7 +1928,9 @@ INSERT INTO `language_text` VALUES ('eng', '_template','create_edit_user_group',
 INSERT INTO `language_text` VALUES ('eng', '_template','create_guideline','Create Guideline','2009-01-21 15:58:32','');
 INSERT INTO `language_text` VALUES ('eng', '_template','create_user','Create User','2009-01-21 15:58:32','');
 INSERT INTO `language_text` VALUES ('eng', '_template','customized_guidelines','Customized Guidelines','2009-01-26 13:27:56','');
+INSERT INTO `language_text` VALUES ('eng', '_template','date','Date','2009-02-27 16:07:19','');
 INSERT INTO `language_text` VALUES ('eng', '_template','date_created','Date Created','2009-02-17 12:02:27','');
+INSERT INTO `language_text` VALUES ('eng', '_template','decision','Decision','2009-02-27 16:07:19','');
 INSERT INTO `language_text` VALUES ('eng', '_template','delete','Delete','2009-01-22 16:02:07','');
 INSERT INTO `language_text` VALUES ('eng', '_template','delete_guideline','Delete Guideline','2009-01-23 11:20:13','');
 INSERT INTO `language_text` VALUES ('eng', '_template','delete_language','Delete Language','2009-02-18 15:56:02','');
@@ -2006,6 +2009,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','new_terms','New Terms','
 INSERT INTO `language_text` VALUES ('eng', '_template','next_chapter','Next Chapter','2009-01-28 15:28:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','no','No','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','none_found','None Found.','2009-01-21 15:06:01','');
+INSERT INTO `language_text` VALUES ('eng', '_template','no_decision','No Decision','2009-02-27 16:07:19','');
 INSERT INTO `language_text` VALUES ('eng', '_template','no_instance','Error: Validation instances are not found.','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','no_results_found','No results found.','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','open_to_public','Open To Public','2009-01-21 12:38:17','');
@@ -2072,6 +2076,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','translate_to','Translate
 INSERT INTO `language_text` VALUES ('eng', '_template','translation','Translation','2009-02-18 11:01:39','');
 INSERT INTO `language_text` VALUES ('eng', '_template','translator','Translator','2009-01-07 15:05:34','');
 INSERT INTO `language_text` VALUES ('eng', '_template','updated_terms','Updated Terms','2008-12-02 09:16:45','');
+INSERT INTO `language_text` VALUES ('eng', '_template','user','User','2009-02-27 16:07:19','');
 INSERT INTO `language_text` VALUES ('eng', '_template','user_group','User Group','2009-02-04 11:51:16','');
 INSERT INTO `language_text` VALUES ('eng', '_template','user_manage','User Management','2008-12-02 11:06:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','user_status','User Status','2009-02-04 11:51:16','');

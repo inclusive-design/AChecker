@@ -117,7 +117,7 @@ li.folders .disabled {
 
 li.msg_err, li.msg_info {
 	font-family: Verdana, Helevetica, Arial, sans-serif;
-	margin-bottom: 10px;
+	margin-bottom: 30px;
 	margin-top: 0px;
 	margin-right: 10px;
 	margin-left: 10px;
@@ -1637,6 +1637,7 @@ a:active,a:hover,a:focus{
 code.input {
   margin-bottom: 2ex;
   background-color: white;
+  line-height: 130%;
 }
 
 code.input strong {

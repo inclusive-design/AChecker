@@ -275,8 +275,10 @@ CREATE TABLE `user_decisions` (
   `line_num` int(10) NOT NULL,
   `column_num` int(10) NOT NULL,
   `check_id` mediumint(8) NOT NULL,
-  `decision` mediumint(8),
-  `create_date` datetime NOT NULL,
+  `sequence_id` int(8) NOT NULL,
+  `decision` varchar(50) NOT NULL DEFAULT 'N',
+  `user_name` varchar(200) NOT NULL DEFAULT '',
+  `last_update` datetime NOT NULL,
   PRIMARY KEY  (`user_link_id`, `line_num`, `column_num`, `check_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -304,13 +306,14 @@ CREATE TABLE `user_group_privilege` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
-# Table structure for table `user_decisions`
+# Table structure for table `user_links`
 # since 0.2
 CREATE TABLE `user_links` (
-  `user_link_id` mediumint(8) NOT NULL,
+  `user_link_id` mediumint(8) NOT NULL auto_increment,
   `user_id` int(10) NOT NULL,
-  `link` int(10) NOT NULL,
-  `create_date` datetime NOT NULL,
+  `URI` text NOT NULL,
+  `last_guideline_ids` varchar(50) NOT NULL,
+  `last_update` datetime NOT NULL,
   PRIMARY KEY  (`user_link_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

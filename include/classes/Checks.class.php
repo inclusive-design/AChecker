@@ -1825,7 +1825,9 @@ class Checks {
 		// return no error if language code is not specified
 		if (!BasicChecks::valid_lang_code($lang_code)) return true;
 		
-		if ($lang_code == "heb" || $lang_code == "he" || $lang_code == "ara" || $lang_code == "ar")
+		$rtl_lang_codes = BasicChecks::get_rtl_lang_codes();
+
+		if (in_array($lang_code, $rtl_lang_codes))
 			// When these 2 languages, "dir" attribute must be set and set to "rtl"
 			return (strtolower(trim($e->attr["dir"])) == "rtl");
 		else

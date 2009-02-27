@@ -98,7 +98,17 @@ class BasicChecks {
 		
 		return BasicChecks::cut_out_lang_code($lang);
 	}
+	
+	/**
+	* return array of all the 2-letter & 3-letter language codes with direction 'rtl'
+	*/
+	public static function get_rtl_lang_codes()
+	{
+		$langCodesDAO = new LangCodesDAO();
 		
+		return $langCodesDAO->GetLangCodeByDirection('rtl');
+	}
+	
 	/**
 	* check if $code is a valid language code
 	* return true if valid, otherwise, return false

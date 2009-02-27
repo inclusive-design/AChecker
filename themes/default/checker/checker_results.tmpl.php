@@ -87,7 +87,7 @@ else
 	echo '<span class="info_msg"><img src="images/info.png" width="15" height="15"/>  '._AC("html_validator_disabled").'</span>';
 ?>
 	</div>
-
+	</fieldset>
 </div>
 
 <script language="JavaScript" type="text/javascript">

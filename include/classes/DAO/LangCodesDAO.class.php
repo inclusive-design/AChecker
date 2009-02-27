@@ -30,7 +30,7 @@ class LangCodesDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	function GetAll()
+	public function GetAll()
 	{
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes ORDER BY description";
 		
@@ -44,7 +44,7 @@ class LangCodesDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	function GetLangCodeBy2LetterCode($code)
+	public function GetLangCodeBy2LetterCode($code)
 	{
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
 					WHERE code_2letters = '".$code ."'";
@@ -59,7 +59,7 @@ class LangCodesDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	function GetLangCodeBy3LetterCode($code)
+	public function GetLangCodeBy3LetterCode($code)
 	{
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
 					WHERE code_3letters = '".$code ."'";
@@ -70,6 +70,32 @@ class LangCodesDAO extends DAO {
 		}
 		else
 			return false;
+	}
+
+	/**
+	* Return array of all the 2-letter & 3-letter language codes with given direction
+	* @access  public
+	* @param   $direction : 'rtl' or 'ltr'
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	public function GetLangCodeByDirection($direction)
+	{
+		$rtn_array = array();
+		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
+					WHERE direction = '".$direction ."'";
+		
+		$rows = $this->execute($sql);
+		
+		if (is_array($rows))
+		{
+			foreach ($rows as $row)
+			{
+				array_push($rtn_array, $row['code_3letters']);
+				array_push($rtn_array, $row['code_2letters']);
+			}
+		}
+		return $rtn_array;
 	}
 
 }
