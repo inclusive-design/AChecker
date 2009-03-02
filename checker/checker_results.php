@@ -14,7 +14,7 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined in c
 
 if (!isset($aValidator) && !isset($htmlValidator)) die(_AC("no_instance"));
 
-include_once(AC_INCLUDE_PATH. "classes/AccessibilityRpt.class.php");
+include_once(AC_INCLUDE_PATH. "classes/HTMLRpt.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/UserLinksDAO.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/UserDecisionsDAO.class.php");
 
@@ -62,9 +62,9 @@ if (isset($aValidator))
 			$show_decision = 'true';
 		}
 
-		$a_rpt = new AccessibilityRpt($errors, $user_link_id);
+		$a_rpt = new HtmlRpt($errors, $user_link_id);
 		$a_rpt->setShowDecisions($show_decision);
-		$a_rpt->generateRpt();
+		$a_rpt->generateHTMLRpt();
 		
 		$num_of_errors = $a_rpt->getNumOfErrors();
 		$num_of_likely_problems = $a_rpt->getNumOfLikelyProblems();

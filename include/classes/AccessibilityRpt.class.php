@@ -12,14 +12,13 @@
 
 /**
 * AccessibilityRpt
-* Class for outputing accessibility validation report in html
-* This class returns accessibility validation report in html
+* Base Class for outputing accessibility validation report
+* This class returns accessibility validation report
 * @access	public
 * @author	Cindy Qi Li
 * @package checker
 */
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
-include_once(AC_INCLUDE_PATH.'classes/HTMLRpt.class.php');
 
 define(IS_ERROR, 1);
 define(IS_WARNING, 2);
@@ -37,6 +36,9 @@ class AccessibilityRpt {
 	var $num_of_likely_problems;         // Number of likely errors. (db: checks.confidence = "Likely")
 	var $num_of_potential_problems;      // Number of potential errors. (db: checks.confidence = "Potential")
 	
+	var $num_of_no_decisions;            // Number of likely/potential errors that decisions have not been made
+	var $num_of_made_decisions;            // Number of likely/potential errors that decisions have been made
+	
 	var $rpt_errors;                     // <DIV> section of errors
 	var $rpt_likely_problems;            // <DIV> section of likely problems
 	var $rpt_potential_problems;         // <DIV> section of potential problems
@@ -50,7 +52,6 @@ class AccessibilityRpt {
 	{
 		$this->errors = $errors;
 		$this->user_link_id = $user_link_id;
-		$this->format = 'html';                 // set default display format to html
 		$this->show_decision = 'false';           // set default "show decision choices" to false
 		
 		$this->num_of_errors = 0;
@@ -62,43 +63,6 @@ class AccessibilityRpt {
 		$this->rpt_potential_problems = "";
 	}
 	
-	/**
-	* public
-	* generate report in html format
-	*/
-	public function generateRpt()
-	{
-		if ($this->format == 'html')
-		{
-			$htmlRpt = new HTMLRpt($this->errors, $this->user_link_id, $this->show_decision);
-			$this->num_of_errors = $htmlRpt->getNumOfErrors();
-			$this->num_of_likely_problems = $htmlRpt->getNumOfLikelyProblems();
-			$this->num_of_potential_problems = $htmlRpt->getNumOfPotentialProblems();
-
-			$this->rpt_errors = $htmlRpt->getErrorRpt();
-			$this->rpt_likely_problems = $htmlRpt->getLikelyProblemRpt();
-			$this->rpt_potential_problems = $htmlRpt->getPotentialProblemRpt();
-		}
-	}
-	
-	/**
-	* public 
-	* set display format
-	*/
-	public function setFormat($format)
-	{
-		$this->format = $format;
-	}
-
-	/**
-	* public 
-	* set display format
-	*/
-	public function getFormat()
-	{
-		return $this->format;
-	}
-
 	/**
 	* public 
 	* set show decision choices
@@ -170,5 +134,6 @@ class AccessibilityRpt {
 	{
 		return $this->num_of_potential_problems;
 	}
+
 }
 ?>  

@@ -9,12 +9,18 @@
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
-
 ?>
 
 <div id="output_div" class="output-form">
+
+<?php 
+if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
+{
+	echo '<form method="get" action="decisions.php">';
+}
+?>
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("accessibility_review"); ?></legend>
-	<h3 class="indent"><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$this->guidelines. ')'; ?></h3>
+	<h3><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$this->guidelines. ')'; ?></h3>
 
 	<div id="topnavlistcontainer">
 		<ul id="topnavlist">
@@ -88,6 +94,17 @@ else
 ?>
 	</div>
 	</fieldset>
+
+<?php 
+if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
+{
+	if ($this->a_rpt->getNumOfNoDecisions() > 0)
+	{
+		echo '<div align="center"><input type="submit" name="make_decision" value="'._AC('make_decision').'" style="align:center" /></div>';
+	}
+	echo '</form>';
+}
+?>
 </div>
 
 <script language="JavaScript" type="text/javascript">

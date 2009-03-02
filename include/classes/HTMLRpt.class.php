@@ -19,27 +19,13 @@
 */
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserDecisionsDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/AccessibilityRpt.class.php');
 
-class HTMLRpt {
+class HTMLRpt extends AccessibilityRpt {
 
 	// all private
-	var $errors;                         // an array, output of AccessibilityValidator -> getValidationErrorRpt
-	var $user_link_id;                   // user_links.user_link_id; default to ''
-	var $show_decision;                  // true or false. default to "false". show decision choices or not.
-	
-	var $num_of_errors;                  // Number of known errors. (db: checks.confidence = "Known")
-	var $num_of_likely_problems;         // Number of likely errors. (db: checks.confidence = "Likely")
-	var $num_of_potential_problems;      // Number of potential errors. (db: checks.confidence = "Potential")
-	
-	var $rpt_errors;                     // <DIV> section of errors
-	var $rpt_likely_problems;            // <DIV> section of likely problems
-	var $rpt_potential_problems;         // <DIV> section of potential problems
-	
-	// temp vars
-	var $rpt_likely_decision_made;       // html string for checks that decisions have been made
-	var $rpt_likely_decision_not_made;   // html string for checks that decisions have NOT been made
-	var $rpt_potential_decision_made;       // html string for checks that decisions have been made
-	var $rpt_potential_decision_not_made;   // html string for checks that decisions have NOT been made
+	var $num_of_no_decisions;            // Number of likely/potential errors that decisions have not been made
+	var $num_of_made_decisions;            // Number of likely/potential errors that decisions have been made
 	
 	// HTML templates
 	var $html_problem =
@@ -87,28 +73,50 @@ class HTMLRpt {
 ';
 
 	var $html_decision_made = 
-'<table>
+'<table class="form-data">
   <tr>
-    <td>{LABEL_DECISION}</td>
+    <th align="left">{LABEL_DECISION}:</td>
     <td>{DECISION}</td>
   <tr>
   <tr>
-    <td>{LABEL_USER}</td>
+    <th align="left">{LABEL_USER}:</td>
     <td>{USER}</td>
   <tr>
   <tr>
-    <td>{LABEL_DATE}</td>
+    <th align="left">{LABEL_DATE}:</td>
     <td>{DATE}</td>
   <tr>
+  {REVERSE_DECISION}
 </table>
 ';
 
+	var $html_reverse_decision = 
+'  <tr>
+    <td colspan="2">
+	  <input value="{LABEL_REVERSE_DECISION}" type="submit" name="reverse[{SEQUENCE_ID}]" />
+    </td>
+  <tr>
+';
+	
 	/**
 	* public
 	* $errors: an array, output of AccessibilityValidator -> getValidationErrorRpt
 	* $type: html
 	*/
-	function HTMLRpt($errors, $user_link_id = '', $show_decision)
+	function HTMLRpt($errors, $user_link_id = '')
+	{
+		// run parent constructor
+		parent::AccessibilityRpt($errors, $user_link_id);
+		
+		$this->num_of_no_decisions = 0;
+		$this->num_of_made_decisions = 0;
+	}
+	
+	/**
+	* public
+	* main process to generate report in html format
+	*/
+	public function generateHTMLRpt()
 	{
 		global $msg;
 
@@ -119,27 +127,6 @@ class HTMLRpt {
 			return false;
 		}
 		
-		$this->errors = $errors;
-		$this->user_link_id = $user_link_id;
-		$this->show_decision = $show_decision;           // set default "show decision choices" to false
-		
-		$this->num_of_errors = 0;
-		$this->num_of_likely_problems = 0;
-		$this->num_of_potential_problems = 0;
-		
-		$this->rpt_errors = "";
-		$this->rpt_likely_problems = "";
-		$this->rpt_potential_problems = "";
-		
-		$this->generateHTMLRpt();
-	}
-	
-	/**
-	* private
-	* generate report in html format
-	*/
-	private function generateHTMLRpt()
-	{
 		// initialize each section
 		$this->rpt_errors = "<h2>". _AC("known_problems") ."</h2><br />";
 		$this->rpt_likely_problems = "<h2>". _AC("likely_problems") ."</h2><br />";
@@ -237,24 +224,32 @@ class HTMLRpt {
 			
 			if ($error_type == IS_WARNING) $this->rpt_likely_decision_not_made .= $problem_section;
 			if ($error_type == IS_INFO) $this->rpt_potential_decision_not_made .= $problem_section;
+			
+			$this->num_of_no_decisions++;
 		}
 		else
 		{
 			if ($row['decision'] == AC_DECISION_PASS) $decision = $check_row['decision_pass'];
 			if ($row['decision'] == AC_DECISION_FAIL) $decision = $check_row['decision_fail'];
 			
+			$reverse_decision = str_replace(array("{LABEL_REVERSE_DECISION}", "{SEQUENCE_ID}"),
+			                                array(_AC('reverse_decision'), $row['sequence_id']),
+			                                $this->html_reverse_decision);
+			                                
 			$decision_section = str_replace(array("{LABEL_DECISION}", 
 			                                      "{DECISION}", 
 			                                      "{LABEL_USER}", 
 			                                      "{USER}", 
 			                                      "{LABEL_DATE}", 
-			                                      "{DATE}"),
+			                                      "{DATE}",
+			                                      "{REVERSE_DECISION}"),
 			                                 array(_AC('decision'),
-			                                       $decision,
+			                                       _AC($decision),
 			                                       _AC('user'),
 			                                       $row['user_name'],
 			                                       _AC('date'),
-			                                       $row['last_update']),
+			                                       $row['last_update'],
+			                                       $reverse_decision),
 			                                 $this->html_decision_made);
 			
 			// generate problem section
@@ -262,6 +257,8 @@ class HTMLRpt {
 			
 			if ($error_type == IS_WARNING) $this->rpt_likely_decision_made .= $problem_section;
 			if ($error_type == IS_INFO) $this->rpt_potential_decision_made .= $problem_section;
+			
+			$this->num_of_made_decisions++;
 		}
 	}
 	
@@ -329,73 +326,23 @@ class HTMLRpt {
 		                   $this->html_problem);
 	}
 	
-	/** 
-	* private
-	* return problem section
-	* parameters:
-	* $line_number: line number that the error happens
-	* $col_number: column number that the error happens
-	* $html_tag: html tag that the error happens
-	* $description: error description
-	*/
-	private function generate_section_decision($check_id, $line_number, $col_number, $html_code, $error, $error_type)
-	{
-		
-		// if pass decision has been made, 
-	}
-	
+
 	/**
 	* public 
-	* return validation error report in html
+	* return number of likely/potential errors that decision have not been made
 	*/
-	public function getErrorRpt()
+	public function getNumOfNoDecisions()
 	{
-		return $this->rpt_errors;
+		return $this->num_of_no_decisions;
 	}
 
 	/**
 	* public 
-	* return validation likely problem report in html
+	* return number of likely/potential errors that decision have been made
 	*/
-	public function getLikelyProblemRpt()
+	public function getNumOfMadeDecisions()
 	{
-		return $this->rpt_likely_problems;
-	}
-
-	/**
-	* public 
-	* return validation error report in html
-	*/
-	public function getPotentialProblemRpt()
-	{
-		return $this->rpt_potential_problems;
-	}
-
-	/**
-	* public 
-	* return number of known errors
-	*/
-	public function getNumOfErrors()
-	{
-		return $this->num_of_errors;
-	}
-	
-	/**
-	* public 
-	* return number of known errors
-	*/
-	public function getNumOfLikelyProblems()
-	{
-		return $this->num_of_likely_problems;
-	}
-	
-	/**
-	* public 
-	* return number of known errors
-	*/
-	public function getNumOfPotentialProblems()
-	{
-		return $this->num_of_potential_problems;
+		return $this->num_of_made_decisions;
 	}
 }
 ?>  
