@@ -12,19 +12,18 @@
 
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined in checker_input_form.php.");
 
-global $_current_user;
+global $_current_user, $decision_error;
 
 $default_uri_value = "http://";
-$default_guideline = 8;      // default guideline to check html accessibility if the guidelines are not given in $_POST
 $num_of_guidelines_per_row = 3;  // default number of guidelines to display in a row on the page
 
-if (!isset($_POST["gid"])) $_POST["gid"] = array($default_guideline);
+if (!isset($_POST["gid"])) $_POST["gid"] = array(DEFAULT_GUIDELINE);
 
 $guidelinesDAO = new GuidelinesDAO();
 $open_guidelines = $guidelinesDAO->getOpenGuidelines();
 
 $savant->assign('default_uri_value', $default_uri_value);
-$savant->assign('default_guideline', $default_guideline);
+$savant->assign('default_guideline', DEFAULT_GUIDELINE);
 $savant->assign('num_of_guidelines_per_row', $num_of_guidelines_per_row);
 
 if (isset($_current_user))
@@ -41,6 +40,7 @@ else
 	
 }
 
+if (isset($decision_error)) $savant->assign('error', $decision_error);
 $savant->assign('rows', $guidelines);
 
 $savant->display('checker/checker_input_form.tmpl.php');

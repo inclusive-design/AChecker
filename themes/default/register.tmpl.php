@@ -137,7 +137,14 @@ function encrypt_password()
 			</td>
 		</tr>
 		<?php }?>
-			
+		
+		<?php if (isset($this->user_row['web_service_id'])) {?>
+		<tr>
+			<td align="left"><?php echo _AC('web_service_id'); ?>:</td>
+			<td align="left"><?php echo $this->user_row['web_service_id']; ?></td>
+		</tr>
+		<?php }?>
+
 		<tr>
 			<td colspan="2"><p class="submit_button">
 				<input type="submit" name="submit" value="<?php echo $this->submit_button_text; ?>" class="submit" onclick="return encrypt_password();" /> 

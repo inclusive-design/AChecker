@@ -20,6 +20,7 @@
 if (!defined('AC_INCLUDE_PATH')) exit;
 
 require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
+require_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 
 class UsersDAO extends DAO {
 
@@ -93,6 +94,7 @@ class UsersDAO extends DAO {
 			               first_name,
 			               last_name,
 			               email,
+			               web_service_id,
 			               status,
 			               create_date
 			               )
@@ -102,6 +104,7 @@ class UsersDAO extends DAO {
 			               '".$first_name."',
 			               '".$last_name."', 
 			               '".$email."',
+			               '".Utility::getSessionID()."',
 			               ".$status.", 
 			               now()
 										)";
@@ -232,6 +235,24 @@ class UsersDAO extends DAO {
 		{
 			return $rows[0];
 		}
+		else return false;
+	}
+
+	/**
+	 * Return user information by given web service ID
+	 * @access  public
+	 * @param   web service ID
+	 * @return  user row
+	 * @author  Cindy Qi Li
+	 */
+	public function getUserByWebServiceID($webServiceID)
+	{
+		$sql = "SELECT * FROM ".TABLE_PREFIX."users WHERE web_service_id='".$webServiceID."'";
+		if ($rows = $this->execute($sql))
+		{
+			return $rows[0];
+		}
+		else return false;
 	}
 
 	/**

@@ -58,3 +58,4 @@ function encrypt_password() {
 	</div>
 </form>
 
+<?php include(AC_INCLUDE_PATH.'footer.inc.php'); ?>

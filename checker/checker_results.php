@@ -73,7 +73,9 @@ if (isset($aValidator))
 		$savant->assign('a_rpt', $a_rpt);
 		$savant->assign('num_of_errors', $a_rpt->getNumOfErrors());
 		$savant->assign('num_of_likely_problems', $a_rpt->getNumOfLikelyProblems());
+		$savant->assign('num_of_likely_problems_no_decision', $a_rpt->getNumOfLikelyWithFailDecisions());
 		$savant->assign('num_of_potential_problems', $a_rpt->getNumOfPotentialProblems());
+		$savant->assign('num_of_potential_problems_no_decision', $a_rpt->getNumOfPotentialWithFailDecisions());
 	}
 
 	$savant->assign('aValidator', $aValidator);

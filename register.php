@@ -68,7 +68,10 @@ if (isset($_POST['cancel'])) {
 				// auto login
 				$usersDAO->setLastLogin($user_id);
 				$_SESSION['user_id'] = $user_id;
-				$msg->addFeedback('LOGIN_SUCCESS');
+				
+				// show web service ID in success message
+				$row = $usersDAO->getUserByID($user_id);
+				$msg->addFeedback(array('REGISTER_SUCCESS', $row['web_service_id']));
 				header('Location: index.php');
 				exit;
 			}

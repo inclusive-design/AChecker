@@ -19,6 +19,9 @@
 * @author	Cindy Qi Li
 * @package checker
 */
+
+include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
+
 class HTMLValidator {
 
 	// all private
@@ -48,9 +51,7 @@ class HTMLValidator {
 			
 		if ($this->validate_type == "uri")
 		{
-			require_once(AC_INCLUDE_PATH.'vitals.inc.php');
-
-			if (!is_uri_valid($this->validate_content))
+			if (!Utility::isURIValid($this->validate_content))
 			{
 				$this->contain_errors = true;
 				$this->msg = "Error: Cannot connect to <strong>".$uri. "</strong>";
@@ -97,7 +98,7 @@ class HTMLValidator {
 
 	/**
 	* private
-  * send post request and html content to 
+  	* send post request and html content to 
 	*/
   function do_post_request($url, $data, $optional_headers = null)
   {

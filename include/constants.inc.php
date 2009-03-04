@@ -22,7 +22,7 @@ define('VERSION',		'0.2');
 define('DEFAULT_LANGUAGE_CODE', 'eng');
 define('DEFAULT_CHARSET', 'utf-8');
 define('AC_LANGUAGE_LOCALE_SEP', '-');
-$_config['default_language'] = DEFAULT_LANGUAGE_CODE;
+//$_config['default_language'] = DEFAULT_LANGUAGE_CODE;
 
 // check confidence
 define('KNOWN', 0);
@@ -98,6 +98,7 @@ define('LANG_PREFIX_TEST_FILES_DESC', '_FILEDESC_');
 
 // used in table "test_procedure"
 define('LANG_PREFIX_TEST_PROCEDURE_STEP', '_PROCEDURESTEP_');
+/* end of language text prefix */
 
 // constant of user decision on pass, fail, no decision.
 // data is saved in table 'user_decisions.decision'
@@ -105,7 +106,11 @@ define('AC_DECISION_PASS', 'P');
 define('AC_DECISION_FAIL', 'F');
 define('AC_NO_DECISION', 'N');
 
-/* end of language text prefix */
+// default output format on web service
+define('DEFAULT_WEB_SERVICE_OUTPUT', 'html');
+
+// default output format on web service
+define('DEFAULT_GUIDELINE', 8);
 
 /* how many days until the password reminder link expires */
 define('AC_PASSWORD_REMINDER_EXPIRY', 2);

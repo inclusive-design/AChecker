@@ -13,8 +13,38 @@
 define('AC_INCLUDE_PATH', '../include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
-include(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
-include(AC_INCLUDE_PATH. 'classes/DAO/ChecksDAO.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/DAO/ChecksDAO.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/Decision.class.php');
+
+global $_current_user;
+
+// process to make decision
+if (isset($_POST['make_decision']) || isset($_POST['reverse']))
+{
+	$decision = new Decision($_SESSION['user_id'], $_POST['uri'], $_POST['output'], $_POST['jsessionid']);
+	
+	if ($decision->hasError())
+	{
+		$decision_error = $decision->getErrorRpt();  // displays in checker_input_form.tmpl.php
+	}
+	else
+	{
+		// make decsions
+		if (isset($_POST['make_decision'])) $decision->makeDecisions($_POST['d'], $_current_user->getUserName());
+		
+		// reverse decision
+		if (isset($_POST['reverse'])) 
+		{
+			foreach ($_POST['reverse'] as $sequenceID => $garbage)
+				$sequences[] = $sequenceID;
+			
+			$decision->reverseDecisions($sequences, $_current_user->getUserName());
+		}
+	}
+}
+// end of process to made decision
 
 // display initial validation form: input URI or upload a html file 
 include ("checker_input_form.php");
@@ -31,7 +61,7 @@ if ($_POST["validate_uri"] || $_POST["validate_file"])
 	if ($_POST["validate_uri"])
 	{
 		$uri = $_POST["uri"];
-		if (!is_uri_valid($uri))
+		if (!Utility::isURIValid($uri))
 		{
 			echo "Error: Cannot connect to <strong>".$uri. "</strong>";
 		}

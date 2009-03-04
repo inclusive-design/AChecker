@@ -317,6 +317,27 @@ class GuidelinesDAO extends DAO {
   	}
 
 	/**
+	* Return rows by guideline title
+	* @access  public
+	* @param   $title
+	*          $ignoreCase: 1: ignore case; 0: don't ignore; set to 1 by default
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	public function getEnabledGuidelinesByTitle($title, $ignoreCase=1)
+	{
+		if ($ignoreCase) $sql_title = "lower(title) = '".strtolower($title)."'";
+		else $sql_title = "title = '".$title."'";
+		
+		$sql = "select *
+				from ". TABLE_PREFIX ."guidelines
+				where ".$sql_title."
+				order by title";
+
+	    return $this->execute($sql);
+  	}
+
+  	/**
 	* Return open-to-public guideline info by given user id
 	* @access  public
 	* @param   none

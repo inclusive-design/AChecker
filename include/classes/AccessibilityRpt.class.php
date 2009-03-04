@@ -29,7 +29,6 @@ class AccessibilityRpt {
 	// all private
 	var $errors;                         // an array, output of AccessibilityValidator -> getValidationErrorRpt
 	var $user_link_id;                   // user_links.user_link_id; default to ''
-	var $format;                         // display format. default to "html". Could be "html", "rest"
 	var $show_decision;                  // 'true' or 'false'. default to 'false'. show decision choices or not.
 	
 	var $num_of_errors;                  // Number of known errors. (db: checks.confidence = "Known")
@@ -74,7 +73,16 @@ class AccessibilityRpt {
 
 	/**
 	* public 
-	* set display format
+	* return user link id
+	*/
+	public function getUserLinkID()
+	{
+		return $this->user_link_id;
+	}
+
+	/**
+	* public 
+	* set show decisions or not
 	*/
 	public function getShowDecisions()
 	{

@@ -1842,9 +1842,17 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMAIL_EXISTS','An a
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMAIL_INVALID','Email address was invalid.','2009-01-09 11:34:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMAIL_NOT_FOUND','No account found with that email address.','2009-01-14 14:40:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_FIELDS','The following required field(s) are empty:<br />\r\n%s.','2009-01-09 11:34:42','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_SESSIONID','Empty Session ID.','2009-03-03 13:44:57','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_URI','Empty URI.','2009-03-03 13:44:57','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_USER','Empty user.','2009-03-03 13:44:57','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_WEB_SERVICE_ID','Empty web service ID.','2009-03-04 14:53:18','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_FIRST_LAST_NAME_UNIQUE','First, second, and last names combination must be unique.','2009-01-09 11:34:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_GUIDELINE_NOT_FOUND','Guideline not found.','2009-01-20 14:19:07','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_FORMAT','Invalid format.','2009-03-03 13:44:57','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_LOGIN','Invalid login/password combination.','2009-01-08 11:43:51','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_SESSION','Invalid session.','2009-03-03 13:44:57','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_URI','Invalid URI.','2009-03-04 14:49:59','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_WEB_SERVICE_ID','Invalid web service ID.','2009-03-04 14:49:59','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_LANG_EMPTY','The text for this language has not been translated yet.','2009-02-24 13:57:01','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_LANG_EXISTS','The language you are trying to create already exists.','2009-02-24 09:20:45','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_LANG_WRONG_VERSION','The language pack you are trying to import is not compatible with this version of AChecker.','2009-02-24 13:58:25','');
@@ -1874,6 +1882,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_FEEDBACK_LOGOUT','You hav
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_FEEDBACK_ONLY_ENGLISH','Only English language is defined in the system. There is no foreign languages to translate.','2009-02-18 11:52:10','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_FEEDBACK_PASSWORD_CHANGED','Password changed successfully.','2009-01-16 10:35:40','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_FEEDBACK_PROFILE_UPDATED','Your Profile was successfully updated.','2009-01-15 10:59:58','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_FEEDBACK_REGISTER_SUCCESS','You have registered successfully. Your web service ID is %s. This ID must be presented when using web service. This ID can always be retrieved from \"Profile\" page.','2009-03-04 13:30:45','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_FEEDBACK_REG_THANKS_CONFIRM','Thank-you for registering. Please follow the instructions in the email we sent you on how to confirm your account. You will need to confirm your account before you can login.','2009-01-09 14:07:11','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_HELP_CHANGE_EMAIL','<h2>Change Email</h2>\n<p>This page allows user to change email address. If email-confirmation has been enabled by the system administrator, a message will be sent to the new email address entered, containing a link that must be followed to confirm the new email address.</p>\n','2009-01-30 10:05:32','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_HELP_CHANGE_PASSWORD','<h2>Change Password</h2>\n<p>This page allows user to change password. The form authenticate user by checking on the old password and set the password to new one.</p>\n','2009-01-30 09:58:00','');
@@ -1995,6 +2004,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','login_name_or_email','Lo
 INSERT INTO `language_text` VALUES ('eng', '_template','login_text','Enter the Login Name (or email) and Password you chose at registration.<br /><br /><br />Not registered yet? <a href=\"register.php\" >Register</a> Or, <a href=\"password_reminder.php\">Forgot your password?</a><br /><br />','2009-01-29 14:24:45','');
 INSERT INTO `language_text` VALUES ('eng', '_template','logout','Logout','2009-01-08 09:31:41','');
 INSERT INTO `language_text` VALUES ('eng', '_template','long_name','Long Name','2009-01-21 12:38:17','');
+INSERT INTO `language_text` VALUES ('eng', '_template','make_decision','Make Decision','2009-03-02 14:30:26','');
 INSERT INTO `language_text` VALUES ('eng', '_template','match_all_words','Match All Words','2009-02-04 11:51:16','');
 INSERT INTO `language_text` VALUES ('eng', '_template','match_any_word','Match Any Word','2009-02-04 11:51:16','');
 INSERT INTO `language_text` VALUES ('eng', '_template','my_guidelines','My Guidelines','2009-01-20 11:45:23','');
@@ -2047,6 +2057,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','reset_filter','Reset Fil
 INSERT INTO `language_text` VALUES ('eng', '_template','result','Result','2008-12-01 14:45:48','');
 INSERT INTO `language_text` VALUES ('eng', '_template','results_found','Results Found: %s','2008-11-27 09:48:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','return_to_handbook','Return to Handbook','2009-01-28 15:28:06','');
+INSERT INTO `language_text` VALUES ('eng', '_template','reverse_decision','Reverse Decision','2009-03-02 13:22:49','');
 INSERT INTO `language_text` VALUES ('eng', '_template','review_output','Review Output','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','save','Save','2009-01-15 10:01:07','');
 INSERT INTO `language_text` VALUES ('eng', '_template','search','Search','2009-01-28 15:28:06','');
@@ -2083,6 +2094,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','user_status','User Statu
 INSERT INTO `language_text` VALUES ('eng', '_template','view','View','2009-01-20 11:47:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','view_guideline','View Guideline','2009-01-20 13:59:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','web_accessibility_checker','Web Accessibility Checker','2008-12-01 13:19:43','');
+INSERT INTO `language_text` VALUES ('eng', '_template','web_service_id','Web Service ID','2009-03-04 13:48:23','');
 INSERT INTO `language_text` VALUES ('eng', '_template','web_site','Web Site','2009-02-06 09:08:32','');
 INSERT INTO `language_text` VALUES ('eng', '_template','welcome','Welcome','2009-01-08 09:30:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','yes','Yes','2009-01-21 12:38:17','');

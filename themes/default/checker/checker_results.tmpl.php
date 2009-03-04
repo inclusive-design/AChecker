@@ -3,12 +3,17 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
+/* Adaptive Technology Resource Centre / University of Toronto          */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
+
+global $addslashes;
+
+include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
 ?>
 
 <div id="output_div" class="output-form">
@@ -16,7 +21,20 @@
 <?php 
 if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
 {
-	echo '<form method="get" action="decisions.php">';
+	$utility = new Utility();
+	$sessionID = $utility->getSessionID();
+	
+	$userLinksDAO = new UserLinksDAO();
+	$userLinksDAO->setLastSessionID($this->a_rpt->getUserLinkID(), $sessionID);
+	
+	echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'."\n\r";
+	echo '<input type="hidden" name="jsessionid" value="'.$sessionID.'" />'."\n\r";
+	echo '<input type="hidden" name="uri" value="'.$addslashes($_POST["uri"]).'" />'."\n\r";
+	echo '<input type="hidden" name="output" value="html" />'."\n\r";
+	echo '<input type="hidden" name="validate_uri" value="1" />'."\n\r";
+
+	foreach ($_POST['gid'] as $gid)
+		echo '<input type="hidden" name="gid[]" value="'.$gid.'" />'."\n\r";
 }
 ?>
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("accessibility_review"); ?></legend>
@@ -24,10 +42,10 @@ if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
 
 	<div id="topnavlistcontainer">
 		<ul id="topnavlist">
-				<li><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="showDiv('errors');"><?php echo _AC("known_problems"); ?> <span class="small_font">(<?php echo $this->num_of_errors; ?>)</span></a></li>
-				<li><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');"><?php echo _AC("likely_problems"); ?> <span class="small_font">(<?php echo $this->num_of_likely_problems; ?>)</span></a></li>
-				<li><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');"><?php echo _AC("potential_problems"); ?> <span class="small_font">(<?php echo $this->num_of_potential_problems; ?>)</span></a></li>
-				<li><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');"><?php echo _AC("html_validation_result"); ?> <span class="small_font"><?php if (isset($_POST["enable_html_validation"])) echo "(".$this->num_of_html_errors.")"; ?></span></a></li>
+			<li><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="showDiv('errors');"><?php echo _AC("known_problems"); ?> <span class="small_font">(<?php echo $this->num_of_errors; ?>)</span></a></li>
+			<li><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');"><?php echo _AC("likely_problems"); ?> <span class="small_font">(<?php echo $this->num_of_likely_problems_no_decision; ?>)</span></a></li>
+			<li><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');"><?php echo _AC("potential_problems"); ?> <span class="small_font">(<?php echo $this->num_of_potential_problems_no_decision; ?>)</span></a></li>
+			<li><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');"><?php echo _AC("html_validation_result"); ?> <span class="small_font"><?php if (isset($_POST["enable_html_validation"])) echo "(".$this->num_of_html_errors.")"; ?></span></a></li>
 		</ul>
 	</div>
 

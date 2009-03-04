@@ -18,5 +18,4 @@ $_SESSION = array();
 
 $msg->addFeedback('LOGOUT');
 header('Location: index.php');
-
 ?>

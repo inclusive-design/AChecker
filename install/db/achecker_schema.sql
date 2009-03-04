@@ -260,6 +260,7 @@ CREATE TABLE `users` (
   `first_name` varchar(100),
   `last_name` varchar(100),
   `email` varchar(50),
+  `web_service_id` varchar(40) NOT NULL,
   `status` tinyint(3) NOT NULL default '1',
   `create_date` datetime NOT NULL,
   `last_login` datetime,
@@ -279,7 +280,8 @@ CREATE TABLE `user_decisions` (
   `decision` varchar(50) NOT NULL DEFAULT 'N',
   `user_name` varchar(200) NOT NULL DEFAULT '',
   `last_update` datetime NOT NULL,
-  PRIMARY KEY  (`user_link_id`, `line_num`, `column_num`, `check_id`)
+  PRIMARY KEY  (`user_link_id`, `line_num`, `column_num`, `check_id`),
+  INDEX IDX_SEQUENCE (`user_link_id`, `sequence_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 # --------------------------------------------------------
@@ -313,6 +315,7 @@ CREATE TABLE `user_links` (
   `user_id` int(10) NOT NULL,
   `URI` text NOT NULL,
   `last_guideline_ids` varchar(50) NOT NULL,
+  `last_sessionID` varchar(40) NOT NULL,
   `last_update` datetime NOT NULL,
   PRIMARY KEY  (`user_link_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

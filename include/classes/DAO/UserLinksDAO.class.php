@@ -121,6 +121,23 @@ class UserLinksDAO extends DAO {
 	}
 
 	/**
+	 * set last sessionID
+	 * Session ID is used to validate the user decisions received is the response 
+	 * for questions sent by server which embed with the same session id  
+	 * @access  public
+	 * @param   $user_link_id
+	 *          $sessionID
+	 * @return  user rows
+	 * @author  Cindy Qi Li
+	 */
+	public function setLastSessionID($user_link_id, $sessionID)
+	{
+		$sql = "UPDATE ".TABLE_PREFIX."user_links SET last_sessionID = '".$sessionID."'
+		         WHERE user_link_id = ".$user_link_id;
+		return $this->execute($sql);
+	}
+
+	/**
 	 * Return all user link information
 	 * @access  public
 	 * @param   none
@@ -164,6 +181,27 @@ class UserLinksDAO extends DAO {
 		$sql = "SELECT * FROM ".TABLE_PREFIX."user_links 
 		         WHERE user_id=".$user_id."
 		           AND URI ='".$addslashes($URI)."'";
+		
+		return $this->execute($sql);
+	}
+
+	/**
+	 * Return row by given user id, URI and session ID
+	 * @access  public
+	 * @param   $user_id
+	 *          $URI
+	 *          $sessionID
+	 * @return  user row
+	 * @author  Cindy Qi Li
+	 */
+	public function getByUserIDAndURIAndSession($user_id, $URI, $sessionID)
+	{
+		global $addslashes;
+
+		$sql = "SELECT * FROM ".TABLE_PREFIX."user_links 
+		         WHERE user_id=".$user_id."
+		           AND URI ='".$addslashes($URI)."'
+		           AND last_sessionID = '".$sessionID."'";
 		
 		return $this->execute($sql);
 	}

@@ -14,8 +14,9 @@ global $onload;
 $onload="initial()";
 
 include(AC_INCLUDE_PATH.'header.inc.php');
-?>
 
+if (isset($this->error)) echo $this->error;
+?>
 <form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 	
 <div class="center-input-form">

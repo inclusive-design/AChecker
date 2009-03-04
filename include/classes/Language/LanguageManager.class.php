@@ -142,7 +142,6 @@ class LanguageManager {
 			}
 
 		} 
-
 		if (isset($_SESSION) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && isset($this->availableLanguages[$_SESSION['lang']])) {
 			$language = $this->getLanguage($_SESSION['lang']);
 
@@ -168,7 +167,7 @@ class LanguageManager {
 				}
 			}
 		}
-
+		
 		if (!empty($_SERVER['HTTP_USER_AGENT'])) {
 
 			// Language is not defined yet :
@@ -183,30 +182,21 @@ class LanguageManager {
 		}
 
 		// Didn't catch any valid lang : we use the default settings
-		if (isset($this->availableLanguages[DEFAULT_LANGUAGE])) {
-			$language = $this->getLanguage(DEFAULT_LANGUAGE, DEFAULT_CHARSET);
+		if (isset($this->availableLanguages[DEFAULT_LANGUAGE_CODE])) {
+			$language = $this->getLanguage(DEFAULT_LANGUAGE_CODE, DEFAULT_CHARSET);
 
 			if ($language) {
 				return $language;
 			}
 		}
-
-		// fail safe
-		if (isset($this->availableLanguages[$this->default_lang])) {
-			$language = $this->getLanguage($this->default_lang, $this->default_charset);
-
-			if ($language) {
-				return $language;
-			}
-		}
-
+		
 		// else pick one at random:
 		reset($this->availableLanguages);
 		$uknown_language = current($this->availableLanguages);
 		if ($unknown_language) {
 			return FALSE;
 		}
-
+		
 		return current($uknown_language);
 	}
 

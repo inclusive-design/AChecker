@@ -65,6 +65,8 @@ else if (isset($_POST['save']))
 			}
 			
 			$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
+			header('Location: user_group.php');
+			exit;
 		}
 	}
 }

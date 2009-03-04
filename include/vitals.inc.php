@@ -91,7 +91,7 @@ require_once(AC_INCLUDE_PATH.'constants.inc.php');
 	unregister_GLOBALS();
 
 /***** end session initilization block ****/
-
+	
 /***** 4. load $_config from table 'config' *****/
 $configDAO = new ConfigDAO();
 $rows = $configDAO->getAll();
@@ -220,22 +220,6 @@ function debug($var, $title='') {
 	$str = str_replace('Array', '<span style="color: purple; font-weight: bold;">Array</span>', $str);
 	echo $str;
 	echo '</pre>';
-}
-
- /**
- * This function is used for checking if the given $uri is valid.
- * @access  public
- * @param   string $uri  The uri address
- * @author  Cindy Qi Li
- */
-function is_uri_valid($uri)
-{
-	$connection = @file_get_contents($uri);
-	
-	if (!$connection) 
-		return false;
-	else
-		return true;
 }
 
 /****************************************************/

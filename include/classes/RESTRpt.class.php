@@ -11,17 +11,18 @@
 /************************************************************************/
 
 /**
-* HTMLRpt
-* Class to generate error report in html format 
+* RESTRpt
+* Class to generate error report in REST format 
 * @access	public
 * @author	Cindy Qi Li
 * @package checker
 */
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
+
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserDecisionsDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/AccessibilityRpt.class.php');
 
-class HTMLRpt extends AccessibilityRpt {
+class RESTRpt extends AccessibilityRpt {
 
 	// all private
 	var $num_of_no_decisions;            // Number of likely/potential errors that decisions have not been made
@@ -385,9 +386,7 @@ class HTMLRpt extends AccessibilityRpt {
 		if (!is_array($errors)) return false;
 		
 		foreach ($errors as $err)
-		{
-			$error_detail .= str_replace("{ERROR}", _AC($err), $html_error_detail);
-		}
+			$error_detail = str_replace("{ERROR}", _AC($err), $html_error_detail); 
 			
 		return str_replace(array('{ERROR_MSG_TITLE}', '{ERROR_DETAIL}'), 
 		                   array(_AC('the_follow_errors_occurred'), $error_detail),

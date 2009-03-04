@@ -26,19 +26,24 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		</tr>
 
 		<tr>
-			<td align="left">&nbsp;&nbsp;&nbsp;&nbsp;<label for="login"><?php echo _AC('login_name'); ?></label>:</td>
+			<th align="left"><label for="login"><?php echo _AC('login_name'); ?></label>:</th>
 			<td align="left"><?php echo stripslashes(htmlspecialchars($_POST['login'])); ?></td>
+		</tr>
+
+		<tr>
+			<th align="left"><?php echo _AC('web_service_id'); ?>:</th>
+			<td align="left"><?php echo $_POST['web_service_id']; ?></td>
 		</tr>
 
 		<tr><td><br /></td></tr>
 
 		<tr>
-			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="first_name"><?php echo _AC('first_name'); ?></label>:</td>
+			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="first_name"><?php echo _AC('first_name'); ?></label>:</th>
 			<td align="left"><input id="first_name" name="first_name" type="text" value="<?php echo stripslashes(htmlspecialchars($_POST['first_name'])); ?>" /></td>
 		</tr>
 
 		<tr>
-			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="last_name"><?php echo _AC('last_name'); ?></label>:</td>
+			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="last_name"><?php echo _AC('last_name'); ?></label>:</th>
 			<td align="left"><input id="last_name" name="last_name" type="text" value="<?php echo stripslashes(htmlspecialchars($_POST['last_name'])); ?>" /></td>
 		</tr>
 
