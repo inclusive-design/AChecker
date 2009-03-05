@@ -67,7 +67,11 @@ else
 // return errors
 if (is_array($errors))
 {
-	echo HTMLRpt::generateErrorRpt($errors);
+	if ($output == 'rest')
+		echo RESTRpt::generateErrorRpt($errors);
+	else
+		echo HTMLRpt::generateErrorRpt($errors);
+	
 	exit;
 }
 
@@ -77,14 +81,17 @@ $guides = explode(',',$guide);
 $guidelinesDAO = new GuidelinesDAO();
 foreach ($guides as $g)
 {
+	if ($g == '') continue;
+
 	$title = str_replace('-',' ',$g);
 	$row = $guidelinesDAO->getEnabledGuidelinesByTitle($title);
-	
+		
 	if ($row) $gids[] = $row['guideline_id'];
 }
 
 // set to default guideline if no input guidelines
 if (!is_array($gids)) $gids[] = DEFAULT_GUIDELINE;
+debug($gids);exit;
 
 // validating uri content
 $validate_content = @file_get_contents($uri);
