@@ -197,9 +197,10 @@ $starttime = $mtime;
 <!--<div>
 	 the bread crumbs 
 	<div id="breadcrumbs">
+		<?php if (is_array($this->path)) {?>
 		<?php foreach ($this->path as $page){ ?>
 			<a href="<?php echo $page['url']; ?>"><?php echo $page['title']; ?></a> > 
-		<?php } echo $this->page_title; ?>
+		<?php }} echo $this->page_title; ?>
 	</div>
 
 	<?php if (isset($this->guide)) {?>
