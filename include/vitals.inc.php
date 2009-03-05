@@ -208,7 +208,6 @@ function debug($var, $title='') {
 	}
 	
 	ob_start();
-	print_r($var);
 	$str = ob_get_contents();
 	ob_end_clean();
 
