@@ -127,7 +127,7 @@ class HTMLRpt extends AccessibilityRpt {
 		global $msg;
 
 		// user_link_id must be given to show decision section
-		if ((!isset($user_link_id) || $user_link_id == '') && $show_decision == 'true')
+		if ((!isset($this->user_link_id) || $this->user_link_id == '') && $this->show_decision == 'true')
 		{
 			$msg->addError('NONE_USER_LINK');
 			return false;

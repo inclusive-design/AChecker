@@ -47,10 +47,10 @@ if (isset($aValidator))
 		// if it's a LOGIN user validates URI, save into database for user to make decision.
 		// Note that results of validating uploaded files are not saved
 		$user_link_id = '';
+		$show_decision = 'false';   // set default showDecision to 'false'
 		
 		if (isset($_SESSION['user_id']) && isset($_POST['uri']))
 		{
-//			debug($errors);exit;
 			// save errors into user_links
 			$userLinksDAO = new UserLinksDAO();
 			$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_POST['uri'], $gids);
@@ -66,10 +66,6 @@ if (isset($aValidator))
 		$a_rpt->setShowDecisions($show_decision);
 		$a_rpt->generateHTMLRpt();
 		
-		$num_of_errors = $a_rpt->getNumOfErrors();
-		$num_of_likely_problems = $a_rpt->getNumOfLikelyProblems();
-		$num_of_potential_problems = $a_rpt->getNumOfPotentialProblems();
-
 		$savant->assign('a_rpt', $a_rpt);
 		$savant->assign('num_of_errors', $a_rpt->getNumOfErrors());
 		$savant->assign('num_of_likely_problems', $a_rpt->getNumOfLikelyProblems());

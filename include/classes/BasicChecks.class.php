@@ -32,6 +32,8 @@ class BasicChecks {
 	{
 		global $header_array;
 		
+		if (!is_array($header_array)) return true;
+		
 		// find the next header after $line_number, $col_number
 		foreach ($header_array as $e)
 		{
@@ -48,19 +50,6 @@ class BasicChecks {
 			return false;
 		else
 			return true;
-	}
-	
-	public static function find_all_headers($elements, &$header_array)
-	{
-		foreach ($elements as $e)
-		{
-			if (substr($e->tag, 0, 1) == "h" and intval(substr($e->tag, 1)) <> 0)
-				array_push($header_array, $e);
-			
-			BasicChecks::find_all_headers($e->children(), &$header_array);
-		}
-		
-		return $header_array;
 	}
 	
 	/**

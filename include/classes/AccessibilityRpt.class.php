@@ -68,6 +68,10 @@ class AccessibilityRpt {
 	*/
 	public function setShowDecisions($showDecisions)
 	{
+		// set default to 'false'
+		if ($showDecisions <> 'true' && $showDecisions <> 'false')
+			$showDecisions = 'false';
+
 		$this->show_decision = $showDecisions;
 	}
 

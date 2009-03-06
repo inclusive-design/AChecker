@@ -90,9 +90,8 @@ class AccessibilityValidator {
 	private function prepare_global_vars()
 	{
 		global $header_array;
-		$header_array = array();
 
-		$header_array = BasicChecks::find_all_headers($this->content_dom->find("html"), &$header_array);
+		$header_array = $this->content_dom->find("h1, h2, h3, h4, h5, h6, h7");
 	}
 	
 	/** private
