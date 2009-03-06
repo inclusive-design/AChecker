@@ -29,7 +29,9 @@ include_once(AC_INCLUDE_PATH. 'classes/RESTRpt.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/DAO/UserLinksDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/AccessibilityValidator.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/HTMLWebServiceOutput.class.php');
 
 $uri = trim(urldecode($_REQUEST['uri']));
 $web_service_id = trim($_REQUEST['id']);
@@ -38,7 +40,7 @@ $output = trim(strtolower($_REQUEST['output']));
 $offset = intval($_REQUEST['offset']);
 
 // initialize defaults for the ones not set or not set right but with default values
-if ($output == '' || ($output <> 'html' && $output <> 'rest')) 
+if ($output <> 'html' && $output <> 'rest') 
 	$output = DEFAULT_WEB_SERVICE_OUTPUT;
 // end of initialization
 
@@ -62,6 +64,8 @@ else
 	$user_row = $usersDAO->getUserByWebServiceID($web_service_id);
 	
 	if (!$user_row) $errors[] = 'AC_ERROR_INVALID_WEB_SERVICE_ID';
+	
+	$user_id = $user_row['user_id'];
 }
 
 // return errors
@@ -85,13 +89,25 @@ foreach ($guides as $g)
 
 	$title = str_replace('-',' ',$g);
 	$row = $guidelinesDAO->getEnabledGuidelinesByTitle($title);
-		
-	if ($row) $gids[] = $row['guideline_id'];
+
+	if ($row) $gids[] = $row[0]['guideline_id'];
 }
 
 // set to default guideline if no input guidelines
 if (!is_array($gids)) $gids[] = DEFAULT_GUIDELINE;
-debug($gids);exit;
+
+foreach ($gids as $gid)
+	$gidStr .= $gid . ",";
+
+$gidStr = substr($gidStr, 0, -1);
+
+// generate user link ID
+$userLinksDAO = new UserLinksDAO();
+$user_link_id = $userLinksDAO->getUserLinkID($user_id, $uri, $gidStr);
+
+// save errors into user_decisions 
+$userDecisionsDAO = new UserDecisionsDAO();
+$userDecisionsDAO->saveErrors($user_link_id, $errors);
 
 // validating uri content
 $validate_content = @file_get_contents($uri);
@@ -100,7 +116,12 @@ if (isset($validate_content))
 {
 	$aValidator = new AccessibilityValidator($validate_content, $gids);
 	$aValidator->validate();
-}
 
+	if ($output == 'html')
+	{ // generate html output
+		$htmlWebServiceOutput = new HTMLWebServiceOutput($aValidator, $user_link_id, $gids);
+	}
+	
+}
 
 ?>

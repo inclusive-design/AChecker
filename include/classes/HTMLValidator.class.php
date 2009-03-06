@@ -64,7 +64,6 @@ class HTMLValidator {
 		else
 		{
 			$this->full_return = $result;
-			
 			$this->result = $this->stripOutResult($result);
 			$this->num_of_errors = $this->stripOutNumOfErrors($result);
 			
@@ -134,7 +133,7 @@ class HTMLValidator {
 	function stripOutResult($full_result)
 	{
 		$pattern1 = '/'. preg_quote('<div id="result">', '/') . '.*'. preg_quote('</div><!-- end of "result" -->', '/').'/s';   // when no errors
-		$pattern2 = '/('.preg_quote('<ol id="error_loop">', '/').'.*)'. preg_quote('</ol>', '/').'/s'; // when has errors
+		$pattern2 = '/('.preg_quote('<ol id="error_loop">', '/').'.*'. preg_quote('</ol>', '/').')/s'; // when has errors
 
 		if (preg_match($pattern1, $full_result, $matches))
 			return $matches[0];

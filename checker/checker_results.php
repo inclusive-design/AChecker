@@ -65,7 +65,7 @@ if (isset($aValidator))
 		$a_rpt = new HtmlRpt($errors, $user_link_id);
 		$a_rpt->setShowDecisions($show_decision);
 		$a_rpt->generateHTMLRpt();
-		
+
 		$savant->assign('a_rpt', $a_rpt);
 		$savant->assign('num_of_errors', $a_rpt->getNumOfErrors());
 		$savant->assign('num_of_likely_problems', $a_rpt->getNumOfLikelyProblems());

@@ -41,8 +41,6 @@ if($languageManager->getNumEnabledLanguages() > 1)
 		<a href="http://atrc.utoronto.ca/"><img width="84" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/atrclogo.gif" height="52" alt="Adaptive Technology Resource Centre" style="border:none;"/></a>
 	</div>
 </div>
-</body>
-</html>
 
 <script language="javascript" type="text/javascript">
 //<!--
@@ -64,6 +62,9 @@ function rowselectbox(obj, checked, handler) {
 }
 //-->
 </script>
+
+</body>
+</html>
 
 <?php
 // Timer, calculate how much time to load the page

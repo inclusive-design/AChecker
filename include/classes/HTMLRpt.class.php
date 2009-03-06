@@ -59,36 +59,36 @@ class HTMLRpt extends AccessibilityRpt {
       <input value="P" type="radio" name="d[{SEQUENCE_ID}]" id="pass{SEQUENCE_ID}" {PASS_CHECKED} />
       <label for="pass{SEQUENCE_ID}">{DECISION_PASS}</label>
    </td>
-  <tr>
+  </tr>
   <tr>
     <td>
 	  <input value="F" type="radio" name="d[{SEQUENCE_ID}]" id="fail{SEQUENCE_ID}" {FAIL_CHECKED} />
       <label for="fail{SEQUENCE_ID}">{DECISION_FAIL}</label>
     </td>
-  <tr>
+  </tr>
   <tr>
     <td>
 	  <input value="N" type="radio" name="d[{SEQUENCE_ID}]" id="nodecision{SEQUENCE_ID}" {NODECISION_CHECKED} />
       <label for="nodecision{SEQUENCE_ID}">{DECISION_NO}</label>
     </td>
-  <tr>
+  </tr>
 </table>
 ';
 
 	var $html_decision_made = 
 '<table class="form-data">
   <tr>
-    <th align="left">{LABEL_DECISION}:</td>
+    <th align="left">{LABEL_DECISION}:</th>
     <td>{DECISION}</td>
+  </tr>
   <tr>
-  <tr>
-    <th align="left">{LABEL_USER}:</td>
+    <th align="left">{LABEL_USER}:</th>
     <td>{USER}</td>
+  </tr>
   <tr>
-  <tr>
-    <th align="left">{LABEL_DATE}:</td>
+    <th align="left">{LABEL_DATE}:</th>
     <td>{DATE}</td>
-  <tr>
+  </tr>
   {REVERSE_DECISION}
 </table>
 ';
@@ -98,7 +98,7 @@ class HTMLRpt extends AccessibilityRpt {
     <td colspan="2">
 	  <input value="{LABEL_REVERSE_DECISION}" type="submit" name="reverse[{SEQUENCE_ID}]" />
     </td>
-  <tr>
+  </tr>
 ';
 	
 	/**
@@ -134,9 +134,9 @@ class HTMLRpt extends AccessibilityRpt {
 		}
 		
 		// initialize each section
-		$this->rpt_errors = "<h2>". _AC("known_problems") ."</h2><br />";
-		$this->rpt_likely_problems = "<h2>". _AC("likely_problems") ."</h2><br />";
-		$this->rpt_potential_problems = "<h2>". _AC("potential_problems") ."</h2><br />";
+		$this->rpt_errors = "<ul>";
+		$this->rpt_likely_problems = "<ul>";
+		$this->rpt_potential_problems = "<ul>";
 
 		// generate section details
 		foreach ($this->errors as $error)
@@ -180,9 +180,13 @@ class HTMLRpt extends AccessibilityRpt {
 		
 		if ($this->show_decision == 'true')
 		{
-			$this->rpt_likely_problems = $this->rpt_likely_decision_not_made.$this->rpt_likely_decision_made;
-			$this->rpt_potential_problems = $this->rpt_potential_decision_not_made.$this->rpt_potential_decision_made;
+			$this->rpt_likely_problems .= $this->rpt_likely_decision_not_made.$this->rpt_likely_decision_made;
+			$this->rpt_potential_problems .= $this->rpt_potential_decision_not_made.$this->rpt_potential_decision_made;
 		}
+		
+		$this->rpt_errors .= "</ul>";
+		$this->rpt_likely_problems .= "</ul>";
+		$this->rpt_potential_problems .= "</ul>";
 	}
 	
 	/** 

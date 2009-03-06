@@ -21,8 +21,9 @@
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
 include (AC_INCLUDE_PATH . "lib/simple_html_dom.php");
-include (AC_INCLUDE_PATH . "classes/Checks.class.php");
+include_once (AC_INCLUDE_PATH . "classes/Checks.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
+include_once (AC_INCLUDE_PATH . "classes/DAO/ChecksDAO.class.php");
 
 define("SUCCESS_RESULT", "success");
 define("FAIL_RESULT", "fail");

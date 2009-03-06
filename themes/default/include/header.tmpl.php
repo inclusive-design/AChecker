@@ -143,9 +143,9 @@ $starttime = $mtime;
 		</h1>
 	</div>
 
-	<div id="topnavlistcontainer">
+	<div class="topnavlistcontainer">
 	<!-- the main navigation. in our case, tabs -->
-		<ul id="topnavlist">
+		<ul class="topnavlist">
 			<?php foreach ($this->top_level_pages as $page): ?>
 				<?php $accesscounter = 0; //initialize ?>
 				<?php ++$accesscounter; $accesscounter = ($accesscounter == 10 ? 0 : $accesscounter); ?>
@@ -166,7 +166,7 @@ $starttime = $mtime;
 		<!-- guide -->
 		<?php if (isset($this->guide)) {?>
 		<div id="guide">
-			<a href="<?php echo $this->guide; ?>" id="guide" onclick="popup('<?php echo $this->guide; ?>'); return false;" target="_new"><em><?php echo $this->page_title; ?></em></a>
+			<a href="<?php echo $this->guide; ?>" onclick="popup('<?php echo $this->guide; ?>'); return false;" target="_new"><em><?php echo $this->page_title; ?></em></a>
 		</div>
 		<?php }?>
 

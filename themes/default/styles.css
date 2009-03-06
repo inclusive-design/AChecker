@@ -1468,37 +1468,36 @@ span.forum-paginator-active{font-weight:700;text-decoration:underline; height:2e
 
 
 
-div#topnavlistcontainer {
+div.topnavlistcontainer {
 	margin-left:auto; 
 	margin-right:auto;
 	border: thin #CCCCCC solid;
 	line-height:100%;
 	background-color: #365D95;
 /*  background-color: #1D2326;*/
-	background-image: url(images/pencil_bottom.gif);
 	background-position:  top right;
 	background-repeat: no-repeat;
 }
-ul#topnavlist {
+ul.topnavlist {
 	padding-top: 10px;
 	white-space: nowrap;
 	margin-left:0px;
 	margin-left:0px;
 }
 
-ul#topnavlist li {
+ul.topnavlist li {
 	list-style: none;
 	display: inline;
 	margin: 0px;
 }
 
-ul#topnavlist li a:hover, ul#topnavlist li a:focus, ul#topnavlist li a.active {
+ul.topnavlist li a:hover, ul.topnavlist li a:focus, ul.topnavlist li a.active {
     background-color: #E6E6E6;
     color: black;
 	text-decoration:none;
 }
 
-ul#topnavlist li a {
+ul.topnavlist li a {
     /* The normal, unselected tabs. They are all links */
     color: #555;
 	font-weight:bold;
@@ -1508,7 +1507,7 @@ ul#topnavlist li a {
 	background-color:white;
 }
 
-ul#topnavlist li a.selected {
+ul.topnavlist li a.selected {
     /* The selected tab. There's only one of these */
     color: #555;
     font-weight: normal;

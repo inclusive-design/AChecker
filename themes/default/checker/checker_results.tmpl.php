@@ -21,8 +21,7 @@ include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
 <?php 
 if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
 {
-	$utility = new Utility();
-	$sessionID = $utility->getSessionID();
+	$sessionID = Utility::getSessionID();
 	
 	$userLinksDAO = new UserLinksDAO();
 	$userLinksDAO->setLastSessionID($this->a_rpt->getUserLinkID(), $sessionID);
@@ -40,8 +39,8 @@ if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("accessibility_review"); ?></legend>
 	<h3><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$this->guidelines. ')'; ?></h3>
 
-	<div id="topnavlistcontainer">
-		<ul id="topnavlist">
+	<div class="topnavlistcontainer">
+		<ul class="topnavlist">
 			<li><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="showDiv('errors');"><?php echo _AC("known_problems"); ?> <span class="small_font">(<?php echo $this->num_of_errors; ?>)</span></a></li>
 			<li><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');"><?php echo _AC("likely_problems"); ?> <span class="small_font">(<?php echo $this->num_of_likely_problems_no_decision; ?>)</span></a></li>
 			<li><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');"><?php echo _AC("potential_problems"); ?> <span class="small_font">(<?php echo $this->num_of_potential_problems_no_decision; ?>)</span></a></li>
@@ -57,7 +56,7 @@ if (isset($this->aValidator))
 	if ($this->num_of_errors > 0)
 		echo $this->a_rpt->getErrorRpt();
 	else
-		echo "<span class='congrats_msg'><img src='images/feedback.gif' />  ". _AC("congrats_no_known") ."</span>";
+		echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_known") ."</span>";
 }
 
 ?>
@@ -71,7 +70,7 @@ if (isset($this->aValidator))
 	if ($this->num_of_likely_problems > 0)
 		echo $this->a_rpt->getLikelyProblemRpt();
 	else
-		echo "<span class='congrats_msg'><img src='images/feedback.gif' />  ". _AC("congrats_no_likely") ."</span>";
+		echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_likely") ."</span>";
 }
 
 ?>
@@ -85,7 +84,7 @@ if (isset($this->aValidator))
 	if ($this->num_of_potential_problems > 0)
 		echo $this->a_rpt->getPotentialProblemRpt();
 	else
-		echo "<span class='congrats_msg'><img src='images/feedback.gif' />  ". _AC("congrats_no_potential") ."</span>";
+		echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_potential") ."</span>";
 }
 
 ?>
@@ -104,11 +103,11 @@ if (isset($this->htmlValidator))
 		if ($this->num_of_html_errors > 0)
 			echo $this->htmlValidator->getValidationRpt();
 		else
-			echo "<span class='congrats_msg'><img src='images/feedback.gif' />  ". _AC("congrats_html_validation") ."</span>";
+			echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_html_validation") ."</span>";
 	}
 }
 else
-	echo '<span class="info_msg"><img src="images/info.png" width="15" height="15"/>  '._AC("html_validator_disabled").'</span>';
+	echo '<span class="info_msg"><img src="'.AC_BASE_HREF.'images/info.png" width="15" height="15" alt="'._AC("info").'"/>  '._AC("html_validator_disabled").'</span>';
 ?>
 	</div>
 	</fieldset>
