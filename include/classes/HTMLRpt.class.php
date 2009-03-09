@@ -378,7 +378,6 @@ class HTMLRpt extends AccessibilityRpt {
 '<div id="error">
 	<h4>{ERROR_MSG_TITLE}</h4>
 	{ERROR_DETAIL}
-	<?php endif; ?>
 </div>';
 	
 		$html_error_detail = 
@@ -396,6 +395,20 @@ class HTMLRpt extends AccessibilityRpt {
 		return str_replace(array('{ERROR_MSG_TITLE}', '{ERROR_DETAIL}'), 
 		                   array(_AC('the_follow_errors_occurred'), $error_detail),
 		                   $html_error);
+	}
+	
+	/** 
+	* public
+	* return success in html
+	* parameters: none
+	* author: Cindy Qi Li
+	*/
+	public static function generateSuccessRpt()
+	{
+		$html_error = 
+'<div id="success">Success</div>';
+		
+		return $html_error;
 	}
 }
 ?>  

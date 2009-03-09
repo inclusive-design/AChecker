@@ -101,13 +101,12 @@ foreach ($gids as $gid)
 
 $gidStr = substr($gidStr, 0, -1);
 
-// generate user link ID
+// retrieve user link ID
 $userLinksDAO = new UserLinksDAO();
 $user_link_id = $userLinksDAO->getUserLinkID($user_id, $uri, $gidStr);
 
-// save errors into user_decisions 
-$userDecisionsDAO = new UserDecisionsDAO();
-$userDecisionsDAO->saveErrors($user_link_id, $errors);
+// set new session id
+$userLinksDAO->setLastSessionID($user_link_id, Utility::getSessionID());
 
 // validating uri content
 $validate_content = @file_get_contents($uri);
@@ -116,12 +115,17 @@ if (isset($validate_content))
 {
 	$aValidator = new AccessibilityValidator($validate_content, $gids);
 	$aValidator->validate();
+	$errors = $aValidator->getValidationErrorRpt();
 
+	// save errors into user_decisions 
+	$userDecisionsDAO = new UserDecisionsDAO();
+	$userDecisionsDAO->saveErrors($user_link_id, $errors);
+		
 	if ($output == 'html')
 	{ // generate html output
 		$htmlWebServiceOutput = new HTMLWebServiceOutput($aValidator, $user_link_id, $gids);
+		echo $htmlWebServiceOutput->getMainStr();
 	}
-	
 }
 
 ?>

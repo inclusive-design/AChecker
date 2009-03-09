@@ -375,7 +375,6 @@ class RESTRpt extends AccessibilityRpt {
 '<div id="error">
 	<h4>{ERROR_MSG_TITLE}</h4>
 	{ERROR_DETAIL}
-	<?php endif; ?>
 </div>';
 	
 		$html_error_detail = 
