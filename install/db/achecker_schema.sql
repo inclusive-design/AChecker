@@ -5083,3 +5083,5 @@ INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (4, 1);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (4, 6);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (4, 7);
+
+INSERT INTO `users` (`user_id`, `login`, `password`, `user_group_id`, `first_name`, `last_name`, `web_service_id`, `status`, `create_date`) VALUES (1, 'ATutor', '0cbab2aec26a53b0107487d43b1b8eb29384ad10', 2, 'ATutor', 'ATutor', '2f4149673d93b7f37eb27506905f19d63fbdfe2d', 1, '2009-03-11 10:16:55');
