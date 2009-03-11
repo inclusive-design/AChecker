@@ -290,7 +290,7 @@ class AccessibilityValidator {
 		// don't check the lines before $line_offset
 		if ($e->linenumber <= $this->line_offset) return;
 		
-		$result = $this->get_check_result($e->linenumber, $e->colnumber, $check_id);
+		$result = $this->get_check_result($e->linenumber-$this->line_offset, $e->colnumber, $check_id);
 
 		// has not been checked
 		if (!$result)
