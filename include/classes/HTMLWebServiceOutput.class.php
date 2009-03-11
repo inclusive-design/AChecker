@@ -171,8 +171,8 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 		}
 
 		// generate $html_summary.{SUMMARY_DETAIL}
-		$summary_detail = '';
-		if ($this->numOfErrors > 0) $summary_detail = $this->numOfErrors. ' ' ._AC('errors').'&nbsp;&nbsp;';
+		$summary_detail = '<span style="font-weight: bold;">';
+		if ($this->numOfErrors > 0) $summary_detail .= $this->numOfErrors. ' ' ._AC('errors').'&nbsp;&nbsp;';
 		if ($this->numOfFailLikelyProblems > 0) 
 		{
 			$summary_detail .= $this->numOfFailLikelyProblems.' '._AC('likely_problems').'&nbsp;&nbsp;';
@@ -181,6 +181,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 		{
 			$summary_detail .= $this->numOfFailPotentialProblems.' '._AC('potential_problems').'&nbsp;&nbsp;';
 		}
+		$summary_detail .= '</span>';
 		
 		$this->summaryStr = str_replace(array('{COLOR}', '{SUMMARY}', '{SUMMARY_DETAIL}'),
 		                                array($color, $summary, $summary_detail),
