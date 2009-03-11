@@ -63,10 +63,6 @@ if ($uri == '')
 {
 	$errors[] = 'AC_ERROR_EMPTY_URI';
 }
-else
-{
-	if (!Utility::isURIValid($uri)) $errors[] = 'AC_ERROR_INVALID_URI';
-}
 
 if ($web_service_id == '')
 {
