@@ -25,19 +25,33 @@ define('AC_INCLUDE_PATH', 'include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH. 'classes/HTMLRpt.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/RESTWebServiceOutput.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
-include_once(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
-include_once(AC_INCLUDE_PATH. 'classes/DAO/UserLinksDAO.class.php');
-include_once(AC_INCLUDE_PATH. 'classes/AccessibilityValidator.class.php');
-include_once(AC_INCLUDE_PATH. 'classes/HTMLWebServiceOutput.class.php');
-include_once(AC_INCLUDE_PATH. 'classes/RESTWebServiceOutput.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/Decision.class.php');
 
-$uri = trim(urldecode($_REQUEST['uri']));
-$web_service_id = trim($_REQUEST['id']);
-$guide = trim(strtolower($_REQUEST['guide']));
-$output = trim(strtolower($_REQUEST['output']));
-$offset = intval($_REQUEST['offset']);
+// parse parameters
+// use two loops on $_REQUEST is to ensure 'reverse' is set before parsing decisions on sequence IDs
+foreach ($_REQUEST as $name => $value)
+{
+	if ($name == 'uri') $uri = trim(urldecode($value));
+	if ($name == 'id') $web_service_id = trim($value);
+	if ($name == 'session') $session_id = trim($value);
+	if ($name == 'output') $output = trim(strtolower($value));
+	if ($name == 'reverse') $reverse = trim($value);
+}
+
+foreach ($_REQUEST as $name => $value)
+{
+	if (is_int($name))
+	{
+		if ($reverse == 'true')  // reverse decisions. set to "No Decision"
+			$decisions[$name] = AC_NO_DECISION;
+		else
+			$decisions[$name] = $value;
+	}
+}
+// end of parsing parameters
 
 // initialize defaults for the ones not set or not set right but with default values
 if ($output <> 'html' && $output <> 'rest') 
@@ -66,7 +80,10 @@ else
 	if (!$user_row) $errors[] = 'AC_ERROR_INVALID_WEB_SERVICE_ID';
 	
 	$user_id = $user_row['user_id'];
+	$user_name = $usersDAO->getUserName($user_id);
 }
+
+if (!is_array($decisions)) $errors[] = 'AC_ERROR_SEQUENCEID_NOT_GIVEN';
 
 // return errors
 if (is_array($errors))
@@ -79,59 +96,21 @@ if (is_array($errors))
 	exit;
 }
 
-// generate guidelines
-$guides = explode(',',$guide);
+// make decisions
+$decision = new Decision($user_id, $uri, $output, $session_id);
 
-$guidelinesDAO = new GuidelinesDAO();
-foreach ($guides as $g)
+if ($decision->hasError())
 {
-	if ($g == '') continue;
-
-	$title = str_replace('-',' ',$g);
-	$row = $guidelinesDAO->getEnabledGuidelinesByTitle($title);
-
-	if ($row) $gids[] = $row[0]['guideline_id'];
+	$decision_error = $decision->getErrorRpt();  // displays in checker_input_form.tmpl.php
 }
-
-// set to default guideline if no input guidelines
-if (!is_array($gids)) $gids[] = DEFAULT_GUIDELINE;
-
-foreach ($gids as $gid)
-	$gidStr .= $gid . ",";
-
-$gidStr = substr($gidStr, 0, -1);
-
-// retrieve user link ID
-$userLinksDAO = new UserLinksDAO();
-$user_link_id = $userLinksDAO->getUserLinkID($user_id, $uri, $gidStr);
-
-// set new session id
-$userLinksDAO->setLastSessionID($user_link_id, Utility::getSessionID());
-
-// validating uri content
-$validate_content = @file_get_contents($uri);
-
-if (isset($validate_content))
+else
 {
-	$aValidator = new AccessibilityValidator($validate_content, $gids);
-	$aValidator->validate();
-	$errors = $aValidator->getValidationErrorRpt();
-
-	// save errors into user_decisions 
-	$userDecisionsDAO = new UserDecisionsDAO();
-	$userDecisionsDAO->saveErrors($user_link_id, $errors);
-	
-	if ($output == 'html')
-	{ // generate html output
-		$htmlWebServiceOutput = new HTMLWebServiceOutput($aValidator, $user_link_id, $gids);
-		echo $htmlWebServiceOutput->getWebServiceOutput();
-	}
+	// make decsions
+	$decision->makeDecisions($decisions, $user_name);
 
 	if ($output == 'rest')
-	{ // generate html output
-		$restWebServiceOutput = new RESTWebServiceOutput($errors, $user_link_id, $gids);
-		echo $restWebServiceOutput->getWebServiceOutput();
-	}
+		echo RESTWebServiceOutput::generateSuccessRpt();
+	else
+		echo HTMLRpt::generateSuccessRpt();
 }
-
 ?>

@@ -138,10 +138,11 @@ class HTMLRpt extends AccessibilityRpt {
 		$this->rpt_likely_problems = "<ul>";
 		$this->rpt_potential_problems = "<ul>";
 
+		$checksDAO = new ChecksDAO();
+		
 		// generate section details
 		foreach ($this->errors as $error)
 		{
-			$checksDAO = new ChecksDAO();
 			$row = $checksDAO->getCheckByID($error["check_id"]);
 
 			if ($row["confidence"] == KNOWN)
@@ -405,10 +406,10 @@ class HTMLRpt extends AccessibilityRpt {
 	*/
 	public static function generateSuccessRpt()
 	{
-		$html_error = 
+		$html_success = 
 '<div id="success">Success</div>';
 		
-		return $html_error;
+		return $html_success;
 	}
 }
 ?>  
