@@ -77,10 +77,15 @@ else
 	$usersDAO = new UsersDAO();
 	$user_row = $usersDAO->getUserByWebServiceID($web_service_id);
 	
-	if (!$user_row) $errors[] = 'AC_ERROR_INVALID_WEB_SERVICE_ID';
-	
-	$user_id = $user_row['user_id'];
-	$user_name = $usersDAO->getUserName($user_id);
+	if (!$user_row)
+	{ 
+		$errors[] = 'AC_ERROR_INVALID_WEB_SERVICE_ID';
+	}
+	else
+	{
+		$user_id = $user_row['user_id'];
+		$user_name = $usersDAO->getUserName($user_id);
+	}
 }
 
 if (!is_array($decisions)) $errors[] = 'AC_ERROR_SEQUENCEID_NOT_GIVEN';
