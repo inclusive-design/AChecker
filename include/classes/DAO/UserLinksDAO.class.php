@@ -121,6 +121,30 @@ class UserLinksDAO extends DAO {
 	}
 
 	/**
+	 * Delete by user ID. This function deletes from tables user_links, user_decisions
+	 * @access  public
+	 * @param   user_id : required
+	 * @return  true, if successful
+	 *          false and add error into global var $msg, if unsuccessful
+	 * @author  Cindy Qi Li
+	 */
+	public function DeleteByUserID($user_id)
+	{
+		// delete customized guidelines created by user but yet open to public
+		include_once(AC_INCLUDE_PATH.'classes/DAO/UserDecisionsDAO.class.php');
+		$userDecisionsDAO = new UserDecisionsDAO();
+		
+		// delete according records from table user_decisions
+		if (!$userDecisionsDAO->DeleteByUserID($user_id))
+			return false;
+		
+		$sql = "DELETE FROM ".TABLE_PREFIX."user_links
+		         WHERE user_id = ".$user_id;
+
+		return $this->execute($sql);
+	}
+
+	/**
 	 * set last sessionID
 	 * Session ID is used to validate the user decisions received is the response 
 	 * for questions sent by server which embed with the same session id  

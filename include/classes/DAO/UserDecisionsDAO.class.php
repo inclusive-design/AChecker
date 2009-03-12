@@ -81,6 +81,25 @@ class UserDecisionsDAO extends DAO {
 	}
 
 	/**
+	 * Delete user decision by user id
+	 * @access  public
+	 * @param   user_id : required
+	 * @return  true, if successful
+	 *          false and add error into global var $msg, if unsuccessful
+	 * @author  Cindy Qi Li
+	 */
+	public function DeleteByUserID($user_id)
+	{
+		// delete customized guidelines created by user but yet open to public
+		$sql = "DELETE FROM ".TABLE_PREFIX."user_decisions
+		         WHERE user_link_id in (SELECT DISTINCT user_link_id 
+		                                  FROM ".TABLE_PREFIX."user_links
+		                                 WHERE user_id = ".$user_id.")";
+
+		return $this->execute($sql);
+	}
+
+	/**
 	 * Return all users' information
 	 * @access  public
 	 * @param   none

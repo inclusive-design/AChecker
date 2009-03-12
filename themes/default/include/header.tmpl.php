@@ -165,8 +165,8 @@ $starttime = $mtime;
 	<div id="sub-menu">
 		<!-- guide -->
 		<?php if (isset($this->guide)) {?>
-		<div id="guide">
-			<a href="<?php echo $this->guide; ?>" onclick="popup('<?php echo $this->guide; ?>'); return false;" target="_new"><em><?php echo $this->page_title; ?></em></a>
+		<div>
+			<a href="<?php echo $this->guide; ?>" onclick="popup('<?php echo $this->guide; ?>'); return false;" id="guide" target="_new"><em><?php echo $this->page_title; ?></em></a>
 		</div>
 		<?php }?>
 

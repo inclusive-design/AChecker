@@ -5065,7 +5065,7 @@ INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_da
 
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (1, 'Administrator', 'Administrate guidelines, checks, users, languages.', now());
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (2, 'User', 'Regular user. Can make decision on likely and potential problems. When a user revisits a report, decisions previously made for Likely and Potential problems will be restored for the matching URL. Regular users can create custom guidelines.', now());
-INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (3, 'Guideline/Check creator', 'Create, edit, delete custom checks and guidelines.', now());
+INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (3, 'Guideline/Check editor', 'Create, edit, delete custom checks and guidelines.', now());
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (4, 'Translator', 'Translate AChecker terms into a foreign lanugage.', now());
 
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 2);
@@ -5077,8 +5077,8 @@ INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 3);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 7);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 1);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 2);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 3);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 4);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 7);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (4, 1);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (4, 6);

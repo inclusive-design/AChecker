@@ -137,8 +137,7 @@ if (in_array(AC_PRIV_LANGUAGE_MANAGEMENT, $privs))
 	$_pages['language/language_add_edit.php']['guide']    = 'AC_HELP_ADD_EDIT_LANGUAGE';
 	
 	$_pages['language/language_delete.php']['title_var'] = 'delete_language';
-	$_pages['language/language_delete.php']['guide']    = 'AC_HELP_LANGUAGE_DELETE';
-
+	$_pages['language/language_delete.php']['parent'] = 'language/index.php';
 }
 
 // 6. translation
