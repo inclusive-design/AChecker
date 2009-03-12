@@ -34,7 +34,7 @@ class PrivilegesDAO extends DAO {
 	{
 		$sql = 'SELECT *
 				FROM '.TABLE_PREFIX.'privileges p
-				ORDER BY description';
+				ORDER BY privilege_id';
 
 		return $this->execute($sql);
   	}
