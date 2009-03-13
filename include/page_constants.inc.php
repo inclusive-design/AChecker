@@ -55,6 +55,9 @@ $_pages['password_reminder.php']['title_var'] = 'password_reminder';
 $_pages['password_reminder.php']['parent']    = 'login.php';
 $_pages['password_reminder.php']['guide']    = 'AC_HELP_PASSWORD_REMINDER';
 
+// to make view_guideline.php to be accessible by public. It is called in web service html report
+$_pages['guideline/view_guideline.php']['title_var'] = 'view_guideline';
+
 // 1. checker pages
 if (in_array(AC_PRIV_CHECKER, $privs))
 {
@@ -80,7 +83,7 @@ if (in_array(AC_PRIV_GUIDELINE_MANAGEMENT, $privs))
 	$_pages['guideline/create_edit_guideline.php']['parent']    = 'guideline/index.php';
 	$_pages['guideline/create_edit_guideline.php']['guide']    = 'AC_HELP_CREATE_EDIT_GUIDELINE';
 	
-	$_pages['guideline/view_guideline.php']['title_var'] = 'view_guideline';
+//	$_pages['guideline/view_guideline.php']['title_var'] = 'view_guideline';
 	$_pages['guideline/view_guideline.php']['parent']    = 'guideline/index.php';
 	$_pages['guideline/view_guideline.php']['guide']    = 'AC_HELP_VIEW_GUIDELINE';
 	
