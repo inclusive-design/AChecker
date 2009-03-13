@@ -35,6 +35,10 @@ if($languageManager->getNumEnabledLanguages() > 1)
 </div>
 <?php } ?>
 
+<div style="text-align:center;margin:1em;1em;">
+	<a href="documentation/web_service_api.php" title="<?php echo _AC("web_service_api"); ?>" target="_new"><?php echo _AC('web_service_api'); ?></a>
+</div>
+
 <div style="margin-left:auto; margin-right:auto; width:20em;">
 	<small>Web site engine's code is copyright &copy; 2009</small><br />
 	<div style="margin-left:auto; margin-right:auto; width:84px;">

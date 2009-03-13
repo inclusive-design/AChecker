@@ -58,6 +58,8 @@ $_pages['password_reminder.php']['guide']    = 'AC_HELP_PASSWORD_REMINDER';
 // to make view_guideline.php to be accessible by public. It is called in web service html report
 $_pages['guideline/view_guideline.php']['title_var'] = 'view_guideline';
 
+$_pages['documentation/web_service_api.php']['title_var'] = 'web_service_api';
+
 // 1. checker pages
 if (in_array(AC_PRIV_CHECKER, $privs))
 {
