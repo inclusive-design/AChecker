@@ -16,7 +16,7 @@ if (!defined('AC_INCLUDE_PATH')) { exit; }
  * constants, some more constants are loaded from table 'config' @ include/vitals.inc.php
  **/
 
-define('VERSION',		'0.2');
+define('VERSION',		'0.3');
 
 // language constants
 define('DEFAULT_LANGUAGE_CODE', 'eng');
