@@ -33,7 +33,7 @@ if (isset($aValidator))
 	{
 		foreach ($rows as $id => $row)
 		{
-			$guidelines .= $row["title"]. ", ";
+			$guidelines .= '<a title="'.$row["title"].'(link opens in a new window)" target="_new" href="'.AC_BASE_HREF.'guideline/view_guideline.php?id='.$row["guideline_id"].'">'.$row["title"]. '</a>, ';
 		}
 	}
 	$guidelines = substr($guidelines, 0, -2); // remove ending space and ,
