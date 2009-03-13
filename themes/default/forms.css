@@ -2,7 +2,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
+/* Adaptive Technology Resource Centre / University of Toronto          */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -27,6 +27,17 @@ div.center-input-form div.row {
 div.center-input-form p.submit_button
 {
 	text-align: center;
+}
+
+div.left-col {
+	width: 76%; 
+	float: left; 
+}
+
+div.right-col {
+	width: 20%; 
+	float: right;
+	margin-right:3em;
 }
 
 div.input-form {
@@ -98,12 +109,13 @@ div.input-form div.buttons input {
 
 div.output-form {
 	width: 90%; 
-	margin-left:auto; 
+	margin-left:3.5%; 
 	margin-right:auto;
 	padding: 10px 10px 20px 10px;
 	border: thin #CCCCCC solid;
 	margin-bottom: 30px;
 	line-height:100%;
 	background-color: #F8F8F8;
+	float: left;
 }
 

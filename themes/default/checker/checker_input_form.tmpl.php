@@ -17,6 +17,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 if (isset($this->error)) echo $this->error;
 ?>
+<div class="left-col">
 <form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 	
 <div class="center-input-form">
@@ -73,8 +74,10 @@ if (is_array($this->rows))
 			echo "			<tr>\n";
 		}
 ?>
-				<td><input type="checkbox" name="gid[]" id='gid_<?php echo $row["guideline_id"]; ?>' value='<?php echo $row["guideline_id"]; ?>' <?php foreach($_POST["gid"] as $gid) if ($gid == $row["guideline_id"]) echo 'checked="checked"'; ?> />
-				<label for='gid_<?php echo $row["guideline_id"]; ?>'><?php echo $row["title"]; ?></label></td>
+				<td>
+					<input type="checkbox" name="gid[]" id='gid_<?php echo $row["guideline_id"]; ?>' value='<?php echo $row["guideline_id"]; ?>' <?php foreach($_POST["gid"] as $gid) if ($gid == $row["guideline_id"]) echo 'checked="checked"'; ?> />
+					<label for='gid_<?php echo $row["guideline_id"]; ?>'><?php echo $row["title"]; ?></label>
+				</td>
 <?php
 		$count_guidelines_in_current_row++;
 	
@@ -87,9 +90,24 @@ if (is_array($this->rows))
 		</table>
 		</div>
 	</fieldset>
-	</div>
-
+</div>
 </form>
+</div>
+	
+<div class="right-col">
+	<h2>Advertisements</h2>
+	<script type="text/javascript">
+	<!--
+	google_ad_client = "pub-8538177464726172";
+	/* 250x250, created 3/13/09 */
+	google_ad_slot = "0783349774";
+	google_ad_width = 250;
+	google_ad_height = 250;
+	//-->
+	</script>
+	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+	</script>
+</div>
 
 <script type="text/JavaScript">
 <!--

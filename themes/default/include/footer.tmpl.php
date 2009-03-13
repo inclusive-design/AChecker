@@ -36,7 +36,7 @@ if($languageManager->getNumEnabledLanguages() > 1)
 <?php } ?>
 
 <div style="margin-left:auto; margin-right:auto; width:20em;">
-	<small>Web site engine's code is copyright &copy; 2008</small><br />
+	<small>Web site engine's code is copyright &copy; 2009</small><br />
 	<div style="margin-left:auto; margin-right:auto; width:84px;">
 		<a href="http://atrc.utoronto.ca/"><img width="84" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/atrclogo.gif" height="52" alt="Adaptive Technology Resource Centre" style="border:none;"/></a>
 	</div>
