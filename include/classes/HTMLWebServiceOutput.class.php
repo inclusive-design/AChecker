@@ -138,7 +138,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 			{
 				$this->guidelineStr .= str_replace(array('{TITLE}','{HREF}'),
 				                           array($row['title'],
-				                                 AC_BASE_HREF.'guideline/view_guide.php?id='.$row['guideline_id']),
+				                                 AC_BASE_HREF.'guideline/view_guideline.php?id='.$row['guideline_id']),
 				                           $this->html_a). "&nbsp;&nbsp;";
 			}
 		}
