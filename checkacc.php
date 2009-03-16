@@ -62,7 +62,7 @@ else
 { // validate web service id
 	$usersDAO = new UsersDAO();
 	$user_row = $usersDAO->getUserByWebServiceID($web_service_id);
-	
+
 	if (!$user_row) $errors[] = 'AC_ERROR_INVALID_WEB_SERVICE_ID';
 	
 	$user_id = $user_row['user_id'];

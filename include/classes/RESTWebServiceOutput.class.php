@@ -20,6 +20,7 @@
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserDecisionsDAO.class.php');
 
@@ -36,6 +37,7 @@ class RESTWebServiceOutput {
 	var $rest_main =
 '<summary>
 	<status>{STATUS}<stauts>
+	<sessionID>{SESSIONID}<sessionID>
 	<NumOfErrors>{NUMOFERRORS}</NumOfErrors>
 	<NumOfLikelyProblems>{NUMOFLIKELYPROBLEMS}</NumOfLikelyProblems>
 	<NumOfPotentialProblems>{NUMOFPOTENTIALPROBLEMS}</NumOfPotentialProblems>
@@ -72,7 +74,8 @@ class RESTWebServiceOutput {
 	var $rest_repair = '<repair>{REPAIR}</repair>';
 	
 	var $rest_decision_questions =
-'<decisionPass>{DECISIONPASS}</decisionPass>
+'<sequenceID>{SEQUENCEID}</sequenceID>
+        <decisionPass>{DECISIONPASS}</decisionPass>
 		<decisionFail>{DECISIONFAIL}</decisionFail>
 ';
 	
@@ -168,15 +171,14 @@ class RESTWebServiceOutput {
 					
 				}
 				
-				$decision_questions = str_replace(array('{DECISIONPASS}', '{DECISIONFAIL}'),
-				                                  array(_AC($row_check['decision_pass']), _AC($row_check['decision_fail'])),
+				$decision_questions = str_replace(array('{SEQUENCEID}', '{DECISIONPASS}', '{DECISIONFAIL}'),
+				                                  array($row_userDecision['sequence_id'], _AC($row_check['decision_pass']), _AC($row_check['decision_fail'])),
 				                                  $this->rest_decision_questions);
 				                                  
 				$decision = $decision_questions . $decision_made;
 				// end of generating user's decision
 			}
 			
-//debug($decision);
 			$result .= str_replace(array('{RESULTTYPE}', 
 			                             '{LINENUM}', 
 			                             '{COLUMNNUM}', 
@@ -199,6 +201,11 @@ class RESTWebServiceOutput {
 			                            $decision),
 			                      $this->rest_result);
 		}
+		
+		// retrieve session id
+		$userLinksDAO = new UserLinksDAO();
+		$row = $userLinksDAO->getByUserLinkID($this->userLinkID);
+		$sessionID = $row['last_sessionID'];
 		
 		// generate guidelines
 		$guidelinesDAO = new GuidelinesDAO();
@@ -225,12 +232,14 @@ class RESTWebServiceOutput {
 		
 		// generate final output
 		$this->output = str_replace(array('{STATUS}', 
-		                                  '{NUMOFERRORS}', 
+		                                  '{SESSIONID}', 
+				                          '{NUMOFERRORS}', 
 		                                  '{NUMOFLIKELYPROBLEMS}', 
 		                                  '{NUMOFPOTENTIALPROBLEMS}', 
 		                                  '{GUIDELINES}',
 		                                  '{RESULTS}'),
 		                            array($status,
+		                                  $sessionID,
 		                                  $num_of_errors,
 		                                  $num_of_likely_problems,
 		                                  $num_of_potential_problems,

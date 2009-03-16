@@ -2108,6 +2108,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','user_status','User Statu
 INSERT INTO `language_text` VALUES ('eng', '_template','view','View','2009-01-20 11:47:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','view_guideline','View Guideline','2009-01-20 13:59:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','web_accessibility_checker','Web Accessibility Checker','2008-12-01 13:19:43','');
+INSERT INTO `language_text` VALUES ('eng', '_template','web_service_api','Web Service API','2009-03-13 11:56:12','');
 INSERT INTO `language_text` VALUES ('eng', '_template','web_service_id','Web Service ID','2009-03-04 13:48:23','');
 INSERT INTO `language_text` VALUES ('eng', '_template','web_site','Web Site','2009-02-06 09:08:32','');
 INSERT INTO `language_text` VALUES ('eng', '_template','welcome','Welcome','2009-01-08 09:30:56','');
