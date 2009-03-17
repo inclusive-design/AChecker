@@ -19,10 +19,10 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <h1>AChecker Web Service API</h1>
 <p>Interface applications with the AChecker through its experimental API. This is version 0.1, dated Mar 2009.</p>
-<p>Two types AChecker web service are provided and save decisions made on accessibility checks that a human must make.</p>
-  <ul>
-    <li>1. Accessibility validation review.</li>
-    <li>2. Save or reverse decisions made on accessibility checks that a human must make.</li>
+<p>Two types AChecker web service API are provided:</p>
+  <ul style="list-style:decimal;">
+    <li>Accessibility validation review;</li>
+    <li>Save or reverse decisions made on accessibility checks that a human must make.</li>
   </ul>
 
 
@@ -57,7 +57,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <h2 id="requestformat_validation">Validation request format</h2>
 
-<p>Below is a table of the parameter you can use to send a request to AChecker for validating given URI.</p>
+<p>Below is a table of the parameter you can use to send a request to AChecker for validating URI.</p>
 
 <p>If you want to use AChecker public validation server, use the parameters below in conjunction with the following base URI:<br>
 <kbd>http://www.atutor.ca/achecker/test/trunk/checkacc.php</kbd> <br>
@@ -77,28 +77,30 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <tr>
   <th>id</th>
   <td>The "Web Service ID" generated once successfully registering into AChecker. 
-  This ID is a 40 characters long string. It can be retrieved from user’s "Profile" page.</td>
+  This ID is a 40 characters long string. It can always be retrieved from user's "Profile" page.</td>
   <td>None, must be given.</td>
 </tr>
 
 <tr>
   <th>guide</th>
   <td>The guidelines to validate against. Separate each guideline with comma (,).</td>
-  <td>WCAG-2.0-L2. Or one or some of these values: <br/>
+  <td>WCAG-2.0-L2. <br/>Or one or some of these values: <br/>
   bitv-1.0-(level-2)<br/>section-508<br/>stanca-act<br/>wcag-1.0-(level-a)<br/>
-  wcag-1.0-(level-aa)<br/>wcag-1.0-(level-aaa)vwcag-2.0-l1<br/>wcag-2.0-l2<br/>wcag-2.0-l3.</td>
+  wcag-1.0-(level-aa)<br/>wcag-1.0-(level-aaa)<br/>wcag-2.0-l1<br/>wcag-2.0-l2<br/>wcag-2.0-l3.</td>
 </tr>
 
 <tr>
   <th>output</th>
-  <td>Triggers the various outputs formats of the validator. If unset, the usual <a href="#htmlformat">html format</a> 
-  will be sent. If set to rest, <a href="#restformat">the rest interface</a> will be triggered.</td>
+  <td>Triggers the various outputs formats of the validator. If unset, the usual 
+  <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#html_sample_response_validation"">HTML format</a> 
+  will be sent. If set to rest, <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#rest_sample_response_validation">
+  the REST interface</a> will be triggered.</td>
   <td>html. Or either one of these values: html or rest</td>
 </tr>
 
 <tr>
   <th>offset</th>
-  <td>The line offset on the html output from uri where the validation starts. </td>
+  <td>The line offset to begin validation on the html output from URI.</td>
   <td>0</td>
 </tr>
 </tbody></table>
@@ -107,8 +109,8 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <span style="font-weight: bold">Sample validation request</span>
 <p>http://www.atutor.ca/achecker/test/trunk/checkacc.php?uri=http%3A%2F%2Fatutor.ca&
 id=888ca9e3f856baa0120755ecd8ffae6be3142029&output=html&guide=stanca-act,wcag-2.0-l2&offset=10</p>
-<p>Goal: Validate URI <code>http://atutor.ca</code> against guidelines Stanca Act and Wcag 2.0 L2. 
-Ignore the first 10 line of html content from http://atutor.ca. Returns validation report
+<p>Goal: Validate URI <code>http://atutor.ca</code> against guidelines "Stanca Act" and "Wcag 2.0 L2". 
+Ignore the first 10 lines of html content from http://atutor.ca. Returns validation report
 in html format.</p>
 
 <h2 id="rest_sample_response_validation">sample REST validation response</h2><br/>
@@ -117,23 +119,23 @@ in html format.</p>
 
 <pre style="background-color:#F7F3ED;"> 
 &lt;summary&gt;
-	&lt;status&gt;FAIL&lt;stauts&gt;
-	&lt;sessionID&gt;40-character-long string&lt;sessionID&gt;
+    &lt;status&gt;FAIL&lt;stauts&gt;
+    &lt;sessionID&gt;40-character-long string&lt;sessionID&gt;
     &lt;NumOfErrors&gt;number&lt;/NumOfErrors&gt;
-	&lt;NumOfLikelyProblems&gt;number&lt;/NumOfLikelyProblems&gt;
-	&lt;NumOfPotentialProblems&gt;number&lt;/NumOfPotentialProblems&gt;
+    &lt;NumOfLikelyProblems&gt;number&lt;/NumOfLikelyProblems&gt;
+    &lt;NumOfPotentialProblems&gt;number&lt;/NumOfPotentialProblems&gt;
 
-	&lt;guidelines&gt;
-		&lt;guideline&gt;string&lt;/guideline&gt;
-		...
-	&lt;/guidelines&gt;
+    &lt;guidelines&gt;
+      &lt;guideline&gt;string&lt;/guideline&gt;
+      ...
+    &lt;/guidelines&gt;
 &lt;/summary&gt;
 
 &lt;results&gt;
 &lt;result&gt;
-	&lt;resultType&gt;string&lt;/resultType&gt;
-	&lt;lineNum&gt;number&lt;/lineNum&gt;
-	&lt;columnNum&gt;number&lt;/columnNum&gt;
+    &lt;resultType&gt;string&lt;/resultType&gt;
+    &lt;lineNum&gt;number&lt;/lineNum&gt;
+    &lt;columnNum&gt;number&lt;/columnNum&gt;
 &lt;errorMsg&gt;encoded string&lt;/errorMsg&gt;
 &lt;errorSourceCode&gt;encoded string&lt;/errorSourceCode&gt;
 &lt;repair&gt;encoded string&lt;/repair&gt;
@@ -170,22 +172,22 @@ in html format.</p>
 
 <tr>
   <th>summary</th>
-  <td>The summary element of the validation response. Encloses validation summary result, 
-      the numbers of different types of problems and the title of guidelines that validate against.</td>
+  <td>The summary element of the validation response. Encloses validation summary information, 
+      the numbers of different types of problems and the title of guidelines validating against.</td>
 </tr>
 
 <tr>
   <th>status</th>
-  <td>Can be one of these values: FAIL, CONDITIONAL PASS, PASS. <br/>FAIL is set when there is known problems.
-      <br/>CONDITIONAL PASS is set when there is no known problems but there is likely or potential problems.<br/>
-      PASS is set when there is no problems found, or, there is no known problems and likely/potential problems
-      have PASS decisions made on.</td>
+  <td>Can be one of these values: FAIL, CONDITIONAL PASS, PASS. <br/>FAIL is set when there is/are known problem(s).
+      <br/>CONDITIONAL PASS is set when there is no known problems but there is/are likely or potential problem(s).<br/>
+      PASS is set when there is no problems found, OR, there is no known problems and likely/potential problems
+      have pass decisions made on.</td>
 </tr>
 
 <tr>
   <th>sessionID</th>
-  <td>The same ID must be sent back in make/reverse decisions request that is in response to the validation request. 
-      This is to verifie the make/reverse decision is from the authenticated source.</td>
+  <td>The same ID must be sent back in make/reverse decisions request in response to the validation request. 
+      This is to ensure the make/reverse decision request comes from the authenticated source.</td>
 </tr>
 
 <tr>
@@ -210,7 +212,7 @@ in html format.</p>
 
 <tr>
   <th>guideline</th>
-  <td>The title of the guideline that has been validated against.</td>
+  <td>A child of <code>guidelines</code>. Encloses the title of the guideline that has been validated against.</td>
 </tr>
 
 <tr>
@@ -245,17 +247,17 @@ in html format.</p>
 
 <tr>
   <th>errorSourceCode</th>
-  <td>A child of <code>result</code>. The line of the source where the error was found.</td>
+  <td>A child of <code>result</code>. The line of the source where the error/problem was detected.</td>
 </tr>
 
 <tr>
   <th>repair</th>
-  <td>A child of <code>result</code>. The message of how to repair. Only presented when resultType is "Error".</td>
+  <td>A child of <code>result</code>. The actual message of how to repair. Only presented when resultType is "Error".</td>
 </tr>
 
 <tr>
   <th>sequenceID</th>
-  <td>A child of <code>result</code>. The actual text message of the pass decision. Only presented when resultType is "Likely Problem" or "Potential Problem".</td>
+  <td>A child of <code>result</code>. The unique sequence ID identifying each error/problem. This ID is used to pinpoint each error/problem in make/reverse decision request.</td>
 </tr>
 
 <tr>
@@ -270,8 +272,8 @@ in html format.</p>
 
 <tr>
   <th>decisionMade</th>
-  <td>A child of <code>result</code>. Only presented when the decision has been made by user. Can be one of these values: PASS, FAIL. PASS is set when
-      pass decision is chosen by the user.</td>
+  <td>A child of <code>result</code>. Only presented when the decision has been made by user. Can be one of these two values: PASS, FAIL. PASS is set when
+      pass decision is chosen by the user. Otherwise, FAIL is set.</td>
 </tr>
 
 <tr>
@@ -281,7 +283,7 @@ in html format.</p>
 
 <tr>
   <th>decisionMadeDate</th>
-  <td>A child of <code>result</code>. Only presented when the decision has been made by user. The date and time that the decision was made.</td>
+  <td>A child of <code>result</code>. Only presented when the decision has been made by user. The date and time when the decision was made.</td>
 </tr>
 
 <tr>
@@ -331,19 +333,19 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 &lt;h4&gt;Errors&lt;/h4&gt;
 &lt;div id="errors" style="margin-top:1em"&gt;
   &lt;ul&gt;
-    ...         // check problem detail
+    ...         // error details
   &lt;/ul&gt;
 &lt;/div&gt;
 
 &lt;div id="likely_problems" style="margin-top:1em"&gt;
   &lt;ul&gt;
-    ...         // check problem detail
+    ...         // likely problem details
   &lt;/ul&gt;
 &lt;/div&gt;
 
 &lt;div id="potential_problems" style="margin-top:1em"&gt;
   &lt;ul&gt;
-    ...         // check problem detail
+    ...         // potential problem details
   &lt;/ul&gt;
 &lt;/div&gt;
 </pre>
@@ -473,7 +475,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 
 <h2 id="requestformat_decision">Make/reverse decisions request format</h2>
 
-<p>Below is a table of the parameter you can use to send a request to AChecker for making decisions on check problems.</p>
+<p>Below is a table of the parameter you can use to send a request to AChecker for making decisions on likely or potential problems.</p>
 
 <p>As said, if you want to use AChecker public validation server, use the parameters below in conjunction with the following base URI:<br>
 <kbd>http://www.atutor.ca/achecker/test/trunk/checkacc.php</kbd> <br>
@@ -493,36 +495,38 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 <tr>
   <th>id</th>
   <td>The "Web Service ID" generated once successfully registering into AChecker. 
-  This ID is a 40 characters long string. It can be retrieved from user’s "Profile" page.</td>
+  This ID is a 40 characters long string. It can always be retrieved from user's "Profile" page.</td>
   <td>None, must be given.</td>
 </tr>
 
 <tr>
   <th>session</th>
-  <td>The "sessionid" embedded in the validation response. In REST format, it's the value of element <sessionID>.
+  <td>The "sessionid" embedded in the validation response. In REST format, it's the value of element &lt;sessionID&gt;.
       In HTML format, it's the value of hidden variable "sessionid"</td>
   <td>None, must be given.</td>
 </tr>
 
 <tr>
   <th>output</th>
-  <td>Triggers the various outputs formats of the validator. If unset, the usual <a href="#htmlformat">html format</a> 
-  will be sent. If set to rest, <a href="#restformat">the rest interface</a> will be triggered.</td>
+  <td>Triggers the various outputs formats of the validator. If unset, the usual 
+  <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#html_sample_response_validation"">HTML format</a> 
+  will be sent. If set to rest, <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#rest_sample_response_validation">
+  the REST interface</a> will be triggered.</td>
   <td>html. Or either one of these values: html or rest</td>
 </tr>
 
 <tr>
   <th>[sequenceID]</th>
-  <td>The sequence ID in the validation response that identifies each check. In REST format, 
-  it's the value of element <sequenceID>. In HTML format, it's the value of radio button name 
-  d[1], d[2] ... 1, 2 is the [sequenceID]. This value is red-highlighted in above html sample response.</td>
-  <td>None. This parameter can appear as many times as user desires. The value can be one of these: <br/>P : pass
-  F : fail<br/>N : no decision</td>
+  <td>The sequence ID in the validation response that identifies each likely or potential problems. In REST format, 
+  it's the value of element &lt;sequenceID&gt;. In HTML format, it's the key value of radio button array 
+  d[1], d[2] ... 1, 2 is the [sequenceID]. (This value is red-highlighted in above html sample response.)</td>
+  <td>None. This parameter can appear as many times as user desires. The value of [sequenceID] can be one of 
+  these: <br/>P : pass <br/>F : fail<br/>N : no decision</td>
 </tr>
 
 <tr>
   <th>reverse</th>
-  <td>When this parameter is presented and set to “true”, the decisions on sequenceIDs are set to 
+  <td>When this parameter is presented and set to "true", the decisions on sequenceIDs sent in the request are all set to 
   "No Decision" (N) no matter what values are given for the sequenceIDs in the request.</td>
   <td>None. When present, must be value "true"</td>
 </tr>
@@ -533,16 +537,16 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 <span style="font-weight: bold">Sample validation request</span>
 <p>http://localhost/achecker/decisons.php?uri=http%3A%2F%2Fatutor.ca&id=888ca9e3f856baa0120755ecd8ffae6be3142029
 &session=c124694572284112cb54679565ec13dd57ed6ccf&output=html&1=P&2=F&3=N&4=P</p>
-<p>Goal: Set decision on check sequence ID 1 to pass decision, 2 to fail decision, 3 to no decision, 4 to pass decision.
-Returns making decision response in HTML format.</p>
+<p>Goal: Set decision on problem sequence ID 1 to pass decision, 2 to fail decision, 3 to no decision, 4 to pass decision.
+Return response in HTML format.</p>
 <p>http://localhost/achecker/decisons.php?uri=http%3A%2F%2Fatutor.ca&id=888ca9e3f856baa0120755ecd8ffae6be3142029
 &session=c124694572284112cb54679565ec13dd57ed6ccf&output=rest&1=P&2=F&3=N&4=P&reverse=true</p>
-<p>Goal: Reverse decisions on check sequence ID 1, 2, 3, 4. All decisions for these sequence ID are set to "decision
-has not been made". Returns making decision response in REST format.</p>
+<p>Goal: Reverse decisions on problem sequence ID 1, 2, 3, 4. All decisions for these sequence IDs are set to "decision
+has not been made". Return response in REST format.</p>
 
 <h2 id="rest_sample_response_validation">Sample REST make/reverse decision response</h2><br/>
 <span style="font-weight:bold">Success Response</span>
-<p>A REST success response for the make/reverse decision of a document will look like this:</p>
+<p>A REST success response for the make/reverse decision request will look like this:</p>
 
 <pre style="background-color:#F7F3ED;"> 
 &lt;summary&gt;
@@ -573,8 +577,7 @@ has not been made". Returns making decision response in REST format.</p>
 
 <tr>
   <th>summary</th>
-  <td>The summary element of the validation response. Encloses validation summary result, 
-      the numbers of different types of problems and the title of guidelines that validate against.</td>
+  <td>The summary element of the validation response. Encloses the validation summary result.</td>
 </tr>
 
 <tr>
