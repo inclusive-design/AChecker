@@ -39,7 +39,7 @@ class Utility {
 	 * @return  true: if valid; false: if invalid
 	 * @author  Cindy Qi Li
 	 */
-	function isURIValid($uri)
+	public static function isURIValid($uri)
 	{
 		$connection = @file_get_contents($uri);
 		
@@ -49,5 +49,31 @@ class Utility {
 			return true;
 	}
 
+	/**
+	* convert text new lines to html tag <br/>
+	* @access  public
+	* @return  converted string
+	* @author  Cindy Qi Li
+	*/
+	public static function convertHTMLNewLine($str)
+	{
+		$new_line_array = array("\n", "\r", "\n\r", "\r\n");
+
+		$found_match = false;
+		
+		if (strlen(trim($str))==0) return "";
+		
+		foreach ($new_line_array as $new_line)
+			if (preg_match('/'.preg_quote($new_line).'/', $str) > 0)
+			{
+				$search_new_line = $new_line;
+				$found_match = true;
+			}
+		 
+		if ($found_match)
+			return preg_replace('/'. preg_quote($search_new_line) .'/', "<br />", $str);
+		else
+			return $str;
+	}
 }
 ?>

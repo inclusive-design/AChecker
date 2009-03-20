@@ -18,7 +18,11 @@ global $_current_user;
 
 $guidelinesDAO = new GuidelinesDAO();
 
-if ($_POST['view'])
+if ((isset($_POST['delete']) || isset($_POST['view']) || isset($_POST['edit']) || isset($_POST['open_to_public']) || isset($_POST['close_from_public'])) && !isset($_POST['id']))
+{
+	$msg->addError('NO_ITEM_SELECTED');
+} 
+else if ($_POST['view'])
 {
 	header('Location: view_guideline.php?id='.$_POST['id']);
 	exit;
@@ -28,7 +32,6 @@ else if ($_POST['delete'])
 	header('Location: delete_guideline.php?id='.$_POST['id']);
 	exit;
 }
-
 else if ($_POST['edit'])
 {
 	header('Location: create_edit_guideline.php?id='.$_POST['id']);

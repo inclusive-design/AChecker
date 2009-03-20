@@ -24,15 +24,354 @@ require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
 class ChecksDAO extends DAO {
 
 	/**
-	* Return all checks' info
+	* Create a new guideline
 	* @access  public
-	* @param   none
-	* @return  table rows
+	* @param   $userID : user id
+	*          $html_tag, $confidence, $status, $note, $name, $err, $desc, $long_desc, 
+	*          $rationale, $how_to_repair, $repair_example, $question, $decision_pass, 
+	*          $decision_fail, $test_procedure, $test_expected_result,
+	*          $test_failed_result, $open_to_public
+	* @return  checkID : if successful
+	*          false : if not successful
+	* @author  Cindy Qi Li
+	*/
+	public function Create($userID, $html_tag, $confidence, $status, 
+	                       $note, $name, $err, $desc, $long_desc, 
+	                       $rationale, $how_to_repair, $repair_example,
+	                       $question, $decision_pass, $decision_fail,
+	                       $test_procedure, $test_expected_result, 
+	                       $test_failed_result, $open_to_public)
+	{
+		global $addslashes;
+		
+		$html_tag = $addslashes(strtolower(trim($html_tag)));
+		$note = $addslashes(trim($note));
+		$name = $addslashes(trim($name));
+		$err = $addslashes(trim($err));
+		$desc = $addslashes(trim($desc));
+		$long_desc = $addslashes(trim($long_desc));
+		$rationale = $addslashes(trim($rationale));
+		$how_to_repair = $addslashes(trim($how_to_repair));
+		$repair_example = $addslashes(trim($repair_example));
+		$question = $addslashes(trim($question));
+		$decision_pass = $addslashes(trim($decision_pass));
+		$decision_fail = $addslashes(trim($decision_fail));
+		$test_procedure = $addslashes(trim($test_procedure));
+		$test_expected_result = $addslashes(trim($test_expected_result));
+		$test_failed_result = $addslashes(trim($test_failed_result));
+		
+		if (!$this->isFieldsValid($html_tag, $confidence, $name, $err, $open_to_public)) return false;
+		
+		$sql = "INSERT INTO ".TABLE_PREFIX."checks
+				(`user_id`, `html_tag`, `confidence`, `status`, `open_to_public`, `create_date`) 
+				VALUES
+				(".$userID.",'".mysql_real_escape_string($html_tag)."', '".$confidence."', '".
+		           $status."', ".$open_to_public.", now())";
+
+		if (!$this->execute($sql))
+		{
+			$msg->addError('DB_NOT_UPDATED');
+			return false;
+		}
+		else
+		{
+			$checkID = mysql_insert_id();
+			
+			if ($note <> '')
+			{
+				$term_note = LANG_PREFIX_CHECKS_NOTE.$checkID;
+				$this->updateLang($checkID, $term_note, $note, 'note');
+			}
+			if ($name <> '')
+			{
+				$term_name = LANG_PREFIX_CHECKS_NAME.$checkID;
+				$this->updateLang($checkID, $term_name, $name, 'name');
+			}
+			if ($err <> '')
+			{
+				$term_err = LANG_PREFIX_CHECKS_ERR.$checkID;
+				$this->updateLang($checkID, $term_err, $err, 'err');
+			}
+			if ($desc <> '')
+			{
+				$term_desc = LANG_PREFIX_CHECKS_DESC.$checkID;
+				$this->updateLang($checkID, $term_desc, $desc, 'description');
+			}
+			if ($long_desc <> '')
+			{
+				$term_long_desc = LANG_PREFIX_CHECKS_LONG_DESC.$checkID;
+				$this->updateLang($checkID, $term_long_desc, $long_desc, 'long_description');
+			}
+			if ($rationale <> '')
+			{
+				$term_rationale = LANG_PREFIX_CHECKS_RATIONALE.$checkID;
+				$this->updateLang($checkID, $term_rationale, $rationale, 'rationale');
+			}
+			if ($how_to_repair <> '')
+			{
+				$term_how_to_repair = LANG_PREFIX_CHECKS_HOW_TO_REPAIR.$checkID;
+				$this->updateLang($checkID, $term_how_to_repair, $how_to_repair, 'how_to_repair');
+			}
+			if ($repair_example <> '')
+			{
+				$term_repair_example = LANG_PREFIX_CHECKS_REPAIR_EXAMPLE.$checkID;
+				$this->updateLang($checkID, $term_repair_example, $repair_example, 'repair_example');
+			}
+			if ($question <> '')
+			{
+				$term_question = LANG_PREFIX_CHECKS_QUESTION.$checkID;
+				$this->updateLang($checkID, $term_question, $question, 'question');
+			}
+			if ($decision_pass <> '')
+			{
+				$term_decision_pass = LANG_PREFIX_CHECKS_DECISION_PASS.$checkID;
+				$this->updateLang($checkID, $term_decision_pass, $decision_pass, 'decision_pass');
+			}
+			if ($decision_fail <> '')
+			{
+				$term_decision_fail = LANG_PREFIX_CHECKS_DECISION_FAIL.$checkID;
+				$this->updateLang($checkID, $term_decision_fail, $decision_fail, 'decision_fail');
+			}
+			if ($test_procedure <> '')
+			{
+				$term_test_procedure = LANG_PREFIX_CHECKS_PROCEDURE.$checkID;
+				$this->updateLang($checkID, $term_test_procedure, $test_procedure, 'test_procedure');
+			}
+			if ($test_expected_result <> '')
+			{
+				$term_test_expected_result = LANG_PREFIX_CHECKS_EXPECTED_RESULT.$checkID;
+				$this->updateLang($checkID, $term_test_expected_result, $test_expected_result, 'test_expected_result');
+			}
+			if ($test_failed_result <> '')
+			{
+				$term_test_failed_result = LANG_PREFIX_CHECKS_FAILED_RESULT.$checkID;
+				$this->updateLang($checkID, $term_test_failed_result, $test_failed_result, 'test_failed_result');
+			}
+			return $checkID;
+		}
+	}
+	
+	/**
+	* Update a existing check
+	* @access  public
+	* @param   $checkID: check id
+	*          $userID : user id
+	*          $html_tag, $confidence, $status, $note, $name, $err, $desc, $long_desc, 
+	*          $rationale, $how_to_repair, $repair_example, $question, $decision_pass, 
+	*          $decision_fail, $test_procedure, $test_expected_result,
+	*          $test_failed_result, $open_to_public
+	* @return  true : if successful
+	*          false : if not successful
+	* @author  Cindy Qi Li
+	*/
+	public function Update($checkID, $userID, $html_tag, $confidence, $status, 
+	                       $note, $name, $err, $desc, $long_desc, 
+	                       $rationale, $how_to_repair, $repair_example,
+	                       $question, $decision_pass, $decision_fail,
+	                       $test_procedure, $test_expected_result, 
+	                       $test_failed_result, $open_to_public)
+	{
+		if (!$this->isFieldsValid($html_tag, $confidence, $name, $err, $open_to_public)) return false;
+		
+		$sql = "UPDATE ".TABLE_PREFIX."checks
+				   SET `user_id`=".$userID.", 
+				       `html_tag` = '".mysql_real_escape_string($html_tag)."', 
+				       `confidence` = '".$confidence."', 
+				       `status` = '".$status."',  
+				       `open_to_public` = ".$open_to_public." 
+				 WHERE check_id = ".$checkID;
+
+		if (!$this->execute($sql))
+		{
+			$msg->addError('DB_NOT_UPDATED');
+			return false;
+		}
+		else
+		{
+			// find language term to update	
+			$row = $this->getCheckByID($checkID);
+
+			require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
+			$langTextDAO = new LanguageTextDAO();
+			
+			if ($note <> '')
+			{
+				$term_note = LANG_PREFIX_CHECKS_NOTE.$checkID;
+				$this->updateLang($checkID, $term_note, $note, 'note');
+			}
+			else
+			{
+				if ($row['note'] <> '') $this->deleteLang($checkID, $row['note'], 'note');
+			}
+			
+			if ($name <> '')
+			{
+				$term_name = LANG_PREFIX_CHECKS_NAME.$checkID;
+				$this->updateLang($checkID, $term_name, $name, 'name');
+			}
+			else
+			{
+				if ($row['name'] <> '') $this->deleteLang($checkID, $row['name'], 'name');
+			}
+			
+			if ($err <> '')
+			{
+				$term_err = LANG_PREFIX_CHECKS_ERR.$checkID;
+				$this->updateLang($checkID, $term_err, $err, 'err');
+			}
+			else
+			{
+				if ($row['err'] <> '') $this->deleteLang($checkID, $row['err'], 'err');
+			}
+			
+			if ($desc <> '')
+			{
+				$term_desc = LANG_PREFIX_CHECKS_DESC.$checkID;
+				$this->updateLang($checkID, $term_desc, $desc, 'description');
+			}
+			else
+			{
+				if ($row['description'] <> '') $this->deleteLang($checkID, $row['description'], 'description');
+			}
+			
+			if ($long_desc <> '')
+			{
+				$term_long_desc = LANG_PREFIX_CHECKS_LONG_DESC.$checkID;
+				$this->updateLang($checkID, $term_long_desc, $long_desc, 'long_description');
+			}
+			else
+			{
+				if ($row['long_description'] <> '') $this->deleteLang($checkID, $row['long_description'], 'long_description');
+			}
+			
+			if ($rationale <> '')
+			{
+				$term_rationale = LANG_PREFIX_CHECKS_RATIONALE.$checkID;
+				$this->updateLang($checkID, $term_rationale, $rationale, 'rationale');
+			}
+			else
+			{
+				if ($row['rationale'] <> '') $this->deleteLang($checkID, $row['rationale'], 'rationale');
+			}
+			
+			if ($how_to_repair <> '')
+			{
+				$term_how_to_repair = LANG_PREFIX_CHECKS_HOW_TO_REPAIR.$checkID;
+				$this->updateLang($checkID, $term_how_to_repair, $how_to_repair, 'how_to_repair');
+			}
+			else
+			{
+				if ($row['how_to_repair'] <> '') $this->deleteLang($checkID, $row['how_to_repair'], 'how_to_repair');
+			}
+			
+			if ($repair_example <> '')
+			{
+				$term_repair_example = LANG_PREFIX_CHECKS_REPAIR_EXAMPLE.$checkID;
+				$this->updateLang($checkID, $term_repair_example, $repair_example, 'repair_example');
+			}
+			else
+			{
+				if ($row['repair_example'] <> '') $this->deleteLang($checkID, $row['repair_example'], 'repair_example');
+			}
+			
+			if ($question <> '')
+			{
+				$term_question = LANG_PREFIX_CHECKS_QUESTION.$checkID;
+				$this->updateLang($checkID, $term_question, $question, 'question');
+			}
+			else
+			{
+				if ($row['question'] <> '') $this->deleteLang($checkID, $row['question'], 'question');
+			}
+			
+			if ($decision_pass <> '')
+			{
+				$term_decision_pass = LANG_PREFIX_CHECKS_DECISION_PASS.$checkID;
+				$this->updateLang($checkID, $term_decision_pass, $decision_pass, 'decision_pass');
+			}
+			else
+			{
+				if ($row['decision_pass'] <> '') $this->deleteLang($checkID, $row['decision_pass'], 'decision_pass');
+			}
+			
+			if ($decision_fail <> '')
+			{
+				$term_decision_fail = LANG_PREFIX_CHECKS_DECISION_FAIL.$checkID;
+				$this->updateLang($checkID, $term_decision_fail, $decision_fail, 'decision_fail');
+			}
+			else
+			{
+				if ($row['decision_fail'] <> '') $this->deleteLang($checkID, $row['decision_fail'], 'decision_fail');
+			}
+			
+			if ($test_procedure <> '')
+			{
+				$term_test_procedure = LANG_PREFIX_CHECKS_PROCEDURE.$checkID;
+				$this->updateLang($checkID, $term_test_procedure, $test_procedure, 'test_procedure');
+			}
+			else
+			{
+				if ($row['test_procedure'] <> '') $this->deleteLang($checkID, $row['test_procedure'], 'test_procedure');
+			}
+			
+			if ($test_expected_result <> '')
+			{
+				$term_test_expected_result = LANG_PREFIX_CHECKS_EXPECTED_RESULT.$checkID;
+				$this->updateLang($checkID, $term_test_expected_result, $test_expected_result, 'test_expected_result');
+			}
+			else
+			{
+				if ($row['test_expected_result'] <> '') $this->deleteLang($checkID, $row['test_expected_result'], 'test_expected_result');
+			}
+			
+			if ($test_failed_result <> '')
+			{
+				$term_test_failed_result = LANG_PREFIX_CHECKS_FAILED_RESULT.$checkID;
+				$this->updateLang($checkID, $term_test_failed_result, $test_failed_result, 'test_failed_result');
+			}
+			else
+			{
+				if ($row['test_failed_result'] <> '') $this->deleteLang($checkID, $row['test_failed_result'], 'test_failed_result');
+			}
+		}
+	}
+	
+	/**
+	* Delete a check by check ID
+	* @access  public
+	* @param   $checkID
+	* @return  true / false
 	* @author  Cindy Qi Li
 	*/
 	function Delete($checkID)
 	{
+		// delete all languages
+		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
+		require_once(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
+		
+		$langTextDAO = new LanguageTextDAO();
+
+		$row = $this->getCheckByID($checkID);
+		if ($row['note'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['note']);
+		if ($row['name'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['name']);
+		if ($row['err'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['err']);
+		if ($row['description'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['description']);
+		if ($row['long_description'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['long_description']);
+		if ($row['rationale'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['rationale']);
+		if ($row['how_to_repair'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['how_to_repair']);
+		if ($row['repair_example'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['repair_example']);
+		if ($row['question'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['question']);
+		if ($row['decision_pass'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['decision_pass']);
+		if ($row['decision_fail'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['decision_fail']);
+		if ($row['test_procedure'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['test_procedure']);
+		if ($row['test_expected_result'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['test_expected_result']);
+		if ($row['test_failed_result'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['test_failed_result']);
+		
+		$checkPrerequisitesDAO = new CheckPrerequisitesDAO();
+		$checkPrerequisitesDAO->DeleteByCheckID($checkID);
+		
 		$sql = "DELETE FROM ". TABLE_PREFIX ."checks WHERE check_id=".$checkID;
+		
 		return $this->execute($sql);
 	}
 
@@ -46,6 +385,19 @@ class ChecksDAO extends DAO {
 	function getAll()
 	{
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."checks";
+		return $this->execute($sql);
+	}
+
+	/**
+	* Return all html tags 
+	* @access  public
+	* @param   none
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function getAllHtmlTags()
+	{
+		$sql = "SELECT distinct html_tag FROM ". TABLE_PREFIX ."checks ORDER BY html_tag";
 		return $this->execute($sql);
 	}
 
@@ -244,5 +596,111 @@ class ChecksDAO extends DAO {
     return $this->execute($sql);
   }
 
+	/**
+	 * Validate fields preparing for insert and update
+	 * @access  private
+	 * @param   $html_tag  
+	 *          $confidence
+	 *          $name
+	 *          $err
+	 *          $open_to_public
+	 * @return  true    if update successfully
+	 *          false   if update unsuccessful
+	 * @author  Cindy Qi Li
+	 */
+	private function isFieldsValid($html_tag, $confidence, $name, $err, $open_to_public)
+	{
+		global $msg;
+		
+		$missing_fields = array();
+
+		if ($html_tag == '')
+		{
+			$missing_fields[] = _AC('html_tag');
+		}
+		if ($confidence == '' || ($confidence <> KNOWN && $confidence <> LIKELY && $confidence <> POTENTIAL))
+		{
+			$missing_fields[] = _AC('error_type');
+		}
+		if ($name == '')
+		{
+			$missing_fields[] = _AC('name');
+		}
+		if ($err == '')
+		{
+			$missing_fields[] = _AC('error');
+		}
+		if ($open_to_public == '' || ($open_to_public <> 0 && $open_to_public <> 1))
+		{
+			$missing_fields[] = _AC('open_to_public');
+		}
+
+		if ($missing_fields)
+		{
+			$missing_fields = implode(', ', $missing_fields);
+			$msg->addError(array('EMPTY_FIELDS', $missing_fields));
+		}
+		
+		if (!$msg->containsErrors())
+			return true;
+		else
+			return false;
+	}
+	
+	/**
+	 * insert check terms into language_text and update according record in table "checks"
+	 * @access  private
+	 * @param   $checkID
+	 *          $term      : term to create/update into 'language_text' table
+	 *          $text      : text to create/update into 'language_text' table
+	 *          $fieldName : field name in table 'checks' to update
+	 * @return  true    if update successfully
+	 *          false   if update unsuccessful
+	 * @author  Cindy Qi Li
+	 */
+	private function updateLang($checkID, $term, $text, $fieldName)
+	{
+		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
+		$langTextDAO = new LanguageTextDAO();
+		$langs = $langTextDAO->getByTermAndLang($term, $_SESSION['lang']);
+
+		if (is_array($langs))
+		{// term already exists. Only need to update modified text
+			if ($langs[0]['text'] <> mysql_real_escape_string($text)) $langTextDAO->setText($_SESSION['lang'], '_check',$term,$text);
+		}
+		else
+		{
+			$langTextDAO->Create($_SESSION['lang'], '_check',$term,$text,'');
+			
+			$sql = "UPDATE ".TABLE_PREFIX."checks SET ".$fieldName."='".$term."' WHERE check_id=".$checkID;
+			$this->execute($sql);
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * delete check terms from language_text and update according record in table "checks" to empty
+	 * @access  private
+	 * @param   $checkID
+	 *          $term       : term to delete from 'language_text' table
+	 *          $fieldName  : field name in table 'checks' to update
+	 * @return  true    if update successfully
+	 *          false   if update unsuccessful
+	 * @author  Cindy Qi Li
+	 */
+	private function deleteLang($checkID, $term, $fieldName)
+	{
+		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
+		$langTextDAO = new LanguageTextDAO();
+
+		$langTextDAO->DeleteByVarAndTerm('_check', $term);
+			
+		$sql = "UPDATE ".TABLE_PREFIX."checks SET ".$fieldName."='' WHERE check_id=".$checkID;
+		$this->execute($sql);
+		
+		return true;
+	}
+	
 }
 ?>

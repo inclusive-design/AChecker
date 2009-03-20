@@ -55,9 +55,9 @@ $_pages['password_reminder.php']['title_var'] = 'password_reminder';
 $_pages['password_reminder.php']['parent']    = 'login.php';
 $_pages['password_reminder.php']['guide']    = 'AC_HELP_PASSWORD_REMINDER';
 
-// to make view_guideline.php to be accessible by public. It is called in web service html report
-$_pages['guideline/view_guideline.php']['title_var'] = 'view_guideline';
-
+// The scripts below need to be accessible by public. 
+$_pages['guideline/view_guideline.php']['title_var'] = 'view_guideline';   // used in web service validation response
+$_pages['checker/suggestion.php']['title_var'] = 'suggestion';
 $_pages['documentation/web_service_api.php']['title_var'] = 'web_service_api';
 
 // 1. checker pages
@@ -67,33 +67,11 @@ if (in_array(AC_PRIV_CHECKER, $privs))
 	$_pages['checker/index.php']['parent']    = AC_NAV_PUBLIC;
 	$_pages['checker/index.php']['guide']    = 'AC_HELP_INDEX';
 	
-	$_pages['checker/suggestion.php']['title_var'] = 'suggestion';
 	$_pages['checker/suggestion.php']['parent']    = AC_NAV_PUBLIC;
 	$_pages['checker/suggestion.php']['guide']    = 'AC_HELP_SUGGESTION';
 }
 
-// 3. guideline pages
-if (in_array(AC_PRIV_GUIDELINE_MANAGEMENT, $privs))
-{
-	$_pages['guideline/index.php']['title_var'] = 'guideline_manage';
-	$_pages['guideline/index.php']['parent']    = AC_NAV_TOP;
-	$_pages['guideline/index.php']['children']  = array_merge(array('guideline/create_edit_guideline.php'), 
-	                                                        isset($_pages['guideline/index.php']['children']) ? $_pages['guideline/index.php']['children'] : array());
-	$_pages['guideline/index.php']['guide']    = 'AC_HELP_GUIDELINE';
-	                                                        
-	$_pages['guideline/create_edit_guideline.php']['title_var'] = 'create_guideline';
-	$_pages['guideline/create_edit_guideline.php']['parent']    = 'guideline/index.php';
-	$_pages['guideline/create_edit_guideline.php']['guide']    = 'AC_HELP_CREATE_EDIT_GUIDELINE';
-	
-//	$_pages['guideline/view_guideline.php']['title_var'] = 'view_guideline';
-	$_pages['guideline/view_guideline.php']['parent']    = 'guideline/index.php';
-	$_pages['guideline/view_guideline.php']['guide']    = 'AC_HELP_VIEW_GUIDELINE';
-	
-	$_pages['guideline/delete_guideline.php']['title_var'] = 'delete_guideline';
-	$_pages['guideline/delete_guideline.php']['parent']    = 'guideline/index.php';
-}
-
-// 4. user pages
+// 2. user pages
 if (in_array(AC_PRIV_USER_MANAGEMENT, $privs))
 {
 	$_pages['user/index.php']['title_var'] = 'user_manage';
@@ -126,6 +104,51 @@ if (in_array(AC_PRIV_USER_MANAGEMENT, $privs))
 	
 	$_pages['user/user_group_delete.php']['title_var'] = 'delete_user_group';
 	$_pages['user/user_group_delete.php']['parent']    = 'user/user_group.php';
+}
+
+// 3. guideline pages
+if (in_array(AC_PRIV_GUIDELINE_MANAGEMENT, $privs))
+{
+	$_pages['guideline/index.php']['title_var'] = 'guideline_manage';
+	$_pages['guideline/index.php']['parent']    = AC_NAV_TOP;
+	$_pages['guideline/index.php']['children']  = array_merge(array('guideline/create_edit_guideline.php'), 
+	                                                        isset($_pages['guideline/index.php']['children']) ? $_pages['guideline/index.php']['children'] : array());
+	$_pages['guideline/index.php']['guide']    = 'AC_HELP_GUIDELINE';
+	                                                        
+	$_pages['guideline/create_edit_guideline.php']['title_var'] = 'create_guideline';
+	$_pages['guideline/create_edit_guideline.php']['parent']    = 'guideline/index.php';
+	$_pages['guideline/create_edit_guideline.php']['guide']    = 'AC_HELP_CREATE_EDIT_GUIDELINE';
+	
+	// $_pages['guideline/view_guideline.php']['title_var'] is defined outside to open to public
+	$_pages['guideline/view_guideline.php']['parent']    = 'guideline/index.php';
+	$_pages['guideline/view_guideline.php']['guide']    = 'AC_HELP_VIEW_GUIDELINE';
+	
+	$_pages['guideline/delete_guideline.php']['title_var'] = 'delete_guideline';
+	$_pages['guideline/delete_guideline.php']['parent']    = 'guideline/index.php';
+}
+
+// 3. check pages
+if (in_array(AC_PRIV_CHECK_MANAGEMENT, $privs))
+{
+	$_pages['check/index.php']['title_var'] = 'check_manage';
+	$_pages['check/index.php']['parent']    = AC_NAV_TOP;
+	$_pages['check/index.php']['children']  = array_merge(array('check/check_create_edit.php'), 
+	                                                        isset($_pages['check/index.php']['children']) ? $_pages['check/index.php']['children'] : array());
+	$_pages['check/index.php']['guide']    = 'AC_HELP_CHECK';
+	                                                        
+	$_pages['check/html_tag_list.php']['title_var'] = 'html_tag_list';
+	$_pages['check/html_tag_list.php']['parent']    = 'check/index.php';
+	
+	$_pages['check/check_create_edit.php']['title_var'] = 'create_check';
+	$_pages['check/check_create_edit.php']['parent']    = 'check/index.php';
+	$_pages['check/check_create_edit.php']['guide']    = 'AC_HELP_CREATE_EDIT_CHECK';
+	
+	$_pages['check/check_function_edit.php']['title_var'] = 'edit_check_function';
+	$_pages['check/check_function_edit.php']['parent']    = 'check/index.php';
+	$_pages['check/check_function_edit.php']['guide']    = 'AC_HELP_EDIT_CHECK_FUNCTION';
+	
+	$_pages['check/check_delete.php']['title_var'] = 'delete_check';
+	$_pages['check/check_delete.php']['parent']    = 'check/index.php';
 }
 
 // 5. language pages

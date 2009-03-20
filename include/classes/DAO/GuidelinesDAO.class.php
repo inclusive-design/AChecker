@@ -64,7 +64,7 @@ class GuidelinesDAO extends DAO {
 				require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 				$langTextDAO = new LanguageTextDAO();
 				
-				if ($langTextDAO->Create($_SESSION['lang'], '_template',$term,$long_name,''))
+				if ($langTextDAO->Create($_SESSION['lang'], '_guideline',$term,$long_name,''))
 				{
 					$sql = "UPDATE ".TABLE_PREFIX."guidelines SET long_name='".$term."' WHERE guideline_id=".$guidelineID;
 					$this->execute($sql);
@@ -75,9 +75,10 @@ class GuidelinesDAO extends DAO {
 	}
 	
 	/**
-	* Create a new guideline
+	* Update an existing guideline
 	* @access  public
-	* @param   $userID : user id
+	* @param   $guidelineID
+	*          $userID : user id
 	*          $title
 	*          $abbr
 	*          $long_name
@@ -86,7 +87,7 @@ class GuidelinesDAO extends DAO {
 	*          $preamble
 	*          $status
 	*          $open_to_public
-	* @return  guidelineID : if successful
+	* @return  true : if successful
 	*          false : if not successful
 	* @author  Cindy Qi Li
 	*/
@@ -117,7 +118,7 @@ class GuidelinesDAO extends DAO {
 			require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 			$langTextDAO = new LanguageTextDAO();
 			
-			if ($langTextDAO->setText($_SESSION['lang'],'_template',$term,$long_name))
+			if ($langTextDAO->setText($_SESSION['lang'],'_guideline',$term,$long_name))
 				return true;
 			else
 				return false;
@@ -188,7 +189,7 @@ class GuidelinesDAO extends DAO {
 		{
 			// delete language for long name
 			$sql = "DELETE FROM ".TABLE_PREFIX."language_text 
-			         WHERE variable='_template' 
+			         WHERE variable='_guideline' 
 			           AND term=(SELECT long_name 
 			                       FROM ".TABLE_PREFIX."guidelines
 			                      WHERE guideline_id=".$guidelineID.")";

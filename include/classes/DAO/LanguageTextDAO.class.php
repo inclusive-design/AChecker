@@ -77,6 +77,24 @@ class LanguageTextDAO extends DAO {
 	}
 	
 	/**
+	* Delete a record by $variable and $term
+	* @access  public
+	* @param   $language_code : language code
+	*          $variable: '_msgs', '_template', '_check', '_guideline', '_test'
+	*          $term
+	* @return  true / false
+	* @author  Cindy Qi Li
+	*/
+	function DeleteByVarAndTerm($variable, $term)
+	{
+		$sql = "DELETE FROM ".TABLE_PREFIX."language_text
+		        WHERE `variable` = '".mysql_real_escape_string($variable)."'
+		          AND `term` = '".mysql_real_escape_string($term)."'";
+		        
+		return $this->execute($sql);
+	}
+	
+	/**
 	* Return message text of given term and language
 	* @access  public
 	* @param   term : language term
@@ -179,9 +197,10 @@ class LanguageTextDAO extends DAO {
 	function setText($languageCode, $variable, $term, $text)
 	{
 		$sql = "UPDATE ".TABLE_PREFIX."language_text 
-		           SET text='".$text."'
+		           SET text='".mysql_real_escape_string($text)."',
+		               revised_date = now()
 		         WHERE language_code = '".$_SESSION['lang']."' 
-		           AND variable='_template' 
+		           AND variable='".$variable."' 
 		           AND term = '".$term."'";
 
     return $this->execute($sql);

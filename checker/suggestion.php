@@ -14,6 +14,7 @@ define('AC_INCLUDE_PATH', '../include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include(AC_INCLUDE_PATH.'header.inc.php');
+include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestProcedureDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestExpectedDAO.class.php');
@@ -38,8 +39,20 @@ if ($row["description"] <> "")
 {
 ?>
 
-<h2><? echo _AC("description"); ?></h2>
+<h2><? echo _AC("short_desc"); ?></h2>
 <span class="msg"><?php echo _AC($row["description"]); ?></span>
+
+<?php
+}
+?>
+
+<?php
+if ($row["long_description"] <> "")
+{
+?>
+
+<h2><? echo _AC("long_desc"); ?></h2>
+<span class="msg"><?php echo _AC($row["long_description"]); ?></span>
 
 <?php
 }
@@ -105,65 +118,32 @@ if ($row["question"] <> "")
 <?php
 }
 
-//$sql = "SELECT step_id, step
-//				FROM ". TABLE_PREFIX ."test_procedure 
-//				WHERE check_id=". $check_id ."
-//				ORDER BY step_id";
-//$result	= mysql_query($sql, $db) or die(mysql_error());
-
-$testProcedureDAO = new TestProcedureDAO();
-$rows = $testProcedureDAO->getProcedureByID($check_id);
-
-if (is_array($rows) > 0)
+if ($row["test_procedure"] <> "")
 {
 ?>
 
 <h2><? echo _AC("steps_to_check"); ?></h2>
 	<h3><? echo _AC("procedure"); ?></h3>
+	<span class="msg"><?php echo Utility::convertHTMLNewLine(_AC($row["test_procedure"])); ?></span><br />
 <?php
 }
 
-foreach ($rows as $id => $row)
-{
-	echo '<span class="msg">'.intval($row["step_id"] + 1)  . ". " . _AC($row["step"]). "</span><br />";
-}
-
-//$sql = "SELECT step_id, step
-//				FROM ". TABLE_PREFIX ."test_expected 
-//				WHERE check_id=". $check_id ."
-//				ORDER BY step_id";
-//$result	= mysql_query($sql, $db) or die(mysql_error());
-
-$testExpectedDAO = new TestExpectedDAO();
-$rows = $testExpectedDAO->getExpectedStepsByID($check_id);
-
-if (is_array($rows) > 0)
+if ($row["test_expected_result"] <> "")
 {
 ?>
 
 	<h3><? echo _AC("expected_result"); ?></h3>
+	<span class="msg"><?php echo Utility::convertHTMLNewLine(_AC($row["test_expected_result"])); ?></span><br />
 <?php
 }
 
-foreach ($rows as $id => $row)
-{
-	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . _AC($row["step"]). "</span><br />";
-}
-
-$testFailDAO = new TestFailDAO();
-$rows = $testFailDAO->getFailStepsByID($check_id);
-
-if (is_array($rows) > 0)
+if ($row["test_failed_result"] <> "")
 {
 ?>
 
 	<h3><? echo _AC("failed_result"); ?></h3>
+	<span class="msg"><?php echo Utility::convertHTMLNewLine(_AC($row["test_failed_result"])); ?></span><br />
 <?php
-}
-
-foreach ($rows as $id => $row)
-{
-	echo '<span class="msg">'.intval($row["step_id"]+1) . ". " . _AC($row["step"]). "</span><br />";
 }
 ?>
 </div>

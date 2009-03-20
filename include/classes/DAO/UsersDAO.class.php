@@ -505,13 +505,13 @@ class UsersDAO extends DAO {
 		}
 
 		// check if first+last is unique
-		if (($first_name || $last_name) && $validate_type == 'new')
-		{
-			if ($this->getUserByName($first_name, $last_name))
-			{
-				$msg->addError('FIRST_LAST_NAME_UNIQUE');
-			}
-		}
+//		if (($first_name || $last_name) && $validate_type == 'new')
+//		{
+//			if ($this->getUserByName($first_name, $last_name))
+//			{
+//				$msg->addError('FIRST_LAST_NAME_UNIQUE');
+//			}
+//		}
 
 		if ($missing_fields)
 		{
