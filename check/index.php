@@ -13,13 +13,16 @@
 define('AC_INCLUDE_PATH', '../include/');
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
+include(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
 
 // initialize constants
 $results_per_page = 50;
+
 $dao = new DAO();
+$checkPrerequisitesDAO = new CheckPrerequisitesDAO();
 
 // handle submit
-if ( (isset($_GET['edit']) || isset($_GET['edit_function'])) && !isset($_GET['id']) ) {
+if ( (isset($_GET['edit']) || isset($_GET['edit_function'])|| isset($_GET['delete']) || isset($_GET['add'])) && !isset($_GET['id']) ) {
 	$msg->addError('SELECT_ONE_ITEM');
 } else if (isset($_GET['edit'], $_GET['id'])) {
 	header('Location: check_create_edit.php?id='.$_GET['id']);
@@ -30,9 +33,26 @@ if ( (isset($_GET['edit']) || isset($_GET['edit_function'])) && !isset($_GET['id
 } else if ( isset($_GET['delete'], $_GET['id'])) {
 	header('Location: check_delete.php?id='.$_GET['id']);
 	exit;
-} else if (isset($_GET['edit']) || isset($_GET['delete']) || isset($_GET['edit_function'])) {
+} else if (isset($_GET['add'], $_GET['id']) ) {
+	if (is_array($_GET['id']))
+	{
+		foreach ($_GET['id'] as $pre_check_id)
+		{
+			$checkPrerequisitesDAO->Create($_GET['cid'], $pre_check_id);
+		}
+		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
+		
+		// force refresh parent window
+		$javascript_run_now = '<script language="JavaScript">
+<!--
+window.opener.location.href = window.opener.location.href;
+//-->
+</script>';
+	}
+} else if (isset($_GET['edit']) || isset($_GET['delete']) || isset($_GET['edit_function']) || isset($_GET['add'])) {
 	$msg->addError('NO_ITEM_SELECTED');
-}
+} 
+
 
 // page initialize
 if ($_GET['reset_filter']) {
@@ -87,6 +107,27 @@ if (isset($_GET['open_to_public']) && $_GET['open_to_public'] <> -1) {
 	}
 }
 
+// when only list the checks that are
+if (isset($_GET['list']))
+{
+	if ($_GET['list'] == 'pre')
+	{
+		$existing_rows = $checkPrerequisitesDAO->getPreChecksByCheckID($_GET['cid']);
+	}
+	// get checks that are open to public and not in guideline
+	unset($str_existing_checks);
+	if (is_array($existing_rows))
+	{
+		foreach($existing_rows as $existing_row)
+			$str_existing_checks .= $existing_row['check_id'] .',';
+		$str_existing_checks = substr($str_existing_checks, 0, -1);
+	}
+	
+	if ($condition <> '') $condition .= ' AND';
+	$condition .= " open_to_public=1";
+	if ($str_existing_checks <> '') $condition .= " AND check_id NOT IN (".$str_existing_checks.")";
+}
+
 if ($condition == '') $condition = '1';
 
 $sql = "SELECT COUNT(check_id) AS cnt FROM ".TABLE_PREFIX."checks WHERE $condition";
@@ -107,13 +148,17 @@ if ( isset($_GET['apply_all']) && $_GET['change_status'] >= -1) {
 	$results_per_page = 999999;
 }
 
+$checksDAO = new ChecksDAO();
+
 $sql = "SELECT * 
           FROM ".TABLE_PREFIX."checks
           WHERE $condition ORDER BY $col $order LIMIT $offset, $results_per_page";
-
 $check_rows = $dao->execute($sql);
 
-$checksDAO = new ChecksDAO();
+
+// if prerequisite or next checks are inserted into db successfully, 
+// $javascript_run_now is set to refresh parent window 
+if (isset($javascript_run_now)) $savant->assign('javascript_run_now', $javascript_run_now);
 
 $savant->assign('check_rows', $check_rows);
 $savant->assign('all_html_tags', $checksDAO->getAllHtmlTags());
@@ -125,6 +170,17 @@ $savant->assign('page_string', $page_string);
 $savant->assign('orders', $orders);
 $savant->assign('order', $order);
 $savant->assign('col', $col);
+
+if (isset($_GET['list']))
+{
+	$savant->assign('row_button_type', 'checkbox');
+	$savant->assign('buttons', array('add'));
+}
+else
+{
+	$savant->assign('row_button_type', 'radio');
+	$savant->assign('buttons', array('edit', 'edit_function','delete'));
+}
 
 $savant->display('check/index.tmpl.php');
 

@@ -11,10 +11,18 @@
 /************************************************************************/
 
 include(AC_INCLUDE_PATH.'header.inc.php');
+
+if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 ?>
 
 <div class="center-input-form">
 	<form name="filter_form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+	<?php if (isset($_GET['list'])){?>
+	<input type="hidden" name="list" value="<?php echo $_GET['list']; ?>" />
+	<?php }?>
+	<?php if (isset($_GET['cid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
+	<input type="hidden" name="cid" value="<?php echo $_GET['cid']; ?>" />
+	<?php }?>
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("filter"); ?></legend>
 		<table class="filter">
 		<tr>
@@ -45,6 +53,10 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			</td>
 		</tr>
 
+		<?php if (!isset($_GET['list'])){ 
+			// when this page is to list available checks to insert into check_prerequsites and pass_next,
+			// open_to_public needs to be always 1, so don't show this option
+		?>
 		<tr>
 			<th><?php echo _AC('open_to_public'); ?>:</th>
 			<td>
@@ -53,6 +65,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<input type="radio" name="open_to_public" value="0" id="s0" <?php if (isset($_GET['open_to_public']) && $_GET['open_to_public'] == 0) { echo 'checked="checked"'; } ?> /><label for="s0"><?php echo _AC('no'); ?></label> 
 			</td>
 		</tr>
+		<?php }?>
 
 		<tr>
 			<td colspan="2"><p class="submit_button">
@@ -71,6 +84,12 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <input type="hidden" name="html_tag" value="<?php echo htmlspecialchars($_GET['html_tag']); ?>" />
 <input type="hidden" name="confidence" value="<?php echo $_GET['confidence']; ?>" />
 <input type="hidden" name="open_to_public" value="<?php echo $_GET['open_to_public']; ?>" />
+<?php if (isset($_GET['list'])){?>
+<input type="hidden" name="list" value="<?php echo $_GET['list']; ?>" />
+<?php }?>
+<?php if (isset($_GET['cid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
+<input type="hidden" name="cid" value="<?php echo $_GET['cid']; ?>" />
+<?php }?>
 
 <table summary="" class="data" rules="rows">
 <colgroup>
@@ -98,7 +117,12 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 </colgroup>
 <thead>
 <tr>
+	<?php if ($this->row_button_type == 'radio') {?>
 	<th scope="col">&nbsp;</th>
+	<?php }?>
+	<?php if ($this->row_button_type == 'checkbox') {?>
+	<th scope="col"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall" onclick="CheckAll();" /></th>
+	<?php }?>
 	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=html_tag<?php echo $page_string; ?>"><?php echo _AC('html_tag');      ?></a></th>
 	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=confidence<?php echo $page_string; ?>"><?php echo _AC('error_type'); ?></a></th>
 	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=description<?php echo $page_string; ?>"><?php echo _AC('description');   ?></a></th>
@@ -111,17 +135,27 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <tfoot>
 <tr>
 	<td colspan="<?php echo 8 + $this->col_counts; ?>">
-		<input type="submit" name="edit" value="<?php echo _AC('edit'); ?>" /> 
+		<?php if (is_array($this->buttons)) { foreach ($this->buttons as $button_text) {?>
+		<input type="submit" name="<?php echo $button_text?>" value="<?php echo _AC($button_text); ?>" />
+		<?php }}?>
+		<!-- <input type="submit" name="edit" value="<?php echo _AC('edit'); ?>" /> 
 		<input type="submit" name="edit_function" value="<?php echo _AC('edit_function'); ?>" />
 		<input type="submit" name="delete" value="<?php echo _AC('delete'); ?>" />
+		 -->
 	</td>
 </tr>
 </tfoot>
 
 <tbody>
 	<?php if (is_array($this->check_rows)){ foreach ($this->check_rows as $row) {?>
+		<?php if ($this->row_button_type == 'radio') {?>
 		<tr onmousedown="document.form['m<?php echo $row["check_id"]; ?>'].checked = true; rowselect(this);" id="r_<?php echo $row["check_id"]; ?>">
 			<td><input type="radio" name="id" value="<?php echo $row["check_id"]; ?>" id="m<?php echo $row['check_id']; ?>" onmouseup="this.checked=!this.checked" /></td>
+		<?php }?>
+		<?php if ($this->row_button_type == 'checkbox') {?>
+		<tr onmousedown="document.form['m<?php echo $row['check_id']; ?>'].checked = !document.form['m<?php echo $row['check_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['check_id']; ?>');" id="rm<?php echo $row['check_id']; ?>">
+			<td><input type="checkbox" name="id[]" value="<?php echo $row['check_id']; ?>" id="m<?php echo $row['check_id']; ?>" onmouseup="this.checked=!this.checked" /></td>
+		<?php }?>
 			<td><?php echo $row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($row['confidence']); ?></td>
 			<td><?php echo _AC($row['description']); ?></td>

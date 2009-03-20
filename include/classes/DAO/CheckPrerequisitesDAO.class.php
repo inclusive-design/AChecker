@@ -32,8 +32,27 @@ class CheckPrerequisitesDAO extends DAO {
 	*          false : if not successful
 	* @author  Cindy Qi Li
 	*/
-	public function Create($userID, $title, $abbr, $long_name, $published_date, $earlid, $preamble, $status, $open_to_public)
+	public function Create($checkID, $prerequisiteCheckID)
 	{
+		$sql = "INSERT INTO ".TABLE_PREFIX."check_prerequisites (check_id, prerequisite_check_id) 
+		        VALUES (".$checkID.", ".$prerequisiteCheckID.")";
+		return $this->execute($sql);
+	}
+	
+	/**
+	* Delete by primary key
+	* @access  public
+	* @param   $checkID
+	*          $prerequisiteCheckID
+	* @return  true : if successful
+	*          false : if unsuccessful
+	* @author  Cindy Qi Li
+	*/
+	public function Delete($checkID, $prerequisiteCheckID)
+	{
+		$sql = "DELETE FROM ".TABLE_PREFIX."check_prerequisites 
+		         WHERE check_id=".$checkID." AND prerequisite_check_id=".$prerequisiteCheckID;
+		return $this->execute($sql);
 	}
 	
 	/**
@@ -47,6 +66,23 @@ class CheckPrerequisitesDAO extends DAO {
 	public function DeleteByCheckID($checkID)
 	{
 		$sql = "DELETE FROM ".TABLE_PREFIX."check_prerequisites WHERE check_id=".$checkID;
+		return $this->execute($sql);
+	}
+	
+	/**
+	* Return prerequisite check IDs by given check ID
+	* @access  public
+	* @param   $checkID
+	* @return  table rows : if successful
+	*          false : if unsuccessful
+	* @author  Cindy Qi Li
+	*/
+	public function getPreChecksByCheckID($checkID)
+	{
+		$sql = "SELECT * FROM ".TABLE_PREFIX."checks 
+		         WHERE check_id in (SELECT prerequisite_check_id 
+		                              FROM ".TABLE_PREFIX."check_prerequisites 
+		                             WHERE check_id=".$checkID.")";
 		return $this->execute($sql);
 	}
 	

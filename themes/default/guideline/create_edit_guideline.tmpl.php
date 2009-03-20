@@ -88,7 +88,6 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<?php }?>
 	</table>
 		
-	
 	<!-- section of displaying existing checks in current guideline -->
 	<?php if (is_array($this->checks_rows)) { ?>
 		<h2><?php echo _AC('checks');?></h2>

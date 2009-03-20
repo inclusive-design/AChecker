@@ -19,17 +19,20 @@
  * all_html_tags: display selections in dropdown list box "HTML Tag"
  */
 
+global $onload;
+$onload = "initial();";
+
 require(AC_INCLUDE_PATH.'header.inc.php'); 
 ?>
 
-<form method="post" action="<?php $id_str = ''; if (isset($_GET['id'])) $id_str='?id='.$_GET['id']; echo $_SERVER['PHP_SELF'].$id_str; ?>" name="form">
+<form method="post" action="<?php $id_str = ''; if (isset($_GET['id'])) $id_str='?id='.$_GET['id']; echo $_SERVER['PHP_SELF'].$id_str; ?>" name="input_form">
 
-<div class="center-input-form">
+<div class="input-form">
 <fieldset class="group_form"><legend class="group_form"><?php echo _AC('create_edit_check'); ?></legend>
 
-	<table class="form-data" align="center">
+	<table class="form-data">
 		<tr>
-			<td colspan="2" align="left"><p><?php echo _AC('required_field_text') ;?><br /><br /><br /></p></td>
+			<td colspan="2" align="left"><p><?php echo _AC('required_field_text') ;?><br /><br/></p></td>
 		</tr>
 
 		<tr>
@@ -150,33 +153,134 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			<td align="left"><textarea rows="3" cols="60" name="test_failed_result" id="test_failed_result"><?php if (isset($_POST['test_failed_result'])) echo $_POST['test_failed_result']; else echo _AC($this->check_row["test_failed_result"]); ?></textarea></td>
 		</tr>
 		
+		<?php if (isset($this->check_row)) {?>
 		<tr>
-			<td colspan="2"><p class="submit_button">
-				<input type="submit" name="submit" value="<?php echo _AC('submit'); ?>" class="submit" /> 
-				<input type="submit" name="cancel" value=" <?php echo _AC('cancel'); ?> "  class="submit" />
-			</td>
+			<th align="left"><? echo _AC("author"); ?>:</th>
+			<td align="left"><?php echo $this->author; ?></td>
 		</tr>
+		<tr>
+			<th align="left"><? echo _AC("date_created"); ?>:</th>
+			<td align="left"><?php echo $this->check_row['create_date']; ?></td>
+		</tr>
+		<?php } ?>
 	</table>
+
+	<!-- section of displaying existing prerequisite checks -->
+	<br/>
+	<h2 id="pre_checks"><?php echo _AC('pre_checks');?></h2>
+	<a href="<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&cid=<?php echo $this->check_row['check_id']; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&cid=<?php echo $this->check_row['check_id']; ?>'); return false;" title="<?php echo _AC('add_pre_checks'); ?>"><?php echo _AC('add_pre_checks'); ?></a>
+	<table class="data" summary="" rules="rows" >
+		<thead>
+		<tr>
+			<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_delchecks" onclick="CheckAll('del_checks_id[]','selectall_delchecks');" /></th>
+			<th align="center"><?php echo _AC('html_tag'); ?></th>
+			<th align="center"><?php echo _AC('error_type'); ?></th>
+			<th align="center"><?php echo _AC('description'); ?></th>
+		</tr>
+		</thead>
+	<?php if (is_array($this->pre_rows)) { ?>
+			
+		<tfoot>
+			<tr>
+				<td colspan="4">
+					<input type="submit" name="remove" value="<?php echo _AC('remove'); ?>" />
+				</td>
+			</tr>
+		</tfoot>
+
+		<tbody>
+	<?php foreach ($this->pre_rows as $pre_row) { ?>
+		<tr onmousedown="document.input_form['del_checks_<?php echo $pre_row['check_id']; ?>'].checked = !document.input_form['del_checks_<?php echo $pre_row['check_id']; ?>'].checked; togglerowhighlight(this, 'del_checks_<?php echo $pre_row['check_id']; ?>');" id="rdel_checks_<?php echo $pre_row['check_id']; ?>">
+			<td><input type="checkbox" name="del_checks_id[]" value="<?php echo $pre_row['check_id']; ?>" id="del_checks_<?php echo $pre_row['check_id']; ?>" onmouseup="this.checked=!this.checked" <?php if (is_array($_POST['del_checks_id']) && in_array($pre_row['check_id'], $_POST['del_checks_id'])) echo 'checked="checked"';?> /></td>
+			<td><?php echo $pre_row['html_tag']; ?></td>
+			<td><?php echo get_confidence_by_code($pre_row['confidence']); ?></td>
+			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>'); return false;"><?php echo _AC($pre_row['name']); ?></a></span></td>
+		</tr>
+	<?php } // end of foreach?>
+	<?php } else {// end of if?>
+		<tr><td colspan="4"><?php echo _AC('none_found'); ?></td></tr>
+	<?php }?>
+		</tbody>
+	</table>
+
+	<!-- section of displaying checks to add 
+	<div class="row">
+		<h2>
+			<img src="images/arrow-closed.png" alt="<?php echo _AC("expand_add_pre_checks"); ?>" title="<?php echo _AC("expand_add_pre_checks"); ?>" id="toggle_image" border="0" />
+			<a href="javascript:toggleToc('div_add_checks')"><?php echo _AC("add_pre_checks"); ?></a>
+		</h2>
+	</div>
+	
+	<div id="div_add_checks">
+	<?php 
+	if (!is_array($this->pre_to_add_rows)){ 
+		echo _AC('none_found');
+	} 
+	else {?>
+		<table class="data" summary="" rules="rows" >
+			<thead>
+			<tr>
+				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_addchecks" onclick="CheckAll('add_checks_id[]','selectall_addchecks');" /></th>
+				<th align="center"><?php echo _AC('html_tag'); ?></th>
+				<th align="center"><?php echo _AC('error_type'); ?></th>
+				<th align="center"><?php echo _AC('description'); ?></th>
+			</tr>
+			</thead>
+			
+			<tbody>
+	<?php foreach ($this->pre_to_add_rows as $pre_to_add_row) { ?>
+			<tr onmousedown="document.input_form['add_checks_<?php echo $pre_to_add_row['check_id']; ?>'].checked = !document.input_form['add_checks_<?php echo $pre_to_add_row['check_id']; ?>'].checked; togglerowhighlight(this, 'add_checks_<?php echo $pre_to_add_row['check_id']; ?>');" id="radd_checks_<?php echo $pre_to_add_row['check_id']; ?>">
+				<td><input type="checkbox" name="add_checks_id[]" value="<?php echo $pre_to_add_row['check_id']; ?>" id="add_checks_<?php echo $pre_to_add_row['check_id']; ?>" onmouseup="this.checked=!this.checked" <?php if (is_array($_POST['add_checks_id']) && in_array($pre_to_add_row['check_id'], $_POST['add_checks_id'])) echo 'checked="checked"';?> /></td>
+				<td><?php echo $pre_to_add_row['html_tag']; ?></td>
+				<td><?php echo get_confidence_by_code($pre_to_add_row['confidence']); ?></td>
+				<td><span class="msg"><a target="_blank" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_to_add_row["check_id"]; ?>"><?php echo _AC($pre_to_add_row['name']); ?></a></span></td>
+			</tr>
+	<?php } // end of foreach?>
+			</tbody>
+		</table>
+	<?php } // end of if?>
+	</div>
+	-->
+	<div class="row">
+		<input type="submit" name="submit" value="<?php echo _AC('submit'); ?>" class="submit" /> 
+		<input type="submit" name="cancel" value=" <?php echo _AC('cancel'); ?> "  class="submit" />
+	</div>
 </fieldset>
 
 </div>
 </form>
 
-<script type="text/javascript">
+<script type="text/JavaScript">
+//<!--
 
-function switch_html_tag_list(a)
+function initial()
 {
-	var e_html_tag_link = document.getElementById("link_html_tag");
+	// hide guideline div
+//	document.getElementById("div_add_checks").style.display = 'none';
 
-	if (e_html_tag_link.innerHTML == "<?php echo _AC('add_html_tag'); ?>") 
-	{
-		document.getElementById("html_tag").style.display="none";
-		document.getElementById("new_html_tag").style.display="";
-		document.form.html_tag.value='';
-	}
-	return false;
+	// set cursor focus
+	document.input_form.html_tag.focus();
 }
 
+function CheckAll(element_name, selectall_checkbox_name) {
+	for (var i=0;i<document.input_form.elements.length;i++)	{
+		var e = document.input_form.elements[i];
+		if ((e.name == element_name) && (e.type=='checkbox')) {
+			e.checked = document.input_form[selectall_checkbox_name].checked;
+			togglerowhighlight(document.getElementById("r" + e.id), e.id);
+		}
+	}
+}
+
+function togglerowhighlight(obj, boxid) {
+	if (document.getElementById(boxid).checked) {
+		obj.className = 'selected';
+	} else {
+		obj.className = '';
+	}
+}
+//  End -->
+//-->
 </script>
 
 <?php require(AC_INCLUDE_PATH.'footer.inc.php'); ?>
