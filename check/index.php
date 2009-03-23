@@ -14,15 +14,18 @@ define('AC_INCLUDE_PATH', '../include/');
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 include(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
+include(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
 
 // initialize constants
 $results_per_page = 50;
 
 $dao = new DAO();
 $checkPrerequisitesDAO = new CheckPrerequisitesDAO();
+$testPassDAO = new TestPassDAO();
 
 // handle submit
-if ( (isset($_GET['edit']) || isset($_GET['edit_function'])|| isset($_GET['delete']) || isset($_GET['add'])) && !isset($_GET['id']) ) {
+if ((isset($_GET['edit']) || isset($_GET['edit_function'])|| isset($_GET['delete']) || isset($_GET['add']) 
+     || isset($_GET['edit_pre_next_checks'])) && !isset($_GET['id']) ) {
 	$msg->addError('SELECT_ONE_ITEM');
 } else if (isset($_GET['edit'], $_GET['id'])) {
 	header('Location: check_create_edit.php?id='.$_GET['id']);
@@ -30,15 +33,29 @@ if ( (isset($_GET['edit']) || isset($_GET['edit_function'])|| isset($_GET['delet
 } else if (isset($_GET['edit_function'], $_GET['id'])) {
 	header('Location: check_function_edit.php?id='.$_GET['id']);
 	exit;
+} else if (isset($_GET['edit_pre_next_checks'], $_GET['id'])) {
+	header('Location: pre_next_checks_edit.php?id='.$_GET['id']);
+	exit;
 } else if ( isset($_GET['delete'], $_GET['id'])) {
 	header('Location: check_delete.php?id='.$_GET['id']);
 	exit;
 } else if (isset($_GET['add'], $_GET['id']) ) {
 	if (is_array($_GET['id']))
 	{
-		foreach ($_GET['id'] as $pre_check_id)
+		if ($_GET['list'] == 'pre')
 		{
-			$checkPrerequisitesDAO->Create($_GET['cid'], $pre_check_id);
+			foreach ($_GET['id'] as $pre_check_id)
+			{
+				$checkPrerequisitesDAO->Create($_GET['cid'], $pre_check_id);
+			}
+		}
+
+		if ($_GET['list'] == 'next')
+		{
+			foreach ($_GET['id'] as $next_check_id)
+			{
+				$testPassDAO->Create($_GET['cid'], $next_check_id);
+			}
 		}
 		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 		
@@ -114,6 +131,10 @@ if (isset($_GET['list']))
 	{
 		$existing_rows = $checkPrerequisitesDAO->getPreChecksByCheckID($_GET['cid']);
 	}
+	if ($_GET['list'] == 'next')
+	{
+		$existing_rows = $testPassDAO->getNextChecksByCheckID($_GET['cid']);
+	}
 	// get checks that are open to public and not in guideline
 	unset($str_existing_checks);
 	if (is_array($existing_rows))
@@ -179,7 +200,7 @@ if (isset($_GET['list']))
 else
 {
 	$savant->assign('row_button_type', 'radio');
-	$savant->assign('buttons', array('edit', 'edit_function','delete'));
+	$savant->assign('buttons', array('edit', 'edit_pre_next_checks', 'edit_function','delete'));
 }
 
 $savant->display('check/index.tmpl.php');

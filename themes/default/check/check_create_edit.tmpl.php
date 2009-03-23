@@ -11,7 +11,7 @@
 /************************************************************************/
 
 /*
- * Called by "register.php" and "user/user_create_edit.php
+ * Called by "check/index.php" and "check/pre_next_checks_edit.php
  * 
  * Accept parameters:
  * 
@@ -62,7 +62,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		</tr>
 
 		<tr>
-			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><? echo _AC("open_to_public"); ?>:</th>
+			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><?php echo _AC("open_to_public"); ?>:</th>
 			<td align="left">
 				<input type="radio" name="open_to_public" id="open_to_publicN" value="0" <?php if ((isset($_POST['open_to_public']) && $_POST['open_to_public']==0) || (!isset($_POST['open_to_public']) && $this->check_row['open_to_public']==0)) echo 'checked="checked"'; ?> /><label for="open_to_publicN"><?php echo _AC('no'); ?></label> 
 				<input type="radio" name="open_to_public" id="open_to_publicY" value="1" <?php if ((isset($_POST['open_to_public']) && $_POST['open_to_public']==1) || (!isset($_POST['open_to_public']) && $this->check_row['open_to_public']==1)) echo 'checked="checked"'; ?> /><label for="open_to_publicY"><?php echo _AC('yes'); ?></label>
@@ -153,94 +153,18 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			<td align="left"><textarea rows="3" cols="60" name="test_failed_result" id="test_failed_result"><?php if (isset($_POST['test_failed_result'])) echo $_POST['test_failed_result']; else echo _AC($this->check_row["test_failed_result"]); ?></textarea></td>
 		</tr>
 		
-		<?php if (isset($this->check_row)) {?>
+		<?php if (isset($this->author)) {?>
 		<tr>
-			<th align="left"><? echo _AC("author"); ?>:</th>
+			<th align="left"><?php echo _AC("author"); ?>:</th>
 			<td align="left"><?php echo $this->author; ?></td>
 		</tr>
 		<tr>
-			<th align="left"><? echo _AC("date_created"); ?>:</th>
+			<th align="left"><?php echo _AC("date_created"); ?>:</th>
 			<td align="left"><?php echo $this->check_row['create_date']; ?></td>
 		</tr>
 		<?php } ?>
 	</table>
 
-	<!-- section of displaying existing prerequisite checks -->
-	<br/>
-	<h2 id="pre_checks"><?php echo _AC('pre_checks');?></h2>
-	<a href="<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&cid=<?php echo $this->check_row['check_id']; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&cid=<?php echo $this->check_row['check_id']; ?>'); return false;" title="<?php echo _AC('add_pre_checks'); ?>"><?php echo _AC('add_pre_checks'); ?></a>
-	<table class="data" summary="" rules="rows" >
-		<thead>
-		<tr>
-			<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_delchecks" onclick="CheckAll('del_checks_id[]','selectall_delchecks');" /></th>
-			<th align="center"><?php echo _AC('html_tag'); ?></th>
-			<th align="center"><?php echo _AC('error_type'); ?></th>
-			<th align="center"><?php echo _AC('description'); ?></th>
-		</tr>
-		</thead>
-	<?php if (is_array($this->pre_rows)) { ?>
-			
-		<tfoot>
-			<tr>
-				<td colspan="4">
-					<input type="submit" name="remove" value="<?php echo _AC('remove'); ?>" />
-				</td>
-			</tr>
-		</tfoot>
-
-		<tbody>
-	<?php foreach ($this->pre_rows as $pre_row) { ?>
-		<tr onmousedown="document.input_form['del_checks_<?php echo $pre_row['check_id']; ?>'].checked = !document.input_form['del_checks_<?php echo $pre_row['check_id']; ?>'].checked; togglerowhighlight(this, 'del_checks_<?php echo $pre_row['check_id']; ?>');" id="rdel_checks_<?php echo $pre_row['check_id']; ?>">
-			<td><input type="checkbox" name="del_checks_id[]" value="<?php echo $pre_row['check_id']; ?>" id="del_checks_<?php echo $pre_row['check_id']; ?>" onmouseup="this.checked=!this.checked" <?php if (is_array($_POST['del_checks_id']) && in_array($pre_row['check_id'], $_POST['del_checks_id'])) echo 'checked="checked"';?> /></td>
-			<td><?php echo $pre_row['html_tag']; ?></td>
-			<td><?php echo get_confidence_by_code($pre_row['confidence']); ?></td>
-			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>'); return false;"><?php echo _AC($pre_row['name']); ?></a></span></td>
-		</tr>
-	<?php } // end of foreach?>
-	<?php } else {// end of if?>
-		<tr><td colspan="4"><?php echo _AC('none_found'); ?></td></tr>
-	<?php }?>
-		</tbody>
-	</table>
-
-	<!-- section of displaying checks to add 
-	<div class="row">
-		<h2>
-			<img src="images/arrow-closed.png" alt="<?php echo _AC("expand_add_pre_checks"); ?>" title="<?php echo _AC("expand_add_pre_checks"); ?>" id="toggle_image" border="0" />
-			<a href="javascript:toggleToc('div_add_checks')"><?php echo _AC("add_pre_checks"); ?></a>
-		</h2>
-	</div>
-	
-	<div id="div_add_checks">
-	<?php 
-	if (!is_array($this->pre_to_add_rows)){ 
-		echo _AC('none_found');
-	} 
-	else {?>
-		<table class="data" summary="" rules="rows" >
-			<thead>
-			<tr>
-				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_addchecks" onclick="CheckAll('add_checks_id[]','selectall_addchecks');" /></th>
-				<th align="center"><?php echo _AC('html_tag'); ?></th>
-				<th align="center"><?php echo _AC('error_type'); ?></th>
-				<th align="center"><?php echo _AC('description'); ?></th>
-			</tr>
-			</thead>
-			
-			<tbody>
-	<?php foreach ($this->pre_to_add_rows as $pre_to_add_row) { ?>
-			<tr onmousedown="document.input_form['add_checks_<?php echo $pre_to_add_row['check_id']; ?>'].checked = !document.input_form['add_checks_<?php echo $pre_to_add_row['check_id']; ?>'].checked; togglerowhighlight(this, 'add_checks_<?php echo $pre_to_add_row['check_id']; ?>');" id="radd_checks_<?php echo $pre_to_add_row['check_id']; ?>">
-				<td><input type="checkbox" name="add_checks_id[]" value="<?php echo $pre_to_add_row['check_id']; ?>" id="add_checks_<?php echo $pre_to_add_row['check_id']; ?>" onmouseup="this.checked=!this.checked" <?php if (is_array($_POST['add_checks_id']) && in_array($pre_to_add_row['check_id'], $_POST['add_checks_id'])) echo 'checked="checked"';?> /></td>
-				<td><?php echo $pre_to_add_row['html_tag']; ?></td>
-				<td><?php echo get_confidence_by_code($pre_to_add_row['confidence']); ?></td>
-				<td><span class="msg"><a target="_blank" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_to_add_row["check_id"]; ?>"><?php echo _AC($pre_to_add_row['name']); ?></a></span></td>
-			</tr>
-	<?php } // end of foreach?>
-			</tbody>
-		</table>
-	<?php } // end of if?>
-	</div>
-	-->
 	<div class="row">
 		<input type="submit" name="submit" value="<?php echo _AC('submit'); ?>" class="submit" /> 
 		<input type="submit" name="cancel" value=" <?php echo _AC('cancel'); ?> "  class="submit" />
@@ -260,24 +184,6 @@ function initial()
 
 	// set cursor focus
 	document.input_form.html_tag.focus();
-}
-
-function CheckAll(element_name, selectall_checkbox_name) {
-	for (var i=0;i<document.input_form.elements.length;i++)	{
-		var e = document.input_form.elements[i];
-		if ((e.name == element_name) && (e.type=='checkbox')) {
-			e.checked = document.input_form[selectall_checkbox_name].checked;
-			togglerowhighlight(document.getElementById("r" + e.id), e.id);
-		}
-	}
-}
-
-function togglerowhighlight(obj, boxid) {
-	if (document.getElementById(boxid).checked) {
-		obj.className = 'selected';
-	} else {
-		obj.className = '';
-	}
 }
 //  End -->
 //-->

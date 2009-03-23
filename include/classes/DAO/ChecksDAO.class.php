@@ -348,6 +348,7 @@ class ChecksDAO extends DAO {
 		// delete all languages
 		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
+		require_once(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
 		
 		$langTextDAO = new LanguageTextDAO();
 
@@ -369,6 +370,9 @@ class ChecksDAO extends DAO {
 		
 		$checkPrerequisitesDAO = new CheckPrerequisitesDAO();
 		$checkPrerequisitesDAO->DeleteByCheckID($checkID);
+		
+		$testPassDAO = new TestPassDAO();
+		$testPassDAO->DeleteByCheckID($checkID);
 		
 		$sql = "DELETE FROM ". TABLE_PREFIX ."checks WHERE check_id=".$checkID;
 		

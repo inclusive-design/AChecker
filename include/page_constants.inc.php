@@ -147,6 +147,10 @@ if (in_array(AC_PRIV_CHECK_MANAGEMENT, $privs))
 	$_pages['check/check_function_edit.php']['parent']    = 'check/index.php';
 	$_pages['check/check_function_edit.php']['guide']    = 'AC_HELP_EDIT_CHECK_FUNCTION';
 	
+	$_pages['check/pre_next_checks_edit.php']['title_var'] = 'edit_pre_next_checks';
+	$_pages['check/pre_next_checks_edit.php']['parent']    = 'check/index.php';
+	$_pages['check/pre_next_checks_edit.php']['guide']    = 'AC_HELP_EDIT_PRE_NEXT_CHECKS';
+	
 	$_pages['check/check_delete.php']['title_var'] = 'delete_check';
 	$_pages['check/check_delete.php']['parent']    = 'check/index.php';
 }

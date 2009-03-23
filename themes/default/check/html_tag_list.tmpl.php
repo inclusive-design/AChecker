@@ -35,7 +35,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		<td><input type="radio" name="html_tag" value="<?php echo $row["html_tag"]; ?>" id="m<?php echo $row['html_tag']; ?>" onmouseup="this.checked=!this.checked" /></td>
 		<td><label for="m<?php echo $row["html_tag"]; ?>"><?php echo $row["html_tag"]; ?></label></td>
 	</tr>
-<?}?>
+<?php } ?>
 </tbody>
 </table>
 </form>

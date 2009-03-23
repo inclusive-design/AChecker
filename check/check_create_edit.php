@@ -13,10 +13,8 @@
 define('AC_INCLUDE_PATH', '../include/');
 include_once(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
-include_once(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
 
 if (isset($_GET['id'])) $check_id = $_GET['id'];
-$checkPrerequisitesDAO = new CheckPrerequisitesDAO();
 
 // handle submit
 if (isset($_POST['cancel'])) {
@@ -54,14 +52,6 @@ if (isset($_POST['cancel'])) {
 		exit;
 	}
 }
-else if (isset($_POST['remove']))
-{
-	if (is_array($_POST['del_checks_id']))
-	{
-		foreach ($_POST['del_checks_id'] as $del_check_id)
-			$checkPrerequisitesDAO->Delete($check_id, $del_check_id);
-	}
-}
 // end of handle submit
 
 // initialize page 
@@ -71,26 +61,13 @@ if (isset($check_id)) // edit existing user
 {
 	$check_row = $checksDAO->getCheckByID($check_id);
 	
-	$pre_rows = $checkPrerequisitesDAO->getPreChecksByCheckID($check_id);
-
 	// get author name
 	$usersDAO = new UsersDAO();
 	$user_name = $usersDAO->getUserName($check_row['user_id']);
 
 	if ($user_name <> '') $savant->assign('author', $user_name);
-	
-	// get checks that are open to public and not in guideline
-	unset($str_existing_pres);
-	if (is_array($pre_rows))
-	{
-		foreach($pre_rows as $pre_row)
-			$str_existing_pres .= $pre_row['check_id'] .',';
-		$str_existing_pres = substr($str_existing_pres, 0, -1);
-	}
-	
+
 	$savant->assign('check_row', $check_row);
-	$savant->assign('pre_rows', $pre_rows);
-	$savant->assign('pre_to_add_rows', $checksDAO->getAllOpenChecksExceptListed($str_existing_pres));
 }
 
 /*****************************/
