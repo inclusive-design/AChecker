@@ -175,6 +175,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		<?php } ?>
 	</table>
 	<br/>
+	<span style="font-weight: bold">&middot; <?php echo _AC('note_edit_pre_next_checks'); ?></span><br/><br/>
 	
 	<div id="div_pre_next_checks">
 	
