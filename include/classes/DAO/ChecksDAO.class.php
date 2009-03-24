@@ -36,7 +36,7 @@ class ChecksDAO extends DAO {
 	* @author  Cindy Qi Li
 	*/
 	public function Create($userID, $html_tag, $confidence, $status, 
-	                       $note, $name, $err, $desc, $long_desc, 
+	                       $note, $name, $err, $desc, $search_str, $long_desc, 
 	                       $rationale, $how_to_repair, $repair_example,
 	                       $question, $decision_pass, $decision_fail,
 	                       $test_procedure, $test_expected_result, 
@@ -49,6 +49,7 @@ class ChecksDAO extends DAO {
 		$name = $addslashes(trim($name));
 		$err = $addslashes(trim($err));
 		$desc = $addslashes(trim($desc));
+		$search_str = $addslashes(trim($search_str));
 		$long_desc = $addslashes(trim($long_desc));
 		$rationale = $addslashes(trim($rationale));
 		$how_to_repair = $addslashes(trim($how_to_repair));
@@ -96,6 +97,11 @@ class ChecksDAO extends DAO {
 			{
 				$term_desc = LANG_PREFIX_CHECKS_DESC.$checkID;
 				$this->updateLang($checkID, $term_desc, $desc, 'description');
+			}
+			if ($search_str<> '')
+			{
+				$term_search_str = LANG_PREFIX_CHECKS_SEARCH_STR.$checkID;
+				$this->updateLang($checkID, $term_search_str, $search_str, 'search_str');
 			}
 			if ($long_desc <> '')
 			{
@@ -165,12 +171,31 @@ class ChecksDAO extends DAO {
 	* @author  Cindy Qi Li
 	*/
 	public function Update($checkID, $userID, $html_tag, $confidence, $status, 
-	                       $note, $name, $err, $desc, $long_desc, 
+	                       $note, $name, $err, $desc, $search_str, $long_desc, 
 	                       $rationale, $how_to_repair, $repair_example,
 	                       $question, $decision_pass, $decision_fail,
 	                       $test_procedure, $test_expected_result, 
 	                       $test_failed_result, $open_to_public)
 	{
+		global $addslashes;
+		
+		$html_tag = $addslashes(strtolower(trim($html_tag)));
+		$note = $addslashes(trim($note));
+		$name = $addslashes(trim($name));
+		$err = $addslashes(trim($err));
+		$desc = $addslashes(trim($desc));
+		$search_str = $addslashes(trim($search_str));
+		$long_desc = $addslashes(trim($long_desc));
+		$rationale = $addslashes(trim($rationale));
+		$how_to_repair = $addslashes(trim($how_to_repair));
+		$repair_example = $addslashes(trim($repair_example));
+		$question = $addslashes(trim($question));
+		$decision_pass = $addslashes(trim($decision_pass));
+		$decision_fail = $addslashes(trim($decision_fail));
+		$test_procedure = $addslashes(trim($test_procedure));
+		$test_expected_result = $addslashes(trim($test_expected_result));
+		$test_failed_result = $addslashes(trim($test_failed_result));
+		
 		if (!$this->isFieldsValid($html_tag, $confidence, $name, $err, $open_to_public)) return false;
 		
 		$sql = "UPDATE ".TABLE_PREFIX."checks
@@ -232,6 +257,16 @@ class ChecksDAO extends DAO {
 			else
 			{
 				if ($row['description'] <> '') $this->deleteLang($checkID, $row['description'], 'description');
+			}
+			
+			if ($search_str<> '')
+			{
+				$term_search_str = LANG_PREFIX_CHECKS_SEARCH_STR.$checkID;
+				$this->updateLang($checkID, $term_search_str, $search_str, 'search_str');
+			}
+			else
+			{
+				if ($row['search_str'] <> '') $this->deleteLang($checkID, $row['search_str'], 'search_str');
 			}
 			
 			if ($long_desc <> '')

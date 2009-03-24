@@ -16,6 +16,7 @@ CREATE TABLE `checks` (
   `name` text,
   `err` text,
   `description` text,
+  `search_str` text,
   `long_description` text,
   `rationale` text,
   `how_to_repair` text,

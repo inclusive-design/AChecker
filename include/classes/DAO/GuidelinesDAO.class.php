@@ -56,11 +56,11 @@ class GuidelinesDAO extends DAO {
 		else
 		{
 			$guidelineID = mysql_insert_id();
-			
+
 			if ($long_name <> '')
 			{
 				$term = LANG_PREFIX_GUIDELINES_LONG_NAME.$guidelineID;
-				
+
 				require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 				$langTextDAO = new LanguageTextDAO();
 				

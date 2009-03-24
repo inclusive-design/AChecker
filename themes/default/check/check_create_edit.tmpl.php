@@ -22,6 +22,11 @@
 global $onload;
 $onload = "initial();";
 
+if (!isset($this->check_row))
+{
+	$onload .= "disableDiv('div_pre_next_checks');";
+}
+
 require(AC_INCLUDE_PATH.'header.inc.php'); 
 ?>
 
@@ -82,6 +87,11 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		<tr>
 			<th align="left"><label for="short_desc"><?php echo _AC('short_desc'); ?></label>:</th>
 			<td align="left"><textarea rows="3" cols="60" name="description" id="short_desc"><?php if (isset($_POST['description'])) echo $_POST['description']; else echo _AC($this->check_row["description"]); ?></textarea></td>
+		</tr>
+
+		<tr>
+			<th align="left"><label for="search_str"><?php echo _AC('search_str'); ?></label>:</th>
+			<td align="left"><textarea rows="3" cols="60" name="search_str" id="search_str"><?php if (isset($_POST['search_str'])) echo $_POST['search_str']; else echo _AC($this->check_row["search_str"]); ?></textarea></td>
 		</tr>
 
 		<tr>
@@ -164,9 +174,95 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		</tr>
 		<?php } ?>
 	</table>
+	<br/>
+	
+	<div id="div_pre_next_checks">
+	
+	<h2 id="#pre_checks">
+		<?php echo _AC('pre_checks');?>
+		<input type="button" name="add_pre_checks" value="<?php echo _AC('add_pre_checks'); ?>" 
+		       onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&cid=<?php echo $_GET['id']; ?>'); return false;" />
+	</h2>
+	<table class="data" summary="" rules="rows" >
+		<thead>
+		<tr>
+			<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_delprechecks" onclick="CheckAll('del_pre_checks_id[]','selectall_delprechecks');" /></th>
+			<th align="center"><?php echo _AC('html_tag'); ?></th>
+			<th align="center"><?php echo _AC('error_type'); ?></th>
+			<th align="center"><?php echo _AC('description'); ?></th>
+		</tr>
+		</thead>
+	<?php if (is_array($this->pre_rows)) { ?>
+			
+		<tfoot>
+			<tr>
+				<td colspan="4">
+					<input type="submit" name="remove_pre" value="<?php echo _AC('remove'); ?>" />
+				</td>
+			</tr>
+		</tfoot>
+
+		<tbody>
+	<?php foreach ($this->pre_rows as $pre_row) { ?>
+		<tr onmousedown="document.input_form['del_pre_checks_<?php echo $pre_row['check_id']; ?>'].checked = !document.input_form['del_pre_checks_<?php echo $pre_row['check_id']; ?>'].checked; togglerowhighlight(this, 'del_pre_checks_<?php echo $pre_row['check_id']; ?>');" id="rdel_pre_checks_<?php echo $pre_row['check_id']; ?>">
+			<td><input type="checkbox" name="del_pre_checks_id[]" value="<?php echo $pre_row['check_id']; ?>" id="del_pre_checks_<?php echo $pre_row['check_id']; ?>" onmouseup="this.checked=!this.checked" <?php if (is_array($_POST['del_pre_checks_id']) && in_array($pre_row['check_id'], $_POST['del_pre_checks_id'])) echo 'checked="checked"';?> /></td>
+			<td><?php echo $pre_row['html_tag']; ?></td>
+			<td><?php echo get_confidence_by_code($pre_row['confidence']); ?></td>
+			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>'); return false;"><?php echo _AC($pre_row['name']); ?></a></span></td>
+		</tr>
+	<?php } // end of foreach?>
+	<?php } else {// end of if?>
+		<tr><td colspan="4"><?php echo _AC('none_found'); ?></td></tr>
+	<?php }?>
+		</tbody>
+	</table>
+
+	<!-- section of displaying existing next checks -->
+	<br/>
+	<h2 id="#next_checks">
+		<?php echo _AC('next_checks');?>
+		<input type="button" name="add_next_checks" value="<?php echo _AC('add_next_checks'); ?>" 
+		       onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=next&cid=<?php echo $_GET['id']; ?>'); return false;" />
+	</h2>
+	<table class="data" summary="" rules="rows" >
+		<thead>
+		<tr>
+			<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_delnextchecks" onclick="CheckAll('del_next_checks_id[]','selectall_delnextchecks');" /></th>
+			<th align="center"><?php echo _AC('html_tag'); ?></th>
+			<th align="center"><?php echo _AC('error_type'); ?></th>
+			<th align="center"><?php echo _AC('description'); ?></th>
+		</tr>
+		</thead>
+	<?php if (is_array($this->next_rows)) { ?>
+			
+		<tfoot>
+			<tr>
+				<td colspan="4">
+					<input type="submit" name="remove_next" value="<?php echo _AC('remove'); ?>" />
+				</td>
+			</tr>
+		</tfoot>
+
+		<tbody>
+	<?php foreach ($this->next_rows as $next_row) { ?>
+		<tr onmousedown="document.input_form['del_next_checks_<?php echo $next_row['check_id']; ?>'].checked = !document.input_form['del_next_checks_<?php echo $next_row['check_id']; ?>'].checked; togglerowhighlight(this, 'del_next_checks_<?php echo $next_row['check_id']; ?>');" id="rdel_next_checks_<?php echo $next_row['check_id']; ?>">
+			<td><input type="checkbox" name="del_next_checks_id[]" value="<?php echo $next_row['check_id']; ?>" id="del_next_checks_<?php echo $next_row['check_id']; ?>" onmouseup="this.checked=!this.checked" <?php if (is_array($_POST['del_next_checks_id']) && in_array($next_row['check_id'], $_POST['del_next_checks_id'])) echo 'checked="checked"';?> /></td>
+			<td><?php echo $next_row['html_tag']; ?></td>
+			<td><?php echo get_confidence_by_code($next_row['confidence']); ?></td>
+			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $next_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $next_row["check_id"]; ?>'); return false;"><?php echo _AC($next_row['name']); ?></a></span></td>
+		</tr>
+	<?php } // end of foreach?>
+	<?php } else {// end of if?>
+		<tr><td colspan="4"><?php echo _AC('none_found'); ?></td></tr>
+	<?php }?>
+		</tbody>
+	</table>
+	<br/>
+	</div>
 
 	<div class="row">
 		<input type="submit" name="submit" value="<?php echo _AC('submit'); ?>" class="submit" /> 
+		<input type="submit" name="submit_and_close" value="<?php echo _AC('submit_and_close'); ?>" class="submit" /> 
 		<input type="submit" name="cancel" value=" <?php echo _AC('cancel'); ?> "  class="submit" />
 	</div>
 </fieldset>
@@ -176,14 +272,52 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 <script type="text/JavaScript">
 //<!--
-
 function initial()
 {
-	// hide guideline div
-//	document.getElementById("div_add_checks").style.display = 'none';
-
 	// set cursor focus
 	document.input_form.html_tag.focus();
+}
+
+cDivs = new Array();
+
+function disableDiv(divID)
+{
+	d = document.getElementsByTagName("BODY")[0];
+
+	e = document.getElementById(divID);
+
+    xPos = e.offsetLeft;
+    yPos = e.offsetTop;
+    oWidth = e.offsetWidth;    
+    oHeight = e.offsetHeight;
+    cDivs[cDivs.length] = document.createElement("DIV");
+    cDivs[cDivs.length-1].style.width = oWidth+"px";
+    cDivs[cDivs.length-1].style.height = oHeight+"px";
+    cDivs[cDivs.length-1].style.position = "absolute";
+    cDivs[cDivs.length-1].style.left = xPos+"px";
+    cDivs[cDivs.length-1].style.top = yPos+"px";
+    cDivs[cDivs.length-1].style.backgroundColor = "#999999";
+    cDivs[cDivs.length-1].style.opacity = .6;
+    cDivs[cDivs.length-1].style.filter = "alpha(opacity=60)";
+    d.appendChild(cDivs[cDivs.length-1]);
+}
+
+function CheckAll(element_name, selectall_checkbox_name) {
+	for (var i=0;i<document.input_form.elements.length;i++)	{
+		var e = document.input_form.elements[i];
+		if ((e.name == element_name) && (e.type=='checkbox')) {
+			e.checked = document.input_form[selectall_checkbox_name].checked;
+			togglerowhighlight(document.getElementById("r" + e.id), e.id);
+		}
+	}
+}
+
+function togglerowhighlight(obj, boxid) {
+	if (document.getElementById(boxid).checked) {
+		obj.className = 'selected';
+	} else {
+		obj.className = '';
+	}
 }
 //  End -->
 //-->

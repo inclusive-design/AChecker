@@ -56,7 +56,7 @@ class GuidelineSubgroupsDAO extends DAO {
 				require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 				$langTextDAO = new LanguageTextDAO();
 				
-				if ($langTextDAO->Create(DEFAULT_LANGUAGE_CODE, '_template',$term,$name,''))
+				if ($langTextDAO->Create(DEFAULT_LANGUAGE_CODE, '_guideline',$term,$name,''))
 				{
 					$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups 
 					           SET name='".$term."' WHERE subgroup_id=".$subgroup_id;

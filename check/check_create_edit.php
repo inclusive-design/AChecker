@@ -13,14 +13,18 @@
 define('AC_INCLUDE_PATH', '../include/');
 include_once(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
 
 if (isset($_GET['id'])) $check_id = $_GET['id'];
+$checkPrerequisitesDAO = new CheckPrerequisitesDAO();
+$testPassDAO = new TestPassDAO();
 
 // handle submit
 if (isset($_POST['cancel'])) {
 	header('Location: index.php');
 	exit;
-} else if (isset($_POST['submit'])) {
+} else if (isset($_POST['submit']) || isset($_POST['submit_and_close'])) {
 	require_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
 	$checksDAO = new ChecksDAO();
 	
@@ -28,28 +32,53 @@ if (isset($_POST['cancel'])) {
 	{
 		$check_id = $checksDAO->Create($_SESSION['user_id'],
                   $_POST['html_tag'],$_POST['confidence'],'',$_POST['note'],
-		          $_POST['name'],$_POST['err'],$_POST['description'],$_POST['long_description'],
-		          $_POST['rationale'],$_POST['how_to_repair'],$_POST['repair_example'],
-		          $_POST['question'],$_POST['decision_pass'],$_POST['decision_fail'],
-		          $_POST['test_procedure'],$_POST['test_expected_result'],
+		          $_POST['name'],$_POST['err'],$_POST['description'],$_POST['search_str'],
+		          $_POST['long_description'],$_POST['rationale'],$_POST['how_to_repair'],
+		          $_POST['repair_example'],$_POST['question'],$_POST['decision_pass'],
+		          $_POST['decision_fail'],$_POST['test_procedure'],$_POST['test_expected_result'],
 		          $_POST['test_failed_result'],$_POST['open_to_public']);
 	}
 	else  // edit existing check
 	{
 		$checksDAO->Update($check_id, $_SESSION['user_id'],
                   $_POST['html_tag'],$_POST['confidence'],'',$_POST['note'],
-		          $_POST['name'],$_POST['err'],$_POST['description'],$_POST['long_description'],
-		          $_POST['rationale'],$_POST['how_to_repair'],$_POST['repair_example'],
-		          $_POST['question'],$_POST['decision_pass'],$_POST['decision_fail'],
-		          $_POST['test_procedure'],$_POST['test_expected_result'],
+		          $_POST['name'],$_POST['err'],$_POST['description'],$_POST['search_str'],
+		          $_POST['long_description'],$_POST['rationale'],$_POST['how_to_repair'],
+		          $_POST['repair_example'],$_POST['question'],$_POST['decision_pass'],
+		          $_POST['decision_fail'],$_POST['test_procedure'],$_POST['test_expected_result'],
 		          $_POST['test_failed_result'],$_POST['open_to_public']);
 	}
 	
 	if (!$msg->containsErrors())
 	{
 		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
-		header('Location: index.php');
+		
+		if (isset($_POST['submit_and_close']))
+		{
+			header('Location: index.php');
+		}
+		else
+		{
+			header('Location: '.$_SERVER['PHP_SELF'].'?id='.$check_id);
+			
+		}
 		exit;
+	}
+}
+else if (isset($_POST['remove_pre']))
+{
+	if (is_array($_POST['del_pre_checks_id']))
+	{
+		foreach ($_POST['del_pre_checks_id'] as $del_check_id)
+			$checkPrerequisitesDAO->Delete($check_id, $del_check_id);
+	}
+}
+else if (isset($_POST['remove_next']))
+{
+	if (is_array($_POST['del_next_checks_id']))
+	{
+		foreach ($_POST['del_next_checks_id'] as $del_check_id)
+			$testPassDAO->Delete($check_id, $del_check_id);
 	}
 }
 // end of handle submit
@@ -68,6 +97,8 @@ if (isset($check_id)) // edit existing user
 	if ($user_name <> '') $savant->assign('author', $user_name);
 
 	$savant->assign('check_row', $check_row);
+	$savant->assign('pre_rows', $checkPrerequisitesDAO->getPreChecksByCheckID($check_id));
+	$savant->assign('next_rows', $testPassDAO->getNextChecksByCheckID($check_id));
 }
 
 /*****************************/

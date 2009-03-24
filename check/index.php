@@ -24,17 +24,14 @@ $checkPrerequisitesDAO = new CheckPrerequisitesDAO();
 $testPassDAO = new TestPassDAO();
 
 // handle submit
-if ((isset($_GET['edit']) || isset($_GET['edit_function'])|| isset($_GET['delete']) || isset($_GET['add']) 
-     || isset($_GET['edit_pre_next_checks'])) && !isset($_GET['id']) ) {
+if ((isset($_GET['edit']) || isset($_GET['edit_function'])|| isset($_GET['delete']) || isset($_GET['add'])) && !isset($_GET['id']) ) 
+{
 	$msg->addError('SELECT_ONE_ITEM');
 } else if (isset($_GET['edit'], $_GET['id'])) {
 	header('Location: check_create_edit.php?id='.$_GET['id']);
 	exit;
 } else if (isset($_GET['edit_function'], $_GET['id'])) {
 	header('Location: check_function_edit.php?id='.$_GET['id']);
-	exit;
-} else if (isset($_GET['edit_pre_next_checks'], $_GET['id'])) {
-	header('Location: pre_next_checks_edit.php?id='.$_GET['id']);
 	exit;
 } else if ( isset($_GET['delete'], $_GET['id'])) {
 	header('Location: check_delete.php?id='.$_GET['id']);
@@ -200,7 +197,7 @@ if (isset($_GET['list']))
 else
 {
 	$savant->assign('row_button_type', 'radio');
-	$savant->assign('buttons', array('edit', 'edit_pre_next_checks', 'edit_function','delete'));
+	$savant->assign('buttons', array('edit', 'edit_function','delete'));
 }
 
 $savant->display('check/index.tmpl.php');
