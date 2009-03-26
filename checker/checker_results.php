@@ -33,46 +33,43 @@ if (isset($aValidator))
 	{
 		foreach ($rows as $id => $row)
 		{
-			$guidelines .= '<a title="'.$row["title"].'(link opens in a new window)" target="_new" href="'.AC_BASE_HREF.'guideline/view_guideline.php?id='.$row["guideline_id"].'">'.$row["title"]. '</a>, ';
+			$guidelines .= '<a title="'.$row["title"]._AC('link_open_in_new').'" target="_new" href="'.AC_BASE_HREF.'guideline/view_guideline.php?id='.$row["guideline_id"].'">'.$row["title"]. '</a>, ';
 		}
 	}
 	$guidelines = substr($guidelines, 0, -2); // remove ending space and ,
 
 	$num_of_total_a_errors = $aValidator->getNumOfValidateError();
 
-	if ($num_of_total_a_errors > 0)
+	$errors = $aValidator->getValidationErrorRpt();
+	
+	// if it's a LOGIN user validates URI, save into database for user to make decision.
+	// Note that results of validating uploaded files are not saved
+	$user_link_id = '';
+	$show_decision = 'false';   // set default showDecision to 'false'
+	
+	if (isset($_SESSION['user_id']) && isset($_POST['uri']))
 	{
-		$errors = $aValidator->getValidationErrorRpt();
+		// save errors into user_links
+		$userLinksDAO = new UserLinksDAO();
+		$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_POST['uri'], $gids);
 		
-		// if it's a LOGIN user validates URI, save into database for user to make decision.
-		// Note that results of validating uploaded files are not saved
-		$user_link_id = '';
-		$show_decision = 'false';   // set default showDecision to 'false'
+		// save errors into user_decisions 
+		$userDecisionsDAO = new UserDecisionsDAO();
+		$userDecisionsDAO->saveErrors($user_link_id, $errors);
 		
-		if (isset($_SESSION['user_id']) && isset($_POST['uri']))
-		{
-			// save errors into user_links
-			$userLinksDAO = new UserLinksDAO();
-			$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_POST['uri'], $gids);
-			
-			// save errors into user_decisions 
-			$userDecisionsDAO = new UserDecisionsDAO();
-			$userDecisionsDAO->saveErrors($user_link_id, $errors);
-			
-			$show_decision = 'true';
-		}
-
-		$a_rpt = new HtmlRpt($errors, $user_link_id);
-		$a_rpt->setShowDecisions($show_decision);
-		$a_rpt->generateHTMLRpt();
-
-		$savant->assign('a_rpt', $a_rpt);
-		$savant->assign('num_of_errors', $a_rpt->getNumOfErrors());
-		$savant->assign('num_of_likely_problems', $a_rpt->getNumOfLikelyProblems());
-		$savant->assign('num_of_likely_problems_no_decision', $a_rpt->getNumOfLikelyWithFailDecisions());
-		$savant->assign('num_of_potential_problems', $a_rpt->getNumOfPotentialProblems());
-		$savant->assign('num_of_potential_problems_no_decision', $a_rpt->getNumOfPotentialWithFailDecisions());
+		$show_decision = 'true';
 	}
+
+	$a_rpt = new HtmlRpt($errors, $user_link_id);
+	$a_rpt->setShowDecisions($show_decision);
+	$a_rpt->generateHTMLRpt();
+
+	$savant->assign('a_rpt', $a_rpt);
+	$savant->assign('num_of_errors', $a_rpt->getNumOfErrors());
+	$savant->assign('num_of_likely_problems', $a_rpt->getNumOfLikelyProblems());
+	$savant->assign('num_of_likely_problems_no_decision', $a_rpt->getNumOfLikelyWithFailDecisions());
+	$savant->assign('num_of_potential_problems', $a_rpt->getNumOfPotentialProblems());
+	$savant->assign('num_of_potential_problems_no_decision', $a_rpt->getNumOfPotentialWithFailDecisions());
 
 	$savant->assign('aValidator', $aValidator);
 	$savant->assign('guidelines', $guidelines);

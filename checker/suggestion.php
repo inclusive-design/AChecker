@@ -16,6 +16,7 @@ include(AC_INCLUDE_PATH.'vitals.inc.php');
 include(AC_INCLUDE_PATH.'header.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestProcedureDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestExpectedDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestFailDAO.class.php');
@@ -25,9 +26,26 @@ $check_id = intval($_GET["id"]);
 $checksDAO = new ChecksDAO();
 $row = $checksDAO->getCheckByID($check_id);
 
+$guidelinesDAO = new GuidelinesDAO();
+$guideline_rows = $guidelinesDAO->getEnabledGuidelinesByCheckID($check_id);
+
 ?>
 <div class="output-form">
 	
+<h2><? echo _AC("html_tag"); ?></h2>
+<span class="msg"><?php echo $row["html_tag"]; ?></span>
+
+<?php if (is_array($guideline_rows)) {?> 
+<h2><? echo _AC("guidelines"); ?></h2>
+<span class="msg">
+	<ul>
+<?php 	foreach ($guideline_rows as $guideline) {?>
+		<li><a title="<?php echo $guideline['title']._AC('link_open_in_new'); ?>" target="_new" href="<?php echo AC_BASE_HREF; ?>guideline/view_guideline.php?id=<?php echo $guideline['guideline_id']; ?>"><?php echo $guideline["title"]; ?></a></li>
+<?php } // end of foreach?>
+	</ul>
+</span>
+<?php } // end of if?>
+
 <h2><? echo _AC("requirement"); ?></h2>
 <span class="msg"><?php echo _AC($row["name"]); ?></span>
 

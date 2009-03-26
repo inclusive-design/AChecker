@@ -49,7 +49,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 <span style="color:red">{SUMMARY_DETAIL}</span>';
 
 	var $html_a = 
-'<a title="{TITLE}(link opens in a new window)" target="_new" href="{HREF}">{TITLE}</a>';
+'<a title="{TITLE}" target="_new" href="{HREF}">{TITLE}</a>';
 	
 	var $html_button_make_decision = 
 '<p align="center">
@@ -137,7 +137,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 			foreach ($rows as $id => $row)
 			{
 				$this->guidelineStr .= str_replace(array('{TITLE}','{HREF}'),
-				                           array($row['title'],
+				                           array($row['title']._AC('link_open_in_new'),
 				                                 AC_BASE_HREF.'guideline/view_guideline.php?id='.$row['guideline_id']),
 				                           $this->html_a). "&nbsp;&nbsp;";
 			}

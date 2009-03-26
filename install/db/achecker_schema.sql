@@ -27,6 +27,7 @@ CREATE TABLE `checks` (
   `test_procedure` text,
   `test_expected_result` text,
   `test_failed_result` text,
+  `func` text,
   `open_to_public` tinyint(4) NOT NULL DEFAULT 0,
   `create_date` datetime NOT NULL,
   PRIMARY KEY  (`check_id`)

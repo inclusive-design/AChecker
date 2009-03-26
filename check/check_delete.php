@@ -41,7 +41,7 @@ $row = $checksDAO->getCheckByID($_REQUEST['id']);
 $name_html = '<ul><li>'._AC($row['name']).'</li></ul>';
 $hidden_vars['id'] = $_REQUEST['id'];
 
-$msg->addConfirm(array('DELETE_ITEM', $name_html), $hidden_vars);
+$msg->addConfirm(array('DELETE_CHECK', $name_html), $hidden_vars);
 $msg->printConfirm();
 
 require(AC_INCLUDE_PATH.'footer.inc.php');

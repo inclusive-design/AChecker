@@ -384,6 +384,9 @@ class ChecksDAO extends DAO {
 		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
+		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
+		require_once(AC_INCLUDE_PATH.'classes/DAO/Techniques.class.php');
+		require_once(AC_INCLUDE_PATH.'classes/DAO/TestFiles.class.php');
 		
 		$langTextDAO = new LanguageTextDAO();
 
@@ -409,11 +412,37 @@ class ChecksDAO extends DAO {
 		$testPassDAO = new TestPassDAO();
 		$testPassDAO->DeleteByCheckID($checkID);
 		
+		$subgroupChecksDAO = new SubgroupChecksDAO();
+		$subgroupChecksDAO->DeleteByCheckID($checkID);
+		
+		$techniques = new Techniques();
+		$techniques->DeleteByCheckID($checkID);
+		
+		$testFiles = new TestFiles();
+		$testFiles->DeleteByCheckID($checkID);
+		
 		$sql = "DELETE FROM ". TABLE_PREFIX ."checks WHERE check_id=".$checkID;
 		
 		return $this->execute($sql);
 	}
 
+	/**
+	* Set checks.func field
+	* @access  public
+	* @param   $checkID: required
+	*          $func
+	* @return  true / false
+	* @author  Cindy Qi Li
+	*/
+	function setFunction($checkID, $func)
+	{
+		$sql = "UPDATE ". TABLE_PREFIX ."checks 
+		           SET func = '".mysql_real_escape_string($func)."' 
+		         WHERE check_id=".$checkID;
+		
+		return $this->execute($sql);
+	}
+	
 	/**
 	* Return all checks' info
 	* @access  public

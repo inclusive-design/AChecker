@@ -318,6 +318,31 @@ class GuidelinesDAO extends DAO {
   	}
 
 	/**
+	* Return open-to-public guideline info by given check id
+	* @access  public
+	* @param   $checkID
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	public function getEnabledGuidelinesByCheckID($checkID)
+	{
+		$sql = "select *
+				from ". TABLE_PREFIX ."guidelines
+				where guideline_id in 
+				     (SELECT distinct gg.guideline_id 
+				        FROM ". TABLE_PREFIX ."guideline_groups gg, 
+								". TABLE_PREFIX ."guideline_subgroups gs, 
+								". TABLE_PREFIX ."subgroup_checks gc,
+								". TABLE_PREFIX ."checks c
+				       WHERE gg.group_id = gs.group_id
+						 AND gs.subgroup_id = gc.subgroup_id
+						 AND gc.check_id = ".$checkID.")
+				order by title";
+
+	    return $this->execute($sql);
+  	}
+
+  	/**
 	* Return rows by guideline title
 	* @access  public
 	* @param   $title

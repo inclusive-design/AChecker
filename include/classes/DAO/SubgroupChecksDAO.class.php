@@ -66,15 +66,23 @@ class SubgroupChecksDAO extends DAO {
 				                    WHERE s.group_id = g.group_id
 				                      AND g.guideline_id = ".$guidelineID.")";
 
-		if (!$this->execute($sql))
-		{
-			$msg->addError('DB_NOT_UPDATED');
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+		return $this->execute($sql);
+	}
+	
+	/**
+	* Delete all entries with given check id
+	* @access  public
+	* @param   $checkID
+	* @return  true : if successful
+	*          false : if not successful
+	* @author  Cindy Qi Li
+	*/
+	public function DeleteByCheckID($checkID)
+	{
+		$sql = "DELETE FROM ".TABLE_PREFIX."subgroup_checks
+				WHERE check_id = ".$checkID;
+
+		return $this->execute($sql);
 	}
 	
 }
