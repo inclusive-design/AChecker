@@ -2672,6 +2672,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PASSWORD_MISMATCH',
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SELECT_ONE_ITEM','Only <em>one</em> item must be selected.','2009-02-04 15:31:02','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SENDING_ERROR','There was an error sending the email message.','2009-01-16 13:14:08','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SEQUENCEID_NOT_GIVEN','No sequence ID is given.','2009-03-09 14:21:28','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SYNTAX_ERROR','Syntax error.','2009-03-26 15:54:24','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_WRONG_PASSWORD','Incorrect password.','2009-01-16 10:29:47','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_FEEDBACK_ACCOUNT_CONFIRMED','Account has been confirmed.','2009-01-14 14:40:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_FEEDBACK_ACTION_COMPLETED_SUCCESSFULLY','Action completed successfully.','2009-01-16 11:29:41','');
