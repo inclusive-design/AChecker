@@ -2631,6 +2631,7 @@ INSERT INTO `language_text` VALUES ('eng', '_guideline','_SUBGROUPNAME_61','14.3
 INSERT INTO `language_text` VALUES ('eng', '_guideline','_SUBGROUPNAME_7','3.1 When an appropriate markup language exists, use markup rather than images to convey information.','2008-11-24 13:03:29','');
 INSERT INTO `language_text` VALUES ('eng', '_guideline','_SUBGROUPNAME_8','3.2 Create documents that validate to published formal grammars.','2008-11-24 13:03:29','');
 INSERT INTO `language_text` VALUES ('eng', '_guideline','_SUBGROUPNAME_9','3.3 Use style sheets to control layout and presentation.','2008-11-24 13:03:29','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_CHECK','Are you sure you want to delete the following check? Please note that deleting a check also deletes this check from guidelines and where this check is defined as a prerequisite/next check in other checks. <strong>%s</strong>','2009-03-26 14:19:22','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_GUIDELINE','Are you sure you want to delete the guideline <strong><em>%s</em></strong>?','2009-01-23 11:20:13','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_ITEM','Are you sure you want to delete the following items? <strong>%s</strong>','2009-03-17 15:19:54','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_LANG','Are you sure you want to delete the language (<strong>%s</strong>)?','2009-02-23 15:13:50','');
@@ -2650,6 +2651,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_USER','Empty 
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_WEB_SERVICE_ID','Empty web service ID.','2009-03-04 14:53:18','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_FIRST_LAST_NAME_UNIQUE','First, second, and last names combination must be unique.','2009-01-09 11:34:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_GUIDELINE_NOT_FOUND','Guideline not found.','2009-01-20 14:19:07','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_ID_ZERO','Check ID was zero, or was missing.','2009-03-26 10:03:56','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_FORMAT','Invalid format.','2009-03-03 13:44:57','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_LOGIN','Invalid login/password combination.','2009-01-08 11:43:51','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_SESSION','Invalid session.','2009-03-03 13:44:57','');
@@ -2712,9 +2714,12 @@ INSERT INTO `language_text` VALUES ('eng', '_template','abbr','Abbreviation','20
 INSERT INTO `language_text` VALUES ('eng', '_template','accessibility_review','Accessibility Review','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','achecker_handbook','Achecker Handbook','2009-01-28 15:28:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','achecker_home','AChecker Home','2009-01-09 14:15:29','');
+INSERT INTO `language_text` VALUES ('eng', '_template','add','Add','2009-03-24 13:47:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','add_checks','Add Checks','2009-01-21 16:23:10','');
 INSERT INTO `language_text` VALUES ('eng', '_template','add_edit_language','Add/Edit Language','2009-02-23 13:27:38','');
 INSERT INTO `language_text` VALUES ('eng', '_template','add_language','Add Language','2009-02-18 15:56:02','');
+INSERT INTO `language_text` VALUES ('eng', '_template','add_next_checks','Add Next Checks','2009-03-24 13:47:37','');
+INSERT INTO `language_text` VALUES ('eng', '_template','add_pre_checks','Add Prerequisite Checks','2009-03-20 12:01:45','');
 INSERT INTO `language_text` VALUES ('eng', '_template','add_privileges','Add Privileges','2009-02-17 09:45:53','');
 INSERT INTO `language_text` VALUES ('eng', '_template','all','All','2008-11-27 09:49:41','');
 INSERT INTO `language_text` VALUES ('eng', '_template','author','Author','2009-02-06 11:42:21','');
@@ -2783,6 +2788,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','error','Error','2008-11-
 INSERT INTO `language_text` VALUES ('eng', '_template','errors','Errors','2009-03-09 09:55:45','');
 INSERT INTO `language_text` VALUES ('eng', '_template','error_type','Error Type','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','expand_add_checks','Expand Add Checks','2009-01-21 16:23:10','');
+INSERT INTO `language_text` VALUES ('eng', '_template','expand_add_pre_checks','Expand Add Prerequisite Checks','2009-03-20 12:01:45','');
 INSERT INTO `language_text` VALUES ('eng', '_template','expand_add_privileges','Expand Add Privileges','2009-02-17 09:45:53','');
 INSERT INTO `language_text` VALUES ('eng', '_template','expand_guidelines','Expand Guidelines','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','expected_result','Expected Result','2008-11-24 14:25:44','');
@@ -2792,6 +2798,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','failed_result','Failed R
 INSERT INTO `language_text` VALUES ('eng', '_template','feedback','Feedback','2009-03-06 11:29:10','');
 INSERT INTO `language_text` VALUES ('eng', '_template','filter','Filter','2008-11-27 09:48:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','first_name','First Name','2009-01-09 10:40:36','');
+INSERT INTO `language_text` VALUES ('eng', '_template','function','Function','2009-03-26 10:09:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','guidelines','Guidelines','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','guideline_manage','Guideline Management','2008-12-02 11:06:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','guideline_terms','Guideline Terms','2008-11-27 09:48:36','');
@@ -2822,6 +2829,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','last_update','Last Updat
 INSERT INTO `language_text` VALUES ('eng', '_template','likely','Likely','2008-11-24 13:04:52','');
 INSERT INTO `language_text` VALUES ('eng', '_template','likely_problem','Likely Problem','2009-03-10 15:00:57','');
 INSERT INTO `language_text` VALUES ('eng', '_template','likely_problems','Likely Problems','2008-11-24 14:12:25','');
+INSERT INTO `language_text` VALUES ('eng', '_template','link_open_in_new','(link opens in a new window)','2009-03-26 14:19:22','');
 INSERT INTO `language_text` VALUES ('eng', '_template','locale','Locale','2009-02-23 13:27:38','');
 INSERT INTO `language_text` VALUES ('eng', '_template','login','Login','2009-01-07 16:14:08','');
 INSERT INTO `language_text` VALUES ('eng', '_template','login_name','Login Name','2009-01-09 10:40:36','');
@@ -2844,9 +2852,11 @@ INSERT INTO `language_text` VALUES ('eng', '_template','new_or_translated','New 
 INSERT INTO `language_text` VALUES ('eng', '_template','new_password','New Password','2009-01-16 10:52:03','');
 INSERT INTO `language_text` VALUES ('eng', '_template','new_terms','New Terms','2008-11-27 09:48:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','next_chapter','Next Chapter','2009-01-28 15:28:06','');
+INSERT INTO `language_text` VALUES ('eng', '_template','next_checks','Next Checks','2009-03-24 13:47:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','no','No','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','none_found','None Found.','2009-01-21 15:06:01','');
 INSERT INTO `language_text` VALUES ('eng', '_template','note','Note','2009-03-18 15:20:21','');
+INSERT INTO `language_text` VALUES ('eng', '_template','note_edit_pre_next_checks','Note: Section \"Prerequisite Checks\" and \"Next Checks\" are disabled at creating a new check. Clicking \"Submit\" to save the new check enables these sections.','2009-03-24 14:38:16','');
 INSERT INTO `language_text` VALUES ('eng', '_template','no_decision','No Decision','2009-02-27 16:07:19','');
 INSERT INTO `language_text` VALUES ('eng', '_template','no_instance','Error: Validation instances are not found.','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','no_results_found','No results found.','2009-01-21 12:38:17','');
@@ -2868,6 +2878,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','potential','Potential','
 INSERT INTO `language_text` VALUES ('eng', '_template','potential_problem','Potential Problem','2009-03-10 15:00:57','');
 INSERT INTO `language_text` VALUES ('eng', '_template','potential_problems','Potential Problems','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','previous_chapter','Previous Chapter','2009-01-28 15:28:06','');
+INSERT INTO `language_text` VALUES ('eng', '_template','pre_checks','Prerequisite Checks','2009-03-20 12:01:45','');
 INSERT INTO `language_text` VALUES ('eng', '_template','print_version','Print Version','2009-01-28 15:28:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','privileges','Privileges','2009-02-12 14:15:23','');
 INSERT INTO `language_text` VALUES ('eng', '_template','procedure','Procedure','2008-11-24 14:25:44','');
@@ -2891,6 +2902,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','review_output','Review O
 INSERT INTO `language_text` VALUES ('eng', '_template','save','Save','2009-01-15 10:01:07','');
 INSERT INTO `language_text` VALUES ('eng', '_template','search','Search','2009-01-28 15:28:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','search_phase','Search Phase','2008-12-01 13:18:57','');
+INSERT INTO `language_text` VALUES ('eng', '_template','search_str','Search String','2009-03-24 13:47:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','search_term_longer_3_chars','Please enter a search term that is longer than 3 characters.','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','search_text','Search for terms that contains the given string. For example, search for phase \"desc\" returns all terms that contain string \"desc\".','2008-12-02 11:06:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','select','Select','2009-02-05 14:16:51','');
@@ -2903,6 +2915,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','standard_guidelines','St
 INSERT INTO `language_text` VALUES ('eng', '_template','status','Status','2009-01-21 12:38:52','');
 INSERT INTO `language_text` VALUES ('eng', '_template','steps_to_check','Steps To Check','2008-11-24 14:25:44','');
 INSERT INTO `language_text` VALUES ('eng', '_template','submit','Submit','2008-12-01 13:18:57','');
+INSERT INTO `language_text` VALUES ('eng', '_template','submit_and_close','Submit and Close','2009-03-24 13:47:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','submit_no','No','2009-01-23 11:25:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','submit_yes','Yes','2009-01-23 11:25:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','Suggestion','suggestion','2009-01-13 15:58:15','');

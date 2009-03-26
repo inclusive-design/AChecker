@@ -565,7 +565,7 @@ class ChecksDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	function getChecksForAllByGuidelineIDs($gids)
+	function getOpenChecksForAllByGuidelineIDs($gids)
 	{
 		$sql = "select distinct gc.check_id, c.html_tag
 						from ". TABLE_PREFIX ."guidelines g, 
@@ -579,6 +579,7 @@ class ChecksDAO extends DAO {
 							and gs.subgroup_id = gc.subgroup_id
 							and gc.check_id = c.check_id
 							and c.html_tag = 'all elements'
+							and c.open_to_public = 1
 						order by c.html_tag";
 
     return $this->execute($sql);
@@ -591,7 +592,7 @@ class ChecksDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	function getChecksNotForAllByGuidelineIDs($gids)
+	function getOpenChecksNotForAllByGuidelineIDs($gids)
 	{
 			$sql = "select distinct gc.check_id, c.html_tag
 							from ". TABLE_PREFIX ."guidelines g, 
@@ -605,6 +606,7 @@ class ChecksDAO extends DAO {
 								and gs.subgroup_id = gc.subgroup_id
 								and gc.check_id = c.check_id
 								and c.html_tag <> 'all elements'
+								and c.open_to_public = 1
 							order by c.html_tag";
 
     return $this->execute($sql);
@@ -617,7 +619,7 @@ class ChecksDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	function getPreChecksByGuidelineIDs($gids)
+	function getOpenPreChecksByGuidelineIDs($gids)
 	{
 		$sql = "select distinct c.check_id, cp.prerequisite_check_id
 					from ". TABLE_PREFIX ."guidelines g, 
@@ -631,6 +633,7 @@ class ChecksDAO extends DAO {
 					  and gg.group_id = gs.group_id
 					  and gs.subgroup_id = gc.subgroup_id
 					  and gc.check_id = c.check_id
+					  and c.open_to_public = 1
 					  and c.check_id = cp.check_id
 					order by c.check_id, cp.prerequisite_check_id";
 
@@ -644,7 +647,7 @@ class ChecksDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	function getNextChecksByGuidelineIDs($gids)
+	function getOpenNextChecksByGuidelineIDs($gids)
 	{
 		$sql = "select distinct c.check_id, tp.next_check_id
 							from ". TABLE_PREFIX ."guidelines g, 
@@ -658,6 +661,7 @@ class ChecksDAO extends DAO {
 							  and gg.group_id = gs.group_id
 							  and gs.subgroup_id = gc.subgroup_id
 							  and gc.check_id = c.check_id
+							  and c.open_to_public = 1
 							  and c.check_id = tp.check_id
 							order by c.check_id, tp.next_check_id";
 

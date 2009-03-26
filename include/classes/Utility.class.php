@@ -75,18 +75,5 @@ class Utility {
 		else
 			return $str;
 	}
-
-	/**
-	* check syntax of the code that is used in eval()
-	* @access  public
-	* @param   $code
-	* @return  true: correct syntax; 
-	*          false: wrong syntax
-	* @author  Cindy Qi Li
-	*/
-	private function check_eval_code_syntax($code) 
-	{
-    	return @eval('return true;' . $code);
-	}
 }
 ?>

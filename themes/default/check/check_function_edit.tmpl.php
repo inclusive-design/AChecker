@@ -36,7 +36,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		</tr>
 		
 		<tr>
-			<td align="left"><textarea rows="25" cols="135" name="func" id="func"><?php if (isset($_POST['func'])) echo $_POST['func']; else echo _AC($this->check_row["func"]); ?></textarea></td>
+			<td align="left"><textarea rows="25" cols="135" name="func" id="func"><?php if (isset($_POST['func'])) echo $_POST['func']; else echo $this->check_row["func"]; ?></textarea></td>
 		</tr>
 
 	</table>

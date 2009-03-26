@@ -13,6 +13,7 @@
 define('AC_INCLUDE_PATH', '../include/');
 include_once(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/CheckFuncUtility.class.php');
 
 if (isset($_GET['id'])) $check_id = intval($_GET['id']);
 
@@ -27,16 +28,26 @@ if ($check_id <= 0)
 }
 
 // handle submit
-if (isset($_POST['cancel'])) {
+if (isset($_POST['cancel'])) 
+{
 	header('Location: index.php');
 	exit;
-} else if (isset($_POST['submit']) || isset($_POST['submit_and_close'])) {
-	$checksDAO = new ChecksDAO();
-	
-	$check_id = $checksDAO->setFunction($check_id, $_POST['func']);
+} 
+else if (isset($_POST['submit']) || isset($_POST['submit_and_close'])) 
+{
+	// check syntax
+	$func = trim($_POST['func']);
+	if (!CheckFuncUtility::validateSyntax($func))
+	{
+		$msg->addError('SYNTAX_ERROR');
+	}
 	
 	if (!$msg->containsErrors())
 	{
+		$checksDAO = new ChecksDAO();
+		
+		$checksDAO->setFunction($check_id, $func);
+	
 		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 		
 		if (isset($_POST['submit_and_close']))

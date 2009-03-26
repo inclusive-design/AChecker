@@ -23,6 +23,7 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 include (AC_INCLUDE_PATH . "lib/simple_html_dom.php");
 include_once (AC_INCLUDE_PATH . "classes/Checks.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
+include_once (AC_INCLUDE_PATH . "classes/CheckFuncUtility.class.php");
 include_once (AC_INCLUDE_PATH . "classes/DAO/ChecksDAO.class.php");
 
 define("SUCCESS_RESULT", "success");
@@ -43,7 +44,8 @@ class AccessibilityValidator {
 	var $check_for_all_elements_array = array(); // array of the to-be-checked check_ids 
 	var $check_for_tag_array = array();          // array of the to-be-checked check_ids 
 	var $prerequisite_check_array = array();     // array of prerequisite check_ids of the to-be-checked check_ids 
-	var $next_check_array = array();             // array of the next check_ids of the to-be-checked check_ids 
+	var $next_check_array = array();             // array of the next check_ids of the to-be-checked check_ids
+	var $check_func_array = array();         // array of all the check functions 
 		
 	var $content_dom;                    // dom of $validate_content
 
@@ -93,6 +95,15 @@ class AccessibilityValidator {
 		global $header_array;
 
 		$header_array = $this->content_dom->find("h1, h2, h3, h4, h5, h6, h7");
+		
+		$checksDAO = new ChecksDAO();
+		$rows = $checksDAO->getAllOpenChecks();
+		
+		if (is_array($rows))
+		{
+			foreach ($rows as $row)
+				$this->check_func_array[$row['check_id']] = CheckFuncUtility::convertCode($row['func']);
+		}
 	}
 	
 	/** private
@@ -159,7 +170,7 @@ class AccessibilityValidator {
 			$checksDAO = new ChecksDAO();
 			
 			// generate array of "all element"
-			$rows = $checksDAO->getChecksForAllByGuidelineIDs($guideline_query);
+			$rows = $checksDAO->getOpenChecksForAllByGuidelineIDs($guideline_query);
 			
 			$count = 0;
 			if (is_array($rows))
@@ -169,7 +180,7 @@ class AccessibilityValidator {
 			}
 			
 			// generate array of check_id
-			$rows = $checksDAO->getChecksNotForAllByGuidelineIDs($guideline_query);
+			$rows = $checksDAO->getOpenChecksNotForAllByGuidelineIDs($guideline_query);
 
 			if (is_array($rows))
 			{
@@ -185,7 +196,7 @@ class AccessibilityValidator {
 			
 			// generate array of prerequisite check_ids
 			
-			$rows = $checksDAO->getPreChecksByGuidelineIDs($guideline_query);
+			$rows = $checksDAO->getOpenPreChecksByGuidelineIDs($guideline_query);
 
 			if (is_array($rows))
 			{
@@ -201,7 +212,7 @@ class AccessibilityValidator {
 			$this->prerequisite_check_array = $prerequisite_check_array;
 
 			// generate array of next check_ids
-			$rows = $checksDAO->getNextChecksByGuidelineIDs($guideline_query);
+			$rows = $checksDAO->getOpenNextChecksByGuidelineIDs($guideline_query);
 
 			if (is_array($rows))
 			{

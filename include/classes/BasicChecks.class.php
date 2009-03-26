@@ -24,7 +24,7 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 include_once(AC_INCLUDE_PATH. 'classes/DAO/LangCodesDAO.class.php');
 
 class BasicChecks {
-	public static function hasAttribute ($att, $e, $content_dom)
+	public static function hasAttribute ($att, $e)
 	{
 		return array_key_exists($attr, $e->attr);
 	}
