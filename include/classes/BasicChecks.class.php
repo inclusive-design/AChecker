@@ -24,10 +24,6 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 include_once(AC_INCLUDE_PATH. 'classes/DAO/LangCodesDAO.class.php');
 
 class BasicChecks {
-	public static function hasAttribute ($att, $e)
-	{
-		return array_key_exists($attr, $e->attr);
-	}
 	/**
 	* check if the next head tag, (for example: <h1>, <h2>..) is not in $not_in_array
 	* return true if not in, otherwise, return false

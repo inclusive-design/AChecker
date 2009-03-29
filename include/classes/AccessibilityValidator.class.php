@@ -22,7 +22,7 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
 include (AC_INCLUDE_PATH . "lib/simple_html_dom.php");
 include_once (AC_INCLUDE_PATH . "classes/Checks.class.php");
-include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
+include_once (AC_INCLUDE_PATH . "classes/BasicFunctions.class.php");
 include_once (AC_INCLUDE_PATH . "classes/CheckFuncUtility.class.php");
 include_once (AC_INCLUDE_PATH . "classes/DAO/ChecksDAO.class.php");
 
@@ -51,7 +51,6 @@ class AccessibilityValidator {
 
 	var $line_offset;                    // 1. ignore the problems on the lines before the line of $line_offset
 	                                     // 2. report line_number = real_line_number - $line_offset 
-	
 	/**
 	 * public
 	 * $content: string, html content to check
@@ -72,7 +71,7 @@ class AccessibilityValidator {
 		// dom of the content to be validated
 		$this->content_dom = $this->get_simple_html_dom($this->validate_content);
 
-		// prepare gobal vars used in BasicChecks.class.php to fasten the validation
+		// prepare gobal vars used in BasicFunctions.class.php to fasten the validation
 		$this->prepare_global_vars();
 		
 		// set arrays of check_id, prerequisite check_id, next check_id
@@ -86,7 +85,7 @@ class AccessibilityValidator {
 	}
 	
 	/** private
-	 * set global vars used in Checks.class.php and BasicChecks.class.php
+	 * set global vars used in Checks.class.php and BasicFunctions.class.php
 	 * to fasten the validation process.
 	 * return nothing.
 	 */
@@ -307,7 +306,9 @@ class AccessibilityValidator {
 		if (!$result)
 		{
 			// run function for $check_id
-			eval("\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom);");
+//			eval("\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom);");
+//			debug($this->check_func_array[$check_id]);exit;
+			$check_result = eval($this->check_func_array[$check_id]);
 
 			if ($check_result)  // success
 			{

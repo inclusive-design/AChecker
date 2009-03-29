@@ -15,6 +15,8 @@ include_once(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/CheckFuncUtility.class.php');
 
+global $msg;
+
 if (isset($_GET['id'])) $check_id = intval($_GET['id']);
 
 if ($check_id <= 0)
@@ -41,6 +43,9 @@ else if (isset($_POST['submit']) || isset($_POST['submit_and_close']))
 	{
 		$msg->addError('SYNTAX_ERROR');
 	}
+	
+	// this function adds errors into $msg
+	CheckFuncUtility::validateSecurity($func);
 	
 	if (!$msg->containsErrors())
 	{
