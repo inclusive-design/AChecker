@@ -25,73 +25,19 @@ include_once(AC_INCLUDE_PATH. 'classes/DAO/LangCodesDAO.class.php');
 
 class BasicChecks {
 	/**
-	* check if the next head tag, (for example: <h1>, <h2>..) is not in $not_in_array
-	* return true if not in, otherwise, return false
-	*/
-	public static function check_next_header_not_in ($content_dom, $line_number, $col_number, $not_in_array)
-	{
-		global $header_array;
-		
-		if (!is_array($header_array)) return true;
-		
-		// find the next header after $line_number, $col_number
-		foreach ($header_array as $e)
-		{
-			if ($e->linenumber > $line_number || ($e->linenumber == $line_number && $e->colnumber > $col_number))
-			{
-				if (!isset($next_header)) 
-					$next_header = $e;
-				else if ($e->linenumber < $next_header->line_number || ($e->linenumber == $next_header->line_number && $e->colnumber > $next_header->col_number))
-					$next_header = $e;
-			}
-		}
-
-		if (isset($next_header) && !in_array($next_header->tag, $not_in_array))
-			return false;
-		else
-			return true;
-	}
-	
-	/**
 	* cut out language code from given $lang
 	* return language code
 	*/
-	public static function cut_out_lang_code($lang)
+	public static function cutOutLangCode($lang)
 	{
 		$words = explode("-", $lang);
 		return trim($words[0]);
 	}
 
 	/**
-	* find language code defined in html
-	* return language code
-	*/
-	public static function get_lang_code($content_dom)
-	{
-		// get html language
-		$e_htmls = $content_dom->find("html");
-
-		foreach ($e_htmls as $e_html)
-		{
-			if (isset($e_html->attr["xml:lang"])) 
-			{
-				$lang = trim($e_html->attr["xml:lang"]);
-				break;
-			}
-			else if (isset($e_html->attr["lang"]))
-			{
-				$lang = trim($e_html->attr["lang"]);
-				break;
-			}
-		}
-		
-		return BasicChecks::cut_out_lang_code($lang);
-	}
-	
-	/**
 	* return array of all the 2-letter & 3-letter language codes with direction 'rtl'
 	*/
-	public static function get_rtl_lang_codes()
+	public static function getRtlLangCodes()
 	{
 		$langCodesDAO = new LangCodesDAO();
 		
@@ -99,49 +45,55 @@ class BasicChecks {
 	}
 	
 	/**
-	* check if $code is a valid language code
-	* return true if valid, otherwise, return false
+	* check if the inner text is in one of the search string defined in checks.search_str
+	* return true if in, otherwise, return false 
 	*/
-	public static function valid_lang_code($code)
+	public static function isTextInSearchString($text, $check_id, $e)
 	{
-		$code = BasicChecks::cut_out_lang_code($code);
-		$langCodesDAO = new LangCodesDAO();
-
-		if (strlen($code) == 2) 
+		$checksDAO = new ChecksDAO();
+		$row = $checksDAO->getCheckByID($check_id);
+		
+		$search_strings = explode(',', _AC($row['search_str']));
+		
+		if (!is_array($search_strings)) return true;
+		else
 		{
-			$rows = $langCodesDAO->GetLangCodeBy2LetterCode($code);
-		}
-		else if (strlen($code) == 3)
-		{
-			$rows = $langCodesDAO->GetLangCodeBy3LetterCode($code);
-		}
-		else 
-		{
+			
+			foreach ($search_strings as $str)
+			{
+				$str = trim($str);
+				$prefix = substr($str, 0 , 1);
+				$suffix = substr($str, -1);
+				
+				if ($prefix == '%' && $suffix == '%')
+				{  // match '%match%' 
+					return stripos($text, substr($str, 1, -1));
+				}
+				else if ($prefix == '%')
+				{  // match '%match'
+					$match = substr($str, 1);
+					return (substr($text, strlen($match)*(-1)) == $match);
+				} 
+				else if ($suffix == '%')
+				{  // match 'match%'
+					$match = substr($str, 0, -1);
+					return (substr($text, 0, strlen($match)) == $match);
+				} 
+				else if ($text == $str)
+				{ 
+					return true;
+				}
+			}
+			
 			return false;
 		}
+	}
 
-		return (is_array($rows));
-	}
-	
-	/**
-	* Check recursively to find if $e has a parent with tag $parent_tag
-	* return true if found, otherwise, false
-	*/
-	public static function has_parent($e, $parent_tag)
-	{
-		if ($e->parent() == NULL) return false;
-		
-		if ($e->parent()->tag == $parent_tag)
-			return true;
-		else
-			return BasicChecks::has_parent($e->parent(), $parent_tag);
-	}
-	
 	/**
 	* Makes a guess about the table type.
 	* Returns true if this should be a data table, false if layout table.
 	*/
-	public static function is_data_table($e)
+	public static function isDataTable($e)
 	{
 		global $is_data_table;
 		
@@ -153,32 +105,10 @@ class BasicChecks {
 			if ($child->tag == "th") 
 				$is_data_table = true;
 			else 
-				BasicChecks::is_data_table($child);
+				BasicChecks::isDataTable($child);
 		}
 	}
 	
-	/**
-	* check if $e has associated label
-	* return true if has, otherwise, return false
-	*/
-	public static function has_associated_label($e, $content_dom)
-	{
-		// 1. The element $e is contained by a "label" element
-		// 2. The element $e has a "title" attribute
-		if ($e->parent()->tag == "label" || isset($e->attr["title"])) return true;
-		
-		// 3. The element $e has an "id" attribute value that matches the "for" attribute value of a "label" element
-		$input_id = $e->attr["id"];
-		
-		if ($input_id == "") return false;  // attribute "id" must exist
-		
-		foreach ($content_dom->find("label") as $e_label)
-		  if (strtolower(trim($e_label->attr["for"])) == strtolower(trim($e->attr["id"])))
-		    return true;
-	  
-	  return false;
-	}
-
 	/**
 	* check if associated label of $e has text
 	* return true if has, otherwise, return false

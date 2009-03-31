@@ -15,7 +15,7 @@ include_once(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/CheckFuncUtility.class.php');
 
-global $msg;
+//global $msg;
 
 if (isset($_GET['id'])) $check_id = intval($_GET['id']);
 
@@ -62,7 +62,6 @@ else if (isset($_POST['submit']) || isset($_POST['submit_and_close']))
 		else
 		{
 			header('Location: '.$_SERVER['PHP_SELF'].'?id='.$check_id);
-			
 		}
 		exit;
 	}
@@ -76,6 +75,14 @@ if (isset($check_id)) // edit existing user
 {
 	$check_row = $checksDAO->getCheckByID($check_id);
 	
+	if (!$check_row)
+	{
+		$msg->addError('INVALID_CHECK_ID');
+		require(AC_INCLUDE_PATH.'header.inc.php');
+		$msg->printAll();
+		require(AC_INCLUDE_PATH.'footer.inc.php');
+		exit;
+	}
 	$savant->assign('check_row', $check_row);
 }
 

@@ -3,7 +3,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
+/* Adaptive Technology Resource Centre / University of Toronto          */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -12,11 +12,11 @@
 
 /**
 * CheckFuncUtility.class.php
-* Utility class for check eval functions
+* Utility class for check functions
 *
 * @access	public
 * @author	Cindy Qi Li
-* @package checker
+* @package  checker
 */
 
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
@@ -91,7 +91,7 @@ class CheckFuncUtility {
     	if (trim($code) == '')
     		return 'return true;';
     	else
-			return 'global $global_e, $global_content_dom; $global_e = $e; $global_content_dom = $this->content_dom; ' . $code;
+			return 'global $global_e, $global_content_dom, $header_array, $global_check_id; $global_e = $e; $global_content_dom = $this->content_dom; $global_check_id=$check_id; ' . $code;
 	}
 }
-?>  
+?>
