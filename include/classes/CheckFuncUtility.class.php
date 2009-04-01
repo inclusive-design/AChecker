@@ -91,7 +91,7 @@ class CheckFuncUtility {
     	if (trim($code) == '')
     		return 'return true;';
     	else
-			return 'global $global_e, $global_content_dom, $header_array, $global_check_id; $global_e = $e; $global_content_dom = $this->content_dom; $global_check_id=$check_id; ' . $code;
+			return 'global $global_e, $global_content_dom, $header_array, $global_check_id, $htmlValidator; $global_e = $e; $global_content_dom = $this->content_dom; $global_check_id=$check_id; ' . $code;
 	}
 }
 ?>

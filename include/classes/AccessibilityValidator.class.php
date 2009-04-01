@@ -300,7 +300,6 @@ class AccessibilityValidator {
 		global $msg;
 		
 		// don't check the lines before $line_offset
-		if ($check_id <> 151) return;
 		if ($e->linenumber <= $this->line_offset) return;
 		
 		$result = $this->get_check_result($e->linenumber-$this->line_offset, $e->colnumber, $check_id);
@@ -310,9 +309,8 @@ class AccessibilityValidator {
 		{
 			// run function for $check_id
 //			eval("\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom);");
-//			debug($this->check_func_array[$check_id]);exit;
 			$check_result = eval($this->check_func_array[$check_id]);
-//debug($check_result);
+			
 			if (is_null($check_result))
 			{ // when $check_result is not true/false, must be something wrong with the check function.
 			  // show warning message and skip this check
@@ -371,7 +369,6 @@ class AccessibilityValidator {
 	 */
 	private function save_result($line_number, $col_number, $html_code, $check_id, $result)
 	{
-//		debug($result);
 		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result));
 		
 		return true;
