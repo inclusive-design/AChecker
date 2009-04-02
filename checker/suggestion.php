@@ -20,15 +20,28 @@ include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestProcedureDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestExpectedDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestFailDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/CheckExamplesDAO.class.php');
 
 $check_id = intval($_GET["id"]);
 
 $checksDAO = new ChecksDAO();
 $row = $checksDAO->getCheckByID($check_id);
 
+if (!$row)
+{ // invalid check id
+	$msg->addError('INVALID_CHECK_ID');
+	require(AC_INCLUDE_PATH.'header.inc.php');
+	$msg->printAll();
+	require(AC_INCLUDE_PATH.'footer.inc.php');
+	exit;
+}
+
 $guidelinesDAO = new GuidelinesDAO();
 $guideline_rows = $guidelinesDAO->getEnabledGuidelinesByCheckID($check_id);
 
+$checkExamplesDAO = new CheckExamplesDAO();
+$pass_examples = $checkExamplesDAO->getByCheckIDAndType($check_id, AC_CHECK_EXAMPLE_PASS);
+$fail_examples = $checkExamplesDAO->getByCheckIDAndType($check_id, AC_CHECK_EXAMPLE_FAIL);
 ?>
 <div class="output-form">
 	
@@ -164,6 +177,35 @@ if ($row["test_failed_result"] <> "")
 <?php
 }
 ?>
+
+<?php if (is_array($pass_examples) || is_array($fail_examples)) {?>
+<h2><? echo _AC("examples"); ?></h2>
+
+<?php 	if (is_array($pass_examples)) {?>
+<h3><? echo _AC("pass_examples"); ?></h3>
+<?php 		foreach ($pass_examples as $pass_example) {?>
+<span class="msg">
+<?php echo $pass_example['description']; ?><br/>
+<pre class="code">
+<?php echo htmlentities($pass_example['content']); ?>
+</pre>
+</span>
+<?php 		} // end of foreach?>
+<?php 	} // end of if (pass examples)?>
+
+<?php 	if (is_array($fail_examples)) {?>
+<h3><? echo _AC("fail_examples"); ?></h3>
+<?php 		foreach ($fail_examples as $fail_example) {?>
+<span class="msg">
+<?php echo $fail_example['description']; ?><br/>
+<pre class="code">
+<?php echo htmlentities($fail_example['content']); ?>
+</pre>
+</span>
+<?php 		} // end of foreach?>
+<?php 	} // end of if (pass examples)?>
+
+<?php }?>
 </div>
 <?php
 // display footer

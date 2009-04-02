@@ -2193,7 +2193,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_94','Is this page
 INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_97','Is this page readable when stylesheets are removed?','2008-11-24 13:02:31','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_98','Are there any abbreviations in the document that are not marked with the <code>abbr</code> element?','2008-11-24 13:02:31','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_99','Are there any acronyms in the content that are not marked with the <code>acronym</code> element?','2008-11-24 13:02:31','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_RATIONALE_1','All images must have alternate text. It\'s required by people that are unable to view the image.','2008-11-24 13:02:09','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_RATIONALE_1','All images must have alternate text. It\\\'s required by people that are unable to view the image.','2009-04-02 12:51:55','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_RATIONALE_10','People with photosensitive epilepsy can have seizures triggered by flickering or flashing in the 4 to 59 flashes per second (Hertz) range with a peak sensitivity at 20 flashes per second as well as quick changes from dark to light (like strobe lights).','2008-11-24 13:02:09','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_RATIONALE_100','Only use <code>blockquote</code> to indicate a quotation. Do not use it to create an indented effect on the page. <code>blockquote</code> is a semantic element and using it improperly can confuse the user.','2008-11-24 13:02:09','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_RATIONALE_110','If you use a number of different languages on a page, make sure that any changes in language are clearly identified by use of the <code>lang</code> attribute.','2008-11-24 13:02:09','');
@@ -2219,7 +2219,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_RATIONALE_80','Each <code>
 INSERT INTO `language_text` VALUES ('eng', '_check','_RATIONALE_9','D-links are required until there is more browser support for the <code>longdesc</code> attribute.','2008-11-24 13:02:09','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_RATIONALE_98','When abbreviations and natural language changes are not identified, they may be indecipherable when machine-spoken or brailled.','2008-11-24 13:02:09','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_RATIONALE_99','When acronyms and natural language changes are not identified, they may be indecipherable when machine-spoken or brailled.','2008-11-24 13:02:09','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_REPAIREXAMPLE_1','<img src=\"rex.jpg\" alt=\"a picture of Rex the cat\" />','2008-11-24 13:02:22','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_REPAIREXAMPLE_1','<img src=\\\"rex.jpg\\\" alt=\\\"a picture of Rex the cat\\\" />','2009-04-02 12:51:55','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_REPAIREXAMPLE_112','<table summary=\"This data table shows the average temperature for each day of the week.\">','2008-11-24 13:02:22','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_REPAIREXAMPLE_114','<table summary=\"\">. (Or remove the table summary attribute.)','2008-11-24 13:02:22','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_REPAIREXAMPLE_134','<a href=\"dogs\">dogs</a> | <a href=\"cats\">cats</a>','2008-11-24 13:02:22','');
@@ -2745,6 +2745,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','charset','Character Set'
 INSERT INTO `language_text` VALUES ('eng', '_template','checks','Checks','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_by_upload','Check Accessibility by File Upload','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_by_uri','Check Accessibility by URI','2008-11-21 14:25:37','');
+INSERT INTO `language_text` VALUES ('eng', '_template','check_id','Check ID','2009-04-02 13:16:21','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_it','Check It','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_manage','Check Management','2008-12-02 11:06:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_terms','Check Terms','2008-11-27 09:48:36','');
@@ -2798,6 +2799,8 @@ INSERT INTO `language_text` VALUES ('eng', '_template','english_text','English T
 INSERT INTO `language_text` VALUES ('eng', '_template','error','Error','2008-11-24 14:25:44','');
 INSERT INTO `language_text` VALUES ('eng', '_template','errors','Errors','2009-03-09 09:55:45','');
 INSERT INTO `language_text` VALUES ('eng', '_template','error_type','Error Type','2009-01-21 12:38:17','');
+INSERT INTO `language_text` VALUES ('eng', '_template','examples','Examples','2009-04-02 13:16:21','');
+INSERT INTO `language_text` VALUES ('eng', '_template','example_type','Example Type','2009-04-02 13:16:21','');
 INSERT INTO `language_text` VALUES ('eng', '_template','expand_add_checks','Expand Add Checks','2009-01-21 16:23:10','');
 INSERT INTO `language_text` VALUES ('eng', '_template','expand_add_pre_checks','Expand Add Prerequisite Checks','2009-03-20 12:01:45','');
 INSERT INTO `language_text` VALUES ('eng', '_template','expand_add_privileges','Expand Add Privileges','2009-02-17 09:45:53','');
@@ -2806,6 +2809,9 @@ INSERT INTO `language_text` VALUES ('eng', '_template','expected_result','Expect
 INSERT INTO `language_text` VALUES ('eng', '_template','export','Export','2009-02-24 13:58:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','fail','FAIL','2009-03-09 12:54:29','');
 INSERT INTO `language_text` VALUES ('eng', '_template','failed_result','Failed Result','2008-11-24 14:25:44','');
+INSERT INTO `language_text` VALUES ('eng', '_template','fail_example','Fail HTML Example','2009-04-02 11:08:06','');
+INSERT INTO `language_text` VALUES ('eng', '_template','fail_examples','Fail Examples','2009-04-02 13:16:21','');
+INSERT INTO `language_text` VALUES ('eng', '_template','fail_example_desc','Fail Example Description','2009-04-02 11:08:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','feedback','Feedback','2009-03-06 11:29:10','');
 INSERT INTO `language_text` VALUES ('eng', '_template','filter','Filter','2008-11-27 09:48:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','first_name','First Name','2009-01-09 10:40:36','');
@@ -2885,6 +2891,9 @@ INSERT INTO `language_text` VALUES ('eng', '_template','password_new_blurb','Ent
 INSERT INTO `language_text` VALUES ('eng', '_template','password_old','Old Password','2009-01-16 10:27:02','');
 INSERT INTO `language_text` VALUES ('eng', '_template','password_reminder','Password Reminder','2009-01-07 16:14:08','');
 INSERT INTO `language_text` VALUES ('eng', '_template','password_request2','Dear %1$s,\r\n\r\nYour login name is %1$s.\r\n\r\nTo set a new password, follow the link below.\r\n\r\n%4$s\r\n\r\n(If this link does not take you to the site, copy and paste it into the address bar of your internet browser)\r\n\r\nThe link will become invalid after %3$s days.','2009-01-16 13:05:25','');
+INSERT INTO `language_text` VALUES ('eng', '_template','pass_example','Pass HTML Example','2009-04-02 11:08:06','');
+INSERT INTO `language_text` VALUES ('eng', '_template','pass_examples','Pass Examples','2009-04-02 13:16:21','');
+INSERT INTO `language_text` VALUES ('eng', '_template','pass_example_desc','Pass Example Description','2009-04-02 11:08:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','potential','Potential','2008-11-24 13:04:52','');
 INSERT INTO `language_text` VALUES ('eng', '_template','potential_problem','Potential Problem','2009-03-10 15:00:57','');
 INSERT INTO `language_text` VALUES ('eng', '_template','potential_problems','Potential Problems','2008-11-24 14:12:25','');

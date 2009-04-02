@@ -14,6 +14,8 @@ define('AC_INCLUDE_PATH', 'include/');
 require(AC_INCLUDE_PATH.'vitals.inc.php');
 
 // unset all session variables
+session_unset();
+session_destroy();
 $_SESSION = array();
 
 $msg->addFeedback('LOGOUT');

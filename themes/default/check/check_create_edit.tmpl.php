@@ -84,6 +84,19 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			<td align="left"><input id="err" name="err" type="text" size="100" value="<?php if (isset($_POST['err'])) echo $_POST['err']; else echo stripslashes(htmlspecialchars(_AC($this->check_row['err']))); ?>" /></td>
 		</tr>
 
+		<?php if (isset($this->check_row)) {?>
+		<tr>
+			<th align="left"><? echo _AC("guidelines"); ?></th>
+			<td align="left">
+			<?php if (is_array($this->guideline_rows)) {?> 
+			<?php 	foreach ($this->guideline_rows as $guideline) {?>
+					<a title="<?php echo $guideline['title']._AC('link_open_in_new'); ?>" target="_new" href="<?php echo AC_BASE_HREF; ?>guideline/view_guideline.php?id=<?php echo $guideline['guideline_id']; ?>"><?php echo $guideline["title"]; ?></a>&nbsp;&nbsp;
+			<?php   } // end of foreach?>
+			<?php } else { echo _AC('none_found'); }?>
+			</td>
+		</tr>
+		<?php }?>
+		
 		<tr>
 			<th align="left"><label for="short_desc"><?php echo _AC('short_desc'); ?></label>:</th>
 			<td align="left"><textarea rows="3" cols="60" name="description" id="short_desc"><?php if (isset($_POST['description'])) echo $_POST['description']; else echo _AC($this->check_row["description"]); ?></textarea></td>
@@ -163,6 +176,26 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			<td align="left"><textarea rows="3" cols="60" name="test_failed_result" id="test_failed_result"><?php if (isset($_POST['test_failed_result'])) echo $_POST['test_failed_result']; else echo _AC($this->check_row["test_failed_result"]); ?></textarea></td>
 		</tr>
 		
+		<tr>
+			<th align="left"><label for="pass_example_desc"><?php echo _AC('pass_example_desc'); ?></label>:</th>
+			<td align="left"><input id="pass_example_desc" name="pass_example_desc" type="text" size="100" value="<?php if (isset($_POST['pass_example_desc'])) echo $_POST['pass_example_desc']; else echo htmlspecialchars($this->check_example_row['pass_example_desc']); ?>" /></td>
+		</tr>
+		
+		<tr>
+			<th align="left"><label for="pass_example"><?php echo _AC('pass_example'); ?></label>:</th>
+			<td align="left"><textarea rows="5" cols="60" name="pass_example" id="pass_example"><?php if (isset($_POST['pass_example'])) echo $_POST['pass_example']; else echo $this->check_example_row["pass_example"]; ?></textarea></td>
+		</tr>
+		
+		<tr>
+			<th align="left"><label for="fail_example_desc"><?php echo _AC('fail_example_desc'); ?></label>:</th>
+			<td align="left"><input id="fail_example_desc" name="fail_example_desc" type="text" size="100" value="<?php if (isset($_POST['fail_example_desc'])) echo $_POST['fail_example_desc']; else echo htmlspecialchars($this->check_example_row['fail_example_desc']); ?>" /></td>
+		</tr>
+		
+		<tr>
+			<th align="left"><label for="fail_example"><?php echo _AC('fail_example'); ?></label>:</th>
+			<td align="left"><textarea rows="5" cols="60" name="fail_example" id="fail_example"><?php if (isset($_POST['pass_example'])) echo $_POST['fail_example']; else echo $this->check_example_row["fail_example"]; ?></textarea></td>
+		</tr>
+		
 		<?php if (isset($this->author)) {?>
 		<tr>
 			<th align="left"><?php echo _AC("author"); ?>:</th>
@@ -183,7 +216,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		<?php echo _AC('pre_checks');?>
 		<input type="button" name="add_pre_checks" value="<?php echo _AC('add_pre_checks'); ?>" 
 		       onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&cid=<?php echo $_GET['id']; ?>'); return false;" />
-	</h2>
+	</h2><br/>
 	<table class="data" summary="" rules="rows" >
 		<thead>
 		<tr>
@@ -224,7 +257,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		<?php echo _AC('next_checks');?>
 		<input type="button" name="add_next_checks" value="<?php echo _AC('add_next_checks'); ?>" 
 		       onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=next&cid=<?php echo $_GET['id']; ?>'); return false;" />
-	</h2>
+	</h2><br/>
 	<table class="data" summary="" rules="rows" >
 		<thead>
 		<tr>

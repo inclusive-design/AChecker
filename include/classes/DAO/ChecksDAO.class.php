@@ -386,7 +386,7 @@ class ChecksDAO extends DAO {
 		require_once(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/Techniques.class.php');
-		require_once(AC_INCLUDE_PATH.'classes/DAO/TestFiles.class.php');
+		require_once(AC_INCLUDE_PATH.'classes/DAO/CheckExamples.class.php');
 		
 		$langTextDAO = new LanguageTextDAO();
 
@@ -418,8 +418,8 @@ class ChecksDAO extends DAO {
 		$techniques = new Techniques();
 		$techniques->DeleteByCheckID($checkID);
 		
-		$testFiles = new TestFiles();
-		$testFiles->DeleteByCheckID($checkID);
+		$checkExamples = new CheckExamples();
+		$checkExamples->DeleteByCheckID($checkID);
 		
 		$sql = "DELETE FROM ". TABLE_PREFIX ."checks WHERE check_id=".$checkID;
 		
@@ -676,8 +676,8 @@ class ChecksDAO extends DAO {
 	 *          $name
 	 *          $err
 	 *          $open_to_public
-	 * @return  true    if update successfully
-	 *          false   if update unsuccessful
+	 * @return  true    if all fields are valid
+	 *          false   if any field is not valid
 	 * @author  Cindy Qi Li
 	 */
 	private function isFieldsValid($html_tag, $confidence, $name, $err, $open_to_public)

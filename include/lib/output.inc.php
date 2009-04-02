@@ -119,8 +119,8 @@ function _AC() {
 	}
 	$format	  = array_shift($args);
 
-	if (isset($_template[$format])) {
-		$outString	= @vsprintf($_template[$format], $args);
+	if (isset($_template[$format]) && count($args) > 0) {
+		$outString	= vsprintf($_template[$format], $args);
 		$str = ob_get_contents();
 	} else {
 		$outString = '';

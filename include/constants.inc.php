@@ -65,6 +65,10 @@ function get_status_by_code($status_code)
 		return '';
 }
 
+/* User status */
+define('AC_CHECK_EXAMPLE_FAIL', 0);
+define('AC_CHECK_EXAMPLE_PASS', 1);
+
 /* language text prefix. Note that all prefixes must be unique */
 // table "checks"
 define('LANG_PREFIX_CHECKS_NOTE', '_NOTE_');

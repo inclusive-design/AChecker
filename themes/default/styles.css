@@ -1332,6 +1332,10 @@ div.insidecol {
    padding:5px;
 }
 
+pre.code {
+	padding: 10px;
+	background-color: #F6EAD6;
+}
 
 /* index page */
 ul#home-links {

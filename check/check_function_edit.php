@@ -83,6 +83,7 @@ if (isset($check_id)) // edit existing user
 		require(AC_INCLUDE_PATH.'footer.inc.php');
 		exit;
 	}
+	
 	$savant->assign('check_row', $check_row);
 }
 

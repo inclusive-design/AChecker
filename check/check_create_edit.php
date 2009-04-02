@@ -15,10 +15,14 @@ include_once(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/CheckExamplesDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
 
 if (isset($_GET['id'])) $check_id = $_GET['id'];
 $checkPrerequisitesDAO = new CheckPrerequisitesDAO();
 $testPassDAO = new TestPassDAO();
+$guidelinesDAO = new GuidelinesDAO();
+$checkExamplesDAO = new CheckExamplesDAO();
 
 // handle submit
 if (isset($_POST['cancel'])) {
@@ -51,6 +55,20 @@ if (isset($_POST['cancel'])) {
 	
 	if (!$msg->containsErrors())
 	{
+		// re-create check examples
+		$checkExamplesDAO->DeleteByCheckID($check_id);
+		
+		$pass_example_desc = trim($_POST['pass_example_desc']);
+		$pass_example = trim($_POST['pass_example']);
+		$fail_example_desc = trim($_POST['fail_example_desc']);
+		$fail_example = trim($_POST['fail_example']);
+		
+		if ($pass_example_desc <> '' || $pass_example <> '')
+			$checkExamplesDAO->Create($check_id, AC_CHECK_EXAMPLE_PASS, $pass_example_desc, $pass_example);
+
+		if ($fail_example_desc <> '' || $fail_example <> '')
+			$checkExamplesDAO->Create($check_id, AC_CHECK_EXAMPLE_FAIL, $fail_example_desc, $fail_example);
+			
 		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 		
 		if (isset($_POST['submit_and_close']))
@@ -90,15 +108,33 @@ if (isset($check_id)) // edit existing user
 {
 	$check_row = $checksDAO->getCheckByID($check_id);
 	
+	if (!$check_row)
+	{ // invalid check id
+		$msg->addError('INVALID_CHECK_ID');
+		require(AC_INCLUDE_PATH.'header.inc.php');
+		$msg->printAll();
+		require(AC_INCLUDE_PATH.'footer.inc.php');
+		exit;
+	}
+	
 	// get author name
 	$usersDAO = new UsersDAO();
 	$user_name = $usersDAO->getUserName($check_row['user_id']);
 
 	if ($user_name <> '') $savant->assign('author', $user_name);
 
+	$check_pass_example_rows = $checkExamplesDAO->getByCheckIDAndType($check_id, AC_CHECK_EXAMPLE_PASS);
+	$check_fail_example_rows = $checkExamplesDAO->getByCheckIDAndType($check_id, AC_CHECK_EXAMPLE_FAIL);
+	$check_example_row['pass_example_desc'] = $check_pass_example_rows[0]['description'];
+	$check_example_row['pass_example'] = $check_pass_example_rows[0]['content'];
+	$check_example_row['fail_example_desc'] = $check_fail_example_rows[0]['description'];
+	$check_example_row['fail_example'] = $check_fail_example_rows[0]['content'];
+	
 	$savant->assign('check_row', $check_row);
 	$savant->assign('pre_rows', $checkPrerequisitesDAO->getPreChecksByCheckID($check_id));
 	$savant->assign('next_rows', $testPassDAO->getNextChecksByCheckID($check_id));
+	$savant->assign('guideline_rows', $guidelinesDAO->getEnabledGuidelinesByCheckID($check_id));
+	$savant->assign('check_example_row', $check_example_row);
 }
 
 /*****************************/

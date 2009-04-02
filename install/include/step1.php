@@ -11,6 +11,15 @@
 /************************************************************************/
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
+
+//clear session before using it
+unset($_SESSION['user_id']);
+unset($_SESSION['lang']);
+unset($_SESSION['prefs']);
+unset($_SESSION['token']);
+session_unset();
+$_SESSION = array();
+
 if (isset($_POST['submit'])) {
 	if ($_POST['submit'] == 'I Agree') {
 		unset($_POST['submit']);
