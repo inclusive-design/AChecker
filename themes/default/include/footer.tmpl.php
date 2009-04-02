@@ -35,7 +35,7 @@ if($languageManager->getNumEnabledLanguages() > 1)
 </div>
 <?php } ?>
 
-<div style="text-align:center;padding:3em;">
+<div align="center" style="clear: left">
 	<a href="documentation/web_service_api.php" title="<?php echo _AC("web_service_api"); ?>" target="_new"><?php echo _AC('web_service_api'); ?></a>
 </div>
 

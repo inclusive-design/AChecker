@@ -78,7 +78,6 @@ if (isset($_POST['cancel'])) {
 		else
 		{
 			header('Location: '.$_SERVER['PHP_SELF'].'?id='.$check_id);
-			
 		}
 		exit;
 	}
