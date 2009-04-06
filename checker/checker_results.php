@@ -62,6 +62,8 @@ if (isset($aValidator))
 
 	$a_rpt = new HtmlRpt($errors, $user_link_id);
 	$a_rpt->setShowDecisions($show_decision);
+	if (isset($_POST['show_source'])) $a_rpt->setShowSource('true', $source_array);
+	
 	$a_rpt->generateHTMLRpt();
 
 	$savant->assign('a_rpt', $a_rpt);

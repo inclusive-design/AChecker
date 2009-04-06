@@ -1334,7 +1334,10 @@ div.insidecol {
 
 pre.code {
 	padding: 10px;
-	background-color: #F6EAD6;
+	background:#F6EAD6 none repeat scroll 0 0;
+	border:1px solid black;
+	font-family:"Bitstream Vera Sans Mono",monospace;
+	margin-top:1em;
 }
 
 /* index page */
@@ -1705,4 +1708,14 @@ table.box {
 table.box th, table.box td {
 	border-bottom: #006699 solid 1px;
 	font-size: smaller;
+}
+
+#source ol {
+	background:#F6EAD6 none repeat scroll 0 0;
+	border:1px solid black;
+	font-family:"Bitstream Vera Sans Mono",monospace;
+	list-style-position:inside;
+	list-style-type:decimal;
+	margin-top:1em;
+	line-height: 200%;
 }

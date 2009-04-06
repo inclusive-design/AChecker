@@ -101,6 +101,16 @@ class HTMLRpt extends AccessibilityRpt {
   </tr>
 ';
 	
+	var $html_source = 
+'	<ol class="source">
+{SOURCE_CONTENT}
+	</ol>
+';
+	
+	var $html_source_line =
+'		<li id="line-{LINE_ID}">{LINE}</li>
+';
+	
 	/**
 	* public
 	* $errors: an array, output of AccessibilityValidator -> getValidationErrorRpt
@@ -188,6 +198,11 @@ class HTMLRpt extends AccessibilityRpt {
 		$this->rpt_errors .= "</ul>";
 		$this->rpt_likely_problems .= "</ul>";
 		$this->rpt_potential_problems .= "</ul>";
+		
+		if ($this->show_source == 'true')
+		{
+			$this->generateSourceRpt();
+		}
 	}
 	
 	/** 
@@ -286,6 +301,11 @@ class HTMLRpt extends AccessibilityRpt {
 	*/
 	private function generate_problem_section($check_id, $line_number, $col_number, $html_code, $error, $repair, $decision, $error_type)
 	{
+		if ($this->show_source == 'true')
+		{
+			$line_number = '<a href="checker/index.php#line-'.$line_number.'">'.$line_number.'</a>';
+		}
+		
 		if ($error_type == IS_ERROR)
 		{
 			$msg_type = "msg_err";
@@ -337,6 +357,24 @@ class HTMLRpt extends AccessibilityRpt {
 		                         $html_repair,
 		                         $decision),
 		                   $this->html_problem);
+	}
+	
+	
+	// generate $this->rpt_source
+	public function generateSourceRpt()
+	{
+		if (count($this->source_array) == 0) return;
+		
+		$line_num = 1;
+		foreach ($this->source_array as $line)
+		{
+			$source_content .= str_replace(array("{LINE_ID}","{LINE}"), 
+			                               array($line_num, htmlspecialchars($line)), 
+			                               $this->html_source_line);
+			$line_num++;
+		}
+		
+		$this->rpt_source = str_replace("{SOURCE_CONTENT}", $source_content, $this->html_source);
 	}
 	
 	/**

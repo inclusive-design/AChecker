@@ -70,6 +70,9 @@ if ($_POST["validate_uri"] || $_POST["validate_file"])
 			$validate_content = @file_get_contents($uri);
 			if (isset($_POST["enable_html_validation"]))
 				$htmlValidator = new HTMLValidator("uri", $uri);
+
+			if (isset($_POST["show_source"]))
+				$source_array = file($uri);
 		}
 	}
 
@@ -79,6 +82,9 @@ if ($_POST["validate_uri"] || $_POST["validate_file"])
 
 		if (isset($_POST["enable_html_validation"]))
 			$htmlValidator = new HTMLValidator("fragment", $validate_content);
+
+		if (isset($_POST["show_source"]))
+			$source_array = file($_FILES['uploadfile']['tmp_name']);
 	}
 	// end of validating html
 

@@ -30,6 +30,8 @@ class AccessibilityRpt {
 	var $errors;                         // an array, output of AccessibilityValidator -> getValidationErrorRpt
 	var $user_link_id;                   // user_links.user_link_id; default to ''
 	var $show_decision;                  // 'true' or 'false'. default to 'false'. show decision choices or not.
+	var $show_source;                    // 'true' or 'false'. default to 'false'. if 'true', wrap line number in <a> to jump to the source line.
+	var $source_array;                   // the array that source content. Each element of the array corresponds to a line in the file
 	
 	var $num_of_errors;                  // Number of known errors. (db: checks.confidence = "Known")
 	var $num_of_likely_problems;         // Number of likely errors. (db: checks.confidence = "Likely")
@@ -41,6 +43,7 @@ class AccessibilityRpt {
 	var $rpt_errors;                     // <DIV> section of errors
 	var $rpt_likely_problems;            // <DIV> section of likely problems
 	var $rpt_potential_problems;         // <DIV> section of potential problems
+	var $rpt_source;                     // <DIV> section of source code used for validation
 	
 	/**
 	* public
@@ -52,6 +55,8 @@ class AccessibilityRpt {
 		$this->errors = $errors;
 		$this->user_link_id = $user_link_id;
 		$this->show_decision = 'false';           // set default "show decision choices" to false
+		$this->show_source = 'false';             // set default "show decision choices" to false
+		$this->source_array = array();
 		
 		$this->num_of_errors = 0;
 		$this->num_of_likely_problems = 0;
@@ -77,6 +82,20 @@ class AccessibilityRpt {
 
 	/**
 	* public 
+	* set show source flag
+	*/
+	public function setShowSource($showSource, $sourceArray)
+	{
+		// set default to 'false'
+		if ($showSource <> 'true' && $showSource <> 'false')
+			$showSource = 'false';
+
+		$this->show_source = $showSource;
+		$this->source_array = $sourceArray;
+	}
+
+	/**
+	* public 
 	* return user link id
 	*/
 	public function getUserLinkID()
@@ -91,6 +110,15 @@ class AccessibilityRpt {
 	public function getShowDecisions()
 	{
 		return $this->show_decision;
+	}
+
+	/**
+	* public 
+	* set show source flag
+	*/
+	public function getShowSource()
+	{
+		return $this->show_source;
 	}
 
 	/**
@@ -145,6 +173,15 @@ class AccessibilityRpt {
 	public function getNumOfPotentialProblems()
 	{
 		return $this->num_of_potential_problems;
+	}
+
+	/**
+	* public 
+	* return number of known errors
+	*/
+	public function getSourceRpt()
+	{
+		return $this->rpt_source;
 	}
 
 }

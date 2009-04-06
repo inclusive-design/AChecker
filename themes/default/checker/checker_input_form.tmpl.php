@@ -43,7 +43,7 @@ if (isset($this->error)) echo $this->error;
 		</div>
 
 		<div class="row">
-			<h2>
+			<h2 align="left">
 				<img src="images/arrow-closed.png" alt="<?php echo _AC("expand_guidelines"); ?>" title="<?php echo _AC("expand_guidelines"); ?>" id="toggle_image" border="0" />
 				<a href="javascript:toggleToc('div_options')"><?php echo _AC("options"); ?></a>
 			</h2>
@@ -51,16 +51,22 @@ if (isset($this->error)) echo $this->error;
 
 		<div id="div_options">
 
-		<div class="row">
-			<input type="checkbox" name="enable_html_validation" id="enable_html_validation" value="1" <?php if (isset($_POST["enable_html_validation"])) echo 'checked="checked"'; ?> />
-				<label for='enable_html_validation'><?php echo _AC("enable_html_validator"); ?></label>
-		</div>
-
-		<div class="row">
-			<h3><?php echo _AC("guidelins_to_check"); ?></h3>
-		</div>
-
 		<table class="data static">
+			<tr>
+				<td>
+				<input type="checkbox" name="enable_html_validation" id="enable_html_validation" value="1" <?php if (isset($_POST["enable_html_validation"])) echo 'checked="checked"'; ?> />
+				<label for='enable_html_validation'><?php echo _AC("enable_html_validator"); ?></label>
+				</td>
+
+				<td colspan="2">
+				<input type="checkbox" name="show_source" id="show_source" value="1" <?php if (isset($_POST["show_source"])) echo 'checked="checked"'; ?> />
+				<label for='show_source'><?php echo _AC("show_source"); ?></label>
+				</td>
+			</tr>
+			
+			<tr>
+				<td colspan="3"><h3><?php echo _AC("guidelins_to_check"); ?></h3></td>
+			</tr>
 <?php
 $count_guidelines_in_current_row = 0;
 

@@ -124,6 +124,15 @@ if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
 ?>
 </div>
 
+<?php if (isset($_POST['show_source']) && isset($this->aValidator)) {?>
+<div id="source" class="output-form">
+<h3><?php echo _AC('source');?></h3>
+<p><?php echo _AC('source_note');?></p>
+
+<?php echo $this->a_rpt->getSourceRpt();?>
+</div>
+<?php }?>
+
 <script language="JavaScript" type="text/javascript">
 <!--
 
