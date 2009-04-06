@@ -35,7 +35,7 @@ function encrypt_password() {
 		<fieldset class="group_form"><legend class="group_form"><?php echo _AC('login') ;?></legend>
 			<table class="form-data" align="center">
 				<tr>
-					<td colspan="2" align="left"><p><?php echo _AC('login_text'). _AC('required_field_text') ;?><br /><br /><br /></p></td>
+					<td colspan="2" align="left"><br /><?php echo _AC('login_text'). _AC('required_field_text') ;?><br /><br /><br /><br /></td>
 				</tr>
 
 				<tr>
@@ -49,8 +49,10 @@ function encrypt_password() {
 				</tr>
 
 				<tr>
-					<td colspan="2"><p class="submit_button">
+					<td colspan="2">
+					<p class="submit_button">
 						<input type="submit" name="submit" value="<?php echo _AC('login'); ?>" class="submit" onclick="return encrypt_password();" /> 
+					</p>
 					</td>
 				</tr>
 			</table>

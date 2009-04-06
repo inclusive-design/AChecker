@@ -26,7 +26,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <fieldset class="group_form"><legend class="group_form"><?php echo _AC('create_edit_user_group'); ?></legend>
 	<table class="form-data">
 		<tr>
-			<td colspan="2" align="left"><p><?php echo _AC('required_field_text') ;?><br /><br /></p></td>
+			<td colspan="2" align="left"><?php echo _AC('required_field_text') ;?><br /><br /></td>
 		</tr>
 
 		<tr>
@@ -36,7 +36,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><label for="description"><?php echo _AC('description'); ?></label></th>
-			<td><textarea cols="3" name="description" id="description"><?php if (isset($_POST['description'])) echo $_POST['description']; else echo $this->user_group_row["description"]; ?></textarea></td>
+			<td><textarea rows="3" cols="30" name="description" id="description"><?php if (isset($_POST['description'])) echo $_POST['description']; else echo $this->user_group_row["description"]; ?></textarea></td>
 		</tr>
 
 		<?php if (isset($this->user_group_row['user_group_id'])) {?>
@@ -63,7 +63,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<table class="data" summary="" rules="rows" >
 			<thead>
 			<tr>
-				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_delchecks" onclick="CheckAll('del_checks_id[]','selectall_delchecks');" /></th>
+				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all_del" title="<?php echo _AC('select_all'); ?>" name="selectall_delprivileges" onclick="CheckAll('del_privileges_id[]','selectall_delprivileges');" /></th>
 				<th><?php echo _AC('privileges'); ?></th>
 			</tr>
 			</thead>
@@ -104,7 +104,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<table class="data" summary="" rules="rows" >
 			<thead>
 			<tr>
-				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_addprivileges" onclick="CheckAll('add_privileges_id[]','selectall_addprivileges');" /></th>
+				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all_add" title="<?php echo _AC('select_all'); ?>" name="selectall_addprivileges" onclick="CheckAll('add_privileges_id[]','selectall_addprivileges');" /></th>
 				<th><?php echo _AC('privileges'); ?></th>
 			</tr>
 			</thead>

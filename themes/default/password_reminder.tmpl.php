@@ -42,7 +42,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			<tr>
 				<td colspan="2">
 					<p class="submit_button">
-						<input type="submit" name="submit" value="<?php echo _AC('submit'); ?>" onClick="encrypt_password()" />
+						<input type="submit" name="submit" value="<?php echo _AC('submit'); ?>" onclick="encrypt_password()" />
 						<input type="submit" name="cancel" value=" <?php echo _AC('cancel'); ?> " />
 					</p>
 				</td>

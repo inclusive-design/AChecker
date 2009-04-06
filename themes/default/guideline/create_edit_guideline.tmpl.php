@@ -27,7 +27,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <fieldset class="group_form"><legend class="group_form"><?php echo _AC('create_edit_guideline'); ?></legend>
 	<table class="form-data">
 		<tr>
-			<td colspan="2" align="left"><p><?php echo _AC('required_field_text') ;?><br /><br /></p></td>
+			<td colspan="2" align="left"><?php echo _AC('required_field_text') ;?><br /><br /></td>
 		</tr>
 
 		<tr>
@@ -49,14 +49,14 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><label for="long_name"><?php echo _AC('long_name'); ?></label></th>
-			<td><textarea cols="3" name="long_name" id="long_name"><?php if (isset($_POST['long_name'])) echo $_POST['long_name']; else echo _AC($this->row["long_name"]); ?></textarea></td>
+			<td><textarea cols="30" rows="3" name="long_name" id="long_name"><?php if (isset($_POST['long_name'])) echo $_POST['long_name']; else echo _AC($this->row["long_name"]); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="published_date"><?php echo _AC('published_date').'<br />('._AC("yyyy-mm-dd").')'; ?></label></th>
 			<td>
 				<input type="text" name="published_date" id="published_date" value="<?php if (isset($_POST['published_date'])) echo $_POST['published_date']; else echo $this->row["published_date"]; ?>" />
-				<img src="images/calendar.gif" style="vertical-align: middle; cursor: pointer;" onclick="scwShow(scwID('published_date'),event);" />
+				<img src="images/calendar.gif" alt="<?php echo _AC('calendar'); ?>" style="vertical-align: middle; cursor: pointer;" onclick="scwShow(scwID('published_date'),event);" />
 			</td>
 		</tr>
 
@@ -94,7 +94,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<table class="data" summary="" rules="rows" >
 			<thead>
 			<tr>
-				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_delchecks" onclick="CheckAll('del_checks_id[]','selectall_delchecks');" /></th>
+				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all_del" title="<?php echo _AC('select_all'); ?>" name="selectall_delchecks" onclick="CheckAll('del_checks_id[]','selectall_delchecks');" /></th>
 				<th align="center"><?php echo _AC('html_tag'); ?></th>
 				<th align="center"><?php echo _AC('error_type'); ?></th>
 				<th align="center"><?php echo _AC('description'); ?></th>
@@ -139,7 +139,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<table class="data" summary="" rules="rows" >
 			<thead>
 			<tr>
-				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_addchecks" onclick="CheckAll('add_checks_id[]','selectall_addchecks');" /></th>
+				<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all_add" title="<?php echo _AC('select_all'); ?>" name="selectall_addchecks" onclick="CheckAll('add_checks_id[]','selectall_addchecks');" /></th>
 				<th align="center"><?php echo _AC('html_tag'); ?></th>
 				<th align="center"><?php echo _AC('error_type'); ?></th>
 				<th align="center"><?php echo _AC('description'); ?></th>

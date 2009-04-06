@@ -46,10 +46,10 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 		<tr>
 			<th><?php echo _AC('error_type'); ?>:</th>
 			<td>
-			<input type="radio" name="confidence" value="-1" id="s3" <?php if ($_GET['confidence'] == -1 || !isset($_GET['confidence']) || $_GET['confidence'] == '') { echo 'checked="checked"'; } ?> /><label for="s3"><?php echo _AC('all'); ?></label> 
-			<input type="radio" name="confidence" value="<?php echo KNOWN; ?>" id="s0" <?php if (isset($_GET['confidence']) && $_GET['confidence'] == KNOWN) { echo 'checked="checked"'; } ?> /><label for="s0"><?php echo _AC('known_problems'); ?></label> 
-			<input type="radio" name="confidence" value="<?php echo LIKELY; ?>" id="s1" <?php if (isset($_GET['confidence']) && $_GET['confidence'] == LIKELY) { echo 'checked="checked"'; } ?> /><label for="s1"><?php echo _AC('likely_problems'); ?></label> 
-			<input type="radio" name="confidence" value="<?php echo POTENTIAL; ?>" id="s2" <?php if (isset($_GET['confidence']) && $_GET['confidence'] == POTENTIAL) { echo 'checked="checked"'; } ?> /><label for="s2"><?php echo _AC('potential_problems'); ?></label> 
+			<input type="radio" name="confidence" value="-1" id="c3" <?php if ($_GET['confidence'] == -1 || !isset($_GET['confidence']) || $_GET['confidence'] == '') { echo 'checked="checked"'; } ?> /><label for="c3"><?php echo _AC('all'); ?></label> 
+			<input type="radio" name="confidence" value="<?php echo KNOWN; ?>" id="c0" <?php if (isset($_GET['confidence']) && $_GET['confidence'] == KNOWN) { echo 'checked="checked"'; } ?> /><label for="c0"><?php echo _AC('known_problems'); ?></label> 
+			<input type="radio" name="confidence" value="<?php echo LIKELY; ?>" id="c1" <?php if (isset($_GET['confidence']) && $_GET['confidence'] == LIKELY) { echo 'checked="checked"'; } ?> /><label for="c1"><?php echo _AC('likely_problems'); ?></label> 
+			<input type="radio" name="confidence" value="<?php echo POTENTIAL; ?>" id="c2" <?php if (isset($_GET['confidence']) && $_GET['confidence'] == POTENTIAL) { echo 'checked="checked"'; } ?> /><label for="c2"><?php echo _AC('potential_problems'); ?></label> 
 			</td>
 		</tr>
 
@@ -78,7 +78,7 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 </form>
 </div>
 
-<?php print_paginator($this->page, $this->num_results, $this->page_string . SEP . $this->order .'='. $this->col, $this->results_per_page); ?>
+<?php print_paginator($this->page, $this->num_results, $this->page_string . htmlspecialchars(SEP) . $this->order .'='. $this->col, $this->results_per_page); ?>
 
 <form name="form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <input type="hidden" name="html_tag" value="<?php echo htmlspecialchars($_GET['html_tag']); ?>" />

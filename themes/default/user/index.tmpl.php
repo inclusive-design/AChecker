@@ -67,7 +67,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 </form>
 </div>
 
-<?php print_paginator($this->page, $this->num_results, $this->page_string . SEP . $this->order .'='. $this->col, $this->results_per_page); ?>
+<?php print_paginator($this->page, $this->num_results, $this->page_string . htmlspecialchars(SEP) . $this->order .'='. $this->col, $this->results_per_page); ?>
 
 <form name="form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <input type="hidden" name="status" value="<?php echo $_GET['status']; ?>" />

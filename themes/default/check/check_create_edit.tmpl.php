@@ -37,7 +37,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 	<table class="form-data">
 		<tr>
-			<td colspan="2" align="left"><p><?php echo _AC('required_field_text') ;?><br /><br/></p></td>
+			<td colspan="2" align="left"><?php echo _AC('required_field_text') ;?><br /><br/></td>
 		</tr>
 
 		<tr>
@@ -212,15 +212,15 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	
 	<div id="div_pre_next_checks">
 	
-	<h2 id="#pre_checks">
+	<h2>
 		<?php echo _AC('pre_checks');?>
 		<input type="button" name="add_pre_checks" value="<?php echo _AC('add_pre_checks'); ?>" 
-		       onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&cid=<?php echo $_GET['id']; ?>'); return false;" />
+		       onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&amp;cid=<?php echo $_GET['id']; ?>'); return false;" />
 	</h2><br/>
 	<table class="data" summary="" rules="rows" >
 		<thead>
 		<tr>
-			<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_delprechecks" onclick="CheckAll('del_pre_checks_id[]','selectall_delprechecks');" /></th>
+			<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all_del_pre" title="<?php echo _AC('select_all'); ?>" name="selectall_delprechecks" onclick="CheckAll('del_pre_checks_id[]','selectall_delprechecks');" /></th>
 			<th align="center"><?php echo _AC('html_tag'); ?></th>
 			<th align="center"><?php echo _AC('error_type'); ?></th>
 			<th align="center"><?php echo _AC('description'); ?></th>
@@ -246,6 +246,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		</tr>
 	<?php } // end of foreach?>
 	<?php } else {// end of if?>
+		<tbody>
 		<tr><td colspan="4"><?php echo _AC('none_found'); ?></td></tr>
 	<?php }?>
 		</tbody>
@@ -253,15 +254,15 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 	<!-- section of displaying existing next checks -->
 	<br/>
-	<h2 id="#next_checks">
+	<h2>
 		<?php echo _AC('next_checks');?>
 		<input type="button" name="add_next_checks" value="<?php echo _AC('add_next_checks'); ?>" 
-		       onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=next&cid=<?php echo $_GET['id']; ?>'); return false;" />
+		       onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=next&amp;cid=<?php echo $_GET['id']; ?>'); return false;" />
 	</h2><br/>
 	<table class="data" summary="" rules="rows" >
 		<thead>
 		<tr>
-			<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall_delnextchecks" onclick="CheckAll('del_next_checks_id[]','selectall_delnextchecks');" /></th>
+			<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all_del_next" title="<?php echo _AC('select_all'); ?>" name="selectall_delnextchecks" onclick="CheckAll('del_next_checks_id[]','selectall_delnextchecks');" /></th>
 			<th align="center"><?php echo _AC('html_tag'); ?></th>
 			<th align="center"><?php echo _AC('error_type'); ?></th>
 			<th align="center"><?php echo _AC('description'); ?></th>
@@ -287,6 +288,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		</tr>
 	<?php } // end of foreach?>
 	<?php } else {// end of if?>
+		<tbody>
 		<tr><td colspan="4"><?php echo _AC('none_found'); ?></td></tr>
 	<?php }?>
 		</tbody>

@@ -58,7 +58,7 @@ if (isset($_GET['asc'])) {
 if (isset($_GET['status']) && ($_GET['status'] != '')) {
 	$_GET['status'] = intval($_GET['status']);
 	$status = '=' . intval($_GET['status']);
-	$page_string .= SEP.'status'.$status;
+	$page_string .= htmlspecialchars(SEP).'status'.$status;
 } else {
 	$status = '<>-1';
 	$_GET['status'] = '';
@@ -66,15 +66,15 @@ if (isset($_GET['status']) && ($_GET['status'] != '')) {
 
 if (isset($_GET['include']) && $_GET['include'] == 'one') {
 	$checked_include_one = ' checked="checked"';
-	$page_string .= SEP.'include=one';
+	$page_string .= htmlspecialchars(SEP).'include=one';
 } else {
 	$_GET['include'] = 'all';
 	$checked_include_all = ' checked="checked"';
-	$page_string .= SEP.'include=all';
+	$page_string .= htmlspecialchars(SEP).'include=all';
 }
 
 if ($_GET['search']) {
-	$page_string .= SEP.'search='.urlencode($stripslashes($_GET['search']));
+	$page_string .= htmlspecialchars(SEP).'search='.urlencode($stripslashes($_GET['search']));
 	$search = $addslashes($_GET['search']);
 	$search = explode(' ', $search);
 
@@ -101,7 +101,7 @@ if ($_GET['search']) {
 
 if ($_GET['user_group_id'] && $_GET['user_group_id'] <> -1) {
 	$user_group_sql = "U.user_group_id = ".$_GET['user_group_id'];
-	$page_string .= SEP.'user_group_id='.urlencode($_GET['user_group_id']);
+	$page_string .= htmlspecialchars(SEP).'user_group_id='.urlencode($_GET['user_group_id']);
 }
 else
 {

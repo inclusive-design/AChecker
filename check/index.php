@@ -96,12 +96,12 @@ if (!isset($_GET['open_to_public']) || $_GET['open_to_public'] == '') $_GET['ope
 
 if ($_GET['html_tag'] && $_GET['html_tag'] <> -1) {
 	$condition = " html_tag = '".$_GET['html_tag']."'";
-	$page_string .= SEP.'html_tag='.urlencode($_GET['html_tag']);
+	$page_string .= htmlspecialchars(SEP).'html_tag='.urlencode($_GET['html_tag']);
 }
 
 if (isset($_GET['confidence']) && $_GET['confidence'] <> -1) {
 	$_GET['confidence'] = intval($_GET['confidence']);
-	$page_string .= SEP.'confidence='.intval($_GET['confidence']);
+	$page_string .= htmlspecialchars(SEP).'confidence='.intval($_GET['confidence']);
 
 	if ($_GET['confidence'] <> -1) 
 	{
@@ -112,7 +112,7 @@ if (isset($_GET['confidence']) && $_GET['confidence'] <> -1) {
 
 if (isset($_GET['open_to_public']) && $_GET['open_to_public'] <> -1) {
 	$_GET['open_to_public'] = intval($_GET['open_to_public']);
-	$page_string .= SEP.'open_to_public='.intval($_GET['open_to_public']);
+	$page_string .= htmlspecialchars(SEP).'open_to_public='.intval($_GET['open_to_public']);
 
 	if ($_GET['open_to_public'] <> -1)
 	{
