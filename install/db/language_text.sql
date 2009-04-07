@@ -2738,6 +2738,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','author_not_exist','[ Aut
 INSERT INTO `language_text` VALUES ('eng', '_template','back_to','Back To: ','2009-01-15 13:18:41','');
 INSERT INTO `language_text` VALUES ('eng', '_template','back_to_chapters','Back to Chapters','2009-01-29 13:49:27','');
 INSERT INTO `language_text` VALUES ('eng', '_template','back_to_contents','Back to Contents','2009-01-29 15:05:04','');
+INSERT INTO `language_text` VALUES ('eng', '_template','calendar','Calendar','2009-04-06 10:43:09','');
 INSERT INTO `language_text` VALUES ('eng', '_template','cancel','Cancel','2009-01-09 10:29:35','');
 INSERT INTO `language_text` VALUES ('eng', '_template','change_email','Change Email','2009-01-15 11:29:34','');
 INSERT INTO `language_text` VALUES ('eng', '_template','change_password','Change Password','2009-01-15 11:29:34','');
@@ -2931,6 +2932,9 @@ INSERT INTO `language_text` VALUES ('eng', '_template','select_from_tag_list','S
 INSERT INTO `language_text` VALUES ('eng', '_template','sent_via_achecker','Sent via an AChecker system at %s','2009-01-09 14:15:29','');
 INSERT INTO `language_text` VALUES ('eng', '_template','short_desc','Short Description','2009-03-19 11:38:11','');
 INSERT INTO `language_text` VALUES ('eng', '_template','show_contents','Show Contents','2009-01-28 15:28:06','');
+INSERT INTO `language_text` VALUES ('eng', '_template','show_source','Show Source','2009-04-06 14:08:37','');
+INSERT INTO `language_text` VALUES ('eng', '_template','source','Source','2009-04-06 15:23:53','');
+INSERT INTO `language_text` VALUES ('eng', '_template','source_note','Below is the source input I used for this validation:','2009-04-06 15:23:53','');
 INSERT INTO `language_text` VALUES ('eng', '_template','standard_guidelines','Standard Guidelines','2009-01-20 11:45:22','');
 INSERT INTO `language_text` VALUES ('eng', '_template','status','Status','2009-01-21 12:38:52','');
 INSERT INTO `language_text` VALUES ('eng', '_template','steps_to_check','Steps To Check','2008-11-24 14:25:44','');
