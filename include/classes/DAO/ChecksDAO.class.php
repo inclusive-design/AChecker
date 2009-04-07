@@ -665,8 +665,77 @@ class ChecksDAO extends DAO {
 							  and c.check_id = tp.check_id
 							order by c.check_id, tp.next_check_id";
 
-    return $this->execute($sql);
-  }
+		return $this->execute($sql);
+	}
+
+	/**
+	* Return checks from the groups which group name is NULL. These groups are created by system
+	* @access  public
+	* @param   $gid : guideline ID
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function getGuidelineLevelChecks($gid)
+	{
+		$sql = "select distinct c.*
+							from ". TABLE_PREFIX ."guideline_groups gg, 
+							     ". TABLE_PREFIX ."guideline_subgroups gs, 
+							     ". TABLE_PREFIX ."subgroup_checks gc,
+							     ". TABLE_PREFIX ."checks c
+							where gg.guideline_id = ".$gid."
+							  and gg.name is NULL
+							  and gg.group_id = gs.group_id
+							  and gs.subgroup_id = gc.subgroup_id
+							  and gc.check_id = c.check_id
+							  and c.open_to_public = 1
+							order by c.html_tag";
+
+		return $this->execute($sql);
+	}
+
+	/**
+	* Return checks from the subgroups which subgroup name is NULL. These subgroups are created by system
+	* @access  public
+	* @param   $gid : group ID
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	function getGroupLevelChecks($group_id)
+	{
+		$sql = "select distinct c.*
+							from ". TABLE_PREFIX ."guideline_subgroups gs, 
+							     ". TABLE_PREFIX ."subgroup_checks gc,
+							     ". TABLE_PREFIX ."checks c
+							where gs.group_id = ".$group_id."
+							  and gs.name is NULL
+							  and gs.subgroup_id = gc.subgroup_id
+							  and gc.check_id = c.check_id
+							  and c.open_to_public = 1
+							order by c.html_tag";
+
+		return $this->execute($sql);
+	}
+
+	/**
+	* Return array of subgroups info whose name is null, and belong to the given group id
+	* @access  public
+	* @param   $groupID : group id
+	* @return  subgroup id rows : array of subgroup ids, if successful
+	*          false : if not successful
+	* @author  Cindy Qi Li
+	*/
+	public function getChecksBySubgroupID($subgroupID)
+	{
+		$sql = "SELECT c.* 
+		          FROM ".TABLE_PREFIX."subgroup_checks gs,"
+		                .TABLE_PREFIX."checks c
+                 WHERE gs.subgroup_id = ".$subgroupID."
+                   AND gs.check_id = c.check_id
+                   AND c.open_to_public = 1
+                 ORDER BY c.html_tag";
+
+		return $this->execute($sql);
+	}
 
 	/**
 	 * Validate fields preparing for insert and update

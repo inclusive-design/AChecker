@@ -37,7 +37,7 @@ class GuidelineGroupsDAO extends DAO {
 	public function Create($guidelineID, $name, $abbr, $principle)
 	{
 		$sql = "INSERT INTO ".TABLE_PREFIX."guideline_groups
-				(`guideline_id`, `abbr`, `principle`) 
+				(`guideline_id`, abbr`, `principle`) 
 				VALUES
 				(".$guidelineID.", '".$abbr."', '".$principle."')";
 
@@ -93,17 +93,35 @@ class GuidelineGroupsDAO extends DAO {
 	}
 
 	/**
-	* Return array of group ids of the given guideline id
+	* Return array of groups info whose name is NOT null, and belong to the given guideline id
 	* @access  public
 	* @param   $guidelineID : guideline id
 	* @return  group id rows : array of group ids, if successful
 	*          false : if not successful
 	* @author  Cindy Qi Li
 	*/
-	public function getGroupByGuidelineID($guidelineID)
+	public function getNamedGroupsByGuidelineID($guidelineID)
 	{
 		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_groups 
-                 WHERE guideline_id = ".$guidelineID;
+                 WHERE guideline_id = ".$guidelineID."
+                   AND name is not NULL";
+
+		return $this->execute($sql);
+	}
+
+	/**
+	* Return array of groups info whose name is null, and belong to the given guideline id
+	* @access  public
+	* @param   $guidelineID : guideline id
+	* @return  group id rows : array of group ids, if successful
+	*          false : if not successful
+	* @author  Cindy Qi Li
+	*/
+	public function getUnnamedGroupsByGuidelineID($guidelineID)
+	{
+		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_groups 
+                 WHERE guideline_id = ".$guidelineID."
+                   AND name is NULL";
 
 		return $this->execute($sql);
 	}

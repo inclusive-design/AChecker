@@ -94,19 +94,38 @@ class GuidelineSubgroupsDAO extends DAO {
 	}
 
 	/**
-	* Return array of subgroup ids of the given group id
+	* Return array of subgroups info whose name is NOT null, and belong to the given group id
 	* @access  public
 	* @param   $groupID : group id
 	* @return  subgroup id rows : array of subgroup ids, if successful
 	*          false : if not successful
 	* @author  Cindy Qi Li
 	*/
-	public function getSubgroupByGuidelineID($groupID)
+	public function getNamedSubgroupByGuidelineID($groupID)
 	{
 		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_subgroups
-                 WHERE group_id = ".$groupID;
+                 WHERE group_id = ".$groupID."
+                   AND name is not NULL";
 
 		return $this->execute($sql);
 	}
+	
+	/**
+	* Return array of subgroups info whose name is null, and belong to the given group id
+	* @access  public
+	* @param   $groupID : group id
+	* @return  subgroup id rows : array of subgroup ids, if successful
+	*          false : if not successful
+	* @author  Cindy Qi Li
+	*/
+	public function getUnnamedSubgroupByGuidelineID($groupID)
+	{
+		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_subgroups
+                 WHERE group_id = ".$groupID."
+                   AND name is NULL";
+
+		return $this->execute($sql);
+	}
+
 }
 ?>

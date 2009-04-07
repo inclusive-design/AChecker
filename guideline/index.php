@@ -74,7 +74,7 @@ if (is_array($my_guidelines))
 if ($_current_user->isAdmin())
 {
 	// admin can set standard guidelines open to or close from public
-	$savant->assign('buttons', array('view', 'open_to_public', 'close_from_public'));
+	$savant->assign('buttons', array('view', 'edit', 'open_to_public', 'close_from_public'));
 }
 else
 {

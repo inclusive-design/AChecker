@@ -141,7 +141,7 @@ class GuidelinesDAO extends DAO {
 		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
 		
 		$guidelineGroupsDAO = new GuidelineGroupsDAO();
-		$groups = $guidelineGroupsDAO->getGroupByGuidelineID($guidelineID);
+		$groups = $guidelineGroupsDAO->getUnnamedGroupsByGuidelineID($guidelineID);
 		
 		if (is_array($groups))
 			$group_id = $groups[0]['group_id'];
@@ -151,7 +151,7 @@ class GuidelinesDAO extends DAO {
 		if ($group_id)
 		{
 			$guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
-			$subgroups = $guidelineSubgroupsDAO->getSubgroupByGuidelineID($group_id);
+			$subgroups = $guidelineSubgroupsDAO->getUnnamedSubgroupByGuidelineID($group_id);
 			
 			if (is_array($subgroups))
 				$subgroup_id = $subgroups[0]['subgroup_id'];

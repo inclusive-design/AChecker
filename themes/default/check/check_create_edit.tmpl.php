@@ -35,6 +35,32 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 <div class="input-form">
 <fieldset class="group_form"><legend class="group_form"><?php echo _AC('create_edit_check'); ?></legend>
 
+<?php if (isset($this->check_row)) { // save raw information ?>
+	<input type="hidden" name="html_tag_orig" value="<?php echo htmlspecialchars($this->check_row['html_tag']); ?>" />
+	<input type="hidden" name="confidence_orig" value="<?php echo $this->check_row['confidence']; ?>" />
+	<input type="hidden" name="open_to_public_orig" value="<?php echo $this->check_row['open_to_public']; ?>" />
+	<input type="hidden" name="name_orig" value="<?php echo htmlspecialchars($this->check_row['name']); ?>" />
+	<input type="hidden" name="err_orig" value="<?php echo htmlspecialchars($this->check_row['err']); ?>" />
+	<input type="hidden" name="description_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["description"])); ?>" />
+	<input type="hidden" name="search_str_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["search_str"])); ?>" />
+	<input type="hidden" name="long_description_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["long_description"])); ?>" />
+	<input type="hidden" name="rationale_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["rationale"])); ?>" />
+	<input type="hidden" name="how_to_repair_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["how_to_repair"])); ?>" />
+	<input type="hidden" name="repair_example_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["repair_example"])); ?>" />
+	<input type="hidden" name="note_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["note"])); ?>" />
+	<input type="hidden" name="question_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["question"])); ?>" />
+	<input type="hidden" name="decision_pass_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["decision_pass"])); ?>" />
+	<input type="hidden" name="decision_fail_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["decision_fail"])); ?>" />
+	<input type="hidden" name="test_procedure_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["test_procedure"])); ?>" />
+	<input type="hidden" name="test_expected_result_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["test_expected_result"])); ?>" />
+	<input type="hidden" name="test_failed_result_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["test_failed_result"])); ?>" />
+	<input type="hidden" name="pass_example_desc_orig" value="<?php echo htmlspecialchars($this->check_example_row['pass_example_desc']); ?>" />
+	<input type="hidden" name="pass_example_orig" value="<?php echo htmlspecialchars($this->check_example_row['pass_example']); ?>" />
+	<input type="hidden" name="fail_example_desc_orig" value="<?php echo htmlspecialchars($this->check_example_row['fail_example_desc']); ?>" />
+	<input type="hidden" name="fail_example_orig" value="<?php echo htmlspecialchars($this->check_example_row['fail_example']); ?>" />
+<?php }?>
+	
+	<input type="hidden" >
 	<table class="form-data">
 		<tr>
 			<td colspan="2" align="left"><?php echo _AC('required_field_text') ;?><br /><br/></td>
@@ -43,7 +69,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="html_tag"><?php echo _AC('html_tag'); ?></label>:</th>
 			<td align="left">
-				<input name="html_tag" id="html_tag" value="<?php if (isset($_POST['html_tag'])) echo stripslashes(htmlspecialchars($_POST['html_tag'])); else echo stripslashes(htmlspecialchars($this->check_row['html_tag'])); ?>" />
+				<input name="html_tag" id="html_tag" value="<?php if (isset($_POST['html_tag'])) echo htmlspecialchars($_POST['html_tag']); else echo htmlspecialchars($this->check_row['html_tag']); ?>" />
 				<a href="<?php echo AC_BASE_HREF; ?>check/html_tag_list.php" onclick="popup('<?php echo AC_BASE_HREF; ?>check/html_tag_list.php'); return false;" title="<?php echo _AC('select_from_tag_list'); ?>"><?php echo _AC('select_from_tag_list'); ?></a>
 			</td>
 		</tr>
@@ -76,12 +102,12 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="name"><?php echo _AC('name'); ?></label>:</th>
-			<td align="left"><input id="name" name="name" type="text" size="100" value="<?php if (isset($_POST['name'])) echo $_POST['name']; else echo stripslashes(htmlspecialchars(_AC($this->check_row['name']))); ?>" /></td>
+			<td align="left"><input id="name" name="name" type="text" size="100" value="<?php if (isset($_POST['name'])) echo $_POST['name']; else echo htmlspecialchars(_AC($this->check_row['name'])); ?>" /></td>
 		</tr>
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="err"><?php echo _AC('error'); ?></label>:</th>
-			<td align="left"><input id="err" name="err" type="text" size="100" value="<?php if (isset($_POST['err'])) echo $_POST['err']; else echo stripslashes(htmlspecialchars(_AC($this->check_row['err']))); ?>" /></td>
+			<td align="left"><input id="err" name="err" type="text" size="100" value="<?php if (isset($_POST['err'])) echo $_POST['err']; else echo htmlspecialchars(_AC($this->check_row['err'])); ?>" /></td>
 		</tr>
 
 		<?php if (isset($this->check_row)) {?>
@@ -99,37 +125,37 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		
 		<tr>
 			<th align="left"><label for="short_desc"><?php echo _AC('short_desc'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="description" id="short_desc"><?php if (isset($_POST['description'])) echo $_POST['description']; else echo _AC($this->check_row["description"]); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="60" name="description" id="short_desc"><?php if (isset($_POST['description'])) echo htmlspecialchars($_POST['description']); else echo htmlspecialchars(_AC($this->check_row["description"])); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="search_str"><?php echo _AC('search_str'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="search_str" id="search_str"><?php if (isset($_POST['search_str'])) echo $_POST['search_str']; else echo _AC($this->check_row["search_str"]); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="60" name="search_str" id="search_str"><?php if (isset($_POST['search_str'])) echo htmlspecialchars($_POST['search_str']); else echo htmlspecialchars(_AC($this->check_row["search_str"])); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="long_desc"><?php echo _AC('long_desc'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="long_description" id="long_desc"><?php if (isset($_POST['long_description'])) echo $_POST['long_description']; else echo _AC($this->check_row["long_description"]); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="60" name="long_description" id="long_desc"><?php if (isset($_POST['long_description'])) echo htmlspecialchars($_POST['long_description']); else echo htmlspecialchars(_AC($this->check_row["long_description"])); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="rationale"><?php echo _AC('rationale'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="rationale" id="rationale"><?php if (isset($_POST['rationale'])) echo $_POST['rationale']; else echo _AC($this->check_row["rationale"]); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="60" name="rationale" id="rationale"><?php if (isset($_POST['rationale'])) echo htmlspecialchars($_POST['rationale']); else echo htmlspecialchars(_AC($this->check_row["rationale"])); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="how_to_repair"><?php echo _AC('how_to_repair'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="how_to_repair" id="how_to_repair"><?php if (isset($_POST['how_to_repair'])) echo $_POST['how_to_repair']; else echo _AC($this->check_row["how_to_repair"]); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="60" name="how_to_repair" id="how_to_repair"><?php if (isset($_POST['how_to_repair'])) echo htmlspecialchars($_POST['how_to_repair']); else echo htmlspecialchars(_AC($this->check_row["how_to_repair"])); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="repair_example"><?php echo _AC('repair_example'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="repair_example" id="repair_example"><?php if (isset($_POST['repair_example'])) echo $_POST['repair_example']; else echo _AC($this->check_row["repair_example"]); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="60" name="repair_example" id="repair_example"><?php if (isset($_POST['repair_example'])) echo htmlspecialchars($_POST['repair_example']); else echo htmlspecialchars(_AC($this->check_row["repair_example"])); ?></textarea></td>
 		</tr>
 		
 		<tr>
 			<th align="left"><label for="note"><?php echo _AC('note'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="note" id="note"><?php if (isset($_POST['note'])) echo $_POST['note']; else echo _AC($this->check_row["note"]); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="60" name="note" id="note"><?php if (isset($_POST['note'])) echo htmlspecialchars($_POST['note']); else echo htmlspecialchars(_AC($this->check_row["note"])); ?></textarea></td>
 		</tr>
 		
 		<tr>
@@ -139,21 +165,21 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		<tr>
 			<th align="left"><label for="question"><?php echo _AC('question'); ?></label>:</th>
 			<td align="left">
-				<input name="question" id="question" size="100" value="<?php if (isset($_POST['question'])) echo $_POST['question']; else echo _AC($this->check_row['question']); ?>" />
+				<input name="question" id="question" size="100" value="<?php if (isset($_POST['question'])) echo htmlspecialchars($_POST['question']); else echo htmlspecialchars(_AC($this->check_row['question'])); ?>" />
 			</td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="decision_pass"><?php echo _AC('decision_pass'); ?></label>:</th>
 			<td align="left">
-				<input name="decision_pass" id="decision_pass" size="100" value="<?php if (isset($_POST['decision_pass'])) echo $_POST['decision_pass']; else echo _AC($this->check_row['decision_pass']); ?>" />
+				<input name="decision_pass" id="decision_pass" size="100" value="<?php if (isset($_POST['decision_pass'])) echo htmlspecialchars($_POST['decision_pass']); else echo htmlspecialchars(_AC($this->check_row['decision_pass'])); ?>" />
 			</td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="decision_fail"><?php echo _AC('decision_fail'); ?></label>:</th>
 			<td align="left">
-				<input name="decision_fail" id="decision_fail" size="100" value="<?php if (isset($_POST['decision_fail'])) echo $_POST['decision_fail']; else echo _AC($this->check_row['decision_fail']); ?>" />
+				<input name="decision_fail" id="decision_fail" size="100" value="<?php if (isset($_POST['decision_fail'])) echo htmlspecialchars($_POST['decision_fail']); else echo htmlspecialchars(_AC($this->check_row['decision_fail'])); ?>" />
 			</td>
 		</tr>
 
@@ -163,37 +189,37 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><label for="test_procedure"><?php echo _AC('procedure'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="test_procedure" id="test_procedure"><?php if (isset($_POST['test_procedure'])) echo $_POST['test_procedure']; else echo _AC($this->check_row["test_procedure"]); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="60" name="test_procedure" id="test_procedure"><?php if (isset($_POST['test_procedure'])) echo htmlspecialchars($_POST['test_procedure']); else echo htmlspecialchars(_AC($this->check_row["test_procedure"])); ?></textarea></td>
 		</tr>
 		
 		<tr>
 			<th align="left"><label for="test_expected_result"><?php echo _AC('expected_result'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="test_expected_result" id="test_expected_result"><?php if (isset($_POST['test_expected_result'])) echo $_POST['test_expected_result']; else echo _AC($this->check_row["test_expected_result"]); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="60" name="test_expected_result" id="test_expected_result"><?php if (isset($_POST['test_expected_result'])) echo htmlspecialchars($_POST['test_expected_result']); else echo htmlspecialchars(_AC($this->check_row["test_expected_result"])); ?></textarea></td>
 		</tr>
 		
 		<tr>
 			<th align="left"><label for="test_failed_result"><?php echo _AC('failed_result'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="test_failed_result" id="test_failed_result"><?php if (isset($_POST['test_failed_result'])) echo $_POST['test_failed_result']; else echo _AC($this->check_row["test_failed_result"]); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="60" name="test_failed_result" id="test_failed_result"><?php if (isset($_POST['test_failed_result'])) echo htmlspecialchars($_POST['test_failed_result']); else echo htmlspecialchars(_AC($this->check_row["test_failed_result"])); ?></textarea></td>
 		</tr>
 		
 		<tr>
 			<th align="left"><label for="pass_example_desc"><?php echo _AC('pass_example_desc'); ?></label>:</th>
-			<td align="left"><input id="pass_example_desc" name="pass_example_desc" type="text" size="100" value="<?php if (isset($_POST['pass_example_desc'])) echo $_POST['pass_example_desc']; else echo htmlspecialchars($this->check_example_row['pass_example_desc']); ?>" /></td>
+			<td align="left"><input id="pass_example_desc" name="pass_example_desc" type="text" size="100" value="<?php if (isset($_POST['pass_example_desc'])) echo htmlspecialchars($_POST['pass_example_desc']); else echo htmlspecialchars($this->check_example_row['pass_example_desc']); ?>" /></td>
 		</tr>
 		
 		<tr>
 			<th align="left"><label for="pass_example"><?php echo _AC('pass_example'); ?></label>:</th>
-			<td align="left"><textarea rows="5" cols="60" name="pass_example" id="pass_example"><?php if (isset($_POST['pass_example'])) echo $_POST['pass_example']; else echo $this->check_example_row["pass_example"]; ?></textarea></td>
+			<td align="left"><textarea rows="5" cols="60" name="pass_example" id="pass_example"><?php if (isset($_POST['pass_example'])) echo htmlspecialchars($_POST['pass_example']); else echo htmlspecialchars($this->check_example_row["pass_example"]); ?></textarea></td>
 		</tr>
 		
 		<tr>
 			<th align="left"><label for="fail_example_desc"><?php echo _AC('fail_example_desc'); ?></label>:</th>
-			<td align="left"><input id="fail_example_desc" name="fail_example_desc" type="text" size="100" value="<?php if (isset($_POST['fail_example_desc'])) echo $_POST['fail_example_desc']; else echo htmlspecialchars($this->check_example_row['fail_example_desc']); ?>" /></td>
+			<td align="left"><input id="fail_example_desc" name="fail_example_desc" type="text" size="100" value="<?php if (isset($_POST['fail_example_desc'])) echo htmlspecialchars($_POST['fail_example_desc']); else echo htmlspecialchars($this->check_example_row['fail_example_desc']); ?>" /></td>
 		</tr>
 		
 		<tr>
 			<th align="left"><label for="fail_example"><?php echo _AC('fail_example'); ?></label>:</th>
-			<td align="left"><textarea rows="5" cols="60" name="fail_example" id="fail_example"><?php if (isset($_POST['pass_example'])) echo $_POST['fail_example']; else echo $this->check_example_row["fail_example"]; ?></textarea></td>
+			<td align="left"><textarea rows="5" cols="60" name="fail_example" id="fail_example"><?php if (isset($_POST['pass_example'])) echo htmlspecialchars($_POST['fail_example']); else echo htmlspecialchars($this->check_example_row["fail_example"]); ?></textarea></td>
 		</tr>
 		
 		<?php if (isset($this->author)) {?>
@@ -215,7 +241,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<h2>
 		<?php echo _AC('pre_checks');?>
 		<input type="button" name="add_pre_checks" value="<?php echo _AC('add_pre_checks'); ?>" 
-		       onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&amp;cid=<?php echo $_GET['id']; ?>'); return false;" />
+		       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&amp;cid=<?php echo $_GET['id']; ?>'); return false;" />
 	</h2><br/>
 	<table class="data" summary="" rules="rows" >
 		<thead>
@@ -257,7 +283,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<h2>
 		<?php echo _AC('next_checks');?>
 		<input type="button" name="add_next_checks" value="<?php echo _AC('add_next_checks'); ?>" 
-		       onclick="popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=next&amp;cid=<?php echo $_GET['id']; ?>'); return false;" />
+		       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=next&amp;cid=<?php echo $_GET['id']; ?>'); return false;" />
 	</h2><br/>
 	<table class="data" summary="" rules="rows" >
 		<thead>
@@ -297,7 +323,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	</div>
 
 	<div class="row">
-		<input type="submit" name="submit" value="<?php echo _AC('submit'); ?>" class="submit" /> 
+		<input type="submit" name="submit_no_close" value="<?php echo _AC('submit'); ?>" class="submit" /> 
 		<input type="submit" name="submit_and_close" value="<?php echo _AC('submit_and_close'); ?>" class="submit" /> 
 		<input type="submit" name="cancel" value=" <?php echo _AC('cancel'); ?> "  class="submit" />
 	</div>
@@ -353,6 +379,85 @@ function togglerowhighlight(obj, boxid) {
 		obj.className = 'selected';
 	} else {
 		obj.className = '';
+	}
+}
+
+function check_unsaved_info() {
+	var has_unsaved_info = false;
+	
+	if (document.input_form.html_tag.value != document.input_form.html_tag_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.confidence.value != document.input_form.confidence_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.open_to_public.value != document.input_form.open_to_public_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.name.value != document.input_form.name_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.err.value != document.input_form.err_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.description.value != document.input_form.description_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.search_str.value != document.input_form.search_str_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.long_description.value != document.input_form.long_description_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.rationale.value != document.input_form.rationale_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.how_to_repair.value != document.input_form.how_to_repair_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.repair_example.value != document.input_form.repair_example_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.note.value != document.input_form.note_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.question.value != document.input_form.question_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.decision_pass.value != document.input_form.decision_pass_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.decision_fail.value != document.input_form.decision_fail_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.test_procedure.value != document.input_form.test_procedure_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.test_expected_result.value != document.input_form.test_expected_result_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.test_failed_result.value != document.input_form.test_failed_result_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.pass_example_desc.value != document.input_form.pass_example_desc_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.pass_example.value != document.input_form.pass_example_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.fail_example_desc.value != document.input_form.fail_example_desc_orig.value) {
+		has_unsaved_info = true;
+	}
+	else if (document.input_form.fail_example.value != document.input_form.fail_example_orig.value) {
+		has_unsaved_info = true;
+	}
+
+	if (has_unsaved_info)
+	{
+		var answer = confirm("<?php echo _AC('has_unsaved_info'); ?>")
+		if (answer){
+			document.input_form.submit();
+		}
 	}
 }
 //  End -->

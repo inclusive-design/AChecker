@@ -2822,6 +2822,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','guideline_manage','Guide
 INSERT INTO `language_text` VALUES ('eng', '_template','guideline_terms','Guideline Terms','2008-11-27 09:48:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','guidelins_to_check','Guidelines to Check Against','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','handbook_toc','Handbook Toc','2009-01-28 15:28:06','');
+INSERT INTO `language_text` VALUES ('eng', '_template','has_unsaved_info','You have unsaved changes. Do you want to save them? Proceeding without saving them will cause the lose of those changes.','2009-04-07 11:10:39','');
 INSERT INTO `language_text` VALUES ('eng', '_template','hide_contents','Hide Contents','2009-01-28 15:28:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','how_to_determine','How To Determine','2008-11-24 14:25:44','');
 INSERT INTO `language_text` VALUES ('eng', '_template','how_to_repair','How To Repair','2008-11-24 14:25:44','');

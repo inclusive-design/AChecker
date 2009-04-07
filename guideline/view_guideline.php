@@ -14,7 +14,6 @@ define('AC_INCLUDE_PATH', '../include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
-include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 
 $gid = intval($_GET["id"]);
 
@@ -30,9 +29,8 @@ if (!$rows)
 }
 else
 {
-	$checksDAO = new ChecksDAO();
 	$savant->assign('row', $rows[0]);
-	$savant->assign('checks_rows', $checksDAO->getChecksByGuidelineID($gid));
+	$savant->assign('gid', $gid);
 	$savant->display('guideline/view_guideline.tmpl.php');
 }
 ?>

@@ -47,7 +47,7 @@ if (isset($aValidator))
 	$user_link_id = '';
 	$show_decision = 'false';   // set default showDecision to 'false'
 	
-	if (isset($_SESSION['user_id']) && isset($_POST['uri']))
+	if (isset($_SESSION['user_id']) && $_POST["validate_uri"])
 	{
 		// save errors into user_links
 		$userLinksDAO = new UserLinksDAO();
