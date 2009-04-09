@@ -35,7 +35,7 @@ if (isset($_POST['cancel']))
 	header('Location: index.php');
 	exit;
 } 
-else if (isset($_POST['submit']) || isset($_POST['submit_and_close'])) 
+else if (isset($_POST['save']) || isset($_POST['save_and_close'])) 
 {
 	// check syntax
 	$func = trim($_POST['func']);
@@ -55,7 +55,7 @@ else if (isset($_POST['submit']) || isset($_POST['submit_and_close']))
 	
 		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 		
-		if (isset($_POST['submit_and_close']))
+		if (isset($_POST['save_and_close']))
 		{
 			header('Location: index.php');
 		}

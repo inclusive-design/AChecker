@@ -119,6 +119,10 @@ if (in_array(AC_PRIV_GUIDELINE_MANAGEMENT, $privs))
 	$_pages['guideline/create_edit_guideline.php']['parent']    = 'guideline/index.php';
 	$_pages['guideline/create_edit_guideline.php']['guide']    = 'AC_HELP_CREATE_EDIT_GUIDELINE';
 	
+	$_pages['guideline/add_edit_group.php']['title_var'] = 'add_group';
+	$_pages['guideline/add_edit_group.php']['parent']    = 'guideline/index.php';
+	$_pages['guideline/add_edit_group.php']['guide']    = 'AC_HELP_ADD_GROUP';
+	
 	// $_pages['guideline/view_guideline.php']['title_var'] is defined outside to open to public
 	$_pages['guideline/view_guideline.php']['parent']    = 'guideline/index.php';
 	$_pages['guideline/view_guideline.php']['guide']    = 'AC_HELP_VIEW_GUIDELINE';

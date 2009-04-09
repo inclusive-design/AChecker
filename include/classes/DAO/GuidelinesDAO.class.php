@@ -140,6 +140,12 @@ class GuidelinesDAO extends DAO {
 		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
 		
+		if (intval($guidelineID) == 0)
+		{
+			$msg->addError('MISSING_GID');
+			return false;
+		}
+		
 		$guidelineGroupsDAO = new GuidelineGroupsDAO();
 		$groups = $guidelineGroupsDAO->getUnnamedGroupsByGuidelineID($guidelineID);
 		
@@ -151,7 +157,7 @@ class GuidelinesDAO extends DAO {
 		if ($group_id)
 		{
 			$guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
-			$subgroups = $guidelineSubgroupsDAO->getUnnamedSubgroupByGuidelineID($group_id);
+			$subgroups = $guidelineSubgroupsDAO->getUnnamedSubgroupByGroupID($group_id);
 			
 			if (is_array($subgroups))
 				$subgroup_id = $subgroups[0]['subgroup_id'];
@@ -238,30 +244,6 @@ class GuidelinesDAO extends DAO {
 		{
 			return false;
 		}
-	}
-	
-	/**
-	* Delete given check, identified by check ID, from given guideline
-	* @access  public
-	* @param   $guidelineID : guideline id
-	*          $checkID : check ID to delete
-	* @return  true : if successful
-	*          false : if unsuccessful
-	* @author  Cindy Qi Li
-	*/
-	public function deleteCheckByID($guidelineID, $checkID)
-	{
-		$sql = "DELETE FROM ".TABLE_PREFIX."subgroup_checks
-		         WHERE subgroup_id in (SELECT distinct subgroup_id 
-		                                 FROM ".TABLE_PREFIX."guidelines g, "
-		                                       .TABLE_PREFIX."guideline_groups gg, "
-		                                       .TABLE_PREFIX."guideline_subgroups gs
-		                                 WHERE g.guideline_id=".$guidelineID."
-		                                   AND g.guideline_id = gg.guideline_id
-		                                   AND gg.group_id = gs.group_id)
-		           AND check_id = ".$checkID;
-		
-		return $this->execute($sql);
 	}
 	
 	/**

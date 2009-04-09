@@ -125,7 +125,7 @@ if (is_array($named_groups))
 		}
 		
 		// display named subgroups and their checks
-		$named_subgroups = $guidelineSubgroupsDAO->getNamedSubgroupByGuidelineID($group['group_id']);
+		$named_subgroups = $guidelineSubgroupsDAO->getNamedSubgroupByGroupID($group['group_id']);
 		if (is_array($named_subgroups))
 		{
 			foreach ($named_subgroups as $subgroup)

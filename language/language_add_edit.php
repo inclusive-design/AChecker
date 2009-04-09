@@ -70,14 +70,6 @@ else if (isset($_POST['save']))
 		}
 	}
 }
-else if (isset($_POST['remove']))
-{
-	if (is_array($_POST['del_checks_id']))
-	{
-		foreach ($_POST['del_checks_id'] as $del_check_id)
-			$guidelinesDAO->deleteCheckByID($gid, $del_check_id);
-	}
-}
 
 // interface display
 if (isset($lang_code) && isset($charset))

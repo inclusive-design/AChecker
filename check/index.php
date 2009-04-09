@@ -13,6 +13,9 @@
 define('AC_INCLUDE_PATH', '../include/');
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
+include(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
+include(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
+include(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
 include(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
 include(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
 
@@ -20,6 +23,10 @@ include(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
 $results_per_page = 50;
 
 $dao = new DAO();
+$checksDAO = new ChecksDAO();
+$guidelinesDAO = new GuidelinesDAO();
+$guidelineGroupsDAO = new GuidelineGroupsDAO();
+$guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
 $checkPrerequisitesDAO = new CheckPrerequisitesDAO();
 $testPassDAO = new TestPassDAO();
 
@@ -39,7 +46,7 @@ if ((isset($_GET['edit']) || isset($_GET['edit_function'])|| isset($_GET['delete
 } else if (isset($_GET['add'], $_GET['id']) ) {
 	if (is_array($_GET['id']))
 	{
-		if ($_GET['list'] == 'pre')
+		if ($_GET['list'] == 'pre') // called by "check_create_edit.php", add pre-requisite checks
 		{
 			foreach ($_GET['id'] as $pre_check_id)
 			{
@@ -47,13 +54,29 @@ if ((isset($_GET['edit']) || isset($_GET['edit_function'])|| isset($_GET['delete
 			}
 		}
 
-		if ($_GET['list'] == 'next')
+		if ($_GET['list'] == 'next') // called by "check_create_edit.php", add next checks
 		{
 			foreach ($_GET['id'] as $next_check_id)
 			{
 				$testPassDAO->Create($_GET['cid'], $next_check_id);
 			}
 		}
+
+		if ($_GET['list'] == 'guideline') // called by "check_create_edit.php", add next checks
+		{
+			$guidelinesDAO->addChecks($_GET['gid'], $_GET['id']);
+		}
+		
+		if ($_GET['list'] == 'group') // called by "check_create_edit.php", add next checks
+		{
+			$guidelineGroupsDAO->addChecks($_GET['ggid'], $_GET['id']);
+		}
+		
+		if ($_GET['list'] == 'subgroup') // called by "check_create_edit.php", add next checks
+		{
+			$guidelineSubgroupsDAO->addChecks($_GET['gsgid'], $_GET['id']);
+		}
+		
 		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 		
 		// force refresh parent window
@@ -121,16 +144,30 @@ if (isset($_GET['open_to_public']) && $_GET['open_to_public'] <> -1) {
 	}
 }
 
-// when only list the checks that are
+// Called by "create/edit checks": add pre-requisite checks, add next checks, 
+//           "create/edit guidelined", add checks into guideline or group. 
+// only list the checks that are not in the pre-requisite checks, or next checks, or guideline, or group
 if (isset($_GET['list']))
 {
-	if ($_GET['list'] == 'pre')
+	if ($_GET['list'] == 'pre') // called by "check_create_edit.php", add pre-requisite checks
 	{
 		$existing_rows = $checkPrerequisitesDAO->getPreChecksByCheckID($_GET['cid']);
 	}
-	if ($_GET['list'] == 'next')
+	if ($_GET['list'] == 'next') // called by "check_create_edit.php", add next checks
 	{
 		$existing_rows = $testPassDAO->getNextChecksByCheckID($_GET['cid']);
+	}
+	if ($_GET['list'] == 'guideline') // called by "create_edit_guideline.php", add checks into guideline
+	{
+		$existing_rows = $checksDAO->getGuidelineLevelChecks($_GET['gid']);
+	}
+	if ($_GET['list'] == 'group') // called by "create_edit_guideline.php", add checks into guideline's group
+	{
+		$existing_rows = $checksDAO->getGroupLevelChecks($_GET['ggid']);
+	}
+	if ($_GET['list'] == 'subgroup') // called by "create_edit_guideline.php", add checks into guideline's subgroup
+	{
+		$existing_rows = $checksDAO->getChecksBySubgroupID($_GET['gsgid']);
 	}
 	// get checks that are open to public and not in guideline
 	unset($str_existing_checks);

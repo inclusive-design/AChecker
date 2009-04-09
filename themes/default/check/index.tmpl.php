@@ -17,12 +17,21 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 
 <div class="center-input-form">
 	<form name="filter_form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
-	<?php if (isset($_GET['list'])){?>
+<?php if (isset($_GET['list'])){?>
 	<input type="hidden" name="list" value="<?php echo $_GET['list']; ?>" />
-	<?php }?>
-	<?php if (isset($_GET['cid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
+<?php }?>
+<?php if (isset($_GET['cid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
 	<input type="hidden" name="cid" value="<?php echo $_GET['cid']; ?>" />
-	<?php }?>
+<?php }?>
+<?php if (isset($_GET['gid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
+	<input type="hidden" name="gid" value="<?php echo $_GET['gid']; ?>" />
+<?php }?>
+<?php if (isset($_GET['ggid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
+	<input type="hidden" name="ggid" value="<?php echo $_GET['ggid']; ?>" />
+<?php }?>
+<?php if (isset($_GET['gsgid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
+	<input type="hidden" name="gsgid" value="<?php echo $_GET['gsgid']; ?>" />
+<?php }?>
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("filter"); ?></legend>
 		<table class="filter">
 		<tr>
@@ -89,6 +98,15 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 <?php }?>
 <?php if (isset($_GET['cid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
 <input type="hidden" name="cid" value="<?php echo $_GET['cid']; ?>" />
+<?php }?>
+<?php if (isset($_GET['gid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
+	<input type="hidden" name="gid" value="<?php echo $_GET['gid']; ?>" />
+<?php }?>
+<?php if (isset($_GET['ggid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
+	<input type="hidden" name="ggid" value="<?php echo $_GET['ggid']; ?>" />
+<?php }?>
+<?php if (isset($_GET['gsgid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
+	<input type="hidden" name="gsgid" value="<?php echo $_GET['gsgid']; ?>" />
 <?php }?>
 
 <table summary="" class="data" rules="rows">

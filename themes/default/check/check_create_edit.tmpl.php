@@ -323,8 +323,8 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	</div>
 
 	<div class="row">
-		<input type="submit" name="submit_no_close" value="<?php echo _AC('submit'); ?>" class="submit" /> 
-		<input type="submit" name="submit_and_close" value="<?php echo _AC('submit_and_close'); ?>" class="submit" /> 
+		<input type="submit" name="save_no_close" value="<?php echo _AC('save'); ?>" class="submit" /> 
+		<input type="submit" name="save_and_close" value="<?php echo _AC('save_and_close'); ?>" class="submit" /> 
 		<input type="submit" name="cancel" value=" <?php echo _AC('cancel'); ?> "  class="submit" />
 	</div>
 </fieldset>

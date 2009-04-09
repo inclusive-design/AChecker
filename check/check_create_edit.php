@@ -28,7 +28,7 @@ $checkExamplesDAO = new CheckExamplesDAO();
 if (isset($_POST['cancel'])) {
 	header('Location: index.php');
 	exit;
-} else if (isset($_POST['submit_no_close']) || isset($_POST['submit_and_close'])) {
+} else if (isset($_POST['save_no_close']) || isset($_POST['save_and_close'])) {
 	require_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
 	$checksDAO = new ChecksDAO();
 	
@@ -71,7 +71,7 @@ if (isset($_POST['cancel'])) {
 			
 		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 		
-		if (isset($_POST['submit_and_close']))
+		if (isset($_POST['save_and_close']))
 		{
 			header('Location: index.php');
 		}

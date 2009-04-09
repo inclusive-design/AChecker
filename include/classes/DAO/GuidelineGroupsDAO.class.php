@@ -36,8 +36,14 @@ class GuidelineGroupsDAO extends DAO {
 	*/
 	public function Create($guidelineID, $name, $abbr, $principle)
 	{
+		global $addslashes;
+		
+		$name = $addslashes(trim($name));	
+		$abbr = $addslashes(trim($abbr));
+		$principle = $addslashes(trim($principle));
+		
 		$sql = "INSERT INTO ".TABLE_PREFIX."guideline_groups
-				(`guideline_id`, abbr`, `principle`) 
+				(`guideline_id`, `abbr`, `principle`) 
 				VALUES
 				(".$guidelineID.", '".$abbr."', '".$principle."')";
 
@@ -57,7 +63,7 @@ class GuidelineGroupsDAO extends DAO {
 				require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 				$langTextDAO = new LanguageTextDAO();
 				
-				if ($langTextDAO->Create(DEFAULT_LANGUAGE_CODE, '_guideline',$term,$name,''))
+				if ($langTextDAO->Create($_SESSION['lang'], '_guideline',$term,$name,''))
 				{
 					$sql = "UPDATE ".TABLE_PREFIX."guideline_groups 
 					           SET name='".$term."' WHERE group_id=".$group_id;
@@ -69,17 +75,28 @@ class GuidelineGroupsDAO extends DAO {
 	}
 	
 	/**
-	* Delete all entries of given guideline ID
+	* Update an existing guideline group
 	* @access  public
-	* @param   $guidelineID : guideline id
+	* @param   $groupID : group id
+	*          $name
+	*          $abbr
+	*          $principle
 	* @return  true : if successful
 	*          false : if not successful
 	* @author  Cindy Qi Li
 	*/
-	public function Delete($guidelineID)
+	public function Update($groupID, $name, $abbr, $principle)
 	{
-		$sql = "DELETE FROM ".TABLE_PREFIX."guideline_groups
-                 WHERE guideline_id = ".$guidelineID;
+		global $addslashes;
+		
+		$name = $addslashes(trim($name));	
+		$abbr = $addslashes(trim($abbr));
+		$principle = $addslashes(trim($principle));
+		
+		$sql = "UPDATE ".TABLE_PREFIX."guideline_groups
+				   SET abbr='".$abbr."', 
+				       principle = '".$principle."' 
+				 WHERE group_id = ".$groupID;
 
 		if (!$this->execute($sql))
 		{
@@ -88,8 +105,131 @@ class GuidelineGroupsDAO extends DAO {
 		}
 		else
 		{
-			return true;
+			if ($name <> '')
+			{
+				$term = LANG_PREFIX_GUIDELINE_GROUPS_NAME.$groupID;
+				$this->updateLang($groupID, $term, $name, 'name');
+			}
 		}
+	}
+	
+//	/**
+//	* Delete all entries of given guideline ID
+//	* @access  public
+//	* @param   $guidelineID : guideline id
+//	* @return  true : if successful
+//	*          false : if not successful
+//	* @author  Cindy Qi Li
+//	*/
+//	public function Delete($guidelineID)
+//	{
+//		$sql = "DELETE FROM ".TABLE_PREFIX."guideline_groups
+//                 WHERE guideline_id = ".$guidelineID;
+//
+//		if (!$this->execute($sql))
+//		{
+//			$msg->addError('DB_NOT_UPDATED');
+//			return false;
+//		}
+//		else
+//		{
+//			return true;
+//		}
+//	}
+
+	/**
+	* Delete all entries of given group ID
+	* @access  public
+	* @param   $groupID : group id
+	* @return  true : if successful
+	*          false : if not successful
+	* @author  Cindy Qi Li
+	*/
+	public function Delete($groupID)
+	{
+		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
+		
+		// Delete all subgroups
+		$subgroupChecksDAO = new SubgroupChecksDAO();
+		$sql = "SELECT subgroup_id FROM ".TABLE_PREFIX."guideline_subgroups
+		         WHERE group_id = ".$groupID;
+		$rows = $this->execute($sql);
+		
+		foreach ($rows as $row)
+			$subgroupChecksDAO->DeleteBySubgroupID($row['subgroup_id']);
+		
+		// delete language for group name
+		$sql = "DELETE FROM ".TABLE_PREFIX."language_text 
+		         WHERE variable='_guideline' 
+		           AND term=(SELECT name 
+		                       FROM ".TABLE_PREFIX."guideline_groups
+		                      WHERE group_id=".$groupID.")";
+		$this->execute($sql);
+			
+		// delete guideline_groups
+		$sql = "DELETE FROM ".TABLE_PREFIX."guideline_groups WHERE group_id=".$groupID;
+			
+		return $this->execute($sql);
+	}
+
+	/**
+	* Add checks into guideline group
+	* @access  public
+	* @param   $groupID : guideline group id
+	*          $cids : array of check ids to be added into guideline group
+	* @return  true : if successful
+	*          false : if unsuccessful
+	* @author  Cindy Qi Li
+	*/
+	public function addChecks($groupID, $cids)
+	{
+		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
+		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
+		
+		if (intval($groupID) == 0)
+		{
+			$msg->addError('MISSING_GID');
+			return false;
+		}
+		
+		$guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
+		$subgroups = $guidelineSubgroupsDAO->getUnnamedSubgroupByGroupID($groupID);
+		
+		if (is_array($subgroups))
+			$subgroup_id = $subgroups[0]['subgroup_id'];
+		else
+			$subgroup_id = $guidelineSubgroupsDAO->Create($groupID, '','');
+		
+		if ($subgroup_id)
+		{
+			$subgroupChecksDAO = new SubgroupChecksDAO();
+			
+			if (is_array($cids))
+			{
+				foreach ($cids as $cid)
+					$subgroupChecksDAO->Create($subgroup_id, $cid);
+			}
+		}
+		else return false;
+		
+		return true;
+	}
+	
+	/**
+	* Return group info of the given group id
+	* @access  public
+	* @param   $groupID : group id
+	* @return  table row: if success
+	*          false : if fail
+	* @author  Cindy Qi Li
+	*/
+	public function getGroupByID($groupID)
+	{
+		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_groups 
+                 WHERE group_id = ".$groupID;
+
+		$rows = $this->execute($sql);
+		return $rows[0];
 	}
 
 	/**
@@ -125,5 +265,38 @@ class GuidelineGroupsDAO extends DAO {
 
 		return $this->execute($sql);
 	}
+	
+	/**
+	 * insert/update guideline group term into language_text and update according record in table "guideline_groups"
+	 * @access  private
+	 * @param   $groupID
+	 *          $term      : term to create/update into 'language_text' table
+	 *          $text      : text to create/update into 'language_text' table
+	 *          $fieldName : field name in table 'guideline_groups' to update
+	 * @return  true    if update successfully
+	 *          false   if update unsuccessful
+	 * @author  Cindy Qi Li
+	 */
+	private function updateLang($groupID, $term, $text, $fieldName)
+	{
+		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
+		$langTextDAO = new LanguageTextDAO();
+		$langs = $langTextDAO->getByTermAndLang($term, $_SESSION['lang']);
+
+		if (is_array($langs))
+		{// term already exists. Only need to update modified text
+			if ($langs[0]['text'] <> mysql_real_escape_string($text)) $langTextDAO->setText($_SESSION['lang'], '_guideline',$term,$text);
+		}
+		else
+		{
+			$langTextDAO->Create($_SESSION['lang'], '_guideline',$term,$text,'');
+			
+			$sql = "UPDATE ".TABLE_PREFIX."guideline_groups SET ".$fieldName."='".$term."' WHERE group_id=".$groupID;
+			$this->execute($sql);
+		}
+		
+		return true;
+	}
+	
 }
 ?>

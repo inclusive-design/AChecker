@@ -14,6 +14,9 @@ define('AC_INCLUDE_PATH', '../include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/UsersDAO.class.php');
 
@@ -22,6 +25,9 @@ global $_current_user;
 if (isset($_GET["id"])) $gid = intval($_GET["id"]);
 
 $guidelinesDAO = new GuidelinesDAO();
+$guidelineGroupsDAO = new GuidelineGroupsDAO();
+$guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
+$subgroupChecksDAO = new SubgroupChecksDAO();
 
 // handle submits
 if (isset($_POST['cancel'])) 
@@ -30,7 +36,7 @@ if (isset($_POST['cancel']))
 	header('Location: index.php');
 	exit;
 } 
-else if (isset($_POST['save']))
+else if (isset($_POST['save_no_close']) || isset($_POST['save_and_close']))
 {
 	$title = $addslashes(trim($_POST['title']));	
 	
@@ -75,16 +81,58 @@ else if (isset($_POST['save']))
 			$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 		}
 	}
-	header('Location: index.php');
-	exit;
+	
+	if (isset($_POST['save_and_close']))
+	{
+		header('Location: index.php');
+		exit;
+	}
+	else
+	{
+		header('Location: create_edit_guideline.php?id='.$gid);
+		exit;
+	}
 }
 else if (isset($_POST['remove']))
 {
-	if (is_array($_POST['del_checks_id']))
+	foreach ($_POST as $name => $value)
 	{
-		foreach ($_POST['del_checks_id'] as $del_check_id)
-			$guidelinesDAO->deleteCheckByID($gid, $del_check_id);
+		// the check ids need to be removed are in an array
+		if (substr($name, 0, 13) == 'del_checks_id' && is_array($value))
+		{
+			$value_prefix = substr($name, 14);
+			$action_on = explode('_', $value_prefix);
+			$action_on_element = $action_on[0];
+			$action_on_id = $action_on[1];
+			
+			if ($action_on_element == 'g')
+			{
+				foreach ($value as $del_check_id)
+					$subgroupChecksDAO->deleteChecksByTypeAndID('guideline', $action_on_id, substr($del_check_id, strlen($value_prefix)+1));
+			}
+			if ($action_on_element == 'gg')
+			{
+				foreach ($value as $del_check_id)
+					$subgroupChecksDAO->deleteChecksByTypeAndID('group', $action_on_id, substr($del_check_id, strlen($value_prefix)+1));
+			}
+					if ($action_on_element == 'gsg')
+			{
+				foreach ($value as $del_check_id)
+					$subgroupChecksDAO->deleteChecksByTypeAndID('subgroup', $action_on_id, substr($del_check_id, strlen($value_prefix)+1));
+			}
+		}
 	}
+}
+
+// remove groups and subgroups
+if ($_GET['action'] == 'remove')
+{
+	if (isset($_GET['gsg']))
+		$guidelineSubgroupsDAO->Delete($_GET['gsg']);
+	if (isset($_GET['gg']))
+		$guidelineGroupsDAO->Delete($_GET['gg']);
+	header('Location: create_edit_guideline.php?id='.$gid);
+	exit;
 }
 
 // interface display
@@ -94,14 +142,12 @@ if (!isset($gid))
 	$checksDAO = new ChecksDAO();
 	
 	$savant->assign('author', $_current_user->getUserName());
-	$savant->assign('checks_to_add_rows', $checksDAO->getAllOpenChecks());
 }
 else
 {
 	// edit existing guideline
 	$checksDAO = new ChecksDAO();
 	$rows = $guidelinesDAO->getGuidelineByIDs($gid);
-	$checks_rows = $checksDAO->getChecksByGuidelineID($gid);
 
 	// get author name
 	$usersDAO = new UsersDAO();
@@ -109,19 +155,21 @@ else
 
 	if (!$user_name) $user_name = _AC('author_not_exist');
 	
-	// get checks that are open to public and not in guideline
-	unset($str_existing_checks);
-	if (is_array($checks_rows))
-	{
-		foreach($checks_rows as $check_row)
-			$str_existing_checks .= $check_row['check_id'] .',';
-		$str_existing_checks = substr($str_existing_checks, 0, -1);
-	}
-	
+//	// get checks that are open to public and not in guideline
+//	unset($str_existing_checks);
+//	if (is_array($checks_rows))
+//	{
+//		foreach($checks_rows as $check_row)
+//			$str_existing_checks .= $check_row['check_id'] .',';
+//		$str_existing_checks = substr($str_existing_checks, 0, -1);
+//	}
+//	
+	$savant->assign('gid', $gid);
 	$savant->assign('row', $rows[0]);
 	$savant->assign('author', $user_name);
-	$savant->assign('checks_rows', $checks_rows);
-	$savant->assign('checks_to_add_rows', $checksDAO->getAllOpenChecksExceptListed($str_existing_checks));
+	$savant->assign('checksDAO', $checksDAO);
+	//	$savant->assign('checks_rows', $checks_rows);
+//	$savant->assign('checks_to_add_rows', $checksDAO->getAllOpenChecksExceptListed($str_existing_checks));
 }
 
 if (isset($_current_user)) $savant->assign('is_admin', $_current_user->isAdmin());
