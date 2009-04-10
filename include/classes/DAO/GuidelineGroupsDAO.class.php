@@ -147,16 +147,16 @@ class GuidelineGroupsDAO extends DAO {
 	*/
 	public function Delete($groupID)
 	{
-		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
+		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
 		
 		// Delete all subgroups
-		$subgroupChecksDAO = new SubgroupChecksDAO();
+		$guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
 		$sql = "SELECT subgroup_id FROM ".TABLE_PREFIX."guideline_subgroups
 		         WHERE group_id = ".$groupID;
 		$rows = $this->execute($sql);
 		
 		foreach ($rows as $row)
-			$subgroupChecksDAO->DeleteBySubgroupID($row['subgroup_id']);
+			$guidelineSubgroupsDAO->Delete($row['subgroup_id']);
 		
 		// delete language for group name
 		$sql = "DELETE FROM ".TABLE_PREFIX."language_text 

@@ -23,10 +23,10 @@
 		<th scope="col"><?php echo _AC('description');?></th>
 		<?php if ($this->showStatus) {?>
 		<th scope="col"><?php echo _AC('status');?></th>
-		<?}?>
+		<?php }?>
 		<?php if ($this->isAdmin) {?>
 		<th scope="col"><?php echo _AC('open_to_public');?></th>
-		<?}?>
+		<?php }?>
 	</tr>
 </thead>
 
@@ -35,7 +35,7 @@
 		<td colspan="5">
 			<?php foreach ($this->buttons as $button_text) {?>
 			<input type="submit" name="<?php echo $button_text; ?>" value="<?php echo _AC($button_text); ?>" />
-			<?}?>
+			<?php }?>
 		</td>
 	</tr>
 </tfoot>
@@ -48,14 +48,13 @@
 		<td><?php echo _AC($row['long_name']); ?></td>
 		<?php if ($this->showStatus) {?>
 		<td><?php if ($row['status']) echo _AC('enabled'); else echo _AC('disabled'); ?></td>
-		<?}?>
+		<?php }?>
 		<?php if ($this->isAdmin) {?>
 		<td><?php if ($row['open_to_public']) echo _AC('yes'); else echo _AC('no'); ?></td>
-		<?}?>
+		<?php }?>
 	</tr>
-<?}?>
+<?php }?>
 </tbody>
 
 </table>
 </form>
-

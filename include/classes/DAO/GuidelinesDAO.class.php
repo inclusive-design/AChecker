@@ -191,59 +191,28 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function Delete($guidelineID)
 	{
-		if ($this->deleteAllChecks($guidelineID))
-		{
-			// delete language for long name
-			$sql = "DELETE FROM ".TABLE_PREFIX."language_text 
-			         WHERE variable='_guideline' 
-			           AND term=(SELECT long_name 
-			                       FROM ".TABLE_PREFIX."guidelines
-			                      WHERE guideline_id=".$guidelineID.")";
-			$this->execute($sql);
-			
-			$sql = "DELETE FROM ".TABLE_PREFIX."guidelines WHERE guideline_id=".$guidelineID;
-			
-			return $this->execute($sql);
-		}
-		else return false;
-	}
-	
-	/**
-	* Delete all checks from guideline
-	* @access  public
-	* @param   $guidelineID : guideline id
-	* @return  true : if successful
-	*          false : if unsuccessful
-	* @author  Cindy Qi Li
-	*/
-	public function deleteAllChecks($guidelineID)
-	{
 		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
-		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
-		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
 		
-		$subgroupChecksDAO = new SubgroupChecksDAO();
+		// Delete all subgroups
+		$guidelineGroupsDAO = new GuidelineGroupsDAO();
+		$sql = "SELECT group_id FROM ".TABLE_PREFIX."guideline_groups
+		         WHERE guideline_id = ".$guidelineID;
+		$rows = $this->execute($sql);
 		
-		if ($subgroupChecksDAO->Delete($guidelineID))
-		{
-			$guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
-			if ($guidelineSubgroupsDAO->Delete($guidelineID))
-			{
-				$guidelineGroupsDAO = new GuidelineGroupsDAO();
-				if ($guidelineGroupsDAO->Delete($guidelineID))
-					return true;
-				else
-					return false;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			return false;
-		}
+		foreach ($rows as $row)
+			$guidelineGroupsDAO->Delete($row['group_id']);
+		
+		// delete language for long name
+		$sql = "DELETE FROM ".TABLE_PREFIX."language_text 
+		         WHERE variable='_guideline' 
+		           AND term=(SELECT long_name 
+		                       FROM ".TABLE_PREFIX."guidelines
+		                      WHERE guideline_id=".$guidelineID.")";
+		$this->execute($sql);
+		
+		$sql = "DELETE FROM ".TABLE_PREFIX."guidelines WHERE guideline_id=".$guidelineID;
+		
+		return $this->execute($sql);
 	}
 	
 	/**
