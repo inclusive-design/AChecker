@@ -32,6 +32,7 @@ function dispaly_check_table($checks_array)
 			<th align="center"><?php echo _AC('html_tag'); ?></th>
 			<th align="center"><?php echo _AC('error_type'); ?></th>
 			<th align="center"><?php echo _AC('description'); ?></th>
+			<th align="center"><?php echo _AC('check_id'); ?></th>
 		</tr>
 		</thead>
 		
@@ -41,6 +42,7 @@ function dispaly_check_table($checks_array)
 			<td><?php echo $check_row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($check_row['confidence']); ?></td>
 			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>'); return false;"><?php echo _AC($check_row['name']); ?></a></span></td>
+			<td><?php echo $check_row['check_id']; ?></td>
 		</tr>
 	<?php } // end of foreach?>
 		</tbody>

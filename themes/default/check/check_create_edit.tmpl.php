@@ -125,37 +125,37 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		
 		<tr>
 			<th align="left"><label for="short_desc"><?php echo _AC('short_desc'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="description" id="short_desc"><?php if (isset($_POST['description'])) echo htmlspecialchars($_POST['description']); else echo htmlspecialchars(_AC($this->check_row["description"])); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="50" name="description" id="short_desc"><?php if (isset($_POST['description'])) echo htmlspecialchars($_POST['description']); else echo htmlspecialchars(_AC($this->check_row["description"])); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="search_str"><?php echo _AC('search_str'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="search_str" id="search_str"><?php if (isset($_POST['search_str'])) echo htmlspecialchars($_POST['search_str']); else echo htmlspecialchars(_AC($this->check_row["search_str"])); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="50" name="search_str" id="search_str"><?php if (isset($_POST['search_str'])) echo htmlspecialchars($_POST['search_str']); else echo htmlspecialchars(_AC($this->check_row["search_str"])); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="long_desc"><?php echo _AC('long_desc'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="long_description" id="long_desc"><?php if (isset($_POST['long_description'])) echo htmlspecialchars($_POST['long_description']); else echo htmlspecialchars(_AC($this->check_row["long_description"])); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="50" name="long_description" id="long_desc"><?php if (isset($_POST['long_description'])) echo htmlspecialchars($_POST['long_description']); else echo htmlspecialchars(_AC($this->check_row["long_description"])); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="rationale"><?php echo _AC('rationale'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="rationale" id="rationale"><?php if (isset($_POST['rationale'])) echo htmlspecialchars($_POST['rationale']); else echo htmlspecialchars(_AC($this->check_row["rationale"])); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="50" name="rationale" id="rationale"><?php if (isset($_POST['rationale'])) echo htmlspecialchars($_POST['rationale']); else echo htmlspecialchars(_AC($this->check_row["rationale"])); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="how_to_repair"><?php echo _AC('how_to_repair'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="how_to_repair" id="how_to_repair"><?php if (isset($_POST['how_to_repair'])) echo htmlspecialchars($_POST['how_to_repair']); else echo htmlspecialchars(_AC($this->check_row["how_to_repair"])); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="50" name="how_to_repair" id="how_to_repair"><?php if (isset($_POST['how_to_repair'])) echo htmlspecialchars($_POST['how_to_repair']); else echo htmlspecialchars(_AC($this->check_row["how_to_repair"])); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="repair_example"><?php echo _AC('repair_example'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="repair_example" id="repair_example"><?php if (isset($_POST['repair_example'])) echo htmlspecialchars($_POST['repair_example']); else echo htmlspecialchars(_AC($this->check_row["repair_example"])); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="50" name="repair_example" id="repair_example"><?php if (isset($_POST['repair_example'])) echo htmlspecialchars($_POST['repair_example']); else echo htmlspecialchars(_AC($this->check_row["repair_example"])); ?></textarea></td>
 		</tr>
 		
 		<tr>
 			<th align="left"><label for="note"><?php echo _AC('note'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="note" id="note"><?php if (isset($_POST['note'])) echo htmlspecialchars($_POST['note']); else echo htmlspecialchars(_AC($this->check_row["note"])); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="50" name="note" id="note"><?php if (isset($_POST['note'])) echo htmlspecialchars($_POST['note']); else echo htmlspecialchars(_AC($this->check_row["note"])); ?></textarea></td>
 		</tr>
 		
 		<tr>
@@ -189,17 +189,17 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><label for="test_procedure"><?php echo _AC('procedure'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="test_procedure" id="test_procedure"><?php if (isset($_POST['test_procedure'])) echo htmlspecialchars($_POST['test_procedure']); else echo htmlspecialchars(_AC($this->check_row["test_procedure"])); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="50" name="test_procedure" id="test_procedure"><?php if (isset($_POST['test_procedure'])) echo htmlspecialchars($_POST['test_procedure']); else echo htmlspecialchars(_AC($this->check_row["test_procedure"])); ?></textarea></td>
 		</tr>
 		
 		<tr>
 			<th align="left"><label for="test_expected_result"><?php echo _AC('expected_result'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="test_expected_result" id="test_expected_result"><?php if (isset($_POST['test_expected_result'])) echo htmlspecialchars($_POST['test_expected_result']); else echo htmlspecialchars(_AC($this->check_row["test_expected_result"])); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="50" name="test_expected_result" id="test_expected_result"><?php if (isset($_POST['test_expected_result'])) echo htmlspecialchars($_POST['test_expected_result']); else echo htmlspecialchars(_AC($this->check_row["test_expected_result"])); ?></textarea></td>
 		</tr>
 		
 		<tr>
 			<th align="left"><label for="test_failed_result"><?php echo _AC('failed_result'); ?></label>:</th>
-			<td align="left"><textarea rows="3" cols="60" name="test_failed_result" id="test_failed_result"><?php if (isset($_POST['test_failed_result'])) echo htmlspecialchars($_POST['test_failed_result']); else echo htmlspecialchars(_AC($this->check_row["test_failed_result"])); ?></textarea></td>
+			<td align="left"><textarea rows="3" cols="50" name="test_failed_result" id="test_failed_result"><?php if (isset($_POST['test_failed_result'])) echo htmlspecialchars($_POST['test_failed_result']); else echo htmlspecialchars(_AC($this->check_row["test_failed_result"])); ?></textarea></td>
 		</tr>
 		
 		<tr>
@@ -209,7 +209,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		
 		<tr>
 			<th align="left"><label for="pass_example"><?php echo _AC('pass_example'); ?></label>:</th>
-			<td align="left"><textarea rows="5" cols="60" name="pass_example" id="pass_example"><?php if (isset($_POST['pass_example'])) echo htmlspecialchars($_POST['pass_example']); else echo htmlspecialchars($this->check_example_row["pass_example"]); ?></textarea></td>
+			<td align="left"><textarea rows="5" cols="50" name="pass_example" id="pass_example"><?php if (isset($_POST['pass_example'])) echo htmlspecialchars($_POST['pass_example']); else echo htmlspecialchars($this->check_example_row["pass_example"]); ?></textarea></td>
 		</tr>
 		
 		<tr>
@@ -219,7 +219,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		
 		<tr>
 			<th align="left"><label for="fail_example"><?php echo _AC('fail_example'); ?></label>:</th>
-			<td align="left"><textarea rows="5" cols="60" name="fail_example" id="fail_example"><?php if (isset($_POST['pass_example'])) echo htmlspecialchars($_POST['fail_example']); else echo htmlspecialchars($this->check_example_row["fail_example"]); ?></textarea></td>
+			<td align="left"><textarea rows="5" cols="50" name="fail_example" id="fail_example"><?php if (isset($_POST['pass_example'])) echo htmlspecialchars($_POST['fail_example']); else echo htmlspecialchars($this->check_example_row["fail_example"]); ?></textarea></td>
 		</tr>
 		
 		<?php if (isset($this->author)) {?>

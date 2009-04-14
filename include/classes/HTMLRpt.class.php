@@ -56,6 +56,11 @@ class HTMLRpt extends AccessibilityRpt {
 '<table>
   <tr>
     <td>
+      {QUESTION}
+   </td>
+  </tr>
+  <tr>
+    <td>
       <input value="P" type="radio" name="d[{SEQUENCE_ID}]" id="pass{SEQUENCE_ID}" {PASS_CHECKED} />
       <label for="pass{SEQUENCE_ID}">{DECISION_PASS}</label>
    </td>
@@ -77,6 +82,11 @@ class HTMLRpt extends AccessibilityRpt {
 
 	var $html_decision_made = 
 '<table class="form-data">
+  <tr>
+    <td>
+      {QUESTION}
+   </td>
+  </tr>
   <tr>
     <th align="left">{LABEL_DECISION}:</th>
     <td>{DECISION}</td>
@@ -235,6 +245,7 @@ class HTMLRpt extends AccessibilityRpt {
 			                                      "{PASS_CHECKED}", 
 			                                      "{FAIL_CHECKED}", 
 			                                      "{NODECISION_CHECKED}", 
+			                                      "{QUESTION}", 
 			                                      "{DECISION_PASS}", 
 			                                      "{DECISION_FAIL}", 
 			                                      "{DECISION_NO}"),
@@ -242,6 +253,7 @@ class HTMLRpt extends AccessibilityRpt {
 			                                      "",
 			                                      "",
 			                                      'checked="checked"',
+			                                      _AC($check_row['question']),
 			                                      _AC($check_row['decision_pass']),
 			                                      _AC($check_row['decision_fail']),
 			                                      _AC('no_decision')),
@@ -265,6 +277,7 @@ class HTMLRpt extends AccessibilityRpt {
 			                                $this->html_reverse_decision);
 			                                
 			$decision_section = str_replace(array("{LABEL_DECISION}", 
+			                                      "{QUESTION}", 
 			                                      "{DECISION}", 
 			                                      "{LABEL_USER}", 
 			                                      "{USER}", 
@@ -272,6 +285,7 @@ class HTMLRpt extends AccessibilityRpt {
 			                                      "{DATE}",
 			                                      "{REVERSE_DECISION}"),
 			                                 array(_AC('decision'),
+			                                       _AC($check_row['question']),
 			                                       _AC($decision),
 			                                       _AC('user'),
 			                                       $row['user_name'],
