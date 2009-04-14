@@ -17,6 +17,8 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestProcedureDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestExpectedDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestFailDAO.class.php');
@@ -42,6 +44,9 @@ $guideline_rows = $guidelinesDAO->getEnabledGuidelinesByCheckID($check_id);
 $checkExamplesDAO = new CheckExamplesDAO();
 $pass_examples = $checkExamplesDAO->getByCheckIDAndType($check_id, AC_CHECK_EXAMPLE_PASS);
 $fail_examples = $checkExamplesDAO->getByCheckIDAndType($check_id, AC_CHECK_EXAMPLE_FAIL);
+
+$guidelineGroupsDAO = new GuidelineGroupsDAO();
+$guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
 ?>
 <div class="output-form">
 	
@@ -53,7 +58,21 @@ $fail_examples = $checkExamplesDAO->getByCheckIDAndType($check_id, AC_CHECK_EXAM
 <span class="msg">
 	<ul>
 <?php 	foreach ($guideline_rows as $guideline) {?>
-		<li><a title="<?php echo $guideline['title']._AC('link_open_in_new'); ?>" target="_new" href="<?php echo AC_BASE_HREF; ?>guideline/view_guideline.php?id=<?php echo $guideline['guideline_id']; ?>"><?php echo $guideline["title"]; ?></a></li>
+		<li>
+			<a title="<?php echo $guideline['title']._AC('link_open_in_new'); ?>" target="_new" href="<?php echo AC_BASE_HREF; ?>guideline/view_guideline.php?id=<?php echo $guideline['guideline_id']; ?>"><?php echo $guideline["title"]; ?></a><br/>
+<?php 
+			$groups = $guidelineGroupsDAO->getGroupByCheckIDAndGuidelineID($check_id, $guideline['guideline_id']);
+			if (is_array($groups) && $groups[0]['name'] <> '') {
+?>
+			<span><img src="themes/default/images/arrow.gif"><?php echo _AC($groups[0]['name']); ?></span><br/>
+<?php 
+			}
+			$subgroups = $guidelineSubgroupsDAO->getSubgroupByCheckIDAndGuidelineID($check_id, $guideline['guideline_id']);
+			if (is_array($subgroups) && $subgroups[0]['name'] <> '') {
+?>
+			<span class="padding_left"><img src="themes/default/images/arrow.gif"><?php echo _AC($subgroups[0]['name']); ?></span>
+<?php 		}?>
+		</li>
 <?php } // end of foreach?>
 	</ul>
 </span>

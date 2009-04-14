@@ -215,7 +215,29 @@ class GuidelineSubgroupsDAO extends DAO {
 		$rows = $this->execute($sql);
 		return $rows[0];
 	}
+	
+	/**
+	* Return subgroup info of the given check id and guideline id
+	* @access  public
+	* @param   $checkID : check id
+	*          $guidelineID: guideline id
+	* @return  table row: if success
+	*          false : if fail
+	* @author  Cindy Qi Li
+	*/
+	public function getSubgroupByCheckIDAndGuidelineID($checkID, $guidelineID)
+	{
+		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_subgroups 
+                 WHERE subgroup_id in (SELECT subgroup_id 
+                                         FROM ".TABLE_PREFIX."subgroup_checks
+                                        WHERE check_id=".$checkID.")
+                   AND group_id in (SELECT group_id 
+                                           FROM ".TABLE_PREFIX."guideline_groups gg
+                                          WHERE gg.guideline_id = ".$guidelineID.")";
 
+		return $this->execute($sql);
+	}
+	
 	/**
 	* Return array of subgroups info whose name is NOT null, and belong to the given group id
 	* @access  public
