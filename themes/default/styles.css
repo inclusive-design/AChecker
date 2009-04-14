@@ -192,6 +192,12 @@ a.dropdown-title {
 }
 
 /* main submit button */
+
+input{
+	background-color: #efefef;
+	font-weight: normal;
+	border:  #AAA  solid 1px;
+}
 .button {
 	background-color: #efefef;
 	font-weight: normal;
