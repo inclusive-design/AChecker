@@ -3543,6 +3543,7 @@ INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (3, 'Guideline/Check editor', 'Create, edit, delete custom checks and guidelines.', now());
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (4, 'Translator', 'Translate AChecker terms into a foreign lanugage.', now());
 
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 1);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 2);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 3);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 4);
