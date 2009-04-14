@@ -240,7 +240,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<a href="<?php echo AC_BASE_HREF; ?>check/index.php?list=subgroup&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>" 
 			       title="<?php echo _AC('add_checks_into_subgroup'); ?>" 
 			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=subgroup&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>'); return false;" >
-			<img alt="<?php echo _AC("add_checks_into_subgroup");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add_group.gif" />
+			<img alt="<?php echo _AC("add_checks_into_subgroup");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add.gif" />
 			</a>
 			<a href="<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=edit&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>" 
 			       title="<?php echo _AC('edit_subgroup_name'); ?>" 
