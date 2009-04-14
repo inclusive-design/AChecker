@@ -74,7 +74,7 @@ if (in_array(AC_PRIV_CHECKER, $privs))
 // 2. user pages
 if (in_array(AC_PRIV_USER_MANAGEMENT, $privs))
 {
-	$_pages['user/index.php']['title_var'] = 'user_manage';
+	$_pages['user/index.php']['title_var'] = 'users';
 	$_pages['user/index.php']['parent']    = AC_NAV_TOP;
 	$_pages['user/index.php']['children']  = array_merge(array('user/user_create_edit.php',
 	                                                           'user/user_group.php'), 
@@ -109,7 +109,7 @@ if (in_array(AC_PRIV_USER_MANAGEMENT, $privs))
 // 3. guideline pages
 if (in_array(AC_PRIV_GUIDELINE_MANAGEMENT, $privs))
 {
-	$_pages['guideline/index.php']['title_var'] = 'guideline_manage';
+	$_pages['guideline/index.php']['title_var'] = 'guidelines';
 	$_pages['guideline/index.php']['parent']    = AC_NAV_TOP;
 	$_pages['guideline/index.php']['children']  = array_merge(array('guideline/create_edit_guideline.php'), 
 	                                                        isset($_pages['guideline/index.php']['children']) ? $_pages['guideline/index.php']['children'] : array());
@@ -134,7 +134,7 @@ if (in_array(AC_PRIV_GUIDELINE_MANAGEMENT, $privs))
 // 3. check pages
 if (in_array(AC_PRIV_CHECK_MANAGEMENT, $privs))
 {
-	$_pages['check/index.php']['title_var'] = 'check_manage';
+	$_pages['check/index.php']['title_var'] = 'checks';
 	$_pages['check/index.php']['parent']    = AC_NAV_TOP;
 	$_pages['check/index.php']['children']  = array_merge(array('check/check_create_edit.php'), 
 	                                                        isset($_pages['check/index.php']['children']) ? $_pages['check/index.php']['children'] : array());
@@ -158,7 +158,7 @@ if (in_array(AC_PRIV_CHECK_MANAGEMENT, $privs))
 // 5. language pages
 if (in_array(AC_PRIV_LANGUAGE_MANAGEMENT, $privs))
 {
-	$_pages['language/index.php']['title_var'] = 'language_manage';
+	$_pages['language/index.php']['title_var'] = 'language';
 	$_pages['language/index.php']['parent']    = AC_NAV_TOP;
 	$_pages['language/index.php']['children']  = array_merge(array('language/language_add_edit.php'), 
 	                                                     isset($_pages['language/index.php']['children']) ? $_pages['language/index.php']['children'] : array());

@@ -131,6 +131,10 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 		<col span="<?php echo 5 + $this->col_counts; ?>" />
 		<col class="sort" />
 		<col span="4" />
+	<?php elseif($this->col == 'check_id'): ?>
+		<col span="<?php echo 5 + $this->col_counts; ?>" />
+		<col class="sort" />
+		<col span="5" />
 	<?php endif; ?>
 </colgroup>
 <thead>
@@ -145,6 +149,7 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=confidence<?php echo $page_string; ?>"><?php echo _AC('error_type'); ?></a></th>
 	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=description<?php echo $page_string; ?>"><?php echo _AC('description');   ?></a></th>
 	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=open_to_public<?php echo $page_string; ?>"><?php echo _AC('open_to_public'); ?></a></th>
+	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=check_id<?php echo $page_string; ?>"><?php echo _AC('check_id'); ?></a></th>
 </tr>
 
 </thead>
@@ -176,8 +181,9 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 		<?php }?>
 			<td><?php echo $row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($row['confidence']); ?></td>
-			<td><?php echo _AC($row['description']); ?></td>
+			<td><?php echo _AC($row['name']); ?></td>
 			<td><?php if ($row['open_to_public']) echo _AC('yes'); else echo _AC('no'); ?></td>
+			<td><?php echo $row['check_id']; ?></td>
 		</tr>
 	<?php }} ?>
 <?php else: ?>

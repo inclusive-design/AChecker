@@ -828,6 +828,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_90','<code>script</co
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_91','<code>select</code> element must have an associated <code>label</code> element. A <code>label</code> element is associated with the <code>select</code> element if the <code>for</code> attribute value of the <code>label</code> is the same as the <code>id</code> attribute of the <code>select</code> element.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_92','<code>select</code> element cannot contain <code>onchange</code> attribute.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_94','This error is generated for each SCRIPT element.','2008-11-24 13:01:58','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_95','All <code>textarea</code> elements must have an explicitly associated label.','2009-04-14 10:45:04','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_96','<code>textarea</code> element must have an associated <code>label</code> element that is positioned close to it.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_97','This error will be generated for each <code>link</code> element that has a <code>rel</code> attribute with a value of \"stylesheet\".','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_98','If <code>body</code> element content is greater than 10 characters (English) this error will be generated.','2008-11-24 13:01:58','');
@@ -1628,7 +1629,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_FAILEDRESULT_90','1. Add a
 INSERT INTO `language_text` VALUES ('eng', '_check','_FAILEDRESULT_91','1. Create a <code>label</code> element for the <code>select</code> element and associate these elements using the ID and <code>for</code> attributes.\n2. and/or\n3. Add a <code>title</code> attribute to the <code>select</code> element.\n4. and/or\n5. Add a <code>label</code> element that contains the <code>select</code> element.','2009-03-18 13:58:06','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_FAILEDRESULT_92','1. Remove the <code>onchange</code> attribute from the <code>select</code> element or modify the event handler so it does not cause a page reload or extreme change of context.','2009-03-18 13:58:06','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_FAILEDRESULT_94','1. Modify the content so it is readable when SCRIPTs are not applied.','2009-03-18 13:58:06','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_FAILEDRESULT_95','1. Create a <code>label</code> element for the <code>textarea</code> element and associate these elements using the ID and <code>for</code> attributes.\n2. and/or\n3. Add a <code>title</code> attribute to the <code>textarea</code> element.\n4. and/or\n5. Add a <code>label</code> element that contains the <code>textarea</code> element.','2009-03-18 13:58:06','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_FAILEDRESULT_95','1. Create a <code>label</code> element for the <code>textarea</code> element and associate these elements using the ID and <code>for</code> attributes.\\r\\n2. and/or\\r\\n3. Add a <code>title</code> attribute to the <code>textarea</code> element.\\r\\n4. and/or\\r\\n5. Add a <code>label</code> element that contains the <code>textarea</code> element.','2009-04-14 10:45:04','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_FAILEDRESULT_96','1. Position the label close to the control.','2009-03-18 13:58:06','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_FAILEDRESULT_97','1. Modify the document so it is readable when LINK stylesheets are not applied.','2009-03-18 13:58:06','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_FAILEDRESULT_98','1. Mark all abbreviations with a valid <code>abbr</code> element.','2009-03-18 13:58:06','');
@@ -2041,7 +2042,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_90','1. View the
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_91','1. Check all <code>select</code> elements in the content.\n2. The <code>select</code> element must have an explicitly associated label using one or more of the following methods.\n3. The <code>select</code> element has an <code>id</code> attribute value that matches the <code>for</code> attribute value of a <code>label</code> element.\n4. and/or\n5. The <code>select</code> element has a <code>title</code> attribute.\n6. or\n7. The <code>select</code> element is contained by a <code>label</code> element.','2009-03-18 13:48:49','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_92','1. Check all <code>select</code> elements in the content.\n2. Check if the <code>select</code> element contains an <code>onchange</code> attribute.\n3. Examine the onchange handler for any action that will cause the page to reload or cause an extreme change of context.\n4. Actions that will cause the page to reload or cause an extreme change of context may be variations of one of the following JavaScript statements:\n5. form.submit();\n6. window.location.href = uri;\n7. elementElsewhereOnThePage.focus();\n8. (@@other examples??)','2009-03-18 13:48:49','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_94','1. Remove or disable each SCRIPT element.\n2. Check if the content is still readable.','2009-03-18 13:48:49','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_95','1. Check all <code>textarea</code> elements.\n2. Each <code>textarea</code> element must have an explicitly associated label using one or more of the following methods.\n3. The <code>textarea</code> element has an <code>id</code> attribute value that matches the <code>for</code> attribute value of a <code>label</code> element.\n4. and/or\n5. The <code>textarea</code> element has a <code>title</code> attribute.\n6. and/or\n7. The <code>textarea</code> element is contained by a <code>label</code> element.','2009-03-18 13:48:49','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_95','1. Check all <code>textarea</code> elements.\\r\\n2. Each <code>textarea</code> element must have an explicitly associated label using one or more of the following methods.\\r\\n3. The <code>textarea</code> element has an <code>id</code> attribute value that matches the <code>for</code> attribute value of a <code>label</code> element.\\r\\n4. and/or\\r\\n5. The <code>textarea</code> element has a <code>title</code> attribute.\\r\\n6. and/or\\r\\n7. The <code>textarea</code> element is contained by a <code>label</code> element.','2009-04-14 10:45:04','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_96','1. Check all <code>textarea</code> elements in the document.','2009-03-18 13:48:49','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_97','1. Check for any <code>link</code> elements that have a <code>rel</code> attribute value of \"stylesheet\".\n2. If any of these elements are found then remove or disable them.\n3. View the document to ensure it is readable.','2009-03-18 13:48:49','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_98','1. Check the document for any text abbreviations.\n2. If an abbreviation is found, check if it is properly marked with the <code>abbr</code> element.','2009-03-18 13:48:49','');
@@ -2755,7 +2756,6 @@ INSERT INTO `language_text` VALUES ('eng', '_template','check_by_upload','Check 
 INSERT INTO `language_text` VALUES ('eng', '_template','check_by_uri','Check Accessibility by URI','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_id','Check ID','2009-04-02 13:16:21','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_it','Check It','2008-11-21 14:25:37','');
-INSERT INTO `language_text` VALUES ('eng', '_template','check_manage','Check Management','2008-12-02 11:06:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_terms','Check Terms','2008-11-27 09:48:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','choose_lang','Choose a language to translate','2008-11-26 10:11:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','close_from_public','Close From Public','2009-01-26 13:34:22','');
@@ -2830,7 +2830,6 @@ INSERT INTO `language_text` VALUES ('eng', '_template','filter','Filter','2008-1
 INSERT INTO `language_text` VALUES ('eng', '_template','first_name','First Name','2009-01-09 10:40:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','function','Function','2009-03-26 10:09:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','guidelines','Guidelines','2008-11-24 14:12:25','');
-INSERT INTO `language_text` VALUES ('eng', '_template','guideline_manage','Guideline Management','2008-12-02 11:06:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','guideline_terms','Guideline Terms','2008-11-27 09:48:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','guidelins_to_check','Guidelines to Check Against','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','handbook_toc','Handbook Toc','2009-01-28 15:28:06','');
@@ -2852,7 +2851,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','interface_terms','Interf
 INSERT INTO `language_text` VALUES ('eng', '_template','known','Known','2008-11-24 13:04:52','');
 INSERT INTO `language_text` VALUES ('eng', '_template','known_problem','Known Problem','2009-03-18 11:18:40','');
 INSERT INTO `language_text` VALUES ('eng', '_template','known_problems','Known Problems','2008-11-24 14:12:25','');
-INSERT INTO `language_text` VALUES ('eng', '_template','language_manage','Language Management','2008-12-02 11:06:56','');
+INSERT INTO `language_text` VALUES ('eng', '_template','language','Language','2009-04-14 10:35:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','lang_code','Language Code','2009-02-20 11:43:44','');
 INSERT INTO `language_text` VALUES ('eng', '_template','last_login','Last Login','2009-02-04 11:51:16','');
 INSERT INTO `language_text` VALUES ('eng', '_template','last_name','Last Name','2009-01-09 10:28:23','');
@@ -2955,7 +2954,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','steps_to_check','Steps T
 INSERT INTO `language_text` VALUES ('eng', '_template','submit','Submit','2008-12-01 13:18:57','');
 INSERT INTO `language_text` VALUES ('eng', '_template','submit_no','No','2009-01-23 11:25:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','submit_yes','Yes','2009-01-23 11:25:56','');
-INSERT INTO `language_text` VALUES ('eng', '_template','Suggestion','suggestion','2009-01-13 15:58:15','');
+INSERT INTO `language_text` VALUES ('eng', '_template','suggestion','Suggestion','2009-01-13 15:58:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','suggest_improvements','Suggest improvements on this error message','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','term_type','Term Type','2008-12-01 14:12:35','');
 INSERT INTO `language_text` VALUES ('eng', '_template','test_terms','Test Terms','2008-11-27 09:48:36','');
@@ -2969,8 +2968,8 @@ INSERT INTO `language_text` VALUES ('eng', '_template','translation','Translatio
 INSERT INTO `language_text` VALUES ('eng', '_template','translator','Translator','2009-01-07 15:05:34','');
 INSERT INTO `language_text` VALUES ('eng', '_template','updated_terms','Updated Terms','2008-12-02 09:16:45','');
 INSERT INTO `language_text` VALUES ('eng', '_template','user','User','2009-02-27 16:07:19','');
+INSERT INTO `language_text` VALUES ('eng', '_template','users','Users','2009-04-14 10:41:51','');
 INSERT INTO `language_text` VALUES ('eng', '_template','user_group','User Group','2009-02-04 11:51:16','');
-INSERT INTO `language_text` VALUES ('eng', '_template','user_manage','User Management','2008-12-02 11:06:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','user_status','User Status','2009-02-04 11:51:16','');
 INSERT INTO `language_text` VALUES ('eng', '_template','view','View','2009-01-20 11:47:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','view_guideline','View Guideline','2009-01-20 13:59:15','');

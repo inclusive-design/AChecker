@@ -3531,10 +3531,10 @@ INSERT INTO `themes` VALUES ('AChecker', '0.1', 'default', NOW(), 'This is the d
 
 # insert privileges, user groups and user group privileges
 INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (1, 'web_accessibility_checker', 'Web accessibility checker', NOW(), 'checker/index.php', 1, 1);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (2, 'user_manage', 'User management: Create, edit, delete users.', NOW(), 'user/index.php', 2, 0);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (3, 'guideline_manage', 'Guideline management: Create, edit, delete, enable, disable guidelines.', NOW(), 'guideline/index.php', 3, 0);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (4, 'check_manage', 'Check management: Create, edit, delete, enable, disable checks.', NOW(), 'check/index.php', 4, 0);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (5, 'language_manage', 'Language management: Create, edit, delete, enable, disable languages.', NOW(), 'language/index.php', 5, 0);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (2, 'users', 'User management: Create, edit, delete users.', NOW(), 'user/index.php', 2, 0);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (3, 'guidelines', 'Guideline management: Create, edit, delete, enable, disable guidelines.', NOW(), 'guideline/index.php', 3, 0);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (4, 'checks', 'Check management: Create, edit, delete, enable, disable checks.', NOW(), 'check/index.php', 4, 0);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (5, 'language', 'Language management: Create, edit, delete, enable, disable languages.', NOW(), 'language/index.php', 5, 0);
 INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (6, 'translation', 'Translation: Translate all Achecker terms into other languages.', NOW(), 'translation/index.php', 6, 0);
 INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (7, 'profile', 'Profile management: Edit profile, change password or email.', NOW(), 'profile/index.php', 7, 0);
 

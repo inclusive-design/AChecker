@@ -20,7 +20,7 @@ include(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
 include(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
 
 // initialize constants
-$results_per_page = 50;
+$results_per_page = 300;
 
 $dao = new DAO();
 $checksDAO = new ChecksDAO();
@@ -98,7 +98,7 @@ if ($_GET['reset_filter']) {
 
 $page_string = '';
 $orders = array('asc' => 'desc', 'desc' => 'asc');
-$cols   = array('html_tag' => 1, 'public_field' => 1, 'confidence' => 1, 'description' => 1, 'open_to_public' => 1);
+$cols   = array('html_tag' => 1, 'public_field' => 1, 'confidence' => 1, 'description' => 1, 'open_to_public' => 1, 'check_id' => 1);
 
 if (isset($_GET['asc'])) {
 	$order = 'asc';
@@ -116,6 +116,7 @@ if (isset($_GET['asc'])) {
 if (!isset($_GET['html_tag']) || $_GET['html_tag'] == '') $_GET['html_tag'] = '-1';
 if (!isset($_GET['confidence']) || $_GET['confidence'] == '') $_GET['confidence'] = '-1';
 if (!isset($_GET['open_to_public']) || $_GET['open_to_public'] == '') $_GET['open_to_public'] = '-1';
+if (!isset($_GET['check_id']) || $_GET['check_id'] == '') $_GET['check_id'] = '-1';
 
 if ($_GET['html_tag'] && $_GET['html_tag'] <> -1) {
 	$condition = " html_tag = '".$_GET['html_tag']."'";
