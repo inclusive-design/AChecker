@@ -250,17 +250,17 @@ if ($num_results > 0)
 	echo '<br /><ul>'."\n";
 	if (is_array($rows))
 	{
+		if (isset($_REQUEST["submit"]))
+			$submits = SEP."submit=1";
+		if (isset($_REQUEST["search"]))
+			$submits .= SEP."search=1";
+
 		foreach ($rows as $row) 
 		{
 			if ($row['term'] == $_REQUEST["selected_term"])
 				echo '<a name="anchor"></a>'."\n".'<li>'."\n";
 			else
 				echo '<li>'."\n";
-	
-			if (isset($_REQUEST["submit"]))
-				$submits = SEP."submit=1";
-			if (isset($_REQUEST["search"]))
-				$submits .= SEP."search=1";
 	
 			if ($row['term'] != $_REQUEST["search_phase"]) {
 				echo '<a href="'.$_SERVER['PHP_SELF'].'?selected_term='.$row['term'].SEP.'lang_code='.$_REQUEST['lang_code'].SEP.'new_or_translated='.$_REQUEST["new_or_translated"].SEP.'term_type='.$_REQUEST["term_type"].SEP.'search_phase='.$_REQUEST["search_phase"].$submits.'#anchor" ';
