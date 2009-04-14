@@ -86,17 +86,18 @@ if (isset($_REQUEST["save"]))
 	}
 }
 
-$rows_lang = $languagesDAO->getAllExceptLangCode(DEFAULT_LANGUAGE_CODE);				
-				
+//$rows_lang = $languagesDAO->getAllExceptLangCode(DEFAULT_LANGUAGE_CODE);				
+$rows_lang = $languagesDAO->getAll();				
+
 include(AC_INCLUDE_PATH.'header.inc.php');
 
-if (!is_array($rows_lang))
-{
-	$msg->addFeedback('ONLY_ENGLISH');
-	$msg->printAll();
-	include(AC_INCLUDE_PATH.'footer.inc.php'); 
-	exit;
-}
+//if (!is_array($rows_lang))
+//{
+//	$msg->addFeedback('ONLY_ENGLISH');
+//	$msg->printAll();
+//	include(AC_INCLUDE_PATH.'footer.inc.php'); 
+//	exit;
+//}
 ?>
 
 <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
