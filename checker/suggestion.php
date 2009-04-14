@@ -64,13 +64,13 @@ $guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
 			$groups = $guidelineGroupsDAO->getGroupByCheckIDAndGuidelineID($check_id, $guideline['guideline_id']);
 			if (is_array($groups) && $groups[0]['name'] <> '') {
 ?>
-			<span><img src="themes/default/images/arrow.gif"><?php echo _AC($groups[0]['name']); ?></span><br/>
+			<span><img src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/arrow.gif"><?php echo _AC($groups[0]['name']); ?></span><br/>
 <?php 
 			}
 			$subgroups = $guidelineSubgroupsDAO->getSubgroupByCheckIDAndGuidelineID($check_id, $guideline['guideline_id']);
 			if (is_array($subgroups) && $subgroups[0]['name'] <> '') {
 ?>
-			<span class="padding_left"><img src="themes/default/images/arrow.gif"><?php echo _AC($subgroups[0]['name']); ?></span>
+			<span class="padding_left"><img src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/arrow.gif"><?php echo _AC($subgroups[0]['name']); ?></span>
 <?php 		}?>
 		</li>
 <?php } // end of foreach?>

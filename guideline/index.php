@@ -78,7 +78,7 @@ if ($_current_user->isAdmin())
 }
 else
 {
-	$savant->assign('buttons', array('view', 'edit'));
+	$savant->assign('buttons', array('view'));
 }
 $savant->assign('title', _AC('standard_guidelines'));
 $savant->assign('rows', $guidelinesDAO->getStandardGuidelines());

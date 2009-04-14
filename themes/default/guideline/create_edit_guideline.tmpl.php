@@ -167,13 +167,18 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <?php if (isset($this->row)) {?>
 	<h2>
-		<?php echo _AC('checks');?><br/>
-		<input type="button" name="add_group" value="<?php echo _AC('add_group'); ?>" 
+		<?php echo _AC('checks');?>
+		<a href="<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;gid=<?php echo $this->gid; ?>'); return false;" 
+		       title="<?php echo _AC("add_group");?>"
 		       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;gid=<?php echo $this->gid; ?>'); return false;" />
-		<input type="button" name="add_checks_into_guideline" value="<?php echo _AC('add_checks_into_guideline'); ?>" 
+		<img alt="<?php echo _AC("add_group");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add_group.gif">
+		</a>
+		<a href="<?php echo AC_BASE_HREF; ?>check/index.php?list=guideline&amp;gid=<?php echo $this->gid; ?>'); return false;" 
+		       title="<?php echo _AC("add_checks_into_guideline");?>"
 		       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=guideline&amp;gid=<?php echo $this->gid; ?>'); return false;" />
-		<br/><br/>
-	</h2>
+		<img alt="<?php echo _AC("add_checks_into_guideline");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add.gif">
+		</a>
+	</h2><br/>
 <?php 
 	// display guideline level checks
 	$guidelineLevel_checks = $this->checksDAO->getGuidelineLevelChecks($gid);
@@ -192,15 +197,27 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		{
 	?>
 		<h3>
-			<?php echo _AC($group['name']);?><br/>
-			<input type="button" name="add_subgroup" value="<?php echo _AC('add_subgroup'); ?>" 
+			<?php echo _AC($group['name']);?>
+			<a href="<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;ggid=<?php echo $group['group_id']; ?>" 
+			       title="<?php echo _AC('add_subgroup'); ?>" 
 			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;ggid=<?php echo $group['group_id']; ?>'); return false;" />
-			<input type="button" name="add_checks_into_group" value="<?php echo _AC('add_checks_into_group'); ?>" 
+			<img alt="<?php echo _AC("add_subgroup");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add_group.gif">
+			</a>
+			<a href="<?php echo AC_BASE_HREF; ?>check/index.php?list=group&amp;ggid=<?php echo $group['group_id']; ?>" 
+			       title="<?php echo _AC('add_checks_into_group'); ?>" 
 			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=group&amp;ggid=<?php echo $group['group_id']; ?>'); return false;" />
-			<input type="button" name="edit_group_name" value="<?php echo _AC('edit_group_name'); ?>" 
+			<img alt="<?php echo _AC("add_checks_into_group");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add.gif">
+			</a>
+			<a href="<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=edit&amp;ggid=<?php echo $group['group_id']; ?>" 
+			       title="<?php echo _AC('edit_group_name'); ?>" 
 			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=edit&amp;ggid=<?php echo $group['group_id']; ?>'); return false;" />
-			<input type="button" name="del_this_group" value="<?php echo _AC('del_this_group'); ?>" 
+			<img alt="<?php echo _AC("edit_group_name");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/edit.gif">
+			</a>
+			<a href="<?php echo AC_BASE_HREF; ?>guideline/create_edit_guideline.php?id=<?php echo $gid?>" 
+			       title="<?php echo _AC('del_this_group'); ?>" 
 			       onclick="return del('gg', <?php echo $group['group_id']; ?>)" />
+			<img alt="<?php echo _AC("del_this_group");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/delete.gif">
+			</a>
 		</h3><br/>
 	<?php
 			// get group level checks: the checks in subgroups without subgroup names
@@ -219,13 +236,22 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 				{
 	?>
 		<h4>
-			<?php echo _AC($subgroup['name']);?><br/>
-			<input type="button" name="add_checks_into_subgroup" value="<?php echo _AC('add_checks_into_subgroup'); ?>" 
+			<?php echo _AC($subgroup['name']);?>
+			<a href="<?php echo AC_BASE_HREF; ?>check/index.php?list=subgroup&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>" 
+			       title="<?php echo _AC('add_checks_into_subgroup'); ?>" 
 			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=subgroup&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>'); return false;" />
-			<input type="button" name="edit_subgroup_name" value="<?php echo _AC('edit_subgroup_name'); ?>" 
+			<img alt="<?php echo _AC("add_checks_into_subgroup");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add_group.gif">
+			</a>
+			<a href="<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=edit&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>" 
+			       title="<?php echo _AC('edit_subgroup_name'); ?>" 
 			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=edit&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>'); return false;" />
-			<input type="button" name="del_this_subgroup" value="<?php echo _AC('del_this_subgroup'); ?>" 
+			<img alt="<?php echo _AC("edit_subgroup_name");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/edit.gif">
+			</a>
+			<a href="<?php echo AC_BASE_HREF; ?>guideline/create_edit_guideline.php?id=<?php echo $gid?>" 
+			       title="<?php echo _AC('del_this_subgroup'); ?>" 
 			       onclick="return del('gsg', <?php echo $subgroup['subgroup_id']; ?>)" />
+			<img alt="<?php echo _AC("del_this_subgroup");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/delete.gif">
+			</a>
 		</h4><br/>
 	<?php 
 					$subgroup_checks = $this->checksDAO->getChecksBySubgroupID($subgroup['subgroup_id']);

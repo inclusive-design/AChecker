@@ -155,21 +155,10 @@ else
 
 	if (!$user_name) $user_name = _AC('author_not_exist');
 	
-//	// get checks that are open to public and not in guideline
-//	unset($str_existing_checks);
-//	if (is_array($checks_rows))
-//	{
-//		foreach($checks_rows as $check_row)
-//			$str_existing_checks .= $check_row['check_id'] .',';
-//		$str_existing_checks = substr($str_existing_checks, 0, -1);
-//	}
-//	
 	$savant->assign('gid', $gid);
 	$savant->assign('row', $rows[0]);
 	$savant->assign('author', $user_name);
 	$savant->assign('checksDAO', $checksDAO);
-	//	$savant->assign('checks_rows', $checks_rows);
-//	$savant->assign('checks_to_add_rows', $checksDAO->getAllOpenChecksExceptListed($str_existing_checks));
 }
 
 if (isset($_current_user)) $savant->assign('is_admin', $_current_user->isAdmin());
