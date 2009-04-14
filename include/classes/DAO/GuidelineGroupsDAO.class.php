@@ -242,9 +242,12 @@ class GuidelineGroupsDAO extends DAO {
 	*/
 	public function getNamedGroupsByGuidelineID($guidelineID)
 	{
-		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_groups 
-                 WHERE guideline_id = ".$guidelineID."
-                   AND name is not NULL";
+		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_groups gg, ".TABLE_PREFIX."language_text l
+                 WHERE gg.guideline_id = ".$guidelineID."
+                   AND gg.name is not NULL
+                   AND gg.name = l.term
+                   AND l.language_code = '".$_SESSION['lang']."'
+                 ORDER BY l.text";
 
 		return $this->execute($sql);
 	}

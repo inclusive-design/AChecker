@@ -250,13 +250,14 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			<th align="center"><?php echo _AC('html_tag'); ?></th>
 			<th align="center"><?php echo _AC('error_type'); ?></th>
 			<th align="center"><?php echo _AC('description'); ?></th>
+			<th align="center"><?php echo _AC('check_id'); ?></th>
 		</tr>
 		</thead>
 	<?php if (is_array($this->pre_rows)) { ?>
 			
 		<tfoot>
 			<tr>
-				<td colspan="4">
+				<td colspan="5">
 					<input type="submit" name="remove_pre" value="<?php echo _AC('remove'); ?>" />
 				</td>
 			</tr>
@@ -269,11 +270,12 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			<td><?php echo $pre_row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($pre_row['confidence']); ?></td>
 			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>'); return false;"><?php echo _AC($pre_row['name']); ?></a></span></td>
+			<td><?php echo $next_row['check_id']; ?></td>
 		</tr>
 	<?php } // end of foreach?>
 	<?php } else {// end of if?>
 		<tbody>
-		<tr><td colspan="4"><?php echo _AC('none_found'); ?></td></tr>
+		<tr><td colspan="5"><?php echo _AC('none_found'); ?></td></tr>
 	<?php }?>
 		</tbody>
 	</table>
@@ -292,6 +294,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			<th align="center"><?php echo _AC('html_tag'); ?></th>
 			<th align="center"><?php echo _AC('error_type'); ?></th>
 			<th align="center"><?php echo _AC('description'); ?></th>
+			<th align="center"><?php echo _AC('check_id'); ?></th>
 		</tr>
 		</thead>
 	<?php if (is_array($this->next_rows)) { ?>
@@ -311,6 +314,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			<td><?php echo $next_row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($next_row['confidence']); ?></td>
 			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $next_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $next_row["check_id"]; ?>'); return false;"><?php echo _AC($next_row['name']); ?></a></span></td>
+			<td><?php echo $next_row['check_id']; ?></td>
 		</tr>
 	<?php } // end of foreach?>
 	<?php } else {// end of if?>

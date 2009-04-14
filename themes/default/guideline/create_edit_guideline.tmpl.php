@@ -34,6 +34,7 @@ function dispaly_check_table($checks_array, $prefix)
 			<th align="center"><?php echo _AC('html_tag'); ?></th>
 			<th align="center"><?php echo _AC('error_type'); ?></th>
 			<th align="center"><?php echo _AC('description'); ?></th>
+			<th align="center"><?php echo _AC('check_id'); ?></th>
 		</tr>
 		</thead>
 		
@@ -52,6 +53,7 @@ function dispaly_check_table($checks_array, $prefix)
 			<td><?php echo $check_row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($check_row['confidence']); ?></td>
 			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>'); return false;"><?php echo _AC($check_row['name']); ?></a></span></td>
+			<td><?php echo $check_row['check_id']; ?></td>
 		</tr>
 <?php } // end of foreach?>
 		</tbody>
@@ -165,7 +167,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <?php if (isset($this->row)) {?>
 	<h2>
-		<?php echo _AC('checks');?>
+		<?php echo _AC('checks');?><br/>
 		<input type="button" name="add_group" value="<?php echo _AC('add_group'); ?>" 
 		       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;gid=<?php echo $this->gid; ?>'); return false;" />
 		<input type="button" name="add_checks_into_guideline" value="<?php echo _AC('add_checks_into_guideline'); ?>" 
@@ -190,7 +192,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		{
 	?>
 		<h3>
-			<?php echo _AC($group['name']);?>
+			<?php echo _AC($group['name']);?><br/>
 			<input type="button" name="add_subgroup" value="<?php echo _AC('add_subgroup'); ?>" 
 			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;ggid=<?php echo $group['group_id']; ?>'); return false;" />
 			<input type="button" name="add_checks_into_group" value="<?php echo _AC('add_checks_into_group'); ?>" 
@@ -217,7 +219,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 				{
 	?>
 		<h4>
-			<?php echo _AC($subgroup['name']);?>
+			<?php echo _AC($subgroup['name']);?><br/>
 			<input type="button" name="add_checks_into_subgroup" value="<?php echo _AC('add_checks_into_subgroup'); ?>" 
 			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=subgroup&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>'); return false;" />
 			<input type="button" name="edit_subgroup_name" value="<?php echo _AC('edit_subgroup_name'); ?>" 

@@ -226,9 +226,12 @@ class GuidelineSubgroupsDAO extends DAO {
 	*/
 	public function getNamedSubgroupByGroupID($groupID)
 	{
-		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_subgroups
-                 WHERE group_id = ".$groupID."
-                   AND name is not NULL";
+		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_subgroups gs, ".TABLE_PREFIX."language_text l
+                 WHERE gs.group_id = ".$groupID."
+                   AND gs.name is not NULL
+                   AND gs.name = l.term
+                   AND l.language_code = '".$_SESSION['lang']."'
+                 ORDER BY l.text";
 
 		return $this->execute($sql);
 	}
