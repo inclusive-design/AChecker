@@ -155,6 +155,10 @@ span.info_msg{
   font-weight: bold;
 }
 
+span.padding_left {
+  padding-left: 1em;
+}
+
 em {
 	font-weight: bold;
 }
