@@ -257,12 +257,13 @@ class GuidelinesDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	public function getEnabledGuidelinesByUserID($userID)
+	public function getClosedEnabledGuidelinesByUserID($userID)
 	{
 		$sql = "select *
 				from ". TABLE_PREFIX ."guidelines
 				where user_id = " . $userID . "
 				and status = ".AC_STATUS_ENABLED."
+				and open_to_public = 0
 				order by title";
 
 	    return $this->execute($sql);

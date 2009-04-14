@@ -28,7 +28,7 @@ $savant->assign('num_of_guidelines_per_row', $num_of_guidelines_per_row);
 
 if (isset($_current_user))
 {
-	$user_guidelines = $guidelinesDAO->getEnabledGuidelinesByUserID($_SESSION['user_id']);
+	$user_guidelines = $guidelinesDAO->getClosedEnabledGuidelinesByUserID($_SESSION['user_id']);
 	if (is_array($user_guidelines)) 
 		$guidelines = array_merge($open_guidelines, $user_guidelines);
 	else
