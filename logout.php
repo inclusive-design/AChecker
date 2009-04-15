@@ -15,10 +15,7 @@ require(AC_INCLUDE_PATH.'vitals.inc.php');
 
 // unset all session variables
 session_unset();
-session_destroy();
 $_SESSION = array();
-
-global $msg;
 
 $msg->addFeedback('LOGOUT');
 header('Location: index.php');
