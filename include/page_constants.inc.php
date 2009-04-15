@@ -142,6 +142,7 @@ if (in_array(AC_PRIV_CHECK_MANAGEMENT, $privs))
 	                                                        
 	$_pages['check/html_tag_list.php']['title_var'] = 'html_tag_list';
 	$_pages['check/html_tag_list.php']['parent']    = 'check/index.php';
+	$_pages['check/html_tag_list.php']['guide']    = 'AC_HELP_HTML_TAG_LIST';
 	
 	$_pages['check/check_create_edit.php']['title_var'] = 'create_check';
 	$_pages['check/check_create_edit.php']['parent']    = 'check/index.php';

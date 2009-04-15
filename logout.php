@@ -18,6 +18,9 @@ session_unset();
 session_destroy();
 $_SESSION = array();
 
+global $msg;
+
 $msg->addFeedback('LOGOUT');
 header('Location: index.php');
+exit;
 ?>

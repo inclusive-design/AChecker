@@ -20,7 +20,7 @@ include(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
 include(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
 
 // initialize constants
-$results_per_page = 300;
+$results_per_page = 50;
 
 $dao = new DAO();
 $checksDAO = new ChecksDAO();

@@ -72,7 +72,7 @@ if (isset($_REQUEST['submit']) || isset($_REQUEST['search']))
 
 if (isset($_REQUEST["save"]))
 {
-	$sql_save	= "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ('".$_POST["lang_code"]."', '".$_POST["variable"]."', '".$_POST["term"]."', '".$_POST["translated_text"]."', NOW(), '')";
+	$sql_save	= "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ('".$_POST["lang_code"]."', '".$_POST["variable"]."', '".$_POST["term"]."', '".$addslashes($_POST["translated_text"])."', NOW(), '')";
 
 	$trans = get_html_translation_table(HTML_ENTITIES);
 	$trans = array_flip($trans);

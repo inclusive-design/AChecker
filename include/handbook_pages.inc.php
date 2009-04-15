@@ -10,6 +10,11 @@ $handbook_pages = array(
                                         'guideline/create_edit_guideline.php',
                                         'guideline/view_guideline.php',
                                         ),
+               'check/index.php' => array(
+                                        'check/check_create_edit.php',
+                                        'check/check_function_edit.php',
+                                        'check/html_tag_list.php'
+                                        ),
                'user/index.php' =>      array(
                                         'user/user_create_edit.php',
                                         'user/user_password.php',
