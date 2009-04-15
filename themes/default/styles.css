@@ -197,17 +197,18 @@ a.dropdown-title {
 
 /* main submit button */
 
-input{
+input[type=button] {
 	background-color: #efefef;
 	font-weight: normal;
 	border:  #AAA  solid 1px;
 }
-.button {
-	background-color: #efefef;
-	font-weight: normal;
-	border:  #AAA  solid 1px;
 
+input[type=submit] {
+	background-color: #efefef;
+	font-weight: normal;
+	border:  #AAA  solid 1px;
 }
+
 .button:focus {
 	border:1px solid #A50707;
 	background-color:  #FFDAB9;	

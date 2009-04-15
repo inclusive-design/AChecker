@@ -107,7 +107,7 @@ div.input-form div.buttons input {
 	background-color: #FFDAB9;
 }
 
-div.output-form {
+div.validator-output-form {
 	width: 90%; 
 	margin-left:3.5%; 
 	margin-right:auto;
@@ -117,5 +117,15 @@ div.output-form {
 	line-height:100%;
 	background-color: #F8F8F8;
 	float: left;
+}
+
+div.output-form {
+	width: 90%; 
+	margin-left:auto; 
+	margin-right:auto;
+	border: thin #CCCCCC solid;
+	margin-bottom: 30px;
+	line-height:100%;
+	background-color: #F8F8F8;
 }
 

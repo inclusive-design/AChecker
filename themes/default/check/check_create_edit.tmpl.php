@@ -30,6 +30,7 @@ if (!isset($this->check_row))
 require(AC_INCLUDE_PATH.'header.inc.php'); 
 ?>
 
+<h2 align="center"><?php echo _AC("create_edit_check"); ?></h2>
 <form method="post" action="<?php $id_str = ''; if (isset($_GET['id'])) $id_str='?id='.$_GET['id']; echo $_SERVER['PHP_SELF'].$id_str; ?>" name="input_form">
 
 <div class="input-form">
@@ -60,7 +61,6 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<input type="hidden" name="fail_example_orig" value="<?php echo htmlspecialchars($this->check_example_row['fail_example']); ?>" />
 <?php }?>
 	
-	<input type="hidden" >
 	<table class="form-data">
 		<tr>
 			<td colspan="2" align="left"><?php echo _AC('required_field_text') ;?><br /><br/></td>
@@ -236,8 +236,6 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<br/>
 	<span style="font-weight: bold">&middot; <?php echo _AC('note_edit_pre_next_checks'); ?></span><br/><br/>
 	
-	<div id="div_pre_next_checks">
-	
 	<h2>
 		<?php echo _AC('pre_checks');?>
 		<input type="button" name="add_pre_checks" value="<?php echo _AC('add_pre_checks'); ?>" 
@@ -265,8 +263,11 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tbody>
 	<?php foreach ($this->pre_rows as $pre_row) { ?>
-		<tr onmousedown="document.input_form['del_pre_checks_<?php echo $pre_row['check_id']; ?>'].checked = !document.input_form['del_pre_checks_<?php echo $pre_row['check_id']; ?>'].checked; togglerowhighlight(this, 'del_pre_checks_<?php echo $pre_row['check_id']; ?>');" id="rdel_pre_checks_<?php echo $pre_row['check_id']; ?>">
-			<td><input type="checkbox" name="del_pre_checks_id[]" value="<?php echo $pre_row['check_id']; ?>" id="del_pre_checks_<?php echo $pre_row['check_id']; ?>" onmouseup="this.checked=!this.checked" <?php if (is_array($_POST['del_pre_checks_id']) && in_array($pre_row['check_id'], $_POST['del_pre_checks_id'])) echo 'checked="checked"';?> /></td>
+		<tr onmousedown="document.input_form['del_pre_checks_<?php echo $pre_row['check_id']; ?>'].checked = !document.input_form['del_pre_checks_<?php echo $pre_row['check_id']; ?>'].checked; togglerowhighlight(this, 'del_pre_checks_<?php echo $pre_row['check_id']; ?>');" id="rdel_pre_checks_<?php echo $pre_row['check_id']; ?>"
+		    onkeydown="document.input_form['del_pre_checks_<?php echo $pre_row['check_id']; ?>'].checked = !document.input_form['del_pre_checks_<?php echo $pre_row['check_id']; ?>'].checked; togglerowhighlight(this, 'del_pre_checks_<?php echo $pre_row['check_id']; ?>');">
+			<td><input type="checkbox" name="del_pre_checks_id[]" value="<?php echo $pre_row['check_id']; ?>" id="del_pre_checks_<?php echo $pre_row['check_id']; ?>" 
+			           title="del_pre_checks_<?php echo $pre_row['check_id']; ?>" onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" 
+			           <?php if (is_array($_POST['del_pre_checks_id']) && in_array($pre_row['check_id'], $_POST['del_pre_checks_id'])) echo 'checked="checked"';?> /></td>
 			<td><?php echo $pre_row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($pre_row['confidence']); ?></td>
 			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>'); return false;"><?php echo _AC($pre_row['name']); ?></a></span></td>
@@ -309,8 +310,11 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tbody>
 	<?php foreach ($this->next_rows as $next_row) { ?>
-		<tr onmousedown="document.input_form['del_next_checks_<?php echo $next_row['check_id']; ?>'].checked = !document.input_form['del_next_checks_<?php echo $next_row['check_id']; ?>'].checked; togglerowhighlight(this, 'del_next_checks_<?php echo $next_row['check_id']; ?>');" id="rdel_next_checks_<?php echo $next_row['check_id']; ?>">
-			<td><input type="checkbox" name="del_next_checks_id[]" value="<?php echo $next_row['check_id']; ?>" id="del_next_checks_<?php echo $next_row['check_id']; ?>" onmouseup="this.checked=!this.checked" <?php if (is_array($_POST['del_next_checks_id']) && in_array($next_row['check_id'], $_POST['del_next_checks_id'])) echo 'checked="checked"';?> /></td>
+		<tr onmousedown="document.input_form['del_next_checks_<?php echo $next_row['check_id']; ?>'].checked = !document.input_form['del_next_checks_<?php echo $next_row['check_id']; ?>'].checked; togglerowhighlight(this, 'del_next_checks_<?php echo $next_row['check_id']; ?>');" id="rdel_next_checks_<?php echo $next_row['check_id']; ?>"
+		    onkeydown="document.input_form['del_next_checks_<?php echo $next_row['check_id']; ?>'].checked = !document.input_form['del_next_checks_<?php echo $next_row['check_id']; ?>'].checked; togglerowhighlight(this, 'del_next_checks_<?php echo $next_row['check_id']; ?>');">
+			<td><input type="checkbox" name="del_next_checks_id[]" value="<?php echo $next_row['check_id']; ?>" id="del_next_checks_<?php echo $next_row['check_id']; ?>" 
+			           title="del_next_checks_<?php echo $next_row['check_id']; ?>" onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" 
+			           <?php if (is_array($_POST['del_next_checks_id']) && in_array($next_row['check_id'], $_POST['del_next_checks_id'])) echo 'checked="checked"';?> /></td>
 			<td><?php echo $next_row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($next_row['confidence']); ?></td>
 			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $next_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $next_row["check_id"]; ?>'); return false;"><?php echo _AC($next_row['name']); ?></a></span></td>
@@ -324,7 +328,6 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		</tbody>
 	</table>
 	<br/>
-	</div>
 
 	<div class="row">
 		<input type="submit" name="save_no_close" value="<?php echo _AC('save'); ?>" class="submit" /> 

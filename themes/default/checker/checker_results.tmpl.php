@@ -16,7 +16,7 @@ include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
 ?>
 
-<div id="output_div" class="output-form">
+<div id="output_div" class="validator-output-form">
 
 <?php 
 if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
@@ -125,7 +125,7 @@ if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
 </div>
 
 <?php if (isset($_POST['show_source']) && isset($this->aValidator)) {?>
-<div id="source" class="output-form">
+<div id="source" class="validator-output-form">
 <h3><?php echo _AC('source');?></h3>
 <p><?php echo _AC('source_note');?></p>
 

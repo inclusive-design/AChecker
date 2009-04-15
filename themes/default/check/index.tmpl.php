@@ -17,6 +17,7 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 
 <div class="center-input-form">
 	<form name="filter_form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("filter"); ?></legend>
 <?php if (isset($_GET['list'])){?>
 	<input type="hidden" name="list" value="<?php echo $_GET['list']; ?>" />
 <?php }?>
@@ -32,15 +33,14 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 <?php if (isset($_GET['gsgid'])){ // perserve the check ID that the prerequisite / next checks are added in ?>
 	<input type="hidden" name="gsgid" value="<?php echo $_GET['gsgid']; ?>" />
 <?php }?>
-	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("filter"); ?></legend>
 		<table class="filter">
 		<tr>
-			<td colspan="2"><h3><?php echo _AC('results_found', $this->num_results); ?></h3></td>
+			<td colspan="2"><h2><?php echo _AC('results_found', $this->num_results); ?></h2></td>
 		</tr>
 
 		<?php if (is_array($this->all_html_tags)) { ?>
 		<tr>
-			<th><?php echo _AC('html_tag'); ?>:</th>
+			<th><label for="html_tag"><?php echo _AC('html_tag'); ?></label>:</th>
 			<td>
 			<select name="html_tag" id="html_tag">
 				<option value="-1">- <?php echo _AC('all'); ?> -</option>
@@ -87,9 +87,12 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 </form>
 </div>
 
+<div id="output_div" class="output-form">
+<form name="form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("checks"); ?></legend>
+
 <?php print_paginator($this->page, $this->num_results, $this->page_string . htmlspecialchars(SEP) . $this->order .'='. $this->col, $this->results_per_page); ?>
 
-<form name="form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <input type="hidden" name="html_tag" value="<?php echo htmlspecialchars($_GET['html_tag']); ?>" />
 <input type="hidden" name="confidence" value="<?php echo $_GET['confidence']; ?>" />
 <input type="hidden" name="open_to_public" value="<?php echo $_GET['open_to_public']; ?>" />
@@ -172,16 +175,22 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 <tbody>
 	<?php if (is_array($this->check_rows)){ foreach ($this->check_rows as $row) {?>
 		<?php if ($this->row_button_type == 'radio') {?>
-		<tr onmousedown="document.form['m<?php echo $row["check_id"]; ?>'].checked = true; rowselect(this);" id="r_<?php echo $row["check_id"]; ?>">
-			<td><input type="radio" name="id" value="<?php echo $row["check_id"]; ?>" id="m<?php echo $row['check_id']; ?>" onmouseup="this.checked=!this.checked" /></td>
+		<tr onmousedown="document.form['m<?php echo $row["check_id"]; ?>'].checked = true; rowselect(this);" 
+		    onkeydown="document.form['m<?php echo $row["check_id"]; ?>'].checked = true; rowselect(this);"
+		    id="r_<?php echo $row["check_id"]; ?>">
+			<td><input type="radio" name="id" value="<?php echo $row["check_id"]; ?>" id="m<?php echo $row['check_id']; ?>" 
+			           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
 		<?php }?>
 		<?php if ($this->row_button_type == 'checkbox') {?>
-		<tr onmousedown="document.form['m<?php echo $row['check_id']; ?>'].checked = !document.form['m<?php echo $row['check_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['check_id']; ?>');" id="rm<?php echo $row['check_id']; ?>">
-			<td><input type="checkbox" name="id[]" value="<?php echo $row['check_id']; ?>" id="m<?php echo $row['check_id']; ?>" onmouseup="this.checked=!this.checked" /></td>
+		<tr onmousedown="document.form['m<?php echo $row['check_id']; ?>'].checked = !document.form['m<?php echo $row['check_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['check_id']; ?>');" 
+		    onkeydown="document.form['m<?php echo $row['check_id']; ?>'].checked = !document.form['m<?php echo $row['check_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['check_id']; ?>');"
+		    id="rm<?php echo $row['check_id']; ?>">
+			<td><input type="checkbox" name="id[]" value="<?php echo $row['check_id']; ?>" id="m<?php echo $row['check_id']; ?>" 
+			           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
 		<?php }?>
 			<td><?php echo $row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($row['confidence']); ?></td>
-			<td><?php echo _AC($row['name']); ?></td>
+			<td><label for="<?php if ($this->row_button_type == 'radio') echo 'm'; else echo 'rm'; echo $row['check_id']; ?>"><?php echo _AC($row['name']); ?></label></td>
 			<td><?php if ($row['open_to_public']) echo _AC('yes'); else echo _AC('no'); ?></td>
 			<td><?php echo $row['check_id']; ?></td>
 		</tr>
@@ -193,7 +202,9 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 <?php endif; ?>
 </tbody>
 </table>
+</fieldset>
 </form>
+</div>
 
 <script language="JavaScript" type="text/javascript">
 //<!--

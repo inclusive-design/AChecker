@@ -17,6 +17,7 @@ include_once(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/CheckExamplesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
+include_once(AC_INCLUDE_PATH.'classes/DAO/UsersDAO.class.php');
 
 if (isset($_GET['id'])) $check_id = $_GET['id'];
 $checkPrerequisitesDAO = new CheckPrerequisitesDAO();
@@ -29,7 +30,6 @@ if (isset($_POST['cancel'])) {
 	header('Location: index.php');
 	exit;
 } else if (isset($_POST['save_no_close']) || isset($_POST['save_and_close'])) {
-	require_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
 	$checksDAO = new ChecksDAO();
 	
 	if (!isset($check_id))  // create new user

@@ -104,8 +104,8 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	<div class="input-form">
 		<div class="row">
 			<div class="required" title="<?php echo _AC('required_field'); ?>">*</div>
-			<?php echo _AC('choose_lang'); ?>:
-			<select name="lang_code"> 
+			<label for="lang_code"><?php echo _AC('choose_lang'); ?></label>:
+			<select name="lang_code" id="lang_code"> 
 <?php 
 	foreach ($rows_lang as $row_lang)
 	{
@@ -122,7 +122,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <?php if (isset($num_results)) { ?>
 		<div class="row">
-			<h3><?php echo _AC('results_found', $num_results); ?></h3>
+			<h2><?php echo _AC('results_found', $num_results); ?></h2>
 		</div>
 <?php } ?>
 
@@ -149,11 +149,11 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		</div>
 
 		<div class="row">
-			<?php echo _AC('or'). ",<br /><br />" . _AC('search_text'); ?>
+			<label for="search_phase"><?php echo _AC('or'). ",<br /><br />" . _AC('search_text'); ?></label>
 		</div>
 
 		<div class="row">
-			<input size="100" type="text" name="search_phase" value="<?php echo htmlspecialchars($stripslashes($_REQUEST['search_phase'])); ?>" /> 
+			<input size="100" type="text" name="search_phase" id="search_phase" value="<?php echo htmlspecialchars($stripslashes($_REQUEST['search_phase'])); ?>" /> 
 		</div>
 
 		<div class="row">
@@ -215,11 +215,11 @@ function trans_form() {
 	<?php if ($row_english['context'] <> "") { ?>
 	<tr>
 		<td align="right"><b><?php echo _AC('english_context'); ?>:</b></td>
-		<td><?php echo $row_english['context']; ?></td>
+		<td><?php echo htmlspecialchars($row_english['context']); ?></td>
 	</tr>
 	<tr>
 		<td align="right"><b><?php echo _AC('translated_context'); ?>:</b></td>
-		<td><input type="text" name="translated_context" class="input" value="<?php echo $row_selected['context']; ?>" size="45" /></td>
+		<td><input type="text" name="translated_context" class="input" value="<?php echo htmlspecialchars($row_selected['context']); ?>" size="45" /></td>
 	</tr>
 	<? } ?>
 
@@ -228,8 +228,8 @@ function trans_form() {
 		<td><?php echo nl2br(htmlspecialchars($row_english['text'])); ?></td>
 	</tr>
 	<tr>
-		<td valign="top" align="right" nowrap="nowrap"><b><?php echo _AC('translated_text'); ?>:</b></td>
-		<td><textarea rows="4" cols="75" name="translated_text" class="input2"><?php echo $row_selected['text'];?></textarea></td>
+		<td valign="top" align="right" nowrap="nowrap"><b><label for="translated_text"><?php echo _AC('translated_text'); ?></label>:</b></td>
+		<td><textarea rows="4" cols="75" name="translated_text" id="translated_text" class="input2"><?php echo htmlspecialchars($row_selected['text']);?></textarea></td>
 	</tr>
 	<tr>
 		<td colspan="2" align="center"><input type="submit" name="save" value="Save ALT-S" class="submit" accesskey="s" />
@@ -251,19 +251,19 @@ if ($num_results > 0)
 	if (is_array($rows))
 	{
 		if (isset($_REQUEST["submit"]))
-			$submits = SEP."submit=1";
+			$submits = htmlspecialchars(SEP)."submit=1";
 		if (isset($_REQUEST["search"]))
-			$submits .= SEP."search=1";
+			$submits .= htmlspecialchars(SEP)."search=1";
 
 		foreach ($rows as $row) 
 		{
 			if ($row['term'] == $_REQUEST["selected_term"])
-				echo '<a name="anchor"></a>'."\n".'<li>'."\n";
+				echo '<li>'."\n".'<a name="anchor" title="anchor"></a>'."\n";
 			else
 				echo '<li>'."\n";
 	
 			if ($row['term'] != $_REQUEST["search_phase"]) {
-				echo '<a href="'.$_SERVER['PHP_SELF'].'?selected_term='.$row['term'].SEP.'lang_code='.$_REQUEST['lang_code'].SEP.'new_or_translated='.$_REQUEST["new_or_translated"].SEP.'term_type='.$_REQUEST["term_type"].SEP.'search_phase='.$_REQUEST["search_phase"].$submits.'#anchor" ';
+				echo '<a href="'.$_SERVER['PHP_SELF'].'?selected_term='.$row['term'].htmlspecialchars(SEP).'lang_code='.$_REQUEST['lang_code'].htmlspecialchars(SEP).'new_or_translated='.$_REQUEST["new_or_translated"].htmlspecialchars(SEP).'term_type='.$_REQUEST["term_type"].htmlspecialchars(SEP).'search_phase='.$_REQUEST["search_phase"].$submits.'#anchor" ';
 				if ($row['term'] == $_REQUEST["selected_term"]) echo 'class="selected"';
 				echo '>';
 				echo $row['term'];
@@ -282,11 +282,11 @@ if ($num_results > 0)
 			if ($row_check['revised_date'] <> '' && $row['revised_date'] > $row_check['revised_date'])
 				echo '&nbsp;<small>*Updated*</small>'."\n";
 				
-			echo '<br />';
+			echo '<br /><br/>';
 			// display translation form
 			if ($row['term'] == $_REQUEST["selected_term"]) trans_form();
 			
-			echo '</li><br />'."\n";
+			echo '</li>'."\n";
 		}
 	}
 	echo '</ul>'."\n";
