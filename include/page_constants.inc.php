@@ -57,7 +57,7 @@ $_pages['password_reminder.php']['guide']    = 'AC_HELP_PASSWORD_REMINDER';
 
 // The scripts below need to be accessible by public. 
 $_pages['guideline/view_guideline.php']['title_var'] = 'view_guideline';   // used in web service validation response
-$_pages['checker/suggestion.php']['title_var'] = 'suggestion';
+$_pages['checker/suggestion.php']['title_var'] = 'details';
 $_pages['documentation/web_service_api.php']['title_var'] = 'web_service_api';
 
 // 1. checker pages
