@@ -54,8 +54,8 @@ if(isset($_POST['submit']) && ($_POST['action'] == 'process')) {
 
 		$status = 3; // for instructor account
 
-		$sql = "INSERT INTO ".$_POST['step2']['tb_prefix']."users (login, password, user_group_id, email, create_date)
-		VALUES ('$_POST[admin_username]', '$_POST[form_admin_password_hidden]', 1, '$_POST[admin_email]', NOW())";
+		$sql = "INSERT INTO ".$_POST['step2']['tb_prefix']."users (login, password, user_group_id, email, web_service_id, create_date)
+		VALUES ('$_POST[admin_username]', '$_POST[form_admin_password_hidden]', 1, '$_POST[admin_email]', '".sha1(mt_rand() . microtime(TRUE))."', NOW())";
 		$result= mysql_query($sql, $db);
 
 		$_POST['site_name'] = $addslashes($_POST['site_name']);
