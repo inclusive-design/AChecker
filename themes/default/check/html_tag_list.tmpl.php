@@ -12,7 +12,9 @@
 
 require(AC_INCLUDE_PATH.'header.inc.php');
 ?>
-<form name="form">
+<div class="output-form">
+<form name="form" action="<?php echo $_SERVER['PHP_SELF']?>">
+<fieldset class="group_form"><legend class="group_form"><?php echo _AC("html_tag_list"); ?></legend>
 <table summary="" class="data" rules="rows" style="width:60%;">
 <thead>
 	<tr>
@@ -30,15 +32,20 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 </tfoot>
 
 <tbody>
-<?php foreach ($this->all_html_tags as $row) {?>
-	<tr onmousedown="document.form['m<?php echo $row["html_tag"]; ?>'].checked = true; rowselect(this);" id="r_<?php echo $row["html_tag"]; ?>">
-		<td><input type="radio" name="html_tag" value="<?php echo $row["html_tag"]; ?>" id="m<?php echo $row['html_tag']; ?>" onmouseup="this.checked=!this.checked" /></td>
-		<td><label for="m<?php echo $row["html_tag"]; ?>"><?php echo $row["html_tag"]; ?></label></td>
+<?php foreach ($this->all_html_tags as $row) { $html_tag_no_space = str_replace(' ', '', $row['html_tag']); ?>
+	<tr onmousedown="document.form['m<?php echo $html_tag_no_space; ?>'].checked = true; rowselect(this);" 
+	    onkeydown="document.form['m<?php echo $html_tag_no_space; ?>'].checked = true; rowselect(this);"
+	    id="r_<?php echo $html_tag_no_space; ?>">
+		<td><input type="radio" name="html_tag" value="<?php echo $row["html_tag"]; ?>" id="m<?php echo $html_tag_no_space; ?>" 
+		           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
+		<td><label for="m<?php echo $html_tag_no_space; ?>"><?php echo $row["html_tag"]; ?></label></td>
 	</tr>
 <?php } ?>
 </tbody>
 </table>
+</fieldset>
 </form>
+</div>
 
 <script type="text/javascript">
 //<!--

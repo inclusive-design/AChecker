@@ -22,11 +22,11 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 	<table class="form-data" align="center">
 		<tr>
-			<td colspan="2" align="left"><p><?php echo _AC('required_field_text') ;?><br /><br /><br /></p></td>
+			<td colspan="2" align="left"><?php echo _AC('required_field_text') ;?><br /><br /><br /></td>
 		</tr>
 
 		<tr>
-			<th align="left"><label for="login"><?php echo _AC('login_name'); ?></label>:</th>
+			<th align="left"><?php echo _AC('login_name'); ?>:</th>
 			<td align="left"><?php echo stripslashes(htmlspecialchars($_POST['login'])); ?></td>
 		</tr>
 
@@ -48,9 +48,11 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		</tr>
 
 		<tr>
-			<td colspan="2"><p class="submit_button">
+			<td colspan="2">
+			<p class="submit_button">
 				<input type="submit" name="submit" value="<?php echo _AC('save'); ?>" class="submit" /> 
 				<input type="submit" name="cancel" value=" <?php echo _AC('cancel'); ?> "  class="submit" />
+			</p>
 			</td>
 		</tr>
 	</table>

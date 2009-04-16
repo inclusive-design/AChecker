@@ -48,11 +48,14 @@ function dispaly_check_table($checks_array, $prefix)
 
 		<tbody>
 <?php foreach ($checks_array as $check_row) { ?>
-		<tr onmousedown="document.getElementById('del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>').checked = !document.getElementById('del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>').checked; togglerowhighlight(this, 'del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>');" id="rdel_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>">
-			<td><input type="checkbox" name="del_checks_id_<?php echo $prefix;?>[]" value="<?php echo $prefix.'_'.$check_row['check_id']; ?>" id="del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>" onmouseup="this.checked=!this.checked" /></td>
+		<tr onmousedown="document.getElementById('del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>').checked = !document.getElementById('del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>').checked; togglerowhighlight(this, 'del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>');" 
+		    onkeydown="document.getElementById('del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>').checked = !document.getElementById('del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>').checked; togglerowhighlight(this, 'del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>');"
+		    id="rdel_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>">
+			<td><input type="checkbox" name="del_checks_id_<?php echo $prefix;?>[]" value="<?php echo $prefix.'_'.$check_row['check_id']; ?>" id="del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>" 
+			           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
 			<td><?php echo $check_row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($check_row['confidence']); ?></td>
-			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>'); return false;"><?php echo _AC($check_row['name']); ?></a></span></td>
+			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>'); return false;"><label for="del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>"><?php echo _AC($check_row['name']); ?></label></a></span></td>
 			<td><?php echo $check_row['check_id']; ?></td>
 		</tr>
 <?php } // end of foreach?>

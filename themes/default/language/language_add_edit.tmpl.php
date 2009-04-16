@@ -27,7 +27,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <fieldset class="group_form"><legend class="group_form"><?php echo _AC('add_edit_language'); ?></legend>
 	<table class="form-data" align="center">
 		<tr>
-			<td colspan="2" align="left"><p><?php echo _AC('required_field_text') ;?><br /><br /></p></td>
+			<td colspan="2" align="left"><?php echo _AC('required_field_text') ;?><br /><br /></td>
 		</tr>
 
 		<tr align="left">
@@ -90,9 +90,11 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		</tr>
 
 		<tr>
-			<td colspan="2"><p class="submit_button">
+			<td colspan="2">
+			<p class="submit_button">
 			<input type="submit" name="save" value="<?php echo _AC('save'); ?>" />
 			<input type="submit" name="cancel" value="<?php echo _AC('cancel'); ?>" />
+			</p>
 			</td>
 		</tr>
 	</table>

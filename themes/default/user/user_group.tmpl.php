@@ -48,9 +48,12 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 				$priv_str .= '</ul>';
 			}
 		?>
-			<tr onmousedown="document.form['m<?php echo $row['user_group_id']; ?>'].checked = !document.form['m<?php echo $row['user_group_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['user_group_id']; ?>');" id="rm<?php echo $row['user_group_id']; ?>">
-				<td><input type="checkbox" name="id[]" value="<?php echo $row['user_group_id']; ?>" id="m<?php echo $row['user_group_id']; ?>" onmouseup="this.checked=!this.checked" /></td>
-				<td width='20%'><?php echo $row['title']; ?></td>
+			<tr onmousedown="document.form['m<?php echo $row['user_group_id']; ?>'].checked = !document.form['m<?php echo $row['user_group_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['user_group_id']; ?>');" 
+			    onkeydown="document.form['m<?php echo $row['user_group_id']; ?>'].checked = !document.form['m<?php echo $row['user_group_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['user_group_id']; ?>');"
+			    id="rm<?php echo $row['user_group_id']; ?>">
+				<td><input type="checkbox" name="id[]" value="<?php echo $row['user_group_id']; ?>" id="m<?php echo $row['user_group_id']; ?>" 
+				           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
+				<td width='20%'><label for="m<?php echo $row['user_group_id']; ?>"><?php echo $row['title']; ?></label></td>
 				<td width='30%'><?php echo $row['description']; ?></td>
 				<td><?php echo $priv_str; ?></td>
 			</tr>

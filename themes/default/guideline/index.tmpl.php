@@ -13,8 +13,9 @@
 ?>
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="<?php echo $this->formName; ?>">
 <h2 align="center"><?php echo $this->title ;?></h2>
-
-<table class="data" summary="" rules="rows">
+<div class="output-form">
+<fieldset class="group_form"><legend class="group_form"><?php echo $this->title; ?></legend>
+<table class="data" summary="" rules="rows" style="margin-top: 1em;">
 
 <thead>
 	<tr>
@@ -42,8 +43,11 @@
 
 <tbody>
 <?php foreach ($this->rows as $row) {?>
-	<tr onmousedown="document.<?php echo $this->formName; ?>['m<?php echo $row["guideline_id"]; ?>'].checked = true; rowselect(this);" id="r_<?php echo $row["guideline_id"]; ?>">
-		<td><input type="radio" name="id" value="<?php echo $row["guideline_id"]; ?>" id="m<?php echo $row['guideline_id']; ?>" onmouseup="this.checked=!this.checked" /></td>
+	<tr onmousedown="document.<?php echo $this->formName; ?>['m<?php echo $row["guideline_id"]; ?>'].checked = true; rowselect(this);" 
+	    onkeydown="document.<?php echo $this->formName; ?>['m<?php echo $row["guideline_id"]; ?>'].checked = true; rowselect(this);"
+	    id="r_<?php echo $row["guideline_id"]; ?>">
+		<td><input type="radio" name="id" value="<?php echo $row["guideline_id"]; ?>" id="m<?php echo $row['guideline_id']; ?>" 
+		           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
 		<td><label for="m<?php echo $row["guideline_id"]; ?>"><?php echo $row["title"]; ?></label></td>
 		<td><?php echo _AC($row['long_name']); ?></td>
 		<?php if ($this->showStatus) {?>
@@ -57,4 +61,6 @@
 </tbody>
 
 </table>
+</fieldset>
+</div>
 </form>

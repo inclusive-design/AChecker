@@ -18,7 +18,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("filter"); ?></legend>
 		<table class="filter">
 		<tr>
-			<td colspan="2"><h3><?php echo _AC('results_found', $this->num_results); ?></h3></td>
+			<td colspan="2"><h2><?php echo _AC('results_found', $this->num_results); ?></h2></td>
 		</tr>
 
 		<tr>
@@ -32,7 +32,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<?php if (is_array($this->all_user_groups)) { ?>
 		<tr>
-			<th><?php echo _AC('user_group'); ?>:</th>
+			<th><label for="user_group_id"><?php echo _AC('user_group'); ?></label>:</th>
 			<td>
 			<select name="user_group_id" id="user_group_id">
 				<option value="-1">- <?php echo _AC('select'); ?> -</option>
@@ -135,9 +135,12 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	</tfoot>
 	<tbody>
 		<?php if (is_array($this->user_rows)){ foreach ($this->user_rows as $row) {?>
-			<tr onmousedown="document.form['m<?php echo $row['user_id']; ?>'].checked = !document.form['m<?php echo $row['user_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['user_id']; ?>');" id="rm<?php echo $row['user_id']; ?>">
-				<td><input type="checkbox" name="id[]" value="<?php echo $row['user_id']; ?>" id="m<?php echo $row['user_id']; ?>" onmouseup="this.checked=!this.checked" /></td>
-				<td><?php echo $row['login']; ?></td>
+			<tr onmousedown="document.form['m<?php echo $row['user_id']; ?>'].checked = !document.form['m<?php echo $row['user_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['user_id']; ?>');" 
+			    onkeydown="document.form['m<?php echo $row['user_id']; ?>'].checked = !document.form['m<?php echo $row['user_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['user_id']; ?>');"
+			    id="rm<?php echo $row['user_id']; ?>">
+				<td><input type="checkbox" name="id[]" value="<?php echo $row['user_id']; ?>" id="m<?php echo $row['user_id']; ?>" 
+				           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
+				<td><label for="m<?php echo $row['user_id']; ?>"><?php echo $row['login']; ?></label></td>
 				<td><?php echo $row['first_name']; ?></td>
 				<td><?php echo $row['last_name']; ?></td>
 				<td><?php echo $row['user_group']; ?></td>

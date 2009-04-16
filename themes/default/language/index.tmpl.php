@@ -40,8 +40,11 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <tbody>
 <?php foreach ($this->rows as $row) {?>
-	<tr onmousedown="document.form1['m<?php echo $row["language_code"]."_".$row["charset"]; ?>'].checked = true; rowselect(this);" id="r_<?php echo $row["language_code"]."_".$row["charset"]; ?>">
-		<td><input type="radio" name="id" value="<?php echo $row["language_code"]."_".$row["charset"]; ?>" id="m<?php echo $row['language_code']."_".$row["charset"]; ?>" onmouseup="this.checked=!this.checked" /></td>
+	<tr onmousedown="document.form1['m<?php echo $row["language_code"]."_".$row["charset"]; ?>'].checked = true; rowselect(this);" 
+	    onkeydown="document.form1['m<?php echo $row["language_code"]."_".$row["charset"]; ?>'].checked = true; rowselect(this);"
+	    id="r_<?php echo $row["language_code"]."_".$row["charset"]; ?>">
+		<td><input type="radio" name="id" value="<?php echo $row["language_code"]."_".$row["charset"]; ?>" id="m<?php echo $row['language_code']."_".$row["charset"]; ?>" 
+		           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
 		<td><label for="m<?php echo $row["language_code"]."_".$row["charset"]; ?>"><?php echo $row["native_name"]; ?></label></td>
 		<td><?php echo $row['english_name']; ?></td>
 		<td><?php echo $row['language_code']; ?></td>
@@ -58,7 +61,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <form name="import_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
 <div class="input-form">
 	<div class="row">
-		<h2><?php echo _AC('import_a_new_lang') ;?></h2>
+		<h2><label for="file"><?php echo _AC('import_a_new_lang') ;?></label></h2>
 	</div>
 	
 	<div class="row">
@@ -68,7 +71,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 </div>
 </form>
 
-<script language="JavaScript">
+<script type="text/javascript">
 <!--
 
 String.prototype.trim = function() {
