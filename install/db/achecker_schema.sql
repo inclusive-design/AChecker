@@ -92,8 +92,10 @@ CREATE TABLE `guidelines` (
   `preamble` text,
   `status` tinyint(3) unsigned NOT NULL default '0',
   `open_to_public` tinyint(4) NOT NULL DEFAULT 0,
+  `seal_icon_name` varchar(255),
+  `subset` tinyint(4) NOT NULL DEFAULT 0 COMMENT 'Value 0 means this guideline is not a subset of any other guidelines. Non-zero value means this guideline is the subset of others. The guideline with lower value is the subset of the guidelines with higher value.',
   PRIMARY KEY  (`guideline_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10;
 
 # --------------------------------------------------------
 # Table structure for table `guideline_groups`
@@ -1271,16 +1273,16 @@ INSERT INTO `color_mapping` (`color_name`, `color_code`) VALUES
 
 -- Dumping data for table `guidelines`
 
-INSERT INTO `guidelines` (`guideline_id`, `user_id`, `title`, `abbr`, `long_name`, `published_date`, `earlid`, `preamble`, `status`, `open_to_public`) VALUES
-(1, 0, 'BITV 1.0 (Level 2)', 'BITV1', '_GNAME_1', '2004-04-02', 'http://123barrierefrei.de/', NULL, 1, 1),
-(2, 0, 'Section 508', '508', '_GNAME_2', '2004-03-12', 'http://www.access-board.gov/sec508', NULL, 1, 1),
-(3, 0, 'Stanca Act', 'STANCA', '_GNAME_3', '2005-12-20', 'http://www.pubbliaccesso.it/index.htm', NULL, 1, 1),
-(4, 0, 'WCAG 1.0 (Level A)', 'WCAG1-A', '_GNAME_4', '2004-03-17', 'http://www.w3.org/TR/WCAG10/#a', NULL, 1, 1),
-(5, 0, 'WCAG 1.0 (Level AA)', 'WCAG1-AA', '_GNAME_5', '2004-05-27', 'http://www.w3.org/TR/WCAG10/#aa', NULL, 1, 1),
-(6, 0, 'WCAG 1.0 (Level AAA)', 'WCAG1-AAA', '_GNAME_6', '2004-03-17', 'http://www.w3.org/TR/WCAG10/#aaa', NULL, 1, 1),
-(7, 0, 'WCAG 2.0 L1', 'WCAG2-L1', '_GNAME_7', '2006-06-19', 'http://www.w3.org/TR/WCAG20/#a', NULL, 1, 1),
-(8, 0, 'WCAG 2.0 L2', 'WCAG2-L2', '_GNAME_8', '2006-06-19', 'http://www.w3.org/TR/WCAG20/#aa', NULL, 1, 1),
-(9, 0, 'WCAG 2.0 L3', 'WCAG2-L3', '_GNAME_9', '2006-06-19', 'http://www.w3.org/TR/WCAG20/#aaa', NULL, 1, 1);
+INSERT INTO `guidelines` (`guideline_id`, `user_id`, `title`, `abbr`, `long_name`, `published_date`, `earlid`, `preamble`, `status`, `open_to_public`, `seal_icon_name`, `subset`) VALUES
+(1, 0, 'BITV 1.0 (Level 2)', 'BITV1', '_GNAME_1', '2004-04-02', 'http://123barrierefrei.de/', NULL, 1, 1, 'iconBITV.png', 0),
+(2, 0, 'Section 508', '508', '_GNAME_2', '2004-03-12', 'http://www.access-board.gov/sec508', NULL, 1, 1, 'icon508.png', 0),
+(3, 0, 'Stanca Act', 'STANCA', '_GNAME_3', '2005-12-20', 'http://www.pubbliaccesso.it/index.htm', NULL, 1, 1, 'iconStanca.png', 0),
+(4, 0, 'WCAG 1.0 (Level A)', 'WCAG1-A', '_GNAME_4', '2004-03-17', 'http://www.w3.org/TR/WCAG10/#a', NULL, 1, 1, 'iconA.png', 4),
+(5, 0, 'WCAG 1.0 (Level AA)', 'WCAG1-AA', '_GNAME_5', '2004-05-27', 'http://www.w3.org/TR/WCAG10/#aa', NULL, 1, 1, 'iconAA.png', 5),
+(6, 0, 'WCAG 1.0 (Level AAA)', 'WCAG1-AAA', '_GNAME_6', '2004-03-17', 'http://www.w3.org/TR/WCAG10/#aaa', NULL, 1, 1, 'iconAAA.png', 6),
+(7, 0, 'WCAG 2.0 L1', 'WCAG2-L1', '_GNAME_7', '2006-06-19', 'http://www.w3.org/TR/WCAG20/#a', NULL, 1, 1, 'iconA.png', 1),
+(8, 0, 'WCAG 2.0 L2', 'WCAG2-L2', '_GNAME_8', '2006-06-19', 'http://www.w3.org/TR/WCAG20/#aa', NULL, 1, 1, 'iconAA.png', 2),
+(9, 0, 'WCAG 2.0 L3', 'WCAG2-L3', '_GNAME_9', '2006-06-19', 'http://www.w3.org/TR/WCAG20/#aaa', NULL, 1, 1, 'iconAAA.png', 3);
 
 -- Dumping data for table `guideline_groups`
 

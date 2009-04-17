@@ -14,7 +14,34 @@ global $addslashes;
 
 include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
+
+// display seals
+if (is_array($this->seals))
+{
 ?>
+<div id="seals_div" class="validator-output-form">
+
+<h3><?php echo _AC('valid_icons');?></h3>
+<p><?php echo _AC('valid_icons_text');?></p>
+<?php 
+	foreach ($this->seals as $seal)
+	{
+?>
+	<img class="inline-badge" src="<?php echo SEAL_ICON_FOLDER . $seal['seal_icon_name'];?>"
+    alt="<?php echo $seal['title']; ?>" height="32" width="102"/>
+    <pre class="badgeSnippet">
+  &lt;p&gt;
+    &lt;a href="<?php echo AC_BASE_HREF; ?>checker/index.php?uri=referer"&gt;
+      &lt;img src="<?php echo SEAL_ICON_FOLDER . $seal['seal_icon_name'];?>" alt="<?php echo $seal['title']; ?>" height="32" width="102" /&gt;
+    &lt;/a&gt;
+  &lt;/p&gt;
+	</pre>
+
+<?php 
+	} // end of foreach (display seals)
+} // end of if (display seals)
+?>
+</div>
 
 <div id="output_div" class="validator-output-form">
 
@@ -37,7 +64,7 @@ if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
 }
 ?>
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("accessibility_review"); ?></legend>
-	<h3><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$this->guidelines. ')'; ?></h3>
+	<h3><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$this->guidelines_text. ')'; ?></h3>
 
 	<div class="topnavlistcontainer">
 		<ul class="topnavlist">

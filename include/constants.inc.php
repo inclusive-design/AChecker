@@ -129,6 +129,9 @@ define('AC_PASSWORD_REMINDER_EXPIRY', 2);
 /* in practice should be 0 (ie. INF)    */
 define('CACHE_TIME_OUT',	60);
 
+/* the folder where seal icons locate*/
+define('SEAL_ICON_FOLDER', 'images/');
+
 // separator used in composing URL
 if (strpos(@ini_get('arg_separator.input'), ';') !== false) {
 	define('SEP', ';');

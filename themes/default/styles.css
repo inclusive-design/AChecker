@@ -1736,3 +1736,15 @@ table.box th, table.box td {
 	margin-top:1em;
 	line-height: 200%;
 }
+
+img.inline-badge {
+	float:left;
+	margin-left:3em;
+	padding:12px;
+}
+
+pre.badgeSnippet {
+	margin-bottom:2em;
+	margin-left:108px;
+	padding-left:3em;
+}
