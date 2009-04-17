@@ -83,17 +83,13 @@ class HTMLRpt extends AccessibilityRpt {
 	var $html_decision_made = 
 '<table class="form-data">
   <tr>
-    <td>
+    <td colspan="2">
       {QUESTION}
    </td>
   </tr>
   <tr>
     <th align="left">{LABEL_DECISION}:</th>
     <td>{DECISION}</td>
-  </tr>
-  <tr>
-    <th align="left">{LABEL_USER}:</th>
-    <td>{USER}</td>
   </tr>
   <tr>
     <th align="left">{LABEL_DATE}:</th>
@@ -280,7 +276,6 @@ class HTMLRpt extends AccessibilityRpt {
 			                                      "{QUESTION}", 
 			                                      "{DECISION}", 
 			                                      "{LABEL_USER}", 
-			                                      "{USER}", 
 			                                      "{LABEL_DATE}", 
 			                                      "{DATE}",
 			                                      "{REVERSE_DECISION}"),
@@ -288,7 +283,6 @@ class HTMLRpt extends AccessibilityRpt {
 			                                       _AC($check_row['question']),
 			                                       _AC($decision),
 			                                       _AC('user'),
-			                                       $row['user_name'],
 			                                       _AC('date'),
 			                                       $row['last_update'],
 			                                       $reverse_decision),

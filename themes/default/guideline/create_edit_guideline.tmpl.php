@@ -107,17 +107,17 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<td><input type="text" name="title" size="100" id="title" value="<?php if (isset($_POST['title'])) echo htmlspecialchars($_POST['title']); else echo htmlspecialchars($this->row["title"]); ?>" /></td>
 		</tr>
 
+		<tr>
+			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="abbr"><?php echo _AC('abbr'); ?></label></th>
+			<td><input type="text" name="abbr" size="100" id="abbr" value="<?php if (isset($_POST['abbr'])) echo htmlspecialchars($_POST['abbr']); else echo htmlspecialchars($this->row["abbr"]); ?>" /></td>
+		</tr>
+
 		<?php if ($this->is_admin) {?>
 		<tr>
 			<th align="left"><? echo _AC("author"); ?></th>
 			<td><?php echo $this->author; ?></td>
 		</tr>
 		<?php } ?>
-
-		<tr>
-			<th align="left"><label for="abbr"><?php echo _AC('abbr'); ?></label></th>
-			<td><input type="text" name="abbr" size="100" id="abbr" value="<?php if (isset($_POST['abbr'])) echo htmlspecialchars($_POST['abbr']); else echo htmlspecialchars($this->row["abbr"]); ?>" /></td>
-		</tr>
 
 		<tr>
 			<th align="left"><label for="long_name"><?php echo _AC('long_name'); ?></label></th>

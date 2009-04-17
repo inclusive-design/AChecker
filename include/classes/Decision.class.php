@@ -64,16 +64,15 @@ class Decision {
 	 * Make decisions
 	 * @access  public
 	 * @param   $decisions: decisions array
-	 *          $userName: the name of the user who made decisions
 	 * @return  true/false
 	 * @author  Cindy Qi Li
 	 */
-	public function makeDecisions($decisions, $userName)
+	public function makeDecisions($decisions)
 	{
 		if (!is_array($decisions)) return false;
 		
 		foreach ($decisions as $sequenceID => $decision)
-			$this->userDecisionsDAO->setDecision($this->userLinkID, $sequenceID, $decision, $userName);
+			$this->userDecisionsDAO->setDecision($this->userLinkID, $sequenceID, $decision);
 	}
 
 	/**
@@ -83,12 +82,12 @@ class Decision {
 	 * @return  true/false
 	 * @author  Cindy Qi Li
 	 */
-	public function reverseDecisions($sequences, $userName)
+	public function reverseDecisions($sequences)
 	{
 		if (!is_array($sequences)) return false;
 		
 		foreach ($sequences as $sequenceID)
-			$this->userDecisionsDAO->setDecision($this->userLinkID, $sequenceID, AC_NO_DECISION, $userName);
+			$this->userDecisionsDAO->setDecision($this->userLinkID, $sequenceID, AC_NO_DECISION);
 	}
 
 	/**

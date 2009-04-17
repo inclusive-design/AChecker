@@ -81,7 +81,6 @@ class RESTWebServiceOutput {
 	
 	var $rest_decision_made =
 '		<decisionMade>{DECISIONMADE}</decisionMade>
-		<decisionMadeByUser>{DECISIONMADEBYUSER}</decisionMadeByUser>
 		<decisionMadeDate>{DECISIONMADEDATE}</decisionMadeDate>
 ';
 	
@@ -145,10 +144,8 @@ class RESTWebServiceOutput {
 					if ($row_userDecision['decision'] == AC_DECISION_FAIL) $decision_text = _AC('fail');
 					
 					$decision_made = str_replace(array('{DECISIONMADE}', 
-					                                   '{DECISIONMADEBYUSER}', 
 					                                   '{DECISIONMADEDATE}'),
 					                             array($decision_text, 
-					                                   $row_userDecision['user_name'], 
 					                                   $row_userDecision['last_update']),
 					                             $this->rest_decision_made);
 				}

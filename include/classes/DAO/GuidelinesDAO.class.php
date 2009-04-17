@@ -41,6 +41,16 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function Create($userID, $title, $abbr, $long_name, $published_date, $earlid, $preamble, $status, $open_to_public)
 	{
+		global $addslashes;
+		
+		$title = $addslashes(trim($title));	
+		$abbr = $addslashes(trim($abbr));	
+		$long_name = $addslashes(trim($long_name));	
+		$earlid = $addslashes(trim($earlid));
+		$preamble = $addslashes(trim($preamble));
+		
+		if (!$this->isFieldsValid($title, $abbr)) return false;
+		
 		$sql = "INSERT INTO ".TABLE_PREFIX."guidelines
 				(`user_id`, `title`, `abbr`, `published_date`,  
 				 `earlid`, `preamble`, `status`, `open_to_public`) 
@@ -93,6 +103,16 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function update($guidelineID, $userID, $title, $abbr, $long_name, $published_date, $earlid, $preamble, $status, $open_to_public)
 	{
+		global $addslashes;
+		
+		$title = $addslashes(trim($title));	
+		$abbr = $addslashes(trim($abbr));	
+		$long_name = $addslashes(trim($long_name));	
+		$earlid = $addslashes(trim($earlid));
+		$preamble = $addslashes(trim($preamble));
+		
+		if (!$this->isFieldsValid($title, $abbr)) return false;
+		
 		$sql = "UPDATE ".TABLE_PREFIX."guidelines
 				   SET `user_id`=".$userID.", 
 				       `title` = '".$title."', 
@@ -302,15 +322,15 @@ class GuidelinesDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	public function getEnabledGuidelinesByTitle($title, $ignoreCase=1)
+	public function getEnabledGuidelinesByAbbr($abbr, $ignoreCase=1)
 	{
-		if ($ignoreCase) $sql_title = "lower(title) = '".strtolower($title)."'";
-		else $sql_title = "title = '".$title."'";
+		if ($ignoreCase) $sql_abbr = "lower(abbr) = '".strtolower($abbr)."'";
+		else $sql_abbr = "abbr = '".$abbr."'";
 		
 		$sql = "select *
 				from ". TABLE_PREFIX ."guidelines
-				where ".$sql_title."
-				order by title";
+				where ".$sql_abbr."
+				order by abbr";
 
 	    return $this->execute($sql);
   	}
@@ -401,5 +421,49 @@ class GuidelinesDAO extends DAO {
 
     return $this->execute($sql);
   }
+
+	/**
+	 * Validate fields preparing for insert and update
+	 * @access  private
+	 * @param   $title  
+	 *          $abbr
+	 * @return  true    if all fields are valid
+	 *          false   if any field is not valid
+	 * @author  Cindy Qi Li
+	 */
+	private function isFieldsValid($title, $abbr)
+	{
+		global $msg;
+		
+		// check missing fields
+		$missing_fields = array();
+
+		if ($title == '')
+		{
+			$missing_fields[] = _AC('title');
+		}
+		if ($abbr == '')
+		{
+			$missing_fields[] = _AC('abbr');
+		}
+		if ($missing_fields)
+		{
+			$missing_fields = implode(', ', $missing_fields);
+			$msg->addError(array('EMPTY_FIELDS', $missing_fields));
+		}
+		
+		// abbr must be unique
+		$sql = "SELECT * FROM ".TABLE_PREFIX."guidelines WHERE abbr='".$abbr."'";
+
+		if (is_array($this->execute($sql)))
+		{
+			$msg->addError('ABBR_EXISTS');
+		}
+			
+		if (!$msg->containsErrors())
+			return true;
+		else
+			return false;
+	}
 }
 ?>

@@ -23,6 +23,7 @@ include_once(AC_INCLUDE_PATH.'classes/DAO/UsersDAO.class.php');
 global $_current_user;
 
 if (isset($_GET["id"])) $gid = intval($_GET["id"]);
+if ($gid == 0) unset($gid);
 
 $guidelinesDAO = new GuidelinesDAO();
 $guidelineGroupsDAO = new GuidelineGroupsDAO();
@@ -38,48 +39,40 @@ if (isset($_POST['cancel']))
 } 
 else if (isset($_POST['save_no_close']) || isset($_POST['save_and_close']))
 {
-	$title = $addslashes(trim($_POST['title']));	
-	
-	if ($title == '')
+	if (isset($gid))  // edit existing guideline
 	{
-		$msg->addError(array('EMPTY_FIELDS', _AC('title')));
+		$guidelinesDAO->update($gid,
+		                       $_POST['user_id'], 
+		                       $_POST['title'], 
+		                       $_POST['abbr'],
+		                       $_POST['long_name'],
+		                       $_POST['published_date'],
+		                       $_POST['earlid'],
+		                       '',
+		                       $_POST['status'],
+		                       $_POST['open_to_public']);
 	}
-	
+	else  // create a new guideline
+	{
+		$gid = $guidelinesDAO->Create($_SESSION['user_id'], 
+		                       $_POST['title'], 
+		                       $_POST['abbr'],
+		                       $_POST['long_name'],
+		                       $_POST['published_date'],
+		                       $_POST['earlid'],
+		                       '',
+		                       $_POST['status'],
+		                       $_POST['open_to_public']);
+		
+		if (intval($gid) == 0) unset($gid);
+	}
+		                       
 	if (!$msg->containsErrors())
 	{
-		if (isset($gid))  // edit existing guideline
-		{
-			$guidelinesDAO->update($gid,
-			                       $_POST['user_id'], 
-			                       $title, 
-			                       $addslashes(trim($_POST['abbr'])),
-			                       $addslashes(trim($_POST['long_name'])),
-			                       $addslashes(trim($_POST['published_date'])),
-			                       $addslashes(trim($_POST['earlid'])),
-			                       '',
-			                       $_POST['status'],
-			                       $_POST['open_to_public']);
-		}
-		else  // create a new guideline
-		{
-			$gid = $guidelinesDAO->Create($_SESSION['user_id'], 
-			                       $title, 
-			                       $addslashes(trim($_POST['abbr'])),
-			                       $addslashes(trim($_POST['long_name'])),
-			                       $addslashes(trim($_POST['published_date'])),
-			                       $addslashes(trim($_POST['earlid'])),
-			                       '',
-			                       $_POST['status'],
-			                       $_POST['open_to_public']);
-		}
-			                       
-		if (!$msg->containsErrors())
-		{
-			// add checks
-			if (is_array($_POST['add_checks_id'])) $guidelinesDAO->addChecks($gid, $_POST['add_checks_id']);
-			
-			$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
-		}
+		// add checks
+		if (is_array($_POST['add_checks_id'])) $guidelinesDAO->addChecks($gid, $_POST['add_checks_id']);
+		
+		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 	}
 	
 	if (isset($_POST['save_and_close']))
@@ -87,7 +80,7 @@ else if (isset($_POST['save_no_close']) || isset($_POST['save_and_close']))
 		header('Location: index.php');
 		exit;
 	}
-	else
+	else if (isset($gid))
 	{
 		header('Location: create_edit_guideline.php?id='.$gid);
 		exit;
@@ -142,6 +135,7 @@ if (!isset($gid))
 	$checksDAO = new ChecksDAO();
 	
 	$savant->assign('author', $_current_user->getUserName());
+	
 }
 else
 {

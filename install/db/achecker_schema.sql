@@ -252,7 +252,6 @@ CREATE TABLE `user_decisions` (
   `check_id` mediumint(8) NOT NULL,
   `sequence_id` int(8) NOT NULL,
   `decision` varchar(50) NOT NULL DEFAULT 'N',
-  `user_name` varchar(200) NOT NULL DEFAULT '',
   `last_update` datetime NOT NULL,
   PRIMARY KEY  (`user_link_id`, `line_num`, `column_num`, `check_id`),
   INDEX IDX_SEQUENCE (`user_link_id`, `sequence_id`)

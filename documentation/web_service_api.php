@@ -84,9 +84,16 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <tr>
   <th>guide</th>
   <td>The guidelines to validate against. Separate each guideline with comma (,).</td>
-  <td>WCAG-2.0-L2. <br/>Or one or some of these values: <br/>
-  bitv-1.0-(level-2)<br/>section-508<br/>stanca-act<br/>wcag-1.0-(level-a)<br/>
-  wcag-1.0-(level-aa)<br/>wcag-1.0-(level-aaa)<br/>wcag-2.0-l1<br/>wcag-2.0-l2<br/>wcag-2.0-l3.</td>
+  <td>WCAG2-L2. <br/>Or one or some of these values: <br/>
+  BITV1: abbreviation of guideline bitv-1.0-(level-2);<br/>
+  508: abbreviation of guideline section-508;<br/>
+  STANCA: abbreviation of guideline stanca-act;<br/>
+  WCAG1-A: abbreviation of guideline wcag-1.0-(level-a);<br/>
+  WCAG1-AA: abbreviation of guideline wcag-1.0-(level-aa);<br/>
+  WCAG1-AAA: abbreviation of guideline wcag-1.0-(level-aaa);<br/>
+  WCAG2-L1: abbreviation of guideline wcag-2.0-l1;<br/>
+  WCAG2-L2: abbreviation of guideline wcag-2.0-l2;<br/>
+  WCAG2-L3: abbreviation of guideline wcag-2.0-l3.</td>
 </tr>
 
 <tr>
@@ -108,7 +115,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <span style="font-weight: bold">Sample validation request</span>
 <p>http://www.atutor.ca/achecker/test/trunk/checkacc.php?uri=http%3A%2F%2Fatutor.ca&
-id=888ca9e3f856baa0120755ecd8ffae6be3142029&output=html&guide=stanca-act,wcag-2.0-l2&offset=10</p>
+id=888ca9e3f856baa0120755ecd8ffae6be3142029&output=html&guide=STANCA,WCAG2-L2&offset=10</p>
 <p>Goal: Validate URI <code>http://atutor.ca</code> against guidelines "Stanca Act" and "Wcag 2.0 L2". 
 Ignore the first 10 lines of html content from http://atutor.ca. Returns validation report
 in html format.</p>
@@ -142,7 +149,6 @@ in html format.</p>
 &lt;decisionPass&gt;encoded string&lt;/decisionPass&gt;
 &lt;decisionFail&gt;encoded string&lt;/decisionFail&gt;
 &lt;decisionMade&gt;string&lt;/decisionMade&gt;
-&lt;decisionMadeByUser&gt;string&lt;/decisionMadeByUser&gt;
 &lt;decisionMadeDate&gt;string&lt;/decisionMadeDate&gt;
 &lt;/result&gt; 
 ...
@@ -277,11 +283,6 @@ in html format.</p>
 </tr>
 
 <tr>
-  <th>decisionMadeByUser</th>
-  <td>A child of <code>result</code>. Only presented when the decision has been made by user. The name of the user who made the decision.</td>
-</tr>
-
-<tr>
   <th>decisionMadeDate</th>
   <td>A child of <code>result</code>. Only presented when the decision has been made by user. The date and time when the decision was made.</td>
 </tr>
@@ -407,10 +408,6 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
     &lt;tr&gt;
       &lt;th align="left"&gt;Decision:&lt;/th&gt;
       &lt;td&gt;Anchor has text that identifies the link destination.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th align="left"&gt;User:&lt;/th&gt;
-      &lt;td&gt;cindy test li test&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;th align="left"&gt;Date:&lt;/th&gt;

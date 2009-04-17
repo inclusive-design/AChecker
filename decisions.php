@@ -80,7 +80,6 @@ else
 	else
 	{
 		$user_id = $user_row['user_id'];
-		$user_name = $usersDAO->getUserName($user_id);
 	}
 }
 
@@ -107,7 +106,7 @@ if ($decision->hasError())
 else
 {
 	// make decsions
-	$decision->makeDecisions($decisions, $user_name);
+	$decision->makeDecisions($decisions);
 
 	if ($output == 'rest')
 		echo RESTWebServiceOutput::generateSuccessRpt();

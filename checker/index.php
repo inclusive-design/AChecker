@@ -18,8 +18,6 @@ include_once(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/Decision.class.php');
 
-global $_current_user;
-
 // process to make decision
 if (isset($_POST['make_decision']) || isset($_POST['reverse']))
 {
@@ -32,7 +30,7 @@ if (isset($_POST['make_decision']) || isset($_POST['reverse']))
 	else
 	{
 		// make decsions
-		if (isset($_POST['make_decision'])) $decision->makeDecisions($_POST['d'], $_current_user->getUserName());
+		if (isset($_POST['make_decision'])) $decision->makeDecisions($_POST['d']);
 		
 		// reverse decision
 		if (isset($_POST['reverse'])) 
@@ -40,7 +38,7 @@ if (isset($_POST['make_decision']) || isset($_POST['reverse']))
 			foreach ($_POST['reverse'] as $sequenceID => $garbage)
 				$sequences[] = $sequenceID;
 			
-			$decision->reverseDecisions($sequences, $_current_user->getUserName());
+			$decision->reverseDecisions($sequences);
 		}
 	}
 }

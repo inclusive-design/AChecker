@@ -88,7 +88,7 @@ foreach ($guides as $g)
 	if ($g == '') continue;
 
 	$title = str_replace('-',' ',$g);
-	$row = $guidelinesDAO->getEnabledGuidelinesByTitle($title);
+	$row = $guidelinesDAO->getEnabledGuidelinesByAbbr($title);
 
 	if ($row) $gids[] = $row[0]['guideline_id'];
 }

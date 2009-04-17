@@ -181,18 +181,16 @@ class UserDecisionsDAO extends DAO {
 	 * @param   $user_link_id : required
 	 *          $sequence_id :required
 	 *          $decision 
-	 *          $user_name: name of the user who make decision
 	 * @return  true    if update successfully
 	 *          false   if update unsuccessful
 	 * @author  Cindy Qi Li
 	 */
-	public function setDecision($user_link_id, $sequence_id, $decision, $user_name)
+	public function setDecision($user_link_id, $sequence_id, $decision)
 	{
 		global $addslashes;
 		
 		$sql = "UPDATE ".TABLE_PREFIX."user_decisions 
-		           SET decision='".$addslashes($decision)."',
-		               user_name='".$addslashes($user_name)."'
+		           SET decision='".$addslashes($decision)."'
 		         WHERE user_link_id = ".$user_link_id."
 		           AND sequence_id = ".$sequence_id;
 		return $this->execute($sql);
