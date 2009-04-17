@@ -2644,6 +2644,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_ITEM','Are
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_LANG','Are you sure you want to delete the language (<strong>%s</strong>)?','2009-02-23 15:13:50','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_USER','Are you sure you want to delete the following users? Please note that deleting a user also deletes the guidelines and checks that are created by this user but not yet open to public. <strong>%s</strong>','2009-02-06 11:58:02','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_USER_GROUP','Are you sure you want to delete the following user groups? <strong>%s</strong>','2009-02-12 15:08:53','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_ABBR_EXISTS','A guideline with this abbreviation already exists.','2009-04-17 09:57:14','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_ACCOUNT_DISABLED','That account has been disabled.','2009-01-08 11:43:51','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_CANNOT_DEL_DEFAULT_LANG','Cannot delete default language <strong>%s</strong>. The system cannot run properly without it.','2009-02-23 15:47:44','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_CHECK_FUNC','The following check function is incorrect. Check function must return true or false.<br/><strong>%s</strong>','2009-03-30 11:34:58','');
@@ -2975,6 +2976,8 @@ INSERT INTO `language_text` VALUES ('eng', '_template','user','User','2009-02-27
 INSERT INTO `language_text` VALUES ('eng', '_template','users','Users','2009-04-14 10:41:51','');
 INSERT INTO `language_text` VALUES ('eng', '_template','user_group','User Group','2009-02-04 11:51:16','');
 INSERT INTO `language_text` VALUES ('eng', '_template','user_status','User Status','2009-02-04 11:51:16','');
+INSERT INTO `language_text` VALUES ('eng', '_template','valid_icons','\"valid\" Icon(s) on your Web page','2009-04-17 14:35:38','');
+INSERT INTO `language_text` VALUES ('eng', '_template','valid_icons_text','To show your readers that you have taken the care to create a web page that applies to accessibility guideline, you may display this(these) icon(s) on the page that validates. Here is the HTML you could use to add the icon(s) to your web page:','2009-04-17 14:35:38','');
 INSERT INTO `language_text` VALUES ('eng', '_template','view','View','2009-01-20 11:47:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','view_guideline','View Guideline','2009-01-20 13:59:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','web_accessibility_checker','Web Accessibility Checker','2008-12-01 13:19:43','');
