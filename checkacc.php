@@ -83,14 +83,13 @@ if (is_array($errors))
 $guides = explode(',',$guide);
 
 $guidelinesDAO = new GuidelinesDAO();
-foreach ($guides as $g)
+foreach ($guides as $abbr)
 {
-	if ($g == '') continue;
+	if ($abbr == '') continue;
 
-	$title = str_replace('-',' ',$g);
-	$row = $guidelinesDAO->getEnabledGuidelinesByAbbr($title);
+	$row = $guidelinesDAO->getEnabledGuidelinesByAbbr($abbr);
 
-	if ($row) $gids[] = $row[0]['guideline_id'];
+	if ($row[0]['guideline_id'] <> '') $gids[] = $row[0]['guideline_id'];
 }
 
 // set to default guideline if no input guidelines
