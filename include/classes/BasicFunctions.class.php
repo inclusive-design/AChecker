@@ -140,30 +140,13 @@ class BasicFunctions {
 	/**
 	* return the width of the image. return false if the image is not accessible or at failure
 	*/
-	public static function getImageWidth($attr)
+	public static function getImageWidthAndHeight($attr)
 	{
 		global $global_e;
 		
-		if (!file_get_contents($global_e->attr[$attr])) return false;
-		
 		$dimensions = getimagesize($global_e->attr[$attr]);
 		
-		if (is_array($dimensions)) return $dimensions[0];
-		else return false;
-	}
-
-	/**
-	* return the height of the image. return false if the image is not accessible or at failure
-	*/
-	public static function getImageHeight($attr)
-	{
-		global $global_e;
-		
-		if (!file_get_contents($global_e->attr[$attr])) return false;
-		
-		$dimensions = getimagesize($global_e->attr[$attr]);
-		
-		if (is_array($dimensions)) return $dimensions[1];
+		if (is_array($dimensions)) return array($dimensions[0], $dimensions[1]);
 		else return false;
 	}
 

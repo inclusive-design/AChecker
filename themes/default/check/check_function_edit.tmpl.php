@@ -38,7 +38,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><?php echo _AC('error_type'); ?>:</th>
-			<td align="left"><?php echo get_confidence_by_code($this->check_row['error_type']); ?></td>
+			<td align="left"><?php echo get_confidence_by_code($this->check_row['confidence']); ?></td>
 		</tr>
 
 		<tr>
