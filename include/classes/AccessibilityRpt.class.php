@@ -29,7 +29,9 @@ class AccessibilityRpt {
 	// all private
 	var $errors;                         // an array, output of AccessibilityValidator -> getValidationErrorRpt
 	var $user_link_id;                   // user_links.user_link_id; default to ''
-	var $show_decision;                  // 'true' or 'false'. default to 'false'. show decision choices or not.
+	var $allow_set_decision;                  // 'true' or 'false'. default to 'false'. show decision choices or not.
+	var $from_referer;                   // 'true' or 'false'. default to 'false'. indicate the request is from referer or not.
+	                                     // if from referer and user_link_id is set but user is not login, only display the choice and not allow to make decision 
 	var $show_source;                    // 'true' or 'false'. default to 'false'. if 'true', wrap line number in <a> to jump to the source line.
 	var $source_array;                   // the array that source content. Each element of the array corresponds to a line in the file
 	
@@ -54,8 +56,9 @@ class AccessibilityRpt {
 	{
 		$this->errors = $errors;
 		$this->user_link_id = $user_link_id;
-		$this->show_decision = 'false';           // set default "show decision choices" to false
-		$this->show_source = 'false';             // set default "show decision choices" to false
+		$this->allow_set_decision = 'false';           // set default "show decision choices" to false
+		$this->from_referer = 'false';           // set default "from referer" to false
+		$this->show_source = 'false';             // set default "show source" to false
 		$this->source_array = array();
 		
 		$this->num_of_errors = 0;
@@ -69,20 +72,33 @@ class AccessibilityRpt {
 	
 	/**
 	* public 
-	* set show decision choices
+	* set flag "show decision"
 	*/
-	public function setShowDecisions($showDecisions)
+	public function setAllowSetDecisions($allowSetDecisions)
 	{
 		// set default to 'false'
-		if ($showDecisions <> 'true' && $showDecisions <> 'false')
-			$showDecisions = 'false';
+		if ($allowSetDecisions <> 'true' && $allowSetDecisions <> 'false')
+			$allowSetDecisions = 'false';
 
-		$this->show_decision = $showDecisions;
+		$this->allow_set_decision = $allowSetDecisions;
 	}
 
 	/**
 	* public 
-	* set show source flag
+	* set flag "from referer"
+	*/
+	public function setFromReferer($fromReferer)
+	{
+		// set default to 'false'
+		if ($fromReferer <> 'true' && $fromReferer <> 'false')
+			$fromReferer = 'false';
+
+		$this->from_referer = $fromReferer;
+	}
+
+	/**
+	* public 
+	* set flag "show source"
 	*/
 	public function setShowSource($showSource, $sourceArray)
 	{
@@ -105,16 +121,25 @@ class AccessibilityRpt {
 
 	/**
 	* public 
-	* set show decisions or not
+	* return flag "show decisions"
 	*/
-	public function getShowDecisions()
+	public function getAllowSetDecisions()
 	{
-		return $this->show_decision;
+		return $this->allow_set_decision;
 	}
 
 	/**
 	* public 
-	* set show source flag
+	* return flag "from referer"
+	*/
+	public function getFromReferer()
+	{
+		return $this->from_referer;
+	}
+
+	/**
+	* public 
+	* return flag "show source"
 	*/
 	public function getShowSource()
 	{
@@ -185,4 +210,4 @@ class AccessibilityRpt {
 	}
 
 }
-?>  
+?>

@@ -24,6 +24,11 @@ if (is_array($this->seals))
 <h3><?php echo _AC('valid_icons');?></h3>
 <p><?php echo _AC('valid_icons_text');?></p>
 <?php 
+	$user_link_url = '';
+	
+	if (isset($this->user_link_id))
+		$user_link_url = '&amp;id='.$this->user_link_id;
+	
 	foreach ($this->seals as $seal)
 	{
 ?>
@@ -31,22 +36,24 @@ if (is_array($this->seals))
     alt="<?php echo $seal['title']; ?>" height="32" width="102"/>
     <pre class="badgeSnippet">
   &lt;p&gt;
-    &lt;a href="<?php echo AC_BASE_HREF; ?>checker/index.php?uri=referer"&gt;
-      &lt;img src="<?php echo SEAL_ICON_FOLDER . $seal['seal_icon_name'];?>" alt="<?php echo $seal['title']; ?>" height="32" width="102" /&gt;
+    &lt;a href="<?php echo AC_BASE_HREF; ?>checker/index.php?uri=referer&amp;gid=<?php echo $seal['guideline'].$user_link_url;?>"&gt;
+      &lt;img src="<?php echo AC_BASE_HREF.SEAL_ICON_FOLDER . $seal['seal_icon_name'];?>" alt="<?php echo $seal['title']; ?>" height="32" width="102" /&gt;
     &lt;/a&gt;
   &lt;/p&gt;
 	</pre>
 
 <?php 
 	} // end of foreach (display seals)
-} // end of if (display seals)
 ?>
 </div>
+<?php 
+} // end of if (display seals)
+?>
 
 <div id="output_div" class="validator-output-form">
 
-<?php 
-if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
+<?php
+if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 {
 	$sessionID = Utility::getSessionID();
 	
@@ -59,6 +66,18 @@ if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
 	echo '<input type="hidden" name="output" value="html" />'."\n\r";
 	echo '<input type="hidden" name="validate_uri" value="1" />'."\n\r";
 
+	// report for referer URI
+	if (isset($this->referer_report))
+	{
+		echo '<input type="hidden" name="referer_report" value="'.$this->referer_report.'" />'."\n\r";
+	} 
+
+	// user_link_id for referer URI is sent in from request, don't need to retrieve
+	if (isset($this->referer_user_link_id))
+	{
+		echo '<input type="hidden" name="referer_user_link_id" value="'.$this->referer_user_link_id.'" />'."\n\r";
+	} 
+	
 	foreach ($_POST['gid'] as $gid)
 		echo '<input type="hidden" name="gid[]" value="'.$gid.'" />'."\n\r";
 }
@@ -68,10 +87,10 @@ if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
 
 	<div class="topnavlistcontainer">
 		<ul class="topnavlist">
-			<li><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="showDiv('errors');"><?php echo _AC("known_problems"); ?> <span class="small_font">(<?php echo $this->num_of_errors; ?>)</span></a></li>
-			<li><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');"><?php echo _AC("likely_problems"); ?> <span class="small_font">(<?php echo $this->num_of_likely_problems_no_decision; ?>)</span></a></li>
-			<li><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');"><?php echo _AC("potential_problems"); ?> <span class="small_font">(<?php echo $this->num_of_potential_problems_no_decision; ?>)</span></a></li>
-			<li><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');"><?php echo _AC("html_validation_result"); ?> <span class="small_font"><?php if (isset($_POST["enable_html_validation"])) echo "(".$this->num_of_html_errors.")"; ?></span></a></li>
+			<li><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="showDiv('errors');return false;"><?php echo _AC("known_problems"); ?> <span class="small_font">(<?php echo $this->num_of_errors; ?>)</span></a></li>
+			<li><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');return false;"><?php echo _AC("likely_problems"); ?> <span class="small_font">(<?php echo $this->num_of_likely_problems_no_decision; ?>)</span></a></li>
+			<li><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');return false;"><?php echo _AC("potential_problems"); ?> <span class="small_font">(<?php echo $this->num_of_potential_problems_no_decision; ?>)</span></a></li>
+			<li><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');return false;"><?php echo _AC("html_validation_result"); ?> <span class="small_font"><?php if (isset($_POST["enable_html_validation"])) echo "(".$this->num_of_html_errors.")"; ?></span></a></li>
 		</ul>
 	</div>
 
@@ -140,7 +159,7 @@ else
 	</fieldset>
 
 <?php 
-if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
+if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 {
 	if ($this->a_rpt->getNumOfNoDecisions() > 0)
 	{
@@ -166,6 +185,7 @@ if (isset($this->aValidator) && $this->a_rpt->getShowDecisions() == 'true')
 // show and highlight the given div, hide other output divs. 
 function showDiv(divName)
 {
+	window.location.hash = 'output_div';
 	// all ids of dives to hide/show
 	var allDivIDs = new Array("errors", "likely_problems", "potential_problems", "html_validation_result");
 	var i;

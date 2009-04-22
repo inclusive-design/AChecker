@@ -83,9 +83,8 @@ class HTMLRpt extends AccessibilityRpt {
 	var $html_decision_made = 
 '<table class="form-data">
   <tr>
-    <td colspan="2">
-      {QUESTION}
-   </td>
+    <th align="left">{LABEL_QUESTION}:</th>
+    <td>{QUESTION}</td>
   </tr>
   <tr>
     <th align="left">{LABEL_DECISION}:</th>
@@ -143,7 +142,7 @@ class HTMLRpt extends AccessibilityRpt {
 		global $msg;
 
 		// user_link_id must be given to show decision section
-		if ((!isset($this->user_link_id) || $this->user_link_id == '') && $this->show_decision == 'true')
+		if ((!isset($this->user_link_id) || $this->user_link_id == '') && $this->allow_set_decision == 'true')
 		{
 			$msg->addError('NONE_USER_LINK');
 			return false;
@@ -170,7 +169,7 @@ class HTMLRpt extends AccessibilityRpt {
 			else if ($row["confidence"] == LIKELY)
 			{
 				$this->num_of_likely_problems++;
-				if ($this->show_decision == 'false')
+				if ($this->allow_set_decision == 'false' && !($this->from_referer == 'true' && $this->user_link_id > 0))
 				{
 					$this->rpt_likely_problems .= $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_WARNING);
 					$this->num_of_likely_problems_fail++;
@@ -183,7 +182,7 @@ class HTMLRpt extends AccessibilityRpt {
 			else if ($row["confidence"] == POTENTIAL)
 			{
 				$this->num_of_potential_problems++;
-				if ($this->show_decision == 'false')
+				if ($this->allow_set_decision == 'false' && !($this->from_referer == 'true' && $this->user_link_id > 0))
 				{
 					$this->rpt_potential_problems .= $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_INFO);
 					$this->num_of_potential_problems_fail++;
@@ -195,7 +194,8 @@ class HTMLRpt extends AccessibilityRpt {
 			}
 		}
 		
-		if ($this->show_decision == 'true')
+		if ($this->allow_set_decision == 'true' || 
+		    ($this->allow_set_decision == 'false' && $this->from_referer == 'true' && $this->user_link_id > 0))
 		{
 			$this->rpt_likely_problems .= $this->rpt_likely_decision_not_made.$this->rpt_likely_decision_made;
 			$this->rpt_potential_problems .= $this->rpt_potential_decision_not_made.$this->rpt_potential_decision_made;
@@ -237,24 +237,26 @@ class HTMLRpt extends AccessibilityRpt {
 		
 		if ($row['decision'] == AC_NO_DECISION)
 		{
-			$decision_section = str_replace(array("{SEQUENCE_ID}", 
-			                                      "{PASS_CHECKED}", 
-			                                      "{FAIL_CHECKED}", 
-			                                      "{NODECISION_CHECKED}", 
-			                                      "{QUESTION}", 
-			                                      "{DECISION_PASS}", 
-			                                      "{DECISION_FAIL}", 
-			                                      "{DECISION_NO}"),
-			                                array($row['sequence_id'],
-			                                      "",
-			                                      "",
-			                                      'checked="checked"',
-			                                      _AC($check_row['question']),
-			                                      _AC($check_row['decision_pass']),
-			                                      _AC($check_row['decision_fail']),
-			                                      _AC('no_decision')),
-			                                $this->html_decision_not_made);
-			                                
+			if ($this->allow_set_decision == 'true')
+			{
+				$decision_section = str_replace(array("{SEQUENCE_ID}", 
+				                                      "{PASS_CHECKED}", 
+				                                      "{FAIL_CHECKED}", 
+				                                      "{NODECISION_CHECKED}", 
+				                                      "{QUESTION}", 
+				                                      "{DECISION_PASS}", 
+				                                      "{DECISION_FAIL}", 
+				                                      "{DECISION_NO}"),
+				                                array($row['sequence_id'],
+				                                      "",
+				                                      "",
+				                                      'checked="checked"',
+				                                      _AC($check_row['question']),
+				                                      _AC($check_row['decision_pass']),
+				                                      _AC($check_row['decision_fail']),
+				                                      _AC('no_decision')),
+				                                $this->html_decision_not_made);
+			}                                
 			// generate problem section
 			$problem_section = $this->generate_problem_section($check_row['check_id'], $line_number, $col_number, $html_code, _AC($check_row['err']), _AC($check_row['how_to_repair']), $decision_section, $error_type);
 			
@@ -268,13 +270,17 @@ class HTMLRpt extends AccessibilityRpt {
 			if ($row['decision'] == AC_DECISION_PASS) $decision = $check_row['decision_pass'];
 			if ($row['decision'] == AC_DECISION_FAIL) $decision = $check_row['decision_fail'];
 			
-			$reverse_decision = str_replace(array("{LABEL_REVERSE_DECISION}", "{SEQUENCE_ID}"),
-			                                array(_AC('reverse_decision'), $row['sequence_id']),
-			                                $this->html_reverse_decision);
-			                                
+			if ($this->allow_set_decision == 'true')
+			{
+				$reverse_decision = str_replace(array("{LABEL_REVERSE_DECISION}", "{SEQUENCE_ID}"),
+				                                array(_AC('reverse_decision'), $row['sequence_id']),
+				                                $this->html_reverse_decision);
+			}
+			                           
 			$decision_section = str_replace(array("{LABEL_DECISION}", 
 			                                      "{QUESTION}", 
 			                                      "{DECISION}", 
+			                                      "{LABEL_QUESTION}",
 			                                      "{LABEL_USER}", 
 			                                      "{LABEL_DATE}", 
 			                                      "{DATE}",
@@ -282,6 +288,7 @@ class HTMLRpt extends AccessibilityRpt {
 			                                 array(_AC('decision'),
 			                                       _AC($check_row['question']),
 			                                       _AC($decision),
+			                                       _AC('question'),
 			                                       _AC('user'),
 			                                       _AC('date'),
 			                                       $row['last_update'],
@@ -458,4 +465,4 @@ class HTMLRpt extends AccessibilityRpt {
 		return $html_success;
 	}
 }
-?>  
+?>

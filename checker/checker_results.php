@@ -45,9 +45,34 @@ if (isset($aValidator))
 	// if it's a LOGIN user validates URI, save into database for user to make decision.
 	// Note that results of validating uploaded files are not saved
 	$user_link_id = '';
-	$show_decision = 'false';   // set default showDecision to 'false'
+	$allow_set_decision = 'false';   // set default allowSetDecision to 'false'
+	$from_referer = 'false';
 	
-	if (isset($_SESSION['user_id']) && $_POST["validate_uri"])
+	// initial request to validate referer URL
+	if ($_GET['uri'] == 'referer')
+	{
+		$from_referer = 'true';
+		
+		// if id (id is user_link_id) is given
+		if (isset($_GET['id']) && intval($_GET['id']) > 0) 
+		{
+			$user_link_id = $_GET['id'];
+			
+			// same user associated in user_link_id is login, set user_link_id
+			// the validation of ($_SESSION['user_id'] == user_id defined in $_GET['id']) is done in checker/index.php 
+			if ($_SESSION['user_id'] > 0) $allow_set_decision = 'true';
+		}
+	}
+	else if (isset($_POST['referer_report']))
+	{
+		$from_referer = 'true';
+		if (isset($_POST['referer_user_link_id'])) 
+		{
+			$user_link_id = $_POST['referer_user_link_id'];
+			if ($_SESSION['user_id'] > 0) $allow_set_decision = 'true';
+		}
+	}
+	else if (isset($_SESSION['user_id']) && $_POST["validate_uri"])
 	{
 		// save errors into user_links
 		$userLinksDAO = new UserLinksDAO();
@@ -57,11 +82,12 @@ if (isset($aValidator))
 		$userDecisionsDAO = new UserDecisionsDAO();
 		$userDecisionsDAO->saveErrors($user_link_id, $errors);
 		
-		$show_decision = 'true';
+		$allow_set_decision = 'true';
 	}
 
 	$a_rpt = new HtmlRpt($errors, $user_link_id);
-	$a_rpt->setShowDecisions($show_decision);
+	$a_rpt->setAllowSetDecisions($allow_set_decision);
+	$a_rpt->setFromReferer($from_referer);
 	if (isset($_POST['show_source'])) $a_rpt->setShowSource('true', $source_array);
 	
 	$a_rpt->generateHTMLRpt();
@@ -71,6 +97,12 @@ if (isset($aValidator))
 	$num_of_likely_problems_no_decision = $a_rpt->getNumOfLikelyWithFailDecisions();
 	$num_of_potential_problems = $a_rpt->getNumOfPotentialProblems();
 	$num_of_potential_problems_no_decision = $a_rpt->getNumOfPotentialWithFailDecisions();
+	
+//	$num_of_errors = 0;
+//	$num_of_likely_problems = 0;
+//	$num_of_likely_problems_no_decision = 0;
+//	$num_of_potential_problems = 0;
+//	$num_of_potential_problems_no_decision = 0;
 	
 	// no any problems or all problems have pass decisions, display seals when no errors
 	if ($num_of_errors == 0 && 
@@ -82,7 +114,9 @@ if (isset($aValidator))
 		{
 			if ($row['subset'] == 0)
 			{
-				$seals[] = array('title' => $row['title'], 'seal_icon_name' => $row['seal_icon_name']);
+				$seals[] = array('title' => $row['title'],
+				                 'guideline' => $row['abbr'], 
+				                 'seal_icon_name' => $row['seal_icon_name']);
 			}
 			else
 			{
@@ -92,7 +126,9 @@ if (isset($aValidator))
 				}
 			}// end of outer if
 		} // end of foreach
-		$seals[] = array('title' => $highest_subset_guideline['title'], 'seal_icon_name' => $highest_subset_guideline['seal_icon_name']);
+		$seals[] = array('title' => $highest_subset_guideline['title'], 
+				         'guideline' => $highest_subset_guideline['abbr'], 
+		                 'seal_icon_name' => $highest_subset_guideline['seal_icon_name']);
 	}
 	
 	$savant->assign('a_rpt', $a_rpt);
@@ -106,7 +142,16 @@ if (isset($aValidator))
 	$savant->assign('guidelines_text', $guidelines_text);
 	$savant->assign('num_of_total_a_errors', $num_of_total_a_errors);
 	
+	// vars for displaying seals
 	if (is_array($seals)) $savant->assign('seals', $seals);
+	if ($user_link_id <> '') $savant->assign('user_link_id', $user_link_id);
+	
+	// vars for displaying report from referer URI
+	if ($_REQUEST['uri'] == 'referer')
+	{
+		$savant->assign('referer_report', 1);
+		if (intval($user_link_id) > 0) $savant->assign('referer_user_link_id', $user_link_id);
+	}
 }
 
 if (isset($htmlValidator))

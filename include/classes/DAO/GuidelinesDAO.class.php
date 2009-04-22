@@ -249,11 +249,26 @@ class GuidelinesDAO extends DAO {
 						where guideline_id in (" . $guidelineIDs . ")
 						order by title";
 
-    
 		return $this->execute($sql);
   	}
 
 	/**
+	* Return guideline info by given guideline abbreviation
+	* @access  public
+	* @param   $abbr : guideline abbreviation
+	* @return  table rows
+	* @author  Cindy Qi Li
+	*/
+	public function getGuidelineByAbbr($abbr)
+	{
+		$sql = "select *
+						from ". TABLE_PREFIX ."guidelines
+						where abbr = '" . $abbr . "'";
+    
+		return $this->execute($sql);
+  	}
+
+  	/**
 	* Return guideline info by given user id
 	* @access  public
 	* @param   $userID : user id
