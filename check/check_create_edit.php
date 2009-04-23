@@ -26,16 +26,20 @@ $guidelinesDAO = new GuidelinesDAO();
 $checkExamplesDAO = new CheckExamplesDAO();
 
 // handle submit
-if (isset($_POST['cancel'])) {
+if (isset($_POST['cancel'])) 
+{
 	header('Location: index.php');
 	exit;
-} else if (isset($_POST['save_no_close']) || isset($_POST['save_and_close'])) {
+} 
+// check on isset($_POST['html_tag']) is to handle javascript submit request for unsaved changes
+else if (isset($_POST['save_no_close']) || isset($_POST['save_and_close']) || isset($_POST['html_tag'])) 
+{
 	$checksDAO = new ChecksDAO();
 	
 	if (!isset($check_id))  // create new user
 	{
 		$check_id = $checksDAO->Create($_SESSION['user_id'],
-                  $_POST['html_tag'],$_POST['confidence'],'',$_POST['note'],
+                  $_POST['html_tag'],$_POST['confidence'],$_POST['note'],
 		          $_POST['name'],$_POST['err'],$_POST['description'],$_POST['search_str'],
 		          $_POST['long_description'],$_POST['rationale'],$_POST['how_to_repair'],
 		          $_POST['repair_example'],$_POST['question'],$_POST['decision_pass'],
@@ -45,7 +49,7 @@ if (isset($_POST['cancel'])) {
 	else  // edit existing check
 	{
 		$checksDAO->Update($check_id, $_SESSION['user_id'],
-                  $_POST['html_tag'],$_POST['confidence'],'',$_POST['note'],
+                  $_POST['html_tag'],$_POST['confidence'],$_POST['note'],
 		          $_POST['name'],$_POST['err'],$_POST['description'],$_POST['search_str'],
 		          $_POST['long_description'],$_POST['rationale'],$_POST['how_to_repair'],
 		          $_POST['repair_example'],$_POST['question'],$_POST['decision_pass'],

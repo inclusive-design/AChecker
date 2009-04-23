@@ -335,7 +335,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONFAIL_200','<code>l
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONFAIL_202','<code>frame</code> <code>title</code> does not describe the purpose or function of the frame.','2008-11-24 13:02:46','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONFAIL_203','Summary does not describe navigation and structure of the table.','2008-11-24 13:02:46','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONFAIL_205','<code>input</code> element\'s label does not describe the purpose or function of the control.','2008-11-24 13:02:46','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONFAIL_209','<code>select</code> element\'s label is not positioned close to the control.','2008-11-24 13:02:46','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONFAIL_209','<code>select</code> element\\\'s label is not positioned close to the control.','2009-04-23 10:07:32','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONFAIL_21','<code>applet</code> uses color alone.','2008-11-24 13:02:46','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONFAIL_210','<code>select</code> element\'s label does not describe the purpose or function of the control.','2008-11-24 13:02:46','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONFAIL_211','Label is not positioned close to the control.','2008-11-24 13:02:46','');
@@ -482,7 +482,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONPASS_200','<code>l
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONPASS_202','<code>frame</code> <code>title</code> describes the purpose or function of the frame.','2008-11-24 13:02:39','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONPASS_203','Summary describes navigation and structure of the table.','2008-11-24 13:02:39','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONPASS_205','<code>input</code> element\'s label describes the purpose or function of the control.','2008-11-24 13:02:39','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONPASS_209','<code>select</code> element\'s label is positioned close to the control.','2008-11-24 13:02:39','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONPASS_209','<code>select</code> element\\\'s label is positioned close to the control.','2009-04-23 10:07:32','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONPASS_21','<code>applet</code> does not use color alone.','2008-11-24 13:02:39','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONPASS_210','<code>select</code> element\'s label describes the purpose or function of the control.','2008-11-24 13:02:39','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DECISIONPASS_211','Label is positioned close to the control.','2008-11-24 13:02:39','');
@@ -951,7 +951,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_205','<code>input</cod
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_206','<code>input</code> element, <code>type</code> of \"checkbox\", has no text in <code>label</code>.','2008-11-24 13:01:50','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_207','<code>input</code> element, <code>type</code> of \"password\", has no text in <code>label</code>.','2008-11-24 13:01:50','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_208','Label text is empty for <code>select</code> element.','2008-11-24 13:01:50','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_209','<code>select</code> element\'s label is not positioned close to control.','2008-11-24 13:01:50','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_209','<code>select</code> element\\\'s label is not positioned close to control.','2009-04-23 10:07:32','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_21','<code>applet</code> may use color alone.','2008-11-24 13:01:50','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_210','<code>select</code> element\'s label may not describe the purpose or function of the control.','2008-11-24 13:01:50','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_211','<code>input</code> element <code>label</code>, <code>type</code> of \"text\", is not positioned close to control.','2008-11-24 13:01:50','');
@@ -1748,7 +1748,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_HOWTOREPAIR_9','Immediatel
 INSERT INTO `language_text` VALUES ('eng', '_check','_HOWTOREPAIR_90','Add a <code>noscript</code> section immediately following the <code>script</code> that provides the same functionality as the <code>script</code>.','2008-11-24 13:02:16','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_HOWTOREPAIR_91','Add a <code>label</code> element that surrounds the control\'s <code>label</code>. Set the <code>for</code> attribute on the <code>label</code> element to the same value as the <code>id</code> attribute of the control. And/or add a <code>title</code> attribute to the <code>input</code> element. And/or create a <code>label</code> element that contains the <code>input</code> element.','2008-11-24 13:02:16','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_HOWTOREPAIR_95','Add a <code>label</code> element immediately before or after the <code>textarea</code> element. Set the <code>for</code> attribute value of the <code>label</code> element to the same value as the <code>id</code> attribute value of the <code>textarea</code> element. Add label text to the <code>label</code> element. Or, set the <code>title</code> attribute value to the <code>textarea</code> element to the label text. Or, add a <code>label</code> element that surrounds the <code>textarea</code> element and add label text.','2008-11-24 13:02:16','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_HOWTOREPAIR_96','Position the control\'s label so it is close to the control.','2008-11-24 13:02:16','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_HOWTOREPAIR_96','Position the control\\\'s label so it is close to the control.','2009-04-23 10:07:24','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_NOTE_10','review postponed until we develop a test for flicker','2008-11-24 11:43:39','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_NOTE_109','move to CSS test suite','2008-11-24 11:43:39','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_NOTE_116','now allowed','2008-11-24 11:43:39','');
@@ -1898,7 +1898,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_205','1. Check a
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_206','1. Check all <code>input</code> elements that have a <code>type</code> attribute value of \"checkbox\".\n2. The <code>input</code> element must have an explicitly associated label using one or more of the following methods.\n3. The <code>input</code> element has an <code>id</code> attribute value that matches the <code>for</code> attribute value of a <code>label</code> element.\n4. and/or\n5. The <code>input</code> element has a <code>title</code> attribute.\n6. and/or\n7. The <code>input</code> element is contained by a <code>label</code> element.\n8. Check if the label contains text.','2009-03-18 13:48:49','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_207','1. Check all <code>input</code> elements that have a <code>type</code> attribute value of \"password\".\n2. The <code>input</code> element must have an explicitly associated label using one or more of the following methods.\n3. The <code>input</code> element has an <code>id</code> attribute value that matches the <code>for</code> attribute value of a <code>label</code> element.\n4. and/or\n5. The <code>input</code> element has a <code>title</code> attribute.\n6. and/or\n7. The <code>input</code> element is contained by a <code>label</code> element.\n8. Check if the label contains text.','2009-03-18 13:48:49','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_208','1. Check the associated label for all <code>select</code> elements.\n2. Note: For information on what constitutes an associated label please see test 57.','2009-03-18 13:48:49','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_209','1. Check all <code>select</code> elements\n2. View the <code>select</code> element within the document and check the positioning of its label.','2009-03-18 13:48:49','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_209','1. Check all <code>select</code> elements\\r\\n2. View the <code>select</code> element within the document and check the positioning of its label.','2009-04-23 10:07:33','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_21','1. View the operation of each <code>applet</code> in the document.','2009-03-18 13:48:49','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_210','1. Check all <code>select</code> elements within the document.\n2. View the <code>select</code> element\'s associated label.','2009-03-18 13:48:49','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_PROCEDURE_211','1. Check all <code>input</code>  elements that have a <code>type</code> attribute value of \"text\".\n2. View the <code>input</code> element within the document and check the positioning of its label.','2009-03-18 13:48:49','');
@@ -2102,7 +2102,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_200','Does the <c
 INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_202','Does the <code>frame</code> <code>title</code> describe the purpose or function of the frame?','2008-11-24 13:02:31','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_203','Does this summary describe navigation and structure of the table?','2008-11-24 13:02:31','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_205','Does the <code>input</code> element\'s label describe the purpose or function of the control?','2008-11-24 13:02:31','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_209','Is the <code>select</code> element\'s label positioned close to the control?','2008-11-24 13:02:31','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_209','Is the <code>select</code> element\\\'s label positioned close to the control?','2009-04-23 10:07:32','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_21','Does this <code>applet</code> make use of color alone?','2008-11-24 13:02:31','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_210','Does the <code>select</code> element\'s label describe the purpose or function of the control?','2008-11-24 13:02:31','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_QUESTION_211','Is the label positioned close to the control?','2008-11-24 13:02:31','');
@@ -2646,6 +2646,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_USER','Are
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_USER_GROUP','Are you sure you want to delete the following user groups? <strong>%s</strong>','2009-02-12 15:08:53','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_ABBR_EXISTS','A guideline with this abbreviation already exists.','2009-04-17 09:57:14','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_ACCOUNT_DISABLED','That account has been disabled.','2009-01-08 11:43:51','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_CANNOT_CONNECT','Cannot connect to URI: %s','2009-04-22 09:26:45','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_CANNOT_DEL_DEFAULT_LANG','Cannot delete default language <strong>%s</strong>. The system cannot run properly without it.','2009-02-23 15:47:44','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_CHECK_FUNC','The following check function is incorrect. Check function must return true or false.<br/><strong>%s</strong>','2009-03-30 11:34:58','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_CONFIRM_BAD','Your email address and account could not be confirmed.','2009-01-14 14:40:42','');
@@ -2654,6 +2655,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMAIL_EXISTS','An a
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMAIL_INVALID','Email address was invalid.','2009-01-09 11:34:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMAIL_NOT_FOUND','No account found with that email address.','2009-01-14 14:40:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_FIELDS','The following required field(s) are empty:<br />\r\n%s.','2009-01-09 11:34:42','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_GID','Empty guideline ID.','2009-04-22 11:40:24','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_SESSIONID','Empty Session ID.','2009-03-03 13:44:57','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_URI','Empty URI.','2009-03-03 13:44:57','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_USER','Empty user.','2009-03-03 13:44:57','');
@@ -2663,6 +2665,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_GUIDELINE_NOT_FOUND
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_ID_ZERO','Check ID was zero, or was missing.','2009-03-26 10:03:56','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_CHECK_ID','Invalid check ID.','2009-03-31 10:52:38','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_FORMAT','Invalid format.','2009-03-03 13:44:57','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_GID','Invalid guideline ID.','2009-04-22 11:40:24','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_LOGIN','Invalid login/password combination.','2009-01-08 11:43:51','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_SESSION','Invalid session.','2009-03-03 13:44:57','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_URI','Invalid URI.','2009-03-04 14:49:59','');
@@ -2674,6 +2677,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_LOGIN_CHARS','Your 
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_LOGIN_EXISTS','That login already exists, please choose another.','2009-01-09 11:34:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_MISSING_GID','Missing guideline ID or guideline group ID.','2009-04-08 13:11:12','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_NONE_USER_LINK','USER_LINK_ID cannot be null at creating user decision section.','2009-02-27 09:16:25','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_NOT_LOCALHOST','Sorry, the IP address of localhost is not public. For security reasons, validating resources located at non-public IP addresses has been disabled in this service.','2009-04-22 09:26:45','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_NO_ACTION_SELECTED','No action selected.','2009-02-04 15:31:02','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_NO_ITEM_SELECTED','You must select an item before using a button.','2009-02-04 15:31:02','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_NO_PHP_FUNC','PHP functions cannot be called. Please remove the following function calls from the code: <br/><ul>%s</ul>','2009-03-31 08:48:28','');
@@ -2682,10 +2686,12 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PAGE_NOT_FOUND','Pa
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PASSWORD_CHARS','The password must contain letters, numbers, and symbols.','2009-01-09 13:41:06','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PASSWORD_LENGTH','Password must be at least 8 characters long.','2009-01-09 13:41:06','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PASSWORD_MISMATCH','Passwords did not match.','2009-01-09 13:41:06','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_REFERER_URI_NOT_MATCH','Referrer URI does NOT match.','2009-04-21 14:11:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SELECT_ONE_ITEM','Only <em>one</em> item must be selected.','2009-02-04 15:31:02','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SENDING_ERROR','There was an error sending the email message.','2009-01-16 13:14:08','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SEQUENCEID_NOT_GIVEN','No sequence ID is given.','2009-03-09 14:21:28','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SYNTAX_ERROR','Syntax error.','2009-03-26 15:54:24','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_USER_NOT_MATCH','User ID does NOT match. Please logout AChecker and try again.','2009-04-21 14:43:51','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_WRONG_PASSWORD','Incorrect password.','2009-01-16 10:29:47','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_FEEDBACK_ACCOUNT_CONFIRMED','Account has been confirmed.','2009-01-14 14:40:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_FEEDBACK_ACTION_COMPLETED_SUCCESSFULLY','Action completed successfully.','2009-01-16 11:29:41','');
@@ -2987,17 +2993,6 @@ INSERT INTO `language_text` VALUES ('eng', '_template','web_site','Web Site','20
 INSERT INTO `language_text` VALUES ('eng', '_template','welcome','Welcome','2009-01-08 09:30:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','yes','Yes','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','yyyy-mm-dd','yyyy-mm-dd','2009-01-21 15:06:01','');
-INSERT INTO `language_text` VALUES ('eng', '_template','_GNAME_13','a test on creating guideline','2009-01-22 14:54:17','');
-INSERT INTO `language_text` VALUES ('eng', '_template','_GNAME_14','a test on creating guideline','2009-01-22 15:07:36','');
-INSERT INTO `language_text` VALUES ('eng', '_template','_GNAME_15','a test on creating guideline','2009-01-22 15:09:44','');
-INSERT INTO `language_text` VALUES ('eng', '_template','_GNAME_16','a test on creating guideline','2009-01-22 15:10:44','');
-INSERT INTO `language_text` VALUES ('eng', '_template','_GNAME_17','a test on creating guideline','2009-01-22 15:11:00','');
-INSERT INTO `language_text` VALUES ('eng', '_template','_GNAME_18','a test on creating guideline','2009-01-22 15:11:18','');
-INSERT INTO `language_text` VALUES ('eng', '_template','_GNAME_19','a test on creating guideline','2009-01-22 15:12:19','');
-INSERT INTO `language_text` VALUES ('eng', '_template','_GNAME_20','a test on creating guideline','2009-01-22 15:13:55','');
-INSERT INTO `language_text` VALUES ('eng', '_template','_GNAME_25','creating a guideline','2009-01-23 11:28:01','');
-INSERT INTO `language_text` VALUES ('eng', '_template','_GNAME_26','creating a guideline','2009-01-23 15:00:52','');
-INSERT INTO `language_text` VALUES ('eng', '_template','_GNAME_27','created by admin','2009-01-23 16:06:14','');
 INSERT INTO `language_text` VALUES ('eng', '_test','_FILEDESC_100_0','<code>blockquote</code> does not have <code>cite</code> attribute.','2008-11-24 13:03:48','');
 INSERT INTO `language_text` VALUES ('eng', '_test','_FILEDESC_100_1','<code>blockquote</code> has <code>cite</code> attribute.','2008-11-24 13:03:48','');
 INSERT INTO `language_text` VALUES ('eng', '_test','_FILEDESC_102_0','Contains an element that has an <code>onclick</code> attribute without an <code>onkeypress</code> attribute.','2008-11-24 13:03:48','');

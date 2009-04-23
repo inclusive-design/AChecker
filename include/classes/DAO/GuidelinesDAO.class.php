@@ -49,7 +49,7 @@ class GuidelinesDAO extends DAO {
 		$earlid = $addslashes(trim($earlid));
 		$preamble = $addslashes(trim($preamble));
 		
-		if (!$this->isFieldsValid($title, $abbr)) return false;
+		if (!$this->isFieldsValid($title, $abbr, true)) return false;
 		
 		$sql = "INSERT INTO ".TABLE_PREFIX."guidelines
 				(`user_id`, `title`, `abbr`, `published_date`,  
@@ -111,7 +111,7 @@ class GuidelinesDAO extends DAO {
 		$earlid = $addslashes(trim($earlid));
 		$preamble = $addslashes(trim($preamble));
 		
-		if (!$this->isFieldsValid($title, $abbr)) return false;
+		if (!$this->isFieldsValid($title, $abbr, false, $guidelineID)) return false;
 		
 		$sql = "UPDATE ".TABLE_PREFIX."guidelines
 				   SET `user_id`=".$userID.", 
@@ -133,7 +133,7 @@ class GuidelinesDAO extends DAO {
 		{
 			// find language term to update	
 			$rows = $this->getGuidelineByIDs($guidelineID);
-			$term = $rows[0]['term'];
+			$term = $rows[0]['long_name'];
 			
 			require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 			$langTextDAO = new LanguageTextDAO();
@@ -219,8 +219,11 @@ class GuidelinesDAO extends DAO {
 		         WHERE guideline_id = ".$guidelineID;
 		$rows = $this->execute($sql);
 		
-		foreach ($rows as $row)
-			$guidelineGroupsDAO->Delete($row['group_id']);
+		if (is_array($rows))
+		{
+			foreach ($rows as $row)
+				$guidelineGroupsDAO->Delete($row['group_id']);
+		}
 		
 		// delete language for long name
 		$sql = "DELETE FROM ".TABLE_PREFIX."language_text 
@@ -442,11 +445,15 @@ class GuidelinesDAO extends DAO {
 	 * @access  private
 	 * @param   $title  
 	 *          $abbr
+	 *          $create_new: flag to indicate if this is creating new record or update.
+	 *                       true is to create new record, false is update record.
+	 *                       if update record, only check abbr uniqueness when abbr is modified.
+	 *          $guidelineID: must be given at updating record, when $create_new == false
 	 * @return  true    if all fields are valid
 	 *          false   if any field is not valid
 	 * @author  Cindy Qi Li
 	 */
-	private function isFieldsValid($title, $abbr)
+	private function isFieldsValid($title, $abbr, $create_new, $guidelineID = 0)
 	{
 		global $msg;
 		
@@ -467,12 +474,20 @@ class GuidelinesDAO extends DAO {
 			$msg->addError(array('EMPTY_FIELDS', $missing_fields));
 		}
 		
-		// abbr must be unique
-		$sql = "SELECT * FROM ".TABLE_PREFIX."guidelines WHERE abbr='".$abbr."'";
-
-		if (is_array($this->execute($sql)))
+		if (!$create_new)
 		{
-			$msg->addError('ABBR_EXISTS');
+			$current_grow = $this->getGuidelineByIDs($guidelineID);
+		}
+		
+		if ($create_new || (!$create_new && $current_grow[0]['abbr'] <> $abbr))
+		{
+			// abbr must be unique
+			$sql = "SELECT * FROM ".TABLE_PREFIX."guidelines WHERE abbr='".$abbr."'";
+	
+			if (is_array($this->execute($sql)))
+			{
+				$msg->addError('ABBR_EXISTS');
+			}
 		}
 			
 		if (!$msg->containsErrors())

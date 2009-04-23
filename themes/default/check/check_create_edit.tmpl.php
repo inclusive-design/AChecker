@@ -40,8 +40,8 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<input type="hidden" name="html_tag_orig" value="<?php echo htmlspecialchars($this->check_row['html_tag']); ?>" />
 	<input type="hidden" name="confidence_orig" value="<?php echo $this->check_row['confidence']; ?>" />
 	<input type="hidden" name="open_to_public_orig" value="<?php echo $this->check_row['open_to_public']; ?>" />
-	<input type="hidden" name="name_orig" value="<?php echo htmlspecialchars($this->check_row['name']); ?>" />
-	<input type="hidden" name="err_orig" value="<?php echo htmlspecialchars($this->check_row['err']); ?>" />
+	<input type="hidden" name="name_orig" value="<?php echo htmlspecialchars(_AC($this->check_row['name'])); ?>" />
+	<input type="hidden" name="err_orig" value="<?php echo htmlspecialchars(_AC($this->check_row['err'])); ?>" />
 	<input type="hidden" name="description_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["description"])); ?>" />
 	<input type="hidden" name="search_str_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["search_str"])); ?>" />
 	<input type="hidden" name="long_description_orig" value="<?php echo htmlspecialchars(_AC($this->check_row["long_description"])); ?>" />
@@ -236,6 +236,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<br/>
 	<span style="font-weight: bold">&middot; <?php echo _AC('note_edit_pre_next_checks'); ?></span><br/><br/>
 	
+	<div id="div_pre_next_checks">
 	<h2>
 		<?php echo _AC('pre_checks');?>
 		<input type="button" name="add_pre_checks" value="<?php echo _AC('add_pre_checks'); ?>" 
@@ -327,6 +328,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<?php }?>
 		</tbody>
 	</table>
+	</div>
 	<br/>
 
 	<div class="row">
@@ -398,7 +400,7 @@ function check_unsaved_info() {
 	else if (document.input_form.confidence.value != document.input_form.confidence_orig.value) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.open_to_public.value != document.input_form.open_to_public_orig.value) {
+	else if (getValue(document.input_form.open_to_public) != document.input_form.open_to_public_orig.value) {
 		has_unsaved_info = true;
 	}
 	else if (document.input_form.name.value != document.input_form.name_orig.value) {
@@ -467,6 +469,26 @@ function check_unsaved_info() {
 		}
 	}
 }
+
+function getValue(Obj) {
+	if(!Obj)
+		return "";
+
+	var radioLength = Obj.length;
+	if(radioLength == undefined)
+		if(Obj.checked)
+			return Obj.value;
+		else
+			return "";
+	for(var i = 0; i < radioLength; i++) {
+		if(Obj[i].checked) {
+			return Obj[i].value;
+		}
+	}
+
+	return "";
+}
+
 //  End -->
 //-->
 </script>

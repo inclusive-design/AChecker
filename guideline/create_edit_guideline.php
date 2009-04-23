@@ -37,7 +37,8 @@ if (isset($_POST['cancel']))
 	header('Location: index.php');
 	exit;
 } 
-else if (isset($_POST['save_no_close']) || isset($_POST['save_and_close']))
+// check on isset($_POST['title']) is to handle javascript submit request for unsaved changes
+else if (isset($_POST['save_no_close']) || isset($_POST['save_and_close']) || isset($_POST['title']))
 {
 	if (isset($gid))  // edit existing guideline
 	{

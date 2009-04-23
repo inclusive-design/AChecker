@@ -155,8 +155,11 @@ class GuidelineGroupsDAO extends DAO {
 		         WHERE group_id = ".$groupID;
 		$rows = $this->execute($sql);
 		
-		foreach ($rows as $row)
-			$guidelineSubgroupsDAO->Delete($row['subgroup_id']);
+		if (is_array($rows))
+		{
+			foreach ($rows as $row)
+				$guidelineSubgroupsDAO->Delete($row['subgroup_id']);
+		}
 		
 		// delete language for group name
 		$sql = "DELETE FROM ".TABLE_PREFIX."language_text 

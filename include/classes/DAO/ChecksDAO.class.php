@@ -27,7 +27,7 @@ class ChecksDAO extends DAO {
 	* Create a new guideline
 	* @access  public
 	* @param   $userID : user id
-	*          $html_tag, $confidence, $status, $note, $name, $err, $desc, $long_desc, 
+	*          $html_tag, $confidence, $note, $name, $err, $desc, $long_desc, 
 	*          $rationale, $how_to_repair, $repair_example, $question, $decision_pass, 
 	*          $decision_fail, $test_procedure, $test_expected_result,
 	*          $test_failed_result, $open_to_public
@@ -35,7 +35,7 @@ class ChecksDAO extends DAO {
 	*          false : if not successful
 	* @author  Cindy Qi Li
 	*/
-	public function Create($userID, $html_tag, $confidence, $status, 
+	public function Create($userID, $html_tag, $confidence, 
 	                       $note, $name, $err, $desc, $search_str, $long_desc, 
 	                       $rationale, $how_to_repair, $repair_example,
 	                       $question, $decision_pass, $decision_fail,
@@ -64,10 +64,10 @@ class ChecksDAO extends DAO {
 		if (!$this->isFieldsValid($html_tag, $confidence, $name, $err, $open_to_public)) return false;
 		
 		$sql = "INSERT INTO ".TABLE_PREFIX."checks
-				(`user_id`, `html_tag`, `confidence`, `status`, `open_to_public`, `create_date`) 
+				(`user_id`, `html_tag`, `confidence`, `open_to_public`, `create_date`) 
 				VALUES
-				(".$userID.",'".mysql_real_escape_string($html_tag)."', '".$confidence."', '".
-		           $status."', ".$open_to_public.", now())";
+				(".$userID.",'".mysql_real_escape_string($html_tag)."', '".$confidence."', ".
+		           $open_to_public.", now())";
 
 		if (!$this->execute($sql))
 		{
@@ -162,7 +162,7 @@ class ChecksDAO extends DAO {
 	* @access  public
 	* @param   $checkID: check id
 	*          $userID : user id
-	*          $html_tag, $confidence, $status, $note, $name, $err, $desc, $long_desc, 
+	*          $html_tag, $confidence, $note, $name, $err, $desc, $long_desc, 
 	*          $rationale, $how_to_repair, $repair_example, $question, $decision_pass, 
 	*          $decision_fail, $test_procedure, $test_expected_result,
 	*          $test_failed_result, $open_to_public
@@ -170,7 +170,7 @@ class ChecksDAO extends DAO {
 	*          false : if not successful
 	* @author  Cindy Qi Li
 	*/
-	public function Update($checkID, $userID, $html_tag, $confidence, $status, 
+	public function Update($checkID, $userID, $html_tag, $confidence, 
 	                       $note, $name, $err, $desc, $search_str, $long_desc, 
 	                       $rationale, $how_to_repair, $repair_example,
 	                       $question, $decision_pass, $decision_fail,
@@ -202,7 +202,6 @@ class ChecksDAO extends DAO {
 				   SET `user_id`=".$userID.", 
 				       `html_tag` = '".mysql_real_escape_string($html_tag)."', 
 				       `confidence` = '".$confidence."', 
-				       `status` = '".$status."',  
 				       `open_to_public` = ".$open_to_public." 
 				 WHERE check_id = ".$checkID;
 
