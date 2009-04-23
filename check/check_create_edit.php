@@ -32,7 +32,7 @@ if (isset($_POST['cancel']))
 	exit;
 } 
 // check on isset($_POST['html_tag']) is to handle javascript submit request for unsaved changes
-else if (isset($_POST['save_no_close']) || isset($_POST['save_and_close']) || isset($_POST['html_tag'])) 
+else if (isset($_POST['save_no_close']) || isset($_POST['save_and_close']) || $_POST['javascript_submit']) 
 {
 	$checksDAO = new ChecksDAO();
 	

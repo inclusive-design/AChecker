@@ -335,6 +335,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		<input type="submit" name="save_no_close" value="<?php echo _AC('save'); ?>" class="submit" /> 
 		<input type="submit" name="save_and_close" value="<?php echo _AC('save_and_close'); ?>" class="submit" /> 
 		<input type="submit" name="cancel" value=" <?php echo _AC('cancel'); ?> "  class="submit" />
+		<input type="hidden" name="javascript_submit" value="0" />
 	</div>
 </fieldset>
 
@@ -465,6 +466,7 @@ function check_unsaved_info() {
 	{
 		var answer = confirm("<?php echo _AC('has_unsaved_info'); ?>")
 		if (answer){
+			document.input_form.javascript_submit.value = 1;
 			document.input_form.submit();
 		}
 	}
