@@ -34,7 +34,8 @@ a:hover {
 	border-bottom: 0px;
 }
 td,th {
-	font-size: 85%;
+	font-size: 100%;
+	padding: 10px;
 }
 
 kbd {
@@ -115,14 +116,11 @@ div#nav-links a {
 	border-bottom: 1px solid;
 }
 pre {
-	font-family: Courier, monospace;
-	background-color: #eef;
-	padding: 5px;
-	margin-left: 20px;
-	color:#761596;
-    margin-top: 0px;
-	width: 50%;
-	font-size: smaller;
+	padding: 10px;
+	background:#F6EAD6 none repeat scroll 0 0;
+	border:1px solid black;
+	font-family:"Bitstream Vera Sans Mono",monospace;
+	margin-top:1em;
 }
 div.seq {
 	font-size: smaller;

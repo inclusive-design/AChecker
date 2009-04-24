@@ -359,13 +359,13 @@ class BasicFunctions {
 	}
 
 	/**
-	* return the number of times that the specified attribute appears in the content 
+	* return the number of times that the specified html tag appears in the content 
 	*/
-	public static function getNumOfTagInWholeContent($attr)
+	public static function getNumOfTagInWholeContent($tag)
 	{
 		global $global_content_dom;
 		
-		return count($global_content_dom->find($attr));
+		return count($global_content_dom->find($tag));
 	}
 
 	/**
