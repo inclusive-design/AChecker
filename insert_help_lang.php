@@ -4,7 +4,7 @@
 //include(AC_INCLUDE_PATH.'vitals.inc.php');
 
 $lang_db = mysql_connect('localhost:3306', 'root', '');
-mysql_select_db('achecker_test', $lang_db);
+mysql_select_db('achecker', $lang_db);
 
 $term=trim('AC_HELP_EDIT_CHECK_FUNCTION');
 
@@ -136,31 +136,31 @@ $text = '<h2>Edit Check Function</h2>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasDuplicateAttribute">hasDuplicateAttribute($attr)</a></th>
-  <td>Recursively search all the children of the element. Return true if the same attribute <code>$attr</code> value appears more than once in children elements. Otherwise, return false.</td>
+  <td>Recursively search all the children elements. Return true if the same attribute <code>$attr</code> value appears more than once in children elements. Otherwise, return false.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasFieldsetOnMultiCheckbox">hasFieldsetOnMultiCheckbox()</a></th>
-  <td></td>
+  <td>Only perform on <code>form</code> element. Recursively search all its elements. Return true if all multiple checkbox buttons are grouped in "fieldset" and "legend" elements. Otherwise, return false.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasGoodContrastWaiert">hasGoodContrastWaiert($color1, $color2)</a></th>
-  <td></td>
+  <td>Return true if the luminosity contrast ratio between <code>$color1</code> and <code>$color2</code> is at least 5:1.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasIdHeaders">hasIdHeaders()</a></th>
-  <td></td>
+  <td>Only performs on <code>table</code> element. Return true if the <code>table</code> element contains more than one header row or header column.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasParent">hasParent($parent_tag)</a></th>
-  <td></td>
+  <td>Recursively search all the parent elements. Return true if there is a parent element with tag <code>$parent_tag</code>. Otherwise, return false.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasScope">hasScope()</a></th>
-  <td></td>
+  <td>Only performs on <code>table</code> element. Return true if the <code>table</code> element contains both row and column headers and the header cells contain a <code>scope</code> attribute that identifies the cells that relate to the header.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasTagInChildren">hasTagInChildren($tag)</a></th>
-  <td></td>
+  <td>Return true if the <code>$tag</code> is found in children elements. Otherwise, return false.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasTextInBtw">hasTextInBtw()</a></th>
@@ -542,7 +542,7 @@ BasicFunctions::hasAttribute("href") returns true.
 
 <li>
 <p><a name="f_hasDuplicateAttribute">hasDuplicateAttribute(<code>attr</code>)</a></p>
-<p>Recursively search all the children of the element. Return true if the same attribute <code>$attr</code> value appears more than once in children elements. Otherwise, return false.</p>
+<p>Recursively search all the children elements. Return true if the same attribute <code>$attr</code> value appears more than once in children elements. Otherwise, return false.</p>
 <pre>
 Perform on the <code>table</code> element: <br/>'.htmlspecialchars('<table border=1 summary="table #1 with IDs and HEADERS">
 <tr>
@@ -562,6 +562,100 @@ BasicFunctions::hasDuplicateAttribute("id") returns true. Attribute <code>id</co
 </pre>
 </li>
 
+<li>
+<p><a name="f_hasFieldsetOnMultiCheckbox">hasFieldsetOnMultiCheckbox()</a></p>
+<p>Only perform on <code>form</code> element. Recursively search all its elements. Return true if all multiple checkbox buttons are grouped in "fieldset" and "legend" elements. Otherwise, return false.</p>
+<pre>
+Perform on the <code>table</code> element: <br/>'.htmlspecialchars('<form action="http://example.com/donut" method="post">
+<fieldset>
+<legend>Donuts Requested (check all that apply)</legend>
+<p>
+<input type="checkbox" name="flavour" id="choc" value="chocolate" />
+<label for="choc">Chocolate</label><br/>
+<input type="checkbox" name="flavour" id="cream" value="cream" />
+<label for="cream">Cream Filled</label><br/>
+<input type="checkbox" name="flavour" id="honey" value="honey" />
+<label for="honey">Honey Glazed</label>
+</p>
+</fieldset>
+<p><input type="submit" value="Purchase Donuts"/></p>
+</form>').'<br/>
+BasicFunctions::hasFieldsetOnMultiCheckbox() returns true. 
+</pre>
+</li>
+
+<li>
+<p><a name="f_hasGoodContrastWaiert">hasGoodContrastWaiert(<code>color1</code>, <code>color2</code>)</a></p>
+<p>Return true if the luminosity contrast ratio between <code>color1</code> and <code>color2</code> is at least 5:1. Color value can be one of: rgb(x,x,x), #xxxxxx, colorname.</p>
+</li>
+  
+<li>
+<p><a name="f_hasIdHeaders">hasIdHeaders()</a></p>
+<p>Only performs on <code>table</code> element. Return true if the <code>table</code> element contains more than one header row or header column.</p>
+<pre>
+Perform on the <code>table</code> element: <br/>'.htmlspecialchars('<table border="1" >
+<tr>
+	<th id="class">Class</th>
+	<th id="teacher">Teacher</th>
+	<th id="males">Males</th>
+	<th id="females">Females</th>
+</tr>
+<tr>
+	<th id="firstyear" rowspan="2">First Year</th>
+	<th id="Bolter" headers="firstyear teacher">D. Bolter</th>
+	<td headers="firstyear Bolter males">5</td>
+	<td headers="firstyear Bolter females">4</td>
+</tr>
+<tr>
+	<th id="Cheetham" headers="firstyear teacher">A. Cheetham</th>
+	<td headers="firstyear Cheetham males">7</td>
+	<td headers="firstyear Cheetham females">9</td>
+</tr>
+</table>').'<br/>
+BasicFunctions::hasIdHeaders() returns true. 
+</pre>
+</li>
+ 
+<li>
+<p><a name="f_hasParent">hasParent(<code>parent_tag</code>)</a></p>
+<p>Recursively search all the parent elements. Return true if there is a parent element with tag <code>parent_tag</code>. Otherwise, return false.</p>
+<pre>
+Perform on the <code>script</code> element: <br/>'.htmlspecialchars('<body>
+<script>
+</script>
+<noscript>Alternate content for script</noscript>
+</body>').'<br/>
+BasicFunctions::hasParent("body") returns true. 
+</pre>
+</li>
+
+<li>
+<p><a name="f_hasScope">hasScope()</a></p>
+<p>Only performs on <code>table</code> element. Return true if the <code>table</code> element contains both row and column headers and the header cells contain a <code>scope</code> attribute that identifies the cells that relate to the header.</p>
+<pre>
+Perform on the <code>table</code> element: <br/>'.htmlspecialchars('<table border="1">
+<tr><th scope="col">Name</th><th scope="col">Birth</th><th scope="col">Gender</th></tr>
+<tr><th scope="row">Clayton</th><td>2005-10-10</td><td>male</td></tr>
+<tr><th scope="row">Carol</th><td>2005-10-11</td><td>female</td></tr>
+<tr><th scope="row">Susan</th><td>2005-10-12</td><td>female</td></tr>
+<tr><th scope="row">Oleg</th><td>2005-10-13</td><td>male</td></tr>
+<tr><th scope="row">Belnar</th><td>2005-10-14</td><td>male</td></tr>
+</table>').'<br/>
+BasicFunctions::hasScope() returns true. 
+</pre>
+</li>
+  
+<li>
+<p><a name="f_hasTagInChildren">hasTagInChildren(<code>tag</code>)</a></p>
+<p>Return true if the <code>tag</code> is found in children elements. Otherwise, return false.</p>
+<pre>
+Perform on the <code>body</code> element: <br/>'.htmlspecialchars('<body>
+<address><a href="mailto:name@company.com">joe smith</a></address>
+</body>').'<br/>
+BasicFunctions::hasTagInChildren("address") returns true. 
+</pre>
+</li>
+  
 </ul>
 </div>
 ';
