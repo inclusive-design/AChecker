@@ -204,27 +204,27 @@ $text = '<h2>Edit Check Function</h2>
 </tr>
 <tr>
   <th align="left"><a href="#f_isRadioButtonsGrouped">isRadioButtonsGrouped()</a></th>
-  <td></td>
+  <td>Find whether radio button groups are marked with <code>fieldset</code> and <code>legend</code> elements.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isSubmitLabelDifferent">isSubmitLabelDifferent()</a></th>
-  <td></td>
+  <td>Find whether the labels for all the submit buttons on the form are different.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isTextMarked">isTextMarked($htmlTagArray)</a></th>
-  <td></td>
+  <td>Find whether the element content is marked with the html tags defined in <code>$htmlTagArray</code>.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isValidLangCode">isValidLangCode($attr)</a></th>
-  <td></td>
+  <td>Find whether the <code>$attr</code> attribute value is a valid language code.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isValidRTL">isValidRTL()</a></th>
-  <td></td>
+  <td>Find whether the <code>dir</code> attribute value has correct "rtl" or "ltr" value matching with the language code. Only perfoms on <code>html</code> element.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_validateDoctype">validateDoctype()</a></th>
-  <td></td>
+  <td>Find whether <code>!DOCTYPE</code> content is valid. Only performs on <code>html</code> element.</td>
 </tr>
 </tbody>
 </table>
@@ -767,7 +767,104 @@ BasicFunctions::isPlainTextInSearchString() returns true.
 </pre>
 </li>
   
-  
+<li>
+<p><a name="f_isRadioButtonsGrouped">isRadioButtonsGrouped()</a></p>
+<p>Return true if radio button groups are marked with <code>fieldset</code> and <code>legend</code> elements. Otherwise, return false.</p>
+<pre>
+Perform on the <code>form</code> element: <br/>'.
+htmlspecialchars('<form action="http://example.com/donut" method="post">
+<fieldset>
+<legend>Donut Type</legend>
+<p>
+<input type="radio" name="flavour" id="choc" value="chocolate" checked="checked" />
+<label for="choc">Chocolate</label><br/>
+<input type="radio" name="flavour" id="cream" value="cream"/>
+<label for="cream">Cream Filled</label><br/>
+<input type="radio" name="flavour" id="honey" value="honey"/>
+<label for="honey">Honey Glazed</label>
+</p>
+</fieldset>
+<p><input type="submit" value="Purchase Donut"/></p>
+</form>').'<br/>
+BasicFunctions::isRadioButtonsGrouped() returns true. 
+</pre>
+</li>
+
+<li>
+<p><a name="f_isSubmitLabelDifferent">isSubmitLabelDifferent()</a></p>
+<p>Return true if the labels for all the submit buttons on the form are different. Otherwise, return false.</p>
+<p>The submit button label may be the <code>alt</code> attribute value of <code>input</code> elements with a <code>type</code> attribute value of "image" or the <code>value</code> attribute value of <code>input</code> elements with a <code>type</code> attribute value of "submit".</p>
+<pre>
+Perform on the <code>form</code> element: <br/>'.
+htmlspecialchars('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />
+<title>ATRC Testfile - Check #237.1 - Positive</title>
+</head>
+<body>
+
+<form action="http://mysite.com">
+<p><input type="submit" value="submit"/></p>
+</form>
+
+<form action="http://yoursite.com">
+<p><input type="image" name="submit" src="submit.gif" alt="submit" /></p>
+</form>
+
+</body>
+</html>').'<br/>
+BasicFunctions::isSubmitLabelDifferent() returns false. 
+</pre>
+</li>
+
+<li>
+<p><a name="f_isTextMarked">isTextMarked(<code>htmlTagArray</code>)</a></p>
+<p>Return true if the element content is marked with the html tags defined in <code>htmlTagArray</code>. Otherwise, return false.</p>
+<pre>
+Perform on the <code>p</code> element: <br/>'.
+htmlspecialchars('<p><strong>Looks like a header</strong></p>').'<br/>
+BasicFunctions::isTextMarked(array("b", "i", "u", "strong")) returns true. 
+</pre>
+</li>
+
+<li>
+<p><a name="f_isValidLangCode">isValidLangCode(<code>attr</code>)</a></p>
+<p>Return true if the <code>attr</code> attribute value is a valid language code. Otherwise, return false.</p>
+<pre>
+Perform on the <code>html</code> element: <br/>'.
+htmlspecialchars('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">').'<br/>
+BasicFunctions::isValidLangCode("lang")) returns true. 
+</pre>
+</li>
+
+<li>
+<p><a name="f_isValidRTL">isValidRTL()</a></p>
+<p>Return true if the <code>dir</code> attribute value has correct "rtl" or "ltr" value matching with the language code. Otherwise, return false. Only perfoms on <code>html</code> element.</p>
+<pre>
+Perform on the <code>html</code> element: <br/>'.
+htmlspecialchars('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="he" lang="he" dir="rtl">').'<br/>
+BasicFunctions::isValidRTL()) returns true. 
+</pre>
+</li>
+
+<li>
+<p><a name="f_validateDoctype">validateDoctype()</a></p>
+<p>Return true if <code>!DOCTYPE</code> content is valid. Only performs on <code>html</code> element. Return false otherwise or <code>!DOCTYPE</code> is not defined. Only perfoms on <code>html</code> element.</p>
+<p>
+<code>!DOCTYPE</code> content must and only must contain one of these values:
+<ol>
+<li>-//W3C//DTD HTML 4.01//EN</li>
+<li>-//W3C//DTD HTML 4.0//EN</li>
+<li>-//W3C//DTD XHTML 1.0 Strict//EN</li>
+</ol>
+</p>
+<pre>
+Perform on the <code>html</code> element: <br/>'.
+htmlspecialchars('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">').'<br/>
+BasicFunctions::validateDoctype()) returns true. 
+</pre>
+</li>
+
 </ul>
 </div>
 ';
