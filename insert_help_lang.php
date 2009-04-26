@@ -128,79 +128,79 @@ $text = '<h2>Edit Check Function</h2>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasAssociatedLabel">hasAssociatedLabel()</a></th>
-  <td>Return true if the element has associated label. Otherwise, return false.</td>
+  <td>Find whether the element has associated label.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasAttribute">hasAttribute($attr)</a></th>
-  <td>Return true if the element has attribute <code>$attr</code>. Otherwise, return false.</td>
+  <td>Find whether the element has attribute <code>$attr</code>.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasDuplicateAttribute">hasDuplicateAttribute($attr)</a></th>
-  <td>Recursively search all the children elements. Return true if the same attribute <code>$attr</code> value appears more than once in children elements. Otherwise, return false.</td>
+  <td>Recursively search all the children elements. Find whether the attribute <code>$attr</code> value appears more than once in children elements.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasFieldsetOnMultiCheckbox">hasFieldsetOnMultiCheckbox()</a></th>
-  <td>Only perform on <code>form</code> element. Recursively search all its elements. Return true if all multiple checkbox buttons are grouped in "fieldset" and "legend" elements. Otherwise, return false.</td>
+  <td>Only perform on <code>form</code> element. Recursively search all its elements. Find whether all multiple checkbox buttons are grouped in "fieldset" and "legend" elements.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasGoodContrastWaiert">hasGoodContrastWaiert($color1, $color2)</a></th>
-  <td>Return true if the luminosity contrast ratio between <code>$color1</code> and <code>$color2</code> is at least 5:1.</td>
+  <td>Find whether the luminosity contrast ratio between <code>$color1</code> and <code>$color2</code> is at least 5:1.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasIdHeaders">hasIdHeaders()</a></th>
-  <td>Only performs on <code>table</code> element. Return true if the <code>table</code> element contains more than one header row or header column.</td>
+  <td>Only performs on <code>table</code> element. Find whether the <code>table</code> element contains more than one header row or header column.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasParent">hasParent($parent_tag)</a></th>
-  <td>Recursively search all the parent elements. Return true if there is a parent element with tag <code>$parent_tag</code>. Otherwise, return false.</td>
+  <td>Recursively search all the parent elements. Find whether there is a parent element with tag <code>$parent_tag</code>.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasScope">hasScope()</a></th>
-  <td>Only performs on <code>table</code> element. Return true if the <code>table</code> element contains both row and column headers and the header cells contain a <code>scope</code> attribute that identifies the cells that relate to the header.</td>
+  <td>Only performs on <code>table</code> element. Find whether the <code>table</code> element contains both row and column headers and the header cells contain a <code>scope</code> attribute that identifies the cells that relate to the header.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasTagInChildren">hasTagInChildren($tag)</a></th>
-  <td>Return true if the <code>$tag</code> is found in children elements. Otherwise, return false.</td>
+  <td>Find whether the child element with html tag <code>$tag</code> exists.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasTextInBtw">hasTextInBtw()</a></th>
-  <td></td>
+  <td>Find whether there is text in between <code>a</code> element. Only perform on <code>a</code>.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasTextInChild">hasTextInChild($childTag, $childAttribute, $valueArray)</a></th>
-  <td></td>
+  <td>Find whether there is a child element with tag named <code>$childTag</code>, in which the value of attribute <code>$childAttribute</code> equals one of the values in array <code>$valueArray</code>.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_hasTextLinkEquivalents">hasTextLinkEquivalents($attr)</a></th>
-  <td></td>
+  <td>Only performs when <code>usemap</code> attribute in <code>img</code> element is on. Find whether there is a <code>map</code> element referred by the <code>usemap</code> attribute and each <code>area</code> element in the <code>map</code> contains a duplicate link in the document.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_htmlValidated">htmlValidated()</a></th>
-  <td></td>
+  <td>Find whether the html markup language in the content is validated.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isAttributeValueInSearchString">isAttributeValueInSearchString($attr)</a></th>
-  <td></td>
+  <td>Find whether the attribute <code>$attr</code> value matches one of the search string criteria.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isDataTable">isDataTable()</a></th>
-  <td></td>
+  <td>Find whether the table defined in <code>table</code> element is a data table. Only performs on <code>table</code> element.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isFileExists">isFileExists($attr)</a></th>
-  <td></td>
+  <td>Find whether the file defined as attribute <code>$attr</code> exists.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isInnerTextInSearchString">isInnerTextInSearchString()</a></th>
-  <td></td>
+  <td>Find whether the inner text matches one of the search string criteria.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isNextTagNotIn">isNextTagNotIn($notInArray)</a></th>
-  <td></td>
+  <td>Find whether the next header tag equals one of the values in <code>$notInArray</code>. Only performs on header tags: <code>h1</code>, <code>h2</code>, <code>h3</code>, <code>h4</code>, <code>h5</code>, <code>h6</code>.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isPlainTextInSearchString">isPlainTextInSearchString()</a></th>
-  <td></td>
+  <td>Find whether the plain text matches one of the search string criteria.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isRadioButtonsGrouped">isRadioButtonsGrouped()</a></th>
@@ -655,6 +655,118 @@ Perform on the <code>body</code> element: <br/>'.htmlspecialchars('<body>
 BasicFunctions::hasTagInChildren("address") returns true. 
 </pre>
 </li>
+  
+<li>
+<p><a name="f_hasTextInBtw">hasTextInBtw()</a></p>
+<p>Return true if there is text in between <code>a</code> element. Otherwise, return false. Only perform on <code>a</code>.</p>
+<pre>
+Perform on the first <code>a</code> element: <br/>'.htmlspecialchars('<a href="dogs">dogs</a> | <a href="cats">cats</a>').'<br/>
+BasicFunctions::hasTextInBtw() returns true. 
+</pre>
+</li>
+  
+<li>
+<p><a name="f_hasTextInChild">hasTextInChild(<code>childTag</code>, <code>childAttribute</code>, <code>valueArray</code>)</a></p>
+<p>Return true if there is a child element with tag named <code>childTag</code>, in which the value of attribute <code>childAttribute</code> equals one of the values in array <code>valueArray</code>. Otherwise, return false.</p>
+<pre>
+Perform on the <code>head</code> element: <br/>'.htmlspecialchars('<head>
+<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />
+<title>ATRC Testfile - Check #147.2 - Negative</title>
+<link rel="Index" href="../index.html" />
+</head>').'<br/>
+BasicFunctions::hasTextInChild("link", "rel", array("index")) returns true. 
+</pre>
+</li>
+
+<li>
+<p><a name="f_hasTextLinkEquivalents">hasTextLinkEquivalents(<code>attr</code>)</a></p>
+<p>Only performs when <code>usemap</code> attribute in <code>img</code> element is on. Return true if there is a <code>map</code> element referred by the <code>usemap</code> attribute and each <code>area</code> element in the <code>map</code> contains a duplicate link in the document. Otherwise, return false.</p>
+<pre>
+Perform on the <code>img</code> element: <br/>'.htmlspecialchars('<p><map name="imagemap" id="map1">
+<area shape="poly" coords="185,0,355,0,295,123" href="horses.html" alt="horses"/>
+<area shape="poly" coords="336,202,549,203,549" href="dogs.html" alt="dogs"/>
+<area shape="rect" coords="0,10,172,10" href="birds.html" alt="birds"/>
+</map></p>
+
+<p><img src="navigation.gif" usemap="#imagemap" alt="navigation"/></p>').'<br/>
+BasicFunctions::hasTextLinkEquivalents("usemap") returns true. 
+</pre>
+</li>
+  
+<li>
+<p><a name="f_htmlValidated">htmlValidated()</a></p>
+<p>Return true if the third party HTML markup language validator is turned on. Otherwise, return false.</p>
+</li>
+
+<li>
+<p><a name="f_isAttributeValueInSearchString">isAttributeValueInSearchString(<code>attr</code>)</a></p>
+<p>Return true if the attribute <code>$attr</code> value matches one of the search string criteria. Otherwise, return false. Search string criteria is defined via "Create/Edit Check" page, "Search String" field.</p>
+<pre>
+"Search String" field on "Create/Edit Check" page is defined as "image, photo, %bytes%".<br/><br/>Perform on the <code>input</code> element: <br/>'.
+htmlspecialchars('<input type="image" name="name" id="name" src="input.jpg" alt="image">').'<br/>
+BasicFunctions::isAttributeValueInSearchString("alt") returns true. 
+</pre>
+</li>
+  
+<li>
+<p><a name="f_isDataTable">isDataTable()</a></p>
+<p>Return true if the table defined in <code>table</code> element is a data table. Otherwise, return false. Only performs on <code>table</code> element.<br/><br/> A <code>table</code> contains <code>th</code> element is considered as a data table.</p>
+<pre>
+Perform on the <code>table</code> element: <br/>'.
+htmlspecialchars('<table>
+
+<tr><th>name</th><th>number of cups</th><th>type</th><th>with sugar</th></tr>
+<tr><td>Adams, Willie</td><td>2</td><td>regular</td><td>sugar</td></tr>
+<tr><td>Bacon, Lise</td><td>4</td><td>regular</td><td>no sugar</td></tr>
+
+</table>').'<br/>
+BasicFunctions::isDataTable() returns true. 
+</pre>
+</li>
+
+<li>
+<p><a name="f_isFileExists">isFileExists(<coe>attr</code>)</a></p>
+<p>Return true if the file defined as attribute <code>$attr</code> exists. Otherwise, return false.</p>
+<pre>
+Perform on the <code>img</code> element: <br/>'.
+htmlspecialchars('<img src="chart.gif" alt="a complex chart" />').'<br/>
+BasicFunctions::isFileExists("src") returns false. 
+</pre>
+</li>
+
+<li>
+<p><a name="f_isInnerTextInSearchString">isInnerTextInSearchString(<code>attr</code>)</a></p>
+<p>Return true if the inner text matches one of the search string criteria. Otherwise, return false. Search string criteria is defined via "Create/Edit Check" page, "Search String" field.</p>
+<pre>
+"Search String" field on "Create/Edit Check" page is defined as "title, the title, this is the title, untitled document".<br/><br/>Perform on the <code>title</code> element: <br/>'.
+htmlspecialchars('<title>title</title>').'<br/>
+BasicFunctions::isInnerTextInSearchString() returns true. 
+</pre>
+</li>
+  
+<li>
+<p><a name="f_isNextTagNotIn">isNextTagNotIn(<code>notInArray</code>)</a></p>
+<p>Return true if the next header tag equals one of the values in <code>notInArray</code>. Otherwise, return false. Only performs on header tags: <code>h1</code>, <code>h2</code>, <code>h3</code>, <code>h4</code>, <code>h5</code>, <code>h6</code>.</p>
+<pre>
+Perform on the <code>h1</code> element: <br/>'.
+htmlspecialchars('<h1>The First Heading</h1>
+<p>Here is some demo text.</p>
+<div><div><h3>The bad Heading</h3></div></div>
+<p>Here is some more demo text.</p>').'<br/>
+BasicFunctions::isNextTagNotIn(array("h1", "h2")) returns true. 
+</pre>
+</li>
+  
+<li>
+<p><a name="f_isPlainTextInSearchString">isPlainTextInSearchString()</a></p>
+<p>Return true if the plain text matches one of the search string criteria. Otherwise, return false. Search string criteria is defined via "Create/Edit Check" page, "Search String" field.</p>
+<pre>
+"Search String" field on "Create/Edit Check" page is defined as "click here, more".<br/><br/>Perform on the <code>a</code> element: <br/>'.
+htmlspecialchars('<a href="dogs.html">click <br/>here</a>').'<br/>
+BasicFunctions::isPlainTextInSearchString() returns true. 
+</pre>
+</li>
+  
   
 </ul>
 </div>
