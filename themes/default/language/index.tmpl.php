@@ -51,7 +51,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<td><?php echo $row['charset']; ?></td>
 		<td><?php if ($row['status']) echo _AC('enabled'); else echo _AC('disabled'); ?></td>
 	</tr>
-<?}?>
+<?php }?>
 </tbody>
 
 </table>

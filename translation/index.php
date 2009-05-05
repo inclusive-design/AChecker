@@ -138,9 +138,10 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<?php echo _AC('term_type'); ?><br />
 			<input type="radio" name="term_type" value="" id="t0" <?php if (!isset($_REQUEST['term_type']) || $_REQUEST['term_type'] == "") { echo 'checked="checked"'; } ?> /><label for="t0"><?php echo _AC('all'); ?></label> 
 			<input type="radio" name="term_type" value="_template" id="t1" <?php if ($_REQUEST['term_type'] == "_template") { echo 'checked="checked"'; } ?> /><label for="t1"><?php echo _AC('interface_terms'); ?></label> 
-			<input type="radio" name="term_type" value="_check" id="t2" <?php if ($_REQUEST['term_type'] == "_check") { echo 'checked="checked"'; } ?> /><label for="t2"><?php echo _AC('check_terms'); ?></label> 
-			<input type="radio" name="term_type" value="_guideline" id="t3" <?php if ($_REQUEST['term_type'] == "_guideline") { echo 'checked="checked"'; } ?> /><label for="t3"><?php echo _AC('guideline_terms'); ?></label> 
-			<input type="radio" name="term_type" value="_test" id="t4" <?php if ($_REQUEST['term_type'] == "_test") { echo 'checked="checked"'; } ?> /><label for="t4"><?php echo _AC('test_terms'); ?></label> 
+			<input type="radio" name="term_type" value="_msgs" id="t2" <?php if ($_REQUEST['term_type'] == "_msgs") { echo 'checked="checked"'; } ?> /><label for="t2"><?php echo _AC('msg_terms'); ?></label> 
+			<input type="radio" name="term_type" value="_check" id="t3" <?php if ($_REQUEST['term_type'] == "_check") { echo 'checked="checked"'; } ?> /><label for="t3"><?php echo _AC('check_terms'); ?></label> 
+			<input type="radio" name="term_type" value="_guideline" id="t4" <?php if ($_REQUEST['term_type'] == "_guideline") { echo 'checked="checked"'; } ?> /><label for="t4"><?php echo _AC('guideline_terms'); ?></label> 
+			<input type="radio" name="term_type" value="_test" id="t5" <?php if ($_REQUEST['term_type'] == "_test") { echo 'checked="checked"'; } ?> /><label for="t5"><?php echo _AC('test_terms'); ?></label> 
 		</div>
 
 		<div>
@@ -221,7 +222,7 @@ function trans_form() {
 		<td align="right"><b><?php echo _AC('translated_context'); ?>:</b></td>
 		<td><input type="text" name="translated_context" class="input" value="<?php echo htmlspecialchars($row_selected['context']); ?>" size="45" /></td>
 	</tr>
-	<? } ?>
+	<?php } ?>
 
 	<tr>
 		<td valign="top" align="right" nowrap="nowrap"><b><?php echo _AC('english_text'); ?>:</b></td>

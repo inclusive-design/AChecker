@@ -2842,6 +2842,8 @@ INSERT INTO `language_text` VALUES ('eng', '_template','filter','Filter','2008-1
 INSERT INTO `language_text` VALUES ('eng', '_template','first_name','First Name','2009-01-09 10:40:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','function','Function','2009-03-26 10:09:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','guidelines','Guidelines','2008-11-24 14:12:25','');
+INSERT INTO `language_text` VALUES ('eng', '_template','guideline_group','Guideline Group','2009-04-30 15:19:16','');
+INSERT INTO `language_text` VALUES ('eng', '_template','guideline_subgroup','Guideline Subgroup','2009-04-30 15:19:16','');
 INSERT INTO `language_text` VALUES ('eng', '_template','guideline_terms','Guideline Terms','2008-11-27 09:48:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','guidelins_to_check','Guidelines to Check Against','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','handbook_toc','Handbook Toc','2009-01-28 15:28:06','');
@@ -2883,6 +2885,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','long_name','Long Name','
 INSERT INTO `language_text` VALUES ('eng', '_template','make_decision','Make Decision','2009-03-02 14:30:26','');
 INSERT INTO `language_text` VALUES ('eng', '_template','match_all_words','Match All Words','2009-02-04 11:51:16','');
 INSERT INTO `language_text` VALUES ('eng', '_template','match_any_word','Match Any Word','2009-02-04 11:51:16','');
+INSERT INTO `language_text` VALUES ('eng', '_template','msg_terms','Message Terms','2009-05-05 09:05:33','');
 INSERT INTO `language_text` VALUES ('eng', '_template','my_guidelines','My Guidelines','2009-01-20 11:45:23','');
 INSERT INTO `language_text` VALUES ('eng', '_template','na','N/A','2009-02-23 14:31:55','');
 INSERT INTO `language_text` VALUES ('eng', '_template','name','Name','2009-03-18 14:53:42','');
