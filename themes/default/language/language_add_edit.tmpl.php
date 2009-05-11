@@ -82,7 +82,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		</tr>
 
 		<tr align="left">
-			<th>&nbsp;&nbsp;&nbsp;<? echo _AC("status"); ?></th>
+			<th>&nbsp;&nbsp;&nbsp;<?php echo _AC("status"); ?></th>
 			<td>
 				<input type="radio" name="status" id="statusD" value="0" <?php if ((isset($_POST['status']) && $_POST['status']==0) || (!isset($_POST['status']) && $this->row['status']==0)) echo 'checked="checked"'; ?> /><label for="statusD"><?php echo _AC('disabled'); ?></label> 
 				<input type="radio" name="status" id="statusE" value="1" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $this->row['status']==1) || (!isset($_POST['status']) && !isset($this->row['status']))) echo 'checked="checked"'; ?> /><label for="statusE"><?php echo _AC('enabled'); ?></label>

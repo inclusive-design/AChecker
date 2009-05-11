@@ -138,7 +138,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		</tr>
 
 		<tr>
-			<th align="left"><? echo _AC("status"); ?></th>
+			<th align="left"><?php echo _AC("status"); ?></th>
 			<td>
 				<input type="radio" name="status" id="statusD" value="0" <?php if ((isset($_POST['status']) && $_POST['status']==0) || (!isset($_POST['status']) && $this->row['status']==0)) echo 'checked="checked"'; ?> /><label for="statusD"><?php echo _AC('disabled'); ?></label> 
 				<input type="radio" name="status" id="statusE" value="1" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $this->row['status']==1)) echo 'checked="checked"'; ?> /><label for="statusE"><?php echo _AC('enabled'); ?></label>
@@ -147,7 +147,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			
 		<?php if ($this->is_admin) {?>
 		<tr>
-			<th align="left"><? echo _AC("open_to_public"); ?></th>
+			<th align="left"><?php echo _AC("open_to_public"); ?></th>
 			<td>
 				<input type="radio" name="open_to_public" id="open_to_publicN" value="0" <?php if ((isset($_POST['open_to_public']) && $_POST['open_to_public']==0) || (!isset($_POST['open_to_public']) && $this->row['open_to_public']==0)) echo 'checked="checked"'; ?> /><label for="open_to_publicN"><?php echo _AC('no'); ?></label> 
 				<input type="radio" name="open_to_public" id="open_to_publicY" value="1" <?php if ((isset($_POST['open_to_public']) && $_POST['open_to_public']==1) || (!isset($_POST['open_to_public']) && $this->row['open_to_public']==1)) echo 'checked="checked"'; ?> /><label for="open_to_publicY"><?php echo _AC('yes'); ?></label>

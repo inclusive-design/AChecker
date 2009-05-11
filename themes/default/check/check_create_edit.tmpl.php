@@ -112,7 +112,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 		<?php if (isset($this->check_row)) {?>
 		<tr>
-			<th align="left"><? echo _AC("guidelines"); ?></th>
+			<th align="left"><?php echo _AC("guidelines"); ?></th>
 			<td align="left">
 			<?php if (is_array($this->guideline_rows)) {?> 
 			<?php 	foreach ($this->guideline_rows as $guideline) {?>

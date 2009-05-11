@@ -58,28 +58,28 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	<table class="form-data">
 	<?php if ($this->row["abbr"] <> "") { ?>
 		<tr>
-			<th align="left"><? echo _AC("abbr"); ?></th>
+			<th align="left"><?php echo _AC("abbr"); ?></th>
 			<td><span class="msg"><?php echo $this->row["abbr"]; ?></span></td>
 		</tr>
 	<?php } ?>
 	
 	<?php if ($this->row["long_name"] <> "") { ?>
 		<tr>
-			<th align="left"><? echo _AC("long_name"); ?></th>
+			<th align="left"><?php echo _AC("long_name"); ?></th>
 			<td><span class="msg"><?php echo _AC($this->row["long_name"]); ?></span></td>
 		</tr>
 	<?php } ?>
 			
 	<?php if ($this->row["published_date"] <> "") { ?>
 		<tr>
-			<th align="left"><? echo _AC("published_date"); ?></th>
+			<th align="left"><?php echo _AC("published_date"); ?></th>
 			<td><span class="msg"><?php echo $this->row["published_date"]; ?></span></td>
 		</tr>
 	<?php } ?>
 
 	<?php if ($this->row["earlid"] <> "") { ?>
 		<tr>
-			<th align="left"><? echo _AC("earlid"); ?></th>
+			<th align="left"><?php echo _AC("earlid"); ?></th>
 			<td><span class="msg"><a href="<?php echo $this->row["earlid"]; ?>"><?php echo $this->row["earlid"]; ?></a></span></td>
 		</tr>
 	<?php } ?>
@@ -87,13 +87,13 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	<?php $status = get_status_by_code($this->row['status']);
 	if ($status <> "") { ?>
 		<tr>
-			<th align="left"><? echo _AC("status"); ?></th>
+			<th align="left"><?php echo _AC("status"); ?></th>
 			<td><span class="msg"><?php echo $status; ?></span></td>
 		</tr>
 	<?php } ?>
 			
 		<tr>
-			<th align="left"><? echo _AC("open_to_public"); ?></th>
+			<th align="left"><?php echo _AC("open_to_public"); ?></th>
 			<td><span class="msg"><?php if ($this->row['open_to_public']) echo _AC('yes'); else echo _AC('no'); ?></span></td>
 		</tr>
 	</table>
