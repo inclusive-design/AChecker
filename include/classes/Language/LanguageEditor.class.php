@@ -235,8 +235,8 @@ class LanguageEditor extends Language {
 	// sends the generated language pack to the browser
 	// public
 	function export($filename = '') {
-		$search  = array('"', "'", "\x00", "\x0a", "\x0d", "\x1a"); //\x08\\x09, not required
-		$replace = array('\"', "\'", '\0', '\n', '\r', '\Z');
+//		$search  = array('"', "'", "\x00", "\x0a", "\x0d", "\x1a"); //\x08\\x09, not required
+//		$replace = array('\"', "\'", '\0', '\n', '\r', '\Z');
 
 		// use a function to generate the ini file
 		// use a diff fn to generate the sql dump
@@ -251,9 +251,11 @@ class LanguageEditor extends Language {
 		if (is_array($rows)) {
 			foreach ($rows as $row)
 			{
-				$row['text']    = str_replace($search, $replace, $row['text']);
-				$row['context'] = str_replace($search, $replace, $row['context']);
-
+//				$row['text']    = str_replace($search, $replace, $row['text']);
+//				$row['context'] = str_replace($search, $replace, $row['context']);
+				$row['text']    = mysql_real_escape_string($row['text']);
+				$row['context'] = mysql_real_escape_string($row['context']);
+				
 				$sql_dump .= "('$this->code', '$row[variable]', '$row[term]', '$row[text]', '$row[revised_date]', '$row[context]'),\r\n";
 			}
 		} else {
