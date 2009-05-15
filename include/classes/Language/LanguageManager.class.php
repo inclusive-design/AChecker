@@ -324,7 +324,7 @@ class LanguageManager {
 			$row['native_name'] = addslashes($row['native_name']);
 			$row['english_name'] = addslashes($row['english_name']);
 
-			$sql = "REPLACE INTO ".TABLE_PREFIX."languages VALUES ('{$row['language_code']}', '{$row['char_set']}', '{$row['direction']}', '{$row['reg_exp']}', '{$row['native_name']}', '{$row['english_name']}', 3)";
+			$sql = "REPLACE INTO ".TABLE_PREFIX."languages VALUES ('{$row['language_code']}', '{$row['charset']}', '{$row['reg_exp']}', '{$row['native_name']}', '{$row['english_name']}', 3)";
 			$result = mysql_query($sql, $db);
 
 			$sql = "SELECT * FROM language_text_SVN WHERE language_code='$language_code'";
