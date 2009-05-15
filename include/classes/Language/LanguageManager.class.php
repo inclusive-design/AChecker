@@ -68,9 +68,8 @@ class LanguageManager {
 		{
 			$rows = array($languagesDAO->getByLangCodeAndCharset(DEFAULT_LANGUAGE_CODE, DEFAULT_CHARSET));
 		}
-
 		foreach ($rows as $i => $row) {
-			$this->availableLanguages[$row['language_code']][$row['char_set']] =& new Language($row);
+			$this->availableLanguages[$row['language_code']][$row['charset']] =& new Language($row);
 		}
 		$this->numEnabledLanguages = count($this->availableLanguages);
 
@@ -78,7 +77,7 @@ class LanguageManager {
 		$rows = $languagesDAO->getAll();
 		
 		foreach ($rows as $i => $row) {
-			$this->allLanguages[$row['language_code']][$row['char_set']] =& new Language($row);
+			$this->allLanguages[$row['language_code']][$row['charset']] =& new Language($row);
 		}
 	}
 
