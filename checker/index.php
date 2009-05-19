@@ -162,6 +162,12 @@ if ($_POST["validate_uri"] || $_POST["validate_file"])
 		include ("checker_results.php");
 	}
 }
+else
+{
+	echo '<div id="output_div" class="validator-output-form">';
+	echo _AC('achecker_whatis');
+	echo '</div>';
+}
 
 // display footer
 include(AC_INCLUDE_PATH.'footer.inc.php');
