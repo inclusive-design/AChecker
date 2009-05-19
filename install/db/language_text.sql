@@ -627,7 +627,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_144','This error will
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_145','This error will be generated for each <code>a</code> (anchor) element that contains an <code>href</code> attribute value ending with (case insensitive): .wmv, .mpg, .mov, .ram, .aif.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_146','If <code>object</code> element contains a <code>type</code> attribute value of \"video\" then this error will be generated.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_147','The <code>link</code> element can provide metadata about the position of an HTML page within a set of Web units or can assist in locating content with a set of Web units.','2008-11-24 13:01:58','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_148','<code>head</code> element must contain a <code>link</code> element with a <code>rel</code> attribute value that equals \"alternate\" and a <code>href</code> attribute value that is a valid URI.','2008-11-24 13:01:58','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_148','<code>head</code> element must contain a <code>link</code> element with a <code>rel</code> attribute value that equals \"alternate\" and a <code>href</code> attribute value that is a valid URL.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_149','OL element that contains a LI element that contains an OL element cannot contain a LI element.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_15','<code>img</code> element that is contained by an <code>a</code> (anchor) element must have Alt text that identifies the link destination.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_150','All LI elements in any list (OL or UL) may not contain an <code>img</code> element.','2008-11-24 13:01:58','');
@@ -765,7 +765,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_30','This error is ge
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_31','Each <code>frame</code> element must have a <code>title</code> attribute.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_32','<code>frame</code> <code>title</code> must describe the purpose or function of the <code>frame</code>.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_33','<code>frame</code> content should be accessible, like HTML, not just an image.','2008-11-24 13:01:58','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_34','If <code>frameset</code> element contains 3 or more <code>frame</code> elements then <code>frameset</code> element must contain a <code>longdesc</code> attribute that is a valid URI.','2008-11-24 13:01:58','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_34','If <code>frameset</code> element contains 3 or more <code>frame</code> elements then <code>frameset</code> element must contain a <code>longdesc</code> attribute that is a valid URL.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_35','<code>frameset</code> element must contain a <code>noframes</code> section.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_36','This error is generated for each NOFRAMES element.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_37','The following header must be equal, one level greater or any level less.','2008-11-24 13:01:58','');
@@ -823,7 +823,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_86','This error will 
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_87','This error will be generated for all <code>script</code> elements.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_88','This error will be generated for all <code>script</code> elements.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_89','This error will be generated for all <code>script</code> elements.','2008-11-24 13:01:58','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_9','<code>img</code> element that contains a <code>longdesc</code> attribute must have a following d-link. A d-link must consist of an A element that contains only the text \"d\" or \"D\". The A element must have an <code>href</code> attribute that is a valid URI and is the same as the <code>img</code> element\'s <code>longdesc</code> attribute. The d-link must immediately follow the <code>img</code> element, separated only by whitespace.','2008-11-24 13:01:58','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_9','<code>img</code> element that contains a <code>longdesc</code> attribute must have a following d-link. A d-link must consist of an A element that contains only the text \"d\" or \"D\". The A element must have an <code>href</code> attribute that is a valid URL and is the same as the <code>img</code> element\'s <code>longdesc</code> attribute. The d-link must immediately follow the <code>img</code> element, separated only by whitespace.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_90','<code>script</code> elements that occur within the <code>body</code> must be followed by a <code>noscript</code> section.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_91','<code>select</code> element must have an associated <code>label</code> element. A <code>label</code> element is associated with the <code>select</code> element if the <code>for</code> attribute value of the <code>label</code> is the same as the <code>id</code> attribute of the <code>select</code> element.','2008-11-24 13:01:58','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_DESC_92','<code>select</code> element cannot contain <code>onchange</code> attribute.','2008-11-24 13:01:58','');
@@ -2646,7 +2646,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_USER','Are
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_CONFIRM_DELETE_USER_GROUP','Are you sure you want to delete the following user groups? <strong>%s</strong>','2009-02-12 15:08:53','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_ABBR_EXISTS','A guideline with this abbreviation already exists.','2009-04-17 09:57:14','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_ACCOUNT_DISABLED','That account has been disabled.','2009-01-08 11:43:51','');
-INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_CANNOT_CONNECT','Cannot connect to URI: %s','2009-04-22 09:26:45','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_CANNOT_CONNECT','Cannot connect to URL: %s','2009-04-22 09:26:45','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_CANNOT_DEL_DEFAULT_LANG','Cannot delete default language <strong>%s</strong>. The system cannot run properly without it.','2009-02-23 15:47:44','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_CHECK_FUNC','The following check function is incorrect. Check function must return true or false.<br/><strong>%s</strong>','2009-03-30 11:34:58','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_CONFIRM_BAD','Your email address and account could not be confirmed.','2009-01-14 14:40:42','');
@@ -2657,7 +2657,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMAIL_NOT_FOUND','N
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_FIELDS','The following required field(s) are empty:<br />\r\n%s.','2009-01-09 11:34:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_GID','Empty guideline ID.','2009-04-22 11:40:24','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_SESSIONID','Empty Session ID.','2009-03-03 13:44:57','');
-INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_URI','Empty URI.','2009-03-03 13:44:57','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_URI','Empty URL.','2009-03-03 13:44:57','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_USER','Empty user.','2009-03-03 13:44:57','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_EMPTY_WEB_SERVICE_ID','Empty web service ID.','2009-03-04 14:53:18','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_FIRST_LAST_NAME_UNIQUE','First, second, and last names combination must be unique.','2009-01-09 11:34:42','');
@@ -2668,7 +2668,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_FORMAT','In
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_GID','Invalid guideline ID.','2009-04-22 11:40:24','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_LOGIN','Invalid login/password combination.','2009-01-08 11:43:51','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_SESSION','Invalid session.','2009-03-03 13:44:57','');
-INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_URI','Invalid URI.','2009-03-04 14:49:59','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_URI','Invalid URL.','2009-03-04 14:49:59','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_INVALID_WEB_SERVICE_ID','Invalid web service ID.','2009-03-04 14:49:59','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_LANG_EMPTY','The text for this language has not been translated yet.','2009-02-24 13:57:01','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_LANG_EXISTS','The language you are trying to create already exists.','2009-02-24 09:20:45','');
@@ -2686,7 +2686,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PAGE_NOT_FOUND','Pa
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PASSWORD_CHARS','The password must contain letters, numbers, and symbols.','2009-01-09 13:41:06','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PASSWORD_LENGTH','Password must be at least 8 characters long.','2009-01-09 13:41:06','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PASSWORD_MISMATCH','Passwords did not match.','2009-01-09 13:41:06','');
-INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_REFERER_URI_NOT_MATCH','Referrer URI does NOT match.','2009-04-21 14:11:42','');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_REFERER_URI_NOT_MATCH','Referrer URL does NOT match.','2009-04-21 14:11:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SELECT_ONE_ITEM','Only <em>one</em> item must be selected.','2009-02-04 15:31:02','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SENDING_ERROR','There was an error sending the email message.','2009-01-16 13:14:08','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SEQUENCEID_NOT_GIVEN','No sequence ID is given.','2009-03-09 14:21:28','');
@@ -2764,7 +2764,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','change_password','Change
 INSERT INTO `language_text` VALUES ('eng', '_template','charset','Character Set','2009-02-20 11:43:44','');
 INSERT INTO `language_text` VALUES ('eng', '_template','checks','Checks','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_by_upload','Check Accessibility by File Upload','2008-11-21 14:25:37','');
-INSERT INTO `language_text` VALUES ('eng', '_template','check_by_uri','Check Accessibility by URI','2008-11-21 14:25:37','');
+INSERT INTO `language_text` VALUES ('eng', '_template','check_by_uri','Check Accessibility by URL','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_id','Check ID','2009-04-02 13:16:21','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_it','Check It','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_terms','Check Terms','2008-11-27 09:48:36','');
