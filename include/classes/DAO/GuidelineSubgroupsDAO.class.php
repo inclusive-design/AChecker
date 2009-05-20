@@ -90,7 +90,7 @@ class GuidelineSubgroupsDAO extends DAO {
 		$abbr = $addslashes(trim($abbr));
 		
 		$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups
-				   SET abbr='".$abbr."' 
+				   SET name='".$name."', abbr='".$abbr."' 
 				 WHERE subgroup_id = ".$subgroupID;
 
 		if (!$this->execute($sql))
