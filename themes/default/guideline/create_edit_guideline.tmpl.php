@@ -40,7 +40,7 @@ function dispaly_check_table($checks_array, $prefix)
 		
 		<tfoot>
 			<tr>
-				<td colspan="4">
+				<td colspan="5">
 					<input type="submit" name="remove" value="<?php echo _AC('remove'); ?>" onclick="javascript: return get_confirm();" />
 				</td>
 			</tr>
