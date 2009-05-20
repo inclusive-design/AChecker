@@ -90,7 +90,7 @@ class GuidelineSubgroupsDAO extends DAO {
 		$abbr = $addslashes(trim($abbr));
 		
 		$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups
-				   SET name='".$name."', abbr='".$abbr."' 
+				   SET abbr='".$abbr."' 
 				 WHERE subgroup_id = ".$subgroupID;
 
 		if (!$this->execute($sql))
@@ -102,7 +102,7 @@ class GuidelineSubgroupsDAO extends DAO {
 		{
 			if ($name <> '')
 			{
-				$term = LANG_PREFIX_GUIDELINE_SUBGROUPS_NAME.$subgroup_id;
+				$term = LANG_PREFIX_GUIDELINE_SUBGROUPS_NAME.$subgroupID;
 				$this->updateLang($subgroupID, $term, $name, 'name');
 			}
 		}
@@ -290,6 +290,7 @@ class GuidelineSubgroupsDAO extends DAO {
 	{
 		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 		$langTextDAO = new LanguageTextDAO();
+		
 		$langs = $langTextDAO->getByTermAndLang($term, $_SESSION['lang']);
 
 		if (is_array($langs))
@@ -301,6 +302,7 @@ class GuidelineSubgroupsDAO extends DAO {
 			$langTextDAO->Create($_SESSION['lang'], '_guideline',$term,$text,'');
 			
 			$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups SET ".$fieldName."='".$term."' WHERE subgroup_id=".$subgroupID;
+			debug($sql);exit;
 			$this->execute($sql);
 		}
 		
