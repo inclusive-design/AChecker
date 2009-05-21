@@ -955,13 +955,49 @@ class BasicFunctions {
 	* check if value in the given attribute is a valid language code
 	* return true if valid, otherwise, return false
 	*/
-	public static function isValidLangCode($attr)
+	public static function isValidLangCode()
 	{
-		global $global_e;
+		global $global_e, $global_content_dom;
 		
-		$code = trim($global_e->attr[$attr]);
+		$is_text_content = false;
+		$is_application_content = false;
 		
-		return BasicChecks::isValidLangCode($code);
+		$metas = $global_content_dom->find("meta");
+		if (is_array($metas))
+		{
+			foreach ($metas as $meta)
+			{
+				if (stristr($meta->attr['content'], 'text/html')) $is_text_content = true;
+				if (stristr($meta->attr['content'], 'application/xhtml+xml')) $is_application_content = true;
+			}
+		}
+		$doctypes = $global_content_dom->find("doctype");
+		if (count($doctypes) == 0) return false;
+		
+		foreach ($doctypes as $doctype)
+		{
+			foreach ($doctype->attr as $doctype_content => $garbage)
+			{
+				// If the content is HTML, check the value of the html element's lang attribute
+				if (stristr($doctype_content, " HTML "))
+					return BasicChecks::isValidLangCode(trim($global_e->attr['lang']));
+				
+				// If the content is XHTML 1.0, or any version of XHTML served as "text/html", 
+				// check the values of both the html element's lang attribute and xml:lang attribute.
+				// Note: both lang attributes must be set to the same value.
+				if (stristr($doctype_content, "XHTML 1.0") || (stristr($doctype_content, " XHTML ") && $is_text_content))
+				{
+					return (BasicChecks::isValidLangCode(trim($global_e->attr['lang'])) && 
+					        BasicChecks::isValidLangCode(trim($global_e->attr['xml:lang'])) &&
+					        trim($global_e->attr['lang']) == trim($global_e->attr['xml:lang']));
+				}
+				else if (stristr($doctype_content, " XHTML ") && $is_application_content)
+				{
+					return BasicChecks::isValidLangCode(trim($global_e->attr['xml:lang']));
+				}
+			}
+		}
+		return false;
 	}
 
 	/*
