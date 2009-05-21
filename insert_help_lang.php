@@ -215,8 +215,8 @@ $text = '<h2>Edit Check Function</h2>
   <td>Find whether the element content is marked with the html tags defined in <code>$htmlTagArray</code>.</td>
 </tr>
 <tr>
-  <th align="left"><a href="#f_isValidLangCode">isValidLangCode($attr)</a></th>
-  <td>Find whether the <code>$attr</code> attribute value is a valid language code.</td>
+  <th align="left"><a href="#f_isValidLangCode">isValidLangCode()</a></th>
+  <td>Find whether the language codes specified in <code>html</code> are valid.</td>
 </tr>
 <tr>
   <th align="left"><a href="#f_isValidRTL">isValidRTL()</a></th>
@@ -828,8 +828,16 @@ BasicFunctions::isTextMarked(array("b", "i", "u", "strong")) returns true.
 </li>
 
 <li>
-<p><a name="f_isValidLangCode">isValidLangCode(<code>attr</code>)</a></p>
-<p>Return true if the <code>attr</code> attribute value is a valid language code. Otherwise, return false.</p>
+<p><a name="f_isValidLangCode">isValidLangCode()</a></p>
+<p>Return true if the language codes specified in <code>html</code> are valid. Otherwise, return false.</p>
+<p>
+The way to determine whether the language codes are valid:<br/>
+1. If the content is HTML, check the value of the html element&apos;s lang attribute.<br/>
+2. If the content is XHTML 1.0, or any version of XHTML served as "text/html", check the values of both the html element&apos;s lang attribute and xml:lang attribute.<br/>
+   Note: both lang attributes must be set to the same value.<br/>
+3. If the content is XHTML 1.1 or higher and served as type "application/xhtml+xml", check the value of the html element&apos;s xml:lang attribute.<br/>
+4. Compare the language attribute value to valid language codes according to the ISO 639 specification.
+</p>
 <pre>
 Perform on the <code>html</code> element: <br/>'.
 htmlspecialchars('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">').'<br/>
