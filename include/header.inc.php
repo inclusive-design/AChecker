@@ -28,7 +28,7 @@ global $_base_path;
 global $_pages;
 global $_current_user;
 
-include(AC_INCLUDE_PATH.'classes/Menu.class.php');
+include_once(AC_INCLUDE_PATH.'classes/Menu.class.php');
 
 $menu =new Menu();
 $_top_level_pages = $menu->getTopPages();

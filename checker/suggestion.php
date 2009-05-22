@@ -32,7 +32,6 @@ $row = $checksDAO->getCheckByID($check_id);
 if (!$row)
 { // invalid check id
 	$msg->addError('INVALID_CHECK_ID');
-	require(AC_INCLUDE_PATH.'header.inc.php');
 	$msg->printAll();
 	require(AC_INCLUDE_PATH.'footer.inc.php');
 	exit;
