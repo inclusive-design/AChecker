@@ -40,9 +40,9 @@ if($languageManager->getNumEnabledLanguages() > 1)
 </div>
 
 <div style="margin-left:auto; margin-right:auto; width:20em;">
-	<small>Web site engine's code is copyright &copy; 2009</small><br />
-	<div style="margin-left:auto; margin-right:auto; width:84px;">
-		<a href="http://atrc.utoronto.ca/"><img width="84" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/atrclogo.gif" height="52" alt="Adaptive Technology Resource Centre" style="border:none;"/></a>
+	<small><?php echo _AC("acheck_copyright"); ?></small><br />
+	<div style="margin-left:auto; margin-right:auto; width:300px;">
+		<a href="http://atrc.utoronto.ca/"><img width="84" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/atrclogo.gif" height="52" alt="Adaptive Technology Resource Centre" style="border:none;float:left;"/></a> <a href="http://www.mcss.gov.on.ca/mcss/english/pillars/accessibilityOntario/accesson/partners.htm"><img src="images/ontario.gif" alt="<?php echo _AC("support_by_ontario"); ?>" style="border:none;float:right;"/></a>
 	</div>
 </div>
 
