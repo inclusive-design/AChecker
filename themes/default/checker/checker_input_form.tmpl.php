@@ -99,8 +99,9 @@ if (is_array($this->rows))
 </div>
 </form>
 </div>
-	
+
 <div class="right-col">
+<a href="#skipads"><img src="images/clr.gif" alt="<?php echo _AC("skip_over_ads"); ?>" border="0"/></a>	
 	<h2>Advertisements</h2>
 	<script type="text/javascript">
 	<!--
@@ -113,6 +114,7 @@ if (is_array($this->rows))
 	</script>
 	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</script>
+<a name="skipads"></a>
 </div>
 
 <script type="text/JavaScript">
