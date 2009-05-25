@@ -56,7 +56,7 @@ class ColorValue {
 	  else  // color name
 	  {
 			$colorMappingDAO = new ColorMappingDAO();
-			$rows = $ColorMappingDAO->GetByColorName($color);
+			$rows = $colorMappingDAO->GetByColorName($color);
 
 //			$sql = "SELECT color_code FROM ". TABLE_PREFIX ."color_mapping WHERE color_name='".$color."'";
 //			$result	= mysql_query($sql, $db) or die(mysql_error());
