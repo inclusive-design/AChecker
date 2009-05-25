@@ -160,6 +160,8 @@ if (isset($htmlValidator))
 
 	$savant->assign('htmlValidator', $htmlValidator);
 	$savant->assign('num_of_html_errors', $num_of_html_errors);
+	$savant->assign('num_of_html_errors', $num_of_html_errors);
+
 }
 
 $savant->display('checker/checker_results.tmpl.php');
