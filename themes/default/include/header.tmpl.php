@@ -111,7 +111,11 @@ $starttime = $mtime;
 </head>
 
 <body onload="<?php echo $this->onload; ?>">
+<a href="#content"><img src="images/clr.gif" height="1" width="1" alt="<?php echo _AC("jump_to_content"); ?>" border="0"></a>
 
+<?php if (isset($aValidator) || isset($htmlValidator)){ ?>
+<a href="#report"><img src="images/clr.gif" height="10" width="10" alt="<?php echo _AC("jump_to_report"); ?>" border="0"></a>
+<?php } ?>
 	<div id="banner">
 		<a href="http://www.atutor.ca/achecker/"><img width="145" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/checker_logo.gif" height="43" alt="AChecker" style="border:none;" /></a>
 		<h1 style="vertical-align:super;"><?php echo _AC("web_accessibility_checker"); ?>
@@ -147,16 +151,11 @@ $starttime = $mtime;
 	<!-- the main navigation. in our case, tabs -->
 		<ul class="topnavlist">
 			<?php foreach ($this->top_level_pages as $page): ?>
-				<?php $accesscounter = 0; //initialize ?>
-				<?php ++$accesscounter; $accesscounter = ($accesscounter == 10 ? 0 : $accesscounter); ?>
-				<?php $accesskey_text = ($accesscounter < 10 ? 'accesskey="'.$accesscounter.'"' : ''); ?>
-				<?php $accesskey_title = ($accesscounter < 10 ? ' Alt+'.$accesscounter : ''); ?>
 				<?php if ($page['url'] == $this->current_top_level_page): ?>
-					<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>" class="active"><?php echo $page['title']; ?></a></li>
+					<li><a href="<?php echo $page['url']; ?>" title="<?php echo $page['title']; ?>" class="active"><?php echo $page['title']; ?></a></li>
 				<?php else: ?>
-					<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>"><?php echo $page['title']; ?></a></li>
+					<li><a href="<?php echo $page['url']; ?>"  title="<?php echo $page['title']; ?>"><?php echo $page['title']; ?></a></li>
 				<?php endif; ?>
-				<?php $accesscounter = ($accesscounter == 0 ? 11 : $accesscounter); ?>
 			<?php endforeach; ?>
 		</ul>
 	</div>
@@ -208,5 +207,5 @@ $starttime = $mtime;
 	<?php } ?>
 </div>
 -->
-
+<a name="content"></a>
 <?php global $msg; $msg->printAll();?>
