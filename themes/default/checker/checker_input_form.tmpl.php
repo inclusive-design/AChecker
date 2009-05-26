@@ -139,7 +139,7 @@ function initial()
 		// highlight tab "errors"
 		document.getElementById("menu_errors").className = 'active';
 	}
-	else if (div_error != null)
+	else if (div_error == null)
 		document.input_form.uri.focus();
 }
 
