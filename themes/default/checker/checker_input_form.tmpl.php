@@ -125,12 +125,13 @@ function initial()
 	// hide guideline div
 	document.getElementById("div_options").style.display = 'none';
 	
-	var div_error = document.getElementById("errors");
+	var div_errors = document.getElementById("errors");
+	var div_error = document.getElementById("error");
 	
-	if (div_error != null)
+	if (div_errors != null)
 	{
 		// show tab "errors", hide other tabs
-		div_error.style.display = 'block';
+		div_errors.style.display = 'block';
 		document.getElementById("likely_problems").style.display = 'none';
 		document.getElementById("potential_problems").style.display = 'none';
 		document.getElementById("html_validation_result").style.display = 'none';
@@ -138,7 +139,7 @@ function initial()
 		// highlight tab "errors"
 		document.getElementById("menu_errors").className = 'active';
 	}
-	else
+	else if (div_error != null)
 		document.input_form.uri.focus();
 }
 
