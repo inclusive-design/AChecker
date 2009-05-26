@@ -27,6 +27,7 @@ global $_custom_head;
 global $_base_path;
 global $_pages;
 global $_current_user;
+global $validate_content;
 
 include_once(AC_INCLUDE_PATH.'classes/Menu.class.php');
 
@@ -80,6 +81,11 @@ $savant->assign('theme', $_SESSION['prefs']['PREF_THEME']);
 
 $theme_img  = $_base_path . 'themes/'. $_SESSION['prefs']['PREF_THEME'] . '/images/';
 $savant->assign('img', $theme_img);
+
+if (isset($validate_content))
+{
+	$savant->assign('show_jump_to_report', 1);
+}
 
 if (isset($_custom_css)) {
 	$custom_head = '<link rel="stylesheet" href="'.$_custom_css.'" type="text/css" />';

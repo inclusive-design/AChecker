@@ -14,7 +14,7 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined in c
 
 global $_current_user, $decision_error;
 
-$default_uri_value = "http://";
+$default_uri_value = "";
 $num_of_guidelines_per_row = 3;  // default number of guidelines to display in a row on the page
 
 if (!isset($_POST["gid"])) $_POST["gid"] = array(DEFAULT_GUIDELINE);
@@ -23,7 +23,6 @@ $guidelinesDAO = new GuidelinesDAO();
 $open_guidelines = $guidelinesDAO->getOpenGuidelines();
 
 $savant->assign('default_uri_value', $default_uri_value);
-$savant->assign('default_guideline', DEFAULT_GUIDELINE);
 $savant->assign('num_of_guidelines_per_row', $num_of_guidelines_per_row);
 
 if (isset($_current_user))

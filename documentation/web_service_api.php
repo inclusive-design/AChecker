@@ -84,16 +84,16 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <tr>
   <th>guide</th>
   <td>The guidelines to validate against. Separate each guideline with comma (,).</td>
-  <td>WCAG2-L2. <br/>Or one or some of these values: <br/>
+  <td>WCAG2-AA. <br/>Or one or some of these values: <br/>
   BITV1: abbreviation of guideline bitv-1.0-(level-2);<br/>
   508: abbreviation of guideline section-508;<br/>
   STANCA: abbreviation of guideline stanca-act;<br/>
   WCAG1-A: abbreviation of guideline wcag-1.0-(level-a);<br/>
   WCAG1-AA: abbreviation of guideline wcag-1.0-(level-aa);<br/>
   WCAG1-AAA: abbreviation of guideline wcag-1.0-(level-aaa);<br/>
-  WCAG2-L1: abbreviation of guideline wcag-2.0-l1;<br/>
-  WCAG2-L2: abbreviation of guideline wcag-2.0-l2;<br/>
-  WCAG2-L3: abbreviation of guideline wcag-2.0-l3.</td>
+  WCAG2-A: abbreviation of guideline wcag-2.0-l1;<br/>
+  WCAG2-AA: abbreviation of guideline wcag-2.0-l2;<br/>
+  WCAG2-AAA: abbreviation of guideline wcag-2.0-l3.</td>
 </tr>
 
 <tr>
@@ -115,7 +115,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <span style="font-weight: bold">Sample validation request</span>
 <p>http://www.atutor.ca/achecker/test/trunk/checkacc.php?uri=http%3A%2F%2Fatutor.ca&
-id=888ca9e3f856baa0120755ecd8ffae6be3142029&output=html&guide=STANCA,WCAG2-L2&offset=10</p>
+id=888ca9e3f856baa0120755ecd8ffae6be3142029&output=html&guide=STANCA,WCAG2-AA&offset=10</p>
 <p>Goal: Validate URI <code>http://atutor.ca</code> against guidelines "Stanca Act" and "Wcag 2.0 L2". 
 Ignore the first 10 lines of html content from http://atutor.ca. Returns validation report
 in html format.</p>

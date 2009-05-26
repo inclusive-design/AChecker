@@ -98,12 +98,12 @@ if (isset($_POST["enable_html_validation"]))
 
 if ($_POST["validate_uri"])
 {
-	$uri = $_POST["uri"];
+	$uri = Utility::getValidURI($_POST["uri"]);
 	
 	// Check if the given URI is connectable
-	if (!Utility::isURIValid($uri))
+	if ($uri === false)
 	{
-		$msg->addError(array('CANNOT_CONNECT', $uri));
+		$msg->addError(array('CANNOT_CONNECT', $_POST['uri']));
 	}
 	
 	// don't accept localhost URI
@@ -112,14 +112,10 @@ if ($_POST["validate_uri"])
 		$msg->addError('NOT_LOCALHOST');
 	}
 	
-	if ($msg->containsErrors())
-	{
-		header('Location:index.php');
-		exit;
-	}
-	else
+	if (!$msg->containsErrors())
 	{
 		$validate_content = @file_get_contents($uri);
+		
 		if (isset($_POST["enable_html_validation"]))
 			$htmlValidator = new HTMLValidator("uri", $uri);
 
@@ -161,8 +157,17 @@ if ($_POST["validate_uri"] || $_POST["validate_file"])
 	{
 		include ("checker_results.php");
 	}
+	else
+	{
+		$show_achecker_whatis = true;
+	}
 }
 else
+{
+	$show_achecker_whatis = true;
+}
+
+if ($show_achecker_whatis)
 {
 	echo '<div id="output_div" class="validator-output-form">';
 	echo _AC('achecker_whatis');

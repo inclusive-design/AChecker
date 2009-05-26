@@ -33,25 +33,58 @@ class Utility {
 	}
 
 	 /**
-	 * check if the given $uri is valid.
+	 * Return the valid format of given $uri. Otherwise, return FALSE
+	 * Return $uri itself if it has valid content, 
+	 * otherwise, return the first listed uri that has valid content: 
+	 * "http://".$uri
+	 * "https://".$uri
+	 * "http://www.".$uri
+	 * "https://www.".$uri
+	 * If none of above has valid content, return FALSE
 	 * @access  public
 	 * @param   string $uri  The uri address
 	 * @return  true: if valid; false: if invalid
 	 * @author  Cindy Qi Li
 	 */
-	public static function isURIValid($uri)
+	public static function getValidURI($uri)
 	{
+		$uri_prefixes = array('http://', 'https://', 'http://www.', 'https://www.');
+		
+		$uri = trim($uri);
 		$connection = @file_get_contents($uri);
 		
-		if (!$connection) 
-			return false;
+		if (!$connection)
+		{
+			// try adding uri prefixes in front of given uri
+			foreach($uri_prefixes as $prefix)
+			{
+				if (substr($uri, 0, strlen($prefix)) <> $prefix)
+				{
+					$prefixed_uri = $prefix.$uri;
+					$connection = @file_get_contents($prefixed_uri);
+					
+					if (!$connection)
+					{
+						continue;
+					}
+					else
+					{
+						return $prefixed_uri;
+					}
+				}
+			}
+		}
 		else
-			return true;
+			return $uri;
+		
+		// no matching valid uri
+		return false;
 	}
 
 	/**
 	* convert text new lines to html tag <br/>
 	* @access  public
+	* @param   string
 	* @return  converted string
 	* @author  Cindy Qi Li
 	*/
@@ -75,5 +108,50 @@ class Utility {
 		else
 			return $str;
 	}
+
+	/**
+	* Return array of seals to display
+	* Some guidelines are in the same group. This is defined in guidelines.subset. 
+	* The format of guidelines.subset is [group_name]-[priority].
+	* When the guidelines in the same group are validated, only the seal for the guideline
+	* with the highest [priority] number is displayed.
+	* @access  public
+	* @param   $guidelines : array of guideline table rows
+	* @return  converted string
+	* @author  Cindy Qi Li
+	*/
+	public static function getSeals($guidelines)
+	{
+		foreach ($guidelines as $guideline)
+		{
+			if ($guideline['subset'] == '0')
+			{
+				$seals[] = array('title' => $guideline['title'],
+				                 'guideline' => $guideline['abbr'], 
+				                 'seal_icon_name' => $guideline['seal_icon_name']);
+			}
+			else
+			{
+				list($group, $priority) = explode('-', $guideline['subset']);
+				
+				if (!isset($highest_priority[$group]['priority']) || $highest_priority[$group]['priority'] < $priority)
+				{
+					$highest_priority[$group]['priority'] = $priority;
+					$highest_priority[$group]['guideline'] = $guideline;
+				}
+			}// end of outer if
+		} // end of foreach
+		
+		if (is_array($highest_priority))
+		{
+			foreach ($highest_priority as $group => $guideline_to_display)
+				$seals[] = array('title' => $guideline_to_display['guideline']['title'], 
+						         'guideline' => $guideline_to_display['guideline']['abbr'], 
+				                 'seal_icon_name' => $guideline_to_display['guideline']['seal_icon_name']);
+		}
+		
+		return $seals;
+	}
+	
 }
 ?>

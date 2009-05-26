@@ -111,10 +111,9 @@ $starttime = $mtime;
 </head>
 
 <body onload="<?php echo $this->onload; ?>">
-<a href="#content"><img src="images/clr.gif" height="1" width="1" alt="<?php echo _AC("jump_to_content"); ?>" border="0"></a>
 
-<?php if (isset($aValidator) || isset($htmlValidator)){ ?>
-<a href="#report"><img src="images/clr.gif" height="10" width="10" alt="<?php echo _AC("jump_to_report"); ?>" border="0"></a>
+<?php if (isset($this->show_jump_to_report)){ ?>
+<a href="checker/index.php#output_div"><img src="images/clr.gif" height="1" width="1" alt="<?php echo _AC("jump_to_report"); ?>" border="0"></a>
 <?php } ?>
 	<div id="banner">
 		<a href="http://www.atutor.ca/achecker/"><img width="145" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/checker_logo.gif" height="43" alt="AChecker" style="border:none;" /></a>

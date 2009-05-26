@@ -3,7 +3,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
+/* Adaptive Technology Resource Centre / University of Toronto          */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -15,6 +15,7 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined in c
 if (!isset($aValidator) && !isset($htmlValidator)) die(_AC("no_instance"));
 
 include_once(AC_INCLUDE_PATH. "classes/HTMLRpt.class.php");
+include_once(AC_INCLUDE_PATH. "classes/Utility.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/UserLinksDAO.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/UserDecisionsDAO.class.php");
 
@@ -98,37 +99,13 @@ if (isset($aValidator))
 	$num_of_potential_problems = $a_rpt->getNumOfPotentialProblems();
 	$num_of_potential_problems_no_decision = $a_rpt->getNumOfPotentialWithFailDecisions();
 	
-//	$num_of_errors = 0;
-//	$num_of_likely_problems = 0;
-//	$num_of_likely_problems_no_decision = 0;
-//	$num_of_potential_problems = 0;
-//	$num_of_potential_problems_no_decision = 0;
-	
 	// no any problems or all problems have pass decisions, display seals when no errors
 	if ($num_of_errors == 0 && 
 	    ($num_of_likely_problems == 0 && $num_of_potential_problems == 0 ||
 	     $num_of_likely_problems_no_decision == 0 && $num_of_potential_problems_no_decision == 0))
 	{
-		unset($highest_subset_guideline);
-		foreach ($guideline_rows as $row)
-		{
-			if ($row['subset'] == 0)
-			{
-				$seals[] = array('title' => $row['title'],
-				                 'guideline' => $row['abbr'], 
-				                 'seal_icon_name' => $row['seal_icon_name']);
-			}
-			else
-			{
-				if (!isset($highest_subset_guideline) || $highest_subset_guideline['subset'] < $row['subset'])
-				{
-					$highest_subset_guideline = $row;
-				}
-			}// end of outer if
-		} // end of foreach
-		$seals[] = array('title' => $highest_subset_guideline['title'], 
-				         'guideline' => $highest_subset_guideline['abbr'], 
-		                 'seal_icon_name' => $highest_subset_guideline['seal_icon_name']);
+		$utility = new Utility();
+		$seals = $utility->getSeals($guideline_rows);
 	}
 	
 	$savant->assign('a_rpt', $a_rpt);
