@@ -52,6 +52,9 @@ $guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
 <h2><?php echo _AC("html_tag"); ?></h2>
 <span class="msg"><?php echo $row["html_tag"]; ?></span>
 
+<h2><?php echo _AC("error_type"); ?></h2>
+<span class="msg"><?php echo get_confidence_by_code($row['confidence']); ?></span>
+
 <?php if (is_array($guideline_rows)) {?> 
 <h2><?php echo _AC("guidelines"); ?></h2>
 	<ul class="msg">
