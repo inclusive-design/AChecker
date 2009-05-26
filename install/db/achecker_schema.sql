@@ -92,7 +92,7 @@ CREATE TABLE `guidelines` (
   `status` tinyint(3) unsigned NOT NULL default '0',
   `open_to_public` tinyint(4) NOT NULL DEFAULT 0,
   `seal_icon_name` varchar(255),
-  `subset` tinyint(4) NOT NULL DEFAULT 0 COMMENT 'Value 0 means this guideline is not a subset of any other guidelines. Non-zero value means this guideline is the subset of others. The guideline with lower value is the subset of the guidelines with higher value.',
+  `subset` varchar(100) NOT NULL DEFAULT 0 COMMENT 'Value 0 means this guideline is not a subset of any other guidelines. The format of non-zero value is [guideline group]-[priority], which means this guideline is the subset of others. The guidelines with same [guideline group] are in the same group. For the guidelines in the same group, the ones with lower [priority] value is the subset of the ones with higher [priority] value.',
   PRIMARY KEY  (`guideline_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10;
 
