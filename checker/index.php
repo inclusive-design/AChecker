@@ -74,7 +74,7 @@ if ($_GET['uri'] == 'referer')
 				$msg->addError('INVALID_GID');
 		}
 		
-		if ($user_link_uri <> $referer_uri)
+		if (!stristr($referer_uri, $user_link_uri))
 			$msg->addError('REFERER_URI_NOT_MATCH');
 		
 		if (isset($_SESSION['user_id']) && $_SESSION['user_id'] <> $row['user_id'])
