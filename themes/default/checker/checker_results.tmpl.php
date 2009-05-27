@@ -86,16 +86,16 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("accessibility_review"); ?></legend>
 	<h3><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$this->guidelines_text. ')'; ?></h3>
 
-	<div class="topnavlistcontainer">
-		<ul class="topnavlist">
-			<li><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="showDiv('errors');return false;"><?php echo _AC("known_problems"); ?> <span class="small_font">(<?php echo $this->num_of_errors; ?>)</span></a></li>
-			<li><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');return false;"><?php echo _AC("likely_problems"); ?> <span class="small_font">(<?php echo $this->num_of_likely_problems_no_decision; ?>)</span></a></li>
-			<li><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');return false;"><?php echo _AC("potential_problems"); ?> <span class="small_font">(<?php echo $this->num_of_potential_problems_no_decision; ?>)</span></a></li>
-			<li><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');return false;"><?php echo _AC("html_validation_result"); ?> <span class="small_font"><?php if (isset($_POST["enable_html_validation"])) echo "(".$this->num_of_html_errors.")"; ?></span></a></li>
+	<div class="topnavlistcontainer"><br />
+		<ul class="navigation">
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="showDiv('errors');return false;"><span><?php echo _AC("known_problems"); ?>(<?php echo $this->num_of_errors; ?>)</span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');return false;"><span><?php echo _AC("likely_problems"); ?> (<?php echo $this->num_of_likely_problems_no_decision; ?>)</span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');return false;"><span><?php echo _AC("potential_problems"); ?> (<?php echo $this->num_of_potential_problems_no_decision; ?>)</span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');return false;"><span><?php echo _AC("html_validation_result"); ?> <?php if (isset($_POST["enable_html_validation"])) echo "(".$this->num_of_html_errors.")"; ?></span></a></li>
 		</ul>
 	</div>
 
-	<div id="errors" style="margin-top:1em">
+	<div id="errors">
 <?php
 
 if (isset($this->aValidator))
@@ -109,7 +109,7 @@ if (isset($this->aValidator))
 ?>
 	</div>
 
-	<div id="likely_problems" style="margin-top:1em">
+	<div id="likely_problems">
 <?php
 
 if (isset($this->aValidator))

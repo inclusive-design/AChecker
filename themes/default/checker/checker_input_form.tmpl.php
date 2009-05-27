@@ -102,7 +102,7 @@ if (is_array($this->rows))
 
 <div class="right-col">
 <a href="#skipads"><img src="images/clr.gif" alt="<?php echo _AC("skip_over_ads"); ?>" border="0"/></a>	
-	<h2>Advertisements</h2>
+	<h2 style="font-size:1em;">Advertisements</h2>
 	<script type="text/javascript">
 	<!--
 	google_ad_client = "pub-8538177464726172";

@@ -115,10 +115,14 @@ $starttime = $mtime;
 <?php if (isset($this->show_jump_to_report)){ ?>
 <a href="checker/index.php#output_div"><img src="images/clr.gif" height="1" width="1" alt="<?php echo _AC("jump_to_report"); ?>" border="0"></a>
 <?php } ?>
+<div id="liquid-round"><div class="top"><span></span></div>
+<div class="center-content">
+		<div id="logo">
+			<a href="http://www.atutor.ca/achecker/"><img width="100" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/checker_logo.gif" height="30" alt="AChecker" style="border:none;" /></a>
+		</div>
 	<div id="banner">
-		<a href="http://www.atutor.ca/achecker/"><img width="145" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/checker_logo.gif" height="43" alt="AChecker" style="border:none;" /></a>
-		<h1 style="vertical-align:super;"><?php echo _AC("web_accessibility_checker"); ?>
-			<span id="logininfo">
+
+	<span id="logininfo">
         <?php
         if (isset($this->user_name))
         {
@@ -137,17 +141,25 @@ $starttime = $mtime;
         <?php
         }
         ?>
-			</span>
-			<span id="versioninfo">
-				<!--<a href="<?php echo AC_BASE_HREF; ?>translator.php" target="_blank"><?php echo _AC('help_with_translate'); ?></a>-->
-				&nbsp;
-				Version <?php echo VERSION; ?> Beta
-			</span>
-		</h1>
+	</span>
+		
 	</div>
 
 	<div class="topnavlistcontainer">
 	<!-- the main navigation. in our case, tabs -->
+		<ul class="navigation">
+			<?php foreach ($this->top_level_pages as $page): ?>
+				<?php if ($page['url'] == $this->current_top_level_page): ?>
+					<li class="navigation"><a href="<?php echo $page['url']; ?>" title="<?php echo $page['title']; ?>" class="active"><span><?php echo $page['title']; ?></span></a></li>
+				<?php else: ?>
+					<li class="navigation"><a href="<?php echo $page['url']; ?>"  title="<?php echo $page['title']; ?>"><span><?php echo $page['title']; ?></span></a></li>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+
+<!--
+	<div class="topnavlistcontainer">
 		<ul class="topnavlist">
 			<?php foreach ($this->top_level_pages as $page): ?>
 				<?php if ($page['url'] == $this->current_top_level_page): ?>
@@ -158,7 +170,7 @@ $starttime = $mtime;
 			<?php endforeach; ?>
 		</ul>
 	</div>
-
+-->
 	<!-- the sub navigation and guide -->
 	<div id="sub-menu">
 		<!-- guide -->
