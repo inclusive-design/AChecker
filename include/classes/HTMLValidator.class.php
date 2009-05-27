@@ -51,7 +51,7 @@ class HTMLValidator {
 			
 		if ($this->validate_type == "uri")
 		{
-			if (!Utility::isURIValid($this->validate_content))
+			if (Utility::getValidURI($this->validate_content) === false)
 			{
 				$this->contain_errors = true;
 				$this->msg = "Error: Cannot connect to <strong>".$uri. "</strong>";

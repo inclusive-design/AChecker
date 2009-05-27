@@ -51,7 +51,7 @@ if ($uri == '')
 }
 else
 {
-	if (!Utility::isURIValid($uri)) $errors[] = 'AC_ERROR_INVALID_URI';
+	if (Utility::getValidURI($uri)) $errors[] = 'AC_ERROR_INVALID_URI';
 }
 
 if ($web_service_id == '')
