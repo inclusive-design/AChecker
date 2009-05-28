@@ -435,8 +435,10 @@ class ChecksDAO extends DAO {
 	*/
 	function setFunction($checkID, $func)
 	{
+		global $addslashes;
+		
 		$sql = "UPDATE ". TABLE_PREFIX ."checks 
-		           SET func = '".mysql_real_escape_string($func)."' 
+		           SET func = '".$addslashes($func)."' 
 		         WHERE check_id=".$checkID;
 		
 		return $this->execute($sql);
