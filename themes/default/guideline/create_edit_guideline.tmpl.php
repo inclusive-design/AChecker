@@ -30,11 +30,11 @@ function dispaly_check_table($checks_array, $prefix)
 	<table class="data" summary="" rules="rows" >
 		<thead>
 		<tr>
-			<th align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all_del_<?php echo $prefix;?>" title="<?php echo _AC('select_all'); ?>" name="selectall_delchecks_<?php echo $prefix;?>" onclick="CheckAll('del_checks_id_<?php echo $prefix; ?>[]','selectall_delchecks_<?php echo $prefix;?>');" /></th>
-			<th align="center"><?php echo _AC('html_tag'); ?></th>
-			<th align="center"><?php echo _AC('error_type'); ?></th>
-			<th align="center"><?php echo _AC('description'); ?></th>
-			<th align="center"><?php echo _AC('check_id'); ?></th>
+			<th align="left" width="10%"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all_del_<?php echo $prefix;?>" title="<?php echo _AC('select_all'); ?>" name="selectall_delchecks_<?php echo $prefix;?>" onclick="CheckAll('del_checks_id_<?php echo $prefix; ?>[]','selectall_delchecks_<?php echo $prefix;?>');" /></th>
+			<th align="left" width="20%"><?php echo _AC('html_tag'); ?></th>
+			<th align="left" width="20%"><?php echo _AC('error_type'); ?></th>
+			<th align="left" width="40%"><?php echo _AC('description'); ?></th>
+			<th align="left" width="10%"><?php echo _AC('check_id'); ?></th>
 		</tr>
 		</thead>
 		
@@ -104,12 +104,12 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="title"><?php echo _AC('title'); ?></label></th>
-			<td><input type="text" name="title" size="100" id="title" value="<?php if (isset($_POST['title'])) echo htmlspecialchars($_POST['title']); else echo htmlspecialchars($this->row["title"]); ?>" /></td>
+			<td><input type="text" name="title" size="70" id="title" value="<?php if (isset($_POST['title'])) echo htmlspecialchars($_POST['title']); else echo htmlspecialchars($this->row["title"]); ?>" /></td>
 		</tr>
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="abbr"><?php echo _AC('abbr'); ?></label></th>
-			<td><input type="text" name="abbr" size="100" id="abbr" value="<?php if (isset($_POST['abbr'])) echo htmlspecialchars($_POST['abbr']); else echo htmlspecialchars($this->row["abbr"]); ?>" /></td>
+			<td><input type="text" name="abbr" size="70" id="abbr" value="<?php if (isset($_POST['abbr'])) echo htmlspecialchars($_POST['abbr']); else echo htmlspecialchars($this->row["abbr"]); ?>" /></td>
 		</tr>
 
 		<?php if ($this->is_admin) {?>
@@ -121,7 +121,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><label for="long_name"><?php echo _AC('long_name'); ?></label></th>
-			<td><textarea cols="30" rows="3" name="long_name" id="long_name"><?php if (isset($_POST['long_name'])) echo htmlspecialchars($_POST['long_name']); else echo htmlspecialchars(_AC($this->row["long_name"])); ?></textarea></td>
+			<td><textarea cols="10" rows="3" name="long_name" id="long_name"><?php if (isset($_POST['long_name'])) echo htmlspecialchars($_POST['long_name']); else echo htmlspecialchars(_AC($this->row["long_name"])); ?></textarea></td>
 		</tr>
 
 		<tr>
@@ -134,7 +134,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><label for="earlid"><?php echo _AC('earlid'); ?></label></th>
-			<td><input type="text" name="earlid" size="100" id="earlid" value="<?php if (isset($_POST['earlid'])) echo htmlspecialchars($_POST['earlid']); else echo htmlspecialchars($this->row["earlid"]); ?>" /></td>
+			<td><input type="text" name="earlid" size="70" id="earlid" value="<?php if (isset($_POST['earlid'])) echo htmlspecialchars($_POST['earlid']); else echo htmlspecialchars($this->row["earlid"]); ?>" /></td>
 		</tr>
 
 		<tr>
@@ -160,7 +160,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<?php }?>
 	</table>
 
-	<div class="row">
+	<div>
 		<input type="submit" name="save_no_close" value="<?php echo _AC('save'); ?>" class="submit" /> 
 		<input type="submit" name="save_and_close" value="<?php echo _AC('save_and_close'); ?>" class="submit" /> 
 		<input type="submit" name="cancel" value="<?php echo _AC('cancel'); ?>" />

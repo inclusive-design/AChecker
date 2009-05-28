@@ -165,17 +165,34 @@ a:active {
 /* main submit button */
 
 input[type=button] {
-	background-color: #efefef;
-	font-weight: normal;
-	border:  #AAA  solid 1px;
+	cursor:pointer;
+	border:outset 1px #ccc;
+	background:#999;
+	color:#666;
+	font-weight:bold;
+	padding: 1px 2px;
+	background:url(images/formbg.gif) repeat-x left top;
 }
 
 input[type=submit] {
-	background-color: #efefef;
-	font-weight: normal;
-	border:  #AAA  solid 1px;
+	cursor:pointer;
+	border:outset 1px #ccc;
+	background:#999;
+	color:#666;
+	font-weight:bold;
+	padding: 1px 2px;
+	background:url(images/formbg.gif) repeat-x left top;
 }
-
+input[type=text] {
+	cursor:pointer;
+	border-bottom:solid 1px #ccc;
+	border-right:solid 1px #ccc;
+	border-top:solid 1px #000;
+	border-left:solid 1px #000;
+	font-weight:bold;
+	background:#fff;
+	padding: 1px 2px;
+}
 .button:focus {
 	border:1px solid #A50707;
 	background-color:  #FFDAB9;	
@@ -478,10 +495,11 @@ table.filter td {
 /* for data tables */
 table.data {
 	clear:right;
-	width: 90%; 
-	margin-left: auto; 
+	width: 95%; 
+	margin-left: 2em;; 
 	margin-right: auto;
 	text-align: left;
+
 } 
 
 table.data th {
@@ -778,7 +796,7 @@ fieldset {
 }
 
 a#guide {
-	background-image: url('../default/images/guide.gif'); background-repeat: no-repeat; background-position: 7px 4px;
+	background-image: url(images/guide.gif); background-repeat: no-repeat; background-position: 7px 4px;
 	background-color: #eee;
 	padding: 2px 10px 2px 27px;
 	border: 1px solid #ccc;
@@ -882,17 +900,18 @@ ul.topnavlist li a.selected {
 
 /*  form fields grouping for WCAG 2.0 conformance*/
 fieldset.group_form{
-	margin:1em;
+	margin:.5em;
 	border:thin #6D7B8D solid;
    	min-height: 170px;
+
 }
 
 legend.group_form{
 	border:thin #6D7B8D solid;
-	background-color: #CCCCCC;
+	background-color: #ffa20c;
 	font-weight: 600;
 	color: black;
-	padding:.5em;
+	padding:.2em;
 }
 
 /* highlight active links for WCAG 2.0 conformance */
@@ -940,7 +959,9 @@ p.helpwanted a {
 table.form-data th,table.form-data td {
 	padding: 4px;
 }
-
+table.form-data{
+width:60%;
+}
 th.box {
 	border-bottom: #006699 solid 1px;
 	color: white;
@@ -1074,6 +1095,7 @@ pre.badgeSnippet {
 #logo{
 	float:right;
 	margin-right:1em;
+	margin-top:-1em;
 }
 
 

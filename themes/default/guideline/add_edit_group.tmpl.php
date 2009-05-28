@@ -36,7 +36,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 	<div class="row">
 		<input type="submit" name="submit" value="<?php echo _AC('submit'); ?>" class="submit" /> 
-		<input type="button" name="cancel" value="<?php echo _AC('cancel'); ?>" onclick="javascript: self.close(); return false;"/>
+		<input type="button" name="cancel" value="<?php echo _AC('cancel'); ?>" onclick="javascript: self.close(); return false;" class="submit"/>
 	</div>
 </fieldset>
 </div>

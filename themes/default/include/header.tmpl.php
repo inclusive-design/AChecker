@@ -218,5 +218,5 @@ $starttime = $mtime;
 	<?php } ?>
 </div>
 -->
-<a name="content"></a>
+<a name="content" title="<?php echo _AC("content_start"); ?>"></a>
 <?php global $msg; $msg->printAll();?>

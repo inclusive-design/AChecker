@@ -10,14 +10,12 @@
 /************************************************************************/
 
 div.center-input-form {
-	width: 90%; 
-	margin-left:auto; 
-	margin-right:auto;
+	width: 100%; 
 	border: thin #CCCCCC solid;
-	margin-bottom: 20px;
+	margin-bottom: 25px;
 	line-height:100%;
 	background-color: #F8F8F8;
-	text-align: center;
+	text-align: top;
 }
 
 div.center-input-form div.row {
@@ -30,18 +28,27 @@ div.center-input-form p.submit_button
 }
 
 div.left-col {
-	width: 76%; 
+	width: 65%; 
 	float: left; 
+	clear:left;
+	min-width:550px;
+	margin-left:auto;
+	margin-right:auto;
+
 }
 
 div.right-col {
-	width: 20%; 
-	float: right;
+	width: 25%; 
+	float:right;
+	clear:right;
 	margin-right:3em;
+	margin-top:-.8em;
+	min-width:255px;
+
 }
 
 div.input-form {
-	width: 90%; 
+	width: 95%; 
 	margin-left:auto; 
 	margin-right:auto;
 	border: thin #CCCCCC solid;
@@ -72,7 +79,7 @@ div.input-form input {
 }
 div.input-form textarea {
 	border: 1px solid #595241;
-	width: 98%;
+	width: 80%;
 	padding: 2px;
 	margin-right: 2px;
 }

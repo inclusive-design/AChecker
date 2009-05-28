@@ -82,7 +82,7 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 		echo '<input type="hidden" name="gid[]" value="'.$gid.'" />'."\n\r";
 }
 ?>
-	<a name="report"></a>
+	<a name="report" title="<?php echo _AC("report_start"); ?>"></a>
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("accessibility_review"); ?></legend>
 	<h3><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$this->guidelines_text. ')'; ?></h3>
 
