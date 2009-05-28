@@ -126,7 +126,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		</div>
 <?php } ?>
 
-		<div class="row">
+		<div>
 			<?php echo _AC('new_or_translated'); ?><br />
 			<input type="radio" name="new_or_translated" value="0" id="u0" <?php if (!isset($_REQUEST['new_or_translated']) || $_REQUEST['new_or_translated'] == 0) { echo 'checked="checked"'; } ?> /><label for="u0"><?php echo _AC('all'); ?></label> 
 			<input type="radio" name="new_or_translated" value="1" id="u1" <?php if ($_REQUEST['new_or_translated'] == 1) { echo 'checked="checked"'; } ?> /><label for="u1"><?php echo _AC('new_terms'); ?></label> 
@@ -134,7 +134,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<input type="radio" name="new_or_translated" value="3" id="u3" <?php if ($_REQUEST['new_or_translated'] == 3) { echo 'checked="checked"'; } ?> /><label for="u3"><?php echo _AC('updated_terms'); ?></label> 
 		</div>
 
-		<div class="row">
+		<div>
 			<?php echo _AC('term_type'); ?><br />
 			<input type="radio" name="term_type" value="" id="t0" <?php if (!isset($_REQUEST['term_type']) || $_REQUEST['term_type'] == "") { echo 'checked="checked"'; } ?> /><label for="t0"><?php echo _AC('all'); ?></label> 
 			<input type="radio" name="term_type" value="_template" id="t1" <?php if ($_REQUEST['term_type'] == "_template") { echo 'checked="checked"'; } ?> /><label for="t1"><?php echo _AC('interface_terms'); ?></label> 
@@ -149,15 +149,15 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<input type="submit" name="reset_filter" value="<?php echo _AC('reset_filter'); ?>" class="submit" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label for="search_phase"><?php echo _AC('or'). ",<br /><br />" . _AC('search_text'); ?></label>
 		</div>
 
-		<div class="row">
-			<input size="100" type="text" name="search_phase" id="search_phase" value="<?php echo htmlspecialchars($stripslashes($_REQUEST['search_phase'])); ?>" /> 
+		<div>
+			<input size="60" type="text" name="search_phase" id="search_phase" value="<?php echo htmlspecialchars($stripslashes($_REQUEST['search_phase'])); ?>" /> 
 		</div>
 
-		<div class="row">
+		<div>
 			<input type="submit" name="search" value="<?php echo _AC('search_phase'); ?>" class="submit" /> 
 		</div>
 	</fieldset>
