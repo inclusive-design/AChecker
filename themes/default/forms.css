@@ -79,7 +79,7 @@ div.input-form input {
 }
 div.input-form textarea {
 	border: 1px solid #595241;
-	width: 80%;
+	width: 100%;
 	padding: 2px;
 	margin-right: 2px;
 }

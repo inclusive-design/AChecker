@@ -24,8 +24,8 @@ if (isset($this->error)) echo $this->error;
 
 <div class="left-col" >
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("input"); ?></legend>
-		<div style="width:90%; margin-left:auto;margin-right:auto;">
-		<div><h2><label for="checkuri"><?php echo _AC("check_by_uri"); ?></label></h2></div>
+		<div style="width:80%; margin-left:auto;margin-right:auto;">
+		<div><h2 style="width:60%;margin-left:auto;margin-right:auto;><label for="checkuri"><?php echo _AC("check_by_uri"); ?></label></h2></div>
 		<div>
 			<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $this->default_uri_value; ?>" size="50" />
 			<p class="submit_button">
@@ -33,7 +33,7 @@ if (isset($this->error)) echo $this->error;
 			</p>
 		</div>
 
-		<div><h2><label for="checkfile"><?php echo _AC("check_by_upload"); ?></label></h2></div>
+		<div><h2 style="width:60%;margin-left:auto;margin-right:auto;"><label for="checkfile"><?php echo _AC("check_by_upload"); ?></label></h2></div>
 
 		<div>
 			<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
@@ -134,7 +134,6 @@ function initial()
 		document.getElementById("likely_problems").style.display = 'none';
 		document.getElementById("potential_problems").style.display = 'none';
 		document.getElementById("html_validation_result").style.display = 'none';
-		document.getElementById("make_decision").style.display = 'none';
 
 		// highlight tab "errors"
 		document.getElementById("menu_errors").className = 'active';
