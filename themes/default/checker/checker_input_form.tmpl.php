@@ -19,23 +19,23 @@ if (isset($this->error)) echo $this->error;
 ?>
 
 <form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
-	
+
 <div class="center-input-form">
 
 <div class="left-col" >
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("input"); ?></legend>
-		<div class="row"><h2><label for="checkuri"><?php echo _AC("check_by_uri"); ?></label></h2></div>
-
-		<div class="row">
+		<div style="width:90%; margin-left:auto;margin-right:auto;">
+		<div><h2><label for="checkuri"><?php echo _AC("check_by_uri"); ?></label></h2></div>
+		<div>
 			<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $this->default_uri_value; ?>" size="50" />
 			<p class="submit_button">
 				<input type="submit" name="validate_uri" size="100" value="<?php echo _AC("check_it"); ?>" onclick="return validate_this_uri();" class="submit"/>
 			</p>
 		</div>
 
-		<div class="row"><h2><label for="checkfile"><?php echo _AC("check_by_upload"); ?></label></h2></div>
+		<div><h2><label for="checkfile"><?php echo _AC("check_by_upload"); ?></label></h2></div>
 
-		<div class="row">
+		<div>
 			<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
 			<input type="file" id="checkfile" name="uploadfile" size="47" />
 		
@@ -43,8 +43,8 @@ if (isset($this->error)) echo $this->error;
 				<input type="submit" name="validate_file" value="<?php echo _AC("check_it"); ?>" onclick="return validate_filename();" class="submit" />
 			</p>
 		</div>
-
-		<div class="row">
+		</div>
+		<div>
 			<h2 align="left">
 				<img src="images/arrow-closed.png" alt="<?php echo _AC("expand_guidelines"); ?>" title="<?php echo _AC("expand_guidelines"); ?>" id="toggle_image" border="0" />
 				<a href="javascript:toggleToc('div_options')"><?php echo _AC("options"); ?></a>
@@ -53,7 +53,7 @@ if (isset($this->error)) echo $this->error;
 
 		<div id="div_options">
 
-		<table class="data static">
+		<table class="data static" style="background-colour:#eeeeee;">
 			<tr>
 				<td>
 				<input type="checkbox" name="enable_html_validation" id="enable_html_validation" value="1" <?php if (isset($_POST["enable_html_validation"])) echo 'checked="checked"'; ?> />
@@ -100,7 +100,7 @@ if (is_array($this->rows))
 	</fieldset>
 </div>
 </form>
-
+<br />
 <a href="#skipads"><img src="images/clr.gif" alt="<?php echo _AC("skip_over_ads"); ?>" border="0"/></a>	
 
 	<script type="text/javascript">

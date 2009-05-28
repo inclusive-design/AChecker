@@ -905,6 +905,7 @@ fieldset.group_form{
 	border:thin #6D7B8D solid;
    	min-height: 170px;
 	padding:.5em;
+	background-color:#F8F8F8;;
 
 }
 
@@ -1009,7 +1010,7 @@ pre.badgeSnippet {
 /* Liquid Round theme elements */
 
 #liquid-round {
-        width:75em;
+        width:85em;
 	margin:0px auto;
 	background:#fff url(images/leftside.gif) repeat-y left top;
 }
@@ -1035,6 +1036,9 @@ pre.badgeSnippet {
 
 
 .bottom {
+	width:85em;
+	margin-left:auto;
+	margin-right:auto;
 	height:60px;
 	background:url(images/bottom.gif) no-repeat left bottom;
 }
