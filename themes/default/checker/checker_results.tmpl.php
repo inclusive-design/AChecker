@@ -50,7 +50,7 @@ if (is_array($this->seals))
 } // end of if (display seals)
 ?>
 
-<div id="output_div" class="validator-output-form">
+<div id="output_div" >
 
 <?php
 if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')

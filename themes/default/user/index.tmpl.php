@@ -13,7 +13,7 @@
 include(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 
-<div class="center-input-form" style="min-width:820px">
+<div class="center-input-form">
 	<form name="filter_form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("filter"); ?></legend>
 		<table class="filter">

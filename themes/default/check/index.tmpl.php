@@ -164,10 +164,7 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 		<?php if (is_array($this->buttons)) { foreach ($this->buttons as $button_text) {?>
 		<input type="submit" name="<?php echo $button_text?>" value="<?php echo _AC($button_text); ?>" />
 		<?php }}?>
-		<!-- <input type="submit" name="edit" value="<?php echo _AC('edit'); ?>" /> 
-		<input type="submit" name="edit_function" value="<?php echo _AC('edit_function'); ?>" />
-		<input type="submit" name="delete" value="<?php echo _AC('delete'); ?>" />
-		 -->
+
 	</td>
 </tr>
 </tfoot>

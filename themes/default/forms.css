@@ -51,10 +51,10 @@ div.input-form {
 	width: 95%; 
 	margin-left:auto; 
 	margin-right:auto;
-	border: thin #CCCCCC solid;
+	/* border: thin #CCCCCC solid; */
 	margin-bottom: 20px;
 	line-height:150%;
-	background-color: #F8F8F8;
+	/* background-color: #F8F8F8; */
 }
 
 div.input-form div.row {
@@ -106,33 +106,33 @@ div.input-form div.buttons {
 	padding:8px;
 }
 div.input-form div.buttons input {
-	background-color: #efefef;
+	/* background-color: #efefef; */
 	font-weight: normal;
-	border:  #AAA  solid 1px;
+	/* border:  #AAA  solid 1px; */
 }
 .formfield:focus{
 	background-color: #FFDAB9;
 }
 
 div.validator-output-form {
-	width: 90%; 
-	margin-left:3em; 
+	width: 95%; 
+	margin-left:1em; 
 	margin-right:auto;
 	padding: 10px 10px 20px 10px;
-	border: thin #CCCCCC solid;
+	/* border: thin #CCCCCC solid; */
 	margin-bottom: 30px;
 	line-height:100%;
-	background-color: #F8F8F8;
+	/*background-color: #F8F8F8; */
 	float: left;
 }
 
 div.output-form {
-	width: 90%; 
+	width: 95%; 
 	margin-left:auto; 
 	margin-right:auto;
-	border: thin #CCCCCC solid;
+	/* border: thin #CCCCCC solid; */
 	margin-bottom: 30px;
 	line-height:100%;
-	background-color: #F8F8F8;
+	/* background-color: #F8F8F8; */
 }
 
