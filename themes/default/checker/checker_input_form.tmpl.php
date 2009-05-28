@@ -135,6 +135,7 @@ function initial()
 		document.getElementById("likely_problems").style.display = 'none';
 		document.getElementById("potential_problems").style.display = 'none';
 		document.getElementById("html_validation_result").style.display = 'none';
+		document.getElementById("make_decision").style.display = 'none';
 
 		// highlight tab "errors"
 		document.getElementById("menu_errors").className = 'active';

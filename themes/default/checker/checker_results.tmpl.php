@@ -164,7 +164,7 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 {
 	if ($this->a_rpt->getNumOfNoDecisions() > 0)
 	{
-		echo '<div align="center"><input type="submit" name="make_decision" value="'._AC('make_decision').'" style="align:center" /></div>';
+		echo '<div align="center"><input type="submit" name="make_decision" id="make_decision" value="'._AC('make_decision').'" style="align:center" /></div>';
 	}
 	echo '</form>';
 }
@@ -203,6 +203,16 @@ function showDiv(divName)
 			document.getElementById(allDivIDs[i]).style.display = 'none';
 			eval('document.getElementById("menu_'+ allDivIDs[i] +'").className = ""');
 		}
+	}
+
+	// hide button "make decision" when "known problems" tab is selected
+	if (divName == "errors")
+	{
+		document.getElementById('make_decision').style.display = 'none';
+	}
+	else	
+	{
+		document.getElementById('make_decision').style.display = 'block';
 	}
 }
 //-->
