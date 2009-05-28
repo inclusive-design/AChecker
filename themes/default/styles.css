@@ -500,6 +500,7 @@ table.data {
 	margin-right: auto;
 	text-align: left;
 
+
 } 
 
 table.data th {
@@ -1007,7 +1008,7 @@ pre.badgeSnippet {
 /* Liquid Round theme elements */
 
 #liquid-round {
-        width:90%;
+        width:75em;
 	margin:0px auto;
 	background:#fff url(images/leftside.gif) repeat-y left top;
 }

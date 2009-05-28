@@ -13,7 +13,7 @@
 include(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 
-<div class="center-input-form">
+<div class="center-input-form" style="min-width:820px">
 	<form name="filter_form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("filter"); ?></legend>
 		<table class="filter">
@@ -111,15 +111,15 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 </colgroup>
 <thead>
 <tr>
-	<th scope="col" align="left"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall" onclick="CheckAll();" /></th>
+	<th scope="col" align="left" width="5%"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall" onclick="CheckAll();" /></th>
 
-	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=login<?php echo $page_string; ?>"><?php echo _AC('login_name');      ?></a></th>
-	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=first_name<?php echo $page_string; ?>"><?php echo _AC('first_name'); ?></a></th>
-	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=last_name<?php echo $page_string; ?>"><?php echo _AC('last_name');   ?></a></th>
-	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=user_group<?php echo $page_string; ?>"><?php echo _AC('user_group'); ?></a></th>
-	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=email<?php echo $page_string; ?>"><?php echo _AC('email');           ?></a></th>
-	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=status<?php echo $page_string; ?>"><?php echo _AC('user_status'); ?></a></th>
-	<th scope="col"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=last_login<?php echo $page_string; ?>"><?php echo _AC('last_login'); ?></a></th>
+	<th scope="col" width="15%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=login<?php echo $page_string; ?>"><?php echo _AC('login_name');      ?></a></th>
+	<th scope="col" width="15%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=first_name<?php echo $page_string; ?>"><?php echo _AC('first_name'); ?></a></th>
+	<th scope="col" width="10%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=last_name<?php echo $page_string; ?>"><?php echo _AC('last_name');   ?></a></th>
+	<th scope="col" width="10%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=user_group<?php echo $page_string; ?>"><?php echo _AC('user_group'); ?></a></th>
+	<th scope="col" width="15%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=email<?php echo $page_string; ?>"><?php echo _AC('email');           ?></a></th>
+	<th scope="col" width="10%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=status<?php echo $page_string; ?>"><?php echo _AC('user_status'); ?></a></th>
+	<th scope="col" width="20%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=last_login<?php echo $page_string; ?>"><?php echo _AC('last_login'); ?></a></th>
 </tr>
 
 </thead>
