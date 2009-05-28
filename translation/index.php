@@ -17,7 +17,7 @@ include_once(AC_INCLUDE_PATH.'classes/DAO/DAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/LanguagesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 
-global $msg;
+global $msg, $addslashes;
 
 $dao = new DAO();
 $languagesDAO = new LanguagesDAO();
@@ -61,7 +61,7 @@ if (isset($_REQUEST['submit']) || isset($_REQUEST['search']))
 	{
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE language_code='".DEFAULT_LANGUAGE_CODE."'
-						  AND lower(term) like '%".mysql_real_escape_string(strtolower(trim($_REQUEST['search_phase'])))."%'";
+						  AND lower(term) like '%".$addslashes(strtolower(trim($_REQUEST['search_phase'])))."%'";
 	}
 	
 	$rows = $dao->execute($sql);

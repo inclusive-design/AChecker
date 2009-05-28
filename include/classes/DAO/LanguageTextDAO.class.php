@@ -36,15 +36,17 @@ class LanguageTextDAO extends DAO {
 	*/
 	function Create($language_code, $variable, $term, $text, $context)
 	{
+		global $addslashes;
+		
 		$sql = "INSERT INTO ".TABLE_PREFIX."language_text
 		        (`language_code`, `variable`, `term`, `text`, `revised_date`, `context`)
 		        VALUES
-		        ('".mysql_real_escape_string($language_code)."', 
-		         '".mysql_real_escape_string($variable)."', 
-		         '".mysql_real_escape_string($term)."', 
-		         '".mysql_real_escape_string($text)."', 
+		        ('".$addslashes($language_code)."', 
+		         '".$addslashes($variable)."', 
+		         '".$addslashes($term)."', 
+		         '".$addslashes($text)."', 
 		         now(), 
-		         '".mysql_real_escape_string($context)."')";
+		         '".$addslashes($context)."')";
 
 		return $this->execute($sql);
 	}
@@ -63,15 +65,17 @@ class LanguageTextDAO extends DAO {
 	*/
 	function Replace($language_code, $variable, $term, $text, $context)
 	{
+		global $addslashes;
+		
 		$sql = "REPLACE INTO ".TABLE_PREFIX."language_text
 		        (`language_code`, `variable`, `term`, `text`, `revised_date`, `context`)
 		        VALUES
-		        ('".mysql_real_escape_string($language_code)."', 
-		         '".mysql_real_escape_string($variable)."', 
-		         '".mysql_real_escape_string($term)."', 
-		         '".mysql_real_escape_string($text)."', 
+		        ('".$addslashes($language_code)."', 
+		         '".$addslashes($variable)."', 
+		         '".$addslashes($term)."', 
+		         '".$addslashes($text)."', 
 		         now(), 
-		         '".mysql_real_escape_string($context)."')";
+		         '".$addslashes($context)."')";
 		        
 		return $this->execute($sql);
 	}
@@ -87,9 +91,11 @@ class LanguageTextDAO extends DAO {
 	*/
 	function DeleteByVarAndTerm($variable, $term)
 	{
+		global $addslashes;
+		
 		$sql = "DELETE FROM ".TABLE_PREFIX."language_text
-		        WHERE `variable` = '".mysql_real_escape_string($variable)."'
-		          AND `term` = '".mysql_real_escape_string($term)."'";
+		        WHERE `variable` = '".$addslashes($variable)."'
+		          AND `term` = '".$addslashes($term)."'";
 		        
 		return $this->execute($sql);
 	}
@@ -196,8 +202,10 @@ class LanguageTextDAO extends DAO {
 	*/
 	function setText($languageCode, $variable, $term, $text)
 	{
+		global $addslashes;
+		
 		$sql = "UPDATE ".TABLE_PREFIX."language_text 
-		           SET text='".mysql_real_escape_string($text)."',
+		           SET text='".$addslashes($text)."',
 		               revised_date = now()
 		         WHERE language_code = '".$_SESSION['lang']."' 
 		           AND variable='".$variable."' 

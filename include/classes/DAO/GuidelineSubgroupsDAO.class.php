@@ -288,6 +288,8 @@ class GuidelineSubgroupsDAO extends DAO {
 	 */
 	private function updateLang($subgroupID, $term, $text, $fieldName)
 	{
+		global $addslashes;
+		
 		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 		$langTextDAO = new LanguageTextDAO();
 		
@@ -295,7 +297,7 @@ class GuidelineSubgroupsDAO extends DAO {
 
 		if (is_array($langs))
 		{// term already exists. Only need to update modified text
-			if ($langs[0]['text'] <> mysql_real_escape_string($text)) $langTextDAO->setText($_SESSION['lang'], '_guideline',$term,$text);
+			if ($langs[0]['text'] <> $addslashes($text)) $langTextDAO->setText($_SESSION['lang'], '_guideline',$term,$text);
 		}
 		else
 		{

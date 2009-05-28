@@ -34,7 +34,7 @@ class CheckExamplesDAO extends DAO {
 	public function Create($checkID, $type, $description, $content)
 	{
 		global $addslashes;
-//		debug($type);
+
 		$description = trim($description);
 		$content = trim($content);
 		
@@ -46,8 +46,8 @@ class CheckExamplesDAO extends DAO {
 		$sql = "INSERT INTO ".TABLE_PREFIX."check_examples
 				(`check_id`, `type`, `description`, `content`) 
 				VALUES
-				(".$checkID.",".$type.",'".mysql_real_escape_string($description)."', ".
-		         "'".mysql_real_escape_string($content)."')";
+				(".$checkID.",".$type.",'".$addslashes($description)."', ".
+		         "'".$addslashes($content)."')";
 
 		if (!$this->execute($sql))
 		{

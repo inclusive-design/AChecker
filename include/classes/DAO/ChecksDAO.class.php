@@ -66,7 +66,7 @@ class ChecksDAO extends DAO {
 		$sql = "INSERT INTO ".TABLE_PREFIX."checks
 				(`user_id`, `html_tag`, `confidence`, `open_to_public`, `create_date`) 
 				VALUES
-				(".$userID.",'".mysql_real_escape_string($html_tag)."', '".$confidence."', ".
+				(".$userID.",'".$addslashes($html_tag)."', '".$confidence."', ".
 		           $open_to_public.", now())";
 
 		if (!$this->execute($sql))
@@ -200,7 +200,7 @@ class ChecksDAO extends DAO {
 		
 		$sql = "UPDATE ".TABLE_PREFIX."checks
 				   SET `user_id`=".$userID.", 
-				       `html_tag` = '".mysql_real_escape_string($html_tag)."', 
+				       `html_tag` = '".$addslashes($html_tag)."', 
 				       `confidence` = '".$confidence."', 
 				       `open_to_public` = ".$open_to_public." 
 				 WHERE check_id = ".$checkID;
@@ -802,13 +802,15 @@ class ChecksDAO extends DAO {
 	 */
 	private function updateLang($checkID, $term, $text, $fieldName)
 	{
+		global $addslashes;
+		
 		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 		$langTextDAO = new LanguageTextDAO();
 		$langs = $langTextDAO->getByTermAndLang($term, $_SESSION['lang']);
 
 		if (is_array($langs))
 		{// term already exists. Only need to update modified text
-			if ($langs[0]['text'] <> mysql_real_escape_string($text)) $langTextDAO->setText($_SESSION['lang'], '_check',$term,$text);
+			if ($langs[0]['text'] <> $addslashes($text)) $langTextDAO->setText($_SESSION['lang'], '_check',$term,$text);
 		}
 		else
 		{

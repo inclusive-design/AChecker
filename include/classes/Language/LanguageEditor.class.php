@@ -241,6 +241,8 @@ class LanguageEditor extends Language {
 		// use a function to generate the ini file
 		// use a diff fn to generate the sql dump
 		// use the zipfile class to package the ini file and the sql dump
+		global $addslashes;
+		
 		$sql_dump = "INSERT INTO `languages` VALUES ('$this->code', '$this->characterSet', '$this->regularExpression', '$this->nativeName', '$this->englishName', $this->status);\r\n\r\n";
 
 		$sql_dump .= "INSERT INTO `language_text` VALUES ";
@@ -253,8 +255,8 @@ class LanguageEditor extends Language {
 			{
 //				$row['text']    = str_replace($search, $replace, $row['text']);
 //				$row['context'] = str_replace($search, $replace, $row['context']);
-				$row['text']    = mysql_real_escape_string($row['text']);
-				$row['context'] = mysql_real_escape_string($row['context']);
+				$row['text']    = $addslashes($row['text']);
+				$row['context'] = $addslashes($row['context']);
 				
 				$sql_dump .= "('$this->code', '$row[variable]', '$row[term]', '$row[text]', '$row[revised_date]', '$row[context]'),\r\n";
 			}
