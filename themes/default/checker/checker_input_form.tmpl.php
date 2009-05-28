@@ -100,9 +100,7 @@ if (is_array($this->rows))
 	</fieldset>
 </div>
 </form>
-</div>
 
-<div class="right-col">
 <a href="#skipads"><img src="images/clr.gif" alt="<?php echo _AC("skip_over_ads"); ?>" border="0"/></a>	
 
 	<script type="text/javascript">

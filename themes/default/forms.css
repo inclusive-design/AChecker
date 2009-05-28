@@ -10,12 +10,12 @@
 /************************************************************************/
 
 div.center-input-form {
-	width: 100%; 
+	width: 95%; 
 	border: thin #CCCCCC solid;
-	margin-bottom: 25px;
+	margin: 1em;
 	line-height:100%;
 	background-color: #F8F8F8;
-	text-align: top;
+	padding:1em;
 }
 
 div.center-input-form div.row {
@@ -116,7 +116,7 @@ div.input-form div.buttons input {
 
 div.validator-output-form {
 	width: 90%; 
-	margin-left:3.5%; 
+	margin-left:3em; 
 	margin-right:auto;
 	padding: 10px 10px 20px 10px;
 	border: thin #CCCCCC solid;
