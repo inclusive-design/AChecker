@@ -66,7 +66,9 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	</fieldset>
 </form>
 </div>
-	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("users"); ?></legend>
+	
+<div id="output_div" class="output-form">
+<fieldset class="group_form"><legend class="group_form"><?php echo _AC("users"); ?></legend>
 <?php print_paginator($this->page, $this->num_results, $this->page_string . htmlspecialchars(SEP) . $this->order .'='. $this->col, $this->results_per_page); ?>
 
 <form name="form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
@@ -166,6 +168,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 </table>
 </form>
 </fieldset>
+</div>
 
 <script language="JavaScript" type="text/javascript">
 //<!--
