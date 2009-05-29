@@ -26,7 +26,7 @@ function dispaly_check_table($checks_array)
 {
 	if (is_array($checks_array)){ 
 ?>
-	<table class="data" summary="" rules="rows" >
+	<table class="data" rules="rows" >
 		<thead>
 		<tr>
 			<th align="center"><?php echo _AC('html_tag'); ?></th>

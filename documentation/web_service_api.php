@@ -59,8 +59,8 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <p>Below is a table of the parameter you can use to send a request to AChecker for validating URI.</p>
 
-<p>If you want to use AChecker public validation server, use the parameters below in conjunction with the following base URI:<br>
-<kbd>http://www.atutor.ca/achecker/test/trunk/checkacc.php</kbd> <br>
+<p>If you want to use AChecker public validation server, use the parameters below in conjunction with the following base URI:<br />
+<kbd>http://www.atutor.ca/achecker/test/trunk/checkacc.php</kbd> <br />
 (replace with the address of your own server if you want to call a private instance of the validator)</p>
 
 <table class="data" rules="all">
@@ -99,7 +99,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <tr>
   <th>output</th>
   <td>Triggers the various outputs formats of the validator. If unset, the usual 
-  <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#html_sample_response_validation"">HTML format</a> 
+  <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#html_sample_response_validation">HTML format</a> 
   will be sent. If set to rest, <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#rest_sample_response_validation">
   the REST interface</a> will be triggered.</td>
   <td>html. Or either one of these values: html or rest</td>
@@ -474,8 +474,8 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 
 <p>Below is a table of the parameter you can use to send a request to AChecker for making decisions on likely or potential problems.</p>
 
-<p>As said, if you want to use AChecker public validation server, use the parameters below in conjunction with the following base URI:<br>
-<kbd>http://www.atutor.ca/achecker/test/trunk/checkacc.php</kbd> <br>
+<p>As said, if you want to use AChecker public validation server, use the parameters below in conjunction with the following base URI:<br />
+<kbd>http://www.atutor.ca/achecker/test/trunk/checkacc.php</kbd> <br />
 (replace with the address of your own server if you want to call a private instance of the validator)</p>
 
 <table class="data" rules="all">
@@ -541,7 +541,7 @@ Return response in HTML format.</p>
 <p>Goal: Reverse decisions on problem sequence ID 1, 2, 3, 4. All decisions for these sequence IDs are set to "decision
 has not been made". Return response in REST format.</p>
 
-<h2 id="rest_sample_response_validation">Sample REST make/reverse decision response</h2><br/>
+<h2 id="rest_sample_response_decision">Sample REST make/reverse decision response</h2><br/>
 <span style="font-weight:bold">Success Response</span>
 <p>A REST success response for the make/reverse decision request will look like this:</p>
 
@@ -566,7 +566,7 @@ has not been made". Return response in REST format.</p>
 &lt;/errors&gt;
 </pre>
 
-<h2 id="restresponse_validation">REST response format reference</h2>
+<h2 id="restresponse_decision">REST response format reference</h2>
 <table class="data" rules="all">
 <tbody><tr>
 <th>Element</th><th>Description</th>
@@ -604,14 +604,14 @@ has not been made". Return response in REST format.</p>
 
 </tbody></table>
 
-<h2 id="html_sample_response_validation">Sample HTML validation response</h2><br/>
+<h2 id="html_sample_response_decision">Sample HTML validation response</h2><br/>
 <span style="font-weight:bold">Success Response</span>
 
 <pre style="background-color:#F7F3ED;"> 
 &lt;div id="success"&gt;Success&lt;/div&gt;
 </pre>
 
-<h2 id="resterror_validation">Validation error response reference</h2>
+<h2 id="resterror_decision">Validation error response reference</h2>
 <table class="data" rules="all"><tbody>
 <tr>
 <th>Error Code</th><th>Description</th>

@@ -15,7 +15,7 @@
 <h2 align="center"><?php echo $this->title ;?></h2>
 <div class="output-form">
 <fieldset class="group_form"><legend class="group_form"><?php echo $this->title; ?></legend>
-<table class="data" summary="" rules="rows" style="margin-top: 1em;">
+<table class="data" summary="a list of accessibility standards available" rules="rows" style="margin-top: 1em;">
 
 <thead>
 	<tr>

@@ -76,7 +76,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>" />
 <input type="hidden" name="include" value="<?php echo htmlspecialchars($_GET['include']); ?>" />
 
-<table summary="" class="data" rules="rows">
+<table summary="Edit, change passwords, or delete users" class="data" rules="rows">
 <colgroup>
 	<?php if ($this->col == 'login'): ?>
 		<col />

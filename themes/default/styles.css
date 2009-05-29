@@ -124,6 +124,7 @@ span.congrats_msg{
   padding: 1em 1em;
   font-size: large;
   font-weight: bold;
+  white-space:nowrap;
 }
 
 span.info_msg{

@@ -27,7 +27,7 @@ function dispaly_check_table($checks_array, $prefix)
 	if (is_array($checks_array)){ 
 ?>
 <form name="input_form_<?php echo $prefix; ?>" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?><?php if (isset($_GET["id"])) echo '?id='.$_GET["id"]; ?>" >
-	<table class="data" summary="" rules="rows" >
+	<table class="data" rules="rows" >
 		<thead>
 		<tr>
 			<th align="left" width="10%"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all_del_<?php echo $prefix;?>" title="<?php echo _AC('select_all'); ?>" name="selectall_delchecks_<?php echo $prefix;?>" onclick="CheckAll('del_checks_id_<?php echo $prefix; ?>[]','selectall_delchecks_<?php echo $prefix;?>');" /></th>
