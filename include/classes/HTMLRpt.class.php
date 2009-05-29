@@ -324,19 +324,19 @@ class HTMLRpt extends AccessibilityRpt {
 		if ($error_type == IS_ERROR)
 		{
 			$msg_type = "msg_err";
-			$img_type = "Error";
+			$img_type = _AC('error');
 			$img_src = "error.png";
 		}
 		else if ($error_type == IS_WARNING)
 		{
 			$msg_type = "msg_info";
-			$img_type = "Info";
+			$img_type = _AC('warning');
 			$img_src = "warning.png";
 		}
 		else if ($error_type == IS_INFO)
 		{
 			$msg_type = "msg_info";
-			$img_type = "Info";
+			$img_type = _AC('check');
 			$img_src = "info.png";
 		}
 		
