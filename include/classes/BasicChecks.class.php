@@ -240,5 +240,59 @@ class BasicChecks {
 
 		return (is_array($rows));
 	}
+
+	/**
+	* Return file location based on base href or uri
+	* return file itself if both base href and uri are empty.
+	*/
+	public static function getFile($src_file, $base_href, $uri)
+	{
+		if (preg_match('/http.*(\:\/\/).*/', $src_file))
+			$file = $src_file;
+		else
+		{
+			// URI that image relatively located to
+			// Note: base_href is from <base href="...">
+			if (isset($base_href) && $base_href <> '') 
+			{
+				if (substr($base_href, -1) <> '/') $base_href .= '/';
+			}
+			else if (isset($uri) && $uri <> '')
+			{
+				preg_match('/^(.*\:\/\/.*\/).*/', $uri, $matches);
+				if (!isset($matches[1])) $uri .= '/';
+				else $uri = $matches[1];
+			}
+				
+			if (substr($src_file, 0, 1) == '/')  //absolute path
+			{
+				if (isset($base_href) && $base_href <> '') 
+				{
+					$file = $base_href.substr($src_file, 1);
+				}
+				else if (isset($uri) && $uri <> '')
+				{
+					preg_match('/^(.*\:\/\/)(.*)/', $uri, $matches);
+					$root_uri = $matches[1].substr($matches[2], 0, strpos($matches[2], '/'));
+					$file = $root_uri.$src_file;
+				}
+			}
+			else // relative path
+			{
+				if (isset($base_href) && $base_href <> '') 
+				{
+					$file = $base_href.$src_file;
+				}
+				else if (isset($uri) && $uri <> '')
+				{
+					$file = $uri.$src_file;
+				}
+			}
+		}
+		
+		if (!isset($file)) $file = $src_file;
+		
+		return $file;
+	}
 }
 ?>  

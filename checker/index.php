@@ -146,9 +146,11 @@ if ($_POST["validate_uri"] || $_POST["validate_file"])
 	// check accessibility
 	include(AC_INCLUDE_PATH. "classes/AccessibilityValidator.class.php");
 
+	if ($_POST["validate_uri"]) $check_uri = $_POST['uri'];
+	
 	if (isset($validate_content))
 	{
-		$aValidator = new AccessibilityValidator($validate_content, $_POST["gid"]);
+		$aValidator = new AccessibilityValidator($validate_content, $_POST["gid"], $check_uri);
 		$aValidator->validate();
 	}
 	// end of checking accessibility

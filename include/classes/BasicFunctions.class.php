@@ -135,9 +135,10 @@ class BasicFunctions {
 	*/
 	public static function getImageWidthAndHeight($attr)
 	{
-		global $global_e;
+		global $global_e, $base_href, $uri;
 		
-		$dimensions = getimagesize($global_e->attr[$attr]);
+		$file = BasicChecks::getFile($global_e->attr[$attr], $base_href, $uri);
+		$dimensions = getimagesize($file);
 		
 		if (is_array($dimensions)) return array($dimensions[0], $dimensions[1]);
 		else return false;
@@ -806,15 +807,19 @@ class BasicFunctions {
 	*/
 	public static function isFileExists($attr)
 	{
-		global $global_e;
+		global $global_e, $base_href, $uri;
 
+		$file = BasicChecks::getFile($global_e->attr[$attr], $base_href, $uri);
 		// use file_get_contents() instead of file_exists() because it might be a remote file specified in URL
-	    $file = @fopen ($global_e->attr[$attr], 'r');
+	    $handle = @fopen ($file, 'r');
 	
-	    if (!$file) 
+	    if (!$handle) 
 	    	return false;
-	
-	    return true;
+	    else
+	    {
+	    	@fclose($handle);
+	    	return true;
+	    }
 	}
 
 	/**

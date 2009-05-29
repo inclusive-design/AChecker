@@ -36,6 +36,7 @@ class AccessibilityValidator {
 	
 	var $validate_content;               // html content to check
 	var $guidelines;                     // array, guidelines to check on
+	var $uri;                            // the URI that $validate_content is from, used in check image size in BasicFunctions
 	
 	// structure: line_number, check_id, result (success, fail)
 	var $result = array();               // all check results, including success ones and failed ones
@@ -56,11 +57,12 @@ class AccessibilityValidator {
 	 * $content: string, html content to check
 	 * $guidelines: array, guidelines to check on
 	 */
-	function AccessibilityValidator($content, $guidelines)
+	function AccessibilityValidator($content, $guidelines, $uri = '')
 	{
 		$this->validate_content = $content;
 		$this->guidelines = $guidelines;
 		$this->line_offset = 0;
+		$this->uri = $uri;
 	}
 	
 	/* public
@@ -91,10 +93,27 @@ class AccessibilityValidator {
 	 */
 	private function prepare_global_vars()
 	{
-		global $header_array;
+		global $header_array, $base_href;
 
+		// find all header tags which are used in BasicFunctions.class.php
 		$header_array = $this->content_dom->find("h1, h2, h3, h4, h5, h6, h7");
 
+		// find base href, used to check image size
+		$all_base_elements = $this->content_dom->find("base");
+
+		if (is_array($all_base_elements))
+		{
+			foreach ($all_base_elements as $base)
+			{
+				if (isset($base->attr['href']))
+				{
+					$base_href = $base->attr['href'];
+					break;
+				}
+			}
+		}
+
+		// set all check functions
 		$checksDAO = new ChecksDAO();
 		$rows = $checksDAO->getAllOpenChecks();
 		

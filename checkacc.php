@@ -112,7 +112,7 @@ $validate_content = @file_get_contents($uri);
 
 if (isset($validate_content))
 {
-	$aValidator = new AccessibilityValidator($validate_content, $gids);
+	$aValidator = new AccessibilityValidator($validate_content, $gids, $uri);
 	$aValidator->setLineOffset($offset);
 	$aValidator->validate();
 	$errors = $aValidator->getValidationErrorRpt();
