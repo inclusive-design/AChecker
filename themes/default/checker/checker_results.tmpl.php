@@ -19,6 +19,7 @@ include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
 if (is_array($this->seals))
 {
 ?>
+
 <div id="seals_div" class="validator-output-form">
 
 <h3><?php echo _AC('valid_icons');?></h3>
@@ -82,6 +83,7 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 		echo '<input type="hidden" name="gid[]" value="'.$gid.'" />'."\n\r";
 }
 ?>
+	<div class="center-input-form">
 	<a name="report" title="<?php echo _AC("report_start"); ?>"></a>
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("accessibility_review"); ?></legend>
 	<h3><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$this->guidelines_text. ')'; ?></h3>
@@ -179,7 +181,7 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 <?php echo $this->a_rpt->getSourceRpt();?>
 </div>
 <?php }?>
-
+</div><br />
 <script language="JavaScript" type="text/javascript">
 <!--
 

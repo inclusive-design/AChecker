@@ -17,32 +17,30 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 if (isset($this->error)) echo $this->error;
 ?>
-
+<div class="center-input-form">
 <form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 
-<div class="center-input-form">
-
-<div class="left-col" >
+	<div class="left-col"><br />
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("input"); ?></legend>
 		<div style="width:80%; margin-left:auto;margin-right:auto;">
-		<div><h2 style="width:60%;margin-left:auto;margin-right:auto;><label for="checkuri"><?php echo _AC("check_by_uri"); ?></label></h2></div>
-		<div>
+			<div><h2 style="width:60%;margin-left:auto;margin-right:auto;"><label for="checkuri"><?php echo _AC("check_by_uri"); ?></label></h2></div>
+			<div>
 			<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $this->default_uri_value; ?>" size="50" />
 			<p class="submit_button">
 				<input type="submit" name="validate_uri" size="100" value="<?php echo _AC("check_it"); ?>" onclick="return validate_this_uri();" class="submit"/>
 			</p>
-		</div>
+			</div>
 
-		<div><h2 style="width:60%;margin-left:auto;margin-right:auto;"><label for="checkfile"><?php echo _AC("check_by_upload"); ?></label></h2></div>
+			<div><h2 style="width:60%;margin-left:auto;margin-right:auto;"><label for="checkfile"><?php echo _AC("check_by_upload"); ?></label></h2></div>
 
-		<div>
+			<div>
 			<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
 			<input type="file" id="checkfile" name="uploadfile" size="47" />
 		
 			<p class="submit_button">
 				<input type="submit" name="validate_file" value="<?php echo _AC("check_it"); ?>" onclick="return validate_filename();" class="submit" />
 			</p>
-		</div>
+			</div>
 		</div>
 		<div>
 			<h2 align="left">
@@ -98,9 +96,10 @@ if (is_array($this->rows))
 		</table>
 		</div>
 	</fieldset>
-</div>
+	</div>
 </form>
-<br />
+</div>
+
 <a href="#skipads"><img src="images/clr.gif" alt="<?php echo _AC("skip_over_ads"); ?>" border="0"/></a>	
 	<script type="text/javascript">
 	<!--
@@ -114,7 +113,6 @@ if (is_array($this->rows))
 	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</script>
 <a name="skipads" title="passed ads"></a>
-</div>
 
 <script type="text/JavaScript">
 <!--
