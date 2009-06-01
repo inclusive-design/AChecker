@@ -617,6 +617,25 @@ class BasicFunctions {
 	}
 	
 	/**
+	 * Check if the table contains more than one row or either row or column headers.
+	 * @return true if contains, otherwise, false
+	 */
+	public static function hasLinkChildWithText($searchStrArray)
+	{
+		global $global_e;
+		
+		foreach ($global_e->children() as $child)
+		{
+			if ($child->tag == 'a' && BasicChecks::inSearchString($child->attr['href'], $searchStrArray))
+			{
+				return true;
+			}
+		}
+				
+		return false;
+	}
+	
+	/**
 	* Check recursively to find if $global_e has a parent with tag $parent_tag
 	* return true if found, otherwise, false
 	*/

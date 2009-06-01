@@ -151,6 +151,10 @@ $text = '<h2>Edit Check Function</h2>
   <td>Only performs on <code>table</code> element. Find whether the <code>table</code> element contains more than one header row or header column.</td>
 </tr>
 <tr>
+  <th align="left"><a href="#f_hasLinkChildWithText">hasLinkChildWithText($searchStrArray)</a></th>
+  <td>Search all the children elements. Find whether there is a <code>a</code> element with the value of attribute <code>href</code> matches one of the string in array <code>$searchStrArray</code>.</td>
+</tr>
+<tr>
   <th align="left"><a href="#f_hasParent">hasParent($parent_tag)</a></th>
   <td>Recursively search all the parent elements. Find whether there is a parent element with tag <code>$parent_tag</code>.</td>
 </tr>
@@ -616,6 +620,27 @@ BasicFunctions::hasIdHeaders() returns true.
 </pre>
 </li>
  
+<li>
+<p><a name="f_hasLinkChildWithText">hasLinkChildWithText(<code>searchStrArray</code>)</a></p>
+<p>Search all the children elements. Return true if there is a <code>a</code> element with the value of attribute <code>href</code> matches one of the string in array <code>$searchStrArray</code>. Otherwise, return false.</p>
+<p>
+The element in array searchStrArray can be one of these values:<br/>
+e.g. title, %title1, title2%, %title3%<br/>
+"%" can be used in front and at the end of a string to match any characters.<br/>
+As an explanation, "title" matches exact string of "title".<br/>
+"%title1" matches any string ending with "title1".<br/>
+"title2%" matches any string starting with "title2".<br/>
+"%title3%" matches any string containing string "title3". 
+</p>
+<pre>
+Perform on the <code>body</code> element: <br/>'.htmlspecialchars('<body>
+<a href="#content">Go To Content</a>
+<a name="cnotent"></a>This is cnotent.
+</body>').'<br/>
+return BasicFunctions::hasLinkChildWithText(array("%jump%","%go to%","%skip%","%navigation%","%content%")) returns true. 
+</pre>
+</li>
+
 <li>
 <p><a name="f_hasParent">hasParent(<code>parent_tag</code>)</a></p>
 <p>Recursively search all the parent elements. Return true if there is a parent element with tag <code>parent_tag</code>. Otherwise, return false.</p>

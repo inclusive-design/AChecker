@@ -45,6 +45,43 @@ class BasicChecks {
 	}
 	
 	/**
+	* check if the text is in one of the search string defined in $search_strings
+	* @param $text: text to check
+	*        $search_strings: array of match string. The string could be %[string]% or %[string] or [string]%
+	* @return true if in, otherwise, return false 
+	*/
+	public static function inSearchString($text, $search_strings)
+	{
+		foreach ($search_strings as $str)
+		{
+			$str = trim($str);
+			$prefix = substr($str, 0 , 1);
+			$suffix = substr($str, -1);
+			
+			if ($prefix == '%' && $suffix == '%')
+			{  // match '%match%' 
+				if (stripos($text, substr($str, 1, -1)) > 0) return true;
+			}
+			else if ($prefix == '%')
+			{  // match '%match'
+				$match = substr($str, 1);
+				if (substr($text, strlen($match)*(-1)) == $match) return true;
+			} 
+			else if ($suffix == '%')
+			{  // match 'match%'
+				$match = substr($str, 0, -1);
+				if (substr($text, 0, strlen($match)) == $match) return true;
+			} 
+			else if ($text == $str)
+			{ 
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	* check if the inner text is in one of the search string defined in checks.search_str
 	* return true if in, otherwise, return false 
 	*/
@@ -60,34 +97,7 @@ class BasicChecks {
 		if (!is_array($search_strings)) return true;
 		else
 		{
-			
-			foreach ($search_strings as $str)
-			{
-				$str = trim($str);
-				$prefix = substr($str, 0 , 1);
-				$suffix = substr($str, -1);
-				
-				if ($prefix == '%' && $suffix == '%')
-				{  // match '%match%' 
-					return stripos($text, substr($str, 1, -1));
-				}
-				else if ($prefix == '%')
-				{  // match '%match'
-					$match = substr($str, 1);
-					return (substr($text, strlen($match)*(-1)) == $match);
-				} 
-				else if ($suffix == '%')
-				{  // match 'match%'
-					$match = substr($str, 0, -1);
-					return (substr($text, 0, strlen($match)) == $match);
-				} 
-				else if ($text == $str)
-				{ 
-					return true;
-				}
-			}
-			
-			return false;
+			return BasicChecks::inSearchString($text, $search_strings);
 		}
 	}
 
