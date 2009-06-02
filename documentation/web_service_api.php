@@ -60,7 +60,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <p>Below is a table of the parameter you can use to send a request to AChecker for validating URI.</p>
 
 <p>If you want to use AChecker public validation server, use the parameters below in conjunction with the following base URI:<br />
-<kbd>http://www.atutor.ca/achecker/test/trunk/checkacc.php</kbd> <br />
+<kbd><?php echo AC_BASE_HREF; ?>checkacc.php</kbd> <br />
 (replace with the address of your own server if you want to call a private instance of the validator)</p>
 
 <table class="data" rules="all">
@@ -114,7 +114,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <br />
 
 <span style="font-weight: bold">Sample validation request</span>
-<p>http://www.atutor.ca/achecker/test/trunk/checkacc.php?uri=http%3A%2F%2Fatutor.ca&
+<p><?php echo AC_BASE_HREF; ?>checkacc.php?uri=http%3A%2F%2Fatutor.ca&
 id=888ca9e3f856baa0120755ecd8ffae6be3142029&output=html&guide=STANCA,WCAG2-AA&offset=10</p>
 <p>Goal: Validate URI <code>http://atutor.ca</code> against guidelines "Stanca Act" and "Wcag 2.0 L2". 
 Ignore the first 10 lines of html content from http://atutor.ca. Returns validation report
@@ -475,7 +475,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 <p>Below is a table of the parameter you can use to send a request to AChecker for making decisions on likely or potential problems.</p>
 
 <p>As said, if you want to use AChecker public validation server, use the parameters below in conjunction with the following base URI:<br />
-<kbd>http://www.atutor.ca/achecker/test/trunk/checkacc.php</kbd> <br />
+<kbd><?php echo AC_BASE_HREF; ?>checkacc.php</kbd> <br />
 (replace with the address of your own server if you want to call a private instance of the validator)</p>
 
 <table class="data" rules="all">
