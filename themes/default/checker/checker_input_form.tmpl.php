@@ -49,7 +49,7 @@ if (isset($this->error)) echo $this->error;
 			</h2>
 		</div>
 
-		<div id="div_options">
+		<div id="div_options" style="display:none">
 
 		<table class="data static" style="background-colour:#eeeeee;">
 			<tr>
@@ -119,9 +119,6 @@ if (is_array($this->rows))
 
 function initial()
 {
-	// hide guideline div
-	document.getElementById("div_options").style.display = 'none';
-	
 	var div_errors = document.getElementById("errors");
 	var div_error = document.getElementById("error");
 	
