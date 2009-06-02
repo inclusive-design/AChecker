@@ -33,19 +33,19 @@ function encrypt_password() {
 
 	<div class="center-input-form">
 		<fieldset class="group_form"><legend class="group_form"><?php echo _AC('login') ;?></legend>
-			<table class="form-data" align="center">
+			<table  align="center" width="90%">
 				<tr>
 					<td colspan="2" align="left"><br /><?php echo _AC('login_text'). _AC('required_field_text') ;?><br /><br /><br /><br /></td>
 				</tr>
 
 				<tr>
 					<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="login"><?php echo _AC('login_name_or_email'); ?></label></td>
-					<td><input type="text" name="form_login" size="50" id="login" /><br /></td>
+					<td><input type="text" name="form_login" size="50" id="login"  class="formfield" style="max-width:70%;width:70%;"/><br /></td>
 				</tr>
 				
 				<tr>
 					<td align="left"><div class="required" align="right" title="<?php echo _AC('required_field'); ?>">*</div><label for="pass"><?php echo _AC('password'); ?></label></td>
-					<td><input type="password" class="formfield" name="form_password" size="50" id="pass" /></td>
+					<td><input type="password" class="formfield" name="form_password" size="50" id="pass" style="max-width:70%;width:70%;"/></td>
 				</tr>
 
 				<tr>
