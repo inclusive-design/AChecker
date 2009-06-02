@@ -20,7 +20,7 @@ if (isset($this->error)) echo $this->error;
 <div class="center-input-form">
 <form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 
-	<div class="left-col"><br />
+	<div class="left-col" style="float:left;clear:left;"><br />
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("input"); ?></legend>
 		<div style="width:80%; margin-left:auto;margin-right:auto;">
 			<div><h2 style="width:60%;margin-left:auto;margin-right:auto;"><label for="checkuri"><?php echo _AC("check_by_uri"); ?></label></h2></div>
@@ -98,9 +98,8 @@ if (is_array($this->rows))
 	</fieldset>
 	</div>
 </form>
-</div>
-
-<a href="#skipads"><img src="images/clr.gif" alt="<?php echo _AC("skip_over_ads"); ?>" border="0"/></a>	
+<div style="float:right;margin-right:2em;clear:right;width:250px;"><br />
+<a href="checker/index.php#skipads"><img src="images/clr.gif" alt="<?php echo _AC("skip_over_ads"); ?>" border="0"/></a>	
 	<script type="text/javascript">
 	<!--
 	google_ad_client = "pub-8538177464726172";
@@ -113,6 +112,9 @@ if (is_array($this->rows))
 	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</script>
 <a name="skipads" title="passed ads"></a>
+</div>
+
+</div>
 
 <script type="text/JavaScript">
 <!--
