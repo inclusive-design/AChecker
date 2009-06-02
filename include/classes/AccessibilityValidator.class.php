@@ -351,7 +351,12 @@ class AccessibilityValidator {
 			}
 
 			// find out checked html tag code
-			$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
+			// http://www.atutor.ca/atutor/mantis/view.php?id=3768
+			// Display link text with Check 19 to make it easier to make decisions
+			if($check_id == 19) 
+				$html_code = $e->outertext;
+			else
+				$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
 
 			// minus out the $line_offset from $linenumber 
 			$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result);
