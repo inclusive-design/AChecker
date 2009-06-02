@@ -368,15 +368,7 @@ a#back-to {
 	background-position: 0px 0px;
 }
 
-a#guide {
-	background-image: url('../default/images/guide.gif'); background-repeat: no-repeat; background-position: 7px 4px;
-	background-color: #eee;
-	padding: 2px 10px 2px 27px;
-	border: 1px solid #ccc;
-	float:right;
-	text-decoration:none;
-	font-size:0.85em;
-}
+
 
 div#breadcrumbs {
     /* The path bar, including breadcrumbs and add to favorites */
@@ -798,15 +790,14 @@ fieldset {
 }
 
 a#guide {
-	background-image: url(images/guide.gif); background-repeat: no-repeat; background-position: 7px 4px;
+	background-image: url(images/guide.jpg); background-repeat: no-repeat; background-position: 0px 0px;
 	background-color: #eee;
-	padding: 2px 10px 2px 27px;
+	padding: 2px 10px 2px 26px;
 	border: 1px solid #ccc;
 	float:right;
 	text-decoration:none;
 	font-size:0.85em;
 }
-
 div#content-text {
 	padding-right: 5pt;
 	line-height:150%;
