@@ -69,6 +69,8 @@ $starttime = $mtime;
 	<title><?php echo SITE_NAME; ?> : <?php echo $this->page_title; ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $this->lang_charset; ?>" />
 	<meta name="Generator" content="Checker - Copyright 2008 by http://checker.atrc.utoronto.ca" />
+	<meta name="keywords" content="accessibility checker, ATRC, WCAG 2, STANCA, BITV, Section 508." />
+	<meta name="description" content="AChecker is a Web accessibility evalution tool designed to help Web content developers and Web application developers ensure their Web content is accessible to everyone regardless to the technology they may be using, or their abilities or disabilities." />
 	<base href="<?php echo $this->base_path; ?>" />
 	<link rel="shortcut icon" href="<?php echo $this->base_path; ?>images/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/forms.css" type="text/css" />
