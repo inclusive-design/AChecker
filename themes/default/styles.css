@@ -580,14 +580,17 @@ table.data.static tbody tr:hover {
 #errors{
 	border:thin #cccccc solid;
 	padding:1em;
+	white-space:nowrap;
 }
 #likely_problems{
 	border:thin #cccccc solid;
 	padding:1em;
+	white-space:nowrap;
 }
 #potential_problems{
 	border:thin #cccccc solid;
 	padding:1em;
+	white-space:nowrap;
 }
 #html_validation_result{
 	width:95%;
