@@ -1098,13 +1098,14 @@ pre.badgeSnippet {
 
 
 ul.navigation li a:hover, ul.navigation li a:focus, ul.navigation li a.active {
-    	background-color: #781351;
-	background: #781351 url(images/navlh.gif) left top no-repeat;
+    	background-color: #781351; 
+	background: url(images/navlh.gif) left top no-repeat;
     	color: white;
 	text-decoration:none;
 }
 
 ul.navigation li a.active span{
+    	background-color: #781351;
 	background: url(images/navrh.gif) right top no-repeat;
 	padding-right: 10px;
 }
