@@ -66,6 +66,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <?php endif; ?>
 </table>
 </form>
+<br/><br/>
 
 <script language="JavaScript" type="text/javascript">
 //<!--

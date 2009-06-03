@@ -417,7 +417,6 @@ class simple_html_dom {
     protected $char;
     protected $size;
     protected $index;
-    protected $new_line;
     public $callback = null;
     protected $noise = array();
     // use isset instead of in_array, performance boost about 30%...
@@ -440,7 +439,7 @@ class simple_html_dom {
         'dd'=>array('dd'=>1, 'dt'=>1),
         'p'=>array('p'=>1),
     );
-    protected $new_line_array = array("\n\r", "\r\n", "\n", "\r");
+    protected $new_line = "\n";
 
     // load html from string
     function load($str, $lowercase=true) {
@@ -529,7 +528,7 @@ class simple_html_dom {
         // set the length of content
         $this->size = strlen($str);
         if ($this->size>0) $this->char = $this->html[0];
-        $this->new_line = $this->find_new_line();
+//        $this->new_line = $this->find_new_line();
     }
 
     // clean up memory due to php5 circular references memory leak...
@@ -546,19 +545,19 @@ class simple_html_dom {
     }
     
     // find new line character used in html
-    function find_new_line()
-    {
-        foreach ($this->new_line_array as $new_line)
-        {
-            if (preg_match('/'.preg_quote($new_line).'/', $this->html) > 0)  
-            {
-            	$used_new_line = $new_line;
-              break;
-            }
-        }
-        
-        return $used_new_line;
-    }
+//    function find_new_line()
+//    {
+//        foreach ($this->new_line_array as $new_line)
+//        {
+//            if (preg_match('/'.preg_quote($new_line).'/', $this->html) > 0)  
+//            {
+//            	$used_new_line = $new_line;
+//              break;
+//            }
+//        }
+//        
+//        return $used_new_line;
+//    }
 
     // parse html content
     function parse() {
@@ -627,8 +626,11 @@ class simple_html_dom {
 
         $node->tag = $this->copy_until($this->token_slash);
         /* customized by UOT, ATRC, cindy Li */
-        $node->linenumber = $this->count_line_number(substr($this->html, 0, $this->pos));
-        $node->colnumber = $this->count_col_number(substr($this->html, 0, $this->pos));
+//        $this->debug(memory_get_usage());
+        $portion = substr($this->html, 0, $this->pos);
+        $node->linenumber = $this->count_line_number($portion);
+        $node->colnumber = $this->count_col_number($portion);
+        unset($portion);
         /* end of customized by UOT, ATRC, cindy Li */
         $node->parent = $this->parent;
 
@@ -749,38 +751,51 @@ class simple_html_dom {
     // return the number of all new line characters in given $text
     protected function count_line_number($text)
     {
-        $num_of_line_number = 0;
-        
-        foreach ($this->new_line_array as $new_line)
-        {
-          $text = preg_replace('/'.preg_quote($new_line).'/s', '', $text, -1, $count);
-          $num_of_line_number += $count;
-        }
-        
-        return $num_of_line_number + 1;
+//        $num_of_line_number = 0;
+//        
+//        foreach ($this->new_line_array as $new_line)
+//        {
+//        	$text = preg_replace('/'.preg_quote($new_line).'/s', '', $text, -1, $count);
+//            $num_of_line_number += $count;
+//        }
+//        
+//        $num = $num_of_line_number + 1;
+          return substr_count($text, $this->new_line)+1;
     }
 
     // return the position of the last characters in its line
     protected function count_col_number($text)
     {
-        $pattern = $this->generate_new_line_pattern();
-
-        preg_match('/.*'.$pattern.'(.*)$/s', $text, $matches);
-
-        return strrpos($matches[1], '<') + 1;
+//    	$pattern = $this->generate_new_line_pattern();
+//
+//        preg_match('/.*'.$pattern.'(.*)$/s', $text, $matches);
+//
+//        return strrpos($matches[1], '<') + 1;
+        
+        $last_new_line_pos = strrpos($text, $this->new_line);
+        if ($last_new_line_pos !== false)
+        	$last_line = substr($text, $last_new_line_pos);
+        else
+        	$last_line = $text;
+        
+        $col_num = strrpos($last_line, '<');
+        if ($col_num == 0)
+        	return 1;
+        else
+        	return $col_num;
     }
     
-    protected function generate_new_line_pattern()
-    {
-      $pattern = "[";
-      
-      foreach ($this->new_line_array as $one_new_line)
-        $pattern .= preg_quote($one_new_line)."|";
-      
-      $pattern .= "]";
-      
-      return $pattern;
-    }
+//    protected function generate_new_line_pattern()
+//    {
+//      $pattern = "[";
+//      
+//      foreach ($this->new_line_array as $one_new_line)
+//        $pattern .= preg_quote($one_new_line)."|";
+//      
+//      $pattern .= "]";
+//      
+//      return $pattern;
+//    }
     /* end of customized by UOT, ATRC, cindy Li */
     
     // parse attributes
@@ -920,6 +935,30 @@ class simple_html_dom {
         }
     }
 
+    /* customized by UOT, ATRC, cindy Li */
+    // print debug information
+    protected function debug($var, $title='') 
+    {
+		echo '<pre style="border: 1px black solid; padding: 0px; margin: 10px;" title="debugging box">';
+		if ($title) {
+			echo '<h4>'.$title.'</h4>';
+		}
+		
+		ob_start();
+		print_r($var);
+		$str = ob_get_contents();
+		ob_end_clean();
+		
+		$str = str_replace('<', '&lt;', $str);
+		
+		$str = str_replace('[', '<span style="color: red; font-weight: bold;">[', $str);
+		$str = str_replace(']', ']</span>', $str);
+		$str = str_replace('=>', '<span style="color: blue; font-weight: bold;">=></span>', $str);
+		$str = str_replace('Array', '<span style="color: purple; font-weight: bold;">Array</span>', $str);
+		echo $str;
+		echo '</pre>';
+	}
+    
     // camel naming conventions
     function childNodes($idx=-1) {return $this->root->childNodes($idx);}
     function firstChild() {return $this->root->first_child();}

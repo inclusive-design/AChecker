@@ -40,7 +40,6 @@ class AccessibilityValidator {
 	
 	// structure: line_number, check_id, result (success, fail)
 	var $result = array();               // all check results, including success ones and failed ones
-	var $error_result = array();         // failed check results
 	
 	var $check_for_all_elements_array = array(); // array of the to-be-checked check_ids 
 	var $check_for_tag_array = array();          // array of the to-be-checked check_ids 
@@ -276,7 +275,7 @@ class AccessibilityValidator {
 					{
 						$check_result = $this->check($e, $prerequisite_check_id);
 						
-						if ($check_result == "fail")
+						if ($check_result == FAIL_RESULT)
 						{
 							$prerequisite_failed = true;
 							break;
@@ -321,11 +320,11 @@ class AccessibilityValidator {
 		// don't check the lines before $line_offset
 		if ($e->linenumber <= $this->line_offset) return;
 		
-		$result = $this->get_check_result($e->linenumber-$this->line_offset, $e->colnumber, $check_id);
+//		$result = $this->get_check_result($e->linenumber-$this->line_offset, $e->colnumber, $check_id);
 
 		// has not been checked
-		if (!$result)
-		{
+//		if (!$result)
+//		{
 			// run function for $check_id
 //			eval("\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom);");
 			$check_result = eval($this->check_func_array[$check_id]);
@@ -359,8 +358,9 @@ class AccessibilityValidator {
 				$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
 
 			// minus out the $line_offset from $linenumber 
-			$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result);
-		}
+			if ($result == FAIL_RESULT)
+				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result);
+//		}
 		
 		return $result;
 	}
@@ -372,16 +372,16 @@ class AccessibilityValidator {
 	 * $line_number: line number in the content for this check
 	 * $check_id: check id
 	 */
-	private function get_check_result($line_number, $col_number, $check_id)
-	{
-		foreach($this->result as $one_result)
-		{
-			if ($one_result["line_number"] == $line_number && $one_result["col_number"] == $col_number && $one_result["check_id"] == $check_id)
-				return $one_result["result"];
-		}
-		
-		return false;
-	}
+//	private function get_check_result($line_number, $col_number, $check_id)
+//	{
+//		foreach($this->result as $one_result)
+//		{
+//			if ($one_result["line_number"] == $line_number && $one_result["col_number"] == $col_number && $one_result["check_id"] == $check_id)
+//				return $one_result["result"];
+//		}
+//		
+//		return false;
+//	}
 
 	/**
 	 * private
@@ -430,13 +430,7 @@ class AccessibilityValidator {
 	 */
 	private function finalize()
 	{
-		function errorRpt($one_result)
-		{
-			return ($one_result["result"] == FAIL_RESULT);
-		}
-	
-		$this->error_result = array_filter($this->result, "errorRpt");
-		$this->num_of_errors = count($this->error_result);
+		$this->num_of_errors = count($this->result);
 	}
 	
 	/**
@@ -459,20 +453,11 @@ class AccessibilityValidator {
 	
 	/**
 	 * public 
-	 * return validation report in html
-	 */
-	public function getValidationFullRpt()
-	{
-		return $this->result;
-	}
-
-	/**
-	 * public 
 	 * return array of all checks that have been done, including successful and failed ones
 	 */
 	public function getValidationErrorRpt()
 	{
-		return $this->error_result;
+		return $this->result;
 	}
 	
 
