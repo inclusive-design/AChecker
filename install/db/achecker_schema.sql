@@ -2230,7 +2230,7 @@ INSERT INTO `lang_codes` (`code_3letters`, `direction`, `code_2letters`, `descri
 
 -- Dumping data for table `subgroup_checks`
 
-INSERT INTO `AC_subgroup_checks` (`subgroup_id`, `check_id`) VALUES
+INSERT INTO `subgroup_checks` (`subgroup_id`, `check_id`) VALUES
 (1, 1),
 (1, 4),
 (1, 5),
