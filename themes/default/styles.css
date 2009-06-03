@@ -590,7 +590,9 @@ table.data.static tbody tr:hover {
 	padding:1em;
 }
 #html_validation_result{
+	width:95%;
 	border:thin #cccccc solid;
+	white-space:nowrap;
 	padding:1em;
 }
 /* feedback /errors */

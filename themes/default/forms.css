@@ -123,7 +123,8 @@ div.validator-output-form {
 	margin-bottom: 30px;
 	line-height:100%;
 	/*background-color: #F8F8F8; */
-	float: left;
+	float: left; 
+	clear:left;
 }
 
 div.output-form {
