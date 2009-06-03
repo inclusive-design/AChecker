@@ -219,7 +219,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_38','The header foll
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_39','The header following an <code>h3</code> is <code>h1</code>, <code>h2</code>, <code>h3</code> or <code>h4</code>.','2008-11-24 13:01:07','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_4','Non-Decorative images must have Alt text.','2008-11-24 13:01:07','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_40','The header following an <code>h4</code> is <code>h1</code>, <code>h2</code>, <code>h3</code>, <code>h4</code> or <code>h5</code>.','2008-11-24 13:01:07','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_41','The header following an <code>h5</code> is <code>h6</code> or any header less than <code>h3</code>.','2008-11-24 13:01:07','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_41','The header following an <code>h5</code> is <code>h6</code> or any header less than <code>h6</code>.','2009-05-28 10:50:01','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_42','All <code>h1</code> elements are not used for formatting.','2008-11-24 13:01:07','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_43','All <code>h2</code> elements are not used for formatting.','2008-11-24 13:01:07','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_44','All <code>h3</code> elements are not used for formatting.','2008-11-24 13:01:07','');
@@ -2755,7 +2755,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','abbr','Abbreviation','20
 INSERT INTO `language_text` VALUES ('eng', '_template','accessibility_review','Accessibility Review','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','achecker_handbook','Achecker Handbook','2009-01-28 15:28:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','achecker_home','AChecker Home','2009-01-09 14:15:29','');
-INSERT INTO `language_text` VALUES ('eng', '_template','achecker_whatis','This tool checks Web-based HT ML content for conformance with accessibility standards to ensure the content can be accessed by everyone. See the Handbook link to the upper right for more about the Web Accessibility Checker.','2009-05-19 15:13:32','');
+INSERT INTO `language_text` VALUES ('eng', '_template','achecker_whatis','This tool checks single HTML pages for conformance with accessibility standards to ensure the content can be accessed by everyone. See the Handbook link to the upper right for more about the Web Accessibility Checker.','2009-05-29 08:55:24','');
 INSERT INTO `language_text` VALUES ('eng', '_template','acheck_copyright','Web site engine\'s code is copyright &copy; 2009','2009-05-25 10:57:43','');
 INSERT INTO `language_text` VALUES ('eng', '_template','add','Add','2009-03-24 13:47:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','add_checks','Add Checks','2009-01-21 16:23:10','');
@@ -2781,6 +2781,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','cancel','Cancel','2009-0
 INSERT INTO `language_text` VALUES ('eng', '_template','change_email','Change Email','2009-01-15 11:29:34','');
 INSERT INTO `language_text` VALUES ('eng', '_template','change_password','Change Password','2009-01-15 11:29:34','');
 INSERT INTO `language_text` VALUES ('eng', '_template','charset','Character Set','2009-02-20 11:43:44','');
+INSERT INTO `language_text` VALUES ('eng', '_template','check','Check','2009-05-29 16:20:08','');
 INSERT INTO `language_text` VALUES ('eng', '_template','checks','Checks','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_by_upload','Check Accessibility by File Upload','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','check_by_uri','Check Accessibility by URL','2008-11-21 14:25:37','');
@@ -2798,6 +2799,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','congrats_no_known','Cong
 INSERT INTO `language_text` VALUES ('eng', '_template','congrats_no_likely','Congratulations! No likely problems.','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','congrats_no_potential','Congratulations! No potential problems.','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','contain_only','May contain only letters, numbers, underscores, hyphens or periods.','2009-01-09 10:16:38','');
+INSERT INTO `language_text` VALUES ('eng', '_template','content_start','Start Content','2009-05-28 08:59:13','');
 INSERT INTO `language_text` VALUES ('eng', '_template','create_check','Create Check','2009-03-17 13:29:08','');
 INSERT INTO `language_text` VALUES ('eng', '_template','create_edit_check','Create/Edit Check','2009-03-18 09:42:26','');
 INSERT INTO `language_text` VALUES ('eng', '_template','create_edit_guideline','Create/Edit Guideline','2009-02-05 10:22:12','');
@@ -2870,10 +2872,10 @@ INSERT INTO `language_text` VALUES ('eng', '_template','has_unsaved_info','You h
 INSERT INTO `language_text` VALUES ('eng', '_template','hide_contents','Hide Contents','2009-01-28 15:28:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','how_to_determine','How To Determine','2008-11-24 14:25:44','');
 INSERT INTO `language_text` VALUES ('eng', '_template','how_to_repair','How To Repair','2008-11-24 14:25:44','');
-INSERT INTO `language_text` VALUES ('eng', '_template','html_tag','HTML Tag To Check','2009-01-21 12:38:17','');
+INSERT INTO `language_text` VALUES ('eng', '_template','html_tag','Element','2009-05-28 11:11:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','html_tag_list','HTML Tag List','2009-03-18 10:34:20','');
 INSERT INTO `language_text` VALUES ('eng', '_template','html_tag_text','Use lower case on html tag.','2009-03-18 10:16:17','');
-INSERT INTO `language_text` VALUES ('eng', '_template','html_validation_result','HTML Markup Validation Results','2008-11-24 14:12:25','');
+INSERT INTO `language_text` VALUES ('eng', '_template','html_validation_result','HTML Validation','2009-05-28 08:52:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','html_validator_disabled','HTML Validator is disabled. Enable it in \"Options\".','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','html_validator_provided_by','<strong>Note: Results are provided by http://validator.w3.org/</strong>','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','import','Import','2009-02-18 15:56:02','');
@@ -2958,6 +2960,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','register','Register','20
 INSERT INTO `language_text` VALUES ('eng', '_template','registration','Registration','2009-01-08 15:51:23','');
 INSERT INTO `language_text` VALUES ('eng', '_template','remove','Remove','2009-01-23 14:04:46','');
 INSERT INTO `language_text` VALUES ('eng', '_template','repair_example','Repair Example','2008-11-24 14:25:44','');
+INSERT INTO `language_text` VALUES ('eng', '_template','report_start','Start Report','2009-05-28 08:59:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','required_field','Required Field','2009-01-08 15:51:23','');
 INSERT INTO `language_text` VALUES ('eng', '_template','required_field_text','<div class=\"required\" title=\"Required Field\">*</div> indicates required fields.','2009-01-08 15:51:23','');
 INSERT INTO `language_text` VALUES ('eng', '_template','requirement','Requirement','2008-11-24 14:25:44','');
@@ -3012,6 +3015,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','valid_icons','\"valid\" 
 INSERT INTO `language_text` VALUES ('eng', '_template','valid_icons_text','To show your readers that you have taken the care to create a web page that applies to accessibility guideline, you may display this(these) icon(s) on the page that validates. Here is the HTML you could use to add the icon(s) to your web page:','2009-04-17 14:35:38','');
 INSERT INTO `language_text` VALUES ('eng', '_template','view','View','2009-01-20 11:47:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','view_guideline','View Guideline','2009-01-20 13:59:15','');
+INSERT INTO `language_text` VALUES ('eng', '_template','warning','Warning','2009-05-29 16:19:57','');
 INSERT INTO `language_text` VALUES ('eng', '_template','web_accessibility_checker','Web Accessibility Checker','2008-12-01 13:19:43','');
 INSERT INTO `language_text` VALUES ('eng', '_template','web_service_api','Web Service API','2009-03-13 11:56:12','');
 INSERT INTO `language_text` VALUES ('eng', '_template','web_service_id','Web Service ID','2009-03-04 13:48:23','');
