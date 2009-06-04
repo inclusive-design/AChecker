@@ -44,7 +44,7 @@ class AccessibilityValidator {
 	var $check_for_all_elements_array = array(); // array of the to-be-checked check_ids 
 	var $check_for_tag_array = array();          // array of the to-be-checked check_ids 
 	var $prerequisite_check_array = array();     // array of prerequisite check_ids of the to-be-checked check_ids 
-	var $next_check_array = array();             // array of the next check_ids of the to-be-checked check_ids
+//	var $next_check_array = array();             // array of the next check_ids of the to-be-checked check_ids
 	var $check_func_array = array();         // array of all the check functions 
 		
 	var $content_dom;                    // dom of $validate_content
@@ -165,14 +165,14 @@ class AccessibilityValidator {
 	 ...
 	 )
 
-	 next_check_array
-	 (
-	 [check_id] => Array
-	 (
-	 [0] => next_check_id 1
-	 [1] => next_check_id 2
-	 ...
-	 )
+//	 next_check_array
+//	 (
+//	 [check_id] => Array
+//	 (
+//	 [0] => next_check_id 1
+//	 [1] => next_check_id 2
+//	 ...
+//	 )
 	 ...
 	 )
 	 */
@@ -229,20 +229,20 @@ class AccessibilityValidator {
 			$this->prerequisite_check_array = $prerequisite_check_array;
 
 			// generate array of next check_ids
-			$rows = $checksDAO->getOpenNextChecksByGuidelineIDs($guideline_query);
-
-			if (is_array($rows))
-			{
-				foreach ($rows as $id => $row)
-				{
-					if ($row["check_id"] <> $prev_check_id)  $next_check_array[$row["check_id"]] = array();
-					
-					array_push($next_check_array[$row["check_id"]], $row["next_check_id"]);
-					
-					$prev_check_id = $row["check_id"];
-				}
-			}
-			$this->next_check_array = $next_check_array;
+//			$rows = $checksDAO->getOpenNextChecksByGuidelineIDs($guideline_query);
+//
+//			if (is_array($rows))
+//			{
+//				foreach ($rows as $id => $row)
+//				{
+//					if ($row["check_id"] <> $prev_check_id)  $next_check_array[$row["check_id"]] = array();
+//					
+//					array_push($next_check_array[$row["check_id"]], $row["next_check_id"]);
+//					
+//					$prev_check_id = $row["check_id"];
+//				}
+//			}
+//			$this->next_check_array = $next_check_array;
 //			debug($this->next_check_array);
 			return true;
 		}
@@ -289,14 +289,14 @@ class AccessibilityValidator {
 					$check_result = $this->check($e, $check_id);
 					
 					// if check_id passes, proceed with next checks
-					if ($check_result == SUCCESS_RESULT)
-					{
-						if (is_array($this->next_check_array[$check_id]))
-							foreach ($this->next_check_array[$check_id] as $next_check_id)
-							{
-								$this->check($e, $next_check_id);
-							}
-					}
+//					if ($check_result == SUCCESS_RESULT)
+//					{
+//						if (is_array($this->next_check_array[$check_id]))
+//							foreach ($this->next_check_array[$check_id] as $next_check_id)
+//							{
+//								$this->check($e, $next_check_id);
+//							}
+//					}
 				}
 			}
 			
