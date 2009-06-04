@@ -179,6 +179,10 @@ $text = '<h2>Edit Check Function</h2>
   <td>Only performs when <code>usemap</code> attribute in <code>img</code> element is on. Find whether there is a <code>map</code> element referred by the <code>usemap</code> attribute and each <code>area</code> element in the <code>map</code> contains a duplicate link in the document.</td>
 </tr>
 <tr>
+  <th align="left"><a href="#f_hasWindowOpenInScript">hasWindowOpenInScript()</a></th>
+  <td>Find whether window.open is contained in <code>script</code> element.</td>
+</tr>
+<tr>
   <th align="left"><a href="#f_htmlValidated">htmlValidated()</a></th>
   <td>Find whether the html markup language in the content is validated.</td>
 </tr>
@@ -715,6 +719,33 @@ Perform on the <code>img</code> element: <br/>'.htmlspecialchars('<p><map name="
 
 <p><img src="navigation.gif" usemap="#imagemap" alt="navigation"/></p>').'<br/>
 BasicFunctions::hasTextLinkEquivalents("usemap") returns true. 
+</pre>
+</li>
+  
+<li>
+<p><a name="f_hasWindowOpenInScript">hasWindowOpenInScript()</a></p>
+<p>Return true if window.open is contained in <code>script</code> element. Otherwise, return false.</p>
+<pre>
+Perform on the whole html content: <br/>'.
+htmlspecialchars('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />
+<title>ATRC Testfile - Check #275.1 - Positive</title>
+<script>
+window.onload = showAdvertisement;
+function showAdvertisement()
+{
+	window.open("275-2.html", "_blank", "height=200,width=150");
+}
+</script>
+
+</head>
+
+<body>
+<p>This page will open a new window upon loading as long as scripting is enabled.</p>
+</body>
+</html>').'<br/>
+BasicFunctions::hasWindowOpenInScript() returns true. 
 </pre>
 </li>
   

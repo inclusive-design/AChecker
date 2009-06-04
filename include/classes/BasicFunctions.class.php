@@ -783,6 +783,25 @@ class BasicFunctions {
 	} 
 	
 	/**
+	* check if window.onload is contained in tag "script".
+	* return true if has, otherwise, false
+	*/
+	public static function hasWindowOpenInScript()
+	{
+		global $global_content_dom;
+
+		$tags = $global_content_dom->find('script');
+		if (is_array($tags))
+		{
+			foreach ($tags as $tag)
+			{
+				if (stristr($tag->innertext, 'window.onload')) return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Check if the html document is validated 
 	 * return true if validated, otherwise, false
 	 */
