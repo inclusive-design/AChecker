@@ -137,6 +137,13 @@ if ($_POST["validate_file"])
 }
 // end of validating html
 
+$has_enough_memory = true;
+if (isset($validate_content) && !Utility::hasEnoughMemory(strlen($validate_content)))
+{
+	$msg->addError('NO_ENOUGH_MEMORY');
+	$has_enough_memory = false;
+}
+
 // display initial validation form: input URI or upload a html file 
 include ("checker_input_form.php");
 
@@ -148,7 +155,7 @@ if ($_POST["validate_uri"] || $_POST["validate_file"])
 
 	if ($_POST["validate_uri"]) $check_uri = $_POST['uri'];
 	
-	if (isset($validate_content))
+	if (isset($validate_content) && $has_enough_memory)
 	{
 		$aValidator = new AccessibilityValidator($validate_content, $_POST["gid"], $check_uri);
 		$aValidator->validate();

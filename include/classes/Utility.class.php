@@ -153,5 +153,37 @@ class Utility {
 		return $seals;
 	}
 	
+	/**
+	* Check if the free memory is big enough to process the given file size
+	* @access  public
+	* @param   $filesize : file size
+	* @return  true if enough, otherwise, return false
+	* @author  Cindy Qi Li
+	*/
+	public static function hasEnoughMemory($filesize)
+	{
+		$memory_limit = ini_get( 'memory_limit' );
+		if ($memory_limit != '')
+		{
+		    switch ( $memory_limit{strlen( $memory_limit ) - 1} )
+		    {
+		        case 'G':
+		            $memory_limit *= 1024;
+		        case 'M':
+		            $memory_limit *= 1024;
+		        case 'K':
+		            $memory_limit *= 1024;
+		    }
+		}
+		else
+			return true;
+		
+		$used_memory = memory_get_usage();
+		
+		if (($filesize * 157) > ($memory_limit - $used_memory))
+			return false;
+		else
+			return true;
+	}
 }
 ?>
