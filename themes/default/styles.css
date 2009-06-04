@@ -580,22 +580,22 @@ table.data.static tbody tr:hover {
 #errors{
 	border:thin #cccccc solid;
 	padding:1em;
-	white-space:nowrap;
+	line-height: 150%;
 }
 #likely_problems{
 	border:thin #cccccc solid;
 	padding:1em;
-	white-space:nowrap;
+	line-height: 150%;
 }
 #potential_problems{
 	border:thin #cccccc solid;
 	padding:1em;
-	white-space:nowrap;
+	line-height: 150%;
 }
 #html_validation_result{
 	width:95%;
 	border:thin #cccccc solid;
-	white-space:nowrap;
+	line-height: 150%;
 	padding:1em;
 }
 /* feedback /errors */
