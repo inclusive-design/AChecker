@@ -185,5 +185,29 @@ class Utility {
 		else
 			return true;
 	}
+
+	/**
+	* Sort $inArray in the order of the number presented in the field with name $fieldName
+	* @access  public
+	* @param   $inArray : input array
+	*          $fieldName : the name of the field to sort by
+	* @return  sorted array
+	* @author  Cindy Qi Li
+	*/
+	public static function sortArrayByNumInField($inArray, $fieldName)
+	{
+		if (is_array($inArray))
+		{
+			foreach ($inArray as $num => $element)
+			{
+				if (preg_match('/[^\d]*(\d*(\.)*(\d)*)[^\d]*/', $element[$fieldName], $matches))
+					$outArray[$matches[1]] = $element;
+			}
+			ksort($outArray);
+			return $outArray;
+		}
+		else
+			return $inArray;
+	}
 }
 ?>

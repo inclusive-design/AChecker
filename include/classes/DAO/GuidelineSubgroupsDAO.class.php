@@ -20,6 +20,7 @@
 if (!defined('AC_INCLUDE_PATH')) exit;
 
 require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
+require_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 
 class GuidelineSubgroupsDAO extends DAO {
 
@@ -255,7 +256,7 @@ class GuidelineSubgroupsDAO extends DAO {
                    AND l.language_code = '".$_SESSION['lang']."'
                  ORDER BY l.text";
 
-		return $this->execute($sql);
+		return Utility::sortArrayByNumInField($this->execute($sql), 'text');
 	}
 	
 	/**
