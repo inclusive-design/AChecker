@@ -200,8 +200,11 @@ class Utility {
 		{
 			foreach ($inArray as $num => $element)
 			{
-				if (preg_match('/[^\d]*(\d*(\.)*(\d)*(\.)*(\d)*)[^\d]*/', $element[$fieldName], $matches))
+				preg_match('/[^\d]*(\d*(\.)*(\d)*(\.)*(\d)*)[^\d]*/', $element[$fieldName], $matches);
+				if ($matches[1] <> '')
+				{
 					$outArray[$matches[1]] = $element;
+				}
 				else
 					$outArray[$num] = $element;
 			}
