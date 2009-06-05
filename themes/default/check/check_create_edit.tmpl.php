@@ -283,7 +283,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	</table>
 
 	<!-- section of displaying existing next checks -->
-	<br/>
+<!-- 	<br/>
 	<h2>
 		<?php echo _AC('next_checks');?>
 		<input type="button" name="add_next_checks" value="<?php echo _AC('add_next_checks'); ?>" 
@@ -327,7 +327,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		<tr><td colspan="4"><?php echo _AC('none_found'); ?></td></tr>
 	<?php }?>
 		</tbody>
-	</table>
+	</table> -->
 	</div>
 	<br/>
 
