@@ -200,8 +200,10 @@ class Utility {
 		{
 			foreach ($inArray as $num => $element)
 			{
-				if (preg_match('/[^\d]*(\d*(\.)*(\d)*)[^\d]*/', $element[$fieldName], $matches))
+				if (preg_match('/[^\d]*(\d*(\.)*(\d)*(\.)*(\d)*)[^\d]*/', $element[$fieldName], $matches))
 					$outArray[$matches[1]] = $element;
+				else
+					$outArray[$num] = $element;
 			}
 			ksort($outArray);
 			return $outArray;
