@@ -154,7 +154,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		</div>
 
 		<div>
-			<input size="60" type="text" name="search_phase" id="search_phase" value="<?php echo htmlspecialchars($stripslashes($_REQUEST['search_phase'])); ?>" /> 
+			<input size="60" type="text" name="search_phase" id="search_phase" value="<?php echo htmlspecialchars(stripslashes($_REQUEST['search_phase'])); ?>" /> 
 		</div>
 
 		<div>
@@ -182,7 +182,6 @@ function trans_form() {
 	global $success_error;
 	global $db;
 	global $addslashes;
-	global $stripslashes;
 
 	if (!is_array($rows_selected)) // add new term
 		$add_new = true;
@@ -198,7 +197,7 @@ function trans_form() {
 	<input type="hidden" name="lang_code" value="<?php echo $_REQUEST['lang_code']; ?>" />
 	<input type="hidden" name="new_or_translated" value="<?php echo $_REQUEST['new_or_translated']; ?>" />
 	<input type="hidden" name="term_type" value="<?php echo $_REQUEST['term_type']; ?>" />
-	<input type="hidden" name="search_phase" value="<?php echo htmlspecialchars($stripslashes($_REQUEST['search_phase'])); ?>" />
+	<input type="hidden" name="search_phase" value="<?php echo htmlspecialchars(stripslashes($_REQUEST['search_phase'])); ?>" />
 	<input type="hidden" name="variable" value="<?php echo $row_english['variable']; ?>" />
 	<input type="hidden" name="term" value="<?php echo $row_english['term']; ?>" />
 <?php if (isset($_REQUEST["submit"])) { ?>
@@ -216,21 +215,21 @@ function trans_form() {
 	<?php if ($row_english['context'] <> "") { ?>
 	<tr>
 		<td align="right"><b><?php echo _AC('english_context'); ?>:</b></td>
-		<td><?php echo htmlspecialchars($row_english['context']); ?></td>
+		<td><?php echo htmlspecialchars(stripslashes($row_english['context'])); ?></td>
 	</tr>
 	<tr>
 		<td align="right"><b><?php echo _AC('translated_context'); ?>:</b></td>
-		<td><input type="text" name="translated_context" class="input" value="<?php echo htmlspecialchars($row_selected['context']); ?>" size="45" /></td>
+		<td><input type="text" name="translated_context" class="input" value="<?php echo htmlspecialchars(stripslashes($row_selected['context'])); ?>" size="45" /></td>
 	</tr>
 	<?php } ?>
 
 	<tr>
 		<td valign="top" align="right" nowrap="nowrap"><b><?php echo _AC('english_text'); ?>:</b></td>
-		<td><?php echo nl2br(htmlspecialchars($row_english['text'])); ?></td>
+		<td><?php echo nl2br(htmlspecialchars(stripslashes($row_english['text']))); ?></td>
 	</tr>
 	<tr>
 		<td valign="top" align="right" nowrap="nowrap"><b><label for="translated_text"><?php echo _AC('translated_text'); ?></label>:</b></td>
-		<td><textarea rows="4" cols="75" name="translated_text" id="translated_text" class="input2"><?php echo htmlspecialchars($row_selected['text']);?></textarea></td>
+		<td><textarea rows="4" cols="75" name="translated_text" id="translated_text" class="input2"><?php echo htmlspecialchars(stripslashes($row_selected['text']));?></textarea></td>
 	</tr>
 	<tr>
 		<td colspan="2" align="center"><input type="submit" name="save" value="Save ALT-S" class="submit" accesskey="s" />
