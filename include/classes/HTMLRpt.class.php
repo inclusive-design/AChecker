@@ -21,6 +21,8 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserDecisionsDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/AccessibilityRpt.class.php');
 
+define("DISPLAY_PREVIEW_IMAGE_HEIGHT", 50);
+
 class HTMLRpt extends AccessibilityRpt {
 
 	// all private
@@ -41,6 +43,7 @@ class HTMLRpt extends AccessibilityRpt {
                title="{TITLE}" target="_new">{ERROR}</a>
          </span>
          <pre><code class="input">{HTML_CODE}</code></pre>
+         {IMAGE}
          <p class="helpwanted">
          </p>
          {REPAIR}
@@ -48,6 +51,10 @@ class HTMLRpt extends AccessibilityRpt {
        </li>
 ';
 
+	var $html_image = 
+'<img src="{SRC}" height="{HEIGHT}" />
+';
+	
 	var $html_repair = 
 '         <span style="font-weight:bold">Repair: </span>{REPAIR_DETAIL}
 ';
@@ -164,19 +171,19 @@ class HTMLRpt extends AccessibilityRpt {
 			{ // no decision to make on known problems
 				$this->num_of_errors++;
 				
-				$this->rpt_errors .= $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_ERROR);
+				$this->rpt_errors .= $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $error["image"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_ERROR);
 			}
 			else if ($row["confidence"] == LIKELY)
 			{
 				$this->num_of_likely_problems++;
 				if ($this->allow_set_decision == 'false' && !($this->from_referer == 'true' && $this->user_link_id > 0))
 				{
-					$this->rpt_likely_problems .= $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_WARNING);
+					$this->rpt_likely_problems .= $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $error["image"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_WARNING);
 					$this->num_of_likely_problems_fail++;
 				}
 				else
 				{
-					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"], IS_WARNING);
+					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"], $error['image'], IS_WARNING);
 				}
 			}
 			else if ($row["confidence"] == POTENTIAL)
@@ -184,12 +191,12 @@ class HTMLRpt extends AccessibilityRpt {
 				$this->num_of_potential_problems++;
 				if ($this->allow_set_decision == 'false' && !($this->from_referer == 'true' && $this->user_link_id > 0))
 				{
-					$this->rpt_potential_problems .= $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_INFO);
+					$this->rpt_potential_problems .= $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $error["image"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_INFO);
 					$this->num_of_potential_problems_fail++;
 				}
 				else
 				{
-					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"], IS_INFO);
+					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"], $error["image"], IS_INFO);
 				}
 			}
 		}
@@ -223,7 +230,7 @@ class HTMLRpt extends AccessibilityRpt {
 	* $html_tag: html tag that the error happens
 	* $error_type: IS_WARNING or IS_INFO
 	*/
-	private function generate_cell_with_decision($check_row, $line_number, $col_number, $html_code, $error_type)
+	private function generate_cell_with_decision($check_row, $line_number, $col_number, $html_code, $image, $error_type)
 	{
 		// generate decision section
 		$userDecisionsDAO = new UserDecisionsDAO();
@@ -258,7 +265,7 @@ class HTMLRpt extends AccessibilityRpt {
 				                                $this->html_decision_not_made);
 			}                                
 			// generate problem section
-			$problem_section = $this->generate_problem_section($check_row['check_id'], $line_number, $col_number, $html_code, _AC($check_row['err']), _AC($check_row['how_to_repair']), $decision_section, $error_type);
+			$problem_section = $this->generate_problem_section($check_row['check_id'], $line_number, $col_number, $html_code, $image, _AC($check_row['err']), _AC($check_row['how_to_repair']), $decision_section, $error_type);
 			
 			if ($error_type == IS_WARNING) $this->rpt_likely_decision_not_made .= $problem_section;
 			if ($error_type == IS_INFO) $this->rpt_potential_decision_not_made .= $problem_section;
@@ -296,7 +303,7 @@ class HTMLRpt extends AccessibilityRpt {
 			                                 $this->html_decision_made);
 			
 			// generate problem section
-			$problem_section = $this->generate_problem_section($check_row['check_id'], $line_number, $col_number, $html_code, _AC($check_row['err']), _AC($check_row['how_to_repair']), $decision_section, $error_type);
+			$problem_section = $this->generate_problem_section($check_row['check_id'], $line_number, $col_number, $html_code, $image, _AC($check_row['err']), _AC($check_row['how_to_repair']), $decision_section, $error_type);
 			
 			if ($error_type == IS_WARNING) $this->rpt_likely_decision_made .= $problem_section;
 			if ($error_type == IS_INFO) $this->rpt_potential_decision_made .= $problem_section;
@@ -314,7 +321,7 @@ class HTMLRpt extends AccessibilityRpt {
 	* $html_tag: html tag that the error happens
 	* $description: error description
 	*/
-	private function generate_problem_section($check_id, $line_number, $col_number, $html_code, $error, $repair, $decision, $error_type)
+	private function generate_problem_section($check_id, $line_number, $col_number, $html_code, $image, $error, $repair, $decision, $error_type)
 	{
 		if ($this->show_source == 'true')
 		{
@@ -346,6 +353,13 @@ class HTMLRpt extends AccessibilityRpt {
 			
 		// generate repair string
 		if ($repair <> '') $html_repair = str_replace('{REPAIR_DETAIL}', $repair, $this->html_repair);
+		if ($image <> '') 
+		{
+			$dimensions = getimagesize($image);
+			if ($dimensions[1] > DISPLAY_PREVIEW_IMAGE_HEIGHT) $height = DISPLAY_PREVIEW_IMAGE_HEIGHT;
+			else $height = $dimensions[1];
+			$html_image = str_replace(array("{SRC}", "{HEIGHT}"), array($image, $height), $this->html_image);
+		}
 		
 		return str_replace(array("{MSG_TYPE}", 
 		                         "{IMG_SRC}", 
@@ -357,6 +371,7 @@ class HTMLRpt extends AccessibilityRpt {
 		                         "{BASE_HREF}", 
 		                         "{CHECK_ID}", 
 		                         "{TITLE}",
+		                         "{IMAGE}",
 		                         "{REPAIR}",
 		                         "{DECISION}"),
 		                   array($msg_type, 
@@ -369,6 +384,7 @@ class HTMLRpt extends AccessibilityRpt {
 		                         AC_BASE_HREF, 
 		                         $check_id, 
 		                         _AC("suggest_improvements"),
+		                         $html_image,
 		                         $html_repair,
 		                         $decision),
 		                   $this->html_problem);

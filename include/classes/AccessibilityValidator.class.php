@@ -22,12 +22,14 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
 include (AC_INCLUDE_PATH . "lib/simple_html_dom.php");
 include_once (AC_INCLUDE_PATH . "classes/Checks.class.php");
+include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicFunctions.class.php");
 include_once (AC_INCLUDE_PATH . "classes/CheckFuncUtility.class.php");
 include_once (AC_INCLUDE_PATH . "classes/DAO/ChecksDAO.class.php");
 
 define("SUCCESS_RESULT", "success");
 define("FAIL_RESULT", "fail");
+define("DISPLAY_PREVIEW_HTML_LENGTH", 100);
 
 class AccessibilityValidator {
 
@@ -315,7 +317,7 @@ class AccessibilityValidator {
 	 */
 	private function check($e, $check_id)
 	{
-		global $msg;
+		global $msg, $base_href;
 		
 		// don't check the lines before $line_offset
 		if ($e->linenumber <= $this->line_offset) return;
@@ -326,14 +328,13 @@ class AccessibilityValidator {
 		if (!$result)
 		{
 			// run function for $check_id
-//			eval("\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom);");
 			$check_result = eval($this->check_func_array[$check_id]);
 			
+			$checksDAO = new ChecksDAO();
+			$row = $checksDAO->getCheckByID($check_id);
 			if (is_null($check_result))
 			{ // when $check_result is not true/false, must be something wrong with the check function.
 			  // show warning message and skip this check
-				$checksDAO = new ChecksDAO();
-				$row = $checksDAO->getCheckByID($check_id);
 				$msg->addError(array('CHECK_FUNC', $row['html_tag'].': '._AC($row['name'])));
 				
 				// skip this check
@@ -349,21 +350,32 @@ class AccessibilityValidator {
 				$result = FAIL_RESULT;
 			}
 
-			// find out checked html tag code
-			// http://www.atutor.ca/atutor/mantis/view.php?id=3768
-			// http://www.atutor.ca/atutor/mantis/view.php?id=3797
-			// Display not only the start tag, but a substring from start tag to end tag.
-			// Displaying checked html is in HTMLRpt.class.php
-			if (strlen($e->outertext) > 100) 
-				$html_code = substr($e->outertext, 0, 100) . " ...";
-			else 
-				$html_code = $e->outertext;
-//			else
-//				$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
-
 			// minus out the $line_offset from $linenumber 
 			if ($result == FAIL_RESULT)
-				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result);
+			{
+				// find out checked html code
+				// http://www.atutor.ca/atutor/mantis/view.php?id=3768
+				// http://www.atutor.ca/atutor/mantis/view.php?id=3797
+				// Display not only the start tag, but a substring from start tag to end tag.
+				// Displaying checked html is in HTMLRpt.class.php
+				if (strlen($e->outertext) > DISPLAY_PREVIEW_HTML_LENGTH) 
+					$html_code = substr($e->outertext, 0, DISPLAY_PREVIEW_HTML_LENGTH) . " ...";
+				else 
+					$html_code = $e->outertext;
+//				else
+//					$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
+
+				if (strtolower(trim($row['html_tag'])) == 'img')
+				{
+					$image = BasicChecks::getFile($e->attr['src'], $base_href, $this->uri);
+				    $handle = @fopen($image, 'r');
+				
+				    if (!$handle) $image = '';
+				    else @fclose($handle);
+				}
+				
+				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result, $image);
+			}
 		}
 		
 		return $result;
@@ -395,9 +407,9 @@ class AccessibilityValidator {
 	 * $check_id: check id
 	 * $result: result to save
 	 */
-	private function save_result($line_number, $col_number, $html_code, $check_id, $result)
+	private function save_result($line_number, $col_number, $html_code, $check_id, $result, $image)
 	{
-		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result));
+		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result, "image"=>$image));
 		
 		return true;
 	}
