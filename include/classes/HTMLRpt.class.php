@@ -341,8 +341,8 @@ class HTMLRpt extends AccessibilityRpt {
 		}
 		
 		// only display first 100 chars of $html_code
-		if (strlen($html_code) > 100)
-			$html_code = substr($html_code, 0, 100) . " ...";
+//		if (strlen($html_code) > 100)
+//			$html_code = substr($html_code, 0, 100) . " ...";
 			
 		// generate repair string
 		if ($repair <> '') $html_repair = str_replace('{REPAIR_DETAIL}', $repair, $this->html_repair);

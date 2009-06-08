@@ -351,11 +351,15 @@ class AccessibilityValidator {
 
 			// find out checked html tag code
 			// http://www.atutor.ca/atutor/mantis/view.php?id=3768
-			// Display link text with Check 19 to make it easier to make decisions
-			if($check_id == 19) 
+			// http://www.atutor.ca/atutor/mantis/view.php?id=3797
+			// Display not only the start tag, but a substring from start tag to end tag.
+			// Displaying checked html is in HTMLRpt.class.php
+			if (strlen($e->outertext) > 100) 
+				$html_code = substr($e->outertext, 0, 100) . " ...";
+			else 
 				$html_code = $e->outertext;
-			else
-				$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
+//			else
+//				$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
 
 			// minus out the $line_offset from $linenumber 
 			if ($result == FAIL_RESULT)
