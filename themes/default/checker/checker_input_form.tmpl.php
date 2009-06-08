@@ -22,18 +22,18 @@ if (isset($this->error)) echo $this->error;
 
 	<div class="left-col" style="float:left;clear:left;"><br />
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("input"); ?></legend>
-		<div style="width:80%; margin-left:auto;margin-right:auto;">
-			<div><h2 style="width:60%;margin-left:auto;margin-right:auto;"><label for="checkuri"><?php echo _AC("check_by_uri"); ?></label></h2></div>
-			<div>
-			<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $this->default_uri_value; ?>" size="50" />
-			<p class="submit_button">
+
+			<div  style="text-align:center;"><h2><label for="checkuri"><?php echo _AC("check_by_uri"); ?></label></h2></div>
+			<div style="margin-left:auto;margin-right:auto;text-align:center;">
+			<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $this->default_uri_value; ?>" size="50"   />
+			<p class="submit_button"  style="text-align:center;">
 				<input type="submit" name="validate_uri" size="100" value="<?php echo _AC("check_it"); ?>" onclick="return validate_this_uri();" class="submit"/>
 			</p>
 			</div>
 
-			<div><h2 style="width:60%;margin-left:auto;margin-right:auto;"><label for="checkfile"><?php echo _AC("check_by_upload"); ?></label></h2></div>
+			<div style="text-align:center;"><h2><label for="checkfile"><?php echo _AC("check_by_upload"); ?></label></h2></div>
 
-			<div>
+			<div  style="text-align:center;">
 			<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
 			<input type="file" id="checkfile" name="uploadfile" size="47" />
 		
@@ -41,7 +41,7 @@ if (isset($this->error)) echo $this->error;
 				<input type="submit" name="validate_file" value="<?php echo _AC("check_it"); ?>" onclick="return validate_filename();" class="submit" />
 			</p>
 			</div>
-		</div>
+
 		<div>
 			<h2 align="left">
 				<img src="images/arrow-closed.png" alt="<?php echo _AC("expand_guidelines"); ?>" title="<?php echo _AC("expand_guidelines"); ?>" id="toggle_image" border="0" />
