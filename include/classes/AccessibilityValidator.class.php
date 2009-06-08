@@ -320,11 +320,11 @@ class AccessibilityValidator {
 		// don't check the lines before $line_offset
 		if ($e->linenumber <= $this->line_offset) return;
 		
-//		$result = $this->get_check_result($e->linenumber-$this->line_offset, $e->colnumber, $check_id);
+		$result = $this->get_check_result($e->linenumber-$this->line_offset, $e->colnumber, $check_id);
 
 		// has not been checked
-//		if (!$result)
-//		{
+		if (!$result)
+		{
 			// run function for $check_id
 //			eval("\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom);");
 			$check_result = eval($this->check_func_array[$check_id]);
@@ -360,7 +360,7 @@ class AccessibilityValidator {
 			// minus out the $line_offset from $linenumber 
 			if ($result == FAIL_RESULT)
 				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result);
-//		}
+		}
 		
 		return $result;
 	}
@@ -372,16 +372,16 @@ class AccessibilityValidator {
 	 * $line_number: line number in the content for this check
 	 * $check_id: check id
 	 */
-//	private function get_check_result($line_number, $col_number, $check_id)
-//	{
-//		foreach($this->result as $one_result)
-//		{
-//			if ($one_result["line_number"] == $line_number && $one_result["col_number"] == $col_number && $one_result["check_id"] == $check_id)
-//				return $one_result["result"];
-//		}
-//		
-//		return false;
-//	}
+	private function get_check_result($line_number, $col_number, $check_id)
+	{
+		foreach($this->result as $one_result)
+		{
+			if ($one_result["line_number"] == $line_number && $one_result["col_number"] == $col_number && $one_result["check_id"] == $check_id)
+				return $one_result["result"];
+		}
+		
+		return false;
+	}
 
 	/**
 	 * private
