@@ -180,7 +180,7 @@ class Utility {
 		
 		$used_memory = memory_get_usage();
 		
-		if (($filesize * 157) > ($memory_limit - $used_memory))
+		if (($filesize * 160) > ($memory_limit - $used_memory))
 			return false;
 		else
 			return true;

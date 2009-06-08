@@ -365,6 +365,7 @@ class AccessibilityValidator {
 //				else
 //					$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
 
+				// find out preview images for validation on <img>
 				if (strtolower(trim($row['html_tag'])) == 'img')
 				{
 					$image = BasicChecks::getFile($e->attr['src'], $base_href, $this->uri);
@@ -372,9 +373,14 @@ class AccessibilityValidator {
 				
 				    if (!$handle) $image = '';
 				    else @fclose($handle);
+				    
+				    // find out image alt text for preview image
+				    if (!isset($e->attr['alt'])) $image_alt = '_NOT_DEFINED';
+				    else if ($e->attr['alt'] == '') $image_alt = '_EMPTY';
+				    else $image_alt = $e->attr['alt'];
 				}
 				
-				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result, $image);
+				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result, $image, $image_alt);
 			}
 		}
 		
@@ -407,9 +413,9 @@ class AccessibilityValidator {
 	 * $check_id: check id
 	 * $result: result to save
 	 */
-	private function save_result($line_number, $col_number, $html_code, $check_id, $result, $image)
+	private function save_result($line_number, $col_number, $html_code, $check_id, $result, $image, $image_alt)
 	{
-		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result, "image"=>$image));
+		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result, "image"=>$image, "image_alt"=>$image_alt));
 		
 		return true;
 	}
