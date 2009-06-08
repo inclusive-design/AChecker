@@ -134,6 +134,10 @@ function initial()
 
 		// highlight tab "errors"
 		document.getElementById("menu_errors").className = 'active';
+
+		// hide button "make decision" as tab "errors" are selected
+		eButtonMakeDecision = document.getElementById('make_decision');
+		if (eButtonMakeDecision != null) eButtonMakeDecision.style.display = 'none';
 	}
 	else if (div_error == null)
 		document.input_form.uri.focus();

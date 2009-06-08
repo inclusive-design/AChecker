@@ -208,13 +208,18 @@ function showDiv(divName)
 	}
 
 	// hide button "make decision" when "known problems" tab is selected
-	if (divName == "errors")
+	eButtonMakeDecision = document.getElementById('make_decision');
+
+	if (eButtonMakeDecision != null)
 	{
-		document.getElementById('make_decision').style.display = 'none';
-	}
-	else	
-	{
-		document.getElementById('make_decision').style.display = 'block';
+		if (divName == "errors")
+		{
+			eButtonMakeDecision.style.display = 'none';
+		}
+		else	
+		{
+			eButtonMakeDecision.style.display = 'block';
+		}
 	}
 }
 //-->
