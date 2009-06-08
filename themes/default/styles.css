@@ -578,24 +578,24 @@ table.data.static tbody tr:hover {
 
 /* report styles */
 #errors{
-	border:thin #cccccc solid;
-	padding:1em;
-	white-space:nowrap;
-}
-#likely_problems{
-	border:thin #cccccc solid;
-	padding:1em;
-	white-space:nowrap;
-}
-#potential_problems{
-	border:thin #cccccc solid;
-	padding:1em;
-	white-space:nowrap;
-}
-#html_validation_result{
 	width:95%;
 	border:thin #cccccc solid;
-	white-space:nowrap;
+	padding:1em;
+}
+#likely_problems{
+	width:95%;
+	border:thin #cccccc solid;
+	padding:1em;
+}
+#potential_problems{
+	width:95%;
+	border:thin #cccccc solid;
+	padding:1em;
+}
+#html_validation_result{
+        white-space:nowrap;
+	width:95%;
+	border:thin #cccccc solid;
 	padding:1em;
 }
 /* feedback /errors */
