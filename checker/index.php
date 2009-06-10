@@ -135,6 +135,13 @@ if ($_POST["validate_file"])
 	if (isset($_POST["show_source"]))
 		$source_array = file($_FILES['uploadfile']['tmp_name']);
 }
+
+if ($_POST["validate_content"] && $_POST["validate_content"] <> '')
+{
+	$validate_content = $_POST["validate_content"];
+	if (isset($_POST["show_source"]))
+		$source_array = explode("\n", $_POST["validate_content"]);
+}
 // end of validating html
 
 $has_enough_memory = true;
@@ -148,7 +155,7 @@ if (isset($validate_content) && !Utility::hasEnoughMemory(strlen($validate_conte
 include ("checker_input_form.php");
 
 // validation and display result
-if ($_POST["validate_uri"] || $_POST["validate_file"])
+if ($_POST["validate_uri"] || $_POST["validate_file"] || $_POST["validate_content"])
 {
 	// check accessibility
 	include(AC_INCLUDE_PATH. "classes/AccessibilityValidator.class.php");
