@@ -136,7 +136,10 @@ class AccessibilityValidator {
 		$dom = str_get_dom($content);
 		
 		if (count($dom->find('html')) == 0)
-			$dom = str_get_dom("<html>".$content."</html>");
+		{
+			$dom = str_get_dom("<html>\n".$content."\n</html>");
+			$this->line_offset += 1;
+		}
 			
 		return $dom;
 	}
