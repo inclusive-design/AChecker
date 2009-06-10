@@ -17,6 +17,9 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 if (isset($this->error)) echo $this->error;
 ?>
+<table style="width:100%">
+<tr>
+<td>
 <div class="center-input-form">
 <form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 
@@ -115,6 +118,9 @@ if (is_array($this->rows))
 </div>
 
 </div>
+</td>
+</tr>
+</table>
 
 <script type="text/JavaScript">
 <!--
