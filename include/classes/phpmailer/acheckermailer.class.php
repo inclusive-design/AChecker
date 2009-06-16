@@ -3,7 +3,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
+/* Adaptive Technology Resource Centre / University of Toronto          */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -69,7 +69,7 @@ class ACheckerMailer extends PHPMailer {
 		$this->Body .= 	"\n\n".'----------------------------------------------'."\n";
 		$this->Body .= _AC('sent_via_achecker', AC_BASE_HREF);
 
-		$this->Body .= "\n"._AC('achecker_home').': http://atutor.ca';
+		$this->Body .= "\n"._AC('achecker_home').': http://achecker.ca';
 
 		// if this email has been queued then don't send it. instead insert it in the db
 		// for each bcc or to or cc

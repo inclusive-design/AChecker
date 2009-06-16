@@ -15,7 +15,7 @@ if (!defined('AC_INCLUDE_PATH')) { exit; }
  * $this->lang_code			the ISO language code
  * SITE_NAME				the site name from the config file
  * $this->page_title		the name of this page to use in the <title>
- * top_level_pages           array(array('url', 'title'))     the top level pages. ATutor default creates tabs.
+ * top_level_pages           array(array('url', 'title'))     the top level pages. AChecker default creates tabs.
  * current_top_level_page    string                           full url to the current top level page in "top_leve_pages"
  * path                      array(array('url', 'title'))     the breadcrumb path to the current page.
  * sub_menus                 array(array('url', 'title'))     the sub level menus.
@@ -24,7 +24,7 @@ if (!defined('AC_INCLUDE_PATH')) { exit; }
  * page_title                string                           the title of the current page.
  * user_name                 string                           name of login user
  * $this->lang_charset		the ISO language character set
- * $this->base_path			the absolute path to this atutor installation
+ * $this->base_path			the absolute path to this achecker installation
  * $this->theme				the directory name of the current theme
  * $this->img				the theme image
  * $this->custom_head		the custom head script used in <head> section
@@ -34,7 +34,7 @@ if (!defined('AC_INCLUDE_PATH')) { exit; }
  * $this->rtl_css			if set, the path to the RTL style sheet
  * $this->icon			the path to a course icon
  * $this->banner_style		-deprecated-
- * $this->base_href			the full url to this atutor installation
+ * $this->base_href			the full url to this achecker installation
  * $this->onload			javascript onload() calls
  * $this->img				the absolute path to this theme's images/ directory
  * $this->sequence_links	associative array of 'previous', 'next', and/or 'resume' links

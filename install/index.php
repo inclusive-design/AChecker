@@ -3,7 +3,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
+/* Adaptive Technology Resource Centre / University of Toronto          */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -36,7 +36,7 @@ $no_good = FALSE;
 $not_as_good = FALSE;
 ?>
 <h3>Welcome to the AChecker Installation</h3>
-<p>This process will step you through your AChecker installation.</p>
+<p>This process will step you through your AChecker installation or upgrade.</p>
 <p>During this process be sure not to use your browser's <em>Refresh</em> or <em>Reload</em> feature as it may complicate the installation process.</p>
 
 <h4>Requirements</h4>
@@ -272,7 +272,7 @@ $not_as_good = FALSE;
 		</form></td>
 	</tr>
 	</table>
-	<!--
+	
 	<table cellspacing="0" cellpadding="10" align="center" width="45%">
 	<tr>
 		<td align="center"><b>Or</b></td>
@@ -287,7 +287,7 @@ $not_as_good = FALSE;
 		</form></td>
 	</tr>
 	</table>
-	//-->
+	
 <?php endif; ?>
 
 <?php require(AC_INCLUDE_PATH.'footer.inc.php'); ?>

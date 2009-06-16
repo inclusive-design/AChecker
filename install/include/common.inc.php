@@ -3,7 +3,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto			    */
+/* Adaptive Technology Resource Centre / University of Toronto          */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -13,7 +13,7 @@
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 error_reporting(E_ALL ^ E_NOTICE);
 
-/* atutor default configuration options */
+/* achecker default configuration options */
 /* used on: step3.php, step4.php, step5.php */
 $_defaults['admin_username'] = 'admin';
 $_defaults['admin_password'] = '';

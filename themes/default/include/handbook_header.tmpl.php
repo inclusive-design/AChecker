@@ -15,7 +15,7 @@
 <html lang="<?php echo DEFAULT_LANGUAGE_CODE; ?>">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title><?php _AC('atutor_documentation'); ?></title>
+	<title><?php _AC('achecker_documentation'); ?></title>
 	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/handbook_styles.css" type="text/css" />
 </head>
 
