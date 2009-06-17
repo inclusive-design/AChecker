@@ -71,57 +71,83 @@ if (isset($errors)) {
 	print_errors($errors);
 }
 
-$defaults = $_defaults;
-$blurb = '';
+if (isset($_POST['step1']['old_version'])) 
+{
+	//get real path to old content
 
-// the following code checks to see if get.php is being executed, then sets $_POST['get_file'] appropriately:
-$headers = array();
-$path  = substr($_SERVER['PHP_SELF'], 0, -strlen('install/install.php')) . 'get.php/?test';
-$port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
+	$old_install   = realpath('../../' . DIRECTORY_SEPARATOR . $_POST['step1']['old_path']);
+	$old_config_cd = urldecode($_POST['step1']['content_dir']); // this path may not exist
+	$new_install   = realpath('../');
 
-$host = parse_url($_SERVER['HTTP_HOST']);
+	$path_info = pathinfo($old_config_cd);
+	$content_dir_name = $path_info['basename'];
 
-if (isset($host['path'])) {
-	$host = $host['path'];
-} else if (isset($host['host'])) {
-	$host = $host['host'];
-} else {
-	$_SERVER['HTTP_HOST'];
+	if ($new_install . DIRECTORY_SEPARATOR . $content_dir_name . DIRECTORY_SEPARATOR == $old_config_cd) {
+		// case 2
+		$copy_from     = $old_install . DIRECTORY_SEPARATOR . $content_dir_name;
+	} else {
+		// case 3 + 4
+		// it's outside
+		$copy_from = '';
+	}
+
+	$_defaults['content_dir'] = $old_config_cd;
+
 }
-if ($port == 443) {
-	// if we're using SSL, but don't know if support is compiled into PHP:
-	$fd = @fopen('https://'.$host.$path, 'rb');
-	print('https://'.$host.$path);
-	if ($fd === false) {
-		$content = false;
-	} else {
-		$content = @fread($fd, filesize($filename));
-		@fclose($fd);
-	}
-
-	if (strlen($content) == 0) {
-		$headers[] = 'AChecker-Get: OK';
-	} else {
-		$headers[] = '';
-	}
-} else {
-	$fp   = @fsockopen($host, $port, $errno, $errstr, 15);
+else
+{
+	$defaults = $_defaults;
+	$blurb = '';
 	
-	if($fp) {
-		$head = 'HEAD '.@$path. " HTTP/1.0\r\nHost: ".@$host."\r\n\r\n";
-		fputs($fp, $head);
-		while(!feof($fp)) {
-			if ($header = trim(fgets($fp, 1024))) {
-				$headers[] = $header;
+	// the following code checks to see if get.php is being executed, then sets $_POST['get_file'] appropriately:
+	$headers = array();
+	$path  = substr($_SERVER['PHP_SELF'], 0, -strlen('install/install.php')) . 'get.php/?test';
+	$port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
+	
+	$host = parse_url($_SERVER['HTTP_HOST']);
+	
+	if (isset($host['path'])) {
+		$host = $host['path'];
+	} else if (isset($host['host'])) {
+		$host = $host['host'];
+	} else {
+		$_SERVER['HTTP_HOST'];
+	}
+	if ($port == 443) {
+		// if we're using SSL, but don't know if support is compiled into PHP:
+		$fd = @fopen('https://'.$host.$path, 'rb');
+		print('https://'.$host.$path);
+		if ($fd === false) {
+			$content = false;
+		} else {
+			$content = @fread($fd, filesize($filename));
+			@fclose($fd);
+		}
+	
+		if (strlen($content) == 0) {
+			$headers[] = 'AChecker-Get: OK';
+		} else {
+			$headers[] = '';
+		}
+	} else {
+		$fp   = @fsockopen($host, $port, $errno, $errstr, 15);
+		
+		if($fp) {
+			$head = 'HEAD '.@$path. " HTTP/1.0\r\nHost: ".@$host."\r\n\r\n";
+			fputs($fp, $head);
+			while(!feof($fp)) {
+				if ($header = trim(fgets($fp, 1024))) {
+					$headers[] = $header;
+				}
 			}
 		}
 	}
-}
-
-if (in_array('AChecker-Get: OK', $headers)) {
-	$get_file = 'TRUE';
-} else {
-	$get_file = 'FALSE';
+	
+	if (in_array('AChecker-Get: OK', $headers)) {
+		$get_file = 'TRUE';
+	} else {
+		$get_file = 'FALSE';
+	}
 }
 
 ?>
@@ -132,7 +158,14 @@ if (in_array('AChecker-Get: OK', $headers)) {
 	<input type="hidden" name="get_file" value="<?php echo $get_file; ?>" />
 	<?php print_hidden($step); ?>
 
-<?php if ($get_file == 'FALSE') : ?>
+<?php if (isset($_POST['step1']['old_version'])) : ?>
+	<input type="hidden" name="content_dir" value="<?php echo $_defaults['content_dir']; ?>" />
+	<table width="80%" class="tableborder" cellspacing="0" cellpadding="1" align="center">	
+	<tr>
+		<td class="row1">The temporary directory at <strong><?php echo $_defaults['content_dir']; ?> </strong> will be used for this installation. Please create it if it does not already exist.</td>
+	</tr>
+	</table>
+<?php elseif ($get_file == 'FALSE') : ?>
 	<input type="hidden" name="content_dir" value="<?php if (!empty($_POST['content_dir'])) { echo $_POST['content_dir']; } else { echo $_defaults['content_dir']; } ?>" />
 
 	<table width="80%" class="tableborder" cellspacing="0" cellpadding="1" align="center">	

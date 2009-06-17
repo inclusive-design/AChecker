@@ -26,12 +26,8 @@ $_defaults['home_url'] = '';
 
 $_defaults['email_notification'] = 'TRUE';
 $_defaults['email_confirmation'] = 'TRUE';
-$_defaults['allow_instructor_requests'] = 'TRUE';
-$_defaults['auto_approve_instructors'] = 'FALSE';
 
 $_defaults['max_file_size'] = '1048576';
-$_defaults['max_course_size'] = '10485760';
-$_defaults['max_course_float'] = '2097152';
 $_defaults['ill_ext'] = 'exe, asp, php, php3, bat, cgi, pl, com, vbs, reg, pcd, pif, scr, bas, inf, vb, vbe, wsc, wsf, wsh';
 $_defaults['cache_dir'] = '';
 

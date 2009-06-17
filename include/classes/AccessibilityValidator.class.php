@@ -21,7 +21,6 @@
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
 include (AC_INCLUDE_PATH . "lib/simple_html_dom.php");
-include_once (AC_INCLUDE_PATH . "classes/Checks.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicFunctions.class.php");
 include_once (AC_INCLUDE_PATH . "classes/CheckFuncUtility.class.php");
@@ -88,7 +87,7 @@ class AccessibilityValidator {
 	}
 	
 	/** private
-	 * set global vars used in Checks.class.php and BasicFunctions.class.php
+	 * set global vars used in BasicChecks.class.php and BasicFunctions.class.php
 	 * to fasten the validation process.
 	 * return nothing.
 	 */

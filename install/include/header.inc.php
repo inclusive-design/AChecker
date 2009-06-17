@@ -42,5 +42,7 @@ $install_steps[7] = array('name' => 'Done!');
 <body>
 <div style="height: 70px; vertical-align: bottom; background-color: #354A81">
 	<h1 id="header">AChecker <?php echo $new_version; ?> Installation</h1>
+	<img src="../images/header_logo_checker.gif" height="29" width="84" alt="AChecher Logo" id="logo" />
 </div>
+<div style="clear: all"></div>
 <div class="content">

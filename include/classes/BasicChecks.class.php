@@ -11,9 +11,9 @@
 /************************************************************************/
 
 /**
-* Basic Checks.class.php
+* BasicChecks.class.php
 * Class for accessibility validate
-* This class contains basic functions called by Checks.class.php
+* This class contains basic functions called by BasicFunctions.class.php
 *
 * @access	public
 * @author	Cindy Qi Li
