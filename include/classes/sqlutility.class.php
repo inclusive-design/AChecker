@@ -173,7 +173,9 @@ class SqlUtility
 	
 			if ($prefixed_query != false ) {
                 $table = $table_prefix.$prefixed_query[4];
-                if($prefixed_query[1] == 'CREATE TABLE'){
+                $prefixed_query[1] = strtoupper($prefixed_query[1]);
+                
+                if(strtoupper($prefixed_query[1]) == 'CREATE TABLE'){
                     if ($dao->execute($prefixed_query[0]) !== false) {
 						$progress[] = 'Table <b>'.$table . '</b> created successfully.';
                     } else {
@@ -184,12 +186,11 @@ class SqlUtility
 						}
                     }
                 }
-                elseif($prefixed_query[1] == 'INSERT INTO'){
+                elseif($prefixed_query[1] == 'INSERT INTO' ||
+                       $prefixed_query[1] == 'ALTER TABLE' ||
+                       $prefixed_query[1] == 'DROP TABLE' ||
+                       $prefixed_query[1] == 'UPDATE'){
 					$dao->execute($prefixed_query[0]);
-                }elseif($prefixed_query[1] == 'ALTER TABLE'){
-                    $dao->execute($prefixed_query[0]);
-                }elseif($prefixed_query[1] == 'DROP TABLE'){
-                    $dao->execute($prefixed_query[1] . ' ' .$table);
                 }
             }
 		}

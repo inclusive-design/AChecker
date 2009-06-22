@@ -164,6 +164,96 @@ CREATE TABLE `mail_queue` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
+# Table structure for table `patches`
+# since 1.1
+
+CREATE TABLE `patches` (
+	`patches_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`achecker_patch_id` VARCHAR(20) NOT NULL default '',
+	`applied_version` VARCHAR(10) NOT NULL default '',
+	`patch_folder` VARCHAR(250) NOT NULL default '',
+  `description` TEXT NOT NULL,
+	`available_to` VARCHAR(250) NOT NULL default '',
+  `sql_statement` text NOT NULL,
+  `status` varchar(20) NOT NULL default '',
+  `remove_permission_files` text NOT NULL,
+  `backup_files` text NOT NULL,
+  `patch_files` text NOT NULL,
+  `author` VARCHAR(255) NOT NULL,
+  `installed_date` datetime NOT NULL,
+	PRIMARY KEY  (`patches_id`)
+);
+
+
+# --------------------------------------------------------
+# Table structure for table `patches_files`
+# since 1.1
+
+CREATE TABLE `patches_files` (
+	`patches_files_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`patches_id` MEDIUMINT UNSIGNED NOT NULL default 0,
+	`action` VARCHAR(20) NOT NULL default '',
+	`name` TEXT NOT NULL,
+	`location` VARCHAR(250) NOT NULL default '',
+	PRIMARY KEY  (`patches_files_id`)
+);
+
+# --------------------------------------------------------
+# Table structure for table `patches_files_actions`
+# since 1.1
+
+CREATE TABLE `patches_files_actions` (
+	`patches_files_actions_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`patches_files_id` MEDIUMINT UNSIGNED NOT NULL default 0,
+	`action` VARCHAR(20) NOT NULL default '',
+	`code_from` TEXT NOT NULL,
+	`code_to` TEXT NOT NULL,
+	PRIMARY KEY  (`patches_files_actions_id`)
+);
+
+# --------------------------------------------------------
+# Table structure for table `myown_patches`
+# since 1.1
+
+CREATE TABLE `myown_patches` (
+	`myown_patch_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`achecker_patch_id` VARCHAR(20) NOT NULL default '',
+	`applied_version` VARCHAR(10) NOT NULL default '',
+  `description` TEXT NOT NULL,
+  `sql_statement` text NOT NULL,
+  `status` varchar(20) NOT NULL default '',
+  `last_modified` datetime NOT NULL,
+	PRIMARY KEY  (`myown_patch_id`)
+);
+
+# --------------------------------------------------------
+# Table structure for table `myown_patches_dependent`
+# since 1.1
+
+CREATE TABLE `myown_patches_dependent` (
+	`myown_patches_dependent_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`myown_patch_id` MEDIUMINT UNSIGNED NOT NULL,
+	`dependent_patch_id` VARCHAR(50) NOT NULL default '',
+	PRIMARY KEY  (`myown_patches_dependent_id`)
+);
+
+# --------------------------------------------------------
+# Table structure for table `myown_patches_files`
+# since 1.1
+
+CREATE TABLE `myown_patches_files` (
+	`myown_patches_files_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`myown_patch_id` MEDIUMINT UNSIGNED NOT NULL,
+	`action` VARCHAR(20) NOT NULL default '',
+	`name` VARCHAR(250) NOT NULL,
+	`location` VARCHAR(250) NOT NULL default '',
+	`code_from` TEXT NOT NULL,
+	`code_to` TEXT NOT NULL,
+	`uploaded_file` TEXT NOT NULL,
+	PRIMARY KEY  (`myown_patches_files_id`)
+);
+
+# --------------------------------------------------------
 # Table structure for table `privileges`
 # since 0.1
 
@@ -3678,7 +3768,8 @@ INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_da
 INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (4, 'checks', 'Check management: Create, edit, delete, enable, disable checks.', NOW(), 'check/index.php', 4, 0);
 INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (5, 'language', 'Language management: Create, edit, delete, enable, disable languages.', NOW(), 'language/index.php', 5, 0);
 INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (6, 'translation', 'Translation: Translate all Achecker terms into other languages.', NOW(), 'translation/index.php', 6, 0);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (7, 'profile', 'Profile management: Edit profile, change password or email.', NOW(), 'profile/index.php', 7, 0);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (7, 'profile', 'Profile management: Edit profile, change password or email.', NOW(), 'profile/index.php', 8, 0);
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (8, 'updater', 'Updater: Install, create, edit updates.', NOW(), 'updater/index.php', 7, 0);
 
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (1, 'Administrator', 'Administrate guidelines, checks, users, languages.', now());
 INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (2, 'User', 'Regular user. Can make decision on likely and potential problems. When a user revisits a report, decisions previously made for Likely and Potential problems will be restored for the matching URL. Regular users can create custom guidelines.', now());
@@ -3691,6 +3782,7 @@ INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 4);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 5);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 7);
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 8);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 1);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 3);
 INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 7);

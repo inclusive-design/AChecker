@@ -1,4 +1,15 @@
 <?php
+/************************************************************************/
+/* AChecker                                                             */
+/************************************************************************/
+/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
+/* Adaptive Technology Resource Centre / University of Toronto          */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or        */
+/* modify it under the terms of the GNU General Public License          */
+/* as published by the Free Software Foundation.                        */
+/************************************************************************/
+
 $handbook_pages = array(
                'register.php',
                'login.php',
@@ -28,7 +39,9 @@ $handbook_pages = array(
                'profile/index.php' =>   array(
                                         'profile/change_password.php',
                                         'profile/change_email.php'
-                                        )
+                                        ),
+               'updater/index.php' => array('updater/myown_patches.php',
+                                            'updater/patch_create.php')
 );
 
 ?>

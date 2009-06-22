@@ -10,6 +10,8 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 
+global $savant;
+
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 
 $savant->display('include/footer.tmpl.php');

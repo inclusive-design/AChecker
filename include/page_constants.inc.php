@@ -1,4 +1,15 @@
 <?php
+/************************************************************************/
+/* AChecker                                                             */
+/************************************************************************/
+/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
+/* Adaptive Technology Resource Centre / University of Toronto          */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or        */
+/* modify it under the terms of the GNU General Public License          */
+/* as published by the Free Software Foundation.                        */
+/************************************************************************/
+
 /* constants to map privileges.privilege_id, used to load constant pages */
 define('AC_PRIV_CHECKER', 1);
 define('AC_PRIV_USER_MANAGEMENT', 2);
@@ -7,6 +18,7 @@ define('AC_PRIV_CHECK_MANAGEMENT', 4);
 define('AC_PRIV_LANGUAGE_MANAGEMENT', 5);
 define('AC_PRIV_TRANSLATION', 6);
 define('AC_PRIV_PROFILE', 7);
+define('AC_PRIV_UPDATER', 8);
 
 /* constants used for menu item generation. Used in class Menu (include/classes/Menu.class.php) */
 define('AC_NAV_PUBLIC', 'AC_NAV_PUBLIC');  // public menus, when no user login
@@ -200,4 +212,28 @@ if (in_array(AC_PRIV_PROFILE, $privs))
 	$_pages['profile/change_email.php']['guide']    = 'AC_HELP_CHANGE_EMAIL';
 }
 
+// 8. updater pages
+if (in_array(AC_PRIV_UPDATER, $privs))
+{
+	$_pages['updater/index.php']['title_var'] = 'updater';
+	$_pages['updater/index.php']['parent']    = AC_NAV_TOP;
+	$_pages['updater/index.php']['guide']    = 'AC_HELP_UPDATER';
+	$_pages['updater/index.php']['children']  = array_merge(array('updater/myown_patches.php', 
+	                                                              'updater/patch_create.php'), 
+	                                                        isset($_pages['updater/index.php']['children']) ? $_pages['updater/index.php']['children'] : array());
+	
+	$_pages['updater/myown_patches.php']['title_var'] = 'myown_updates';
+	$_pages['updater/myown_patches.php']['parent']    = 'updater/index.php';
+	$_pages['updater/myown_patches.php']['children']    = array('updater/patch_create.php');
+	
+	$_pages['updater/patch_create.php']['title_var'] = 'create_update';
+	$_pages['updater/patch_create.php']['parent']    = 'updater/index.php';
+	$_pages['updater/patch_create.php']['guide']    = 'AC_HELP_CREATE_UPDATE';
+
+	$_pages['updater/patch_edit.php']['title_var'] = 'edit_update';
+	$_pages['updater/patch_edit.php']['parent']    = 'updater/index.php';
+
+	$_pages['updater/patch_delete.php']['title_var'] = 'delete_update';
+	$_pages['updater/patch_delete.php']['parent']    = 'updater/index.php';
+}
 ?>
