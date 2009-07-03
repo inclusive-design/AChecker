@@ -2877,6 +2877,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','details','Check Details'
 INSERT INTO `language_text` VALUES ('eng', '_template','directory','Directory','2009-06-22 14:49:01','');
 INSERT INTO `language_text` VALUES ('eng', '_template','disable','Disable','2009-01-20 11:47:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','disabled','Disabled','2009-01-20 11:45:23','');
+INSERT INTO `language_text` VALUES ('eng', '_template','done','Done','2009-06-22 16:16:50','');
 INSERT INTO `language_text` VALUES ('eng', '_template','earlid','URL','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','edit','Edit','2009-01-22 16:02:07','');
 INSERT INTO `language_text` VALUES ('eng', '_template','edit_check_function','Edit Check Function','2009-03-17 13:29:08','');
