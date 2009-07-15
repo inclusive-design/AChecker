@@ -92,7 +92,7 @@ CREATE TABLE `guidelines` (
   `status` tinyint(3) unsigned NOT NULL default '0',
   `open_to_public` tinyint(4) NOT NULL DEFAULT 0,
   `seal_icon_name` varchar(255),
-  `subset` varchar(100) NOT NULL DEFAULT 0 COMMENT 'Value 0 means this guideline is not a subset of any other guidelines. The format of non-zero value is [guideline group]-[priority], which means this guideline is the subset of others. The guidelines with same [guideline group] are in the same group. For the guidelines in the same group, the ones with lower [priority] value is the subset of the ones with higher [priority] value.',
+  `subset` varchar(100) NOT NULL DEFAULT 0,
   PRIMARY KEY  (`guideline_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10;
 
@@ -159,7 +159,7 @@ CREATE TABLE `mail_queue` (
   `from_name` VARCHAR( 50 ) NOT NULL default '',
   `char_set` VARCHAR( 20 ) NOT NULL default '',
   `subject` VARCHAR(255) NOT NULL ,
-  `body` TEXT NOT NULL ,
+  `body` TEXT,
   PRIMARY KEY ( `mail_id` )
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -172,13 +172,13 @@ CREATE TABLE `patches` (
 	`achecker_patch_id` VARCHAR(20) NOT NULL default '',
 	`applied_version` VARCHAR(10) NOT NULL default '',
 	`patch_folder` VARCHAR(250) NOT NULL default '',
-  `description` TEXT NOT NULL,
+  `description` TEXT,
 	`available_to` VARCHAR(250) NOT NULL default '',
-  `sql_statement` text NOT NULL,
+  `sql_statement` text,
   `status` varchar(20) NOT NULL default '',
-  `remove_permission_files` text NOT NULL,
-  `backup_files` text NOT NULL,
-  `patch_files` text NOT NULL,
+  `remove_permission_files` text,
+  `backup_files` text,
+  `patch_files` text,
   `author` VARCHAR(255) NOT NULL,
   `installed_date` datetime NOT NULL,
 	PRIMARY KEY  (`patches_id`)
@@ -193,7 +193,7 @@ CREATE TABLE `patches_files` (
 	`patches_files_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`patches_id` MEDIUMINT UNSIGNED NOT NULL default 0,
 	`action` VARCHAR(20) NOT NULL default '',
-	`name` TEXT NOT NULL,
+	`name` TEXT,
 	`location` VARCHAR(250) NOT NULL default '',
 	PRIMARY KEY  (`patches_files_id`)
 );
@@ -206,8 +206,8 @@ CREATE TABLE `patches_files_actions` (
 	`patches_files_actions_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`patches_files_id` MEDIUMINT UNSIGNED NOT NULL default 0,
 	`action` VARCHAR(20) NOT NULL default '',
-	`code_from` TEXT NOT NULL,
-	`code_to` TEXT NOT NULL,
+	`code_from` TEXT,
+	`code_to` TEXT,
 	PRIMARY KEY  (`patches_files_actions_id`)
 );
 
@@ -219,8 +219,8 @@ CREATE TABLE `myown_patches` (
 	`myown_patch_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`achecker_patch_id` VARCHAR(20) NOT NULL default '',
 	`applied_version` VARCHAR(10) NOT NULL default '',
-  `description` TEXT NOT NULL,
-  `sql_statement` text NOT NULL,
+  `description` TEXT,
+  `sql_statement` text,
   `status` varchar(20) NOT NULL default '',
   `last_modified` datetime NOT NULL,
 	PRIMARY KEY  (`myown_patch_id`)
@@ -247,9 +247,9 @@ CREATE TABLE `myown_patches_files` (
 	`action` VARCHAR(20) NOT NULL default '',
 	`name` VARCHAR(250) NOT NULL,
 	`location` VARCHAR(250) NOT NULL default '',
-	`code_from` TEXT NOT NULL,
-	`code_to` TEXT NOT NULL,
-	`uploaded_file` TEXT NOT NULL,
+	`code_from` TEXT,
+	`code_to` TEXT,
+	`uploaded_file` TEXT,
 	PRIMARY KEY  (`myown_patches_files_id`)
 );
 
@@ -260,7 +260,7 @@ CREATE TABLE `myown_patches_files` (
 CREATE TABLE `privileges` (
   `privilege_id` mediumint(8) unsigned NOT NULL auto_increment,
   `title_var` varchar(255) NOT NULL DEFAULT '',
-  `description` text NOT NULL DEFAULT '',
+  `description` text,
   `create_date` datetime NOT NULL,
   `last_update` datetime,
   `link` varchar(255) NOT NULL DEFAULT '',
@@ -309,7 +309,7 @@ CREATE TABLE `themes` (
   `version` varchar(10) NOT NULL default '',
   `dir_name` varchar(20) NOT NULL default '',
   `last_updated` date NOT NULL default '0000-00-00',
-  `extra_info` TEXT NOT NULL ,
+  `extra_info` TEXT,
   `status` tinyint(3) unsigned NOT NULL default '1',
   PRIMARY KEY  (`title`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -355,7 +355,7 @@ CREATE TABLE `user_decisions` (
 CREATE TABLE `user_groups` (
   `user_group_id` mediumint(8) unsigned NOT NULL auto_increment,
   `title` varchar(255) NOT NULL DEFAULT '',
-  `description` text NOT NULL DEFAULT '',
+  `description` text,
   `create_date` datetime NOT NULL,
   `last_update` datetime,
   PRIMARY KEY  (`user_group_id`)
@@ -377,7 +377,7 @@ CREATE TABLE `user_group_privilege` (
 CREATE TABLE `user_links` (
   `user_link_id` mediumint(8) NOT NULL auto_increment,
   `user_id` int(10) NOT NULL,
-  `URI` text NOT NULL,
+  `URI` text,
   `last_guideline_ids` varchar(50) NOT NULL,
   `last_sessionID` varchar(40) NOT NULL,
   `last_update` datetime NOT NULL,
