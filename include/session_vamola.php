@@ -1,0 +1,199 @@
+<?php 
+// Le variabili di sessione sono da sistemare, alcune sono inutili
+
+if ((isset($_POST["validate_uri"]) || isset($_POST["validate_file"])) ||  !isset($_GET["tab_ris"]))
+{
+	unset($_SESSION["validate_file"]);
+	unset($_SESSION["validate_uri"]);
+	unset($_SESSION["uploadfile"]);
+	unset($_SESSION["uri"]);
+	unset($_SESSION["risultati"]);
+	unset($_SESSION["tab_ris"]);
+}
+
+// NOTA DI SIMO: Unire parte sopra e sotto
+//MB
+if(isset($_POST["validate_uri"]) ||  isset($_POST["validate_file"]) || (!isset($_GET["tab_ris"]) && !isset($_POST["all_checks"]) && !isset($_POST["no_checks"])))//ho premuto uno dei tasti "valida"
+{
+	unset($_SESSION["validate_file"]);
+	unset($_SESSION["validate_uri"]);
+	unset($_SESSION["uploadfile"]);
+	unset($_SESSION["uri"]);
+	//unset($_SESSION["risultati"]);
+	//unset($_SESSION["tab_ris"]);
+	unset($_SESSION["show"]);	//per gestire output wcag
+	unset($_SESSION["show_nav"]); //per gestire output wcag
+	
+	unset($_SESSION["risultati"]);//cancello i vecchi risultati
+	unset($_SESSION["tab_ris"]); //cancello il tab
+	unset($_SESSION["visual_img"]);// per il controllo visivo sull'alternativa visuale delle immagini
+	unset($_SESSION["new_web_site"]);
+	unset($_SESSION["css_disable"]);
+	unset($_SESSION["disable"]);
+	unset($_SESSION["enable_html_validation"]);
+	unset($_SESSION["enable_css_validation"]);
+	unset($_SESSION["req"]);
+	//$_SESSION["new_web_site"]=1;
+	$_SESSION["req"][0]="0";
+}
+
+if(!isset($_POST["validate_uri"]) &&  !isset($_POST["validate_file"]) && !isset($_GET["tab_ris"]) && !isset($_POST["all_checks"]) && !isset($_POST["no_checks"]))//ricarico la pagina
+{
+	$_POST["new_web_site"]=1;
+}
+
+
+
+
+
+
+if (isset($_REQUEST["validate_file"]))
+	$_SESSION["validate_file"] = $_REQUEST["validate_file"];
+
+if (isset($_REQUEST["validate_uri"]))
+	$_SESSION["validate_uri"] = $_REQUEST["validate_uri"];
+
+if (isset($_FILES["uploadfile"]))
+	$_SESSION["uploadfile"] = $_FILES["uploadfile"];
+	
+if (isset($_REQUEST["uri"]))
+	$_SESSION["uri"] = $_REQUEST["uri"];
+	
+if (isset($_REQUEST["gid"]))
+	$_SESSION["gid"] = $_REQUEST["gid"];
+
+if (isset($_REQUEST["tab_ris"]))
+	$_SESSION["tab_ris"] = $_REQUEST["tab_ris"];
+
+
+	
+//abilito i validatori html e css se il req 1 � selezionato
+if($_POST["req"][0]=="100" && (isset($_POST["validate_uri"]) ||  isset($_POST["validate_file"])))
+{
+	$_POST["enable_html_validation"]=1;
+	$_POST["enable_css_validation"]=1;
+	$_SESSION["enable_html_validation"]=1;
+	$_SESSION["enable_css_validation"]=1;
+}	
+
+
+//opzioni selezionate di default
+if(!isset($_SESSION["new_web_site"]))
+	$_SESSION["new_web_site"]=1;
+
+if(!isset($_SESSION["enable_html_validation"]))
+	$_SESSION["enable_html_validation"]=0;	
+
+if(!isset($_SESSION["enable_css_validation"]))
+	$_SESSION["enable_css_validation"]=0;
+
+if(isset($_POST["new_web_site"]))
+	$_SESSION["new_web_site"]=1;
+elseif (!isset($_GET["tab_ris"]))
+	$_SESSION["new_web_site"]=0;
+	
+if(isset($_POST["css_disable"]))
+	$_SESSION["css_disable"]=1;
+elseif (!isset($_GET["tab_ris"]))
+	$_SESSION["css_disable"]=0;	
+	
+if(isset($_POST["enable_html_validation"]))
+	$_SESSION["enable_html_validation"]=1;
+elseif (!isset($_GET["tab_ris"]))
+	$_SESSION["enable_html_validation"]=0;
+
+if(isset($_POST["enable_css_validation"]))
+	$_SESSION["enable_css_validation"]=1;
+elseif (!isset($_GET["tab_ris"]))
+	$_SESSION["enable_css_validation"]=0;	
+
+
+if(isset($_GET["tab_ris"]))
+	$_SESSION["tab_ris"]=$_GET["tab_ris"];
+	
+if(!isset($_SESSION["tab_ris"]))
+	$_SESSION["tab_ris"]=1;
+	
+if(isset($_POST["req"][0]))
+	$_SESSION["req"]=$_POST["req"];
+
+if(isset($_POST["visual_img"]))
+	$_SESSION["visual_img"]=1;
+else
+	$_SESSION["visual_img"]=0;	
+	
+	
+if(isset($_POST["all_checks"]))
+{
+	for($i=0;$i<22;$i++)
+		$_SESSION["req"][$i]=100+$i;
+	
+}
+
+if(isset($_POST["no_checks"])){
+	
+	unset($_SESSION["req"]);
+	unset($_POST["req"]);
+	$_SESSION["req"][0]="0";
+	$_POST["req"][0]="0";
+}	
+	
+	
+// Simo aggiunta Wcag
+if(!isset($_SESSION["show"]) && !isset($_GET["show"]))
+{
+	$_SESSION["show"]="stanca";
+}
+else if(isset($_GET["show"]))
+	$_SESSION["show"]=$_GET["show"];
+	
+
+/*	
+if (isset($_SESSION["validate_file"]) && isset($_SESSION["uploadfile"]))
+{
+	if (is_valid_filename($_SESSION['uploadfile']))
+	{
+		//echo "file caricato valido";
+	}
+	else echo "file caricato non valido";
+}
+
+if (isset($_SESSION["validate_uri"]) && isset($_SESSION["uri"]))
+{
+	if (is_valid_uri($_SESSION['uri']))
+	{
+		//echo "uri valido";
+	}
+	else echo "uri non valido";
+}
+*/
+
+
+
+
+// Simo: Validazione uri, per eliminare javascript
+// Restituisce true se il nome del file non � vuoto e se non � composto unicamente da http://
+function is_valid_uri($uri) {
+	
+	$uri = trim($uri);
+	if ($uri === "" || uri === "http://")
+		return false;	
+	else return true;
+}
+
+
+
+// Simo: Validazione filename per eliminare javascript
+// Restituisce true se il file ha un'estensione .html, .htm o .xhtml
+function is_valid_filename($file) {
+	
+	$file_extension = trim(strtolower(substr($file['name'], strrpos($file['name'], "."))));
+	$allowed_ext = array (".html", ".htm", ".xhtml");
+	
+	if (in_array($file_extension, $allowed_ext))
+		return true;
+	else return false;
+}
+
+
+?>
