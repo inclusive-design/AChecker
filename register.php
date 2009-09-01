@@ -17,6 +17,8 @@ if (isset($_POST['cancel'])) {
 	header('Location: index.php');
 	exit;
 } else if (isset($_POST['submit'])) {
+	if ($_SERVER['HTTP_REFERER'] <> AC_BASE_HREF.'register.php') exit;
+	
 	require_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
 	$usersDAO = new UsersDAO();
 	

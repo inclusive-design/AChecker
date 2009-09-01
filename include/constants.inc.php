@@ -124,6 +124,9 @@ define('DEFAULT_GUIDELINE', 8);
 /* how many days until the password reminder link expires */
 define('AC_PASSWORD_REMINDER_EXPIRY', 2);
 
+/* send email confirmation by default */
+define('AC_EMAIL_CONFIRMATION', 1);
+
 /* how long cache objects can persist	*/
 /* in seconds. should be low initially, but doesn't really matter. */
 /* in practice should be 0 (ie. INF)    */
