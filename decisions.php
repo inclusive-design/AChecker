@@ -24,7 +24,8 @@
 define('AC_INCLUDE_PATH', 'include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
-include_once(AC_INCLUDE_PATH. 'classes/HTMLRpt.class.php');
+//include_once(AC_INCLUDE_PATH. "classes/HTMLRpt.class.php");
+include_once(AC_INCLUDE_PATH. "classes/HTMLRptVamola.class.php");
 include_once(AC_INCLUDE_PATH. 'classes/RESTWebServiceOutput.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');

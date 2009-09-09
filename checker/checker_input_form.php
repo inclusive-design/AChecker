@@ -17,10 +17,15 @@ global $_current_user, $decision_error;
 $default_uri_value = "";
 $num_of_guidelines_per_row = 3;  // default number of guidelines to display in a row on the page
 
-if (!isset($_POST["gid"])) $_POST["gid"] = array(DEFAULT_GUIDELINE);
+//MB if (!isset($_POST["gid"])) $_POST["gid"] = array(DEFAULT_GUIDELINE);
 
 $guidelinesDAO = new GuidelinesDAO();
 $open_guidelines = $guidelinesDAO->getOpenGuidelines();
+
+include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
+$guidelineGroupsDAO = new GuidelineGroupsDAO();
+$req_stanca = $guidelineGroupsDAO->getGroupsByGuidelineID(10);
+$savant->assign('req_stanca', $req_stanca);
 
 $savant->assign('default_uri_value', $default_uri_value);
 $savant->assign('num_of_guidelines_per_row', $num_of_guidelines_per_row);
@@ -39,7 +44,7 @@ else
 	
 }
 
-if (isset($decision_error)) $savant->assign('error', $decision_error);
+//if (isset($decision_error)) $savant->assign('error', $decision_error);
 $savant->assign('rows', $guidelines);
 
 $savant->display('checker/checker_input_form.tmpl.php');

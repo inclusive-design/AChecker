@@ -25,6 +25,7 @@
 
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
+include_once (AC_INCLUDE_PATH . "classes/VamolaBasicChecks.class.php");
 
 class Checks {
 	public static function check_1($e, $content_dom)
@@ -65,7 +66,7 @@ class Checks {
 
 	public static function check_8($e, $content_dom)
 	{
-		if (!file_get_contents($e->attr["src"])) return isset($e->attr['longdesc']);
+		if (!@file_get_contents($e->attr["src"])) return isset($e->attr['longdesc']);
 		
 		$dimensions = getimagesize($e->attr["src"]);
 		
@@ -86,7 +87,7 @@ class Checks {
 
 	public static function check_11($e, $content_dom)
 	{
-		if (!file_get_contents($e->attr["src"])) return false;
+		if (!@file_get_contents($e->attr["src"])) return false;
 		
 		$dimensions = getimagesize($e->attr["src"]);
 		
@@ -154,7 +155,7 @@ class Checks {
 
 	public static function check_14($e, $content_dom)
 	{
-		if (!file_get_contents($e->attr["src"])) return false;
+		if (!@file_get_contents($e->attr["src"])) return false;
 
 		$dimensions = getimagesize($e->attr["src"]);
 		
@@ -350,17 +351,19 @@ class Checks {
 
 	public static function check_49($e, $content_dom)
 	{
-		$lang_code = trim($e->attr["lang"]);
-		$xml_lang_code = trim($e->attr["xml:lang"]);
-		
-		// set default
-		$is_lang_code_valid = true;
-		$is_xml_lang_code_valid = true;
-
-		if ($lang_code <> "") $is_lang_code_valid = BasicChecks::valid_lang_code($lang_code);
-		if ($xml_lang_code <> "") $is_xml_lang_code_valid = BasicChecks::valid_lang_code($xml_lang_code);
-
-		return ($is_lang_code_valid && $is_xml_lang_code_valid);
+		return true;
+		// commentato perche' da errore nel nuovo achecker
+//		$lang_code = trim($e->attr["lang"]);
+//		$xml_lang_code = trim($e->attr["xml:lang"]);
+//		
+//		// set default
+//		$is_lang_code_valid = true;
+//		$is_xml_lang_code_valid = true;
+//
+//		if ($lang_code <> "") $is_lang_code_valid = BasicChecks::valid_lang_code($lang_code);
+//		if ($xml_lang_code <> "") $is_xml_lang_code_valid = BasicChecks::valid_lang_code($xml_lang_code);
+//
+//		return ($is_lang_code_valid && $is_xml_lang_code_valid);
 	}
 
 	public static function check_50($e, $content_dom)
@@ -1817,21 +1820,22 @@ class Checks {
 
 	public static function check_273($e, $content_dom)
 	{
-		if (isset($e->attr["lang"]))
-			$lang_code = trim($e->attr["lang"]);
-		else
-			$lang_code = trim($e->attr["xml:lang"]);
-
-		// return no error if language code is not specified
-		if (!BasicChecks::valid_lang_code($lang_code)) return true;
-		
-		$rtl_lang_codes = BasicChecks::get_rtl_lang_codes();
-
-		if (in_array($lang_code, $rtl_lang_codes))
-			// When these 2 languages, "dir" attribute must be set and set to "rtl"
-			return (strtolower(trim($e->attr["dir"])) == "rtl");
-		else
-			return (!isset($e->attr["dir"]) || strtolower(trim($e->attr["dir"])) == "ltr");
+		return true;
+//		if (isset($e->attr["lang"]))
+//			$lang_code = trim($e->attr["lang"]);
+//		else
+//			$lang_code = trim($e->attr["xml:lang"]);
+//
+//		// return no error if language code is not specified
+//		if (!BasicChecks::valid_lang_code($lang_code)) return true;
+//		
+//		$rtl_lang_codes = BasicChecks::get_rtl_lang_codes();
+//
+//		if (in_array($lang_code, $rtl_lang_codes))
+//			// When these 2 languages, "dir" attribute must be set and set to "rtl"
+//			return (strtolower(trim($e->attr["dir"])) == "rtl");
+//		else
+//			return (!isset($e->attr["dir"]) || strtolower(trim($e->attr["dir"])) == "ltr");
 	}
 
 	public static function check_274($e, $content_dom)
@@ -1852,5 +1856,4267 @@ class Checks {
 	{
 		return false;
 	}
+	
+	
+	
+	
+	
+	
+	// CHECK UNIBO
+	//Matteo Battistelli
+	//h1-h6: pseudo 21
+	
+	// controllo che h2-h6 non siano in prima posizione
+	//h2
+	public static function check_995($e, $content_dom)
+	{
+		$headers_array = $content_dom->find('h1, h2, h3, h4, h5, h6');
+		if($headers_array[0]->linenumber==$e->linenumber && $headers_array[0]->colnumber==$e->colnumber)
+			return false;
+		else
+			return true;
+		
+	}
+	//h3
+	public static function check_996($e, $content_dom)
+	{
+		$headers_array = $content_dom->find('h1, h2, h3, h4, h5, h6');
+		if($headers_array[0]->linenumber==$e->linenumber && $headers_array[0]->colnumber==$e->colnumber)
+			return false;
+		else
+			return true;		
+	}
+	//h4
+	public static function check_997($e, $content_dom)
+	{
+		$headers_array = $content_dom->find('h1, h2, h3, h4, h5, h6');
+		if($headers_array[0]->linenumber==$e->linenumber && $headers_array[0]->colnumber==$e->colnumber)
+			return false;
+		else
+			return true;		
+	}
+	//h5
+	public static function check_998($e, $content_dom)
+	{
+		$headers_array = $content_dom->find('h1, h2, h3, h4, h5, h6');
+		if($headers_array[0]->linenumber==$e->linenumber && $headers_array[0]->colnumber==$e->colnumber)
+			return false;
+		else
+			return true;		
+	}
+	//h6
+	public static function check_999($e, $content_dom)
+	{
+		$headers_array = $content_dom->find('h1, h2, h3, h4, h5, h6');
+		if($headers_array[0]->linenumber==$e->linenumber && $headers_array[0]->colnumber==$e->colnumber)
+			return false;
+		else
+			return true;		
+	}
+	
+	public static function check_1000($e, $content_dom)
+	{// controllo che non si ripetano gli h1
+		
+		$headers_array = $content_dom->find('h1, h2, h3, h4, h5, h6');
+		
+		for ($i=0; $i < sizeof($headers_array); $i++)
+		{
+			if($headers_array[$i]->linenumber==$e->linenumber && $headers_array[$i]->colnumber==$e->colnumber)
+			break;
+		}
+		
+		$headers_array_2 = $content_dom->find('h1');
+		if(sizeof($headers_array_2)>1 && ($headers_array_2[0]->linenumber!=$e->linenumber ||
+ 		$headers_array_2[0]->colnumber!=$e->colnumber))
+		return false;
+		else
+		return true;
+	}
+	
+	public static function check_1001($e, $content_dom)
+	{ //h3
+		$headers_array = $content_dom->find('h1, h2, h3, h4, h5, h6');
+		
+		for ($i=1; $i < sizeof($headers_array); $i++)
+		{
+			if($headers_array[$i]->linenumber==$e->linenumber && $headers_array[$i]->colnumber==$e->colnumber)
+			break;
+		}
+		if($headers_array[$i-1]->tag == 'h1' )
+		return false;
+		else
+		return true;
+	}
+
+	public static function check_1002($e, $content_dom)
+	{   //h4
+		$headers_array = $content_dom->find('h1, h2, h3, h4, h5, h6');
+		
+		for ($i=1; $i < sizeof($headers_array); $i++)
+		{
+			if($headers_array[$i]->linenumber==$e->linenumber && $headers_array[$i]->colnumber==$e->colnumber)
+			break;
+		}
+		if($headers_array[$i-1]->tag == 'h1' || $headers_array[$i-1]->tag == 'h2')
+		return false;
+		else
+		return true;
+	}	
+
+	public static function check_1003($e, $content_dom)
+	{   //h5
+		$headers_array = $content_dom->find('h1, h2, h3, h4, h5, h6');
+		
+		for ($i=1; $i < sizeof($headers_array); $i++)
+		{
+			if($headers_array[$i]->linenumber==$e->linenumber && $headers_array[$i]->colnumber==$e->colnumber)
+			break;
+		}
+		if($headers_array[$i-1]->tag == 'h1' || $headers_array[$i-1]->tag == 'h2' || $headers_array[$i-1]->tag == 'h3')
+		return false;
+		else
+		return true;
+	}	
+
+	public static function check_1004($e, $content_dom)
+	{   //h6
+		$headers_array = $content_dom->find('h1, h2, h3, h4, h5, h6');
+		
+		for ($i=1; $i < sizeof($headers_array); $i++)
+		{
+			if($headers_array[$i]->linenumber==$e->linenumber && $headers_array[$i]->colnumber==$e->colnumber)
+			break;
+		}
+		if($headers_array[$i-1]->tag == 'h1' || $headers_array[$i-1]->tag == 'h2' || $headers_array[$i-1]->tag == 'h3' || $headers_array[$i-1]->tag == 'h4')
+		return false;
+		else
+		return true;
+	}		
+	
+//b, basefont, big, center, font, s, small, strike, tt, u: pseudo 2
+	//b
+	public static function check_1005($e, $content_dom)
+	{	
+		
+		return false;
+	}	
+	//basefont
+	public static function check_1006($e, $content_dom)
+	{
+		
+		return false;
+	}
+	//big
+	public static function check_1007($e, $content_dom)
+	{
+		
+		return false;
+	}	
+	//center
+	public static function check_1008($e, $content_dom)
+	{
+		return false;
+	
+	}	
+	//font
+	public static function check_1009($e, $content_dom)
+	{
+	
+		return false;
+	
+	}
+	//s
+	public static function check_1010($e, $content_dom)
+	{
+	
+		return false;
+	
+	}	
+	//small
+	public static function check_1011($e, $content_dom)
+	{
+	
+		return false;
+	
+	}	
+	//strike
+	public static function check_1012($e, $content_dom)
+	{
+	
+		return false;
+	
+	}
+	//tt
+	public static function check_1013($e, $content_dom)
+	{
+	
+		return false;
+	}
+	//u
+	public static function check_1014($e, $content_dom)
+	{
+	
+		return false;
+	}	
+	
+	//body: pseudo 3
+	public static function check_1015($e, $content_dom)
+	{
+
+		return !( isset($e->attr["text"]) || isset($e->attr["link"]) || isset($e->attr["vlink"]) || isset($e->attr["bgcolor"]) || isset($e->attr["background"]) || isset($e->attr["alink"])  );
+
+	}
+	
+	//p div: pseudo 4
+	//controlla che p non contenga align
+	public static function check_1016($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"]) );
+
+	}
+	//controlla che div non contenga align
+	public static function check_1017($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"])  );
+
+	}
+	//controlla che caption non contenga align
+	//da eliminare
+	public static function check_1018($e, $content_dom)
+	{
+
+		//return !( isset($e->attr["align"])  );
+		return true;
+
+	}
+	//h1 - h6 pseudo 5	
+	public static function check_1019($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"])  );
+
+	}
+	public static function check_1020($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"])  );
+
+	}
+	public static function check_1021($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"])  );
+
+	}
+	public static function check_1022($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"])  );
+
+	}
+	public static function check_1023($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"])  );
+
+	}
+	public static function check_1024($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"])  );
+
+	}
+	//hr: pseudo 6
+	public static function check_1025($e, $content_dom)
+	{
+
+		return !( isset($e->attr["noshade"]) || isset($e->attr["align"])  || isset($e->attr["width"]) || isset($e->attr["size"]));
+
+	}
+	
+	//  applet: pseudo 7
+	public static function check_1026($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"]) || isset($e->attr["hspace"])  || isset($e->attr["vspace"]) || isset($e->attr["width"]) || isset($e->attr["height"]));
+
+	}
+	
+	// img object: pseudo 8
+	public static function check_1027($e, $content_dom)
+	{
+		// Simo: levati i controlli su height e width
+		/*return !( isset($e->attr["align"]) || isset($e->attr["hspace"])  || isset($e->attr["vspace"]) || isset($e->attr["width"]) || isset($e->attr["height"]) || isset($e->attr["border"]));*/
+
+		return !( isset($e->attr["align"]) || isset($e->attr["hspace"])  || isset($e->attr["vspace"]) || isset($e->attr["border"]));
+	}
+	
+	public static function check_1028($e, $content_dom)
+	{
+		// Simo: levati i controlli su height e width
+		/*return !( isset($e->attr["align"]) || isset($e->attr["hspace"])  || isset($e->attr["vspace"]) || isset($e->attr["width"]) || isset($e->attr["height"]) || isset($e->attr["border"]));*/
+		return !( isset($e->attr["align"]) || isset($e->attr["hspace"])  || isset($e->attr["vspace"]) || isset($e->attr["border"]));
+
+	}
+
+
+	//table: pseudo 9
+	public static function check_1029($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"]) || isset($e->attr["width"])  || isset($e->attr["bgcolor"]) || isset($e->attr["frame"]) || isset($e->attr["rules"]) || isset($e->attr["border"]) || isset($e->attr["cellspacing"]) || isset($e->attr["cellpadding"]));
+
+	}
+	
+	//caption: pseudo 10
+	//conrolla che <caption> in <table> non contenga 'align'
+	public static function check_1030($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"]));
+		
+	}	
+	//thead tfoot tbody: pseudo 11
+	public static function check_1031($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"]) || isset($e->attr["char"]) || isset($e->attr["charoff"]) || isset($e->attr["valign"]));
+
+	}
+	public static function check_1032($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"]) || isset($e->attr["char"]) || isset($e->attr["charoff"]) || isset($e->attr["valign"]));
+
+	}		
+	public static function check_1033($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"]) || isset($e->attr["char"]) || isset($e->attr["charoff"]) || isset($e->attr["valign"]));
+
+	}
+	//colgroup col : pseudo 12
+	public static function check_1034($e, $content_dom)
+	{
+
+		return !( isset($e->attr["align"]) || isset($e->attr["char"]) || isset($e->attr["charoff"]) || isset($e->attr["valign"]) || isset($e->attr["width"]));
+
+	}
+	
+	public static function check_1035($e, $content_dom)
+	{
+		
+		return !( isset($e->attr["align"]) || isset($e->attr["char"]) || isset($e->attr["charoff"]) || isset($e->attr["valign"]) || isset($e->attr["width"]));
+
+	}	
+	//tr: pseudo 13
+	public static function check_1036($e, $content_dom)
+	{
+		
+		return !( isset($e->attr["align"]) || isset($e->attr["char"]) || isset($e->attr["charoff"]) || isset($e->attr["valign"]) || isset($e->attr["bgcolor"]));
+
+	}
+	//th td: pseudo 14
+
+	public static function check_1037($e, $content_dom)
+	{
+		
+		return !( isset($e->attr["align"]) || isset($e->attr["char"]) || isset($e->attr["charoff"]) || isset($e->attr["valign"]) || isset($e->attr["bgcolor"]) || isset($e->attr["height"]) || isset($e->attr["width"]) || isset($e->attr["nowrap"]));
+
+	}
+	public static function check_1038($e, $content_dom)
+	{
+		
+ 		return !( isset($e->attr["align"]) || isset($e->attr["char"]) || isset($e->attr["charoff"]) || isset($e->attr["valign"]) || isset($e->attr["bgcolor"]) || isset($e->attr["height"]) || isset($e->attr["width"]) || isset($e->attr["nowrap"]));
+
+	}
+	//input : pseudo 15
+	public static function check_1039($e, $content_dom)
+	{
+		
+ 		return !( isset($e->attr["align"]) /*|| isset($e->attr["size"])*/);
+
+	}		
+	//legend : pseudo 16
+	public static function check_1040($e, $content_dom)
+	{
+		
+ 		return !( isset($e->attr["align"]));
+
+	}	
+	//select: pseudo 17
+	public static function check_1041($e, $content_dom)
+	{
+		
+ 		//return !( isset($e->attr["size"]));
+		return true;
+	}	
+
+	//pre: pseudo 18
+	public static function check_1042($e, $content_dom)
+	{
+		
+ 		return !( isset($e->attr["width"]));
+
+	}		
+	
+	//style: pseudo 19
+	public static function check_1043($e, $content_dom)
+	{
+		
+ 		return !( isset($e->attr["style"]));
+
+	}	
+	
+	//form a: pseudo 20
+	public static function check_1044($e, $content_dom)
+	{
+		if (isset($e->attr["target"]) && $e->attr["target"]!="_self" && $e->attr["target"]!="")
+ 			return ( isset($e->attr["title"]));
+ 		else
+ 			return true;
+
+	}
+	public static function check_1045($e, $content_dom)
+	{
+		if (isset($e->attr["target"]) && $e->attr["target"]!="_self" && $e->attr["target"]!="")
+ 			return ( isset($e->attr["title"]));
+		else
+ 			return true;
+	}		
+	public static function check_1046($e, $content_dom)
+	{
+		if (isset($e->attr["target"]) && $e->attr["target"]!="_self" && $e->attr["target"]!="")
+ 			return !( isset($e->attr["title"]));
+ 		else
+ 			return true;
+
+	}
+	public static function check_1047($e, $content_dom)
+	{
+		
+ 		if (isset($e->attr["target"]) && $e->attr["target"]!="_self" && $e->attr["target"]!="")
+ 			return !( isset($e->attr["title"]));
+ 		else
+ 			return true;
+
+	}
+	//blockquote q: pseudo 22
+	public static function check_1048($e, $content_dom)
+	{
+		
+ 		return ( isset($e->attr["cite"]));
+
+	}
+	public static function check_1049($e, $content_dom)
+	{
+		
+ 		return ( isset($e->attr["cite"]));
+
+	}
+	public static function check_1050($e, $content_dom)
+	{
+		
+ 		return false;
+
+	}
+	public static function check_1051($e, $content_dom)
+	{
+		
+ 		return false;
+
+	}
+	//cite: pseudo 23
+	public static function check_1052($e, $content_dom)
+	{
+		
+ 		return false;
+
+	}	
+	//code: pseudo 24
+	public static function check_1053($e, $content_dom)
+	{
+		
+ 		return false;
+
+	}	
+	//pre: pseudo 25
+	public static function check_1054($e, $content_dom)
+	{
+		
+ 		return false;
+
+	}		
+	//div: pseudo 26
+	public static function check_1055($e, $content_dom)
+	{
+		
+		$div_array = $content_dom->find("div");
+		$i=0;
+		for ($i=0; $i < sizeof($div_array); $i++)
+		{
+			if($div_array[$i]->linenumber==$e->linenumber && $div_array[$i]->colnumber==$e->colnumber)
+				break;
+		}
+		
+		if($i < sizeof($div_array)-1) //$e isn't the last <div>
+		{
+			$c1=$div_array[$i]->children();
+			$c2=$div_array[$i+1]->children();
+			//is the same image?
+			if($c1[0]->tag=="img" && $c2[0]->tag=="img" && $c1[0]->attr['src'] == $c2[0]->attr['src']/*$c1[0]->src == $c2[0]->src*/)
+			{	
+					return false;
+			}
+	 
+		}
+		
+		return true;
+	}
+	
+	//p: pseudo 27
+	public static function check_1056($e, $content_dom)
+	{
+		
+		$p_array = $content_dom->find("p");
+		$i=0;
+		for ($i=0; $i < sizeof($p_array); $i++)
+		{
+			if($p_array[$i]->linenumber==$e->linenumber && $p_array[$i]->colnumber==$e->colnumber)
+				break;
+		}
+		
+		if($i < sizeof($p_array)-1) //$e isn't the last <p>
+		{
+			$c1=$p_array[$i]->children();
+			$c2=$p_array[$i+1]->children();
+			//is the same image?
+			if($c1[0]->tag=="img" && $c2[0]->tag=="img" && $c1[0]->attr['src'] == $c2[0]->attr['src'])
+			{	
+					return false;
+			}
+	 
+		}
+		
+		return true;
+	}	
+	//~Matteo Battistelli	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// Simone Spagnoli
+
+	// Pseudocodice 28
+	// Br usati per implementare le liste
+	public static function check_1057($e, $content_dom)
+	{
+	
+		$padre = $e->parent();
+		// Se dopo un br c'e' una immagine faccio partire il check		
+		$fratello = $e->next_sibling();
+		if ($fratello->tag == "img")
+		{
+			$src_img = $fratello->attr["src"];
+			//echo "cerco:". $src_img . " ";
+			$num_repeated_img = 0;
+			$figli = $padre->children();
+			foreach ($figli as $child)
+			{
+				if ($child->tag == "img" && $child->attr["src"] == $src_img)
+				{
+					// Se tra i fratelli trovo un'altra immagine con lo stesso src allora l'immagine e' ripetuta
+					$num_repeated_img = $num_repeated_img+1;				
+				}
+			}
+
+			if ($num_repeated_img > 1)
+			{
+				return false;				
+			}
+		}	
+
+		return true;	
+	
+	}
+	
+	// Pseudocodice 29
+	// Tr (tabelle)  usate per implementare le liste
+	public static function check_1058($e, $content_dom)
+	{
+
+		$table = $e->parent();
+	
+		$img = $e->find('img', 0);
+		
+		// Se dentro un tr c'e' una immagine faccio partire il check
+		if ($img != null)
+		{
+			$src_img = $img->attr["src"]; 
+		
+			$num_repeated_img = 0;
+			$table_row = $table->children();
+			
+			foreach ($table_row as $child)
+			{
+				if ($child->tag == "tr")
+				{
+					$child_img = $child->find('img',0);
+					if ($child_img != null)
+					{
+						$src_img_child = $child_img->attr["src"];
+						if ($src_img_child == $src_img)
+						{
+							// Se tra le altre righe trovo un'altra immagine con lo stesso src allora l'immagine e' ripetuta
+							$num_repeated_img = $num_repeated_img+1;
+						}					
+					}				
+				}	
+			}
+			if ($num_repeated_img > 1)
+			{
+				return false;				
+			}	
+		
+		
+		}
+
+		return true;
+	
+	}
+	
+	
+	// Pseudocodice 30
+	// Dl deve avere come figli solo dt e dd, e dt deve per forza essere seguito da un dd
+	public static function check_1059($e, $content_dom)
+	{
+	
+		$dl_child = $e->children();
+		foreach ($dl_child as $child)
+			{
+				if ($child->tag != "dt" && $child->tag != "dd")
+				{
+					return false;			
+				}
+				elseif ($child->tag == "dt")
+				{
+					$dt_broth = $child->next_sibling();
+					if ($dt_broth->tag != "dd")
+					{
+						return false;			
+					}
+				}
+		}
+		return true;
+	
+	}
+	
+
+	
+	// Pseudocodice 32
+	// Frame deve avere title o name
+	public static function check_1060($e, $content_dom)
+	{
+
+		return ( isset($e->attr["title"]) || isset($e->attr["name"]) );
+	
+	}
+
+	// Iframe deve avere title o name
+	public static function check_1061($e, $content_dom)
+	{
+
+		return ( isset($e->attr["title"]) || isset($e->attr["name"]) );
+	
+	}
+	
+
+	// Frame deve avere longdesc
+	public static function check_1062($e, $content_dom)
+	{
+
+		return isset($e->attr["longdesc"]);
+	
+	}
+	
+	// Iframe deve avere longdesc
+	public static function check_1063($e, $content_dom)
+	{
+
+		return isset($e->attr["longdesc"]);
+	
+	}
+	
+	// Pseudocodice 33
+	// Frame non deve avere frameborder, marginwidth e marginheight
+	public static function check_1064($e, $content_dom)
+	{
+
+		return !( isset($e->attr["frameborder"]) || isset($e->attr["marginwidth"]) || isset($e->attr["marginheight"]) );
+	
+	}
+	
+	// Pseudocodice 34
+	// Iframe non deve avere width, height, align, frameborder, marginwidth e marginheight
+	public static function check_1065($e, $content_dom)
+	{
+
+		return !( isset($e->attr["width"]) || isset($e->attr["height"]) || isset($e->attr["align"]) || isset($e->attr["frameborder"]) || isset($e->attr["marginwidth"]) || isset($e->attr["marginheight"]) );
+		
+	}
+
+	// Pseudocodice 35
+	// Ogni frameset deve contenere noframes
+	public static function check_1066($e, $content_dom)
+	{
+		
+		foreach ($e->children() as $child)
+			if ($child->tag == "noframes")
+				return true;
+
+	}
+	
+	// Pseudocodice 32 
+	// Frame: verifica esistenza file longdesc remoto
+	public static function check_1067($e, $content_dom)
+	{
+		
+		if (($_POST["uri"]) != "http://")
+		{
+			if (isset($e->attr["longdesc"]))
+			{	
+
+				$ld_uri = explode("/",$_POST["uri"]);
+				$ld_uri = array_slice($ld_uri, 0, sizeof($ld_uri)-1);
+				$ur = implode("/", $ld_uri);
+
+				$ld_path = $ur . "/" . $e->attr["longdesc"];
+		
+				$AgetHeaders = @get_headers($ld_path);
+				if (preg_match("|200|", $AgetHeaders[0])) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+		return true;
+	
+	}
+	
+	// Pseudocodice 32 
+	// Iframe: verifica esistenza file longdesc remoto
+	public static function check_1068($e, $content_dom)
+	{
+
+		if (($_POST["uri"]) != "http://")
+		{
+			if (isset($e->attr["longdesc"]))
+			{	
+
+				$ld_uri = explode("/",$_POST["uri"]);
+				$ld_uri = array_slice($ld_uri, 0, sizeof($ld_uri)-1);
+				$ur = implode("/", $ld_uri);
+
+				$ld_path = $ur . "/" . $e->attr["longdesc"];
+		
+				$AgetHeaders = @get_headers($ld_path);
+				if (preg_match("|200|", $AgetHeaders[0])) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+		return true;
+	
+	}
+	
+	// Check 225
+	// HTML se il doctype non e' strict ritorna false
+	public static function check_1069($e, $content_dom)
+	{
+		$doctypes = $content_dom->find("doctype");
+
+		if (count($doctypes) == 0) return false;
+		
+		foreach ($doctypes as $doctype)
+		{
+			foreach ($doctype->attr as $doctype_content => $garbage)
+				if (stristr($doctype_content, "-//W3C//DTD HTML 4.01//EN") ||
+						stristr($doctype_content, "-//W3C//DTD HTML 4.0//EN") ||
+						stristr($doctype_content, "-//W3C//DTD XHTML 1.0 Strict//EN"))
+					return true;
+		}
+		return false;
+	}
+
+	// Check 232
+	// HTML: se il validatore markup e' attivo e trova almeno un errore ritorna false
+	public static function check_1070($e, $content_dom)
+	{
+		global $htmlValidator;
+
+		if (!isset($htmlValidator)) return true;
+		
+		return ($htmlValidator->getNumOfValidateError() == 0);
+	}
+	
+	// Check 233
+	// Frameset: se esiste l'elemento frameset nel documento ritorna falso
+	public static function check_1071($e, $content_dom)
+	{
+		return false;
+	}
+
+	// Check 234
+	// Frame: se esiste l'elemento frame nel documento ritorna falso	
+	public static function check_1072($e, $content_dom)
+	{
+		return false;
+	}
+
+	//CHECK FILO
+	
+	//REQUISITO 11
+	// 
+	//Pseudocodice 5.19
+	//Controllo presenza tag link che legano fogli di stile o style che definiscono stili interni nell'header
+	// Nota di Simo: si possono unire questo e il seguente, basta che dopo il foreach si controlli la presenza di almeno un elemento di tipo Style
+	
+	public static function check_1073($e, $content_dom)
+	{
+		foreach ($e->children() as $child)
+		{
+			if ($child->tag == "link")
+			{
+				$rel_val = strtolower(trim($child->attr["rel"]));
+				
+				if ($rel_val == "stylesheet" && isset($child->attr["href"]))
+					return false;
+			}
+			if($child->tag =="style"){
+				return false;
+			}
+		}	
+		return true;
+	}
+	
+	//MB: eliminato dalla tabella ac_subgroups_checks. Era associato ai subgroup_id 1010 e 2010
+	//nota MB: non è sufficiente restituire un messaggio per pagina invece che per ogni elemento con attributo style?
+	//Controllo la presenza di attributi style che indicano la definizione di stili inline nei tag del body
+	public static function check_1074($e, $content_dom)
+	{
+		// Nota di Simo: Non c'e' bisogno di questo controllo, dato che e' manuale basta segnalarlo una volta sola per pagina, basta quello sopra, commento questo e levo l'all elements dalla tabella senno' rallenta inutilmente tutto.
+		return true;
+ 		//return !( isset($e->attr["style"]));
+	}	
+	
+	
+	/***************
+	*REQUISITO 12  *
+	*			   *
+	****************/
+	
+	//Pseudocodice 6.1
+	
+	//Controllo dell'attributo font-size in ogni tag del body
+	
+	//nota MB: mancano 2 messaggi del req 12: quello relativo a px e quello sulle sovrapposizioni
+	/*
+	public static function check_1075($e, $content_dom, $b){
+		$val='font-size';
+		//per prima cosa controllo la presenza di stili inline nel tag
+		
+		//$fs= BasicChecks::GetUDM($e,$val,$b);
+		$fs= VamolaBasicChecks::get_p_css($e,$val,$b);
+		
+		if($fs!=""){
+			if((substr($fs,strlen($fs)-2,2)=="px") ||(substr($fs,strlen($fs)-2,2)=="pt") || (substr($fs,strlen($fs)-2,2)=="in") || (substr($fs,strlen($fs)-2,2)=="cm") || (substr($fs,strlen($fs)-2,2)=="mm") || (substr($fs,strlen($fs)-2,2)=="pc") ){
+			
+				return false;
+			}
+		}
+		return true;
+	}
+	//Stelli controlli per l'attributo line-height
+	public static function check_1076($e, $content_dom, $b){
+		
+		$val='line-height';
+	    //per prima cosa controllo la presenza di stili inline nel tag
+		//$fs= BasicChecks::GetUDM($e,$val,$b);
+		$fs= VamolaBasicChecks::get_p_css($e,$val,$b);
+		
+		if($fs!=""){
+			if((substr($fs,strlen($fs)-2,2)=="px") ||(substr($fs,strlen($fs)-2,2)=="pt") || (substr($fs,strlen($fs)-2,2)=="in") || (substr($fs,strlen($fs)-2,2)=="cm") || (substr($fs,strlen($fs)-2,2)=="mm") || (substr($fs,strlen($fs)-2,2)=="pc") ){
+			
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	//Controllo dell'attributo padding
+	public static function check_1077($e, $content_dom, $b){
+		
+		$val='padding';
+		//per prima cosa controllo la presenza di stili inline nel tag
+		//$fs= BasicChecks::GetUDM($e,$val,$b);
+		$fs= VamolaBasicChecks::get_p_css($e,$val,$b);
+		
+		if($fs!=""){
+			if((substr($fs,strlen($fs)-2,2)=="px") ||(substr($fs,strlen($fs)-2,2)=="pt") || (substr($fs,strlen($fs)-2,2)=="in") || (substr($fs,strlen($fs)-2,2)=="cm") || (substr($fs,strlen($fs)-2,2)=="mm") || (substr($fs,strlen($fs)-2,2)=="pc") ){
+			
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	//Controllo dell'attributo margin
+	public static function check_1078($e, $content_dom, $b){
+		
+		$val='margin';
+	    //per prima cosa controllo la presenza di stili inline nel tag
+		//$fs= BasicChecks::GetUDM($e,$val,$b);
+		$fs= VamolaBasicChecks::get_p_css($e,$val,$b);
+		
+		if($fs!=""){
+			if((substr($fs,strlen($fs)-2,2)=="px") ||(substr($fs,strlen($fs)-2,2)=="pt") || (substr($fs,strlen($fs)-2,2)=="in") || (substr($fs,strlen($fs)-2,2)=="cm") || (substr($fs,strlen($fs)-2,2)=="mm") || (substr($fs,strlen($fs)-2,2)=="pc") ){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	//Controllo dell'attributo top
+	public static function check_1079($e, $content_dom, $b){
+		
+		$val='top';
+	    //per prima cosa controllo la presenza di stili inline nel tag
+		//$fs= BasicChecks::GetUDM($e,$val,$b);
+		$fs= VamolaBasicChecks::get_p_css($e,$val,$b);
+		
+		if($fs!=""){
+			if((substr($fs,strlen($fs)-2,2)=="px") ||(substr($fs,strlen($fs)-2,2)=="pt") || (substr($fs,strlen($fs)-2,2)=="in") || (substr($fs,strlen($fs)-2,2)=="cm") || (substr($fs,strlen($fs)-2,2)=="mm") || (substr($fs,strlen($fs)-2,2)=="pc") ){
+			
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	//Controllo dell'attributo bottom
+	public static function check_1080($e, $content_dom, $b){
+		
+		$val='bottom';
+	    //per prima cosa controllo la presenza di stili inline nel tag
+		//$fs= BasicChecks::GetUDM($e,$val,$b);
+		$fs= VamolaBasicChecks::get_p_css($e,$val,$b);
+		
+		if($fs!=""){
+			if((substr($fs,strlen($fs)-2,2)=="px") ||(substr($fs,strlen($fs)-2,2)=="pt") || (substr($fs,strlen($fs)-2,2)=="in") || (substr($fs,strlen($fs)-2,2)=="cm") || (substr($fs,strlen($fs)-2,2)=="mm") || (substr($fs,strlen($fs)-2,2)=="pc") ){
+			
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	//Controllo dell'attributo left
+	public static function check_1081($e, $content_dom, $b){
+		
+		$val='left';
+	    //per prima cosa controllo la presenza di stili inline nel tag
+		//$fs= BasicChecks::GetUDM($e,$val,$b);
+		$fs= VamolaBasicChecks::get_p_css($e,$val,$b);
+		
+		if($fs!=""){
+			if((substr($fs,strlen($fs)-2,2)=="px") ||(substr($fs,strlen($fs)-2,2)=="pt") || (substr($fs,strlen($fs)-2,2)=="in") || (substr($fs,strlen($fs)-2,2)=="cm") || (substr($fs,strlen($fs)-2,2)=="mm") || (substr($fs,strlen($fs)-2,2)=="pc") ){
+			
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	//Controllo dell'attributo right
+	public static function check_1082($e, $content_dom, $b){
+		
+		$val='right';
+	    //per prima cosa controllo la presenza di stili inline nel tag
+		//$fs= BasicChecks::GetUDM($e,$val,$b);
+		$fs= VamolaBasicChecks::get_p_css($e,$val,$b);
+		
+		if($fs!=""){
+			if((substr($fs,strlen($fs)-2,2)=="px") ||(substr($fs,strlen($fs)-2,2)=="pt") || (substr($fs,strlen($fs)-2,2)=="in") || (substr($fs,strlen($fs)-2,2)=="cm") || (substr($fs,strlen($fs)-2,2)=="mm") || (substr($fs,strlen($fs)-2,2)=="pc") ){
+			
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	//Controllo dell'attributo width
+	public static function check_1083($e, $content_dom, $b){
+		
+		$val='width';
+	    //per prima cosa controllo la presenza di stili inline nel tag
+		//$fs= BasicChecks::GetUDM($e,$val,$b);
+		$fs= VamolaBasicChecks::get_p_css($e,$val,$b);
+		
+		if($fs!=""){
+			if((substr($fs,strlen($fs)-2,2)=="px") ||(substr($fs,strlen($fs)-2,2)=="pt") || (substr($fs,strlen($fs)-2,2)=="in") || (substr($fs,strlen($fs)-2,2)=="cm") || (substr($fs,strlen($fs)-2,2)=="mm") || (substr($fs,strlen($fs)-2,2)=="pc") ){
+			
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	//Controllo dell'attributo height
+	public static function check_1084($e, $content_dom, $b){
+		
+		$val='height';
+	    //per prima cosa controllo la presenza di stili inline nel tag
+		//$fs= BasicChecks::GetUDM($e,$val,$b);
+		$fs= VamolaBasicChecks::get_p_css($e,$val,$b);
+		
+		if($fs!=""){
+			if((substr($fs,strlen($fs)-2,2)=="px") ||(substr($fs,strlen($fs)-2,2)=="pt") || (substr($fs,strlen($fs)-2,2)=="in") || (substr($fs,strlen($fs)-2,2)=="cm") || (substr($fs,strlen($fs)-2,2)=="mm") || (substr($fs,strlen($fs)-2,2)=="pc") ){
+			
+				return false;
+			}
+		}
+		return true;
+	}	
+	*/
+	/***************
+	*REQUISITO 21  *
+	*			   *
+	****************/
+	
+	/* Pseudocodice 7.1*/
+	
+	//Controllo presenza href nei tag a
+	/*
+	public static function check_1085($e, $content_dom){
+	
+	if(!isset($e->attr["href"]) && (!isset($e->attr["name"])|| !isset($e->attr["id"])))
+			return false;
+		else
+			return true;
+	}
+	
+	// Pseudocodice 7.2 
+	
+	//Controllo che alla presenza di onmouseover corrisponda la presenza di onfocus
+	public static function check_1086($e, $content_dom){
+	
+		if(isset($e->attr["onmouseover"])){
+			if(!isset($e->attr["onfocus"]))
+				return false;
+		}		
+		return true;
+	}
+	
+	//Controllo che alla presenza di onmouseout corrisponda la presenza di onblur
+	public static function check_1087($e, $content_dom){
+	
+		if(isset($e->attr["onmouseout"])){
+			if(!isset($e->attr["onblur"]))
+				return false;
+		}
+		return true;		
+	}
+	
+	//Controllo che alla presenza di onmousedown corrisponda la presenza di onkeydown
+	public static function check_1088($e, $content_dom){
+	
+		if(isset($e->attr["onmousedown"])){
+			if(!isset($e->attr["onkeydown"]))
+				return false;
+		}
+		return true;		
+	}
+	
+	//Controllo che alla presenza di onmouseup corrisponda la presenza di onkeyup
+	public static function check_1089($e, $content_dom){
+	
+		if(isset($e->attr["onmouseup"])){
+			if(!isset($e->attr["onkeyup"]))
+				return false;
+		}
+		return true;		
+	}
+	
+	//Controllo che alla presenza di onclick corrisponda la presenza di onkeypress
+	public static function check_1090($e, $content_dom){
+	
+		if(isset($e->attr["onclick"])){
+			if(!isset($e->attr["onkeypress"]))
+				return false;
+		}
+		return true;		
+	}
+	
+	//Controllo che alla presenza di onmouseout corrisponda la presenza di onblur
+	public static function check_1091($e, $content_dom){
+	
+		if(isset($e->attr["ondblclick"]) || isset($e->attr["onmousemove"]))
+				return false;
+		else
+			return true;		
+	}
+	
+	//Pseudocodice 7.3 
+	
+	//controllo dello spazio verticale tra link consecutivi.
+	public static function check_1092($e, $content_dom, $b){
+
+		
+	global $m_bottom;
+	global $m_top;
+	global $p_bottom;	
+	global $p_top;
+	
+	$array_li;
+	$i=0;
+		//Ciclo per calcolare il numero di elementi della lista
+		foreach ($e->children() as $child){
+			$array_li[$i]=$child;
+			$i++;
+		}
+		$num=$i;
+		
+		for($i=0;$i<$num-1;$i++){
+			
+			//Richiamo la funzione che calcola la distanza verticale
+			VamolaBasicChecks::GetVerticalDistance($i,$array_li,$b);
+
+			
+			//Controllo che le UDM degli attributi siano in em
+			//MB
+			if($m_bottom!="" && substr($m_bottom,-2, 2)!="em" || $p_bottom!="" && substr($p_bottom,-2, 2)!="em" || $m_top!="" && substr($m_top,-2, 2)!="em" || $p_top!="" &&substr($p_top,-2, 2)!="em"){			
+			//if(substr($m_bottom,strlen($m_bottom),-2)!="em" || substr($p_bottom,strlen($p_bottom),-2)!="em" || substr($m_top,strlen($m_top),-2)!="em" || substr($p_top,strlen($p_top),-2)!="em"){
+			
+				//MB"
+				//echo ("<p>è un EM -->".substr($m_bottom,-2, 2)."</p>");
+				//echo ("<p>risultati getVerticalDistance</p><p>m_bottom ".$m_bottom."</p> <p>m_top ".$m_top."</p> <p>p_bottom ".$p_bottom."</p> <p>p_top".$p_top."</p>" );
+				return false;
+			}
+
+			$m_bottom = substr($m_bottom,0,strlen($m_bottom)-2);
+			$m_top = substr($m_top,0,strlen($m_top)-2);
+			$p_bottom = substr($p_bottom,0,strlen($p_bottom)-2);
+			$p_top = substr($p_top,0,strlen($p_top)-2);
+			
+			
+	
+			
+			//Se sono in em faccio il controllo sulla distanza
+			//MB: imposto i valori "" a 0
+			//if($p_top!="" || $p_bottom!="" || $m_bottom!="" || $m_top!=""){
+			if($p_top=="")
+				$p_top=0;
+			if($p_bottom=="")
+				$p_bottom=0;
+			if($m_top=="")
+				$m_top=0;		
+			if($m_bottom=="")
+				$m_bottom=0;
+			
+				$dist= $p_top + $p_bottom + max( $m_bottom, $m_top );
+				
+				if($dist<0.5){
+					return false;
+				}
+			//}
+		}
+		return true;
+	}
+	//Stesso controllo ma per la lista ul
+	public static function check_1093($e, $content_dom, $b){
+	//MB: e' identico al 1092: richiamo check_1092	
+		return Checks::check_1092($e, $content_dom, $b);	
+	
+	}
+
+	// Pseudocodice 7.4
+	//Controllo della distanza minima orizzontale in caso di liste disposte inline
+	public static function check_1094($e, $content_dom, $b){
+
+	global $m_left;
+	global $p_left;
+	global $m_right;
+	global $p_right;
+	
+	$array_li;
+	$i=0;
+		foreach ($e->children() as $child){
+			$array_li[$i]=$child;
+			$i++;
+		}
+		$num=$i;
+		for($i=0;$i<$num-1;$i++){
+			//MB
+			$inlinea=VamolaBasicChecks::get_p_css($array_li[$i], "display", $b);
+			$inlinea2=VamolaBasicChecks::get_p_css($array_li[$i+1], "display", $b);
+			
+					
+			if(($inlinea!="" && stripos($inlinea,"inline")!==null) && ($inlinea2!="" && stripos($inlinea2,"inline")!==null)){
+					
+			    		
+				VamolaBasicChecks::GetHorizontalDistance($i,$array_li,$b);
+			
+				//MB if(substr($m_left,strlen($m_left),-2)!="em" || substr($p_left,strlen($p_left),-2)!="em" || substr($m_right,strlen($m_right),-2)!="em" || substr($p_right,strlen($p_right),-2)!="em"){
+				if($m_left!="" && substr($m_left,-2, 2)!="em" || $p_left!="" && substr($p_left,-2, 2)!="em" || $m_right!="" && substr($m_right,-2, 2)!="em" || $p_right!="" && substr($p_right,-2, 2)!="em"){
+					return false;
+				}
+				
+				$m_left = substr($m_left,0,strlen($m_left)-2);
+				$m_right = substr($m_right,0,strlen($m_right)-2);
+				$p_left = substr($p_left,0,strlen($p_left)-2);
+				$p_right = substr($p_right,0,strlen($p_right)-2);
+		
+	
+				
+				
+				//MB: imposto i valori "" a 0
+				//if($p_top!="" || $p_bottom!="" || $m_bottom!="" || $m_top!=""){
+				if($p_right=="")
+					$p_right=0;
+				if($p_left=="")
+					$p_left=0;
+				if($m_right=="")
+					$m_right=0;		
+				if($m_left=="")
+					$m_left=0;
+				
+				$dist= $p_right + $p_left + $m_right + $m_left;
+					
+				//MB
+				//echo ("<p>risultati getOrizontalDistance</p><p>m_bottom ".$m_left."</p> <p>m_top ".$m_right."</p> <p>p_bottom ".$p_left."</p> <p>p_top ".$p_right."</p>" );
+				
+				//echo("<p>dist ".$dist."</p>");					
+					
+					if($dist<0.5){
+						return false;
+					}
+				//}				
+			}
+		}
+		return true;
+	}
+	
+	public static function check_1095($e, $content_dom, $b){
+	//MB dato che e' identica alla 1094: richiamo check_1094
+	
+		return Checks::check_1094($e, $content_dom, $b);
+
+	}
+	
+//Pseudocodice 7.5
+
+	//Controllo lo spazio verticale tra liste di link
+	public static function check_1096($e, $content_dom, $b){
+	
+		
+		
+	    global $m_bottom;
+		global $p_bottom;	
+
+		
+		VamolaBasicChecks::GetVerticalListBottomDistance($e,$b);
+		
+		
+		
+		
+		if(($m_bottom!="" && substr($m_bottom,-2,2)!="em") || ($p_bottom!="" && substr($p_bottom,-2,2)!="em")){
+				return false;
+			}
+			
+		
+			
+		$m_bottom = substr($m_bottom,0,strlen($m_bottom)-2);
+		$p_bottom = substr($p_bottom,0,strlen($p_bottom)-2);
+		
+		
+		if($p_bottom=="")  
+				$p_bottom=0;
+		if($m_bottom=="")
+				$m_bottom=0;
+						
+		
+
+
+			
+		
+		$dist_bottom= $p_bottom + $m_bottom;
+				
+			
+			
+			if($dist_bottom<0.5){
+				return false;
+			}
+		
+			return true;
+	}
+	
+	public static function check_1097($e, $content_dom, $b){
+	
+		
+	global $m_top;	
+	global $p_top;
+	
+		VamolaBasicChecks::GetVerticalListTopDistance($e,$b);
+		
+		
+		if(($m_top!="" && substr($m_top,-2,2)!="em") || ($p_top!="" && substr($p_top,-2,2)!="em")){					
+			return false;
+		}
+
+				
+		$m_top = substr($m_top,0,strlen($m_top)-2);
+		$p_top = substr($p_top,0,strlen($p_top)-2);
+		
+		
+		if($p_top=="")  
+				$p_top=0;
+		if($m_top=="")
+				$m_top=0;
+
+
+			$dist_top= $p_top + $m_top;
+						
+			if($dist_top<0.5){
+				return false;
+			}
+		
+			return true;	
+	}
+	
+	public static function check_1098($e, $content_dom, $b){
+		
+		//MB identica a 1096, richiamo check_1096
+		return Checks::check_1096($e, $content_dom, $b);
+
+	}
+	
+	public static function check_1099($e, $content_dom, $b){
+		
+		//MB identica a 1097, richiamo check_1097
+		return Checks::check_1097($e, $content_dom, $b);
+	}
+	
+	//Pseudocodice 7.6
+	
+	//Verifica delle corrette dimensioni ridefinite in un pulsante
+	public static function check_1100($e, $content_dom, $b){
+		if(($e->tag == "input" && $e->attr["type"]=="button") || $e->tag == "button"){
+					
+			if(isset($e->attr["style"])){
+				$height_inline=VamolaBasicChecks::GetElementStyleInline($e->attr["style"],"height");
+				$padding_inline=VamolaBasicChecks::GetElementStyleInline($e->attr["style"],"padding");
+				$pl_inline=VamolaBasicChecks::GetElementStyleInline($e->attr["style"],"pading-left");
+				$pr_inline=VamolaBasicChecks::GetElementStyleInline($e->attr["style"],"padding-right");
+				$pt_inline=VamolaBasicChecks::GetElementStyleInline($e->attr["style"],"padding-top");
+				$pb_inline=VamolaBasicChecks::GetElementStyleInline($e->attr["style"],"padding-bottom");
+			}
+			if(isset($e->attr["id"])){
+				$height_id=VamolaBasicChecks::GetElementStyleId($e->attr["id"],"height",$b);
+				$padding_id=VamolaBasicChecks::GetElementStyleId($e->attr["id"],"padding",$b);
+				$pl_id=VamolaBasicChecks::GetElementStyleId($e->attr["id"],"padding-left",$b);
+				$pr_id=VamolaBasicChecks::GetElementStyleId($e->attr["id"],"padding-right",$b);
+				$pt_id=VamolaBasicChecks::GetElementStyleId($e->attr["id"],"padding-top",$b);
+				$pb_id=VamolaBasicChecks::GetElementStyleId($e->attr["id"],"padding-buttom",$b);
+			}
+			if(isset($e->attr["class"])){
+				$height_class=VamolaBasicChecks::GetElementStyleClass($e->attr["class"],"height",$b);
+				$padding_class=VamolaBasicChecks::GetElementStyleClass($e->attr["class"],"padding",$b);
+				$pl_class=VamolaBasicChecks::GetElementStyleClass($e->attr["class"],"padding-left",$b);
+				$pr_class=VamolaBasicChecks::GetElementStyleClass($e->attr["class"],"padding-right",$b);
+				$pt_class=VamolaBasicChecks::GetElementStyleClass($e->attr["class"],"padding-top",$b);
+				$pb_class=VamolaBasicChecks::GetElementStyleClass($e->attr["class"],"padding-buttom",$b);
+			}
+			if(!isset($e->attr["class"]) && !isset($e->attr["id"]) && !isset($e->attr["style"])){
+				$height=VamolaBasicChecks::GetElementStyle($e->tag,"height",$b);
+				$padding=VamolaBasicChecks::GetElementStyle($e->tag,"padding",$b);
+				$pl=VamolaBasicChecks::GetElementStyle($e->tag,"padding-left",$b);
+				$pr=VamolaBasicChecks::GetElementStyle($e->tag,"padding-right",$b);
+				$pt=VamolaBasicChecks::GetElementStyle($e->tag,"padding-top",$b);
+				$pb=VamolaBasicChecks::GetElementStyle($e->tag,"padding-buttom",$b);	
+			}	
+			if($height_inline!="")
+			$height=$height_inline;
+			else if($height_id!="")
+				$height=$height_id;
+			else if($height_class!="")
+				$height=$height_class;
+			if($padding_inline!="")
+				$padding=$padding_inline;
+			else if($padding_id!="")
+				$padding=$padding_id;
+			else if($padding_class!="")
+				$padding=$height_class;
+			if($pl_inline!="")
+				$pl=$pl_inline;
+			else if($pl_id!="")
+				$pl=$pl_id;
+			else if($pl_class!="")
+				$pl=$pl_class;
+			if($pr_inline!="")
+				$pr=$pr_inline;
+			else if($pr_id!="")
+				$pr=$pr_id;
+			else if($pr_class!="")
+				$pr=$pr_class;
+			if($pt_inline!="")
+				$pt=$pt_inline;
+			else if($pt_id!="")
+				$pt=$pt_id;
+			else if($pt_class!="")
+				$pt=$pt_class;
+			if($pb_inline!="")
+				$pb=$pb_inline;
+			else if($pb_id!="")
+				$pb=$pb_id;
+			else if($pb_class!="")
+				$pb=$pb_class;
+			
+			if($height !="" || $padding!="" || $pl!="" || $pr!="" || $pt!="" || $pb!=""){
+				return false;
+			}	
+		}
+		return true;
+	}
+		
+	public static function check_1101($e, $content_dom, $b){
+	
+	global $m_top;	
+	
+		if(($e->tag == "input" && $e->attr["type"]=="button") || $e->tag == "button"){
+		
+			VamolaBasicChecks::GetVerticalListTopDistance($e,$b);
+			//echo("<p>BOTTONE= ".$m_top."");
+			if(($m_top!="" && substr($m_top,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_top = substr($m_top,0,strlen($m_top)-2);
+			
+			
+			//echo("<p>BOTTONE= ".$m_top."</p>");
+			//MB
+			if($m_top =="")
+				$m_top=0;
+			//MBif($m_top !="" && $m_top<0.5){
+			
+			if($m_top<0.5){
+				return false;
+			}	
+		}
+		return true;
+	}
+	
+	public static function check_1102($e, $content_dom, $b){
+	
+	global $m_bottom;	
+
+		if(($e->tag == "input" && $e->attr["type"]=="button") || $e->tag == "button"){
+		
+			VamolaBasicChecks::GetVerticalListBottomDistance($e,$b);
+			//echo("<p>m_bottom =".$m_bottom."");
+			if(($m_bottom!="" && substr($m_bottom,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_bottom = substr($m_bottom,0,strlen($m_bottom)-2);
+		
+			//MB
+			if($m_bottom =="")
+				$m_bottom=0;			
+			
+			//MBif($m_bottom !="" && $m_bottom<0.5){
+			//echo("<p>m_bottom =".$m_bottom."");
+			if($m_bottom<0.5){
+				return false;
+			}	
+		}
+		return true;
+	}
+	
+	public static function check_1103($e, $content_dom, $b){
+	
+	global $m_left;	
+
+		if(($e->tag == "input" && $e->attr["type"]=="button") || $e->tag == "button"){
+		
+			VamolaBasicChecks::GetHorizontalListLeftDistance($e,$b);
+			
+			if(($m_left!="" && substr($m_left,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_left = substr($m_left,0,strlen($m_left)-2);
+			
+			
+			//MB
+			if($m_left =="")
+				$m_left=0;			
+			
+			//MB if($m_left !="" && $m_left<0.5){
+			if($m_left<0.5){
+				return false;
+			}	
+		}
+		return true;
+	}
+	
+	public static function check_1104($e, $content_dom, $b){
+	
+	global $m_right;	
+
+		if(($e->tag == "input" && $e->attr["type"]=="button") || $e->tag == "button"){
+		
+			VamolaBasicChecks::GetHorizontalListRightDistance($e,$b);
+			
+			if(($m_right!="" && substr($m_right,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_right = substr($m_right,0,strlen($m_right)-2);
+		
+			//MB
+			if($m_right =="")
+				$m_right=0;
+			
+			//MB if($m_right !="" && $m_right<0.5){
+			if($m_right<0.5){
+				return false;
+			}	
+		}
+		return true;
+	}
+	*/
+		
+	// REQUISITO 3
+	// Simone Spagnoli
+	// Pseudocodice 36
+	// Input di tipo button e image: se non esiste l'attributo alt ritorna falso	
+	public static function check_3000($e, $content_dom)
+	{
+		if ($e->attr["type"] == "button" || $e->attr["type"] == "image")
+		{
+			if (!isset($e->attr["alt"]))
+			{
+				return false;
+			}
+		}	
+		return true;
+	}
+
+	// Input: se l'attributo alt e' di lunghezza zero ritorna falso	(alt="")
+	public static function check_3001($e, $content_dom)
+	{
+		if ($e->attr["type"] == "button" || $e->attr["type"] == "image")
+		{
+			if (isset($e->attr["alt"])) 
+			{	
+				$alt = $e->attr["alt"];
+				$alt_trim = trim($alt);
+				if ($alt_trim == "") 
+				{
+					return false;
+				}
+			}
+		}	
+		return true;
+	}
+	
+	// Input: se l'attributo alt e' di lunghezza maggiore di LUNGHEZZA_MASSIMA ritorna falso	
+	public static function check_3002($e, $content_dom)
+	{
+		$MAX_LENGTH = 80;
+		if ($e->attr["type"] == "button" || $e->attr["type"] == "image")
+		{
+			
+			if (isset($e->attr["alt"])) 
+			{	
+				$alt = $e->attr["alt"];
+				$alt_trim = trim($alt);
+				if ($alt_trim != "" && strlen($alt) > $MAX_LENGTH ) 
+				{
+					return false;
+				}
+			}
+		}	
+		return true;		
+	}
+	
+	
+	// Input: se nel contenuto dell'attributo alt trovo l'estensione di una immagine ritorna falso	
+	public static function check_3003($e, $content_dom)
+	{
+		$MAX_LENGTH = 80;
+		if ($e->attr["type"] == "button" || $e->attr["type"] == "image")
+		{
+			
+			if (isset($e->attr["alt"])) 
+			{	
+				$alt = $e->attr["alt"];
+				$alt_trim = trim($alt);
+				if ($alt_trim != "" && strlen($alt) < $MAX_LENGTH ) 
+				{
+					$pos_gif = stripos($alt,".gif");
+					$pos_jpg = stripos($alt,".jpg");
+					$pos_jpeg = stripos($alt,".jpeg");
+					$pos_png = stripos($alt,".png");
+					$pos_bmp = stripos($alt,".bmp");
+					$pos_tga = stripos($alt,".tga");
+					
+					if($pos_gif !== FALSE || $pos_jpg !== FALSE || $pos_jpeg !== FALSE || 
+					   $pos_png !== FALSE || $pos_bmp !== FALSE || $pos_tga !== FALSE ) 					
+					{
+						return false;
+					}
+				}
+			}
+		}	
+		return true;	
+	}
+	
+	// Input: se l'attributo alt c'e', se non e' di dimensione zero, se non e' troppo lungo, se non contiene l'estensione di una immagine, ritorna falso lo stesso per segnalare di controllare che l'alt abbia un contenuto adeguato 	
+	public static function check_3004($e, $content_dom)
+	{
+		$MAX_LENGTH = 80;
+		if ($e->attr["type"] == "button" || $e->attr["type"] == "image")
+		{
+			
+			if (isset($e->attr["alt"])) 
+			{	
+				$alt = $e->attr["alt"];
+				$alt_trim = trim($alt);
+				if ($alt_trim != "" && strlen($alt) < $MAX_LENGTH ) 
+				{
+					$pos_gif = stripos($alt,".gif");
+					$pos_jpg = stripos($alt,".jpg");
+					$pos_jpeg = stripos($alt,".jpeg");
+					$pos_png = stripos($alt,".png");
+					$pos_bmp = stripos($alt,".bmp");
+					$pos_tga = stripos($alt,".tga");
+					
+					if($pos_gif === FALSE && $pos_jpg === FALSE && $pos_jpeg === FALSE && 
+					   $pos_png === FALSE && $pos_bmp === FALSE && $pos_tga === FALSE ) 					
+					{
+						return false;
+					}
+				}
+			}
+		}	
+		return true;	
+	}
+	
+	
+	// Area: se non esiste l'attributo alt ritorna falso	
+	public static function check_3005($e, $content_dom)
+	{
+		if (!isset($e->attr["alt"]))
+		{
+			return false;
+		}	
+		return true;
+	}
+
+	// Area: se l'attributo alt e' di lunghezza zero ritorna falso	(alt="")
+	public static function check_3006($e, $content_dom)
+	{
+		if (isset($e->attr["alt"])) 
+		{	
+			$alt = $e->attr["alt"];
+			$alt_trim = trim($alt);
+			if ($alt_trim == "") 
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	// Area: se l'attributo alt e' di lunghezza maggiore di LUNGHEZZA_MASSIMA ritorna falso	
+	public static function check_3007($e, $content_dom)
+	{
+		$MAX_LENGTH = 80;
+
+		if (isset($e->attr["alt"])) 
+		{	
+			$alt = $e->attr["alt"];
+			$alt_trim = trim($alt);
+			if ($alt_trim != "" && strlen($alt) > $MAX_LENGTH ) 
+			{
+				return false;
+			}
+		}
+	
+		return true;		
+	}
+	
+	
+	// Area: se nel contenuto dell'attributo alt trovo l'estensione di una immagine ritorna falso	
+	public static function check_3008($e, $content_dom)
+	{
+		$MAX_LENGTH = 80;
+				
+		if (isset($e->attr["alt"])) 
+		{	
+			$alt = $e->attr["alt"];
+			$alt_trim = trim($alt);
+			if ($alt_trim != "" && strlen($alt) < $MAX_LENGTH ) 
+			{
+				$pos_gif = stripos($alt,".gif");
+				$pos_jpg = stripos($alt,".jpg");
+				$pos_jpeg = stripos($alt,".jpeg");
+				$pos_png = stripos($alt,".png");
+				$pos_bmp = stripos($alt,".bmp");
+				$pos_tga = stripos($alt,".tga");
+				
+				if($pos_gif !== FALSE || $pos_jpg !== FALSE || $pos_jpeg !== FALSE || 
+				   $pos_png !== FALSE || $pos_bmp !== FALSE || $pos_tga !== FALSE ) 					
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;	
+	}
+	
+	// Area: se l'attributo alt c'e', se non e' di dimensione zero, se non e' troppo lungo, se non contiene l'estensione di una immagine, ritorna falso lo stesso per segnalare di controllare che l'alt abbia un contenuto adeguato 	
+	public static function check_3009($e, $content_dom)
+	{
+		$MAX_LENGTH = 80;
+
+		if (isset($e->attr["alt"])) 
+		{	
+			$alt = $e->attr["alt"];
+			$alt_trim = trim($alt);
+			if ($alt_trim != "" && strlen($alt) < $MAX_LENGTH ) 
+			{
+				$pos_gif = stripos($alt,".gif");
+				$pos_jpg = stripos($alt,".jpg");
+				$pos_jpeg = stripos($alt,".jpeg");
+				$pos_png = stripos($alt,".png");
+				$pos_bmp = stripos($alt,".bmp");
+				$pos_tga = stripos($alt,".tga");
+				
+				if($pos_gif === FALSE && $pos_jpg === FALSE && $pos_jpeg === FALSE && 
+				   $pos_png === FALSE && $pos_bmp === FALSE && $pos_tga === FALSE ) 					
+				{
+					return false;
+				}
+			}
+		}
+	
+		return true;	
+	}
+
+	
+	// Img: se non esiste l'attributo alt ritorna falso	
+	public static function check_3010($e, $content_dom)
+	{
+		if (!isset($e->attr["alt"]))
+		{
+			return false;
+		}	
+		return true;
+	}
+
+	// Img: se l'attributo alt e' di lunghezza zero ritorna falso	(alt="")
+	public static function check_3011($e, $content_dom)
+	{
+		if (isset($e->attr["alt"])) 
+		{	
+			$alt = $e->attr["alt"];
+			$alt_trim = trim($alt);
+			if ($alt_trim == "") 
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	// Img: se l'attributo alt e' di lunghezza maggiore di LUNGHEZZA_MASSIMA ritorna falso	
+	public static function check_3012($e, $content_dom)
+	{
+		$MAX_LENGTH = 80;
+
+		if (isset($e->attr["alt"])) 
+		{	
+			$alt = $e->attr["alt"];
+			$alt_trim = trim($alt);
+			if ($alt_trim != "" && strlen($alt) > $MAX_LENGTH ) 
+			{
+				return false;
+			}
+		}
+	
+		return true;		
+	}
+	
+	
+	// Img: se nel contenuto dell'attributo alt trovo l'estensione di una immagine ritorna falso	
+	public static function check_3013($e, $content_dom)
+	{
+		$MAX_LENGTH = 80;
+				
+		if (isset($e->attr["alt"])) 
+		{	
+			$alt = $e->attr["alt"];
+			$alt_trim = trim($alt);
+			if ($alt_trim != "" && strlen($alt) < $MAX_LENGTH ) 
+			{
+				$pos_gif = stripos($alt,".gif");
+				$pos_jpg = stripos($alt,".jpg");
+				$pos_jpeg = stripos($alt,".jpeg");
+				$pos_png = stripos($alt,".png");
+				$pos_bmp = stripos($alt,".bmp");
+				$pos_tga = stripos($alt,".tga");
+				
+				if($pos_gif !== FALSE || $pos_jpg !== FALSE || $pos_jpeg !== FALSE || 
+				   $pos_png !== FALSE || $pos_bmp !== FALSE || $pos_tga !== FALSE ) 					
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;	
+	}
+	
+	// Img: se l'attributo alt c'e', se non e' di dimensione zero, se non e' troppo lungo, se non contiene l'estensione di una immagine, ritorna falso lo stesso per segnalare di controllare che l'alt abbia un contenuto adeguato 	
+	public static function check_3014($e, $content_dom)
+	{
+		$MAX_LENGTH = 80;
+
+		if (isset($e->attr["alt"])) 
+		{	
+			$alt = $e->attr["alt"];
+			$alt_trim = trim($alt);
+			if ($alt_trim != "" && strlen($alt) < $MAX_LENGTH ) 
+			{
+				$pos_gif = stripos($alt,".gif");
+				$pos_jpg = stripos($alt,".jpg");
+				$pos_jpeg = stripos($alt,".jpeg");
+				$pos_png = stripos($alt,".png");
+				$pos_bmp = stripos($alt,".bmp");
+				$pos_tga = stripos($alt,".tga");
+				
+				if($pos_gif === FALSE && $pos_jpg === FALSE && $pos_jpeg === FALSE && 
+				   $pos_png === FALSE && $pos_bmp === FALSE && $pos_tga === FALSE ) 					
+				{
+					return false;
+				}
+			}
+		}
+	
+		return true;	
+	}
+	
+
+	// Pseudocodice 37
+	// Img: se validazione tramite uri e se trovo longdesc controllo se il file esiste
+	public static function check_3015($e, $content_dom)
+	{
+		if (($_POST["uri"]) != "http://")
+		{
+			if (isset($e->attr["longdesc"]))
+			{	
+
+				$ld_uri = explode("/",$_POST["uri"]);
+				$ld_uri = array_slice($ld_uri, 0, sizeof($ld_uri)-1);
+				$ur = implode("/", $ld_uri);
+
+				$ld_path = $ur . "/" . $e->attr["longdesc"];
+		
+				$AgetHeaders = @get_headers($ld_path);
+				if (preg_match("|200|", $AgetHeaders[0])) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+		return true;
+
+	}
+
+	// Img: se esiste l'attributo longdesc avviso di controllare il contenuto
+	public static function check_3016($e, $content_dom)
+	{
+		if (isset($e->attr["longdesc"]))
+		{	
+			return false;
+		}
+		return true;
+	}
+	
+	//pseudocodice 2a 2.3 
+	// object: verifico ricorsivamente la presenza di alternativi testuali
+	public static function check_3017($e, $content_dom)
+	{
+		if ($e->parent()->tag!='object')
+		return VamolaBasicChecks::check_obj($e,$content_dom);
+		else
+		return true;
+	}
+	
+	//ritorna false se l'alternativo testuale di object contiene il nome di un file
+	public static function check_3018($e, $content_dom)
+	{
+		$testo=VamolaBasicChecks::remove_obj($e);
+		
+		$estensioni= array(".jpg",".jpeg", ".gif", ".png", ".bmp", ".tga", ".mpeg", ".avi", ".mpg");
+		if (isset($testo) && trim($testo)!='')// l'elemento contiene del testo
+		{
+			//echo($e->plaintext);
+			
+			foreach($estensioni as $est)
+			{
+			if(stripos($testo,$est) !== false)
+			return false;
+			
+			}
+		}
+		return true;
+	}
+	
+	//ritorna false per tutti gli alternativi testualti di object 
+	// (eccetto per quelli che contengono il nome di un file, 
+	//  per cui c'� gi� il controllo 3018)
+	public static function check_3019($e, $content_dom)
+	{
+		if ($e->parent()->tag!='object')
+		return !VamolaBasicChecks::check_obj($e,$content_dom);
+		else
+		return true;
+	}	
+	
+	//REQUISITO 4
+	//Pseudocodice 2.1 (Doc 3a)
+	//Controllo manuale: un messaggio per ogni pagina. Controlla che il colore non sia l'unico mezzo per veicolare info.
+	public static function check_4000($e, $content_dom)
+	{
+		return false;	
+	}
+	
+	//REQUISITO 5
+	
+	//Pseudocodice 3.1 (Doc 3a)
+	//Controllo la presenza della regola text-decoration : blink
+	// negli elementi: p span a strong em q cite blockquote li ol dd dd dt td tr th h1 h2 h3 h4 h5 h6 label acronym abbr code pre
+	//p
+	public static function check_5000($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}	
+	
+	//span
+	public static function check_5001($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+	//a
+	public static function check_5002($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//strong
+	public static function check_5003($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//em
+	public static function check_5004($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//q
+	public static function check_5005($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//cite
+	public static function check_5006($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//blockquote
+	public static function check_5007($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//li
+	public static function check_5008($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//ol
+	public static function check_5009($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//dd
+	public static function check_5010($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+ 
+	//dt
+	public static function check_5011($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//td
+	public static function check_5012($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//tr
+	public static function check_5013($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//th
+	public static function check_5014($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//h1
+	public static function check_5015($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//h2
+	public static function check_5016($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//h3
+	public static function check_5017($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//h4
+	public static function check_5018($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//h5
+	public static function check_5019($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//h6
+	public static function check_5020($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//label
+	public static function check_5021($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//acronym
+	public static function check_5022($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//abbr
+	public static function check_5023($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//code
+	public static function check_5024($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+
+	//pre
+	public static function check_5025($e, $content_dom, $b)
+	{
+			return VamolaBasicChecks::check_blink($e, $content_dom, $b);
+	}
+	
+	//Pseudocodice 3.2 (Doc 3a)
+	//verifico presenza dell'elemento <blink>
+	public static function check_5026($e, $content_dom)
+	{
+		
+		return false;	
+	}
+	
+	//Pseudocodice 3.3 (Doc 3a)
+	//Richiede di verificare se i .gif sono animati (su img)
+	public static function check_5027($e, $content_dom)
+	{
+		$ext = strtolower(substr(trim($e->attr["src"]), -4));
+		
+		return !($ext == ".gif" );	
+	}	
+
+	//Pseudocodice 3.4 (Doc 3a)
+	//Richiede di verificare se i .png sono animati (su img)
+	public static function check_5028($e, $content_dom)
+	{
+		$ext = strtolower(substr(trim($e->attr["src"]), -4));
+		
+		return !($ext == ".png" );	
+	}		
+	
+
+	/**************
+	* Requisito 6 *
+	**************/
+	
+	//Pseudocodice 4.2
+	public static function check_6000($e, $content_dom, $b){
+	
+		
+		$background='';
+		$foreground='';
+		//controllo solo gli elementi testuali
+		if($e->tag=="p" || $e->tag=="span" || $e->tag=="strong" || $e->tag=="em" || 
+		   $e->tag=="q" || $e->tag=="cite" || $e->tag=="blockquote" || $e->tag=="li" || 
+		   $e->tag=="dd" ||  $e->tag=="dt" || $e->tag=="td" ||  $e->tag=="th" || 
+		   $e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6" || 
+		   $e->tag=="label" || $e->tag=="acronym" || $e->tag=="abbr" || $e->tag=="code" || $e->tag=="pre")
+		{
+				
+				if(trim($e->plaintext)=="") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+				
+			
+				$background=VamolaBasicChecks::getBackground($e,$b);
+				$foreground=VamolaBasicChecks::getForeground($e,$b);
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+				
+				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+
+				if ($ris < 125)
+				{	
+					return false;
+				}
+				else{
+					return true;
+				}
+				
+		}
+		return true;
+	}
+	
+	public static function check_6001($e, $content_dom, $b){
+	
+		$background='';
+		$foreground='';
+		//elementi testuali
+		if($e->tag=="p" || $e->tag=="span" || $e->tag=="strong" || $e->tag=="em" || 
+		   $e->tag=="q" || $e->tag=="cite" || $e->tag=="blockquote" || $e->tag=="li" || 
+		   $e->tag=="dd" ||  $e->tag=="dt" || $e->tag=="td" ||  $e->tag=="th" || 
+		   $e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6" || 
+		   $e->tag=="label" || $e->tag=="acronym" || $e->tag=="abbr" || $e->tag=="code" || $e->tag=="pre")		
+		{
+				
+				if(trim($e->plaintext)=="") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+
+				$background=VamolaBasicChecks::getBackground($e,$b);
+				$foreground=VamolaBasicChecks::getForeground($e,$b);	
+				
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+				
+				$ris= VamolaBasicChecks::CalculateColorDifference($background,$foreground);
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+				if($ris > 499)
+				{
+					return true;
+					
+				}else
+				{
+					return false;
+				}
+				
+		}
+		return true;
+	}	
+	
+	//Pseudocodice 4.3
+	//su <body>, restituisce un messaggio solo se c'è almeno un'immagine
+	public static function check_6002($e, $content_dom){
+	
+		if (BasicChecks::count_children_by_tag($e, "img") > 0)
+			return false;
+		else
+			return true;
+	}
+	
+	//Pseudocodice 4.4
+	
+
+	
+	public static function check_6003($e, $content_dom, $b)
+	{
+		$bg=VamolaBasicChecks::get_p_css($e,"background-image", $b);
+		
+		if($bg!=""){
+			return false;
+		}
+		return true;
+	}
+	
+
+	//link visitati
+	public static function check_6004($e, $content_dom, $b){
+	
+		
+		$background='';
+		$foreground='';
+
+				
+				if(trim($e->plaintext)=="") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+				
+				$foreground=VamolaBasicChecks::getForegroundA($e,$b, "visited");
+				if($foreground=="" || $foreground==null)
+				{	
+					$app=$e->parent();
+					while($app->tag!="body")
+						$app=$app->parent();
+					if(isset($app->attr["vlink"]))
+						$foreground=$app->attr["vlink"];
+						
+				}
+				if($foreground=="" || $foreground==null)
+					return true;
+				
+				$background=VamolaBasicChecks::getBackgroundA($e,$b,"visited");
+				if($background=="" ||$background==null)
+					$background=VamolaBasicChecks::getBackground($e,$b);
+					
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+				
+				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+
+				if ($ris < 125)
+				{	
+					return false;
+				}
+				else{
+					return true;
+				}
+				
+		
+		return true;
+	}
+	
+	//link visitati
+	public static function check_6005($e, $content_dom, $b){
+	
+		$background='';
+		$foreground='';
+		//elementi testuali
+				
+				if(trim($e->plaintext)=="") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+
+				$foreground=VamolaBasicChecks::getForegroundA($e,$b, "visited");
+				if($foreground=="" || $foreground==null)
+				{	
+					$app=$e->parent();
+					while($app->tag!="body")
+						$app=$app->parent();
+					if(isset($app->attr["vlink"]))
+						$foreground=$app->attr["vlink"];
+						
+				}
+				if($foreground=="" || $foreground==null)
+					return true;
+				
+				$background=VamolaBasicChecks::getBackgroundA($e,$b,"visited");
+				if($background=="" ||$background==null)
+					$background=VamolaBasicChecks::getBackground($e,$b);;	
+				
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+				
+				$ris= VamolaBasicChecks::CalculateColorDifference($background,$foreground);
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+				if($ris > 499)
+				{
+					return true;
+					
+				}else
+				{
+					return false;
+				}
+				
+		
+		return true;
+	}
+	
+
+	//link attivati
+	public static function check_6006($e, $content_dom, $b){
+	
+		
+		$background='';
+		$foreground='';
+
+				
+				if(trim($e->plaintext)=="") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+				
+				$foreground=VamolaBasicChecks::getForegroundA($e,$b, "active");
+				if($foreground=="" || $foreground==null)
+				{	
+					$app=$e->parent();
+					while($app->tag!="body")
+						$app=$app->parent();
+					if(isset($app->attr["alink"]))
+						$foreground=$app->attr["alink"];
+						
+				}
+				if($foreground=="" || $foreground==null)
+					return true;
+				
+				$background=VamolaBasicChecks::getBackgroundA($e,$b,"active");
+				if($background=="" ||$background==null)
+					$background=VamolaBasicChecks::getBackground($e,$b);
+					
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+				
+				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+
+				if ($ris < 125)
+				{	
+					return false;
+				}
+				else{
+					return true;
+				}
+				
+		
+		return true;
+	}
+	
+	//link attivati
+	public static function check_6007($e, $content_dom, $b){
+	
+		$background='';
+		$foreground='';
+		//elementi testuali
+				
+				if(trim($e->plaintext)=="") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+
+				$foreground=VamolaBasicChecks::getForegroundA($e,$b, "active");
+				if($foreground=="" || $foreground==null)
+				{	
+					$app=$e->parent();
+					while($app->tag!="body")
+						$app=$app->parent();
+					if(isset($app->attr["alink"]))
+						$foreground=$app->attr["alink"];
+						
+				}
+				if($foreground=="" || $foreground==null)
+					return true;
+				
+				$background=VamolaBasicChecks::getBackgroundA($e,$b,"active");
+				if($background=="" ||$background==null)
+					$background=VamolaBasicChecks::getBackground($e,$b);;	
+				
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+				
+				$ris= VamolaBasicChecks::CalculateColorDifference($background,$foreground);
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+				if($ris > 499)
+				{
+					return true;
+					
+				}else
+				{
+					return false;
+				}
+				
+		
+		return true;
+	}
+		
+
+	//link hover
+	public static function check_6008($e, $content_dom, $b){
+	
+		
+		$background='';
+		$foreground='';
+
+				
+				if(trim($e->plaintext)=="") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+				
+				$foreground=VamolaBasicChecks::getForegroundA($e,$b, "hover");
+				if($foreground=="" || $foreground==null)
+
+				if($foreground=="" || $foreground==null)
+					return true;
+				
+				$background=VamolaBasicChecks::getBackgroundA($e,$b,"hover");
+				if($background=="" ||$background==null)
+					$background=VamolaBasicChecks::getBackground($e,$b);
+					
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+				
+				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+
+				if ($ris < 125)
+				{	
+					return false;
+				}
+				else{
+					return true;
+				}
+				
+		
+		return true;
+	}
+	
+	//link hover
+	public static function check_6009($e, $content_dom, $b){
+	
+		$background='';
+		$foreground='';
+		//elementi testuali
+				
+				if(trim($e->plaintext)=="") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+
+				$foreground=VamolaBasicChecks::getForegroundA($e,$b, "hover");
+				if($foreground=="" || $foreground==null)
+
+				if($foreground=="" || $foreground==null)
+					return true;
+				
+				$background=VamolaBasicChecks::getBackgroundA($e,$b,"hover");
+				if($background=="" ||$background==null)
+					$background=VamolaBasicChecks::getBackground($e,$b);;	
+				
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+				
+				$ris= VamolaBasicChecks::CalculateColorDifference($background,$foreground);
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+				if($ris > 499)
+				{
+					return true;
+					
+				}else
+				{
+					return false;
+				}
+				
+		
+		return true;
+	}	
+	
+	
+	//link non visitati
+	public static function check_6010($e, $content_dom, $b){
+	
+		
+		$background='';
+		$foreground='';
+
+				
+				if(trim($e->plaintext)=="") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+				
+				$foreground=VamolaBasicChecks::getForegroundA($e,$b, "link");
+				if($foreground=="" || $foreground==null)
+					$foreground=VamolaBasicChecks::getForeground($e,$b);
+				if($foreground=="" || $foreground==null)
+				{	
+					$app=$e->parent();
+					while($app->tag!="body")
+						$app=$app->parent();
+					if(isset($app->attr["link"]))
+						$foreground=$app->attr["link"];
+						
+				}
+				if($foreground=="" || $foreground==null)
+					return true;
+				
+				$background=VamolaBasicChecks::getBackgroundA($e,$b,"active");
+				if($background=="" ||$background==null)
+					$background=VamolaBasicChecks::getBackground($e,$b);
+					
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+				
+				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+
+				if ($ris < 125)
+				{	
+					return false;
+				}
+				else{
+					return true;
+				}
+				
+		
+		return true;
+	}
+	
+	//link non visitati
+	public static function check_6011($e, $content_dom, $b){
+	
+		$background='';
+		$foreground='';
+		//elementi testuali
+				
+				if(trim($e->plaintext)=="") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+
+				$foreground=VamolaBasicChecks::getForegroundA($e,$b, "link");
+				if($foreground=="" || $foreground==null)
+					$foreground=VamolaBasicChecks::getForeground($e,$b);
+				if($foreground=="" || $foreground==null)
+				{	
+					$app=$e->parent();
+					while($app->tag!="body")
+						$app=$app->parent();
+					if(isset($app->attr["link"]))
+						$foreground=$app->attr["link"];
+						
+				}
+				if($foreground=="" || $foreground==null)
+					return true;
+				
+				$background=VamolaBasicChecks::getBackgroundA($e,$b,"active");
+				if($background=="" ||$background==null)
+					$background=VamolaBasicChecks::getBackground($e,$b);
+					
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+				
+				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+
+				$ris= VamolaBasicChecks::CalculateColorDifference($background,$foreground);
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+				if($ris > 499)
+				{
+					return true;
+					
+				}else
+				{
+					return false;
+				}
+				
+		
+		return true;
+	}	
+	
+	// Requisito 7 e 8
+	// Pseudocodice 39
+	// Img: se c'e' l'attributo ismap e' una mappa lato server, allora restituisco errore
+	public static function check_7000($e, $content_dom)
+	{
+		if (isset($e->attr["ismap"]))
+		{	
+			return false;
+		}
+		return true;
+	}	
+	
+	
+	/***************
+	*REQUISITO 12  *
+	*			   *
+	****************/
+	
+	//12000 - 12031: conrolli sulle misure relative e contenuto di px per tutti gli elementi
+	//sulle proprietà: font-size, line-height, padding-top, padding-bottom, padding-left, 
+	//padding-right, margin-top, margin -bottom, margin -left, margin –right, top, 
+	//bottom, left, right, width e height
+	
+	public static function check_12000($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'font-size',$b);
+		
+	}
+	
+	public static function check_12001($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkPx($e,'font-size',$b);
+		
+	}
+
+	public static function check_12002($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'line-height',$b);
+		
+	}
+	
+	public static function check_12003($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkPx($e,'line-height',$b);
+		
+	}	
+
+	
+	public static function check_12004($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'padding-top',$b);
+	}
+	
+	
+	public static function check_12005($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkPx($e,'padding-top',$b);
+
+	}		
+	
+	
+	public static function check_12006($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'padding-bottom',$b);
+
+	}
+	
+	public static function check_12007($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkPx($e,'padding-bottom',$b);
+
+	}	
+	
+	public static function check_12008($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'padding-right',$b);
+
+	}
+	
+	public static function check_12009($e, $content_dom, $b){
+		
+		
+		return VamolaBasicChecks::checkPx($e,'padding-right',$b);
+		
+	}	
+
+
+	public static function check_12010($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'padding-left',$b);
+
+	}
+	
+	public static function check_12011($e, $content_dom, $b){
+		
+		
+		return VamolaBasicChecks::checkPx($e,'padding-left',$b);
+		
+	}	
+	
+
+	public static function check_12012($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'margin-top',$b);
+	}
+	
+	
+	public static function check_12013($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkPx($e,'margin-top',$b);
+
+	}		
+	
+	
+	public static function check_12014($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'margin-bottom',$b);
+
+	}
+	
+	public static function check_12015($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkPx($e,'margin-bottom',$b);
+
+	}	
+	
+	public static function check_12016($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'margin-right',$b);
+
+	}
+	
+	public static function check_12017($e, $content_dom, $b){
+		
+		
+		return VamolaBasicChecks::checkPx($e,'margin-right',$b);
+		
+	}	
+
+
+	public static function check_12018($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'margin-left',$b);
+
+	}
+	
+	public static function check_12019($e, $content_dom, $b){
+		
+		
+		return VamolaBasicChecks::checkPx($e,'margin-left',$b);
+		
+	}
+	
+	
+	public static function check_12020($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'top',$b);
+
+	}
+	
+	public static function check_12021($e, $content_dom, $b){
+		
+		
+		return VamolaBasicChecks::checkPx($e,'top',$b);
+		
+	}	
+	
+	public static function check_12022($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'bottom',$b);
+
+	}
+	
+	public static function check_12023($e, $content_dom, $b){
+		
+		
+		return VamolaBasicChecks::checkPx($e,'bottom',$b);
+		
+	}	
+	
+	
+	public static function check_12024($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'left',$b);
+
+	}
+	
+	public static function check_12025($e, $content_dom, $b){
+		
+		
+		return VamolaBasicChecks::checkPx($e,'left',$b);
+		
+	}	
+	
+	public static function check_12026($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'right',$b);
+
+	}
+	
+	public static function check_12027($e, $content_dom, $b){
+		
+		
+		return VamolaBasicChecks::checkPx($e,'right',$b);
+		
+	}	
+	
+	public static function check_12028($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'width',$b);
+
+	}
+	
+	public static function check_12029($e, $content_dom, $b){
+		
+		
+		return VamolaBasicChecks::checkPx($e,'width',$b);
+		
+	}		
+	
+	
+	public static function check_12030($e, $content_dom, $b){
+		
+		return VamolaBasicChecks::checkRelative($e,'height',$b);
+
+	}
+	
+	public static function check_12031($e, $content_dom, $b){
+		
+		
+		return VamolaBasicChecks::checkPx($e,'height',$b);
+		
+	}
+	
+	//messaggio che richiede di verificare la sovrapposizione tra elementi 
+	//nel caso di ridimensionamento delle finestre
+	
+	public static function check_12032($e, $content_dom){
+		
+		return false;
+	}
+	
+	
+	// SIMO: aggiunti i controlli per il requisito 14 
+	// Requisito 14
+	// Pseudocodice 2.1
+	// Etichetta implicita in elemento input
+	public static function check_14000($e, $content_dom)
+	{
+		if ($e->attr["type"] != "button" && $e->attr["type"] != "submit" &&
+			$e->attr["type"] != "reset" && $e->attr["type"] != "image" && 
+			$e->attr["type"] != "hidden")
+		{
+			return Checks::check_14002($e, $content_dom);
+		}
+		else
+			return true;
+	}
+	
+	// Pseudocodice 2.1
+	// Etichetta implicita in elemento textarea
+	public static function check_14001($e, $content_dom)
+	{
+		
+		return Checks::check_14002($e, $content_dom);
+	}
+	
+	// Pseudocodice 2.1
+	// Etichetta implicita in elemento select
+	public static function check_14002($e, $content_dom)
+	{
+		
+		$foundLabel = FALSE;
+ 		$isImplicit = FALSE;
+ 
+		$parentFormElement = $e->parent();
+		$brotherFormElement = $e->prev_sibling();
+		
+		$idFormElement = $e->attr["id"];
+		
+		$labelFormElements = $content_dom->find("label");  
+		foreach ($labelFormElements as $label)
+		{
+			if (strtolower(trim($label->attr["for"])) == strtolower(trim($idFormElement)) && $idFormElement!="")		
+				$labelFormElement = $label;
+		}
+		
+		// Etichetta esplicita
+		if ( $labelFormElement != NULL || $labelFormElement != "")
+		{
+			$foundLabel = TRUE;
+			$isImplicit = FALSE;
+		}	
+
+		// etichetta implicita come padre o fratello
+	    else if ( ($parentFormElement->tag == "label" && 
+		 		   $parentFormElement->attr["for"] == NULL) || 
+		 		  ($brotherFormElement->tag == "label" && 
+ 				   $brotherFormElement->attr["for"] == NULL))
+		{ 
+     		 $foundLabel = TRUE;
+     		 $isImplicit = TRUE;
+		}
+		
+		if ( $foundLabel == TRUE && $isImplicit == TRUE )
+		{		/*
+		//MB tolgo eventuali nomi di proprietà
+		
+		$m_top = str_ireplace(":","",$m_top);
+		$p_top = str_ireplace(":","",$p_top);
+		$m_top = str_ireplace("margin-top","",$m_top);
+		$p_top = str_ireplace("padding-top","",$p_top);
+		$m_top = str_ireplace("margin","",$m_top);
+		$p_top = str_ireplace("padding","",$p_top);					
+		*/
+			return false;
+		}
+		else
+		    	return true;
+	}
+	
+	
+	// Pseudocodice 2.1
+	// Nessuna etichetta esplicita in elemento input
+	public static function check_14003($e, $content_dom)
+	{
+		$e->attr["type"]=strtolower(trim($e->attr["type"]));
+		if ($e->attr["type"] != "button" && $e->attr["type"] != "submit" &&
+			$e->attr["type"] != "reset" && $e->attr["type"] != "image" && 
+			$e->attr["type"] != "hidden")
+		{
+			return Checks::check_14005($e, $content_dom);
+		}
+		else
+			return true;
+	}
+	
+	// Pseudocodice 2.1
+	// Nessuna etichetta esplicita in elemento textarea
+	public static function check_14004($e, $content_dom)
+	{
+		
+		return Checks::check_14005($e, $content_dom);;
+	}
+	
+	// Pseudocodice 2.1
+	// Nessuna etichetta esplicita in elemento select
+	public static function check_14005($e, $content_dom)
+	{
+		$foundLabel = FALSE;
+ 		$isImplicit = FALSE;
+ 
+		$parentFormElement = $e->parent();
+		$brotherFormElement = $e->prev_sibling();
+		
+		$idFormElement = $e->attr["id"];
+		
+		$labelFormElements = $content_dom->find("label");  
+		foreach ($labelFormElements as $label)
+		{
+			if (strtolower(trim($label->attr["for"])) == strtolower(trim($idFormElement)) && $idFormElement!="")		
+				$labelFormElement = $label;
+		}
+		
+		// Etichetta esplicita
+		if ( $labelFormElement != NULL || $labelFormElement != "")
+		{
+			$foundLabel = TRUE;
+			$isImplicit = FALSE;
+		}	
+
+		// etichetta implicita come padre o fratello
+	    else if ( ($parentFormElement->tag == "label" && 
+		 		   $parentFormElement->attr["for"] == NULL) || 
+		 		  ($brotherFormElement->tag == "label" && 
+ 				   $brotherFormElement->attr["for"] == NULL))
+		{
+     		 $foundLabel = TRUE;
+     		 $isImplicit = TRUE;
+		}
+		
+		if ( $foundLabel == TRUE && $isImplicit == TRUE )
+		{
+			return true;
+		}
+		else if ( $foundLabel == FALSE)
+		{
+			return false;
+		}
+		else
+		    return true;
+	}
+	
+
+	// Requisito 18
+	//consiglia di verificare la trascrizione di un filmato puntato da un link
+	public static function check_18000($e, $content_dom)
+	{	// come il check_20 con l'aggiunta di ".avi"
+		// il check_20 esegue lo stesso controllo del check_145
+		//return Checks::check_20($e, $content_dom);		
+		$ext = strtolower(substr(trim($e->attr["href"]), -4));
+		
+		return !($ext == ".wmv" || $ext == ".mpg" || $ext == ".mov" || $ext == ".ram" || $ext == ".aif" || $ext == ".avi");
+
+		
+
+	}
+	//consiglia di verificare la trascrizione di un filmato contenuto in un <object>
+	public static function check_18001($e, $content_dom)
+	{
+		// il check_77 esegue lo stesso controllo del check_146
+		return Checks::check_77($e, $content_dom);
+	}
+	/*
+	public static function check_true($e, $content_dom)
+	{
+		return true;
+	}
+	*/
+	
+	
+	/***************
+	*REQUISITO 21  *
+	*			   *
+	****************/
+	
+	/* Pseudocodice 7.1*/
+	
+	//Controllo presenza href nei tag a
+	public static function check_21000($e, $content_dom){
+	
+	if(!isset($e->attr["href"]) && !isset($e->attr["name"]) && !isset($e->attr["id"]))
+			return false;
+		else
+			return true;
+	}
+	
+	/* Pseudocodice 7.2 */
+	
+	//Controllo che alla presenza di onmouseover corrisponda la presenza di onfocus
+	public static function check_21001($e, $content_dom){
+	
+		if(isset($e->attr["onmouseover"])){
+			if(!isset($e->attr["onfocus"]))
+				return false;
+		}		
+		return true;
+	}
+	
+	//Controllo che alla presenza di onmouseout corrisponda la presenza di onblur
+	public static function check_21002($e, $content_dom){
+	
+		if(isset($e->attr["onmouseout"])){
+			if(!isset($e->attr["onblur"]))
+				return false;
+		}
+		return true;		
+	}
+	
+	//Controllo che alla presenza di onmousedown corrisponda la presenza di onkeydown
+	public static function check_21003($e, $content_dom){
+	
+		if(isset($e->attr["onmousedown"])){
+			if(!isset($e->attr["onkeydown"]))
+				return false;
+		}
+		return true;		
+	}
+	
+	//Controllo che alla presenza di onmouseup corrisponda la presenza di onkeyup
+	public static function check_21004($e, $content_dom){
+	
+		if(isset($e->attr["onmouseup"])){
+			if(!isset($e->attr["onkeyup"]))
+				return false;
+		}
+		return true;		
+	}
+	
+	//Controllo che alla presenza di onclick corrisponda la presenza di onkeypress
+	public static function check_21005($e, $content_dom){
+	
+		if(isset($e->attr["onclick"])){
+			if(!isset($e->attr["onkeypress"]))
+				return false;
+		}
+		return true;		
+	}
+	
+	//Controllo che alla presenza di onmouseout corrisponda la presenza di onblur
+	public static function check_21006($e, $content_dom){
+	
+		if(isset($e->attr["ondblclick"])) 
+				return false;
+		else
+			return true;		
+	}
+	
+	//Controllo che alla presenza di onmouseout corrisponda la presenza di onblur
+	public static function check_21007($e, $content_dom){
+	
+		if(isset($e->attr["onmousemove"]))
+				return false;
+		else
+			return true;		
+	}
+	
+	/*Pseudocodice 7.3 */
+	
+	//controllo dello spazio verticale tra link consecutivi.
+	//funzione richiamata su un elemento li
+	public static function check_21008($e, $content_dom, $b){
+
+			//relativi al fratello precedente di $e
+			global $m_bottom;
+			global $p_bottom;
+			//relativi a $e
+			global $m_top;
+			global $p_top;
+			
+			$prev=$e->prev_sibling();
+			
+			if($prev== null || $prev->tag!="li")//li è il primo elemento della lista
+				return true;
+			
+			$a =$e->find("a");
+			$a_prev =$e->prev_sibling()->find("a");
+			if(($a== null || sizeof($a)==0) &&($a_prev== null || sizeof($a_prev)==0))//ne' li ne' il suo prev sono link
+				return true;
+			
+			
+			//verifico che non siano inline
+			$inlinea=VamolaBasicChecks::get_p_css($e, "display", $b);
+			$inlinea2=VamolaBasicChecks::get_p_css($e->prev_sibling(), "display", $b);
+			
+
+			if(($inlinea!="" && stripos($inlinea,"inline")!==null) && ($inlinea2!=="" || stripos($inlinea2,"inline")!==null))
+				return true;		
+				
+				
+				
+			VamolaBasicChecks::GetVerticalDistance($e,$b);
+			//se non sono in em ritorno false
+			if($m_bottom!="" && substr($m_bottom,-2, 2)!="em" || $p_bottom!="" && substr($p_bottom,-2, 2)!="em" || $m_top!="" && substr($m_top,-2, 2)!="em" || $p_top!="" &&substr($p_top,-2, 2)!="em")
+			{
+				return false; 
+			}
+			 
+			
+			$m_bottom = str_ireplace("em","",$m_bottom);
+			$m_top = str_ireplace("em","",$m_top);
+			$p_bottom = str_ireplace("em","",$p_bottom);
+			$p_top = str_ireplace("em","",$p_top);
+			
+		
+			if($p_top=="")
+				$p_top=0;
+			if($p_bottom=="")
+				$p_bottom=0;
+			if($m_top=="")
+				$m_top=0;		
+			if($m_bottom=="")
+				$m_bottom=0;
+			
+				$dist= $p_top + $p_bottom + max( $m_bottom, $m_top );
+				
+				if($dist<0.5){
+					return false;
+				}
+				
+			return true;	
+	}
+			
+	/* Pseudocodice 7.4*/
+	//Controllo della distanza minima orizzontale di un li in caso di liste disposte inline
+	public static function check_21009($e, $content_dom, $b){
+
+			//relativi al fratello precedente di $e
+			global $m_right;
+			global $p_right;
+			//relativi a $e
+			global $m_left;
+			global $p_left;
+			
+			$prev=$e->prev_sibling();
+			
+			if($prev== null || $prev->tag!="li")//li è il primo elemento della lista
+				return true;
+			
+			$a =$e->find("a");
+			$a_prev =$e->prev_sibling()->find("a");
+			if(($a== null || sizeof($a)==0) &&($a_prev== null || sizeof($a_prev)==0))//ne' li ne' il suo prev sono link
+				return true;
+				
+			//verifico che siano inline
+			$inlinea=VamolaBasicChecks::get_p_css($e, "display", $b);
+			$inlinea2=VamolaBasicChecks::get_p_css($e->prev_sibling(), "display", $b);
+			
+
+			if(($inlinea=="" || stripos($inlinea,"inline")===null) && ($inlinea2=="" || stripos($inlinea2,"inline")===null))
+				return true;	
+				
+			
+			VamolaBasicChecks::GetHorizontalDistance($e,$b);
+			//se non sono in em ritorno false
+			if($m_right!="" && substr($m_right,-2, 2)!="em" || $p_right!="" && substr($p_right,-2, 2)!="em" || $m_left!="" && substr($m_left,-2, 2)!="em" || $p_left!="" &&substr($p_left,-2, 2)!="em")
+			{
+				return false; 
+			}
+			 
+			
+			$m_right = str_ireplace("em","",$m_right);
+			$m_left = str_ireplace("em","",$m_left);
+			$p_right = str_ireplace("em","",$p_right);
+			$p_left = str_ireplace("em","",$p_left);
+			
+		
+			if($p_right=="")
+					$p_right=0;
+				if($p_left=="")
+					$p_left=0;
+				if($m_right=="")
+					$m_right=0;		
+				if($m_left=="")
+					$m_left=0;
+				
+			$dist= $p_right + $p_left + $m_right + $m_left;
+			if($dist<0.5){
+				return false;	
+			}
+				
+			return true;	
+	}	
+
+	
+	
+//Pseudocodice 7.5
+  
+	//Controllo lo spazio verticale tra liste di link
+	//ol
+	public static function check_21010($e, $content_dom, $b){
+	
+		
+		
+	    global $m_bottom;
+		global $p_bottom;	
+
+		$a =$e->find("a");
+		if($a== null || sizeof($a)==0)//ol non contiene link
+			return true;
+		
+		
+		VamolaBasicChecks::GetVerticalListBottomDistance($e,$b);
+		
+		
+		
+		
+		if(($m_bottom!="" && substr($m_bottom,-2,2)!="em") || ($p_bottom!="" && substr($p_bottom,-2,2)!="em")){
+				return false;
+			}
+			
+		
+			
+		$m_bottom = substr($m_bottom,0,strlen($m_bottom)-2);
+		$p_bottom = substr($p_bottom,0,strlen($p_bottom)-2);
+		
+		
+		if($p_bottom=="")  
+				$p_bottom=0;
+		if($m_bottom=="")
+				$m_bottom=0;
+						
+		
+		
+		$dist_bottom= $p_bottom + $m_bottom;
+				
+			
+			
+			if($dist_bottom<0.5){
+				return false;
+			}
+		
+			return true;
+	}
+	//ol
+	public static function check_21011($e, $content_dom, $b){
+	
+		
+	global $m_top;	
+	global $p_top;
+	
+		$a =$e->find("a");
+		if($a== null || sizeof($a)==0)//ol non contiene link
+			return true;
+	
+		VamolaBasicChecks::GetVerticalListTopDistance($e,$b);
+		
+		
+		if(($m_top!="" && substr($m_top,-2,2)!="em") || ($p_top!="" && substr($p_top,-2,2)!="em")){					
+			return false;
+		}
+
+				
+		$m_top = substr($m_top,0,strlen($m_top)-2);
+		$p_top = substr($p_top,0,strlen($p_top)-2);
+		
+		
+		if($p_top=="")  
+				$p_top=0;
+		if($m_top=="")
+				$m_top=0;
+
+
+			$dist_top= $p_top + $m_top;
+						
+			if($dist_top<0.5){
+				return false;
+			}
+		
+			return true;	
+	}
+	//ul
+	public static function check_21012($e, $content_dom, $b){
+		
+		//richiamo check_21010
+		return Checks::check_21010($e, $content_dom, $b);
+
+	}
+	//ul
+	public static function check_21013($e, $content_dom, $b){
+		
+		// richiamo check_21011
+		return Checks::check_21011($e, $content_dom, $b);
+	}
+	
+	//Pseudocodice 7.6
+	
+	//Verifica delle corrette dimensioni ridefinite in un "input" con type "button"
+	public static function check_21014($e, $content_dom, $b){
+		if($e->tag == "input" && ($e->attr["type"]=="button" || $e->attr["type"]=="submit" || $e->attr["type"]=="reset")){
+			
+			$h =VamolaBasicChecks::get_p_css($e, "height",$b);
+			$pl = VamolaBasicChecks::get_p_css($e, "padding-left",$b);
+			$pr = VamolaBasicChecks::get_p_css($e, "padding-right",$b);
+			$pt = VamolaBasicChecks::get_p_css($e, "padding-top",$b);
+			$pb = VamolaBasicChecks::get_p_css($e, "padding-buttom",$b);
+			
+			
+			
+			if($h !="" || $pl!="" || $pr!="" || $pt!="" || $pb!=""){
+				return false;
+			}	
+		}
+		return true;
+	}
+		
+	public static function check_21015($e, $content_dom, $b){
+	
+	global $m_top;	
+	
+		if($e->tag == "input" && ($e->attr["type"]=="button" || $e->attr["type"]=="submit" || $e->attr["type"]=="reset")) {
+		
+			VamolaBasicChecks::GetVerticalListTopDistance($e,$b);
+			//echo("<p>BOTTONE= ".$m_top."");
+			if(($m_top!="" && substr($m_top,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_top = substr($m_top,0,strlen($m_top)-2);
+			
+			
+			//echo("<p>BOTTONE= ".$m_top."</p>");
+			//MB
+			if($m_top =="")
+				$m_top=0;
+			//MBif($m_top !="" && $m_top<0.5){
+			
+			if($m_top<0.5){
+				return false;
+			}	
+		}
+		return true;
+	}
+	
+	public static function check_21016($e, $content_dom, $b){
+	
+	global $m_bottom;	
+
+		if($e->tag == "input" && ($e->attr["type"]=="button" || $e->attr["type"]=="submit" || $e->attr["type"]=="reset")){
+		
+			VamolaBasicChecks::GetVerticalListBottomDistance($e,$b);
+			//echo("<p>m_bottom =".$m_bottom."");
+			if(($m_bottom!="" && substr($m_bottom,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_bottom = substr($m_bottom,0,strlen($m_bottom)-2);
+		
+			//MB
+			if($m_bottom =="")
+				$m_bottom=0;			
+			
+			//MBif($m_bottom !="" && $m_bottom<0.5){
+			//echo("<p>m_bottom =".$m_bottom."");
+			if($m_bottom<0.5){
+				return false;
+			}	
+		}
+		return true;
+	}
+	
+	public static function check_21017($e, $content_dom, $b){
+	
+	global $m_left;	
+
+		if($e->tag == "input" && ($e->attr["type"]=="button" || $e->attr["type"]=="submit" || $e->attr["type"]=="reset")) {
+		
+			VamolaBasicChecks::GetHorizontalListLeftDistance($e,$b);
+			
+			if(($m_left!="" && substr($m_left,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_left = substr($m_left,0,strlen($m_left)-2);
+			
+			
+			//MB
+			if($m_left =="")
+				$m_left=0;			
+			
+			//MB if($m_left !="" && $m_left<0.5){
+			if($m_left<0.5){
+				return false;
+			}	
+		}
+		return true;
+	}
+	
+	public static function check_21018($e, $content_dom, $b){
+	
+	global $m_right;	
+
+		if($e->tag == "input" && ($e->attr["type"]=="button" || $e->attr["type"]=="submit" || $e->attr["type"]=="reset")){
+		
+			VamolaBasicChecks::GetHorizontalListRightDistance($e,$b);
+			
+			if(($m_right!="" && substr($m_right,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_right = substr($m_right,0,strlen($m_right)-2);
+		
+			//MB
+			if($m_right =="")
+				$m_right=0;
+			
+			//MB if($m_right !="" && $m_right<0.5){
+			if($m_right<0.5){
+				return false;
+			}	
+		}
+		return true;
+	}
+		
+
+	//Verifica delle corrette dimensioni ridefinite in un "button"
+	public static function check_21019($e, $content_dom, $b){
+		//if(($e->tag == "input" && $e->attr["type"]=="button") || $e->tag == "button"){
+			
+			$h =VamolaBasicChecks::get_p_css($e, "height",$b);
+			$pl = VamolaBasicChecks::get_p_css($e, "padding-left",$b);
+			$pr = VamolaBasicChecks::get_p_css($e, "padding-right",$b);
+			$pt = VamolaBasicChecks::get_p_css($e, "padding-top",$b);
+			$pb = VamolaBasicChecks::get_p_css($e, "padding-buttom",$b);
+			
+			
+			
+			if($h !="" || $pl!="" || $pr!="" || $pt!="" || $pb!=""){
+				return false;
+			}	
+		//}
+		return true;
+	}
+		
+	public static function check_21020($e, $content_dom, $b){
+	
+	global $m_top;	
+	
+		//if(($e->tag == "input" && $e->attr["type"]=="button") || $e->tag == "button"){
+		
+			VamolaBasicChecks::GetVerticalListTopDistance($e,$b);
+			//echo("<p>BOTTONE= ".$m_top."");
+			if(($m_top!="" && substr($m_top,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_top = substr($m_top,0,strlen($m_top)-2);
+			
+			
+			//echo("<p>BOTTONE= ".$m_top."</p>");
+			//MB
+			if($m_top =="")
+				$m_top=0;
+			//MBif($m_top !="" && $m_top<0.5){
+			
+			if($m_top<0.5){
+				return false;
+			}	
+		//}
+		return true;
+	}
+	
+	public static function check_21021($e, $content_dom, $b){
+	
+	global $m_bottom;	
+
+		//if(($e->tag == "input" && $e->attr["type"]=="button") || $e->tag == "button"){
+		
+			VamolaBasicChecks::GetVerticalListBottomDistance($e,$b);
+			//echo("<p>m_bottom =".$m_bottom."");
+			if(($m_bottom!="" && substr($m_bottom,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_bottom = substr($m_bottom,0,strlen($m_bottom)-2);
+		
+			//MB
+			if($m_bottom =="")
+				$m_bottom=0;			
+			
+			//MBif($m_bottom !="" && $m_bottom<0.5){
+			//echo("<p>m_bottom =".$m_bottom."");
+			if($m_bottom<0.5){
+				return false;
+			}	
+		//}
+		return true;
+	}
+	
+	public static function check_21022($e, $content_dom, $b){
+	
+	global $m_left;	
+
+		//if(($e->tag == "input" && $e->attr["type"]=="button") || $e->tag == "button"){
+		
+			VamolaBasicChecks::GetHorizontalListLeftDistance($e,$b);
+			
+			if(($m_left!="" && substr($m_left,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_left = substr($m_left,0,strlen($m_left)-2);
+			
+			
+			//MB
+			if($m_left =="")
+				$m_left=0;			
+			
+			//MB if($m_left !="" && $m_left<0.5){
+			if($m_left<0.5){
+				return false;
+			}	
+		//}
+		return true;
+	}
+	
+	public static function check_21023($e, $content_dom, $b){
+	
+	global $m_right;	
+
+		//if(($e->tag == "input" && $e->attr["type"]=="button") || $e->tag == "button"){
+		
+			VamolaBasicChecks::GetHorizontalListRightDistance($e,$b);
+			
+			if(($m_right!="" && substr($m_right,-2,2)!="em")){
+				return false;
+			}
+							
+			$m_right = substr($m_right,0,strlen($m_right)-2);
+		
+			//MB
+			if($m_right =="")
+				$m_right=0;
+			
+			//MB if($m_right !="" && $m_right<0.5){
+			if($m_right<0.5){
+				return false;
+			}	
+		//}
+		return true;
+	}	
+	
+	
+	
+	public static function check_23023($e, $content_dom){
+		return false;
+	}
+	public static function check_23024($e, $content_dom){
+		return true;
+	}
+	public static function check_23025($e, $content_dom){
+		return false;
+	}
+	public static function check_23026($e, $content_dom){
+		return false;
+	}
+	public static function check_23027($e, $content_dom){
+		return false;
+	}
+	public static function check_23028($e, $content_dom){
+		return false;
+	}
+	public static function check_23029($e, $content_dom){
+		return false;
+	}	
+	public static function check_23030($e, $content_dom){
+		return false;
+	}	
+	public static function check_23031($e, $content_dom){
+		return false;
+	}
+	public static function check_23032($e, $content_dom){
+		return false;
+	}
+
+	
+	//attributi deprecati
+	/*
+	public static function check_23040($e, $content_dom){
+		
+		if(isset($e->attr["align"]) && ($e->tag=="caption" || $e->tag=="iframe" || $e->tag=="img" || $e->tag=="input" || $e->tag=="object" || $e->tag=="legend" || $e->tag=="table" || $e->tag=="hr" || $e->tag=="div" 
+		|| $e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6"  || $e->tag=="p"))
+		return false;
+		else
+		return true;
+	}
+	
+	
+	public static function check_23041($e, $content_dom){
+		
+		if(isset($e->attr["alink"]) && $e->tag=="body" )
+		return false;
+		else
+		return true;
+	}
+	
+	public static function check_23042($e, $content_dom){
+		
+		if(isset($e->attr["background"]) && $e->tag=="body" )
+		return false;
+		else
+		return true;
+	}	
+	
+	public static function check_23043($e, $content_dom){
+		
+		if(isset($e->attr["bgcolor"]) && ($e->tag=="table" || $e->tag=="tr" || $e->tag=="td" || $e->tag=="th" || $e->tag=="body"))
+		return false;
+		
+		else
+		return true;
+	}
+	
+	public static function check_23044($e, $content_dom){
+		
+		if(($e->tag=="img" || $e->tag=="object") && isset($e->attr['border']))
+		{
+						//echo("<p>".print_r($e->attr)."</p>");
+		return false;
+		}
+		else
+		return true;
+	}		
+
+	public static function check_23045($e, $content_dom){
+		
+		if(isset($e->attr["color"]) && ($e->tag=="br" ))
+		return false;
+		else
+		return true;
+	}		
+	
+	public static function check_23046($e, $content_dom){
+		
+		if(isset($e->attr["compact"]) && ($e->tag=="dl" || $e->tag=="ol" || $e->tag=="ul"))
+		return false;
+		else
+		return true;
+	}
+	
+	public static function check_23047($e, $content_dom){
+		
+		if(isset($e->attr["height"]) && ($e->tag=="th" || $e->tag=="td" ))
+		return false;
+		else
+		return true;
+	}		
+	
+	public static function check_23048($e, $content_dom){
+		
+		if(isset($e->attr["hspace"]) && ($e->tag=="img" || $e->tag=="object"))
+		return false;
+		else
+		return true;
+	}
+
+	public static function check_23049($e, $content_dom){
+		
+		if(isset($e->attr["language"]) && ($e->tag=="script"))
+		return false;
+		else
+		return true;
+	}		
+
+	public static function check_23050($e, $content_dom){
+		
+		if(isset($e->attr["link"]) && ($e->tag=="body"))
+		return false;
+		else
+		return true;
+	}	
+	
+	
+	public static function check_23051($e, $content_dom){
+		
+		if(isset($e->attr["noshade"]) && ($e->tag=="hr"))
+		return false;
+		else
+		return true;
+	}
+	
+	public static function check_23052($e, $content_dom){
+		
+		if(isset($e->attr["nowrap"]) && ($e->tag=="td" || $e->tag=="th"))
+		return false;
+		else
+		return true;
+	}
+	
+	public static function check_23053($e, $content_dom){
+		
+		if(isset($e->attr["size"]) && ($e->tag=="hr"))
+		return false;
+		else
+		return true;
+	}	
+	
+
+	public static function check_23054($e, $content_dom){
+		
+		if(isset($e->attr["start"]) && ($e->tag=="ol"))
+		return false;
+		else
+		return true;
+	}		
+	
+
+	public static function check_23055($e, $content_dom){
+		
+		if(isset($e->attr["text"]) && ($e->tag=="body"))
+		return false;
+		else
+		return true;
+	}			
+	
+
+	public static function check_23056($e, $content_dom){
+		
+		if(isset($e->attr["type"]) && ($e->tag=="li" || $e->tag=="ul" || $e->tag=="ol"))
+		return false;
+		else
+		return true;
+	}		
+	
+	public static function check_23057($e, $content_dom){
+		
+		if(isset($e->attr["value"]) && ($e->tag=="li"))
+		return false;
+		else
+		return true;
+	}	
+
+	public static function check_23058($e, $content_dom){
+		
+		if(isset($e->attr["version"]) && ($e->tag=="html"))
+		return false;
+		else
+		return true;
+	}
+	
+
+	public static function check_23059($e, $content_dom){
+		
+		if(isset($e->attr["vlink"]) && ($e->tag=="body"))
+		return false;
+		else
+		return true;
+	}
+	
+	public static function check_23060($e, $content_dom){
+		
+		if(isset($e->attr["vspace"]) && ($e->tag=="img" || $e->tag=="object"))
+		return false;
+		else
+		return true;
+	}	
+	
+
+	public static function check_23061($e, $content_dom){
+		
+		if(isset($e->attr["width"]) && ($e->tag=="hr" || $e->tag=="td" || $e->tag=="th" || $e->tag=="pre"))
+		return false;
+		else
+		return true;
+	}
+	*/
+
+	//body
+	public static function check_24000($e, $content_dom){
+		
+		if(isset($e->attr["background"]) )
+		return false;
+		else
+		return true;
+	}	
+
+
+	public static function check_24001($e, $content_dom){
+		
+		if(isset($e->attr["bgcolor"]) )
+		return false;
+		else
+		return true;
+	}	
+
+
+
+	public static function check_24002($e, $content_dom){
+		
+		if(isset($e->attr["link"]) )
+		return false;
+		else
+		return true;
+	}		
+
+
+	public static function check_24003($e, $content_dom){
+		
+		if(isset($e->attr["text"]) )
+		return false;
+		else
+		return true;
+	}		
+
+
+	public static function check_24004($e, $content_dom){
+		
+		if(isset($e->attr["vlink"]) )
+		return false;
+		else
+		return true;
+	}	
+
+
+	public static function check_24005($e, $content_dom){
+		
+		if(isset($e->attr["alink"]) )
+		return false;
+		else
+		return true;
+	}	
+
+
+//table
+
+	public static function check_24006($e, $content_dom){
+		
+		if(isset($e->attr["bgcolor"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+	
+	public static function check_24007($e, $content_dom){
+		
+		if(isset($e->attr["alink"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+
+//tr
+
+	public static function check_24008($e, $content_dom){
+		
+		if(isset($e->attr["bgcolor"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+	
+//td
+
+	public static function check_24009($e, $content_dom){
+		
+		if(isset($e->attr["bgcolor"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+	public static function check_24010($e, $content_dom){
+		
+		if(isset($e->attr["height"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+	
+	public static function check_24011($e, $content_dom){
+		
+		if(isset($e->attr["nowrap"]) )
+		return false;
+		else
+		return true;
+	}		
+	
+	
+//th
+
+	public static function check_24012($e, $content_dom){
+		
+		if(isset($e->attr["bgcolor"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+	public static function check_24013($e, $content_dom){
+		
+		if(isset($e->attr["height"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+	
+	public static function check_24014($e, $content_dom){
+		
+		if(isset($e->attr["nowrap"]) )
+		return false;
+		else
+		return true;
+	}			
+	
+//img
+	public static function check_24015($e, $content_dom){
+		
+		if(isset($e->attr["border"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+	
+	public static function check_24016($e, $content_dom){
+		
+		if(isset($e->attr["hspace"]) )
+		return false;
+		else
+		return true;
+	}
+	
+	
+	public static function check_24017($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+	
+//object
+	public static function check_24018($e, $content_dom){
+		
+		if(isset($e->attr["border"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+	
+	public static function check_24019($e, $content_dom){
+		
+		if(isset($e->attr["hspace"]) )
+		return false;
+		else
+		return true;
+	}
+	
+	
+	public static function check_24020($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}		
+	
+//br
+
+	public static function check_24021($e, $content_dom){
+		
+		if(isset($e->attr["clear"]) )
+		return false;
+		else
+		return true;
+	}
+	
+	
+//dl
+
+	public static function check_24022($e, $content_dom){
+		
+		if(isset($e->attr["compact"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+//ol
+
+	public static function check_24023($e, $content_dom){
+		
+		if(isset($e->attr["compact"]) )
+		return false;
+		else
+		return true;
+	}		
+	
+	public static function check_24024($e, $content_dom){
+		
+		if(isset($e->attr["type"]) )
+		return false;
+		else
+		return true;
+	}		
+
+	
+	public static function check_24025($e, $content_dom){
+		
+		if(isset($e->attr["start"]) )
+		return false;
+		else
+		return true;
+	}		
+	
+	
+//ul
+
+	public static function check_24026($e, $content_dom){
+		
+		if(isset($e->attr["compact"]) )
+		return false;
+		else
+		return true;
+	}		
+	
+	public static function check_24027($e, $content_dom){
+		
+		if(isset($e->attr["type"]) )
+		return false;
+		else
+		return true;
+	}		
+
+	
+//script
+	
+	public static function check_24028($e, $content_dom){
+		
+		if(isset($e->attr["language"]) )
+		return false;
+		else
+		return true;
+	}		
+	
+	
+//hr
+
+	public static function check_24029($e, $content_dom){
+		
+		if(isset($e->attr["noshade"]) )
+		return false;
+		else
+		return true;
+	}	
+
+	public static function check_24030($e, $content_dom){
+		
+		if(isset($e->attr["size"]) )
+		return false;
+		else
+		return true;
+	}		
+
+	public static function check_24031($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}	
+	
+//li
+
+	public static function check_24032($e, $content_dom){
+		
+		if(isset($e->attr["type"]) )
+		return false;
+		else
+		return true;
+	}		
+
+	public static function check_24033($e, $content_dom){
+		
+		if(isset($e->attr["value"]) )
+		return false;
+		else
+		return true;
+	}		
+	
+//caption
+
+	public static function check_24034($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}		
+
+	
+	
+//iframe	
+	public static function check_24035($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}		
+	
+//input	
+	public static function check_24036($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}		
+
+//legend	
+	public static function check_24037($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}		
+	
+//div	
+	public static function check_24038($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}
+
+//h1	
+	public static function check_24039($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}		
+
+//h2	
+	public static function check_24040($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}		
+//h3	
+	public static function check_24041($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}		
+
+	
+//h4	
+	public static function check_24042($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}		
+	
+//h5	
+	public static function check_24043($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}	
+
+//h6
+	public static function check_24044($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}
+
+//p	
+	public static function check_24045($e, $content_dom){
+		
+		if(isset($e->attr["align"]) )
+		return false;
+		else
+		return true;
+	}		
+	
+		
+	
+	
 }
 ?>  

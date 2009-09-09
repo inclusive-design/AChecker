@@ -74,12 +74,30 @@ class AccessibilityValidator {
 		// dom of the content to be validated
 		$this->content_dom = $this->get_simple_html_dom($this->validate_content);
 
+		if($_SESSION["css_disable"]!=1)
+		{		//MB eseguo questa parte solo se non è selezionato il check che disabilita i controlli CSS
+				//Modifica Filo
+				$csslist = $this ->get_style_external($this->validate_content);
+				$cssinternal= $this ->get_style_internal($this->validate_content);
+				//File Modifica Filo		
+		}		
+		
+		
 		// prepare gobal vars used in BasicFunctions.class.php to fasten the validation
 		$this->prepare_global_vars();
 		
 		// set arrays of check_id, prerequisite check_id, next check_id
 		$this->prepare_check_arrays($this->guidelines);
-
+		
+		if($_SESSION["css_disable"]!=1)
+		{
+			//MB creo la struttura dati contenente i dati dei css
+			$this->prepare_css_arrays($csslist,$cssinternal); 
+			global $selettori_appoggio;
+			VamolaBasicChecks::sistemaSelettori();
+	
+		}
+		
 		$this->validate_element($this->content_dom->find('html'));
 		
 		$this->finalize();
@@ -186,6 +204,40 @@ class AccessibilityValidator {
 		// validation process
 		else  
 		{
+			// SIMO: gestione tab per Wcag e Stanca ///////////////////////////////////////////////
+			$idStanca = 10; // Identificativo Legge Stanca
+			$idWcagA = 7;
+			$idWcagAA = 8;
+			$idWcagAAA = 8;
+			
+			$isWcag = FALSE;
+			$isStanca = FALSE;
+				
+			$arrayGid = $guidelines;
+			if (is_array($arrayGid) && in_array($idStanca, $arrayGid))
+				$isStanca = TRUE;
+			
+			if (is_array($arrayGid) && (in_array($idWcagA, $arrayGid) || in_array($idWcagAA, $arrayGid) || in_array($idWcagAAA, $arrayGid)))
+				$isWcag = TRUE;	
+				
+			if ($isStanca && $isWcag)
+			{
+				$_SESSION["show_nav"]="true";
+				$_SESSION["show"]="all";
+				$_SESSION["tab_ris"]="1";
+			}
+			else if ($isStanca && !$isWcag)
+			{
+				$_SESSION["show"]="stanca";$_SESSION["tab_ris"]="1";
+			}
+			else if (!$isStanca && $isWcag)
+			{
+				$_SESSION["show"]="wcag";$_SESSION["tab_ris"]="5";
+			}	
+			// SIMO: fine gestione tab per Wcag e Stanca //////////////////////////////////////////
+
+			
+			
 			$checksDAO = new ChecksDAO();
 			
 			// generate array of "all element"
@@ -328,7 +380,77 @@ class AccessibilityValidator {
 		if (!$result)
 		{
 			// run function for $check_id
-			$check_result = eval($this->check_func_array[$check_id]);
+			//MB $check_result = eval($this->check_func_array[$check_id]);
+			// Simo: vecchia eval
+			// run function for $check_id
+			if(($check_id > 1074 && $check_id < 1085) || $check_id >1091 && $check_id <1105 
+				|| $check_id >=5000 && $check_id <=5025 || $check_id >=6000 && $check_id <=6001 || $check_id >=6003 && $check_id <=6011 
+				|| $check_id >=12000 && $check_id <=12031 || $check_id >=21007 && $check_id <=21023)	
+			{	
+				global $csslist;			
+				global $array_css;
+				$array_css=array();
+				$spazio="{_}";
+				
+				
+				$check_result = eval($this->check_func_array[$check_id]);
+									if ($check_result)  // success
+									{
+										$result = SUCCESS_RESULT;
+									}
+									else
+									{
+										$result = FAIL_RESULT;
+									}
+									
+																	
+									//regole css relative all'errore
+									$css_code="";
+									if( isset($array_css) && $array_css!=null)
+									{
+										//print_r($array_css);
+										
+											$css_code="<p style='padding:1em'>Regole CSS relative all'errore: </p>\n\t\n\t<pre>\n\t\n\t";
+											foreach($array_css as $rule)
+											{
+												if($rule["idcss"]==sizeof($csslist))//ultimo posto, stile interno
+													$css_code=$css_code."CSS interno (contenuto nell'elemento <code>style</code> della pagina):\n\t\n\t      ";
+												else
+													$css_code=$css_code."CSS esterno (<a title='link al CSS esterno' href='".$csslist[$rule["idcss"]]."'>".$csslist[$rule["idcss"]]."</a>):\n\t\n\t      ";
+												
+												for($i=sizeof($rule["prev"])-1; $i>=0;$i--)
+												{
+													$css_code=$css_code." ".$rule["prev"][$i];
+												}
+												$css_code=str_ireplace(" .",".",$css_code);
+												$css_code=str_ireplace(" #","#",$css_code);
+												$css_code=str_ireplace(">.","> .",$css_code);
+												$css_code=str_ireplace(">#","> #",$css_code);
+												$css_code=str_ireplace("+.","+ .",$css_code);
+												$css_code=str_ireplace("+#","+ #",$css_code);
+												$css_code=str_ireplace(" ".$spazio,"",$css_code);
+												
+												$css_code=$css_code."{\n\t\n\t";
+												
+												foreach($rule["regole"] as $prop => $value)
+												{
+													$css_code=$css_code."            ".$prop.":".$value["val"].";\n\t";
+												}
+												$css_code=$css_code."      }\n\t\n\t";
+											}
+											$css_code=$css_code."</pre>\n\t";
+											
+											//echo($css_code);
+									}
+				
+			}
+			else 
+				eval("\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom);");
+			
+			// Simo: funzione nuova che prende dal db
+			//$check_result = eval($this->check_func_array[$check_id]);
+		
+		
 			
 			$checksDAO = new ChecksDAO();
 			$row = $checksDAO->getCheckByID($check_id);
@@ -358,14 +480,18 @@ class AccessibilityValidator {
 				// http://www.atutor.ca/atutor/mantis/view.php?id=3797
 				// Display not only the start tag, but a substring from start tag to end tag.
 				// Displaying checked html is in HTMLRpt.class.php
+				/*//MB tolgo per visualizzazione immagini
 				if (strlen($e->outertext) > DISPLAY_PREVIEW_HTML_LENGTH) 
 					$html_code = substr($e->outertext, 0, DISPLAY_PREVIEW_HTML_LENGTH) . " ...";
-				else 
+				else
+				*/ 
 					$html_code = $e->outertext;
 //				else
 //					$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
 
 				// find out preview images for validation on <img>
+				/* 
+				//MB
 				if (strtolower(trim($row['html_tag'])) == 'img')
 				{
 					$image = BasicChecks::getFile($e->attr['src'], $base_href, $this->uri);
@@ -379,8 +505,12 @@ class AccessibilityValidator {
 				    else if ($e->attr['alt'] == '') $image_alt = '_EMPTY';
 				    else $image_alt = $e->attr['alt'];
 				}
+				*/
+				//MB $this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result, $image, $image_alt);
 				
-				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result, $image, $image_alt);
+				
+				
+				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $css_code, $check_id, $result);
 			}
 		}
 		
@@ -413,10 +543,10 @@ class AccessibilityValidator {
 	 * $check_id: check id
 	 * $result: result to save
 	 */
-	private function save_result($line_number, $col_number, $html_code, $check_id, $result, $image, $image_alt)
+	private function save_result($line_number, $col_number, $html_code, $css_code, $check_id, $result /* //MB, $image, $image_alt*/)
 	{
-		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result, "image"=>$image, "image_alt"=>$image_alt));
-		
+		//array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result, "image"=>$image, "image_alt"=>$image_alt));
+		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "css_code"=>$css_code, "check_id"=>$check_id, "result"=>$result));
 		return true;
 	}
 	
@@ -520,5 +650,128 @@ class AccessibilityValidator {
 		return $rtn;
 	}
 
+	
+	
+	
+	
+// funzioni per i css
+	
+	/* ritorna la lista degli stili esterni presenti nella pagina */
+	function get_style_external($content){
+		
+		global $csslist;
+		
+		//MB
+		$dom=str_get_dom($content);
+		$vettore_link=$dom->find('link');
+		$vettore_link=array_reverse($vettore_link);
+		$i=0;
+		foreach($vettore_link as $link)
+		{	
+			if ($link->attr["type"]=="text/css" && $link->attr["rel"]=="stylesheet" 
+				&&(!isset($link->attr["media"]) ||$link->attr["media"]=="all" ||$link->attr["media"]=="screen" ))
+			{
+				$csslist[$i]=$link->attr["href"];
+				$i++;
+			}
+					
+		}
+		
+			
+			
+			if ($csslist=="") return $csslist;			
+			//MB ripulisco gli url dei css
+			global $uri;
+			$uri2=VamolaBasicChecks::getSiteUri($uri);
+			
+			$i=1;
+			//modifico gli indirizzi relativi dei fogli di stile
+			foreach($csslist as $foglio)
+			{
+				$foglio=str_replace('"','',$foglio);
+				if(stripos($foglio,"http://")===false)//indirizzo relativo
+				{
+					if(substr($foglio,0,1)=="/")
+						$foglio=$uri2.$foglio;
+					else
+						$foglio=$uri2."/".$foglio;
+				}
+				$csslist[$i]=$foglio;
+				$i++;
+			}
+			
+			//print_r($csslist);
+			return $csslist;
+			
+		}
+	
+	//La funzione ritorna i css di una pagina
+	function get_style_internal($content){
+		
+				
+		//MB
+		$dom=str_get_dom($content);
+		//echo("<p> contenuto di style: </p>");
+		
+		//modifico l'url del sito da validare in modo da porterci aggiungere l'indirizzo di un css relativo
+		global $uri;
+		$uri2=VamolaBasicChecks::getSiteUri($uri);
+		
+		$vettore_stili_interni=$dom->find('style');
+		$cssint="";
+		for($i=0;$i<sizeof($vettore_stili_interni);$i++)
+		{
+			if(!isset($vettore_stili_interni[$i]->attr["media"]) || $vettore_stili_interni[$i]->attr["media"]=="all" 
+			|| $vettore_stili_interni[$i]->attr["media"]=="screen" )
+			{
+				$cssint=$cssint.$vettore_stili_interni[$i]->innertext;
+				$cssint=trim($cssint);
+				while(substr($cssint,0,7)=="@import")
+				{
+					$import = substr($cssint, 0, stripos($cssint,";") +1  );
+					$cssint= str_ireplace($import, "", $cssint);
+								
+					$indirizzo = substr($import, stripos($import, '(')+1, stripos($import, ')') - stripos($import, '(') -1) ;
+					$indirizzo = str_ireplace('"','', $indirizzo);
+					
+					if(stripos($indirizzo,"http://")===false)//indirizzo relativo
+					{
+						if(substr($indirizzo,0,1)=="/")
+							$indirizzo=$uri2.$indirizzo;
+						else
+							$indirizzo=$uri2."/".$indirizzo;
+					}
+					
+					$cssint= @file_get_contents($indirizzo)."\n".$cssint;
+					
+				}
+			}
+		}
+		return $cssint;
+		
+	}
+
+
+	
+   //La funzione crea l'array degli stili (interni ed esterni) da sottoporre alla validazione.
+    
+  function prepare_css_arrays($array_css_esterni,$ci){
+		for($b=0;$b<count($array_css_esterni);$b++){
+			$css_content=@file_get_contents($array_css_esterni[$b]);
+			VamolaBasicChecks::GetCSSDom($css_content,$b);  	
+		}
+		
+		
+		//MB
+		//Insrisco nell'ultima posizione lo stile interno
+		if($ci!=""){
+			
+				VamolaBasicChecks::GetCSSDom($ci,$b);
+		}		
+		
+		
+  }	
+	
+	
 }
 ?>  
