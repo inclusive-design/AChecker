@@ -4043,6 +4043,7 @@ class Checks {
 				}
 				
 		}
+		//return 2;
 		return true;
 	}
 	
@@ -4079,6 +4080,7 @@ class Checks {
 				}
 				
 		}
+		//return 2;
 		return true;
 	}	
 	
@@ -4303,7 +4305,7 @@ class Checks {
 					return true;
 				
 				$foreground=VamolaBasicChecks::getForegroundA($e,$b, "hover");
-				if($foreground=="" || $foreground==null)
+				//if($foreground=="" || $foreground==null)
 
 				if($foreground=="" || $foreground==null)
 					return true;
@@ -4341,7 +4343,7 @@ class Checks {
 					return true;
 
 				$foreground=VamolaBasicChecks::getForegroundA($e,$b, "hover");
-				if($foreground=="" || $foreground==null)
+				//if($foreground=="" || $foreground==null)
 
 				if($foreground=="" || $foreground==null)
 					return true;
@@ -4478,6 +4480,192 @@ class Checks {
 		}
 		return true;
 	}	
+	
+	
+	
+	/***************
+	*REQUISITO 9  *
+	*			   *
+	****************/	
+	//Pseudocodice 2.1
+	// Elemento TABLE, tipologia 2
+	//
+	public static function check_9000($e, $content_dom)
+	{
+		// Se summary non c'e' (null), oppure è vuoto (""):
+		//L'elemento <table> non contiene l'attributo summary. Tale attributo è necessario per fornire una descrizione sul contenuto e sull’organizzazione della tabella.
+		
+		if (!isset($e->attr["summary"]) || $e->attr["summary"]=='')
+			return false;
+		else
+			return true;
+	}
+
+	// Elemento TABLE, tipologia 1
+	//
+	public static function check_9001($e, $content_dom)
+	{
+		
+		// Se summary c'e', e non è vuoto:
+		//Verificare che l’attributo summary dell’elemento <table> descriva in maniera adeguata il contenuto e l’organizzazione della tabella.
+
+		if (isset($e->attr["summary"]) && $e->attr["summary"]!='')
+			return false; 
+		else
+			return true;
+	}	
+	//Pseudocodice 2.2
+	// Elemento TABLE, tipologia 2
+	//	
+	public static function check_9002($e, $content_dom)
+	{
+		
+		// Se non c'e' caption ne' title:
+		// 
+		//L'elemento <table> non contiene l'attributo title né l'elemento <caption>, necessari per descrivere la natura della tabella.
+
+				
+		$th =$e->find("caption");
+		if( ($th== null || sizeof($th)==0) && !isset($e->attr["title"]))
+			return false;
+		else
+			return true;
+	}		
+	
+	// Elemento TABLE, tipologia 1
+	//	
+
+	public static function check_9003($e, $content_dom)
+	{
+		// Se caption c'e':
+		//Verificare che l'elemento <caption> descriva in maniera adeguata la natura della tabella.
+		$th =$e->find("caption");
+		if( ($th== null || sizeof($th)==0))
+			return true;
+		else
+			return false;
+	}			
+
+
+	// Elemento TABLE, tipologia 1
+	//
+	public static function check_9004($e, $content_dom)
+	{
+		// Se title c'e':
+		//Verificare che l’attributo title dell’elemento <table> descriva in maniera adeguata la natura della tabella.
+
+		if( !isset($e->attr["title"]))
+			return true;
+		else
+			return false;
+	}
+
+	//Pseudocodice 2.3
+	// Elemento TABLE, tipologia 1
+	//	
+	public static function check_9005($e, $content_dom)
+	{
+		// Se non c'e' nessun th:	
+		// Nessun elemento <th> presente all’interno della tabella. Se si tratta di una tabella dati è necessario specificarne le intestazioni tramite questo elemento.
+
+		$th =$e->find("th");
+		if( ($th== null || sizeof($th)==0))
+			return false;
+		else
+			return true;
+	}	
+	// Elemento TABLE, tipologia 1
+	//
+	public static function check_9006($e, $content_dom)
+	{
+		// Se c'e' th:	
+		// Verificare che gli elementi <th> della tabella siano utilizzati per specificare una intestazione e non a scopo decorativo
+
+		$th =$e->find("th");
+		if( ($th != null && sizeof($th)!=0))
+			return false;
+		else
+			return true;
+	}
+	
+	//Pseudocodice 2.4
+	// Elemento TABLE, tipologia 2
+	//
+	public static function check_9007($e, $content_dom)
+	{		
+		// Se c'e' almeno un th e nessun abbr:	
+		// Non è stato individuato alcun attributo abbr per gli elementi <th> presenti nella tabella. Nel caso di etichette di intestazione lunghe può essere utile fornirne abbreviazioni.
+
+
+		$th =$e->find("th");
+		
+		if( ($th == null || sizeof($th)==0))
+			return true;
+		else
+		{
+	
+			for($i=0; $i<sizeof($th); $i++)
+			{
+				
+				if(isset($th[$i]->attr['abbr']) && $th[$i]->attr['abbr']!="")
+					return true; //c'è almeno un abbr
+					
+			}
+			//se esco dal for non ho trovato nessun abbr
+			return false;
+		}
+	}
+		
+	
+	
+	/**************
+	* Requisito 10 *
+	**************/
+	
+	//Pseudocodice 3.1
+	// Elemento TD, tipologia 0
+	//
+	public static function check_10000($e, $content_dom){
+		
+		
+		//Uno degli id indicati nell’attributo headers dell’elemento <td> non esiste, cioè tale id non è associato a nessuna intestazione.
+		
+		
+		if (!isset ($e->attr["headers"]))
+			return true; //non c'è l'attributo headers
+		else 
+		{
+			$headers=$e->attr["headers"];
+			$ids=explode(' ',$headers);
+			$t=VamolaBasicChecks::getTable($e);
+			if($t==null)
+				return false;
+			return VamolaBasicChecks::checkIdInTable($t,$ids);
+
+		}
+		
+		
+	}
+	
+	// Elemento TD, tipologia 0
+	//
+	public static function check_10001($e, $content_dom)
+	{
+	
+		//A questo elemento <td> non è associata nessuna intestazione. Nell’elemento l’attributo headers non è definito o è vuoto ed, inoltre, l’elemento non rientra nello scope di nessuna cella di intestazione.
+		
+		 if (isset ($e->attr["headers"]))
+			return true; // c'è l'attributo headers
+		else
+		{
+			if(VamolaBasicChecks::getRowHeader($e)==null && VamolaBasicChecks::getColHeader($e)==null)
+				return false;
+			else 
+				return true;
+		}
+		
+	}	
+	
 	
 	
 	/***************
@@ -4709,9 +4897,40 @@ class Checks {
 		return false;
 	}
 	
+
+	/**************
+	* Requisito 13 *
+	**************/
 	
-	// SIMO: aggiunti i controlli per il requisito 14 
-	// Requisito 14
+	//Pseudocodice 4.1
+	// Elemento TABLE, tipologia 1
+	//
+	public static function check_13000($e, $content_dom){
+		
+		// Le tabelle di layout andrebbero evitate, preferendo l’uso dei fogli di stile CSS. Se questa è una tabella di layout  si ricorda che è necessario verificare manualmente che essa sia comprensibile se letta in maniera linearizzata. 
+		return false;
+		
+	}
+	
+	
+	//Pseudocodice 4.2
+	// Elemento TABLE, tipologia 1
+	//
+	public static function check_13001($e, $content_dom){
+		// Se la TABLE ha th | thead | tbody | tfoot | caption:
+		// Se questa è una tabella di layout, si ricorda che va evitato l’utilizzo degli elementi marcatori di struttura quali th, thead, tbody, tfoot e caption.
+		
+		if($e->find("th")!=null || $e->find("th")!=null || $e->find("thead")!=null || $e->find("tbody")!=null || $e->find("tfoot")!=null || $e->find("caption")!=null)
+			return false;
+		else 
+			return true;
+		
+	}	
+	
+	
+	/**************
+	* Requisito 14 *
+	**************/
 	// Pseudocodice 2.1
 	// Etichetta implicita in elemento input
 	public static function check_14000($e, $content_dom)
@@ -4860,8 +5079,180 @@ class Checks {
 		    return true;
 	}
 	
+	
+	
+	
 
-	// Requisito 18
+	/***************
+	* Requisito 15 *
+	***************/
+	
+	//Pseudocodice 2.1
+	// Elemento BODY, tipologia 0
+	public static function check_15000($e, $content_dom){
+		
+		// Non è presente alcun elemento <noscript> che fornisca una versione alternativa per gli elementi <script> presenti nella pagina.
+		$script=$e->find('script');
+		
+		if(!isset($script) || sizeof($script)==0)//c'è almeno un elemento <script>
+			return true;
+		else //verifico che sia presente almeno un elemento <noscript>
+			{
+				$noscript=$e->find('noscript');
+				if(!isset($noscript) || sizeof($noscript)==0)
+				return false;		
+			}
+
+		
+	}
+	
+	//Pseudocodice 2.2
+	// Elemento NOSCRIPT, tipologia 1
+	public static function check_15001($e, $content_dom){
+		
+		// Verificare che l’elemento <noscript> fornisca le stesse funzionalità e informazioni offerte dagli oggetti di programmazione presenti nella pagina.
+		return true;
+		
+	}
+	
+	
+	/* per questi richiamo i controlli 3017, 3018, 3019
+	//Pseudocodice 2.3
+	// Elemento OBJECT, tipologia 0
+	public static function check_15002($e, $content_dom){
+	
+		// Vedi controlli documento 2a
+	}
+	
+	// Elemento OBJECT, tipologia 2
+	public static function check_15003($e, $content_dom){
+	
+		// Vedi controlli documento 2a
+		return true;		
+	}
+	
+		// Elemento OBJECT, tipologia 1
+	public static function check_15004($e, $content_dom){
+	
+		// Vedi controlli documento 2a
+		return true;		
+	}
+	*/
+	
+	//Pseudocodice 2.4
+	// Elemento APPLET, tipologia 0
+	public static function check_15002($e, $content_dom){
+	
+		
+		$testo=trim($e->plaintext)=="";
+		if (isset($testo) && $testo!='')
+			return false;
+		return true;		
+	}
+	
+	// Elemento APPLET, tipologia 1
+	public static function check_15003($e, $content_dom){
+	
+		//restituisce un messaggio per gli elementi che non fanno scattare il controllo sulle estensioni di file
+		return !Checks::check_15002($e,$content_dom) || !Checks::check_15004($e,$content_dom);		
+		
+	}
+	
+	// Elemento APPLET, tipologia 2
+	public static function check_15004($e, $content_dom){
+	
+		$testo=trim($e->plaintext);
+		$estensioni= array(".class");
+		if (isset($testo) && $testo!='')// l'elemento contiene del testo
+		{
+			//echo($e->plaintext);
+			
+			foreach($estensioni as $est)
+			{
+			if(stripos($testo,$est) !== false)
+			return false;
+			
+			}
+		}
+		return true;
+		
+		
+
+		
+	}
+	
+	//Pseudocodice 2.5 
+	// Elemento HTML, tipologia 1
+	public static function check_15005($e, $content_dom){
+	
+		//Assicurarsi che le pagine siano utilizzabili quando script, applet, o altri oggetti di programmazione sono disabilitati o non supportati. Se ciò non fosse possibile fornire una spiegazione testuale della funzionalità svolta e garantire un’alternativa testuale equivalente.
+		return VamolaBasicChecks::rec_check_15005($e);
+		
+		
+		return true;		
+		
+	}
+	
+	
+	/***************
+	* Requisito 16 *  
+	***************/
+	//Pseudocodice 3.1
+	//vengono richiamati i check 21001 - 21007
+	
+	//Pseudocodice 3.2
+	//body, tipologia 1
+	//nota: farlo anche per applet oltre che per object?
+	public static function check_16000($e, $content_dom){
+		$o=$e->find('object');
+		if(isset($o) && sizeof($o)>0)
+			return false;
+		else 
+			return true;
+		//Verificare che eventuali applet o oggetti di programmazione dotati di una propria specifica	interfaccia, siano indipendenti da uno specifico dispositivo di input."
+		
+		
+	}	
+	
+
+	/***************
+	* Requisito 17 *
+	***************/	
+	//Pseudocodice 4.1 tipologia 1
+	//È stato rilevato un oggetto di programmazione. Assicurarsi che le funzionalità e le informazioni veicolate per mezzo di tale oggetto siano direttamente accessibili.
+	
+	//object
+	public static function check_17000($e, $content_dom){
+		return false;
+	}
+	
+	//script
+	public static function check_17001($e, $content_dom){
+		return false;
+	}	
+	
+	//applet
+	public static function check_17002($e, $content_dom){
+		return false;
+	}
+	
+	//all elements
+	public static function check_17003($e, $content_dom){
+		
+		if(isset($e->attr['onload']) || isset($e->attr['onunload']) || isset($e->attr['onclick']) || isset($e->attr['ondblclick'])
+		   || isset($e->attr['onmousedown'])|| isset($e->attr['onmouseup'])|| isset($e->attr['onmouseover']) || isset($e->attr['onmousemove'])|| isset($e->attr['onmouse'])|| isset($e->attr['onblur'])
+		   || isset($e->attr['onkeypress'])|| isset($e->attr['onkeydown'])|| isset($e->attr['onkeyup'])|| isset($e->attr['onsubmit'])|| isset($e->attr['onreset'])|| isset($e->attr['onselect'])
+		   || isset($e->attr['onchange']))
+		   
+			return false;
+		else 
+			return true; 
+	}
+	
+	
+	/***************
+	* Requisito 18 *
+	***************/
 	//consiglia di verificare la trascrizione di un filmato puntato da un link
 	public static function check_18000($e, $content_dom)
 	{	// come il check_20 con l'aggiunta di ".avi"
@@ -4886,6 +5277,42 @@ class Checks {
 		return true;
 	}
 	*/
+	
+	
+	
+	/***************
+	* Requisito 19 *
+	***************/
+	//pseudocodice 5.1
+	//elemento a, tipologia 0
+	public static function check_19000($e, $content_dom)
+	{
+		$t=$e->innertext();
+		if(stripos($t,"click here")!==false || stripos($t,"clicca")!==false)
+			return false;
+		else
+			return true;
+		//Evitare di utilizzare frasi come "Clicca qui" o "Click here" come testo di un link. Il testo dovrebbe fornire informazioni sulla natura della destinazione del collegamento ipertestuale.
+	}
+	
+	//elemento a, tipologia 1
+	public static function check_19001($e, $content_dom)
+	{
+		
+		return !Checks::check_19000($e, $content_dom);
+		
+		//Assicurarsi che il testo del link sia significativo e che sia chiara la destinazione del collegamento ipertestuale.
+	}	
+	
+	//pseudocodice 5.2
+	//elemento body, tipologia 1
+	public static function check_19002($e, $content_dom)
+	{
+		return false;
+		//Verificare che siano presenti meccanismi che consentano di evitare la lettura ripetitiva di sequenze di collegamenti comuni a più pagine.
+		
+	}
+	
 	
 	
 	/***************

@@ -14,10 +14,10 @@
 /************************************************************************/
 /************************************************************************/
 /* the database user name                                               */
-define('DB_USER',                      'simone');
+define('DB_USER',                      'db_user');
 
 /* the database password                                                */
-define('DB_PASSWORD',                  's1m0ne');
+define('DB_PASSWORD',                  'db_password');
 
 /* the database host                                                    */
 define('DB_HOST',                      'localhost');
@@ -26,7 +26,7 @@ define('DB_HOST',                      'localhost');
 define('DB_PORT',                      '3306');
 
 /* the database name                                                    */
-define('DB_NAME',                      'simo1_0');
+define('DB_NAME',                      'db_name');
 
 /* The prefix to add to table names to avoid conflicts with existing    */
 /* tables. Default: AC_                                                 */

@@ -1911,5 +1911,134 @@ class VamolaBasicChecks {
         }
     }
 	}
+	
+	//prende in input un elemento e restituisce la relativa table
+	public static function getTable($e)
+	{
+				
+				while($e->parent()->tag!="table" && $e->parent()->tag!=null)
+					$e=$e->parent();
+				
+				if($e->parent()->tag=="html")
+					return null;
+				else
+					return $e->parent();	
+				
+	}
+	
+	//prende un array di id (attributo headers di un elemento td) e verifica che ogni id sia associato a un th
+	public static function checkIdInTable($t,$ids)
+	{
+			
+			$th=$t->find("th");
+			$num=0;
+			
+				for($i=0; $i<sizeof($ids); $i++)
+				{
+					for($j=0; $j<sizeof($th); $j++)
+					{	
+						
+						
+						if(isset($th[$j]->attr['id']) && $th[$j]->attr['id']==$ids[$i])
+						{	
+							
+							$num++;
+							break;
+						}
+					
+					}
+				}
+				
+				
+				if($num==sizeof($ids)) //ho trovato un id in un th per ogni id di un td
+					return true;
+				else 
+					return false;
+	}
+	
+	//verifica l'esistenza di un'intestazione di riga per un elemento td
+	public static function getRowHeader($e)
+	{
+		
+		while($e->prev_sibling()!=null && $e->prev_sibling->tag!="th")
+		{	
+	
+			$e=$e->prev_sibling();
+		}
+		
+		if($e==null)
+			return null;
+		else
+			if(isset($e->attr["scope"]) && $e->attr["scope"]=="row")
+				return $e;
+			else
+				return null;	
+				
+	}
+	//verifica l'esistenza di un'intestazione di colonna per un elemento td
+	public static function getColHeader($e)
+	{
+		
+		
+		$pos=0;
+		$e_count=$e;
+		//trovo la posizione nella riga di td
+		while($e_count->prev_sibling()!=null )
+		{
+			$pos++;
+			$e_count =$e_count->prev_sibling();
+		}
+		
+			
+		$t=VamolaBasicChecks::getTable($e);
+		
+		$tr=$t->find("tr");
+		
+		
+		if($tr==null || sizeof($tr)==0)
+			return null;
+		
+		for($i=0; $i<sizeof($tr)-1;$i++)
+		{	
+			$th_next=$tr[$i+1]->find("th");
+			if($th_next==null || sizeof($th_next)==0)
+			break; //l'i-esima tr contiene l'intestazione più interna
+		}
+		
+		
+		$h=$tr[$i]->childNodes();
+		//verifico che la casella in posizione $pos della presunta riga di intestazione sia effettivamente un'intestazione 
+		if(isset($h[$pos]) && $h[$pos]->tag=="th" && isset($h[$pos]->attr["scope"]) && $h[$pos]->attr["scope"]=="col")
+			return $h[$pos];
+		else 
+			return null;
+		
+		
+	
+	}
+	
+	public static function rec_check_15005($e)
+	{
+		if($e->tag=='script' || $e->tag=='object' || $e->tag=='applet' || isset($e->attr['onload']) || isset($e->attr['onunload']) || isset($e->attr['onclick']) || isset($e->attr['ondblclick'])
+		   || isset($e->attr['onmousedown'])|| isset($e->attr['onmouseup'])|| isset($e->attr['onmouseover']) || isset($e->attr['onmousemove'])|| isset($e->attr['onmouse'])|| isset($e->attr['onblur'])
+		   || isset($e->attr['onkeypress'])|| isset($e->attr['onkeydown'])|| isset($e->attr['onkeyup'])|| isset($e->attr['onsubmit'])|| isset($e->attr['onreset'])|| isset($e->attr['onselect'])
+		   || isset($e->attr['onchange']))
+		return false;
+		
+		else 
+		$c= $e->children();
+		$res=true; 
+		foreach ($c as $elem )
+		{
+			$res=VamolaBasicChecks::rec_check_15005($elem);
+			if($res==false)
+				return $res;
+		}
+		return $res;
+		
+
+
+	}
+	
 }
 ?>

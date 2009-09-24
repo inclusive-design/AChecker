@@ -99,10 +99,10 @@ include_once(AC_INCLUDE_PATH.'header.inc.php');
 							{
 					?>
 								<div>
-								<input <?php  if( $i==8 || $i==9 || $i==12 || $i==14 || $i==15 || $i==16 || $i==18 || $i==19 || $i==21) echo('disabled="disabled"');?> type="checkbox" name="req[]" <?php echo('id="req_'.($i+1).'" value="'.$requisiti[$i].'"') ?> 
+								<input <?php  if(   $i==19 || $i==21) echo('disabled="disabled"');?> type="checkbox" name="req[]" <?php echo('id="req_'.($i+1).'" value="'.$requisiti[$i].'"') ?> 
 									<?php if (isset($_SESSION["req"]))
 											{	foreach($_SESSION["req"] as $req) 
-													if ($req == $requisiti[$i] && !( $i==8 || $i==9 || $i==12 || $i==14 || $i==15 || $i==16 || $i==18 || $i==19 || $i==21)) echo 'checked="checked"';
+													if ($req == $requisiti[$i] && !( $i==19 || $i==21)) echo 'checked="checked"';
 											}		
 									?> />
 								<label for='req_<?php echo($i+1)?>'>Requisiti 7 e 8</label> <a class="req_link" href="<?php echo $this->base_path ?>documentation_vamola/requisiti.php#req_<?php echo($i+1)?>" title="Visualizza il testo dei Requisiti 7 e 8"><img  src="themes/vamola/images/bookd.gif" alt="Testo dei requisiti 7 e 8" /></a>
@@ -114,10 +114,10 @@ include_once(AC_INCLUDE_PATH.'header.inc.php');
 							{
 							?>
 								<div>
-								<input <?php if($i==8 || $i==9 || $i==12 || $i==14 || $i==15 || $i==16 || $i==18 || $i==19 || $i==21) echo('disabled="disabled"');?>  type="checkbox" name="req[]" <?php echo('id="req_'.($i+1).'" value="'.$requisiti[$i].'"') ?> 
+								<input <?php if(   $i==19 || $i==21) echo('disabled="disabled"');?>  type="checkbox" name="req[]" <?php echo('id="req_'.($i+1).'" value="'.$requisiti[$i].'"') ?> 
 									<?php if (isset($_SESSION["req"]))
 											{	foreach($_SESSION["req"] as $req) 
-													if ($req == $requisiti[$i] && !( $i==8 || $i==9 || $i==12 || $i==14 || $i==15 || $i==16 || $i==18 || $i==19 || $i==21)) echo 'checked="checked"'; 
+													if ($req == $requisiti[$i] && !( $i==19 || $i==21)) echo 'checked="checked"'; 
 											}		
 									?> />
 								<label for='req_<?php echo($i+1)?>'>Requisito <?php echo($i+1)?></label> <a class="req_link" href="<?php echo $this->base_path ?>documentation_vamola/requisiti.php#req_<?php echo($i+1)?>" title="Visualizza il testo del Requisito <?php echo($i+1)?>"><img  src="themes/vamola/images/bookd.gif" alt="Testo del requisito <?php echo($i+1)?>" /></a>

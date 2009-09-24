@@ -34,6 +34,7 @@ define("DISPLAY_PREVIEW_HTML_LENGTH", 100);
 class AccessibilityValidator {
 
 	// all private
+	var $num_success;
 	var $num_of_errors = 0;              // number of errors
 	
 	var $validate_content;               // html content to check
@@ -464,16 +465,38 @@ class AccessibilityValidator {
 				$check_result = true;
 			}
 			
-			if ($check_result)  // success
+			if ($check_result===true)  // success
 			{
 				$result = SUCCESS_RESULT;
+				
+				//MB numero di controlli a buon fine
+				if(isset($this->num_success[$check_id]))
+					$this->num_success[$check_id]++;
+				else 
+					$this->num_success[$check_id]=1;
 			}
-			else
+			//MB aggiungo questo elseif per avere un conteggio "veritiero" degli errori potenziali per gli elementi di testo
+			//   ora alcuni check restituisco 2 oltre a true e false. 
+			elseif($check_result===false)
 			{
 				$result = FAIL_RESULT;
 			}
-
-			// minus out the $line_offset from $linenumber 
+			else 
+			{
+				//echo("<p>check non conteggiato</p>");
+			}
+			
+			// minus out the $line_offset from $linenumber
+			/*
+			//MB salvo anche i controlli andati a buon fine se chiamata REST (soluzione momentanea) 
+			if(isset($_GET['output']) && $_GET['output']=='rest' && $result == SUCCESS_RESULT)
+			{
+				//$html_code = $e->outertext;
+				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $css_code, $check_id, $result);
+				
+			}
+			else
+			*/ 
 			if ($result == FAIL_RESULT)
 			{
 				// find out checked html code
@@ -513,10 +536,25 @@ class AccessibilityValidator {
 				
 				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $css_code, $check_id, $result);
 			}
+			
 		}
 		
 		return $result;
 	}
+	
+	//MB
+	function get_num_success()
+	{
+		/*
+		if(isset($this->num_success[$check_id]))
+			return $this->num_success[$check_id];
+		else 
+			return 0;
+		*/
+		//print_r($this->num_success);
+		return $this->num_success;
+	}
+	
 	
 	/**
 	 * private

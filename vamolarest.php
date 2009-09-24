@@ -125,11 +125,14 @@ if (isset($validate_content))
 	$aValidator->setLineOffset($offset);
 	$aValidator->validate();
 	$errors = $aValidator->getValidationErrorRpt();
+	//MB
+	$num_success=$aValidator->get_num_success();
 
-	
+	/* //MB Non salvo decisions
 	// save errors into user_decisions 
 	$userDecisionsDAO = new UserDecisionsDAO();
 	$userDecisionsDAO->saveErrors($user_link_id, $errors);
+	*/
 	
 	if ($output == 'html')
 	{ // generate html output
@@ -139,7 +142,7 @@ if (isset($validate_content))
 
 	if ($output == 'rest')
 	{ // generate html output
-		$restWebServiceOutputVamola = new RESTWebServiceOutputVamola($errors, $user_link_id, $gids);
+		$restWebServiceOutputVamola = new RESTWebServiceOutputVamola($num_success, $errors, $user_link_id, $gids);
 		echo $restWebServiceOutputVamola->getWebServiceOutput();
 		//print_r($errors);
 	}
