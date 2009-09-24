@@ -393,7 +393,8 @@ class AccessibilityValidator {
 				$spazio="{_}";
 				
 				
-				$check_result = eval($this->check_func_array[$check_id]);
+				//$check_result = eval($this->check_func_array[$check_id]);
+				eval("\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom, 1);");
 									if ($check_result)  // success
 									{
 										$result = SUCCESS_RESULT;

@@ -9,6 +9,7 @@ if ((isset($_POST["validate_uri"]) || isset($_POST["validate_file"])) ||  !isset
 	unset($_SESSION["uri"]);
 	unset($_SESSION["risultati"]);
 	unset($_SESSION["tab_ris"]);
+	unset($_SESSION["flag_gid"]);
 }
 
 // NOTA DI SIMO: Unire parte sopra e sotto
