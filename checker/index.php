@@ -3,7 +3,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto          */
+/* Adaptive Technology Resource Centre / University of Toronto			    */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -19,7 +19,11 @@ include_once(AC_INCLUDE_PATH. 'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/UserLinksDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/Decision.class.php');
 
+// Simo: inclusione file per le variabili di sessione //////////////////////////////
+include_once(AC_INCLUDE_PATH. 'session_vamola.php');
+
 $guidelinesDAO = new GuidelinesDAO();
+
 
 // process to make decision
 if (isset($_POST['make_decision']) || isset($_POST['reverse']))
@@ -96,8 +100,27 @@ $error_happen = false;
 if (isset($_POST["enable_html_validation"]))
 	include(AC_INCLUDE_PATH. "classes/HTMLValidator.class.php");
 
+// Simo: validazione css
+if (isset($_POST["enable_css_validation"]))
+	include(AC_INCLUDE_PATH. "classes/CSSValidator.class.php");
+
+
+
 if ($_POST["validate_uri"])
-{
+{	
+	
+	//MB controllo selezione requisiti
+	if(in_array(10,$_SESSION['gid']) && $_SESSION["req"][0]=="0")
+	//if(!isset($_POST["req"]))
+	{	
+		//print_r($_SESSION['gid']);
+		$msg->addError('NO_REQUISITES_STANCA');
+	}
+	//MB~	
+	
+	if (!isset($_POST["gid"]))
+		$msg->addError('NO_GIDS');
+	
 	$uri = Utility::getValidURI($_POST["uri"]);
 	
 	// Check if the given URI is connectable
@@ -120,20 +143,81 @@ if ($_POST["validate_uri"])
 		if (isset($_POST["enable_html_validation"]))
 			$htmlValidator = new HTMLValidator("uri", $uri);
 
+	    ////////////////////////////////////////////////////////////////////////////		
+		//Simo: ho inserito il CSS Validator
+		if (isset($_POST["enable_css_validation"]))
+			$cssValidator = new CSSValidator("uri", $uri);	
+	    ////////////////////////////////////////////////////////////////////////////
+	    			
 		if (isset($_POST["show_source"]))
 			$source_array = file($uri);
 	}
+	////////////////////////////////////////////////////////////////////////////////
+	// Simo: se c'e' un errore, lo visualizzo e visualizzo l'input form
+	
+	
+	
+	else {
+		include ("checker_input_form.php");
+		//MB ho spostato la stampa degli errori dentro checker_input_form
+		/*
+		global $msg; 
+		$msg->printAll();
+		*/
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+		
+	
+
+	
 }
+	
 
 if ($_POST["validate_file"])
 {
-	$validate_content = file_get_contents($_FILES['uploadfile']['tmp_name']);
+	
+	//MB controllo selezione requisiti
+	if(in_array(10,$_SESSION['gid']) && $_SESSION["req"][0]=="0")
+	//if(!isset($_POST["req"]))
+		$msg->addError('NO_REQUISITES_STANCA');
+	//MB~		
+	
+	if (!isset($_POST["gid"]))
+		$msg->addError('NO_GIDS');
+	
+	//MB{ controllo l'estensione del file
+	if(!is_valid_filename($_FILES['uploadfile']['name']))
+		$msg->addError(array('WRONG_FILE', $_FILES['uploadfile']['name']));	
+	
+	if ($msg->containsErrors()){
 
-	if (isset($_POST["enable_html_validation"]))
-		$htmlValidator = new HTMLValidator("fragment", $validate_content);
-
-	if (isset($_POST["show_source"]))
-		$source_array = file($_FILES['uploadfile']['tmp_name']);
+		include ("checker_input_form.php");
+		//MB nota: la stampa degli errori � dentro checker_input_form
+	}
+	//}MB
+	else
+	{
+		$validate_content = file_get_contents($_FILES['uploadfile']['tmp_name']);
+	
+		if (isset($_POST["enable_html_validation"]))
+			$htmlValidator = new HTMLValidator("fragment", $validate_content);
+				
+		
+	    ////////////////////////////////////////////////////////////////////////////////		
+		//Simo: ho inserito il CSS Validator
+		if (isset($_POST["enable_css_validation"]))
+			$cssValidator = new CSSValidator("uri", $uri);	
+	    ////////////////////////////////////////////////////////////////////////////////		
+			
+		if (isset($_POST["show_source"]))
+			$source_array = file($_FILES['uploadfile']['tmp_name']);
+		
+	}
+	
+	
+	
+	
 }
 
 if ($_POST["validate_content"] && $_POST["validate_content"] <> '')
@@ -142,7 +226,7 @@ if ($_POST["validate_content"] && $_POST["validate_content"] <> '')
 	if (isset($_POST["show_source"]))
 		$source_array = explode("\n", $_POST["validate_content"]);
 }
-// end of validating html
+// end of validating html and css
 
 $has_enough_memory = true;
 if (isset($validate_content) && !Utility::hasEnoughMemory(strlen($validate_content)))
@@ -151,12 +235,14 @@ if (isset($validate_content) && !Utility::hasEnoughMemory(strlen($validate_conte
 	$has_enough_memory = false;
 }
 
-// display initial validation form: input URI or upload a html file 
-include ("checker_input_form.php");
+
+
 
 // validation and display result
+
 if ($_POST["validate_uri"] || $_POST["validate_file"] || $_POST["validate_content"])
 {
+	//MB if (!isset($_POST["gid"])) $_POST["gid"] = array(DEFAULT_GUIDELINE);
 	// check accessibility
 	include(AC_INCLUDE_PATH. "classes/AccessibilityValidator.class.php");
 
@@ -179,17 +265,29 @@ if ($_POST["validate_uri"] || $_POST["validate_file"] || $_POST["validate_conten
 		$show_achecker_whatis = true;
 	}
 }
+////////////////////////////////////////////////////////////////////////////////////
+// Simo: Se ho gia' i risultati nella variabile di sessione, li mostro 
+else if (isset($_SESSION["risultati"]))
+{
+	include ("checker_results.php");
+}
 else
 {
+////////////////////////////////////////////////////////////////////////////////////		
+//Simo: input form solo nella pagina iniziale	
+	// display initial validation form: input URI or upload a html file
+	 
+	include ("checker_input_form.php");
 	$show_achecker_whatis = true;
 }
-
+/* rimuovo la descrizione di achecker, eventualmente andrebbe adattata per vamola'
 if ($show_achecker_whatis)
 {
 	echo '<div id="output_div" class="validator-output-form">';
 	echo _AC('achecker_whatis');
 	echo '</div>';
 }
+*/
 
 // display footer
 include(AC_INCLUDE_PATH.'footer.inc.php');
