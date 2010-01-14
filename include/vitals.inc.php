@@ -12,12 +12,8 @@
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 
-require(AC_INCLUDE_PATH.'phpCache/phpCache.inc.php'); // cache library
-require(AC_INCLUDE_PATH.'classes/DAO/ThemesDAO.class.php');
-require(AC_INCLUDE_PATH.'classes/DAO/ConfigDAO.class.php');
-
 define('AC_DEVEL', 1);
-define('AC_ERROR_REPORTING', E_ALL ^ E_NOTICE); // default is E_ALL ^ E_NOTICE, use E_ALL or E_ALL + E_STRICT for developing
+define('AC_ERROR_REPORTING', E_ALL ^ E_DEPRECATED ^ E_NOTICE); // default is E_ALL ^ E_NOTICE, use E_ALL or E_ALL + E_STRICT for developing
 
 // Emulate register_globals off. src: http://php.net/manual/en/faq.misc.php#faq.misc.registerglobals
 function unregister_GLOBALS() {
@@ -91,7 +87,11 @@ require_once(AC_INCLUDE_PATH.'constants.inc.php');
 	unregister_GLOBALS();
 
 /***** end session initilization block ****/
-	
+
+require(AC_INCLUDE_PATH.'phpCache/phpCache.inc.php'); // cache library
+require(AC_INCLUDE_PATH.'classes/DAO/ThemesDAO.class.php');
+require(AC_INCLUDE_PATH.'classes/DAO/ConfigDAO.class.php');
+
 /***** 4. load $_config from table 'config' *****/
 $configDAO = new ConfigDAO();
 $rows = $configDAO->getAll();
@@ -108,7 +108,7 @@ define('SITE_NAME',                 $_config['site_name']);
 /***** 5. start language block *****/
 	// set current language
 	require(AC_INCLUDE_PATH . 'classes/Language/LanguageManager.class.php');
-	$languageManager =& new LanguageManager();
+	$languageManager = new LanguageManager();
 
 	$myLang =& $languageManager->getMyLanguage();
 
@@ -134,7 +134,7 @@ define('SITE_NAME',                 $_config['site_name']);
 	require(AC_INCLUDE_PATH.'classes/Savant2/Savant2.php');
 
 	// set default template paths:
-	$savant =& new Savant2();
+	$savant = new Savant2();
 
 	if (isset($_SESSION['prefs']['PREF_THEME']) && file_exists(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']) && isset($_SESSION['valid_user']) && $_SESSION['valid_user']) 
 	{

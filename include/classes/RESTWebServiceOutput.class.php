@@ -35,9 +35,11 @@ class RESTWebServiceOutput {
 	
 	// REST templates
 	var $rest_main =
-'<summary>
-	<status>{STATUS}<stauts>
-	<sessionID>{SESSIONID}<sessionID>
+'<?xml version="1.0" encoding="UTF-8"?>
+<resultset>
+<summary>
+	<status>{STATUS}</status>
+	<sessionID>{SESSIONID}</sessionID>
 	<NumOfErrors>{NUMOFERRORS}</NumOfErrors>
 	<NumOfLikelyProblems>{NUMOFLIKELYPROBLEMS}</NumOfLikelyProblems>
 	<NumOfPotentialProblems>{NUMOFPOTENTIALPROBLEMS}</NumOfPotentialProblems>
@@ -50,6 +52,7 @@ class RESTWebServiceOutput {
 <results>
 {RESULTS}
 </results>
+</resultset>
 ';
 	
 	var $rest_guideline =
@@ -63,7 +66,7 @@ class RESTWebServiceOutput {
 		<columnNum>{COLUMNNUM}</columnNum>
 		<errorMsg>&lt;a href=&quot;{BASE_HREF}checker/suggestion.php?id={CHECK_ID}&quot;
                onclick=&quot;popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\'); return false;&quot; 
-               title=&quot;{TITLE}&quot; target=&quot;_new&quot;&gt;{ERRORMSG}</a>
+               title=&quot;{TITLE}&quot; target=&quot;_new&quot;&gt;{ERRORMSG}&lt;/a&gt;
         </errorMsg>
 		<errorSourceCode>{ERRORSOURCECODE}</errorSourceCode>
 		{REPAIR}

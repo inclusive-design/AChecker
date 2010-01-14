@@ -126,8 +126,8 @@ in html format.</p>
 
 <pre style="background-color:#F7F3ED;"> 
 &lt;summary&gt;
-    &lt;status&gt;FAIL&lt;stauts&gt;
-    &lt;sessionID&gt;40-character-long string&lt;sessionID&gt;
+    &lt;status&gt;FAIL&lt;/status&gt;
+    &lt;sessionID&gt;40-character-long string&lt;/sessionID&gt;
     &lt;NumOfErrors&gt;number&lt;/NumOfErrors&gt;
     &lt;NumOfLikelyProblems&gt;number&lt;/NumOfLikelyProblems&gt;
     &lt;NumOfPotentialProblems&gt;number&lt;/NumOfPotentialProblems&gt;
