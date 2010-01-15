@@ -49,11 +49,20 @@ class Utility {
 	public static function getValidURI($uri)
 	{
 		$uri_prefixes = array('http://', 'https://', 'http://www.', 'https://www.');
+		$already_a_uri = false;
 		
 		$uri = trim($uri);
-		$connection = @file_get_contents($uri);
 		
-		if (!$connection)
+		// Check whether the URI prefixes are already in place
+		foreach($uri_prefixes as $prefix)
+		{
+			if (substr($uri, 0, strlen($prefix)) == $prefix)
+			{
+				$already_a_uri = true;
+				break;
+			}
+		}
+		if (!$already_a_uri)
 		{
 			// try adding uri prefixes in front of given uri
 			foreach($uri_prefixes as $prefix)
@@ -75,7 +84,12 @@ class Utility {
 			}
 		}
 		else
-			return $uri;
+		{
+			$connection = @file_get_contents($uri);
+			
+			if ($connection) return $uri;
+			else return $uri;
+		}
 		
 		// no matching valid uri
 		return false;
