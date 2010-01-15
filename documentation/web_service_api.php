@@ -125,7 +125,9 @@ in html format.</p>
 <p>A REST success response for the validation of a document (invalid) will look like this:</p>
 
 <pre style="background-color:#F7F3ED;"> 
-&lt;summary&gt;
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;resultset&gt;
+  &lt;summary&gt;
     &lt;status&gt;FAIL&lt;/status&gt;
     &lt;sessionID&gt;40-character-long string&lt;/sessionID&gt;
     &lt;NumOfErrors&gt;number&lt;/NumOfErrors&gt;
@@ -136,29 +138,31 @@ in html format.</p>
       &lt;guideline&gt;string&lt;/guideline&gt;
       ...
     &lt;/guidelines&gt;
-&lt;/summary&gt;
+  &lt;/summary&gt;
 
-&lt;results&gt;
-&lt;result&gt;
-    &lt;resultType&gt;string&lt;/resultType&gt;
-    &lt;lineNum&gt;number&lt;/lineNum&gt;
-    &lt;columnNum&gt;number&lt;/columnNum&gt;
-&lt;errorMsg&gt;encoded string&lt;/errorMsg&gt;
-&lt;errorSourceCode&gt;encoded string&lt;/errorSourceCode&gt;
-&lt;repair&gt;encoded string&lt;/repair&gt;
-&lt;decisionPass&gt;encoded string&lt;/decisionPass&gt;
-&lt;decisionFail&gt;encoded string&lt;/decisionFail&gt;
-&lt;decisionMade&gt;string&lt;/decisionMade&gt;
-&lt;decisionMadeDate&gt;string&lt;/decisionMadeDate&gt;
-&lt;/result&gt; 
-...
-&lt;/results&gt;
+  &lt;results&gt;
+    &lt;result&gt;
+      &lt;resultType&gt;string&lt;/resultType&gt;
+      &lt;lineNum&gt;number&lt;/lineNum&gt;
+      &lt;columnNum&gt;number&lt;/columnNum&gt;
+    &lt;errorMsg&gt;encoded string&lt;/errorMsg&gt;
+    &lt;errorSourceCode&gt;encoded string&lt;/errorSourceCode&gt;
+    &lt;repair&gt;encoded string&lt;/repair&gt;
+    &lt;decisionPass&gt;encoded string&lt;/decisionPass&gt;
+    &lt;decisionFail&gt;encoded string&lt;/decisionFail&gt;
+    &lt;decisionMade&gt;string&lt;/decisionMade&gt;
+    &lt;decisionMadeDate&gt;string&lt;/decisionMadeDate&gt;
+    &lt;/result&gt; 
+    ...
+  &lt;/results&gt;
+&lt;/resultset&gt;
 </pre>
 
 <br />
 <span style="font-weight:bold">Error Response</span>
 
 <pre style="background-color:#F7F3ED;"> 
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;errors&gt;
   &lt;totalCount&gt;number&lt;/totalCount&gt;
   &lt;error code="401"&gt;
@@ -174,6 +178,11 @@ in html format.</p>
 <table class="data" rules="all">
 <tbody><tr>
 <th>Element</th><th>Description</th>
+</tr>
+
+<tr>
+  <th>resultset</th>
+  <td>The root element of REST response. Encloses validation summary and results information.</td>
 </tr>
 
 <tr>
@@ -546,6 +555,7 @@ has not been made". Return response in REST format.</p>
 <p>A REST success response for the make/reverse decision request will look like this:</p>
 
 <pre style="background-color:#F7F3ED;"> 
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;summary&gt;
   &lt;status&gt;success&lt;/status&gt;
 &lt;/summary&gt;
@@ -555,6 +565,7 @@ has not been made". Return response in REST format.</p>
 <span style="font-weight:bold">Error Response</span>
 
 <pre style="background-color:#F7F3ED;"> 
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;errors&gt;
   &lt;totalCount&gt;number&lt;/totalCount&gt;
   &lt;error code="401"&gt;
@@ -608,6 +619,7 @@ has not been made". Return response in REST format.</p>
 <span style="font-weight:bold">Success Response</span>
 
 <pre style="background-color:#F7F3ED;"> 
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;div id="success"&gt;Success&lt;/div&gt;
 </pre>
 

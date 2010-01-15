@@ -37,41 +37,41 @@ class RESTWebServiceOutput {
 	var $rest_main =
 '<?xml version="1.0" encoding="UTF-8"?>
 <resultset>
-<summary>
-	<status>{STATUS}</status>
-	<sessionID>{SESSIONID}</sessionID>
-	<NumOfErrors>{NUMOFERRORS}</NumOfErrors>
-	<NumOfLikelyProblems>{NUMOFLIKELYPROBLEMS}</NumOfLikelyProblems>
-	<NumOfPotentialProblems>{NUMOFPOTENTIALPROBLEMS}</NumOfPotentialProblems>
+  <summary>
+    <status>{STATUS}</status>
+    <sessionID>{SESSIONID}</sessionID>
+    <NumOfErrors>{NUMOFERRORS}</NumOfErrors>
+    <NumOfLikelyProblems>{NUMOFLIKELYPROBLEMS}</NumOfLikelyProblems>
+    <NumOfPotentialProblems>{NUMOFPOTENTIALPROBLEMS}</NumOfPotentialProblems>
 
-	<guidelines>
+    <guidelines>
 {GUIDELINES}
-	</guidelines>
-</summary>
+    </guidelines>
+  </summary>
 
-<results>
+  <results>
 {RESULTS}
-</results>
+  </results>
 </resultset>
 ';
 	
 	var $rest_guideline =
-'		<guideline>{GUIDELINE}</guideline>
+'      <guideline>{GUIDELINE}</guideline>
 ';
 	
 	var $rest_result = 
-'	<result>
-		<resultType>{RESULTTYPE}</resultType>
-		<lineNum>{LINENUM}</lineNum>
-		<columnNum>{COLUMNNUM}</columnNum>
-		<errorMsg>&lt;a href=&quot;{BASE_HREF}checker/suggestion.php?id={CHECK_ID}&quot;
+'    <result>
+      <resultType>{RESULTTYPE}</resultType>
+      <lineNum>{LINENUM}</lineNum>
+      <columnNum>{COLUMNNUM}</columnNum>
+      <errorMsg>&lt;a href=&quot;{BASE_HREF}checker/suggestion.php?id={CHECK_ID}&quot;
                onclick=&quot;popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\'); return false;&quot; 
                title=&quot;{TITLE}&quot; target=&quot;_new&quot;&gt;{ERRORMSG}&lt;/a&gt;
-        </errorMsg>
-		<errorSourceCode>{ERRORSOURCECODE}</errorSourceCode>
-		{REPAIR}
-		{DECISION}
-	</result> 
+      </errorMsg>
+      <errorSourceCode>{ERRORSOURCECODE}</errorSourceCode>
+        {REPAIR}
+        {DECISION}
+    </result> 
 ';
 	
 	var $rest_repair = '<repair>{REPAIR}</repair>';
@@ -79,12 +79,12 @@ class RESTWebServiceOutput {
 	var $rest_decision_questions =
 '<sequenceID>{SEQUENCEID}</sequenceID>
         <decisionPass>{DECISIONPASS}</decisionPass>
-		<decisionFail>{DECISIONFAIL}</decisionFail>
+        <decisionFail>{DECISIONFAIL}</decisionFail>
 ';
 	
 	var $rest_decision_made =
-'		<decisionMade>{DECISIONMADE}</decisionMade>
-		<decisionMadeDate>{DECISIONMADEDATE}</decisionMadeDate>
+'        <decisionMade>{DECISIONMADE}</decisionMade>
+        <decisionMadeDate>{DECISIONMADEDATE}</decisionMadeDate>
 ';
 	
 	/**
@@ -276,16 +276,17 @@ class RESTWebServiceOutput {
 		
 		// error template in REST format
 		$rest_error = 
-'<errors>
-	<totalCount>{TOTOAL_COUNT}</totalCount>
+'<?xml version="1.0" encoding="UTF-8"?>
+<errors>
+  <totalCount>{TOTOAL_COUNT}</totalCount>
 {ERROR_DETAIL}
 </errors>
 ';
 	
 		$rest_error_detail = 
-'	<error code="{ERROR_CODE}">
-		<message>{MESSAGE}</message>
-	</error>
+'  <error code="{ERROR_CODE}">
+    <message>{MESSAGE}</message>
+  </error>
 ';
 		if (!is_array($errors)) return false;
 		
@@ -310,8 +311,9 @@ class RESTWebServiceOutput {
 	public static function generateSuccessRpt()
 	{
 		$rest_success = 
-'<summary>
-	<status>success</status>
+'<?xml version="1.0" encoding="UTF-8"?>
+<summary>
+  <status>success</status>
 </summary>
 ';
 		
