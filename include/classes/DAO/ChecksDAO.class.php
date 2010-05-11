@@ -566,7 +566,121 @@ class ChecksDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	function getOpenChecksForAllByGuidelineIDs($gids)
+function getOpenChecksForAllByGuidelineIDs($gids)
+	{
+		//MB
+		if(isset($_SESSION['req']) && $_SESSION['req'][0]!=0)
+		{
+			
+			$reqids = implode(',', $_SESSION['req']);
+			
+			
+			
+			$sql_subg="select subgroup_id from ". TABLE_PREFIX ."guideline_subgroups gs where gs.group_id in (".$reqids.")";
+			$subg_stanca = $this->execute($sql_subg);
+					
+			//echo('<p>'.$gids.'</p>');
+			$sql_subg="select subgroup_id 
+							from ". TABLE_PREFIX ."guideline_subgroups gs, 
+							". TABLE_PREFIX ."guideline_groups gg
+							where gg.guideline_id in (".$gids.")
+								and gg.guideline_id <> 10 
+								and gg.group_id = gs.group_id";
+			$subg_others= $this->execute($sql_subg);
+			
+			
+			foreach($subg_stanca as $sub)
+					$subg[] = $sub['subgroup_id'];
+			
+			
+									
+			if($subg_others!=1)
+			{		
+			foreach($subg_others as $sub)
+						$subg[] = $sub['subgroup_id'];
+			}		
+			
+					
+			$subg = implode(',', $subg);
+			
+			//qui rimuovo i sottogruppi stanca in base a cosa è stato selezionato nella form		
+			if($_SESSION["new_web_site"]==1)//sito nuovo
+			{
+				$subg=str_replace(',1000','',$subg);
+				$subg=str_replace(',1001','',$subg);
+				$subg=str_replace(',1010','',$subg);
+				$subg=str_replace('1000,','',$subg);
+				$subg=str_replace('1001,','',$subg);
+				$subg=str_replace('1010,','',$subg);
+			}
+			else //sito vecchio
+			{
+				$subg=str_replace(',2000','',$subg);
+				$subg=str_replace(',2001','',$subg);
+				$subg=str_replace(',2010','',$subg);
+				$subg=str_replace('2000,','',$subg);
+				$subg=str_replace('2001,','',$subg);
+				$subg=str_replace('2010,','',$subg);
+			}
+			
+			if ($_SESSION["css_disable"]==1) //controlli css disabilitati
+			{
+				
+				$subg=str_replace(',2004','',$subg);
+				$subg=str_replace(',2005','',$subg);
+				$subg=str_replace(',2011','',$subg);
+				$subg=str_replace(',2020','',$subg);
+				$subg=str_replace('2004,','',$subg);
+				$subg=str_replace('2005,','',$subg);
+				$subg=str_replace('2011,','',$subg);
+				$subg=str_replace('2020,','',$subg);
+				
+			}
+			else //controlli css abilitati
+			{
+				;//lascio tutti i gruppi
+			}
+			//echo('<p>'.$subg.'</p>');
+			
+			
+			$sql = "select distinct gc.check_id, c.html_tag
+							from  ". TABLE_PREFIX ."subgroup_checks gc,
+									". TABLE_PREFIX ."checks c
+							where gc.subgroup_id in (".$subg.")
+								and gc.check_id = c.check_id
+								and c.html_tag = 'all elements'
+								and c.open_to_public = 1
+							order by c.html_tag";
+		}
+		else
+		{   //query originale
+			$sql = "select distinct gc.check_id, c.html_tag
+							from ". TABLE_PREFIX ."guidelines g, 
+									". TABLE_PREFIX ."guideline_groups gg, 
+									". TABLE_PREFIX ."guideline_subgroups gs, 
+									". TABLE_PREFIX ."subgroup_checks gc,
+									". TABLE_PREFIX ."checks c
+							where g.guideline_id in (".$gids.")
+								and g.guideline_id = gg.guideline_id
+								and gg.group_id = gs.group_id
+								and gs.subgroup_id = gc.subgroup_id
+								and gc.check_id = c.check_id
+								and c.html_tag = 'all elements'
+								and c.open_to_public = 1
+							order by c.html_tag";
+		}
+    return $this->execute($sql);
+  }
+
+  /**
+	* Return checks for all html elements by given group ids
+	* @access  public
+	* @param   $gids : guideline IDs
+	* @return  table rows
+	* @author  MB
+	*/
+  /*
+	function getOpenChecksForAllByGropuIDs($gids)
 	{
 		$sql = "select distinct gc.check_id, c.html_tag
 						from ". TABLE_PREFIX ."guidelines g, 
@@ -574,9 +688,7 @@ class ChecksDAO extends DAO {
 								". TABLE_PREFIX ."guideline_subgroups gs, 
 								". TABLE_PREFIX ."subgroup_checks gc,
 								". TABLE_PREFIX ."checks c
-						where g.guideline_id in (".$gids.")
-							and g.guideline_id = gg.guideline_id
-							and gg.group_id = gs.group_id
+						where gg.group_id  in (".$gids.")
 							and gs.subgroup_id = gc.subgroup_id
 							and gc.check_id = c.check_id
 							and c.html_tag = 'all elements'
@@ -584,8 +696,9 @@ class ChecksDAO extends DAO {
 						order by c.html_tag";
 
     return $this->execute($sql);
-  }
-
+  } 
+  */
+  
 	/**
 	* Return checks NOT for all html elements by given guideline ids
 	* @access  public
@@ -593,8 +706,91 @@ class ChecksDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
+	
 	function getOpenChecksNotForAllByGuidelineIDs($gids)
 	{
+		//MB
+		if(isset($_SESSION['req']) && $_SESSION['req'][0]!=0)
+		{
+			
+			$reqids = implode(',', $_SESSION['req']);
+			
+			
+			
+			$sql_subg="select subgroup_id from ". TABLE_PREFIX ."guideline_subgroups gs where gs.group_id in (".$reqids.")";
+			$subg_stanca = $this->execute($sql_subg);
+					
+			//echo('<p>'.$gids.'</p>');
+			$sql_subg="select subgroup_id 
+							from ". TABLE_PREFIX ."guideline_subgroups gs, 
+							". TABLE_PREFIX ."guideline_groups gg
+							where gg.guideline_id in (".$gids.")
+								and gg.guideline_id <> 10 
+								and gg.group_id = gs.group_id";
+			$subg_others= $this->execute($sql_subg);
+				
+			foreach($subg_stanca as $sub)
+					$subg[] = $sub['subgroup_id'];
+			
+												
+			if($subg_others!=1)
+			{		
+			foreach($subg_others as $sub)
+						$subg[] = $sub['subgroup_id'];
+			}		
+			
+					
+			$subg = implode(',', $subg);
+			
+			//qui rimuovo i sottogruppi stanca in base a cosa è stato selezionato nella form		
+			if($_SESSION["new_web_site"]==1) //sito nuovo
+			{
+				$subg=str_replace(',1000','',$subg);
+				$subg=str_replace(',1001','',$subg);
+				$subg=str_replace(',1010','',$subg);
+				$subg=str_replace('1000,','',$subg);
+				$subg=str_replace('1001,','',$subg);
+				$subg=str_replace('1010,','',$subg);
+			}
+			else //sito vecchio
+			{
+				$subg=str_replace(',2000','',$subg);
+				$subg=str_replace(',2001','',$subg);
+				$subg=str_replace(',2010','',$subg);
+				$subg=str_replace('2000,','',$subg);
+				$subg=str_replace('2001,','',$subg);
+				$subg=str_replace('2010,','',$subg);
+			}
+			
+			if ($_SESSION["css_disable"]==1) //controlli css disabilitati
+			{
+				$subg=str_replace(',2004','',$subg);
+				$subg=str_replace(',2005','',$subg);
+				$subg=str_replace(',2011','',$subg);
+				$subg=str_replace(',2020','',$subg);
+				$subg=str_replace('2004,','',$subg);
+				$subg=str_replace('2005,','',$subg);
+				$subg=str_replace('2011,','',$subg);
+				$subg=str_replace('2020,','',$subg);
+			}
+			else //controlli css abilitati
+			{
+				;//lascio tutti i gruppi
+			}
+			
+			//echo('<p>'.$subg.'</p>');
+			
+			$sql = "select distinct gc.check_id, c.html_tag
+							from  ". TABLE_PREFIX ."subgroup_checks gc,
+									". TABLE_PREFIX ."checks c
+							where gc.subgroup_id in (".$subg.")
+								and gc.check_id = c.check_id
+								and c.html_tag <> 'all elements'
+								and c.open_to_public = 1
+							order by c.html_tag";
+		}
+		else
+		{   //query originale	
 			$sql = "select distinct gc.check_id, c.html_tag
 							from ". TABLE_PREFIX ."guidelines g, 
 									". TABLE_PREFIX ."guideline_groups gg, 
@@ -609,9 +805,37 @@ class ChecksDAO extends DAO {
 								and c.html_tag <> 'all elements'
 								and c.open_to_public = 1
 							order by c.html_tag";
-
+		}
     return $this->execute($sql);
   }
+  
+  
+	/**
+	* Return checks NOT for all html elements by given group ids
+	* @access  public
+	* @param   $gids : guideline IDs
+	* @return  table rows
+	* @author  MB
+	*/
+	/*
+	function getOpenChecksNotForAllByGroupIDs($gids)
+	{
+			$sql = "select distinct gc.check_id, c.html_tag
+							from ". TABLE_PREFIX ."guidelines g, 
+									". TABLE_PREFIX ."guideline_groups gg, 
+									". TABLE_PREFIX ."guideline_subgroups gs, 
+									". TABLE_PREFIX ."subgroup_checks gc,
+									". TABLE_PREFIX ."checks c
+							where gg.group_id  in (".$gids.")
+								and gs.subgroup_id = gc.subgroup_id
+								and gc.check_id = c.check_id
+								and c.html_tag <> 'all elements'
+								and c.open_to_public = 1
+							order by c.html_tag";
+
+    return $this->execute($sql);
+  }  
+  */
 
 	/**
 	* Return prerequisite checks by given guideline ids

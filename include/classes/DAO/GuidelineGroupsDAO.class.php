@@ -235,6 +235,30 @@ class GuidelineGroupsDAO extends DAO {
 		$rows = $this->execute($sql);
 		return $rows[0];
 	}
+	
+	//MB
+	/**
+	* Return group ids of the given guideline id
+	* @access  public
+	* @param   $groupID : group id
+	* @return  table row: if success
+	*          false : if fail
+	* @author  MB
+	*/
+	public function getGroupsByGuidelineID($gID)
+	{
+		$sql = "SELECT group_id FROM ".TABLE_PREFIX."guideline_groups 
+                 WHERE guideline_id = ".$gID." order by group_id";
+
+		$rows = $this->execute($sql);
+		$groups=array();
+		foreach($rows as $row)
+			$groups[]=$row['group_id'];
+		
+		return $groups;
+	}
+		
+	
 
 	/**
 	* Return group info of the given check id and guideline id
