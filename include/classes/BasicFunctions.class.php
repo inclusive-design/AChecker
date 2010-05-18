@@ -1092,4 +1092,4 @@ class BasicFunctions {
 		return false;
 	}
 }
-?>  
+?>

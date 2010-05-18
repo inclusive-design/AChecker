@@ -523,4 +523,4 @@ class AccessibilityValidator {
 	}
 
 }
-?>  
+?>

@@ -320,4 +320,4 @@ class RESTWebServiceOutput {
 		return $rest_success;
 	}
 }
-?>  
+?>

@@ -305,4 +305,4 @@ class BasicChecks {
 		return $file;
 	}
 }
-?>  
+?>

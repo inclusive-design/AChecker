@@ -115,4 +115,4 @@ class ColorValue {
 		return $this->blue;
 	}
 }
-?>  
+?>
