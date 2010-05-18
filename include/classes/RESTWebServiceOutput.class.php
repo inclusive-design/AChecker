@@ -197,8 +197,8 @@ class RESTWebServiceOutput {
 			                            htmlentities(_AC("suggest_improvements")),
 			                            htmlentities(_AC($row_check['err'])),
 			                            htmlentities($error["html_code"]),
-			                            htmlentities($repair),
-			                            htmlentities($decision)),
+			                            $repair,
+			                            $decision),
 			                      $this->rest_result);
 		}
 		
