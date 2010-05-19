@@ -130,6 +130,7 @@ if (isset($validate_content))
 	if ($output == 'rest')
 	{ // generate html output
 		$restWebServiceOutput = new RESTWebServiceOutput($errors, $user_link_id, $gids);
+		header('Content-type: text/xml');
 		echo $restWebServiceOutput->getWebServiceOutput();
 	}
 }
