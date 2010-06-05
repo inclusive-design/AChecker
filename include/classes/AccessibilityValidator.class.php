@@ -23,6 +23,7 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 include (AC_INCLUDE_PATH . "lib/simple_html_dom.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicFunctions.class.php");
+include_once (AC_INCLUDE_PATH . "classes/BasicFunctionsVamola.class.php");
 include_once (AC_INCLUDE_PATH . "classes/CheckFuncUtility.class.php");
 include_once (AC_INCLUDE_PATH . "classes/DAO/ChecksDAO.class.php");
 
