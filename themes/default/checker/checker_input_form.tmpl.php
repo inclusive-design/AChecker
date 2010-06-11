@@ -60,11 +60,17 @@ if (isset($this->error)) echo $this->error;
 				<input type="checkbox" name="enable_html_validation" id="enable_html_validation" value="1" <?php if (isset($_POST["enable_html_validation"])) echo 'checked="checked"'; ?> />
 				<label for='enable_html_validation'><?php echo _AC("enable_html_validator"); ?></label>
 				</td>
-
+			<td>
+				<input type="checkbox" name="enable_css_validation" id="enable_css_validation" value="1" <?php if (isset($_POST["enable_css_validation"])) echo 'checked="checked"'; ?> />
+				<label for='enable_css_validation'><?php echo _AC("enable_css_validation"); ?></label>
+				</td>
+				
 				<td colspan="2">
 				<input type="checkbox" name="show_source" id="show_source" value="1" <?php if (isset($_POST["show_source"])) echo 'checked="checked"'; ?> />
 				<label for='show_source'><?php echo _AC("show_source"); ?></label>
 				</td>
+				
+				
 			</tr>
 			
 			<tr>
@@ -137,7 +143,7 @@ function initial()
 		document.getElementById("likely_problems").style.display = 'none';
 		document.getElementById("potential_problems").style.display = 'none';
 		document.getElementById("html_validation_result").style.display = 'none';
-
+		document.getElementById("css_validation_result").style.display = 'none';
 		// highlight tab "errors"
 		document.getElementById("menu_errors").className = 'active';
 

@@ -141,5 +141,18 @@ if (isset($htmlValidator))
 
 }
 
+//CSS Validation
+if (isset($cssValidator))
+{
+	$num_of_css_errors = $cssValidator->getNumOfValidateError();
+
+	$savant->assign('cssValidator', $cssValidator);
+	$savant->assign('num_of_css_errors', $num_of_css_errors);
+	
+}
+
+
+
+
 $savant->display('checker/checker_results.tmpl.php');
 ?>

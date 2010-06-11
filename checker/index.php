@@ -92,6 +92,12 @@ if ($_GET['uri'] == 'referer')
 // a flag to record if there's problem validating html thru 3rd party web service
 $error_happen = false;
 
+// CSS Validation
+if (isset($_POST["enable_css_validation"]))
+	include(AC_INCLUDE_PATH. "classes/CSSValidator.class.php");
+
+
+
 // validate html
 if (isset($_POST["enable_html_validation"]))
 	include(AC_INCLUDE_PATH. "classes/HTMLValidator.class.php");
@@ -119,6 +125,13 @@ if ($_POST["validate_uri"])
 		
 		if (isset($_POST["enable_html_validation"]))
 			$htmlValidator = new HTMLValidator("uri", $uri);
+
+		////////////////////////////////////////////////////////////////////////////		
+		//CSS Validator
+		if (isset($_POST["enable_css_validation"]))
+			$cssValidator = new CSSValidator("uri", $uri);	
+	    ////////////////////////////////////////////////////////////////////////////
+
 
 		if (isset($_POST["show_source"]))
 			$source_array = file($uri);
