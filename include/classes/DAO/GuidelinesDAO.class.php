@@ -495,5 +495,31 @@ class GuidelinesDAO extends DAO {
 		else
 			return false;
 	}
+	
+	
+	
+	  	// Simo: aggiunto per vedere quali check hanno il tag img, per il controllo visivo delle immagini
+  	// Restituisce una stringa con tutti gli id dei check, separati da virgola, che riguardano la guideline e l'elemento specificato
+  	public function getCheckByTagAndGuideline($tag, $guideline)
+	{
+		$sql = "select distinct c.check_id,c.html_tag
+					from ". TABLE_PREFIX ."guidelines g, 
+					     ". TABLE_PREFIX ."guideline_groups gg, 
+					     ". TABLE_PREFIX ."guideline_subgroups gs, 
+					     ". TABLE_PREFIX ."subgroup_checks gc,
+					     ". TABLE_PREFIX ."checks c
+					where g.guideline_id = '". $guideline ."'
+					  and g.guideline_id = gg.guideline_id
+					  and gg.group_id = gs.group_id
+					  and gs.subgroup_id = gc.subgroup_id
+					  and gc.check_id = c.check_id
+					  and c.html_tag = '" . $tag ."'
+					order by c.html_tag";
+		$check = ",";
+		
+		return $this->execute($sql);
+	}	
+	
+	
 }
 ?>

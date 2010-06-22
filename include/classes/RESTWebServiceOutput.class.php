@@ -3,7 +3,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto          */
+/* Adaptive Technology Resource Centre / University of Toronto			    */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -35,43 +35,40 @@ class RESTWebServiceOutput {
 	
 	// REST templates
 	var $rest_main =
-'<?xml version="1.0" encoding="ISO-8859-1"?>
-<resultset>
-  <summary>
-    <status>{STATUS}</status>
-    <sessionID>{SESSIONID}</sessionID>
-    <NumOfErrors>{NUMOFERRORS}</NumOfErrors>
-    <NumOfLikelyProblems>{NUMOFLIKELYPROBLEMS}</NumOfLikelyProblems>
-    <NumOfPotentialProblems>{NUMOFPOTENTIALPROBLEMS}</NumOfPotentialProblems>
+'<summary>
+	<status>{STATUS}<stauts>
+	<sessionID>{SESSIONID}<sessionID>
+	<NumOfErrors>{NUMOFERRORS}</NumOfErrors>
+	<NumOfLikelyProblems>{NUMOFLIKELYPROBLEMS}</NumOfLikelyProblems>
+	<NumOfPotentialProblems>{NUMOFPOTENTIALPROBLEMS}</NumOfPotentialProblems>
 
-    <guidelines>
+	<guidelines>
 {GUIDELINES}
-    </guidelines>
-  </summary>
+	</guidelines>
+</summary>
 
-  <results>
+<results>
 {RESULTS}
-  </results>
-</resultset>
+</results>
 ';
 	
 	var $rest_guideline =
-'      <guideline>{GUIDELINE}</guideline>
+'		<guideline>{GUIDELINE}</guideline>
 ';
 	
 	var $rest_result = 
-'    <result>
-      <resultType>{RESULTTYPE}</resultType>
-      <lineNum>{LINENUM}</lineNum>
-      <columnNum>{COLUMNNUM}</columnNum>
-      <errorMsg>&lt;a href=&quot;{BASE_HREF}checker/suggestion.php?id={CHECK_ID}&quot;
+'	<result>
+		<resultType>{RESULTTYPE}</resultType>
+		<lineNum>{LINENUM}</lineNum>
+		<columnNum>{COLUMNNUM}</columnNum>
+		<errorMsg>&lt;a href=&quot;{BASE_HREF}checker/suggestion.php?id={CHECK_ID}&quot;
                onclick=&quot;popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\'); return false;&quot; 
-               title=&quot;{TITLE}&quot; target=&quot;_new&quot;&gt;{ERRORMSG}&lt;/a&gt;
-      </errorMsg>
-      <errorSourceCode>{ERRORSOURCECODE}</errorSourceCode>
-        {REPAIR}
-        {DECISION}
-    </result> 
+               title=&quot;{TITLE}&quot; target=&quot;_new&quot;&gt;{ERRORMSG}</a>
+        </errorMsg>
+		<errorSourceCode>{ERRORSOURCECODE}</errorSourceCode>
+		{REPAIR}
+		{DECISION}
+	</result> 
 ';
 	
 	var $rest_repair = '<repair>{REPAIR}</repair>';
@@ -79,12 +76,12 @@ class RESTWebServiceOutput {
 	var $rest_decision_questions =
 '<sequenceID>{SEQUENCEID}</sequenceID>
         <decisionPass>{DECISIONPASS}</decisionPass>
-        <decisionFail>{DECISIONFAIL}</decisionFail>
+		<decisionFail>{DECISIONFAIL}</decisionFail>
 ';
 	
 	var $rest_decision_made =
-'        <decisionMade>{DECISIONMADE}</decisionMade>
-        <decisionMadeDate>{DECISIONMADEDATE}</decisionMadeDate>
+'		<decisionMade>{DECISIONMADE}</decisionMade>
+		<decisionMadeDate>{DECISIONMADEDATE}</decisionMadeDate>
 ';
 	
 	/**
@@ -133,7 +130,7 @@ class RESTWebServiceOutput {
 				$result_type = _AC('error');
 				
 				$repair = str_replace('{REPAIR}', 
-				                      htmlentities(_AC($row_check["how_to_repair"])), 
+				                      htmlspecialchars(_AC($row_check["how_to_repair"]), ENT_QUOTES), 
 				                      $this->rest_repair);
 			}
 			else 
@@ -148,7 +145,7 @@ class RESTWebServiceOutput {
 					
 					$decision_made = str_replace(array('{DECISIONMADE}', 
 					                                   '{DECISIONMADEDATE}'),
-					                             array(htmlentities($decision_text), 
+					                             array($decision_text, 
 					                                   $row_userDecision['last_update']),
 					                             $this->rest_decision_made);
 				}
@@ -172,7 +169,7 @@ class RESTWebServiceOutput {
 				}
 				
 				$decision_questions = str_replace(array('{SEQUENCEID}', '{DECISIONPASS}', '{DECISIONFAIL}'),
-				                                  array($row_userDecision['sequence_id'], htmlentities(_AC($row_check['decision_pass'])), htmlentities(_AC($row_check['decision_fail']))),
+				                                  array($row_userDecision['sequence_id'], _AC($row_check['decision_pass']), _AC($row_check['decision_fail'])),
 				                                  $this->rest_decision_questions);
 				                                  
 				$decision = $decision_questions . $decision_made;
@@ -192,11 +189,11 @@ class RESTWebServiceOutput {
 			                      array($result_type, 
 			                            $error["line_number"], 
 			                            $error["col_number"], 
-			                            htmlentities(AC_BASE_HREF), 
+			                            AC_BASE_HREF, 
 			                            $error['check_id'], 
-			                            htmlentities(_AC("suggest_improvements")),
-			                            htmlentities(_AC($row_check['err'])),
-			                            htmlentities($error["html_code"]),
+			                            _AC("suggest_improvements"),
+			                            htmlspecialchars(_AC($row_check['err']), ENT_QUOTES),
+			                            htmlspecialchars($error["html_code"], ENT_QUOTES),
 			                            $repair,
 			                            $decision),
 			                      $this->rest_result);
@@ -213,7 +210,7 @@ class RESTWebServiceOutput {
 		foreach ($this->guidelineArray as $gid)
 		{
 			$row_guideline = $guidelinesDAO->getGuidelineByIDs($gid);
-			$guidelines .= str_replace('{GUIDELINE}', htmlentities($row_guideline[0]['title']), $this->rest_guideline);
+			$guidelines .= str_replace('{GUIDELINE}', $row_guideline[0]['title'], $this->rest_guideline);
 		}
 		
 		// find out result status: pass, fail, conditional pass
@@ -276,24 +273,23 @@ class RESTWebServiceOutput {
 		
 		// error template in REST format
 		$rest_error = 
-'<?xml version="1.0" encoding="UTF-8"?>
-<errors>
-  <totalCount>{TOTOAL_COUNT}</totalCount>
+'<errors>
+	<totalCount>{TOTOAL_COUNT}</totalCount>
 {ERROR_DETAIL}
 </errors>
 ';
 	
 		$rest_error_detail = 
-'  <error code="{ERROR_CODE}">
-    <message>{MESSAGE}</message>
-  </error>
+'	<error code="{ERROR_CODE}">
+		<message>{MESSAGE}</message>
+	</error>
 ';
 		if (!is_array($errors)) return false;
 		
 		foreach ($errors as $err)
 		{
 			$error_detail .= str_replace(array("{ERROR_CODE}", "{MESSAGE}"), 
-			                             array($errorCodes[$err], htmlentities(_AC($err))), 
+			                             array($errorCodes[$err], _AC($err)), 
 			                             $rest_error_detail); 
 		}
 			                            
@@ -311,13 +307,12 @@ class RESTWebServiceOutput {
 	public static function generateSuccessRpt()
 	{
 		$rest_success = 
-'<?xml version="1.0" encoding="ISO-8859-1"?>
-<summary>
-  <status>success</status>
+'<summary>
+	<status>success</status>
 </summary>
 ';
 		
 		return $rest_success;
 	}
 }
-?>
+?>  

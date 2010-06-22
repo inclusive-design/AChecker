@@ -12,17 +12,45 @@
 
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined in checker_input_form.php.");
 
-if (!isset($aValidator) && !isset($htmlValidator)) die(_AC("no_instance"));
+//if (!isset($aValidator) && !isset($htmlValidator)) die(_AC("no_instance"));
+//Simo: aggiunto isset risultati////////////////////////////////////////////////////
+if (!isset($aValidator) && !isset($htmlValidator)  && !isset($_SESSION["risultati"])) die(_AC("no_instance"));
 
-include_once(AC_INCLUDE_PATH. "classes/HTMLRpt.class.php");
+//include_once(AC_INCLUDE_PATH. "classes/HTMLRpt.class.php");
+include_once(AC_INCLUDE_PATH. "classes/HTMLRptVamola.class.php");
 include_once(AC_INCLUDE_PATH. "classes/Utility.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/UserLinksDAO.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/UserDecisionsDAO.class.php");
 
+
+if (isset($htmlValidator))
+{
+	$num_of_html_errors = $htmlValidator->getNumOfValidateError();
+
+	$savant->assign('htmlValidator', $htmlValidator);
+	$savant->assign('num_of_html_errors', $num_of_html_errors);
+
+	$_SESSION["risultati"]["num_of_html_errors"] = $num_of_html_errors;
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+//Simo: Validatore CSS
+if (isset($cssValidator))
+{
+	$num_of_css_errors = $cssValidator->getNumOfValidateError();
+
+	$savant->assign('cssValidator', $cssValidator);
+	$savant->assign('num_of_css_errors', $num_of_css_errors);
+	
+	$_SESSION["risultati"]["num_of_css_errors"]=$num_of_css_errors;
+}
+////////////////////////////////////////////////////////////////////////////////////
+
+
 if (isset($aValidator))
 {
 	// find out selected guidelines
-	foreach ($_POST["gid"] as $gid)
+	foreach ($_REQUEST["gid"] as $gid)
 		$gids .= $gid . ",";
 	
 	$gids = substr($gids, 0, -1);
@@ -34,7 +62,8 @@ if (isset($aValidator))
 	{
 		foreach ($guideline_rows as $id => $row)
 		{
-			$guidelines_text .= '<a title="'.$row["title"]._AC('link_open_in_new').'" target="_new" href="'.AC_BASE_HREF.'guideline/view_guideline.php?id='.$row["guideline_id"].'">'.$row["title"]. '</a>, ';
+			//MB tolgo il link $guidelines_text .= '<a title="'.$row["title"]._AC('link_open_in_new').'" target="_new" href="'.AC_BASE_HREF.'guideline/view_guideline.php?id='.$row["guideline_id"].'">'.$row["title"]. '</a>, ';
+			$guidelines_text .= $row["title"]. ', ';
 		}
 	}
 	$guidelines_text = substr($guidelines_text, 0, -2); // remove ending space and ,
@@ -64,20 +93,20 @@ if (isset($aValidator))
 			if ($_SESSION['user_id'] > 0) $allow_set_decision = 'true';
 		}
 	}
-	else if (isset($_POST['referer_report']))
+	else if (isset($_REQUEST['referer_report']))
 	{
 		$from_referer = 'true';
-		if (isset($_POST['referer_user_link_id'])) 
+		if (isset($_REQUEST['referer_user_link_id'])) 
 		{
-			$user_link_id = $_POST['referer_user_link_id'];
+			$user_link_id = $_REQUEST['referer_user_link_id'];
 			if ($_SESSION['user_id'] > 0) $allow_set_decision = 'true';
 		}
 	}
-	else if (isset($_SESSION['user_id']) && $_POST["validate_uri"])
+	else if (isset($_SESSION['user_id']) && $_REQUEST["validate_uri"])
 	{
 		// save errors into user_links
 		$userLinksDAO = new UserLinksDAO();
-		$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_POST['uri'], $gids);
+		$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_REQUEST['uri'], $gids);
 		
 		// save errors into user_decisions 
 		$userDecisionsDAO = new UserDecisionsDAO();
@@ -89,7 +118,7 @@ if (isset($aValidator))
 	$a_rpt = new HtmlRpt($errors, $user_link_id);
 	$a_rpt->setAllowSetDecisions($allow_set_decision);
 	$a_rpt->setFromReferer($from_referer);
-	if (isset($_POST['show_source'])) $a_rpt->setShowSource('true', $source_array);
+	if (isset($_REQUEST['show_source'])) $a_rpt->setShowSource('true', $source_array);
 	
 	$a_rpt->generateHTMLRpt();
 
@@ -99,10 +128,23 @@ if (isset($aValidator))
 	$num_of_potential_problems = $a_rpt->getNumOfPotentialProblems();
 	$num_of_potential_problems_no_decision = $a_rpt->getNumOfPotentialWithFailDecisions();
 	
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//Simo: Errori di VaMoLà
+	$num_of_errors_10 = $a_rpt->getNumOfErrors10();	
+	$num_of_errors_11 = $a_rpt->getNumOfErrors11();
+	$num_of_errors_12 = $a_rpt->getNumOfErrors12();
+	$num_of_errors_13 = $a_rpt->getNumOfErrors13();
+	////////////////////////////////////////////////////////////////////////////////
+	
+	// Simo: Aggiunto bollino Stanca
 	// no any problems or all problems have pass decisions, display seals when no errors
-	if ($num_of_errors == 0 && 
-	    ($num_of_likely_problems == 0 && $num_of_potential_problems == 0 ||
-	     $num_of_likely_problems_no_decision == 0 && $num_of_potential_problems_no_decision == 0))
+//	if ($num_of_errors == 0 && 
+//	    ($num_of_likely_problems == 0 && $num_of_potential_problems == 0 ||
+//	     $num_of_likely_problems_no_decision == 0 && $num_of_potential_problems_no_decision == 0))
+// Impossibile che tutti gli errori siano 0	
+//if (($num_of_errors_10 + $num_of_html_errors + $num_of_css_errors + $num_of_errors_11 + $num_of_errors_12 + $num_of_errors_13) == 103)
+	if (($num_of_errors_10 + $num_of_html_errors + $num_of_css_errors + $num_of_errors + $num_of_likely_problems + $num_of_potential_problems) == 0)
 	{
 		$utility = new Utility();
 		$seals = $utility->getSeals($guideline_rows);
@@ -115,6 +157,28 @@ if (isset($aValidator))
 	$savant->assign('num_of_potential_problems', $num_of_potential_problems);
 	$savant->assign('num_of_potential_problems_no_decision', $num_of_potential_problems_no_decision);
 
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//Simo: Errori di VaMoLà e impostazione variabili di sessione
+	$savant->assign('num_of_errors_10', $num_of_errors_10);
+	$savant->assign('num_of_errors_11', $num_of_errors_11);
+	$savant->assign('num_of_errors_12', $num_of_errors_12);
+	$savant->assign('num_of_errors_13', $num_of_errors_13);
+	
+	$_SESSION["risultati"]["num_of_total_a_errors"] = $num_of_total_a_errors;
+	$_SESSION["risultati"]["guidelines"] = $guidelines_text;
+	
+	$_SESSION["risultati"]["num_of_errors"] = $num_of_errors;	
+	$_SESSION["risultati"]["num_of_likely_problems"] = $num_of_likely_problems;	
+	$_SESSION["risultati"]["num_of_potential_problems"] = $num_of_potential_problems;	
+	
+	$_SESSION["risultati"]["num_of_errors_10"] = $num_of_errors_10;
+	$_SESSION["risultati"]["num_of_errors_11"] = $num_of_errors_11;	
+	$_SESSION["risultati"]["num_of_errors_12"] = $num_of_errors_12;
+	$_SESSION["risultati"]["num_of_errors_13"] = $num_of_errors_13;
+	////////////////////////////////////////////////////////////////////////////////
+
+	
 	$savant->assign('aValidator', $aValidator);
 	$savant->assign('guidelines_text', $guidelines_text);
 	$savant->assign('num_of_total_a_errors', $num_of_total_a_errors);
@@ -131,26 +195,30 @@ if (isset($aValidator))
 	}
 }
 
-if (isset($htmlValidator))
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
+// Simo: Sezione per utilizzo variabili di sessione nei template
+if(isset($_SESSION["risultati"]))
 {
-	$num_of_html_errors = $htmlValidator->getNumOfValidateError();
-
-	$savant->assign('htmlValidator', $htmlValidator);
-	$savant->assign('num_of_html_errors', $num_of_html_errors);
-	$savant->assign('num_of_html_errors', $num_of_html_errors);
-
-}
-
-//CSS Validation
-if (isset($cssValidator))
-{
-	$num_of_css_errors = $cssValidator->getNumOfValidateError();
-
-	$savant->assign('cssValidator', $cssValidator);
-	$savant->assign('num_of_css_errors', $num_of_css_errors);
+	$savant->assign('guidelines_text', $_SESSION["risultati"]["guidelines"]);
 	
-}
+	$savant->assign('num_of_total_a_errors', $_SESSION["risultati"]["num_of_total_a_errors"]);
+	
+	$savant->assign('num_of_html_errors', $_SESSION["risultati"]["num_of_html_errors"]);
+	$savant->assign('num_of_css_errors', $_SESSION["risultati"]["num_of_css_errors"]);
+	
+	$savant->assign('num_of_errors', $_SESSION["risultati"]["num_of_errors"]);
+	$savant->assign('num_of_likely_problems', $_SESSION["risultati"]["num_of_likely_problems"]);
+	$savant->assign('num_of_potential_problems', $_SESSION["risultati"]["num_of_potential_problems"]);
 
+	$savant->assign('num_of_errors_10', $_SESSION["risultati"]["num_of_errors_10"]);
+	$savant->assign('num_of_errors_11', $_SESSION["risultati"]["num_of_errors_11"]);
+	$savant->assign('num_of_errors_12', $_SESSION["risultati"]["num_of_errors_12"]);
+	$savant->assign('num_of_errors_13', $_SESSION["risultati"]["num_of_errors_13"]);
+}
+////////////////////////////////////////////////////////////////////////////////////
 
 
 

@@ -598,6 +598,49 @@ table.data.static tbody tr:hover {
 	border:thin #cccccc solid;
 	padding:1em;
 }
+
+#errors_10{
+	border:thin #cccccc solid;
+	padding:1em;
+	margin:0.5em;
+	width:95%;
+}
+
+#errors_11{
+	border:thin #cccccc solid;
+	padding:1em;
+	margin:0.5em;
+	width:95%;
+}
+
+#errors_12{
+	border:thin #cccccc solid;
+	padding:1em;
+	margin:0.5em;
+	width:95%;
+}
+
+#errors_13{
+	border:thin #cccccc solid;
+	padding:1em;
+	margin:0.5em;
+	width:95%;
+}
+
+#markup_validator{
+	border:thin #cccccc solid;
+	padding:1em;
+	margin:0.5em;
+	width:95%;
+}
+
+#css_validator {
+	border:thin #cccccc solid;
+	padding:1em;
+	margin:0.5em;
+	width:95%;
+}
+
 /* feedback /errors */
 
 

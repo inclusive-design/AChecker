@@ -22,7 +22,8 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
 require_once(AC_INCLUDE_PATH. 'classes/DAO/UserLinksDAO.class.php');
 require_once(AC_INCLUDE_PATH. 'classes/DAO/UserDecisionsDAO.class.php');
-require_once(AC_INCLUDE_PATH. 'classes/HTMLRpt.class.php');
+//require_once(AC_INCLUDE_PATH. 'classes/HTMLRpt.class.php');
+require_once(AC_INCLUDE_PATH. "classes/HTMLRptVamola.class.php");
 
 class Decision {
 
@@ -31,13 +32,13 @@ class Decision {
 	var $URI;                              // URI to make/reverse decisions on
 	var $output;                           // output format: html or rest
 	var $sessionID;                        // session ID sent by our server in question list form
-	
+
 	var $userLinkID;                       // generated in validateFields()
 	var $userLinksDAO;
 	var $userDecisionsDAO;
 
 	var $errors;                           // error msg array
-	
+
 	/**
 	 * Constructor
 	 * doing nothing
@@ -48,15 +49,15 @@ class Decision {
 	function Decision($userID, $URI, $output, $sessionID)
 	{
 		global $msg;
-		
+
 		$this->userID = $userID;
 		$this->URI = urldecode($URI);
 		$this->output = $output;
 		$this->sessionID = $sessionID;
-		
+
 		$this->userLinksDAO = new UserLinksDAO();
 		$this->userDecisionsDAO = new UserDecisionsDAO();
-		
+
 		if (!$this->validateFields()) return false;
 	}
 
@@ -70,7 +71,7 @@ class Decision {
 	public function makeDecisions($decisions)
 	{
 		if (!is_array($decisions)) return false;
-		
+
 		foreach ($decisions as $sequenceID => $decision)
 			$this->userDecisionsDAO->setDecision($this->userLinkID, $sequenceID, $decision);
 	}
@@ -85,7 +86,7 @@ class Decision {
 	public function reverseDecisions($sequences)
 	{
 		if (!is_array($sequences)) return false;
-		
+
 		foreach ($sequences as $sequenceID)
 			$this->userDecisionsDAO->setDecision($this->userLinkID, $sequenceID, AC_NO_DECISION);
 	}
@@ -101,7 +102,7 @@ class Decision {
 	{
 		return (count($this->errors) > 0);
 	}
-	
+
 	/**
 	 * return error report
 	 * @access  public
@@ -117,7 +118,7 @@ class Decision {
 		}
 		return $errorRpt;
 	}
-	
+
 	/**
 	 * Validate fields
 	 * @access  private
@@ -127,7 +128,7 @@ class Decision {
 	 */
 	private function validateFields()
 	{
-		// check if the 
+		// check if the
 		if ($this->sessionID == '')
 		{
 			$this->errors[] = 'AC_ERROR_EMPTY_SESSIONID';
@@ -144,23 +145,23 @@ class Decision {
 		{
 			$this->errors[] = 'AC_ERROR_INVALID_FORMAT';
 		}
-		
+
 		if (count($this->errors) > 0) return false;
-		
+
 		$rows = $this->userLinksDAO->getByUserIDAndURIAndSession($this->userID, $this->URI, $this->sessionID);
-		
-		if (!is_array($rows)) 
+
+		if (!is_array($rows))
 		{
 			$this->errors[] = 'AC_ERROR_INVALID_SESSION';
-			return false; 
+			return false;
 		}
 		else
 		{
 			$this->userLinkID = $rows[0]['user_link_id'];
 		}
-		
+
 		return true;
 	}
-	
+
 }
 ?>
