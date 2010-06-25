@@ -599,6 +599,13 @@ table.data.static tbody tr:hover {
 	padding:1em;
 }
 
+#css_validation_result{
+        white-space:nowrap;
+	width:95%;
+	border:thin #cccccc solid;
+	padding:1em;
+}
+
 #errors_10{
 	border:thin #cccccc solid;
 	padding:1em;

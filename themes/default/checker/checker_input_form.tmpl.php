@@ -144,6 +144,14 @@ function initial()
 		document.getElementById("potential_problems").style.display = 'none';
 		document.getElementById("html_validation_result").style.display = 'none';
 		document.getElementById("css_validation_result").style.display = 'none';
+		//document.getElementById("errors_10").style.display = 'none';
+		//document.getElementById("errors_11").style.display = 'none';
+	//	document.getElementById("errors_12").style.display = 'none';
+	//	document.getElementById("errors_13").style.display = 'none';
+		
+		
+		
+		
 		// highlight tab "errors"
 		document.getElementById("menu_errors").className = 'active';
 

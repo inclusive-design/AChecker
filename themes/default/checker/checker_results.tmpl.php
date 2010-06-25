@@ -92,21 +92,12 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 		<ul class="navigation">
 			<li class="navigation"><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="showDiv('errors');return false;"><span><?php echo _AC("known_problems"); ?>(<?php echo $this->num_of_errors; ?>)</span></a></li>
 			<li class="navigation"><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');return false;"><span><?php echo _AC("likely_problems"); ?> (<?php echo $this->num_of_likely_problems_no_decision; ?>)</span></a></li>
-				
 			<li class="navigation"><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');return false;"><span><?php echo _AC("potential_problems"); ?> (<?php echo $this->num_of_potential_problems_no_decision; ?>)</span></a></li>
 			<li class="navigation"><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');return false;"><span><?php echo _AC("html_validation_result"); ?> <?php if (isset($_POST["enable_html_validation"])) echo "(".$this->num_of_html_errors.")"; ?></span></a></li>
 			<li class="navigation"><a href="checker/index.php#output_div" accesskey="5" title="<?php echo _AC("css_validation_result"); ?> Alt+5" id="menu_css_validation_result" onclick="showDiv('css_validation_result');return false;"><span><?php echo _AC("css_validation_result"); ?> <?php if (isset($_POST["enable_css_validation"])) echo "(".$this->num_of_css_errors.")"; ?></span></a></li>
 			
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="6" title="<?php echo _AC("errors_10"); ?> Alt+6" id="menu_errors_10" onclick="showDiv('errors_10');return false;"><span><?php echo _AC("errors_10"); ?> (<?php echo $this->num_of_errors_10 + 0 ; ?>)</span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="7" title="<?php echo _AC("errors_11"); ?> Alt+7" id="menu_errors_11" onclick="showDiv('errors_11');return false;"><span><?php echo _AC("errors_11"); ?> (<?php echo $this->num_of_errors_11 + 0 ; ?>)</span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="8" title="<?php echo _AC("errors_12"); ?> Alt+8" id="menu_errors_12" onclick="showDiv('errors_12');return false;"><span><?php echo _AC("errors_12"); ?> (<?php echo $this->num_of_errors_12 + 0 ; ?>)</span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="9" title="<?php echo _AC("errors_13"); ?> Alt+9" id="menu_errors_13" onclick="showDiv('errors_13');return false;"><span><?php echo _AC("errors_13"); ?> (<?php echo $this->num_of_errors_13 + 0 ; ?>)</span></a></li>
 						
-			
-		
-
-		
-		
+				
 		</ul>
 	</div>
 
@@ -196,64 +187,7 @@ else
 	echo '<span class="info_msg"><img src="'.AC_BASE_HREF.'images/info.png" width="15" height="15" alt="'._AC("info").'"/>  '._AC("css_validator_disabled").'</span>';
 ?>
 	</div>
-	
-		<div id="errors_10" style="margin-top:1em">
-<?php
-
-if (isset($this->aValidator))
-{
-	if ($this->num_of_errors_10 > 0)
-		echo $this->a_rpt->getErrors10Rpt();
-	else
-		echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_potential") ."</span>";
-}
-
-?>
-	</div>
-	
-		<div id="errors_11" style="margin-top:1em">
-<?php
-
-if (isset($this->aValidator))
-{
-	if ($this->num_of_errors_11 > 0)
-		echo $this->a_rpt->getErrors11Rpt();
-	else
-		echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_potential") ."</span>";
-}
-
-?>
-	</div>
-	
-		<div id="errors_12" style="margin-top:1em">
-<?php
-
-if (isset($this->aValidator))
-{
-	if ($this->num_of_errors_12 > 0)
-		echo $this->a_rpt->getErrors12Rpt();
-	else
-		echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_potential") ."</span>";
-}
-
-?>
-	</div>
-	
-		<div id="errors_13" style="margin-top:1em">
-<?php
-
-if (isset($this->aValidator))
-{
-	if ($this->num_of_errors_13 > 0)
-		echo $this->a_rpt->getErrors13Rpt();
-	else
-		echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_potential") ."</span>";
-}
-
-?>
-	</div>
-	
-	
+		
 		
 	</fieldset>
 
@@ -286,7 +220,7 @@ function showDiv(divName)
 {
 	window.location.hash = 'output_div';
 	// all ids of dives to hide/show
-	var allDivIDs = new Array("errors", "likely_problems", "potential_problems", "html_validation_result", "errors_10", "errors_11","errors_12","errors_13","css_validation_result");
+	var allDivIDs = new Array("errors", "likely_problems", "potential_problems", "html_validation_result","css_validation_result");
 	var i;
 	
 	for (i in allDivIDs)
