@@ -71,10 +71,12 @@ else
 // return errors
 if (is_array($errors))
 {
-	if ($output == 'rest')
+	if ($output == 'rest') {
+		header('Content-type: text/xml');
 		echo RESTWebServiceOutput::generateErrorRpt($errors);
-	else
+	} else {
 		echo HTMLRpt::generateErrorRpt($errors);
+	}
 	
 	exit;
 }
