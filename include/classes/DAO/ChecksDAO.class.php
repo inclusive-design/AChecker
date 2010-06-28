@@ -385,7 +385,7 @@ class ChecksDAO extends DAO {
 		require_once(AC_INCLUDE_PATH.'classes/DAO/TestPassDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/Techniques.class.php');
-		require_once(AC_INCLUDE_PATH.'classes/DAO/CheckExamples.class.php');
+		require_once(AC_INCLUDE_PATH.'classes/DAO/CheckExamplesDAO.class.php');
 		
 		$langTextDAO = new LanguageTextDAO();
 
@@ -417,8 +417,8 @@ class ChecksDAO extends DAO {
 		$techniques = new Techniques();
 		$techniques->DeleteByCheckID($checkID);
 		
-		$checkExamples = new CheckExamples();
-		$checkExamples->DeleteByCheckID($checkID);
+		$checkExamplesDAO = new CheckExamplesDAO();
+		$checkExamplesDAO->DeleteByCheckID($checkID);
 		
 		$sql = "DELETE FROM ". TABLE_PREFIX ."checks WHERE check_id=".$checkID;
 		
