@@ -172,7 +172,7 @@ input[type=button] {
 	color:#666;
 	font-weight:bold;
 	padding: 1px 2px;
-	background:url(images/formbg.gif) repeat-x left top;
+/*	background:url(images/formbg.gif) repeat-x left top;*/
 }
 
 input[type=submit] {
@@ -182,7 +182,7 @@ input[type=submit] {
 	color:#666;
 	font-weight:bold;
 	padding: 1px 2px;
-	background:url(images/formbg.gif) repeat-x left top;
+/*	background:url(images/formbg.gif) repeat-x left top;*/
 }
 input[type=text] {
 	cursor:pointer;
