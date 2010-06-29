@@ -168,7 +168,7 @@ a:active {
 input[type=button] {
 	cursor:pointer;
 	border:outset 1px #ccc;
-	background:#999;
+	background:#eee;
 	color:#666;
 	font-weight:bold;
 	padding: 1px 2px;
@@ -178,7 +178,7 @@ input[type=button] {
 input[type=submit] {
 	cursor:pointer;
 	border:outset 1px #ccc;
-	background:#999;
+	background:#eee;
 	color:#666;
 	font-weight:bold;
 	padding: 1px 2px;
