@@ -103,7 +103,7 @@ class ColorValue {
 	*/
 	function getGreen()
 	{
-		return $this->red;
+		return $this->green;
 	}
 
 	/**
@@ -115,4 +115,4 @@ class ColorValue {
 		return $this->blue;
 	}
 }
-?>  
+?>
