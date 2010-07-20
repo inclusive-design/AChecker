@@ -1,0 +1,29 @@
+REQUISITI DI SISTEMA
+
+    Requisiti server (per l’installazione)
+      Il server che ospita il validatore deve avere installati:
+        * Web Server HTTP. (Apache raccomandato)
+        * PHP 5.2.4 o superiore.
+        * MySQL 5.0 o superiore.
+    
+    Database
+      In fase di installazione è necessario possedere un account con privilegi di amministratore, in modo da poter popolare il database con il file .sql fornito. Per ulteriori informazioni consultare il manuale di MySQL al capitolo “How the Privilege System Works” (http://dev.mysql.com/doc/refman/5.1/en/privilege-system.html).
+
+INSTALLAZIONE
+
+    Prerequisiti
+      Assicurarsi di soddisfare i requisiti di sistema prima di procedere con l’installazione.
+    
+    Installazione
+      * Scaricare l’ultima versione di VaMoLà Validator da sourceforge (http://sourceforge.net/projects/vamola-validate/). 
+      * Estrarne il contenuto in una cartella del web server. 
+      * Creare un nuovo database MySQL chiamato “vamola_validator”.
+      * Dentro la cartella “install”, aprire il file “vamola_validator.sql”. Importare il contenuto del file nel database appena creato.
+      * Aprire il file “config.inc.php” dentro la cartella “include”.
+      * In base alle proprie impostazioni MySQL, modificare i campi DB_USER, DB_PASSWORD, DB_HOST, DB_PORT.
+   
+    Utilizzo - Servizio Web
+      Al termine dell’installazione, l’interfaccia grafica del validatore sarà raggiungibile, tramite browser, all'indirizzo del tipo www.nomeserver.it/vamola-validator.
+    
+    Utilizzo - Web service Rest
+      E’ possibile interrogare il validatore tramite web service Rest in questo modo: www.nomeserver.it/vamola-validator/vamolarest.php?uri=[url_da_validare], dove [url_da_validare] rappresenta l’indirizzo della pagina che si intende validare. L’output restituito è in formato XML e fornisce una sintesi del risultato della validazione, conteggiando i controlli effettuati nella pagina e raggruppandoli per tipologia del controllo (elemento “type”), requisito (elemento “req”), gruppo dell’errore (elemento “group”) e controllo (elemento “check”). Ognuno dei precedenti elementi possiede gli attributi “id”, “success” e “fail” che rappresentano rispettivamente l’identificativo dell’elemento, il numero di controlli andati a buon fine associati a quell’elemento e il numero di controlli non andati a buon fine associati a quell’elemento.
