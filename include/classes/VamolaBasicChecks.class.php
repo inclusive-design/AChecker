@@ -2,20 +2,14 @@
 
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
+//Virruso e Tosi: default font size e default font format
+define("DEFAULT_FONT_SIZE",12);
+define("DEFAULT_FONT_FORMAT","pt");
+$tag_size = -1;
+
 class VamolaBasicChecks {
 
-        //controllo se ad un elemento è associata più di una classe
-        //es: class="classe1 classe2"
-        public static function isMultiClass($e)
-        {
-           
-            if(isset($e->attr["class"]) && stripos(trim($e->attr["class"]),' ')!==false)
-                return true;
-            else
-                return false;
-        }
-
-
+	
 	public static function getSiteUri($uri){
 			
 			
@@ -167,7 +161,7 @@ class VamolaBasicChecks {
 						{
 			
 							if($child->tag=="object")
-							{   $flag=1; //c'è almeno un object figlio
+							{   $flag=1; //c'� almeno un object figlio
 								if(VamolaBasicChecks::check_obj($child, $content_dom)==false)
 									return false;
 							}
@@ -223,7 +217,6 @@ class VamolaBasicChecks {
 			//classe
 			if(isset($e->attr["class"]))
 			{
-                                                
 						$class=VamolaBasicChecks::GetElementStyleClass($e,$e->attr["class"],$p);
 						$best=VamolaBasicChecks::getPriorityInfo($best,$class);
 			}			
@@ -430,7 +423,7 @@ class VamolaBasicChecks {
 									else 
 									{
 										//le due regole sono perfettamente equivalenti, quindi restituisco
-										// con idcss piu' piccolo (idcss == 0 è il foglio interno).
+										// con idcss piu' piccolo (idcss == 0 � il foglio interno).
 										if($info1["css_rule"]["idcss"]>$info2["css_rule"]["idcss"])
 											$best=$info1;
 										elseif($info1["css_rule"]["idcss"]<$info2["css_rule"]["idcss"])
@@ -624,7 +617,13 @@ class VamolaBasicChecks {
 					break;
 					
 					case "background-color":
-						if(isset($array_val[$val]) || isset($array_val["background"]))
+                                                //verifico se c'è un'immagine di sfondo, nel caso setto la proprietà a -1
+                                                if(isset($array_regole["regole"]["background-image"]))
+                                                    $valore_proprieta_new="-1";
+                                                elseif(isset($array_regole["regole"]["background"]) && stripos($array_regole["regole"]["background"]["val"], "url" )!==false)
+                                                        $valore_proprieta_new="-1";
+
+						elseif(isset($array_val[$val]) || isset($array_val["background"]))
 							$valore_proprieta=VamolaBasicChecks::getBgColor(VamolaBasicChecks::get_priority_prop($array_val[$val],$array_val["background"]));
 					break;
 						
@@ -930,7 +929,13 @@ class VamolaBasicChecks {
 					break;
 					
 					case "background-color":
-						if(isset($array_regole["regole"][$val]) || isset($array_regole["regole"]["background"]))
+
+                                                //verifico se c'è un'immagine di sfondo, nel caso setto la proprietà a -1
+                                                if(isset($array_regole["regole"]["background-image"]))
+                                                    $valore_proprieta_new="-1";
+                                                elseif(isset($array_regole["regole"]["background"]) && stripos($array_regole["regole"]["background"]["val"], "url" )!==false)
+                                                        $valore_proprieta_new="-1";
+						elseif(isset($array_regole["regole"][$val]) || isset($array_regole["regole"]["background"]))
 							$valore_proprieta_new=VamolaBasicChecks::getBgColor(VamolaBasicChecks::get_priority_prop($array_regole["regole"][$val],$array_regole["regole"]["background"]));
 					break;
 						
@@ -966,7 +971,7 @@ class VamolaBasicChecks {
 							//la verifica tiene conto che una regola composta ha priorità su una "semplice", anche se la semplice è successiva!
 							//es: "div > p{}" & "p{}" => per <div><p></p></div> vince "div > p{}"
 							//controllo se l'elemento rientra nella regola "composta"
-							//se si, verifico se in [$regola]["regole"] è contenuta la proprietà $val
+							//se si, verifico se in [$regola]["regole"] � contenuta la propriet� $val
 							$i=1;//inizio dal primo padre dell'elemento corrente
 							$e=$e_original;
 														
@@ -1256,6 +1261,7 @@ class VamolaBasicChecks {
 								}
 								elseif(stripos($valore_proprieta_new,"!important")===false && stripos($valore_proprieta,"!important")===false 
 										|| stripos($valore_proprieta_new,"!important")!==false && stripos($valore_proprieta,"!important")!==false) 
+
 										//hanno entrambe !important o non lo hanno nessuna della due, quindi verifico il numeo di id
 								{	
 											
@@ -1405,7 +1411,7 @@ class VamolaBasicChecks {
 							$sel= preg_replace("/".$spazio."$/","",$sel);
 							$sel=trim($sel);
 							$selettore_array = split(" ",$sel);
-							//nell'ultima posizione di $selettore_array c'è il selettore piu' a dx prima di una "," o di "{"
+							//nell'ultima posizione di $selettore_array c'� il selettore piu' a dx prima di una "," o di "{" 
 							$last=$selettore_array[sizeof($selettore_array) -1]; //ultimo elemento a dx, es: "div > p br" ---> br 
 							
 							$array_appoggio = array();
@@ -1433,7 +1439,7 @@ class VamolaBasicChecks {
 											$array_appoggio["regole"][$proprieta]["val"]=$valore;
 											$array_appoggio["regole"][$proprieta]["pos"]=$pos_prop;
 										}
-										elseif(stripos($array_appoggio["regole"][$proprieta]["val"],"!important")!==false ) //la proprietà è già stata impostata ed è !important, la posso sovrascrivere solo se anche quella che sto analizzando è !important
+										elseif(stripos($array_appoggio["regole"][$proprieta]["val"],"!important")!==false ) //la propriet� � gi� stata impostata ed � !important, la posso sovrascrivere solo se anche quella che sto analizzando � !important
 										{
 											if(stripos($valore,"!important")!==false)	
 												$array_appoggio["regole"][$proprieta]["val"] = $valore;
@@ -1452,7 +1458,7 @@ class VamolaBasicChecks {
 							}
 
 							//memorizzo i "predecessori". es: il selettore =" div > p br", allora i predecessori di br (considero anche br stesso) sono br, p, > e div. li memorizzo da dx a sx
-							//if(sizeof($selettore_array)==1) //il selettore è formato da un solo elemento
+							//if(sizeof($selettore_array)==1) //il selettore � formato da un solo elemento
 							
 								for($j=sizeof($selettore_array)-1,$k=0; $j>=0; $j--,$k++)
 								{
@@ -1461,7 +1467,7 @@ class VamolaBasicChecks {
 							
 					
 							
-							//if(isset($selettori_appoggio[$idcss][$last])) //ho già inserito questo elemento (tag, id, class) almeno una volta
+							//if(isset($selettori_appoggio[$idcss][$last])) //ho gi� inserito questo elemento (tag, id, class) almeno una volta 
 							if(isset($selettori_appoggio[$last])) //ho gia' inserito questo elemento (tag, id, class) almeno una volta 
 							{
 								//$posizione = sizeof($selettori_appoggio[$idcss][$last]);
@@ -1640,41 +1646,47 @@ class VamolaBasicChecks {
 
 	
 	public static function getForegroundA($e, $link_sel){
-		
-		//cerco il valore di foreground esplicitamente definito per l'elemento link $e 
+
+		//cerco il valore di foreground esplicitamente definito per l'elemento link $e
 		$foreground=VamolaBasicChecks::get_p_css_a($e, "color", $link_sel);
 
+                $foreground=str_replace("'", "", $foreground);
+                $foreground=str_replace("\"", "", $foreground);
+                $foreground=str_replace("!important", "", $foreground);
 		return $foreground;
-		
 
-	}	
-	
-	
+
+	}
+
+
 	public static function getBackgroundA($e, $link_sel){
-		
+
 		//cerco il valore di background esplicitamente definito per l'elemento $e
 		$background=VamolaBasicChecks::get_p_css_a($e, "background-color", $link_sel);
+                $background=str_replace("'", "", $background);
+                $background=str_replace("\"", "", $background);
+                $background=str_replace("!important", "", $background);
 		return $background;
 
-	}	
-	
-	
+	}
+
+
 	public static function getForeground($e){
-		
+
 		//cerco il valore di foreground esplicitamente definito per l'elemento $e
 		$foreground=VamolaBasicChecks::get_p_css($e, "color");
-		
+
 		//i link non ereditano "color" definito in style
 		if ($foreground=="" && $e->tag=="a")
 			return $foreground;
-		
+
 		//per gli elementi normali se foreground == "" significa che il valore non è stato definito per $e: ricerco tra i suoi genitori
 		while(($foreground=="" || $foreground==null)  && $e->tag!=null && $e->tag!="body")
 		{
 				$e=$e->parent();
 				$foreground=VamolaBasicChecks::get_p_css($e, "color");
 		}
-		
+
 		//se non trovo nessun foreground, controllo se è definito nel body, se no gli assegno il nero
 		//NOTA: va aggiunto il controllo su link, alink, ...
 		if($foreground=="" || $foreground==null)
@@ -1682,49 +1694,131 @@ class VamolaBasicChecks {
 			if($e->tag=="body" && isset($e->attr["text"]))
 				$foreground = $e->attr["text"];
 			else
-				$foreground="#000000";	
+				$foreground="#000000";
 		}
+
+                $foreground=str_replace("'", "", $foreground);
+                $foreground=str_replace("\"", "", $foreground);
+                $foreground=str_replace("!important", "", $foreground);
 		return $foreground;
-		
+
 
 	}
-	
-	
-	
+
+
+
 	public static function getBackground($e){
-		
+
 		//cerco il valore di background esplicitamente definito per l'elemento $e
-		$background=VamolaBasicChecks::get_p_css($e, "background-color");
-		
-		
-		
+                $background=VamolaBasicChecks::get_p_css($e, "background-color");
+
+
+
 		//se background == "" significa che il valore non è stato definito per $e: ricerco tra i suoi genitori
 		while(($background=="" || $background==null) && $e->tag!=null && $e->tag!="body")
 		{
 				$e=$e->parent();
+
 				$background=VamolaBasicChecks::get_p_css($e, "background-color");
-				if($background=="" || $background==null)//controllo se c'è bgcolor che ha priorità inferiore dello stile
+				if($background=="" || $background==null)//controllo se c'� bgcolor che ha priorit� inferiore dello stile
 				{
 					if(($e->tag=="table" || $e->tag=="tr" || $e->tag=="td") && isset($e->attr["bgcolor"]))
 						$background = $e->attr["bgcolor"];
 				}
-				
+                                //se l'elemento ha posizione assoluta e background non definito (default:transparent)
+                                if(VamolaBasicChecks::get_p_css($e, "position")=="absolute" && ($background=="" || $background==null))
+                                        $background=-1;
 		}
-		
-		
+
+
 		//se non trovo nessun background controllo che sia definito nel body, se no gli assegno il bianco
 		if($background=="" || $background==null || $background=="transparent" )
 		{
-			
+
 			if($e->tag=="body" && isset($e->attr["bgcolor"]))
 				$background = $e->attr["bgcolor"];
 			else
 				$background="#ffffff";
 		}
+
+                $background=str_replace("'", "", $background);
+                $background=str_replace("\"", "", $background);
+                $background=str_replace("!important", "", $background);
 		return $background;
 
-	}	
-	
+	}
+
+
+
+
+
+        //sale l'albero fino a trovare un elemento genitore che abbia nel suo stile $propriety di valore $value
+        public static function isProprietyInerited($e, $propriety, $value){
+
+		//cerco il valore di $propriety esplicitamente definito per l'elemento $e
+                $p=VamolaBasicChecks::get_p_css($e, $propriety);
+
+
+
+		//se background == "" significa che il valore non è stato definito per $e: ricerco tra i suoi genitori
+		while(($p=="" || $p==null || $p!==$value) && $e->tag!=null && $e->tag!="html")
+		{
+                        $e=$e->parent();
+                        $p=VamolaBasicChecks::get_p_css($e, $propriety);
+                }
+
+                if($p=="" || $p==null)
+                    return false;
+                else
+                    return true;
+        }
+
+        //controllo se l'elemento è contenuto in un elemento con posizione assoluta esterna alla pagina
+        public static function isPositionOutOfPage($e)
+        {
+            $p=VamolaBasicChecks::get_p_css($e, "display");
+            while(($p=="" || $p==null || $p!=="none") && $e->tag!=null && $e->tag!="html")
+		{
+                        $e=$e->parent();
+                        $p=VamolaBasicChecks::get_p_css($e, $propriety);
+                }
+
+                if($p=="" || $p==null)
+                    return false;
+                else
+                    if($p=="none")
+                    {
+                        $top=VamolaBasicChecks::get_p_css($e, "top");
+                        if(stripos($top,"-")===0)
+                                return true;
+
+                        $left=VamolaBasicChecks::get_p_css($e, "left");
+                        if(stripos($left,"-")===0)
+                                return true;
+
+                    }
+
+
+                return false;
+        }
+
+
+        //controllo che l'elemento sia visibile
+        public static function isElementVisible($e)
+        {
+            //visibility:hidden o display:none
+            if(VamolaBasicChecks::isProprietyInerited($e,"visible","hidden") || VamolaBasicChecks::isProprietyInerited($e,"display","none"))
+                     return false;
+
+            //controllo se l'elemento è all'interno di un elemento con posizione assoluta esterna alla pagina
+            if(VamolaBasicChecks::isPositionOutOfPage($e))
+                return false;
+
+            return true;
+
+        }
+
+
 	
 	
 	
@@ -1865,6 +1959,7 @@ class VamolaBasicChecks {
 		$colorG2 = $color2->getGreen();
 		$colorB2 = $color2->getBlue();
 		
+		
 		//echo("<p>Colori dopo ColorValue: colorR1=".$colorR1.  "colorR2=".$colorR2. "</p>");
 		//echo("<p>Colori dopo ColorValue: colorG1=".$colorG1.  "colorG2=".$colorG2. "</p>");
 		//echo("<p>Colori dopo ColorValue: colorB1=".$colorB1.  "colorB2=".$colorB2. "</p>");
@@ -1906,9 +2001,194 @@ class VamolaBasicChecks {
 		return $difference;
 	}
 	
+	//TOSI e VIRRUSO WCAG2
+	public static function ContrastRatio($color1, $color2)
+	{
+	
+		include_once (AC_INCLUDE_PATH . "classes/ColorValue.class.php");
+
+		//echo("<p>CalcolateContra</p>");
+		
+		
+		$color1 = new ColorValue($color1);
+		$color2 = new ColorValue($color2);
+		
+		//echo("<p>Colori dopo ColorValue: color1=".$color1.  "color2=".$color2. "</p>");
+		
+		if (!$color1->isValid() || !$color2->isValid())
+			return true;
+		
+		/*
+			RsRGB = R8bit/255
+			GsRGB = G8bit/255
+			BsRGB = B8bit/255
+		*/
+		
+		$colorR1 = $color1->getRed()/255;
+		$colorG1 = $color1->getGreen()/255;
+		$colorB1 = $color1->getBlue()/255;
+		
+		$colorR2 = $color2->getRed()/255;
+		$colorG2 = $color2->getGreen()/255;
+		$colorB2 = $color2->getBlue()/255;
+		
+/*
+		CALCOLO LUMINANZA
+
+		L = 0.2126 * R + 0.7152 * G + 0.0722 * B where R, G and B are defined as:
+
+		if RsRGB <= 0.03928 then R = RsRGB/12.92 else R = ((RsRGB+0.055)/1.055) ^ 2.4
+		if GsRGB <= 0.03928 then G = GsRGB/12.92 else G = ((GsRGB+0.055)/1.055) ^ 2.4
+		if BsRGB <= 0.03928 then B = BsRGB/12.92 else B = ((BsRGB+0.055)/1.055) ^ 2.4
+		
+*/
+                if($colorR1 <= 0.03928)
+                    $colorR1=$colorR1/12.92;
+                else
+                    $colorR1 = pow((($colorR1+0.055)/1.055), 2.4);
+
+                if($colorG1 <= 0.03928)
+                    $colorG1=$colorG1/12.92;
+                else
+                    $colorG1 = pow((($colorG1+0.055)/1.055), 2.4);
+
+                if($colorB1 <= 0.03928)
+                    $colorB1=$colorB1/12.92;
+                else
+                    $colorB1 = pow((($colorB1+0.055)/1.055), 2.4);
+
+
+                if($colorR2 <= 0.03928)
+                    $colorR2=$colorR2/12.92;
+                else
+                    $colorR2 = pow((($colorR2+0.055)/1.055), 2.4);
+
+                if($colorG2 <= 0.03928)
+                    $colorG2=$colorG2/12.92;
+                else
+                    $colorG2 = pow((($colorG2+0.055)/1.055), 2.4);
+
+                if($colorB2 <= 0.03928)
+                    $colorB2=$colorB2/12.92;
+                else
+                    $colorB2 = pow((($colorB2+0.055)/1.055), 2.4);
+
+
+		$Lum1 = ($colorR1 * 0.2126) + ($colorG1 * 0.7152) + ($colorB1 * 0.0722);
+		$Lum2 = ($colorR2 * 0.2126) + ($colorG2 * 0.7152) + ($colorB2 * 0.0722);
+
+/*
+		ContrastRatio = (L1 + 0.05) / (L2 + 0.05)
+		L1 is the relative luminance of the lighter of the colors, and
+		L2 is the relative luminance of the darker of the colors.
+
+*/
+
+		$ContrastRatio = 0;
+		if ($Lum1 > $Lum2)
+		{
+			$ContrastRatio = ($Lum1 + 0.05) / ($Lum2 + 0.05);
+		}
+		else 
+		{
+			$ContrastRatio = ($Lum2 + 0.05) / ($Lum1 + 0.05);
+		}
+
+		return $ContrastRatio;
+
+	}
+	
+		
+	//TOSI e VIRRUSO risale al font-size e lo converte in pt
+	public static function fontSizeToPt($e)
+	{
+		global $tag_size;
+		$tag_size=VamolaBasicChecks::get_p_css($e, "font-size");
+		while($tag_size==null && $e->tag!="body"){
+			$h = VamolaBasicChecks::checkHeadingLevel($e);
+			if($h!=null && $tag_size==null){
+				$tag_size = $h * VamolaBasicChecks::fontSizeToPt($e->parent());
+				//heading tag found
+				return $tag_size;
+			}
+			else{
+				//not an heading
+				$e = $e->parent();
+				$tag_size=VamolaBasicChecks::get_p_css($e, "font-size");
+			}
+		}
+		if($tag_size==null){
+			$tag_size = DEFAULT_FONT_SIZE;
+			$format=DEFAULT_FONT_FORMAT;
+			return $tag_size;
+		}else{
+			if(substr($tag_size, -1)=="%"){
+				//percent
+				$s = substr($tag_size,0,(strlen($tag_size)-1))/100;
+
+				if($e->tag=="body"){
+					$tag_size = DEFAULT_FONT_SIZE* $s;
+					return $tag_size;
+				}
+				else{
+					$tag_size = $s * VamolaBasicChecks::fontSizeToPt($e->parent());
+					return $tag_size;
+				}
+			}else{
+				//em,px,pt
+				$format = substr($tag_size, -2);
+				$s = substr($tag_size,0,(strlen($tag_size)-2));
+				switch ($format) {
+					case "pt":						
+    			    		$tag_size = $s;
+    			    		return $tag_size;
+    			    		break;
+		    		case "px":
+		    			$tag_size = $s / 1.32;
+        				return $tag_size;
+        				break;
+				case "em":
+				    	if($e->tag=="body"){
+					    	$tag_size = DEFAULT_FONT_SIZE * $s;
+						return $tag_size;
+					}
+					else{
+						$tag_size = $s * VamolaBasicChecks::fontSizeToPt($e->parent());
+						return $tag_size;
+					}
+					break;
+    				default:
+						//formato non supportato
+	    				return -1;
+				}
+			}
+		}
+	}
+	//Ritorna il fattore moltiplicativo degli heading tag
+	private static function checkHeadingLevel($e)
+	{
+		switch ($e->tag){
+			case "h1": //def 24pt
+				return 2;
+			case "h2": //def 18pt
+				return 1.5;
+			case "h3": //def 14pt
+				return 1.17;
+			case "h4": //def 12pt
+				return 1;
+			case "h5": //def 10pt
+				return 0.83;
+			case "h6": //def 8pt
+				return 0.67;
+			default :
+				return null;
+		}
+		
+	}
+	
 	//MODIFICA FILO: Funzione per la conversione del colore
 	public static function convert_color_to_hex($f_color) {
-    /* Se il colore è indicato in esadecimale lo restituisco così com'è */
+    /* Se il colore � indicato in esadecimale lo restituisco cos� com'� */
    		$a=strpos($f_color,"#");
 		
 	//MBif($a!=0){
@@ -1916,7 +2196,7 @@ class VamolaBasicChecks {
 			$f_color=substr($f_color,$a+1);
         	return $f_color;
    	}
-    /* Se è in formato RGB lo converto in esadecimale poi lo restituisco */
+    /* Se � in formato RGB lo converto in esadecimale poi lo restituisco */
     elseif (eregi('rgb',$f_color)) {
         if (eregi('\(([^,]+),',$f_color,$red)) {$red=dechex($red[1]); }
         if (eregi(',([^,]+),',$f_color,$green)) {$green=dechex($green[1]); }
@@ -1924,7 +2204,7 @@ class VamolaBasicChecks {
         $f_color=$red.$green.$blue;
         return $f_color;
     }
-    /* La stessa cosa faccio se è indicato con il proprio nome */
+    /* La stessa cosa faccio se � indicato con il prprio nome */
     else {
         switch ($f_color) {
         	
@@ -2049,7 +2329,7 @@ class VamolaBasicChecks {
 		{	
 			$th_next=$tr[$i+1]->find("th");
 			if($th_next==null || sizeof($th_next)==0)
-			break; //l'i-esima tr contiene l'intestazione più interna
+			break; //l'i-esima tr contiene l'intestazione pi� interna
 		}
 		
 		
@@ -2219,7 +2499,7 @@ class VamolaBasicChecks {
   }
   
   
-  //restituisce il codice css che ha provocato un errore, relativamente all'ultimo check sui css che è stato eseguito
+  //restituisce il codice css che ha provocato un errore, relativamente all'ultimo check sui css che � stato eseguito
   //viene richiamata in AccessibilityValidator dopo l'esecuizione di ogni check
   //restituisce $css_code che, nel caso in cui il check non abbia riscontrato errori su un css interno/esterno o
   //non sia un check sui css, viene impostata a ""

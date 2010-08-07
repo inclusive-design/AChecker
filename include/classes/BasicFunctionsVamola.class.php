@@ -26,6 +26,8 @@ include_once(AC_INCLUDE_PATH. 'classes/ColorValue.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/LangCodesDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/ChecksDAO.class.php');
 
+global $variabile_di_prova;
+$variabile_di_prova="<p>prova</p>";
 
 // Simo: in realta' non c'e' bisogno dell'extend dato che non uso funzioni di BasicFunctions
 class BasicFunctionsVamola extends BasicFunctions {
@@ -39,7 +41,7 @@ class BasicFunctionsVamola extends BasicFunctions {
 	//	$e = $global_e;
 	//	$content_dom = $global_content_dom;
 	//  Inserire la chiamata a funzione nel database: "return BasicFunctionsVamola::check_1000();"
-	
+
 	
 
 	
@@ -310,6 +312,8 @@ class BasicFunctionsVamola extends BasicFunctions {
 		return true;	
 	
 	}
+
+
 	
 	
 	// Pseudocodice 29
@@ -1017,579 +1021,763 @@ global $global_e, $global_content_dom;
 	/**************
 	* Requisito 6 *
 	**************/
-	
+
 	//Pseudocodice 4.2
+	/*
 	public static function check_6000(){
-		
-		global $global_e, $global_content_dom;
-		
+                if (!isset($_GET['contrastType']) || !in_array("WCAG1", $_GET['contrastType']))
+			return true;
+
+                global $background, $foreground;
+                global $global_e, $global_content_dom;
+
 		$e = $global_e;
 		$content_dom = $global_content_dom;
 
-                if(VamolaBasicChecks::isMultiClass($e))
-                    return true;
-
 		VamolaBasicChecks::setCssSelectors($content_dom);
-		
+
+
 		$background='';
 		$foreground='';
 		//controllo solo gli elementi testuali
-		if($e->tag=="p" || $e->tag=="span" || $e->tag=="strong" || $e->tag=="em" || 
-		   $e->tag=="q" || $e->tag=="cite" || $e->tag=="blockquote" || $e->tag=="li" || 
-		   $e->tag=="dd" ||  $e->tag=="dt" || $e->tag=="td" ||  $e->tag=="th" || 
-		   $e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6" || 
+		if(($e->tag=="div" || $e->tag=="p" || $e->tag=="span" || $e->tag=="strong" || $e->tag=="em" ||
+		   $e->tag=="q" || $e->tag=="cite" || $e->tag=="blockquote" || $e->tag=="li" ||
+		   $e->tag=="dd" ||  $e->tag=="dt" || $e->tag=="td" ||  $e->tag=="th" ||
+		   $e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6" ||
 		   $e->tag=="label" || $e->tag=="acronym" || $e->tag=="abbr" || $e->tag=="code" || $e->tag=="pre")
+                        && VamolaBasicChecks::isElementVisible($e))
 		{
-				
-				if(trim(VamolaBasicChecks::remove_children($e))=="" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+
+				if(trim(VamolaBasicChecks::remove_children($e))=="" || trim(VamolaBasicChecks::remove_children($e))=="&nbsp;" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
 					return true;
-				
-			
+
+
 				$background=VamolaBasicChecks::getBackground($e);
 				$foreground=VamolaBasicChecks::getForeground($e);
+
+                                if($foreground=="" || $foreground==null || $background=="undetermined")
+					return true;
+
+                                if($background=="" || $background==null || $background=="-1" || $background=="undetermined")
+					return true;
+
 				$background=VamolaBasicChecks::convert_color_to_hex($background);
 				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
-				
+
+
+
 				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
-				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";
 
 				if ($ris < 125)
-				{	
+				{
 					return false;
 				}
 				else{
 					return true;
 				}
-				
+
 		}
-		
+
 		return true;
 	}
-	
+
 	public static function check_6001(){
-		
-		global $global_e, $global_content_dom;
-		
+                //if (!isset($_GET['contrastType']) || !in_array("WCAG1", $_GET['contrastType']))
+		//	return true;
+
+                global $background, $foreground;
+                global $global_e, $global_content_dom;
+
 		$e = $global_e;
 		$content_dom = $global_content_dom;
 
-                if(VamolaBasicChecks::isMultiClass($e))
-                    return true;
-		VamolaBasicChecks::setCssSelectors($content_dom);
-		
+
+
 		$background='';
 		$foreground='';
 		//elementi testuali
-		if($e->tag=="p" || $e->tag=="span" || $e->tag=="strong" || $e->tag=="em" || 
-		   $e->tag=="q" || $e->tag=="cite" || $e->tag=="blockquote" || $e->tag=="li" || 
-		   $e->tag=="dd" ||  $e->tag=="dt" || $e->tag=="td" ||  $e->tag=="th" || 
-		   $e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6" || 
-		   $e->tag=="label" || $e->tag=="acronym" || $e->tag=="abbr" || $e->tag=="code" || $e->tag=="pre")		
+		if(($e->tag=="div" || $e->tag=="p" || $e->tag=="span" || $e->tag=="strong" || $e->tag=="em" ||
+		   $e->tag=="q" || $e->tag=="cite" || $e->tag=="blockquote" || $e->tag=="li" ||
+		   $e->tag=="dd" ||  $e->tag=="dt" || $e->tag=="td" ||  $e->tag=="th" ||
+		   $e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6" ||
+		   $e->tag=="label" || $e->tag=="acronym" || $e->tag=="abbr" || $e->tag=="code" || $e->tag=="pre")
+                        && VamolaBasicChecks::isElementVisible($e))
 		{
-				
-				if(trim(VamolaBasicChecks::remove_children($e))=="" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+
+				if(trim(VamolaBasicChecks::remove_children($e))=="" || trim(VamolaBasicChecks::remove_children($e))=="&nbsp;") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
 					return true;
 
 				$background=VamolaBasicChecks::getBackground($e);
-				$foreground=VamolaBasicChecks::getForeground($e);	
-				
+				$foreground=VamolaBasicChecks::getForeground($e);
+
+                                if($foreground=="" || $foreground==null || $background=="undetermined" )
+					return true;
+
+                                if($background=="" || $background==null || $background=="-1" || $background=="undetermined")
+					return true;
+
 				$background=VamolaBasicChecks::convert_color_to_hex($background);
 				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
-				
+
+
 				$ris= VamolaBasicChecks::CalculateColorDifference($background,$foreground);
-				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+
 				if($ris > 499)
 				{
 					return true;
-					
+
 				}else
 				{
 					return false;
 				}
-				
+
 		}
-		
+
 		return true;
-	}	
-	
+	}
+
 	//Pseudocodice 4.3
 	//su <body>, restituisce un messaggio solo se c'è almeno un'immagine
 	public static function check_6002(){
-	
+
 		global $global_e, $global_content_dom;
-		
+
 		$e = $global_e;
 		$content_dom = $global_content_dom;
-		
+
 		if (BasicChecks::count_children_by_tag($e, "img") > 0)
 			return false;
 		else
 			return true;
 	}
-	
-	//Pseudocodice 4.4
-	
 
-	
+	//Pseudocodice 4.4
+
+
+
 	public static function check_6003()
 	{
-		
+
 		global $global_e, $global_content_dom;
-		
+
 		$e = $global_e;
 		$content_dom = $global_content_dom;
-		
+
 		VamolaBasicChecks::setCssSelectors($content_dom);
-		
+
 		$bg=VamolaBasicChecks::get_p_css($e,"background-image");
-		
-		if($bg!=""){
+
+		if($bg!="" && $bg!="undetermined"){
 			return false;
 		}
 		return true;
 	}
-	
+
+
+        public static function checkLinkBrightness($cssPropriety,$bodyAttribute)
+        {
+
+                global $background, $foreground;
+                if (!isset($_GET['contrastType']) || !in_array("WCAG1", $_GET['contrastType']))
+			return true;
+		global $global_e, $global_content_dom;
+
+		$e = $global_e;
+		$content_dom = $global_content_dom;
+
+		VamolaBasicChecks::setCssSelectors($content_dom);
+
+                 if(!VamolaBasicChecks::isElementVisible($e))
+                     return true;
+
+		$background='';
+		$foreground='';
+
+
+				if(trim(VamolaBasicChecks::remove_children($e))=="" || trim(VamolaBasicChecks::remove_children($e))=="&nbsp;" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+
+				$foreground=VamolaBasicChecks::getForegroundA($e, $cssPropriety);
+                                if($foreground=="undetermined")
+                                    return true;
+				if(($foreground=="" || $foreground==null) && $bodyAttribute!=null)
+				{
+					$app=$e->parent();
+					while($app->tag!="body"  && $app->tag!=null)
+						$app=$app->parent();
+					if($app!=null && isset($app->attr[$bodyAttribute]))
+						$foreground=$app->attr[$bodyAttribute];
+
+				}
+                                if($foreground=="undetermined")
+                                    return true;
+
+				if($foreground=="" || $foreground==null )
+					return true;
+
+				$background=VamolaBasicChecks::getBackgroundA($e,$cssPropriety);
+                                if($background=="undetermined")
+                                    return true;
+
+				if($background=="" ||$background==null)
+					$background=VamolaBasicChecks::getBackground($e);
+
+                                if($background=="" || $background==null || $background=="-1")
+					return true;
+
+                                if($background=="undetermined")
+                                    return true;
+
+
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+
+				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
+
+
+				if ($ris < 125)
+				{
+					return false;
+				}
+				else{
+					return true;
+				}
+
+
+		return true;
+
+        }
+
+	public static function checkLinkColorDifference($cssPropriety,$bodyAttribute)
+        {
+
+              //  global $background, $foreground;
+           //     if (!isset($_GET['contrastType']) || !in_array("WCAG1", $_GET['contrastType']))
+		//	return true;
+		global $global_e, $global_content_dom;
+
+		$e = $global_e;
+		$content_dom = $global_content_dom;
+
+		VamolaBasicChecks::setCssSelectors($content_dom);
+
+                if(!VamolaBasicChecks::isElementVisible($e))
+                     return true;
+
+                $background='';
+		$foreground='';
+		//elementi testuali
+
+				if(trim(VamolaBasicChecks::remove_children($e))=="" || trim(VamolaBasicChecks::remove_children($e))=="&nbsp;") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+
+				$foreground=VamolaBasicChecks::getForegroundA($e, $cssPropriety);
+                                if($foreground=="undetermined")
+                                    return true;
+				if(($foreground=="" || $foreground==null) && $bodyAttribute!=null)
+				{
+					$app=$e->parent();
+					while($app->tag!="body"  && $app->tag!=null)
+						$app=$app->parent();
+					if($app!=null && isset($app->attr[$bodyAttribute]))
+						$foreground=$app->attr[$bodyAttribute];
+
+				}
+				if($foreground=="" || $foreground==null)
+					return true;
+
+                                if($foreground=="undetermined")
+                                    return true;
+
+				$background=VamolaBasicChecks::getBackgroundA($e,$cssPropriety);
+                                if($background=="undetermined")
+                                    return true;
+				if($background=="" ||$background==null)
+					$background=VamolaBasicChecks::getBackground($e);;
+
+                                if($background=="undetermined")
+                                    return true;
+
+
+                                if($background=="" || $background==null || $background=="-1")
+					return true;
+
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+
+				$ris= VamolaBasicChecks::CalculateColorDifference($background,$foreground);
+
+				if($ris > 499)
+				{
+					return true;
+
+				}else
+				{
+					return false;
+				}
+
+
+		return true;
+	}
+
+
+
 
 	//link visitati
 	public static function check_6004(){
-	
-		global $global_e, $global_content_dom;
-		
-		$e = $global_e;
-		$content_dom = $global_content_dom;
-		
-                if(VamolaBasicChecks::isMultiClass($e))
-                    return true;
 
-		VamolaBasicChecks::setCssSelectors($content_dom);
-		
-		$background='';
-		$foreground='';
+                return(BasicFunctionsVamola::checkLinkBrightness("visited","vlink"));
 
-				
-				if(trim(VamolaBasicChecks::remove_children($e))=="" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
-					return true;
-				
-				$foreground=VamolaBasicChecks::getForegroundA($e, "visited");
-				if($foreground=="" || $foreground==null)
-				{	
-					$app=$e->parent();
-					while($app->tag!="body"  && $app->tag!=null)
-						$app=$app->parent();
-					if($app!=null && isset($app->attr["vlink"]))
-						$foreground=$app->attr["vlink"];
-						
-				}
-				if($foreground=="" || $foreground==null)
-					return true;
-				
-				$background=VamolaBasicChecks::getBackgroundA($e,"visited");
-				if($background=="" ||$background==null)
-					$background=VamolaBasicChecks::getBackground($e);
-					
-				$background=VamolaBasicChecks::convert_color_to_hex($background);
-				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
-				
-				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
-				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
 
-				if ($ris < 125)
-				{	
-					return false;
-				}
-				else{
-					return true;
-				}
-				
-		
-		return true;
 	}
-	
+
 	//link visitati
 	public static function check_6005(){
-	
-		
-		global $global_e, $global_content_dom;
-		
-		$e = $global_e;
-		$content_dom = $global_content_dom;
-		
-                if(VamolaBasicChecks::isMultiClass($e))
-                    return true;
+                return(BasicFunctionsVamola::checkLinkColorDifference("visited","vlink"));
 
-		VamolaBasicChecks::setCssSelectors($content_dom);
-		
-		$background='';
-		$foreground='';
-		//elementi testuali
-				
-				if(trim(VamolaBasicChecks::remove_children($e))=="" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
-					return true;
 
-				$foreground=VamolaBasicChecks::getForegroundA($e, "visited");
-				if($foreground=="" || $foreground==null)
-				{	
-					$app=$e->parent();
-					while($app->tag!="body"  && $app->tag!=null)
-						$app=$app->parent();
-					if($app!=null && isset($app->attr["vlink"]))
-						$foreground=$app->attr["vlink"];
-						
-				}
-				if($foreground=="" || $foreground==null)
-					return true;
-				
-				$background=VamolaBasicChecks::getBackgroundA($e,"visited");
-				if($background=="" ||$background==null)
-					$background=VamolaBasicChecks::getBackground($e);;	
-				
-				$background=VamolaBasicChecks::convert_color_to_hex($background);
-				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
-				
-				$ris= VamolaBasicChecks::CalculateColorDifference($background,$foreground);
-				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
-				if($ris > 499)
-				{
-					return true;
-					
-				}else
-				{
-					return false;
-				}
-				
-		
-		return true;
 	}
-	
+
 
 	//link attivati
 	public static function check_6006(){
-	
-		global $global_e, $global_content_dom;
-		
-		$e = $global_e;
-		$content_dom = $global_content_dom;
-		
-                if(VamolaBasicChecks::isMultiClass($e))
-                    return true;
 
-		VamolaBasicChecks::setCssSelectors($content_dom);
-		
-		$background='';
-		$foreground='';
+                return(BasicFunctionsVamola::checkLinkBrightness("active","alink"));
 
-				
-				if(trim(VamolaBasicChecks::remove_children($e))=="" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
-					return true;
-				
-				$foreground=VamolaBasicChecks::getForegroundA($e, "active");
-				if($foreground=="" || $foreground==null)
-				{	
-					$app=$e->parent();
-					while($app->tag!="body"  && $app->tag!=null)
-						$app=$app->parent();
-					if($app!=null && isset($app->attr["alink"]))
-						$foreground=$app->attr["alink"];
-						
-				}
-				if($foreground=="" || $foreground==null)
-					return true;
-				
-				$background=VamolaBasicChecks::getBackgroundA($e,"active");
-				if($background=="" ||$background==null)
-					$background=VamolaBasicChecks::getBackground($e);
-					
-				$background=VamolaBasicChecks::convert_color_to_hex($background);
-				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
-				
-				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
-				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
-
-				if ($ris < 125)
-				{	
-					return false;
-				}
-				else{
-					return true;
-				}
-				
-		
-		return true;
 	}
-	
+
 	//link attivati
 	public static function check_6007(){
-	
-		global $global_e, $global_content_dom;
-		
-		$e = $global_e;
-		$content_dom = $global_content_dom;
-		
-                if(VamolaBasicChecks::isMultiClass($e))
-                    return true;
 
-		VamolaBasicChecks::setCssSelectors($content_dom);
-		
-		$background='';
-		$foreground='';
-		//elementi testuali
-				
-				if(trim(VamolaBasicChecks::remove_children($e))=="" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
-					return true;
+                return(BasicFunctionsVamola::checkLinkColorDifference("active","alink"));
 
-				$foreground=VamolaBasicChecks::getForegroundA($e, "active");
-				if($foreground=="" || $foreground==null)
-				{	
-					$app=$e->parent();
-					while($app->tag!="body"  && $app->tag!=null)
-						$app=$app->parent();
-					if($app!=null && isset($app->attr["alink"]))
-						$foreground=$app->attr["alink"];
-						
-				}
-				if($foreground=="" || $foreground==null)
-					return true;
-				
-				$background=VamolaBasicChecks::getBackgroundA($e,"active");
-				if($background=="" ||$background==null)
-					$background=VamolaBasicChecks::getBackground($e);;	
-				
-				$background=VamolaBasicChecks::convert_color_to_hex($background);
-				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
-				
-				$ris= VamolaBasicChecks::CalculateColorDifference($background,$foreground);
-				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
-				if($ris > 499)
-				{
-					return true;
-					
-				}else
-				{
-					return false;
-				}
-				
-		
-		return true;
 	}
-		
+
 
 	//link hover
 	public static function check_6008(){
-	
-		global $global_e, $global_content_dom;
-		
-		$e = $global_e;
-		$content_dom = $global_content_dom;
-		
-                if(VamolaBasicChecks::isMultiClass($e))
-                    return true;
+                return(BasicFunctionsVamola::checkLinkBrightness("hover",null));
 
-		VamolaBasicChecks::setCssSelectors($content_dom);
-		
-		$background='';
-		$foreground='';
-
-				
-				if(trim(VamolaBasicChecks::remove_children($e))=="" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
-					return true;
-				
-				$foreground=VamolaBasicChecks::getForegroundA($e, "hover");
-				//if($foreground=="" || $foreground==null)
-
-				if($foreground=="" || $foreground==null)
-					return true;
-				
-				$background=VamolaBasicChecks::getBackgroundA($e,"hover");
-				if($background=="" ||$background==null)
-					$background=VamolaBasicChecks::getBackground($e);
-					
-				$background=VamolaBasicChecks::convert_color_to_hex($background);
-				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
-				
-				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
-				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
-
-				if ($ris < 125)
-				{	
-					return false;
-				}
-				else{
-					return true;
-				}
-				
-		
-		return true;
 	}
-	
+
 	//link hover
 	public static function check_6009(){
-	
-		global $global_e, $global_content_dom;
-		
-		$e = $global_e;
-		$content_dom = $global_content_dom;
+                return(BasicFunctionsVamola::checkLinkColorDifference("hover",null));
 
-                if(VamolaBasicChecks::isMultiClass($e))
-                    return true;
-		
-		VamolaBasicChecks::setCssSelectors($content_dom);
-		
-		$background='';
-		$foreground='';
-		//elementi testuali
-				
-				if(trim(VamolaBasicChecks::remove_children($e))=="" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
-					return true;
+	}
 
-				$foreground=VamolaBasicChecks::getForegroundA($e, "hover");
-				//if($foreground=="" || $foreground==null)
 
-				if($foreground=="" || $foreground==null)
-					return true;
-				
-				$background=VamolaBasicChecks::getBackgroundA($e,"hover");
-				if($background=="" ||$background==null)
-					$background=VamolaBasicChecks::getBackground($e);;	
-				
-				$background=VamolaBasicChecks::convert_color_to_hex($background);
-				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
-				
-				$ris= VamolaBasicChecks::CalculateColorDifference($background,$foreground);
-				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
-				if($ris > 499)
-				{
-					return true;
-					
-				}else
-				{
-					return false;
-				}
-				
-		
-		return true;
-	}	
-	
-	
 	//link non visitati
 	public static function check_6010(){
-	
-		
+
+		return(BasicFunctionsVamola::checkLinkBrightness("link","link"));
+
+	}
+
+	//link non visitati
+	public static function check_6011(){
+
+                return(BasicFunctionsVamola::checkLinkColorDifference("link","link"));
+
+	}
+
+	*/
+	/*********************
+	* WCAG2 AA Algorithm *
+	* by Virruso e Tosi  *
+	*********************/	
+
+       public static function checkLinkContrastWcag2AA($cssPropriety,$bodyAttribute)
+        {
+          //     if (!isset($_GET['contrastType']) || !in_array("WCAG2AA", $_GET['contrastType']))
+          //                  return true;
+
+    global $background, $foreground;
 		global $global_e, $global_content_dom;
-		
+    global $stringa_testo_prova;
 		$e = $global_e;
 		$content_dom = $global_content_dom;
-		
-                if(VamolaBasicChecks::isMultiClass($e))
-                    return true;
 
 		VamolaBasicChecks::setCssSelectors($content_dom);
-		
+
+    if(!VamolaBasicChecks::isElementVisible($e))
+    	return true;
+
 		$background='';
 		$foreground='';
 
-				
-				if(trim(VamolaBasicChecks::remove_children($e))=="" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+
+				if(trim(VamolaBasicChecks::remove_children($e))=="" || trim(VamolaBasicChecks::remove_children($e))=="&nbsp;" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
 					return true;
-				
-				$foreground=VamolaBasicChecks::getForegroundA($e, "link");
-				if($foreground=="" || $foreground==null)
-					$foreground=VamolaBasicChecks::getForeground($e);
-				if($foreground=="" || $foreground==null)
-				{	
+
+				$foreground=VamolaBasicChecks::getForegroundA($e, $cssPropriety);
+            if($foreground=="undetermined")
+             return true;
+				if(($foreground=="" || $foreground==null) && $bodyAttribute!=null)
+				{
 					$app=$e->parent();
 					while($app->tag!="body"  && $app->tag!=null)
 						$app=$app->parent();
-					if($app!=null && isset($app->attr["link"]))
-						$foreground=$app->attr["link"];
-						
+					if($app!=null && isset($app->attr[$bodyAttribute]))
+						$foreground=$app->attr[$bodyAttribute];
+
 				}
-				if($foreground=="" || $foreground==null)
+        if($foreground=="undetermined")
+            return true;
+
+				if($foreground=="" || $foreground==null )
 					return true;
-				
-				$background=VamolaBasicChecks::getBackgroundA($e,"active");
+
+				$background=VamolaBasicChecks::getBackgroundA($e,$cssPropriety);
+        if($background=="undetermined")
+          return true;
+
 				if($background=="" ||$background==null)
 					$background=VamolaBasicChecks::getBackground($e);
-					
+
+        if($background=="" || $background==null || $background=="-1")
+					return true;
+
+        if($background=="undetermined")
+    				return true;
+
+
 				$background=VamolaBasicChecks::convert_color_to_hex($background);
 				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
-				
-				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
-				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
 
-				if ($ris < 125)
-				{	
+				$ris=VamolaBasicChecks::ContrastRatio(strtolower($background),strtolower($foreground));
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";
+
+				$size = VamolaBasicChecks::fontSizeToPt($e);
+				$bold = VamolaBasicChecks::get_p_css($e,"font-weight");
+				//echo "FINAL SIZE: ".$size. " BOLD: ".$bold." <br/>";
+
+				if($size<0) //formato non supportato
+					return true;
+				elseif($size>=18 || ($bold=="bold" && $size>=14))
+					$threashold = 3;
+				else
+					$threashold = 4.5;
+				if ($ris < $threashold)
+				{
 					return false;
 				}
 				else{
 					return true;
 				}
-				
-		
+
+
 		return true;
-	}
-	
-	//link non visitati
-	public static function check_6011(){
-	
+
+        }
+
+
+
+
+	public static function check_6012(){
+	//	if (!isset($_GET['contrastType']) || !in_array("WCAG2AA", $_GET['contrastType']))
+	//		return true;
+		//WCAG2.0 Contrast check
+                global $background, $foreground;
 		global $global_e, $global_content_dom;
-		
+		global $stringa_testo_prova;
 		$e = $global_e;
 		$content_dom = $global_content_dom;
-
-                if(VamolaBasicChecks::isMultiClass($e))
-                    return true;
-		
+	
 		VamolaBasicChecks::setCssSelectors($content_dom);
 		
 		$background='';
 		$foreground='';
 		//elementi testuali
-				
-				if(trim(VamolaBasicChecks::remove_children($e))=="" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+		if(($e->tag=="div" || $e->tag=="p" || $e->tag=="span" || $e->tag=="strong" || $e->tag=="em" ||
+		   $e->tag=="q" || $e->tag=="cite" || $e->tag=="blockquote" || $e->tag=="li" ||
+		   $e->tag=="dd" ||  $e->tag=="dt" || $e->tag=="td" ||  $e->tag=="th" ||
+		   $e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6" ||
+		   $e->tag=="label" || $e->tag=="acronym" || $e->tag=="abbr" || $e->tag=="code" || $e->tag=="pre")
+                        && VamolaBasicChecks::isElementVisible($e))
+		{
+
+				if(trim(VamolaBasicChecks::remove_children($e))=="" || trim(VamolaBasicChecks::remove_children($e))=="&nbsp;") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
 					return true;
 
-				$foreground=VamolaBasicChecks::getForegroundA($e, "link");
-				if($foreground=="" || $foreground==null)
-					$foreground=VamolaBasicChecks::getForeground($e);
-				if($foreground=="" || $foreground==null)
-				{	
-					$app=$e->parent();
-					while($app->tag!="body" && $app->tag!=null)
-						$app=$app->parent();
-					if($app!=null && isset($app->attr["link"]))
-						$foreground=$app->attr["link"];
-						
-				}
-				if($foreground=="" || $foreground==null)
+				$background=VamolaBasicChecks::getBackground($e);
+				$foreground=VamolaBasicChecks::getForeground($e);
+
+                                if($foreground=="" || $foreground==null || $background=="undetermined" )
 					return true;
-				
-				$background=VamolaBasicChecks::getBackgroundA($e,"active");
-				if($background=="" ||$background==null)
-					$background=VamolaBasicChecks::getBackground($e);
-					
+
+                                if($background=="" || $background==null || $background=="-1" || $background=="undetermined")
+					return true;
+
 				$background=VamolaBasicChecks::convert_color_to_hex($background);
 				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
 				
-				$ris=VamolaBasicChecks::CalculateBrightness(strtolower($background),strtolower($foreground));
-				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
-
-				$ris= VamolaBasicChecks::CalculateColorDifference($background,$foreground);
-				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
-				if($ris > 499)
-				{
-					return true;
-					
-				}else
-				{
-					return false;
-				}
 				
+				$ris=VamolaBasicChecks::ContrastRatio(strtolower($background),strtolower($foreground));
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+				
+
+				
+				
+				$size = VamolaBasicChecks::fontSizeToPt($e);
+				$bold = VamolaBasicChecks::get_p_css($e,"font-weight");
+				if($e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6")
+					$bold="bold";
+				
+				//echo "FINAL SIZE: ".$size. " BOLD: ".$bold." <br/>";
+				
+				if($size<0) //formato non supportato
+					return true;
+				elseif($size>=18 || ($bold=="bold" && $size>=14))
+					$threashold = 3;
+				else
+					$threashold = 4.5;
+          $stringa_testo_prova='';
+
+                                $stringa_testo_prova="<p>ris: ".$ris." threashold: ".$threashold."</p>";
+
+				if ($ris < $threashold)
+				{	
+					return false;
+                                        
+				}
+				else{
+					return true;
+				}
+
+		}
 		
 		return true;
-	}		
+		
+	}
 	
+	//link visitati
+	public static function check_6013(){
+               
+		return(BasicFunctionsVamola::checkLinkContrastWcag2AA("visited","vlink"));
+	}
 	
+	//link attivati
+	public static function check_6014(){
+                
+		return(BasicFunctionsVamola::checkLinkContrastWcag2AA("active","alink"));
+	}
+
+	//link hover
+
+	public static function check_6015(){
+            
+		return(BasicFunctionsVamola::checkLinkContrastWcag2AA("hover",null));
+	}
+		
+	//link non visitati
+	public static function check_6016(){
+            
+		return(BasicFunctionsVamola::checkLinkContrastWcag2AA("link","link"));
+	}
+
+	/**********************
+	* WCAG2 AAA Algorithm *
+	* by Virruso e Tosi   *
+	**********************/	
+
+       public static function checkLinkContrastWcag2AAA($cssPropriety,$bodyAttribute)
+        {
+             //  if (!isset($_GET['contrastType']) || !in_array("WCAG2AAA", $_GET['contrastType']))
+             //               return true;
+
+                global $background, $foreground;
+		global $global_e, $global_content_dom;
+                global $stringa_testo_prova;
+		$e = $global_e;
+		$content_dom = $global_content_dom;
+
+		VamolaBasicChecks::setCssSelectors($content_dom);
+
+                 if(!VamolaBasicChecks::isElementVisible($e))
+                     return true;
+
+		$background='';
+		$foreground='';
+
+
+				if(trim(VamolaBasicChecks::remove_children($e))=="" || trim(VamolaBasicChecks::remove_children($e))=="&nbsp;" ) //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+
+				$foreground=VamolaBasicChecks::getForegroundA($e, $cssPropriety);
+                                if($foreground=="undetermined")
+                                    return true;
+				if(($foreground=="" || $foreground==null) && $bodyAttribute!=null)
+				{
+					$app=$e->parent();
+					while($app->tag!="body"  && $app->tag!=null)
+						$app=$app->parent();
+					if($app!=null && isset($app->attr[$bodyAttribute]))
+						$foreground=$app->attr[$bodyAttribute];
+
+				}
+                                if($foreground=="undetermined")
+                                    return true;
+
+				if($foreground=="" || $foreground==null )
+					return true;
+
+				$background=VamolaBasicChecks::getBackgroundA($e,$cssPropriety);
+                                if($background=="undetermined")
+                                    return true;
+
+				if($background=="" ||$background==null)
+					$background=VamolaBasicChecks::getBackground($e);
+
+                                if($background=="" || $background==null || $background=="-1")
+					return true;
+
+                                if($background=="undetermined")
+                                    return true;
+
+
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+                                $ris='';
+				$ris=VamolaBasicChecks::ContrastRatio(strtolower($background),strtolower($foreground));
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";
+
+				$size = VamolaBasicChecks::fontSizeToPt($e);
+				$bold = VamolaBasicChecks::get_p_css($e,"font-weight");
+				//echo "FINAL SIZE: ".$size. " BOLD: ".$bold." <br/>";
+
+				if($size<0) //formato non supportato
+					return true;
+				elseif($size>=18 || ($bold=="bold" && $size>=14))
+					$threashold = 4.5;
+				else
+					$threashold = 7;
+
+                                $stringa_testo_prova='';
+
+				$stringa_testo_prova="<p>ris: ".$ris." threashold: ".$threashold."</p>";
+
+
+				if ($ris < $threashold)
+				{
+                                        
+					return false;
+				}
+				else
+                                {
+					return true;
+				}
+
+
+		return true;
+
+        }
+
+
+	public static function check_6017(){
+
+		//if (!isset($_GET['contrastType']) || !in_array("WCAG2AAA", $_GET['contrastType']))
+	//		return true;
+		//WCAG2.0 Contrast check
+                global $background, $foreground;
+		global $global_e, $global_content_dom;
+		global $stringa_testo_prova;
+		$e = $global_e;
+		$content_dom = $global_content_dom;
 	
+		VamolaBasicChecks::setCssSelectors($content_dom);
+		
+				$background='';
+		$foreground='';
+		//elementi testuali
+		if(($e->tag=="div" || $e->tag=="p" || $e->tag=="span" || $e->tag=="strong" || $e->tag=="em" ||
+		   $e->tag=="q" || $e->tag=="cite" || $e->tag=="blockquote" || $e->tag=="li" ||
+		   $e->tag=="dd" ||  $e->tag=="dt" || $e->tag=="td" ||  $e->tag=="th" ||
+		   $e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6" ||
+		   $e->tag=="label" || $e->tag=="acronym" || $e->tag=="abbr" || $e->tag=="code" || $e->tag=="pre")
+                        && VamolaBasicChecks::isElementVisible($e))
+		{
+
+				if(trim(VamolaBasicChecks::remove_children($e))=="" || trim(VamolaBasicChecks::remove_children($e))=="&nbsp;") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+					return true;
+
+				$background=VamolaBasicChecks::getBackground($e);
+				$foreground=VamolaBasicChecks::getForeground($e);
+
+                                if($foreground=="" || $foreground==null || $background=="undetermined" )
+					return true;
+
+                                if($background=="" || $background==null || $background=="-1" || $background=="undetermined")
+					return true;
+
+				$background=VamolaBasicChecks::convert_color_to_hex($background);
+				$foreground=VamolaBasicChecks::convert_color_to_hex($foreground);
+				
+				
+				$ris='';
+				$ris=VamolaBasicChecks::ContrastRatio(strtolower($background),strtolower($foreground));
+				//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+				
+				$size = VamolaBasicChecks::fontSizeToPt($e);
+				$bold = VamolaBasicChecks::get_p_css($e,"font-weight");
+				if($e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6")
+					$bold="bold";
+				//echo "FINAL SIZE: ".$size. " BOLD: ".$bold." <br/>";
+				
+				if($size<0) //formato non supportato
+					return true;
+				elseif($size>=18 || ($bold=="bold" && $size>=14))
+					$threashold = 4.5;
+				else
+					$threashold = 7;
+
+                                $stringa_testo_prova='';
+
+				$stringa_testo_prova="<p>ris: ".$ris." threashold: ".$threashold."</p>";
+
+                                
+				if ($ris < $threashold)
+				{
+                                        
+					return false;
+				}
+				else
+                                {
+                                        
+					return true;
+				}
+
+		}
+		
+		return true;
+		
+	}
+	
+	//link visitati
+	public static function check_6018(){
+
+		return(BasicFunctionsVamola::checkLinkContrastWcag2AAA("visited","vlink"));
+	}
+
+	//link attivati
+	public static function check_6019(){
+
+		return(BasicFunctionsVamola::checkLinkContrastWcag2AAA("active","alink"));
+	}
+
+	//link hover
+
+	public static function check_6020(){
+
+		return(BasicFunctionsVamola::checkLinkContrastWcag2AAA("hover",null));
+	}
+
+	//link non visitati
+	public static function check_6021(){
+
+		return(BasicFunctionsVamola::checkLinkContrastWcag2AAA("link","link"));
+	}
 	
 	
 	/***************
@@ -1742,6 +1930,7 @@ global $global_e, $global_content_dom;
 					return true; //c'� almeno un abbr
 					
 			}
+
 			//se esco dal for non ho trovato nessun abbr
 			return false;
 		}
@@ -1754,6 +1943,7 @@ global $global_e, $global_content_dom;
 	**************/
 	
 	//Pseudocodice 3.1
+
 	// Elemento TD, tipologia 0
 	//
 	public static function check_10000()

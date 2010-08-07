@@ -23,6 +23,7 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 include (AC_INCLUDE_PATH . "lib/simple_html_dom.php");
 //include_once (AC_INCLUDE_PATH . "classes/Checks.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
+include_once (AC_INCLUDE_PATH . "classes/VamolaBasicChecks.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicFunctions.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicFunctionsVamola.class.php");
 include_once (AC_INCLUDE_PATH . "classes/CheckFuncUtility.class.php");
@@ -357,8 +358,7 @@ class AccessibilityValidator {
 	 */
 	private function check($e, $check_id)
 	{
-		global $msg, $base_href;
-		
+		global $msg, $base_href, $tag_size;
 		// don't check the lines before $line_offset
 		if ($e->linenumber <= $this->line_offset) return;
 		
@@ -368,21 +368,56 @@ class AccessibilityValidator {
 		if (!$result)
 		{
 		
-			//echo("<p>\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom); </p>");
+		//	echo("<p>\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom); </p>");
 			//echo("<p>e=".$e->tag." line=".$e->linenumber." col=".$e->colnumber."</p>");
 			//eval("\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom);");
 			
 			// Simo: funzione nuova che prende dal db
 			$check_result = eval($this->check_func_array[$check_id]);
 		
+		//TOSI VIRRUSO
+                        global $stringa_testo_prova;//per il debug
+//			$e = $global_e;
+//			$back=VamolaBasicChecks::getBackground($e);
+//			$fore=VamolaBasicChecks::getForeground($e);
+//			$back=VamolaBasicChecks::convert_color_to_hex($back);
+//			$fore=VamolaBasicChecks::convert_color_to_hex($fore);
+                        global $background, $foreground;
+                        $back=$background;
+                        $fore=$foreground;
+                        $background=$foreground='';
+		
+			if ( $check_id >= 6012 && $check_id <= 6021)
+		{
+			 // no decision to make on known problems
+			$css_code = "Error:";
+			//$css_code = $stringa_testo_prova.$css_code.
+                        $css_code = $css_code.
+				"<p style='font-size:20px;width:80px;text-align:center;background-color:#".
+				$back.";color:#".$fore."'>"."TEXT"."</p>";
+		//	if (isset($_GET['contrastType']) && (in_array("WCAG2AAA", $_GET['contrastType']) || in_array("WCAG2AA", $_GET['contrastType']))){
+			
+				$bold = VamolaBasicChecks::get_p_css($e,"font-weight");
+				if($e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6")
+					$bold="bold";
+
+				$css_code = $css_code."Font size = ".$tag_size." pt ".$bold;
+				
+			}
+				
+		
 			//MB $css_code: variabile assegnata alla fine di un check sui css 
 			//contiene il codice da stampare in output tra gli errori
 			//$css_code viene poi passato a save_result()
-			$css_code=VamolaBasicChecks::getCssOutput();
+			$css_code=$css_code.VamolaBasicChecks::getCssOutput();
+		
 			
 			
+			//$css_code=VamolaBasicChecks::getCssOutput();
+					
 			$checksDAO = new ChecksDAO();
 			$row = $checksDAO->getCheckByID($check_id);
+			
 			if (is_null($check_result))
 			{ // when $check_result is not true/false, must be something wrong with the check function.
 			  // show warning message and skip this check
