@@ -3,7 +3,7 @@
 /* AChecker                                                             */
 /************************************************************************/
 /* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto          */
+/* Adaptive Technology Resource Centre / University of Toronto			    */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
@@ -47,6 +47,8 @@ class AccessibilityRpt {
 	var $rpt_potential_problems;         // <DIV> section of potential problems
 	var $rpt_source;                     // <DIV> section of source code used for validation
 	
+		
+	
 	/**
 	* public
 	* $errors: an array, output of AccessibilityValidator -> getValidationErrorRpt
@@ -68,6 +70,7 @@ class AccessibilityRpt {
 		$this->rpt_errors = "";
 		$this->rpt_likely_problems = "";
 		$this->rpt_potential_problems = "";
+
 	}
 	
 	/**
@@ -208,6 +211,6 @@ class AccessibilityRpt {
 	{
 		return $this->rpt_source;
 	}
-
+	
 }
 ?>

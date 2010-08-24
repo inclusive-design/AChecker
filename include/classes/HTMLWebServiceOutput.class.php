@@ -15,8 +15,7 @@
  */
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
-//include_once(AC_INCLUDE_PATH.'classes/HTMLRpt.class.php');
-include_once(AC_INCLUDE_PATH. "classes/HTMLRptVamola.class.php");
+include_once(AC_INCLUDE_PATH.'classes/HTMLRpt.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
 

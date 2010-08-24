@@ -193,40 +193,7 @@ class AccessibilityValidator {
 		// validation process
 		else  
 		{
-			// SIMO: gestione tab per Wcag e Stanca ///////////////////////////////////////////////
-			$idStanca = 10; // Identificativo Legge Stanca
-			$idWcagA = 7;
-			$idWcagAA = 8;
-			$idWcagAAA = 8;
-			
-			$isWcag = FALSE;
-			$isStanca = FALSE;
-				
-			$arrayGid = $guidelines;
-			if (is_array($arrayGid) && in_array($idStanca, $arrayGid))
-				$isStanca = TRUE;
-			
-			if (is_array($arrayGid) && (in_array($idWcagA, $arrayGid) || in_array($idWcagAA, $arrayGid) || in_array($idWcagAAA, $arrayGid)))
-				$isWcag = TRUE;	
-				
-			if ($isStanca && $isWcag)
-			{
-				$_SESSION["show_nav"]="true";
-				$_SESSION["show"]="all";
-				$_SESSION["tab_ris"]="1";
-			}
-			else if ($isStanca && !$isWcag)
-			{
-				$_SESSION["show"]="stanca";$_SESSION["tab_ris"]="1";
-			}
-			else if (!$isStanca && $isWcag)
-			{
-				$_SESSION["show"]="wcag";$_SESSION["tab_ris"]="5";
-			}	
-			// SIMO: fine gestione tab per Wcag e Stanca //////////////////////////////////////////
-
-			
-			
+		
 			$checksDAO = new ChecksDAO();
 			
 			// generate array of "all element"
@@ -271,22 +238,7 @@ class AccessibilityValidator {
 			}
 			$this->prerequisite_check_array = $prerequisite_check_array;
 
-			// generate array of next check_ids
-//			$rows = $checksDAO->getOpenNextChecksByGuidelineIDs($guideline_query);
-//
-//			if (is_array($rows))
-//			{
-//				foreach ($rows as $id => $row)
-//				{
-//					if ($row["check_id"] <> $prev_check_id)  $next_check_array[$row["check_id"]] = array();
-//					
-//					array_push($next_check_array[$row["check_id"]], $row["next_check_id"]);
-//					
-//					$prev_check_id = $row["check_id"];
-//				}
-//			}
-//			$this->next_check_array = $next_check_array;
-//			debug($this->next_check_array);
+
 			return true;
 		}
 	}
@@ -309,9 +261,7 @@ class AccessibilityValidator {
 			{
 				// check prerequisite ids first, if fails, report failure and don't need to proceed with $check_id
 				$prerequisite_failed = false;
-//debug($check_id);
-//debug($this->prerequisite_check_array[$check_id]);
-//debug($this->next_check_array[$check_id]);
+
 				if (is_array($this->prerequisite_check_array[$check_id]))
 				{
 					foreach ($this->prerequisite_check_array[$check_id] as $prerequisite_check_id)
@@ -331,15 +281,6 @@ class AccessibilityValidator {
 				{
 					$check_result = $this->check($e, $check_id);
 					
-					// if check_id passes, proceed with next checks
-//					if ($check_result == SUCCESS_RESULT)
-//					{
-//						if (is_array($this->next_check_array[$check_id]))
-//							foreach ($this->next_check_array[$check_id] as $next_check_id)
-//							{
-//								$this->check($e, $next_check_id);
-//							}
-//					}
 				}
 			}
 			
@@ -368,20 +309,13 @@ class AccessibilityValidator {
 		if (!$result)
 		{
 		
-		//	echo("<p>\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom); </p>");
-			//echo("<p>e=".$e->tag." line=".$e->linenumber." col=".$e->colnumber."</p>");
-			//eval("\$check_result = Checks::check_" . $check_id . "(\$e, \$this->content_dom);");
 			
 			// Simo: funzione nuova che prende dal db
 			$check_result = eval($this->check_func_array[$check_id]);
 		
 		//TOSI VIRRUSO
                         global $stringa_testo_prova;//per il debug
-//			$e = $global_e;
-//			$back=VamolaBasicChecks::getBackground($e);
-//			$fore=VamolaBasicChecks::getForeground($e);
-//			$back=VamolaBasicChecks::convert_color_to_hex($back);
-//			$fore=VamolaBasicChecks::convert_color_to_hex($fore);
+
                         global $background, $foreground;
                         $back=$background;
                         $fore=$foreground;
@@ -395,8 +329,7 @@ class AccessibilityValidator {
                         $css_code = $css_code.
 				"<p style='font-size:20px;width:80px;text-align:center;background-color:#".
 				$back.";color:#".$fore."'>"."TEXT"."</p>";
-		//	if (isset($_GET['contrastType']) && (in_array("WCAG2AAA", $_GET['contrastType']) || in_array("WCAG2AA", $_GET['contrastType']))){
-			
+		
 				$bold = VamolaBasicChecks::get_p_css($e,"font-weight");
 				if($e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6")
 					$bold="bold";
@@ -405,16 +338,10 @@ class AccessibilityValidator {
 				
 			}
 				
-		
-			//MB $css_code: variabile assegnata alla fine di un check sui css 
-			//contiene il codice da stampare in output tra gli errori
-			//$css_code viene poi passato a save_result()
+
 			$css_code=$css_code.VamolaBasicChecks::getCssOutput();
 		
-			
-			
-			//$css_code=VamolaBasicChecks::getCssOutput();
-					
+								
 			$checksDAO = new ChecksDAO();
 			$row = $checksDAO->getCheckByID($check_id);
 			
@@ -447,37 +374,18 @@ class AccessibilityValidator {
 			{
 				//echo("<p>check non conteggiato</p>");
 			}
-			
-			// minus out the $line_offset from $linenumber
-			/*
-			//MB salvo anche i controlli andati a buon fine se chiamata REST (soluzione momentanea) 
-			if(isset($_GET['output']) && $_GET['output']=='rest' && $result == SUCCESS_RESULT)
-			{
-				//$html_code = $e->outertext;
-				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $css_code, $check_id, $result);
 				
-			}
-			else
-			*/ 
 			if ($result == FAIL_RESULT)
 			{
-				// find out checked html code
-				// http://www.atutor.ca/atutor/mantis/view.php?id=3768
-				// http://www.atutor.ca/atutor/mantis/view.php?id=3797
-				// Display not only the start tag, but a substring from start tag to end tag.
-				// Displaying checked html is in HTMLRpt.class.php
-				/*//MB tolgo per visualizzazione immagini
+
 				if (strlen($e->outertext) > DISPLAY_PREVIEW_HTML_LENGTH) 
 					$html_code = substr($e->outertext, 0, DISPLAY_PREVIEW_HTML_LENGTH) . " ...";
-				else
-				*/ 
+				else 
 					$html_code = $e->outertext;
 //				else
 //					$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
 
 				// find out preview images for validation on <img>
-				/* 
-				//MB
 				if (strtolower(trim($row['html_tag'])) == 'img')
 				{
 					$image = BasicChecks::getFile($e->attr['src'], $base_href, $this->uri);
@@ -491,14 +399,11 @@ class AccessibilityValidator {
 				    else if ($e->attr['alt'] == '') $image_alt = '_EMPTY';
 				    else $image_alt = $e->attr['alt'];
 				}
-				*/
-				//MB $this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result, $image, $image_alt);
 				
-				
-				
-				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $css_code, $check_id, $result);
+				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result, $image, $image_alt, $css_code);
+
 			}
-			
+									
 		}
 		
 		return $result;
@@ -507,13 +412,7 @@ class AccessibilityValidator {
 	//MB
 	function get_num_success()
 	{
-		/*
-		if(isset($this->num_success[$check_id]))
-			return $this->num_success[$check_id];
-		else 
-			return 0;
-		*/
-		//print_r($this->num_success);
+		
 		return $this->num_success;
 	}
 	
@@ -544,12 +443,19 @@ class AccessibilityValidator {
 	 * $check_id: check id
 	 * $result: result to save
 	 */
-	private function save_result($line_number, $col_number, $html_code, $css_code, $check_id, $result /* //MB, $image, $image_alt*/)
+
+	
+		private function save_result($line_number, $col_number, $html_code, $check_id, $result, $image, $image_alt, $css_code)
 	{
-		//array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result, "image"=>$image, "image_alt"=>$image_alt));
-		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "css_code"=>$css_code, "check_id"=>$check_id, "result"=>$result));
+		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result, "image"=>$image, "image_alt"=>$image_alt, "css_code"=>$css_code));
+		
 		return true;
 	}
+	
+	
+	
+	
+	
 	
 	/**
 	 * private

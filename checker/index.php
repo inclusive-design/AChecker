@@ -125,13 +125,10 @@ if ($_POST["validate_uri"])
 		
 		if (isset($_POST["enable_html_validation"]))
 			$htmlValidator = new HTMLValidator("uri", $uri);
-
-		////////////////////////////////////////////////////////////////////////////		
+	
 		//CSS Validator
 		if (isset($_POST["enable_css_validation"]))
 			$cssValidator = new CSSValidator("uri", $uri);	
-	    ////////////////////////////////////////////////////////////////////////////
-
 
 		if (isset($_POST["show_source"]))
 			$source_array = file($uri);
