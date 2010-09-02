@@ -98,7 +98,9 @@ if (isset($_POST["enable_html_validation"]))
 
 if ($_POST["validate_uri"])
 {
-	$uri = Utility::getValidURI($_POST["uri"]);
+	$_POST['uri'] = htmlentities($_POST['uri']);
+	
+	$uri = Utility::getValidURI($addslashes($_POST["uri"]));
 	
 	// Check if the given URI is connectable
 	if ($uri === false)
