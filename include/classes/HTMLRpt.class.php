@@ -238,7 +238,7 @@ var $html_problem_vamola =
 				}
 				else
 				{
-					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"], IS_WARNING);
+					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"],$error['image'], $error["image_alt"], IS_WARNING);
 				}
 			}
 			else if ($row["confidence"] == POTENTIAL || $row["confidence"] == 11)
@@ -246,13 +246,15 @@ var $html_problem_vamola =
 				$this->num_of_potential_problems++;
 				if ($this->allow_set_decision == 'false' && !($this->from_referer == 'true' && $this->user_link_id > 0))
 				{
+					echo("sono qui e sono user anonimo");
 					$this->rpt_potential_problems .= $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $error["image"], $error["image_alt"],$error["css_code"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_INFO);
 
 					$this->num_of_potential_problems_fail++;
 				}
 				else
 				{
-					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"], IS_INFO);
+					
+					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"],$error['image'], $error["image_alt"], IS_INFO);
 				}
 			}
 			
