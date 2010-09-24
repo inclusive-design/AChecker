@@ -1091,5 +1091,185 @@ class BasicFunctions {
 		}
 		return false;
 	}
+		
+	//MB
+	//Color Contrast Functions (checks 301 - 310)
+	public static function checkColorContrastForGeneralElementWCAG2AA() {
+		//WCAG2.0 Contrast check
+		global $background, $foreground;
+		global $global_e, $global_content_dom;
+		global $stringa_testo_prova;
+		$e = $global_e;
+		$content_dom = $global_content_dom;
+		
+		BasicChecks::setCssSelectors ( $content_dom );
+		
+		$background = '';
+		$foreground = '';
+		//elementi testuali
+		if (($e->tag == "div" || $e->tag == "p" || $e->tag == "span" || $e->tag == "strong" || $e->tag == "em" || $e->tag == "q" || $e->tag == "cite" || $e->tag == "blockquote" || $e->tag == "li" || $e->tag == "dd" || $e->tag == "dt" || $e->tag == "td" || $e->tag == "th" || $e->tag == "h1" || $e->tag == "h2" || $e->tag == "h3" || $e->tag == "h4" || $e->tag == "h5" || $e->tag == "h6" || $e->tag == "label" || $e->tag == "acronym" || $e->tag == "abbr" || $e->tag == "code" || $e->tag == "pre") && BasicChecks::isElementVisible ( $e )) {
+			
+			if (trim ( BasicChecks::remove_children ( $e ) ) == "" || trim ( BasicChecks::remove_children ( $e ) ) == "&nbsp;") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+				return true;
+			
+			$background = BasicChecks::getBackground ( $e );
+			$foreground = BasicChecks::getForeground ( $e );
+			
+			if ($foreground == "" || $foreground == null || $background == "undetermined")
+				return true;
+			
+			if ($background == "" || $background == null || $background == "-1" || $background == "undetermined")
+				return true;
+			
+			$background = BasicChecks::convert_color_to_hex ( $background );
+			$foreground = BasicChecks::convert_color_to_hex ( $foreground );
+			
+			$ris = BasicChecks::ContrastRatio ( strtolower ( $background ), strtolower ( $foreground ) );
+			//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+			
+
+			$size = BasicChecks::fontSizeToPt ( $e );
+			$bold = BasicChecks::get_p_css ( $e, "font-weight" );
+			if ($e->tag == "h1" || $e->tag == "h2" || $e->tag == "h3" || $e->tag == "h4" || $e->tag == "h5" || $e->tag == "h6")
+				$bold = "bold";
+
+			if ($size < 0) //formato non supportato
+				return true;
+			elseif ($size >= 18 || ($bold == "bold" && $size >= 14))
+				$threashold = 3;
+			else
+				$threashold = 4.5;
+			$stringa_testo_prova = '';
+			
+			$stringa_testo_prova = "<p>ris: " . $ris . " threashold: " . $threashold . "</p>";
+			
+			if ($ris < $threashold) {
+				return false;
+			
+			} else {
+				return true;
+			}
+		
+		}
+		
+		return true;
+	
+	}
+	
+	//visited links
+	public static function checkColorContrastForVisitedLinkWCAG2AA() {
+		
+		return (BasicChecks::checkLinkContrastWcag2AA ( "visited", "vlink" ));
+	}
+	
+	//active links
+	public static function checkColorContrastForActiveLinkWCAG2AA() {
+
+		return (BasicChecks::checkLinkContrastWcag2AA ( "active", "alink" ));
+	}
+	
+	//hover links
+	public static function checkColorContrastForHoverLinkWCAG2AA() {
+		
+		return (BasicChecks::checkLinkContrastWcag2AA ( "hover", null ));
+	}
+	
+	//not visited links
+	public static function checkColorContrastForNotVisitedLinkWCAG2AA() {
+		
+		return (BasicChecks::checkLinkContrastWcag2AA ( "link", "link" ));
+	}
+	
+	public static function checkColorContrastForGeneralElementWCAG2AAA() {
+		
+		//WCAG2.0 Contrast check
+		global $background, $foreground;
+		global $global_e, $global_content_dom;
+		global $stringa_testo_prova;
+		$e = $global_e;
+		$content_dom = $global_content_dom;
+		
+		BasicChecks::setCssSelectors ( $content_dom );
+		
+		$background = '';
+		$foreground = '';
+		//elementi testuali
+		if (($e->tag == "div" || $e->tag == "p" || $e->tag == "span" || $e->tag == "strong" || $e->tag == "em" || $e->tag == "q" || $e->tag == "cite" || $e->tag == "blockquote" || $e->tag == "li" || $e->tag == "dd" || $e->tag == "dt" || $e->tag == "td" || $e->tag == "th" || $e->tag == "h1" || $e->tag == "h2" || $e->tag == "h3" || $e->tag == "h4" || $e->tag == "h5" || $e->tag == "h6" || $e->tag == "label" || $e->tag == "acronym" || $e->tag == "abbr" || $e->tag == "code" || $e->tag == "pre") && BasicChecks::isElementVisible ( $e )) {
+			
+			if (trim ( BasicChecks::remove_children ( $e ) ) == "" || trim ( BasicChecks::remove_children ( $e ) ) == "&nbsp;") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+				return true;
+			
+			$background = BasicChecks::getBackground ( $e );
+			$foreground = BasicChecks::getForeground ( $e );
+			
+			if ($foreground == "" || $foreground == null || $background == "undetermined")
+				return true;
+			
+			if ($background == "" || $background == null || $background == "-1" || $background == "undetermined")
+				return true;
+			
+			$background = BasicChecks::convert_color_to_hex ( $background );
+			$foreground = BasicChecks::convert_color_to_hex ( $foreground );
+			
+			$ris = '';
+			$ris = BasicChecks::ContrastRatio ( strtolower ( $background ), strtolower ( $foreground ) );
+			//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
+			
+
+			$size = BasicChecks::fontSizeToPt ( $e );
+			$bold = BasicChecks::get_p_css ( $e, "font-weight" );
+			if ($e->tag == "h1" || $e->tag == "h2" || $e->tag == "h3" || $e->tag == "h4" || $e->tag == "h5" || $e->tag == "h6")
+				$bold = "bold";
+			
+
+			if ($size < 0) //formato non supportato
+				return true;
+			elseif ($size >= 18 || ($bold == "bold" && $size >= 14))
+				$threashold = 4.5;
+			else
+				$threashold = 7;
+			
+			$stringa_testo_prova = '';
+			
+			$stringa_testo_prova = "<p>ris: " . $ris . " threashold: " . $threashold . "</p>";
+			
+			if ($ris < $threashold) {
+				
+				return false;
+			} else {
+				
+				return true;
+			}
+		
+		}
+		
+		return true;
+	
+	}
+	
+	//visited links
+	public static function checkColorContrastForVisitedLinkWCAG2AAA() {
+		
+		return (BasicChecks::checkLinkContrastWcag2AAA ( "visited", "vlink" ));
+	}
+	
+	//active links
+	public static function checkColorContrastForActiveLinkWCAG2AAA() {
+
+		return (BasicChecks::checkLinkContrastWcag2AAA ( "active", "alink" ));
+	}
+	
+	//hover links
+	public static function checkColorContrastForHoverLinkWCAG2AAA() {
+		
+		return (BasicChecks::checkLinkContrastWcag2AAA ( "hover", null ));
+	}
+	
+	//not visited links
+	public static function checkColorContrastForNotVisitedLinkWCAG2AAA() {
+		
+		return (BasicChecks::checkLinkContrastWcag2AAA ( "link", "link" ));
+	}	
+
 }
 ?>  

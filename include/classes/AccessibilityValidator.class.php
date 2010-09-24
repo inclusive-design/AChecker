@@ -23,9 +23,9 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 include (AC_INCLUDE_PATH . "lib/simple_html_dom.php");
 //include_once (AC_INCLUDE_PATH . "classes/Checks.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
-include_once (AC_INCLUDE_PATH . "classes/VamolaBasicChecks.class.php");
+//include_once (AC_INCLUDE_PATH . "classes/VamolaBasicChecks.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicFunctions.class.php");
-include_once (AC_INCLUDE_PATH . "classes/BasicFunctionsVamola.class.php");
+//include_once (AC_INCLUDE_PATH . "classes/BasicFunctionsVamola.class.php");
 include_once (AC_INCLUDE_PATH . "classes/CheckFuncUtility.class.php");
 include_once (AC_INCLUDE_PATH . "classes/DAO/ChecksDAO.class.php");
 
@@ -310,36 +310,11 @@ class AccessibilityValidator {
 		{
 		
 			
-			// Simo: funzione nuova che prende dal db
+			
 			$check_result = eval($this->check_func_array[$check_id]);
-		
-		//TOSI VIRRUSO
-                        global $stringa_testo_prova;//per il debug
-
-                        global $background, $foreground;
-                        $back=$background;
-                        $fore=$foreground;
-                        $background=$foreground='';
-		
-			if ( $check_id >= 6012 && $check_id <= 6021)
-		{
-			 // no decision to make on known problems
-			$css_code = "Error:";
-			//$css_code = $stringa_testo_prova.$css_code.
-                        $css_code = $css_code.
-				"<p style='font-size:20px;width:80px;text-align:center;background-color:#".
-				$back.";color:#".$fore."'>"."TEXT"."</p>";
-		
-				$bold = VamolaBasicChecks::get_p_css($e,"font-weight");
-				if($e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6")
-					$bold="bold";
-
-				$css_code = $css_code."Font size = ".$tag_size." pt ".$bold;
-				
-			}
-				
-
-			$css_code=$css_code.VamolaBasicChecks::getCssOutput();
+			
+			//CSS code variable
+			$css_code = BasicChecks::getCssOutput();
 		
 								
 			$checksDAO = new ChecksDAO();
@@ -358,22 +333,18 @@ class AccessibilityValidator {
 			{
 				$result = SUCCESS_RESULT;
 				
-				//MB numero di controlli a buon fine
+				//MB 
+				// number of success checks
 				if(isset($this->num_success[$check_id]))
 					$this->num_success[$check_id]++;
 				else 
 					$this->num_success[$check_id]=1;
-			}
-			//MB aggiungo questo elseif per avere un conteggio "veritiero" degli errori potenziali per gli elementi di testo
-			//   ora alcuni check restituisco 2 oltre a true e false. 
-			elseif($check_result===false)
+			} 
+			else
 			{
 				$result = FAIL_RESULT;
 			}
-			else 
-			{
-				//echo("<p>check non conteggiato</p>");
-			}
+			
 				
 			if ($result == FAIL_RESULT)
 			{
@@ -410,7 +381,11 @@ class AccessibilityValidator {
 	}
 	
 	//MB
-	function get_num_success()
+	/**
+	 * public 
+	 * get number of success errors
+	 */
+	public function get_num_success()
 	{
 		
 		return $this->num_success;

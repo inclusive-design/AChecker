@@ -38,17 +38,6 @@ class HTMLRpt extends AccessibilityRpt {
 	
 	
 
-var $html_problem_vamola =
-'      <li class="{MSG_TYPE}">
-         <span class="err_type"><img src="images/{IMG_SRC}" alt="{IMG_TYPE}" title="{IMG_TYPE}" width="15" height="15" /></span>
-         <em>Line {LINE_NUMBER}, Column {COL_NUMBER}</em>:
-         <span class="msg">
-       {ERROR}
-         </span>
-         <pre><code class="input">{HTML_CODE}</code></pre>
-         {CSS_CODE}
-       </li>
-';
 
 
 
@@ -71,29 +60,7 @@ var $html_problem_vamola =
        </li>
 ';
 
-	
 
-	// Simo: Nuova cella per le immagini      
-	/*
-	var $cell_html_img =
-'      <li class="{MSG_TYPE}">
-         <span class="err_type"><img src="images/{IMG_SRC}" alt="{IMG_TYPE}" title="{IMG_TYPE}" width="15" height="15" /></span>
-         <em>Line {LINE_NUMBER}, Column {COL_NUMBER}</em>:
-         <span class="msg">
-       {ERROR}
-         </span>     
-         <pre><code class="input">{HTML_CODE}</code></pre>
-         {CSS_CODE}
-        <div style="margin:12px;margin-left:8px;">
-         	<strong>Immagine</strong>: {IMG_TAG}
-        </div> 	
- 		<div style="margin:12px;margin-left:8px;">
-         	<strong>Alternativa testuale</strong>: {IMG_ALT}
-          </div>
-       </li>
-';
-
-*/
 
 	var $html_image = 
 '<img src="{SRC}" height="{HEIGHT}" border="1" {ALT} />
@@ -200,19 +167,12 @@ var $html_problem_vamola =
 		}
 		
 		// initialize each section
-		// Simo: Ho aggiunto la classe msg_err agli ul /////////////////////////////
-		$this->rpt_errors = "<ul class='msg_err'>\n";
-		$this->rpt_likely_problems = "<ul class='msg_err'>\n";
-		$this->rpt_potential_problems = "<ul class='msg_err'>\n";
-		////////////////////////////////////////////////////////////////////////////
+		$this->rpt_errors = "<ul>\n";
+		$this->rpt_likely_problems = "<ul>\n";
+		$this->rpt_potential_problems = "<ul>\n";
+
 		
-		////////////////////////////////////////////////////////////////////////////
-		//Simo: Inizializzo la sezione
-		$this->rpt_errors_10 = "<ul class='msg_err'>\n";
-		$this->rpt_errors_11 = "<ul class='msg_err'>\n";
-		$this->rpt_errors_12 = "<ul class='msg_err'>\n";
-		$this->rpt_errors_13 = "<ul class='msg_err'>\n";
-		////////////////////////////////////////////////////////////////////////////
+
 		
 		$checksDAO = new ChecksDAO();
 		// generate section details
@@ -220,14 +180,14 @@ var $html_problem_vamola =
 		{	
 		
 			$row = $checksDAO->getCheckByID($error["check_id"]);
-			if ($row["confidence"] == KNOWN || $row["confidence"] == 10)
+			if ($row["confidence"] == KNOWN )
 			{ // no decision to make on known problems
 				$this->num_of_errors++;
 				
 				$this->rpt_errors .= $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $error["image"], $error["image_alt"], $error["css_code"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_ERROR);
 
 			}
-			else if ($row["confidence"] == LIKELY || $row["confidence"] == 12|| $row["confidence"] == 13)
+			else if ($row["confidence"] == LIKELY )
 			{
 				$this->num_of_likely_problems++;
 				if ($this->allow_set_decision == 'false' && !($this->from_referer == 'true' && $this->user_link_id > 0))
@@ -241,12 +201,12 @@ var $html_problem_vamola =
 					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"],$error['image'], $error["image_alt"], IS_WARNING);
 				}
 			}
-			else if ($row["confidence"] == POTENTIAL || $row["confidence"] == 11)
+			else if ($row["confidence"] == POTENTIAL )
 			{
 				$this->num_of_potential_problems++;
 				if ($this->allow_set_decision == 'false' && !($this->from_referer == 'true' && $this->user_link_id > 0))
 				{
-					echo("sono qui e sono user anonimo");
+					
 					$this->rpt_potential_problems .= $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $error["image"], $error["image_alt"],$error["css_code"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_INFO);
 
 					$this->num_of_potential_problems_fail++;
@@ -273,14 +233,7 @@ var $html_problem_vamola =
 		$this->rpt_likely_problems .= "</ul>";
 		$this->rpt_potential_problems .= "</ul>";
 		
-		
-		////////////////////////////////////////////////////////////////////////////
-		//Simo: Fine lista di errori VaMoLï¿½		
-		$this->rpt_errors_10 .= "</ul>";
-		$this->rpt_errors_11 .= "</ul>";
-		$this->rpt_errors_12 .= "</ul>";
-		$this->rpt_errors_13 .= "</ul>";
-		////////////////////////////////////////////////////////////////////////////
+
 			
 		if ($this->show_source == 'true')
 		{
@@ -441,39 +394,8 @@ var $html_problem_vamola =
 			$html_image = str_replace(array("{SRC}", "{HEIGHT}", "{ALT}"), array($image, $height, $alt), $this->html_image);
 		}
 		
-		if ($check_id > 276)
-		{	
 		
-					return str_replace(array("{MSG_TYPE}", 
-		                         "{IMG_SRC}", 
-		                         "{IMG_TYPE}", 
-		                         "{LINE_NUMBER}", 
-		                         "{COL_NUMBER}", 
-		                         "{HTML_CODE}",
-		                         "{CSS_CODE}", 
-		                         "{ERROR}", 
-		                         "{BASE_HREF}", 
-		                         "{CHECK_ID}", 
-		                         "{TITLE}",
-		                         "{IMAGE}",
-		                         "{DECISION}"),
-		                   array($msg_type, 
-		                         $img_src, 
-		                         $img_type, 
-		                         $line_number, 
-		                         $col_number, 
-		                         htmlentities($html_code),
-		                         $css_code, 
-		                         $error, 
-		                         $check_id, 
-		                         _AC("suggest_improvements"),
-		                         $html_image,
-		                         $decision),
-		                    $this->html_problem_vamola);
-		}	
-		else
 		
-		{		
 		
 		return str_replace(array("{MSG_TYPE}", 
 		                         "{IMG_SRC}", 
@@ -504,7 +426,7 @@ var $html_problem_vamola =
 		                         $html_repair,
 		                         $decision),
 		                   $this->html_problem_achecker);
-		}
+
                    
 	}
 	
