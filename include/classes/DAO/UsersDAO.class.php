@@ -455,7 +455,7 @@ class UsersDAO extends DAO {
 		else
 		{
 			/* check for special characters */
-			if (!(eregi("^[a-zA-Z0-9_.-]([a-zA-Z0-9_.-])*$", $login)))
+			if (!(preg_match("/^[a-zA-Z0-9_.-]([a-zA-Z0-9_.-])*$/i", $login)))
 			{
 				$msg->addError('LOGIN_CHARS');
 			}
@@ -481,7 +481,7 @@ class UsersDAO extends DAO {
 		{
 			$missing_fields[] = _AC('email');
 		}
-		else if (!eregi("^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$", $email))
+		else if (!preg_match("/^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$/i", $email))
 		{
 			$msg->addError('EMAIL_INVALID');
 		}

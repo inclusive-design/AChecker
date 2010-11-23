@@ -669,27 +669,34 @@ function embed_media($text) {
 function make_clickable($text) {
 	$text = embed_media($text);
 
-	$text = eregi_replace("([[:space:]])(http[s]?)://([^[:space:]<]*)([[:alnum:]#?/&=])", "\\1<a href=\"\\2://\\3\\4\">\\3\\4</a>", $text);
-
-	$text = eregi_replace(	'([_a-zA-Z0-9\-]+(\.[_a-zA-Z0-9\-]+)*'.
-							'\@'.'[_a-zA-Z0-9\-]+(\.[_a-zA-Z0-9\-]+)*'.'(\.[a-zA-Z]{1,6})+)',
-							"<a href=\"mailto:\\1\">\\1</a>",
-							$text);
-
+	// convert plain text URL to clickable URL.
+	// Limited conversion: It doesn't cover the case when the stuff in front of the URL is not a word. For example:
+	// <p>http://google.ca</p>
+	// "http://google.ca" 
+	$text = preg_replace('/(^|[\n ])([\w]*?)((?<!(\[media\]))http(s)?:\/\/[\w]+[^ \,\"\n\r\t\)<]*)/is', 
+	                     '$1$2<a href="$3">$3</a>', $text);
+	
+	// convert email address to clickable URL that pops up "send email" interface with the address filled in
+	$text = preg_replace('/(?|<a href="mailto[\s]*:[\s]*([_a-zA-Z0-9\-]+(\.[_a-zA-Z0-9\-]+)*'.'\@'
+                            .'[_a-zA-Z0-9\-]+(\.[_a-zA-Z0-9\-]+)*'.'(\.[a-zA-Z]{1,6})+)">(.*)<\/a>'
+                            .'|((((([_a-zA-Z0-9\-]+(\.[_a-zA-Z0-9\-]+)*'.'\@'
+                            .'[_a-zA-Z0-9\-]+(\.[_a-zA-Z0-9\-]+)*'.'(\.[a-zA-Z]{1,6})+))))))/i',
+						"<a href=\"mailto:\\1\">\\5</a>",
+						$text);
+	
 	return $text;
 }
 
 function image_replace($text) {
 	/* image urls do not require http:// */
 	
-	$text = eregi_replace("\[image(\|)?([[:alnum:][:space:]]*)\]" .
-						 "[:space:]*" .
-						 "([[:alnum:]#?/&=:\"'_.-]+)" .
-						 "[:space:]*" .
-						 "((\[/image\])|(.*\[/image\]))",
+	$text = preg_replace("/\[image(\|)?([a-zA-Z0-9\s]*)\]".
+	                     "[\s]*".
+	                     "([a-zA-Z0-9\#\?\/\&\=\:\\\"\'\_\.\-]+)[\s]*".
+	                     "((\[\/image\])|(.*\[\/image\]))/i",
 				  "<img src=\"\\3\" alt=\"\\2\" />",
 				  $text);
-	 
+		 
 	return $text;
 }
 

@@ -46,7 +46,7 @@ if ($_POST['create'] || $_POST['save'])
 		$msg->addError(array('EMPTY_FIELDS', $missing_fields));
 	}
 
-	if (!(eregi("^[a-zA-Z0-9_.-]([a-zA-Z0-9_.-])*$", $_POST['achecker_patch_id'])))
+	if (!(preg_match("/^[a-zA-Z0-9_.-]([a-zA-Z0-9_.-])*$/i", $_POST['achecker_patch_id'])))
 		$msg->addError('LOGIN_CHARS');
 
 	// main process

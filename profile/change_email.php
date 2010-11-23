@@ -63,7 +63,7 @@ if (isset($_POST['submit']))
 	} 
 	else 
 	{
-		if(!eregi("^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$", $_POST['email'])) 
+		if(!preg_match("/^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$/i", $_POST['email'])) 
 		{
 			$msg->addError('EMAIL_INVALID');
 		}
