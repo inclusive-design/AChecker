@@ -10,6 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 // $Id
+
 /*
  * This is the web service interface to check accessibility on a given URI
  * Expected parameters:
