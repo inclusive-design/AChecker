@@ -9,7 +9,7 @@
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: 
+// $Id
 
 /*
  * This is the web service interface to check accessibility on a given URI
