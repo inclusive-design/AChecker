@@ -141,7 +141,7 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_216','All <code>inpu
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_217','All <code>input</code> elements, <code>type</code> of \"password\", have a <code>label</code> that describes the purpose or function of the control.','2008-11-24 13:01:07','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_218','All <code>input</code> elements, <code>type</code> of \"text\", have a <code>label</code> that describes the purpose or function of the control.','2008-11-24 13:01:07','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_219','All <code>input</code> elements, <code>type</code> of \"checkbox\", have a <code>label</code> that describes the purpose or function of the control.','2008-11-24 13:01:07','');
-INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_22','All <code>applets</code> do not flicker.','2008-11-24 13:01:07','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_22','<code>applets</code> cause screen flicker.','2009-06-15 10:40:35','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_220','All <code>input</code> elements, <code>type</code> of \"radio\", have a <code>label</code> that describes the purpose or function of the control.','2008-11-24 13:01:07','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_221','The luminosity contrast ratio between text and background color is at least 5:1.','2008-11-24 13:01:07','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_CNAME_222','The luminosity contrast ratio between link text and background color is at least 5:1.','2008-11-24 13:01:07','');
@@ -1040,7 +1040,17 @@ INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_28','Document may be m
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_29','<code>doctype</code> declaration missing.','2008-11-24 13:01:50','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_3','Image Alt text may be too long.','2008-11-24 13:01:50','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_30','<code>object</code> may flicker.','2008-11-24 13:01:50','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_301','The luminosity contrast between the background and the text colors for the element is not sufficient according to the algorithm WCAG2.0 AA.','0000-00-00 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_302','The luminosity contrast between the background and the text colors of the visited link is not sufficient according to the algorithm WCAG2.0 AA.','0000-00-00 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_303','The luminosity contrast between the background and the text colors of the active link is not sufficient according to the algorithm WCAG2.0 AA.','0000-00-00 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_304','The luminosity contrast between the background and the text colors of the selected link is not sufficient according to the algorithm WCAG2.0 AA.','0000-00-00 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_305','The luminosity contrast between the background and the text colors of the non-visited link is not sufficient according to the algorithm WCAG2.0 AA.','0000-00-00 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_306','The luminosity contrast between the background and the text colors for the element is not sufficient according to the algorithm WCAG2.0 AAA.','0000-00-00 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_307','The luminosity contrast between the background and the text colors of the visited link is not sufficient according to the algorithm WCAG2.0 AAA.','0000-00-00 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_308','The luminosity contrast between the background and the text colors of the active link is not sufficient according to the algorithm WCAG2.0 AAA.','0000-00-00 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_309','The luminosity contrast between the background and the text colors of the selected link is not sufficient according to the algorithm WCAG2.0 AAA.','0000-00-00 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_31','<code>frame</code> missing <code>title</code> attribute.','2008-11-24 13:01:50','');
+INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_310','The luminosity contrast between the background and the text colors of the non-visited link is not sufficient according to the algorithm WCAG2.0 AAA.','0000-00-00 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_32','<code>frame</code> <code>title</code> may not describe the purpose or function of the <code>frame</code>.','2008-11-24 13:01:50','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_33','<code>frame</code> source may not be accessible content.','2008-11-24 13:01:50','');
 INSERT INTO `language_text` VALUES ('eng', '_check','_ERR_34','Relationship between <code>frames</code> may not be described.','2008-11-24 13:01:50','');
@@ -2816,6 +2826,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','available_updates','Avai
 INSERT INTO `language_text` VALUES ('eng', '_template','back_to','Back To: ','2009-01-15 13:18:41','');
 INSERT INTO `language_text` VALUES ('eng', '_template','back_to_chapters','Back to Chapters','2009-01-29 13:49:27','');
 INSERT INTO `language_text` VALUES ('eng', '_template','back_to_contents','Back to Contents','2009-01-29 15:05:04','');
+INSERT INTO `language_text` VALUES ('eng', '_template','bold','bold','2010-09-22 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','calendar','Calendar','2009-04-06 10:43:09','');
 INSERT INTO `language_text` VALUES ('eng', '_template','cancel','Cancel','2009-01-09 10:29:35','');
 INSERT INTO `language_text` VALUES ('eng', '_template','change_email','Change Email','2009-01-15 11:29:34','');
@@ -2833,10 +2844,12 @@ INSERT INTO `language_text` VALUES ('eng', '_template','close_from_public','Clos
 INSERT INTO `language_text` VALUES ('eng', '_template','close_popup','Close Popup','2009-01-28 15:28:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','code_to_replace_from','Code To Replace From','2009-06-22 14:49:02','Updater');
 INSERT INTO `language_text` VALUES ('eng', '_template','code_to_replace_to','Code To Replace To','2009-06-22 14:49:02','Updater');
+INSERT INTO `language_text` VALUES ('eng', '_template','color_contrast_example','color contrast example','2010-09-22 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','column','Column','2009-06-08 11:10:16','');
 INSERT INTO `language_text` VALUES ('eng', '_template','combination','Use a combination of letters, numbers and symbols','2009-01-09 10:16:38','');
 INSERT INTO `language_text` VALUES ('eng', '_template','conditional_pass','CONDITIONAL PASS','2009-03-09 12:54:29','');
 INSERT INTO `language_text` VALUES ('eng', '_template','confirm_delete','Are you sure you want to delete these records?','2009-04-09 11:29:46','');
+INSERT INTO `language_text` VALUES ('eng', '_template','congrats_css_validation','Congratulations! Passed CSS Validation.','2010-06-09 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','congrats_html_validation','Congratulations! Passed HTML Validation.','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','congrats_no_known','Congratulations! No known problems.','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','congrats_no_likely','Congratulations! No likely problems.','2008-11-24 14:12:25','');
@@ -2853,6 +2866,9 @@ INSERT INTO `language_text` VALUES ('eng', '_template','create_edit_user_group',
 INSERT INTO `language_text` VALUES ('eng', '_template','create_guideline','Create Guideline','2009-01-21 15:58:32','');
 INSERT INTO `language_text` VALUES ('eng', '_template','create_update','Create Update','2009-06-22 14:49:02','Updater');
 INSERT INTO `language_text` VALUES ('eng', '_template','create_user','Create User','2009-01-21 15:58:32','');
+INSERT INTO `language_text` VALUES ('eng', '_template','css_validation_result','CSS Validation','0000-00-00 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_template','css_validator_disabled','CSS Validator is disabled. Enable it in \"Options\".','0000-00-00 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_template','css_validator_provided_by','Note: Results are provided by http://jigsaw.w3.org/css-validator','0000-00-00 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','customized_guidelines','Customized Guidelines','2009-01-26 13:27:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','date','Date','2009-02-27 16:07:19','');
 INSERT INTO `language_text` VALUES ('eng', '_template','date_created','Date Created','2009-02-17 12:02:27','');
@@ -2886,6 +2902,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','edit_group_name','Edit G
 INSERT INTO `language_text` VALUES ('eng', '_template','edit_profile','Edit Profile','2009-01-16 10:52:51','');
 INSERT INTO `language_text` VALUES ('eng', '_template','edit_subgroup_name','Edit Subgroup Name','2009-04-08 15:19:33','');
 INSERT INTO `language_text` VALUES ('eng', '_template','edit_update','Edit Update','2009-06-22 14:49:02','Updater');
+INSERT INTO `language_text` VALUES ('eng', '_template','element_CSS_rules','CSS rules for the element','2010-09-22 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','email','Email','2009-02-04 11:51:16','');
 INSERT INTO `language_text` VALUES ('eng', '_template','email_address','Email Address','2009-01-09 10:40:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','email_confirmation_message','You have registered for an account on %1s. Please finish the registration process by confirming your email address by using the following link: %2s .','2009-01-14 13:25:55','');
@@ -2893,6 +2910,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','email_confirmation_messa
 INSERT INTO `language_text` VALUES ('eng', '_template','email_confirmation_subject','Email Confirmation','2009-01-14 13:25:55','');
 INSERT INTO `language_text` VALUES ('eng', '_template','enable','Enable','2009-01-20 11:47:15','');
 INSERT INTO `language_text` VALUES ('eng', '_template','enabled','Enabled','2009-01-20 11:45:23','');
+INSERT INTO `language_text` VALUES ('eng', '_template ','enable_css_validation','Enable CSS Validator','2010-06-08 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','enable_html_validator','Enable HTML Validator','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','english_context','English Context','2008-12-01 13:18:57','');
 INSERT INTO `language_text` VALUES ('eng', '_template','english_text','English Text','2008-12-01 13:18:57','');
@@ -2907,17 +2925,19 @@ INSERT INTO `language_text` VALUES ('eng', '_template','expand_add_privileges','
 INSERT INTO `language_text` VALUES ('eng', '_template','expand_guidelines','Expand Guidelines','2008-11-21 14:25:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','expected_result','Expected Result','2008-11-24 14:25:44','');
 INSERT INTO `language_text` VALUES ('eng', '_template','export','Export','2009-02-24 13:58:06','');
+INSERT INTO `language_text` VALUES ('eng', '_template','external_CSS','External CSS','2010-09-22 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','fail','FAIL','2009-03-09 12:54:29','');
 INSERT INTO `language_text` VALUES ('eng', '_template','failed_result','Failed Result','2008-11-24 14:25:44','');
 INSERT INTO `language_text` VALUES ('eng', '_template','fail_example','Fail HTML Example','2009-04-02 11:08:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','fail_examples','Fail Examples','2009-04-02 13:16:21','');
 INSERT INTO `language_text` VALUES ('eng', '_template','fail_example_desc','Fail Example Description','2009-04-02 11:08:06','');
-INSERT INTO `language_text` VALUES ('eng', '_template','feedback','Feedback','2009-03-06 11:29:10','');
+INSERT INTO `language_text` VALUES ('eng', '_template','feedback','Feedback','2009-06-08 18:08:18','');
 INSERT INTO `language_text` VALUES ('eng', '_template','file','File','2009-06-22 14:49:01','');
 INSERT INTO `language_text` VALUES ('eng', '_template','files','Files','2009-06-22 14:49:01','');
 INSERT INTO `language_text` VALUES ('eng', '_template','file_name','File Name','2009-06-22 14:49:01','');
 INSERT INTO `language_text` VALUES ('eng', '_template','filter','Filter','2008-11-27 09:48:36','');
 INSERT INTO `language_text` VALUES ('eng', '_template','first_name','First Name','2009-01-09 10:40:36','');
+INSERT INTO `language_text` VALUES ('eng', '_template','fixed_size_example_text','Fixed size example','2010-09-22 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','function','Function','2009-03-26 10:09:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','get_my_update','Get My Update','2009-06-22 14:49:01','Updater');
 INSERT INTO `language_text` VALUES ('eng', '_template','grant_write_permission','Please grant <strong>write</strong> permission to folders and files listed below:<p><strong>Note:</strong> To change permissions on Unix use <kbd>chmod a+rw</kbd> then the file name.</p>','2009-06-22 14:49:02','Updater');
@@ -2944,6 +2964,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','input','Input','2008-11-
 INSERT INTO `language_text` VALUES ('eng', '_template','install','Install','2009-06-22 14:49:03','');
 INSERT INTO `language_text` VALUES ('eng', '_template','installed_date','Installed Date','2009-06-22 14:49:01','');
 INSERT INTO `language_text` VALUES ('eng', '_template','interface_terms','Interface Terms','2008-11-27 09:48:36','');
+INSERT INTO `language_text` VALUES ('eng', '_template','internal_CSS','Internal CSS','2010-09-22 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','jump_to_content','Jump to Content','2009-05-25 10:17:46','');
 INSERT INTO `language_text` VALUES ('eng', '_template','known','Known','2008-11-24 13:04:52','');
 INSERT INTO `language_text` VALUES ('eng', '_template','known_problem','Known Problem','2009-03-18 11:18:40','');
@@ -3010,6 +3031,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','password_request2','Dear
 INSERT INTO `language_text` VALUES ('eng', '_template','pass_example','Pass HTML Example','2009-04-02 11:08:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','pass_examples','Pass Examples','2009-04-02 13:16:21','');
 INSERT INTO `language_text` VALUES ('eng', '_template','pass_example_desc','Pass Example Description','2009-04-02 11:08:06','');
+INSERT INTO `language_text` VALUES ('eng', '_template','points','points','2010-09-22 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','potential','Potential','2008-11-24 13:04:52','');
 INSERT INTO `language_text` VALUES ('eng', '_template','potential_problem','Potential Problem','2009-03-10 15:00:57','');
 INSERT INTO `language_text` VALUES ('eng', '_template','potential_problems','Potential Problems','2008-11-24 14:12:25','');
@@ -3022,6 +3044,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','profile','Profile','2009
 INSERT INTO `language_text` VALUES ('eng', '_template','published_date','Published Date','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','question','Question','2008-11-24 14:25:44','');
 INSERT INTO `language_text` VALUES ('eng', '_template','rationale','Rationale','2008-11-24 14:25:44','');
+INSERT INTO `language_text` VALUES ('eng', '_template','real_size_example_text','Real size example','2010-09-22 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','register','Register','2009-01-08 09:30:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','registration','Registration','2009-01-08 15:51:23','');
 INSERT INTO `language_text` VALUES ('eng', '_template','relative_directory','Directory is relative directory to AChecker root, for example: docs/images/ or tools/tests/. Leave empty if it is AChecker root directory.','2009-06-22 14:49:02','Updater');

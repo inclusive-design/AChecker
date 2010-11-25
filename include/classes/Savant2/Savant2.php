@@ -48,7 +48,7 @@ if (! isset($GLOBALS['_SAVANT2']['error'])) {
 * Please see the documentation at {@link http://phpsavant.com/}, and be
 * sure to donate! :-)
 * 
-* $Id: Savant2.php,v 1.32 2006/03/05 16:58:38 pmjones Exp $
+* $Id$
 * 
 * @author Paul M. Jones <pmjones@ciaweb.net>
 * 

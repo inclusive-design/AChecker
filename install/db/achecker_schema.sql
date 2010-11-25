@@ -6,12 +6,13 @@
 # Table structure for table `checks`
 # since 0.1
 
+
 CREATE TABLE `checks` (
-  `check_id` mediumint(8) unsigned NOT NULL auto_increment,
-  `user_id` mediumint(8) unsigned NOT NULL default 0,
+  `check_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `html_tag` varchar(50) NOT NULL,
   `confidence` mediumint(8) NOT NULL,
-  `note` varchar(500) default NULL,
+  `note` varchar(500) DEFAULT NULL,
   `name` text,
   `err` text,
   `description` text,
@@ -27,24 +28,23 @@ CREATE TABLE `checks` (
   `test_expected_result` text,
   `test_failed_result` text,
   `func` text,
-  `open_to_public` tinyint(4) NOT NULL DEFAULT 0,
+  `open_to_public` tinyint(4) NOT NULL DEFAULT '0',
   `create_date` datetime NOT NULL,
-  PRIMARY KEY  (`check_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
+  PRIMARY KEY (`check_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `check_examples`
 # since 0.1
 
 CREATE TABLE `check_examples` (
-  `check_example_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `check_example_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `check_id` mediumint(8) unsigned NOT NULL,
-  `type` varchar(50) default NULL COMMENT 'Values: pass, fail',
+  `type` varchar(50) DEFAULT NULL COMMENT 'Values: pass, fail',
   `description` text,
   `content` text COMMENT 'Example content',
-  PRIMARY KEY  (`check_example_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`check_example_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `check_prerequisites`
@@ -53,7 +53,7 @@ CREATE TABLE `check_examples` (
 CREATE TABLE `check_prerequisites` (
   `check_id` mediumint(8) unsigned NOT NULL,
   `prerequisite_check_id` mediumint(8) unsigned NOT NULL,
-  PRIMARY KEY  (`check_id`,`prerequisite_check_id`)
+  PRIMARY KEY (`check_id`,`prerequisite_check_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
@@ -61,9 +61,9 @@ CREATE TABLE `check_prerequisites` (
 # since 0.1
 
 CREATE TABLE `color_mapping` (
-  `color_name` varchar(50) NOT NULL default '',
-  `color_code` varchar(6) default NULL,
-  PRIMARY KEY  (`color_name`)
+  `color_name` varchar(50) NOT NULL DEFAULT '',
+  `color_code` varchar(6) DEFAULT NULL,
+  PRIMARY KEY (`color_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
@@ -71,9 +71,9 @@ CREATE TABLE `color_mapping` (
 # since 0.1
 
 CREATE TABLE `config` (
-  `name` CHAR( 30 ) NOT NULL default '',
-  `value` CHAR( 255 ) NOT NULL default '',
-  PRIMARY KEY ( `name` )
+  `name` char(30) NOT NULL DEFAULT '',
+  `value` char(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
@@ -81,58 +81,58 @@ CREATE TABLE `config` (
 # since 0.1
 
 CREATE TABLE `guidelines` (
-  `guideline_id` mediumint(8) unsigned NOT NULL auto_increment,
-  `user_id` mediumint(8) unsigned NOT NULL default 0,
-  `title` varchar(255) default NULL,
-  `abbr` varchar(100) default NULL,
-  `long_name` varchar(255) default NULL,
-  `published_date` date default NULL,
-  `earlid` varchar(255) default NULL,
+  `guideline_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(255) DEFAULT NULL,
+  `abbr` varchar(100) DEFAULT NULL,
+  `long_name` varchar(255) DEFAULT NULL,
+  `published_date` date DEFAULT NULL,
+  `earlid` varchar(255) DEFAULT NULL,
   `preamble` text,
-  `status` tinyint(3) unsigned NOT NULL default '0',
-  `open_to_public` tinyint(4) NOT NULL DEFAULT 0,
-  `seal_icon_name` varchar(255),
-  `subset` varchar(100) NOT NULL DEFAULT 0,
-  PRIMARY KEY  (`guideline_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10;
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `open_to_public` tinyint(4) NOT NULL DEFAULT '0',
+  `seal_icon_name` varchar(255) DEFAULT NULL,
+  `subset` varchar(100) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`guideline_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `guideline_groups`
 # since 0.1
 
 CREATE TABLE `guideline_groups` (
-  `group_id` mediumint(8) unsigned NOT NULL auto_increment,
-  `guideline_id` mediumint(8) unsigned default NULL,
-  `name` varchar(255) default NULL,
-  `abbr` varchar(100) default NULL,
-  `principle` varchar(100) default NULL,
-  PRIMARY KEY  (`group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=86 ;
+  `group_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `guideline_id` mediumint(8) unsigned DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `abbr` varchar(100) DEFAULT NULL,
+  `principle` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`group_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `guideline_subgroups`
 # since 0.1
 
 CREATE TABLE `guideline_subgroups` (
-  `subgroup_id` mediumint(8) unsigned NOT NULL auto_increment,
-  `group_id` mediumint(8) unsigned default NULL,
-  `name` varchar(255) default NULL,
-  `abbr` varchar(100) default NULL,
-  PRIMARY KEY  (`subgroup_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=330 ;
+  `subgroup_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` mediumint(8) unsigned DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `abbr` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`subgroup_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `languages`
 # since 0.1
 
 CREATE TABLE `languages` (
-  `language_code` varchar(20) NOT NULL default '',
-  `charset` varchar(80) NOT NULL default '',
-  `reg_exp` varchar(124) NOT NULL default '',
-  `native_name` varchar(80) NOT NULL default '',
-  `english_name` varchar(80) NOT NULL default '',
-  `status` tinyint(3) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`language_code`)
+  `language_code` varchar(20) NOT NULL DEFAULT '',
+  `charset` varchar(80) NOT NULL DEFAULT '',
+  `reg_exp` varchar(124) NOT NULL DEFAULT '',
+  `native_name` varchar(80) NOT NULL DEFAULT '',
+  `english_name` varchar(80) NOT NULL DEFAULT '',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
@@ -140,11 +140,11 @@ CREATE TABLE `languages` (
 # since 0.1
 
 CREATE TABLE `lang_codes` (
-  `code_3letters` varchar(3) NOT NULL default '',
-  `direction` varchar(16) NOT NULL default '',
-  `code_2letters` varchar(2) default NULL,
-  `description` varchar(50) default NULL,
-  PRIMARY KEY  (`code_3letters`)
+  `code_3letters` varchar(3) NOT NULL DEFAULT '',
+  `direction` varchar(16) NOT NULL DEFAULT '',
+  `code_2letters` varchar(2) DEFAULT NULL,
+  `description` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`code_3letters`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
@@ -152,15 +152,15 @@ CREATE TABLE `lang_codes` (
 # since 0.2
 
 CREATE TABLE `mail_queue` (
-  `mail_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `to_email` VARCHAR( 50 ) NOT NULL default '',
-  `to_name` VARCHAR( 50 ) NOT NULL default '',
-  `from_email` VARCHAR( 50 ) NOT NULL default '',
-  `from_name` VARCHAR( 50 ) NOT NULL default '',
-  `char_set` VARCHAR( 20 ) NOT NULL default '',
-  `subject` VARCHAR(255) NOT NULL ,
-  `body` TEXT,
-  PRIMARY KEY ( `mail_id` )
+  `mail_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `to_email` varchar(50) NOT NULL DEFAULT '',
+  `to_name` varchar(50) NOT NULL DEFAULT '',
+  `from_email` varchar(50) NOT NULL DEFAULT '',
+  `from_name` varchar(50) NOT NULL DEFAULT '',
+  `char_set` varchar(20) NOT NULL DEFAULT '',
+  `subject` varchar(255) NOT NULL,
+  `body` text NOT NULL,
+  PRIMARY KEY (`mail_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
@@ -168,12 +168,12 @@ CREATE TABLE `mail_queue` (
 # since 1.1
 
 CREATE TABLE `patches` (
-	`patches_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`achecker_patch_id` VARCHAR(20) NOT NULL default '',
-	`applied_version` VARCHAR(10) NOT NULL default '',
-	`patch_folder` VARCHAR(250) NOT NULL default '',
+  `patches_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `achecker_patch_id` VARCHAR(20) NOT NULL default '',
+  `applied_version` VARCHAR(10) NOT NULL default '',
+  `patch_folder` VARCHAR(250) NOT NULL default '',
   `description` TEXT,
-	`available_to` VARCHAR(250) NOT NULL default '',
+  `available_to` VARCHAR(250) NOT NULL default '',
   `sql_statement` text,
   `status` varchar(20) NOT NULL default '',
   `remove_permission_files` text,
@@ -181,7 +181,7 @@ CREATE TABLE `patches` (
   `patch_files` text,
   `author` VARCHAR(255) NOT NULL,
   `installed_date` datetime NOT NULL,
-	PRIMARY KEY  (`patches_id`)
+  PRIMARY KEY  (`patches_id`)
 );
 
 
@@ -190,12 +190,12 @@ CREATE TABLE `patches` (
 # since 1.1
 
 CREATE TABLE `patches_files` (
-	`patches_files_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`patches_id` MEDIUMINT UNSIGNED NOT NULL default 0,
-	`action` VARCHAR(20) NOT NULL default '',
-	`name` TEXT,
-	`location` VARCHAR(250) NOT NULL default '',
-	PRIMARY KEY  (`patches_files_id`)
+  `patches_files_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `patches_id` MEDIUMINT UNSIGNED NOT NULL default 0,
+  `action` VARCHAR(20) NOT NULL default '',
+  `name` TEXT,
+  `location` VARCHAR(250) NOT NULL default '',
+  PRIMARY KEY  (`patches_files_id`)
 );
 
 # --------------------------------------------------------
@@ -203,12 +203,12 @@ CREATE TABLE `patches_files` (
 # since 1.1
 
 CREATE TABLE `patches_files_actions` (
-	`patches_files_actions_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`patches_files_id` MEDIUMINT UNSIGNED NOT NULL default 0,
-	`action` VARCHAR(20) NOT NULL default '',
-	`code_from` TEXT,
-	`code_to` TEXT,
-	PRIMARY KEY  (`patches_files_actions_id`)
+  `patches_files_actions_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `patches_files_id` MEDIUMINT UNSIGNED NOT NULL default 0,
+  `action` VARCHAR(20) NOT NULL default '',
+  `code_from` TEXT,
+  `code_to` TEXT,
+  PRIMARY KEY  (`patches_files_actions_id`)
 );
 
 # --------------------------------------------------------
@@ -216,14 +216,14 @@ CREATE TABLE `patches_files_actions` (
 # since 1.1
 
 CREATE TABLE `myown_patches` (
-	`myown_patch_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`achecker_patch_id` VARCHAR(20) NOT NULL default '',
-	`applied_version` VARCHAR(10) NOT NULL default '',
+  `myown_patch_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `achecker_patch_id` VARCHAR(20) NOT NULL default '',
+  `applied_version` VARCHAR(10) NOT NULL default '',
   `description` TEXT,
   `sql_statement` text,
   `status` varchar(20) NOT NULL default '',
   `last_modified` datetime NOT NULL,
-	PRIMARY KEY  (`myown_patch_id`)
+  PRIMARY KEY  (`myown_patch_id`)
 );
 
 # --------------------------------------------------------
@@ -231,10 +231,10 @@ CREATE TABLE `myown_patches` (
 # since 1.1
 
 CREATE TABLE `myown_patches_dependent` (
-	`myown_patches_dependent_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`myown_patch_id` MEDIUMINT UNSIGNED NOT NULL,
-	`dependent_patch_id` VARCHAR(50) NOT NULL default '',
-	PRIMARY KEY  (`myown_patches_dependent_id`)
+  `myown_patches_dependent_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `myown_patch_id` MEDIUMINT UNSIGNED NOT NULL,
+  `dependent_patch_id` VARCHAR(50) NOT NULL default '',
+  PRIMARY KEY  (`myown_patches_dependent_id`)
 );
 
 # --------------------------------------------------------
@@ -242,15 +242,15 @@ CREATE TABLE `myown_patches_dependent` (
 # since 1.1
 
 CREATE TABLE `myown_patches_files` (
-	`myown_patches_files_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`myown_patch_id` MEDIUMINT UNSIGNED NOT NULL,
-	`action` VARCHAR(20) NOT NULL default '',
-	`name` VARCHAR(250) NOT NULL,
-	`location` VARCHAR(250) NOT NULL default '',
-	`code_from` TEXT,
-	`code_to` TEXT,
-	`uploaded_file` TEXT,
-	PRIMARY KEY  (`myown_patches_files_id`)
+  `myown_patches_files_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `myown_patch_id` MEDIUMINT UNSIGNED NOT NULL,
+  `action` VARCHAR(20) NOT NULL default '',
+  `name` VARCHAR(250) NOT NULL,
+  `location` VARCHAR(250) NOT NULL default '',
+  `code_from` TEXT,
+  `code_to` TEXT,
+  `uploaded_file` TEXT,
+  PRIMARY KEY  (`myown_patches_files_id`)
 );
 
 # --------------------------------------------------------
@@ -258,25 +258,25 @@ CREATE TABLE `myown_patches_files` (
 # since 0.1
 
 CREATE TABLE `privileges` (
-  `privilege_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `privilege_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `title_var` varchar(255) NOT NULL DEFAULT '',
-  `description` text,
+  `description` text NOT NULL,
   `create_date` datetime NOT NULL,
-  `last_update` datetime,
+  `last_update` datetime DEFAULT NULL,
   `link` varchar(255) NOT NULL DEFAULT '',
   `menu_sequence` tinyint(4) NOT NULL,
-  `open_to_public` tinyint(4) NOT NULL DEFAULT 0,
-  PRIMARY KEY  (`privilege_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `open_to_public` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`privilege_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `subgroup_checks`
 # since 0.1
 
 CREATE TABLE `subgroup_checks` (
-  `subgroup_id` mediumint(8) unsigned NOT NULL default '0',
-  `check_id` mediumint(8) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`subgroup_id`,`check_id`)
+  `subgroup_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `check_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`subgroup_id`,`check_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
@@ -284,10 +284,10 @@ CREATE TABLE `subgroup_checks` (
 # since 0.1
 
 CREATE TABLE `techniques` (
-  `subgroup_id` mediumint(8) unsigned NOT NULL default '0',
-  `check_id` mediumint(8) unsigned NOT NULL default '0',
-  `technique` varchar(50) NOT NULL default '',
-  PRIMARY KEY  (`subgroup_id`,`check_id`,`technique`)
+  `subgroup_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `check_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `technique` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`subgroup_id`,`check_id`,`technique`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
@@ -297,7 +297,7 @@ CREATE TABLE `techniques` (
 CREATE TABLE `test_pass` (
   `check_id` mediumint(8) unsigned NOT NULL,
   `next_check_id` mediumint(8) unsigned NOT NULL,
-  PRIMARY KEY  (`check_id`,`next_check_id`)
+  PRIMARY KEY (`check_id`,`next_check_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
@@ -305,37 +305,39 @@ CREATE TABLE `test_pass` (
 # since 0.1
 
 CREATE TABLE `themes` (
-  `title` varchar(80) NOT NULL default '',
-  `version` varchar(10) NOT NULL default '',
-  `dir_name` varchar(20) NOT NULL default '',
-  `last_updated` date NOT NULL default '0000-00-00',
-  `extra_info` TEXT,
-  `status` tinyint(3) unsigned NOT NULL default '1',
-  PRIMARY KEY  (`title`)
+  `title` varchar(80) NOT NULL DEFAULT '',
+  `version` varchar(10) NOT NULL DEFAULT '',
+  `dir_name` varchar(20) NOT NULL DEFAULT '',
+  `last_updated` date NOT NULL DEFAULT '0000-00-00',
+  `extra_info` text NOT NULL,
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`title`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `users`
 # since 0.1
+
 CREATE TABLE `users` (
-  `user_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `user_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `login` varchar(20) NOT NULL,
   `password` varchar(40) NOT NULL,
   `user_group_id` mediumint(8) NOT NULL,
-  `first_name` varchar(100),
-  `last_name` varchar(100),
-  `email` varchar(50),
+  `first_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
   `web_service_id` varchar(40) NOT NULL,
-  `status` tinyint(3) NOT NULL default '1',
+  `status` tinyint(3) NOT NULL DEFAULT '1',
   `create_date` datetime NOT NULL,
-  `last_login` datetime,
+  `last_login` datetime DEFAULT NULL,
   `preferences` text,
-  PRIMARY KEY  (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `user_decisions`
 # since 0.2
+
 CREATE TABLE `user_decisions` (
   `user_link_id` mediumint(8) NOT NULL,
   `line_num` int(10) NOT NULL,
@@ -344,22 +346,22 @@ CREATE TABLE `user_decisions` (
   `sequence_id` int(8) NOT NULL,
   `decision` varchar(50) NOT NULL DEFAULT 'N',
   `last_update` datetime NOT NULL,
-  PRIMARY KEY  (`user_link_id`, `line_num`, `column_num`, `check_id`),
-  INDEX IDX_SEQUENCE (`user_link_id`, `sequence_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`user_link_id`,`line_num`,`column_num`,`check_id`),
+  KEY `IDX_SEQUENCE` (`user_link_id`,`sequence_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `user_groups`
 # since 0.1
 
 CREATE TABLE `user_groups` (
-  `user_group_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `user_group_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL DEFAULT '',
-  `description` text,
+  `description` text NOT NULL,
   `create_date` datetime NOT NULL,
-  `last_update` datetime,
-  PRIMARY KEY  (`user_group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `last_update` datetime DEFAULT NULL,
+  PRIMARY KEY (`user_group_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `user_group_privilege`
@@ -368,21 +370,22 @@ CREATE TABLE `user_groups` (
 CREATE TABLE `user_group_privilege` (
   `user_group_id` mediumint(8) unsigned NOT NULL,
   `privilege_id` mediumint(8) unsigned NOT NULL,
-  PRIMARY KEY  (`user_group_id`, `privilege_id`)
+  PRIMARY KEY (`user_group_id`,`privilege_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `user_links`
-# since 0.2
+# since 0.1
+
 CREATE TABLE `user_links` (
-  `user_link_id` mediumint(8) NOT NULL auto_increment,
+  `user_link_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
-  `URI` text,
+  `URI` text NOT NULL,
   `last_guideline_ids` varchar(50) NOT NULL,
   `last_sessionID` varchar(40) NOT NULL,
   `last_update` datetime NOT NULL,
-  PRIMARY KEY  (`user_link_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`user_link_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 # Dumping data for table `checks`
 
@@ -653,9 +656,19 @@ INSERT INTO `checks` (`check_id`, `user_id`, `html_tag`, `confidence`, `note`, `
 (273, 0, 'html', 0, '', '_CNAME_273', '_ERR_273', '_DESC_273', NULL, NULL, '', '_HOWTOREPAIR_273', '_REPAIREXAMPLE_273', '', '', '', '_PROCEDURE_273', '_EXPECTEDRESULT_273', '_FAILEDRESULT_273', 'return BasicFunctions::isValidRTL();', 1, '0000-00-00 00:00:00'),
 (274, 0, 'all elements', 2, '', '_CNAME_274', '_ERR_274', '_DESC_274', NULL, NULL, '', '', '', '_QUESTION_274', '_DECISIONPASS_274', '_DECISIONFAIL_274', '_PROCEDURE_274', '_EXPECTEDRESULT_274', '_FAILEDRESULT_274', 'return !(BasicFunctions::hasAttribute("onmouseover") || \r\n         BasicFunctions::hasAttribute("onmouseout") || \r\n         BasicFunctions::hasAttribute("onfocus") || \r\n         BasicFunctions::hasAttribute("onblur") || \r\n         BasicFunctions::hasAttribute("onchange"));', 1, '0000-00-00 00:00:00'),
 (275, 0, 'body', 2, '', '_CNAME_275', '_ERR_275', '_DESC_275', NULL, NULL, '', '', '', '_QUESTION_275', '_DECISIONPASS_275', '_DECISIONFAIL_275', '_PROCEDURE_275', '_EXPECTEDRESULT_275', '_FAILEDRESULT_275', 'return (!BasicFunctions::hasAttribute("onload") && !BasicFunctions::hasWindowOpenInScript());', 1, '0000-00-00 00:00:00'),
-(276, 0, 'body', 2, '', '_CNAME_276', '_ERR_276', '_DESC_276', NULL, NULL, '', '', '', '_QUESTION_276', '_DECISIONPASS_276', '_DECISIONFAIL_276', '_PROCEDURE_276', '_EXPECTEDRESULT_276', '_FAILEDRESULT_276', 'return false;', 1, '0000-00-00 00:00:00');
+(276, 0, 'body', 2, '', '_CNAME_276', '_ERR_276', '_DESC_276', NULL, NULL, '', '', '', '_QUESTION_276', '_DECISIONPASS_276', '_DECISIONFAIL_276', '_PROCEDURE_276', '_EXPECTEDRESULT_276', '_FAILEDRESULT_276', 'return false;', 1, '0000-00-00 00:00:00'),
+(301, 0, 'all elements', 0, NULL, '_NAME_301', '_ERR_301', '_DESC_301', '999', NULL, NULL, NULL, NULL, '_QUESTION_301', '_DECISIONPASS_301', '_DECISIONFAIL_301', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForGeneralElementWCAG2AA();', 1, '0000-00-00 00:00:00'),
+(302, 0, 'a', 0, NULL, '_NAME_302', '_ERR_302', '_DESC_302', '999', NULL, NULL, NULL, NULL, '_QUESTION_302', '_DECISIONPASS_302', '_DECISIONFAIL_302', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForVisitedLinkWCAG2AA();', 1, '0000-00-00 00:00:00'),
+(303, 0, 'a', 0, NULL, '_NAME_303', '_ERR_303', '_DESC_303', '999', NULL, NULL, NULL, NULL, '_QUESTION_303', '_DECISIONPASS_303', '_DECISIONFAIL_303', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForActiveLinkWCAG2AA();', 1, '0000-00-00 00:00:00'),
+(304, 0, 'a', 0, NULL, '_NAME_304', '_ERR_304', '_DESC_304', '999', NULL, NULL, NULL, NULL, '_QUESTION_304', '_DECISIONPASS_304', '_DECISIONFAIL_304', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForHoverLinkWCAG2AA();', 1, '0000-00-00 00:00:00'),
+(305, 0, 'a', 0, NULL, '_NAME_305', '_ERR_305', '_DESC_305', '999', NULL, NULL, NULL, NULL, '_QUESTION_305', '_DECISIONPASS_305', '_DECISIONFAIL_305', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForNotVisitedLinkWCAG2AA();', 1, '0000-00-00 00:00:00'),
+(306, 0, 'all elements', 0, NULL, '_NAME_306', '_ERR_306', '_DESC_306', '999', NULL, NULL, NULL, NULL, '_QUESTION_306', '_DECISIONPASS_306', '_DECISIONFAIL_306', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForGeneralElementWCAG2AAA();', 1, '0000-00-00 00:00:00'),
+(307, 0, 'a', 0, NULL, '_NAME_307', '_ERR_307', '_DESC_307', '999', NULL, NULL, NULL, NULL, '_QUESTION_307', '_DECISIONPASS_307', '_DECISIONFAIL_307', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForVisitedLinkWCAG2AAA();', 1, '0000-00-00 00:00:00'),
+(6019, 0, 'a', 0, NULL, '_NAME_308', '_ERR_308', '_DESC_308', '999', NULL, NULL, NULL, NULL, '_QUESTION_308', '_DECISIONPASS_308', '_DECISIONFAIL_308', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForActiveLinkWCAG2AAA();', 1, '0000-00-00 00:00:00'),
+(309, 0, 'a', 0, NULL, '_NAME_309', '_ERR_309', '_DESC_309', '999', NULL, NULL, NULL, NULL, '_QUESTION_309', '_DECISIONPASS_309', '_DECISIONFAIL_309', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForHoverLinkWCAG2AAA();', 1, '0000-00-00 00:00:00'),
+(310, 0, 'a', 0, NULL, '_NAME_310', '_ERR_310', '_DESC_310', '999', NULL, NULL, NULL, NULL, '_QUESTION_310', '_DECISIONPASS_310', '_DECISIONFAIL_310', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForNotVisitedLinkWCAG2AAA();', 1, '0000-00-00 00:00:00');
 
--- Dumping data for table `check_examples`
+# Dumping data for table `check_examples`
 
 INSERT INTO `check_examples` (`check_example_id`, `check_id`, `type`, `description`, `content`) VALUES
 (1, 1, '1', '<code>img</code> element with an <code>alt</code> attribute.', '<?xml version="1.0" encoding="UTF-8"?>\r<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\r<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\r<head>\r<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\r<title>Testfile - Check #1 - Negative</title>\r</head>\r<body>\r<p><img src="rex.jpg" alt="A black and brown cat named Rex."/></p>\r</body>\r</html>'),
@@ -1147,12 +1160,12 @@ INSERT INTO `check_examples` (`check_example_id`, `check_id`, `type`, `descripti
 (487, 268, '0', 'Form submission error message does not provide assistance.', '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #268.1 - Positive</title>\n</head>\n<body>\n\n<p>Assume the form below was submitted to the server and has now been returned with an error message.</p>\n\n<p><strong>Error:</strong> Form submission wrong.</p>\n\n<form action="http://www.test.com">\n\n<p>\n<label for="date">date:</label>\n<input type="text" id="firstname" /><br/>\n<input type="submit" value="submit"/>\n</p>\n\n</form>\n\n</body>\n</html>'),
 (488, 269, '1', 'Form submission process allows user to correct data before final acceptance.', '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #269.2 - Negative</title>\n</head>\n<body>\n\n<p>Shown below are the steps required to purchase a concert ticket.</p>\n\n<ol>\n<li>User fills out the form and selects the "submit" button.</li>\n<li>Data is presented to user with the option to correct data or submit it.</li>\n<li>If user submits form then credit card is charged for the tickets and tickets are mailed to user.</li>\n</ol>\n\n<h1>Step 1 - fill out form</h1>\n\n<form action="http://www.test.com">\n\n<p>\n<label for="concert">concert</label>\n<select name="concert" id="concert">\n<option label="Beethoven" value="c1">\nBeethoven\n</option>\n<option label="Mozart" value="c2">\nMozart\n</option>\n<option label="Mamaday" value="c3">\nMamaday\n</option>\n<option label="U2" value="c4">\nU2\n</option>\n</select>\n\n<br/><label for="card">credit card:</label>\n<input type="text" size="30" id="card" name="card"/>\n\n<br/>\n<input type="submit" value="submit"/>\n</p>\n\n</form>\n\n<h1>Step 2 - data is presented to user</h1>\n\n<p>Please review the data below. If the data is correct select the "Purchase Ticket" button. If data is not correct then select this link to <a href="http://www.test.com/fix">modify the data</a>.</p>\n\n<form action="http://www.test.com">\n\n<p>\n<label for="concert">concert</label>\n<select name="concert" id="concert">\n<option label="Beethoven" value="c1">\nBeethoven\n</option>\n<option label="Mozart" value="c2" selected="selected">\nMozart\n</option>\n<option label="Mamaday" value="c3">\nMamaday\n</option>\n<option label="U2" value="c4">\nU2\n</option>\n</select>\n\n<br/><label for="card">credit card:</label>\n<input type="text" size="30" id="card" name="card" value="1234xxxxxxx567"/>\n\n<br/>\n<input type="submit" value="Purchase Ticket"/>\n</p>\n\n</form>\n\n</body>\n</html>'),
 (489, 269, '0', 'Form submission proces does not allow user to correct data before final acceptance.', '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #269.1 - Positive</title>\n</head>\n<body>\n\n<p>Shown below are the steps required to purchase a concert ticket.</p>\n\n<ol>\n<li>User fills out the form and selects the "submit" button.</li>\n<li>User''s credit card is charged for the tickets and tickets are mailed to user.</li>\n</ol>\n\n\n<form action="http://www.test.com">\n\n<p>\n<label for="concert">concert</label>\n<select name="concert" id="concert">\n<option label="Beethoven" value="c1">\nBeethoven\n</option>\n<option label="Mozart" value="c2">\nMozart\n</option>\n<option label="Mamaday" value="c3">\nMamaday\n</option>\n<option label="U2" value="c4">\nU2\n</option>\n</select>\n\n<br/><label for="card">credit card:</label>\n<input type="text" size="30" id="card" name="card"/>\n\n<br/>\n<input type="submit" value="submit"/>\n</p>\n\n</form>\n\n</body>\n</html>'),
-(490, 270, '1', 'Unicode right-to-left marking is present and HTML bidirectional algorithm produces desirable results.', '﻿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #270.2 - Negative</title>\n</head>\n<body>\n\n<p>The title is "مفتاح معايير الويب!&amp;rlm;" in Arabic.</p>\n\n</body>\n</html>'),
-(491, 270, '0', 'Unicode right-to-left marking is missing from text and HTML bidirectional algorithm produces undesirable results.', '﻿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #270.1 - Positive</title>\n</head>\n<body><p>The title is "مفتاح معايير الويب!" in Arabic.\n\n</p></body>\n</html>'),
-(492, 271, '1', 'Block of text with a reading order different from the primary language is marked using the <code>dir</code> attribute.', '﻿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #271.2 - Negative</title>\n</head>\n<body>\n\n<p>The title says "<span lang="he" dir="rtl">פעילות הבי� אום, W3C</span>" in Hebrew.</p>\n\n</body>\n</html>'),
-(493, 271, '0', 'Block of text with a reading order different from the primary language is not marked using the <code>dir</code> attribute.', '﻿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #271.1 - Positive</title>\n</head>\n<body>\n\n<p>The title says "<span lang="he">פעילות הבי� אום, W3C</span>" in Hebrew.</p>\n\n</body>\n</html>'),
-(494, 272, '1', 'Form allows user to delete information and provides a method of recovery.', '﻿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #272.2 - Negative</title>\n</head>\n<body>\n\n<p>Use the form below to remove your report from the repository.<br/>\nSelect the following link if you would like to <a href="http://www.example.com">recover a report</a> that has been previously deleted.</p>\n\n<form action="http://www.example.com" method="post">\n<p>\n<label for="r1">Report Name:</label> <input type="text" id="r1" /><br/>\n<input type="submit" value="Delete Report" />\n</p>\n</form>\n\n<p></p>\n\n</body>\n</html>'),
-(495, 272, '0', 'Form allows user to delete information without allowing recovery.', '﻿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #272.1 - Positive</title>\n</head>\n<body>\n\n<p>Use the form below to remove your report from the repository.</p>\n\n<form action="http://www.example.com" method="post">\n<p>\n<label for="r1">Report Name:</label> <input type="text" id="r1" /><br/>\n<input type="submit" value="Delete Report" />\n</p>\n</form>\n\n</body>\n</html>'),
+(490, 270, '1', 'Unicode right-to-left marking is present and HTML bidirectional algorithm produces desirable results.', 'Ã¯Â»Â¿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #270.2 - Negative</title>\n</head>\n<body>\n\n<p>The title is "Ã™â€¦Ã™ÂÃ˜ÂªÃ˜Â§Ã˜Â­ Ã™â€¦Ã˜Â¹Ã˜Â§Ã™Å Ã™Å Ã˜Â± Ã˜Â§Ã™â€žÃ™Ë†Ã™Å Ã˜Â¨!&amp;rlm;" in Arabic.</p>\n\n</body>\n</html>'),
+(491, 270, '0', 'Unicode right-to-left marking is missing from text and HTML bidirectional algorithm produces undesirable results.', 'Ã¯Â»Â¿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #270.1 - Positive</title>\n</head>\n<body><p>The title is "Ã™â€¦Ã™ÂÃ˜ÂªÃ˜Â§Ã˜Â­ Ã™â€¦Ã˜Â¹Ã˜Â§Ã™Å Ã™Å Ã˜Â± Ã˜Â§Ã™â€žÃ™Ë†Ã™Å Ã˜Â¨!" in Arabic.\n\n</p></body>\n</html>'),
+(492, 271, '1', 'Block of text with a reading order different from the primary language is marked using the <code>dir</code> attribute.', 'Ã¯Â»Â¿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #271.2 - Negative</title>\n</head>\n<body>\n\n<p>The title says "<span lang="he" dir="rtl">Ã—Â¤Ã—Â¢Ã—â„¢Ã—Å“Ã—â€¢Ã—Âª Ã—â€Ã—â€˜Ã—â„¢Ã— Ã—ÂÃ—â€¢Ã—Â, W3C</span>" in Hebrew.</p>\n\n</body>\n</html>'),
+(493, 271, '0', 'Block of text with a reading order different from the primary language is not marked using the <code>dir</code> attribute.', 'Ã¯Â»Â¿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #271.1 - Positive</title>\n</head>\n<body>\n\n<p>The title says "<span lang="he">Ã—Â¤Ã—Â¢Ã—â„¢Ã—Å“Ã—â€¢Ã—Âª Ã—â€Ã—â€˜Ã—â„¢Ã— Ã—ÂÃ—â€¢Ã—Â, W3C</span>" in Hebrew.</p>\n\n</body>\n</html>'),
+(494, 272, '1', 'Form allows user to delete information and provides a method of recovery.', 'Ã¯Â»Â¿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #272.2 - Negative</title>\n</head>\n<body>\n\n<p>Use the form below to remove your report from the repository.<br/>\nSelect the following link if you would like to <a href="http://www.example.com">recover a report</a> that has been previously deleted.</p>\n\n<form action="http://www.example.com" method="post">\n<p>\n<label for="r1">Report Name:</label> <input type="text" id="r1" /><br/>\n<input type="submit" value="Delete Report" />\n</p>\n</form>\n\n<p></p>\n\n</body>\n</html>'),
+(495, 272, '0', 'Form allows user to delete information without allowing recovery.', 'Ã¯Â»Â¿<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #272.1 - Positive</title>\n</head>\n<body>\n\n<p>Use the form below to remove your report from the repository.</p>\n\n<form action="http://www.example.com" method="post">\n<p>\n<label for="r1">Report Name:</label> <input type="text" id="r1" /><br/>\n<input type="submit" value="Delete Report" />\n</p>\n</form>\n\n</body>\n</html>'),
 (496, 273, '1', 'Document''s primary reading order is right to left and <code>dir</code> attribute is set.', '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="he" lang="he" dir="rtl">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #273.2 - Negative</title>\n</head>\n<body>\n\n<p></p>\n\n\n</body>\n</html>'),
 (497, 273, '0', 'Document''s primary reading order is right to left but <code>dir</code> attribute is not set.', '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ar" lang="ar">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #273.1 - Positive</title>\n</head>\n<body>\n\n<p></p>\n\n</body>\n</html>'),
 (498, 274, '1', 'Window change occurs only after user selects form submit button.', '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>Testfile - Check #274.2 - Positive</title>\n</head>\n<body>\n\n<form action="http://www.example.com" method="post">\n<p>\n<select name="flavour">\n<option>Choose A Flavour</option>\n<option value="c">chocolate</option>\n<option value="v">vanilla</option>\n<option value="m">mango</option>\n</select><br/>\n<input type="submit" value="submit flavour" />\n</p>\n</form>\n\n</body>\n</html>'),
@@ -1162,7 +1175,7 @@ INSERT INTO `check_examples` (`check_example_id`, `check_id`, `type`, `descripti
 (502, 276, '1', 'Links appear in the same order as the other page.', '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #276.1 - Negative</title>\n</head>\n<body>\n\n<p>Here is a link to <a href="276-3.html">another page</a>. Note that the first link below is ''home''.</p>\n\n<p><a href="home.html">home</a> | <a href="dogs.html">dogs</a> | <a href="cats.html">cats</a></p>\n\n</body>\n</html>'),
 (503, 276, '0', 'Links do not appear in the same order as the other page.', '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n<title>ATRC Testfile - Check #276.3 - Positive</title>\n</head>\n<body>\n\n<p>Here is a link to <a href="276-1.html">another page</a>. Note that the first link below is ''dogs''.</p>\n\n<p><a href="dogs.html">dogs</a> | <a href="cats.html">cats</a> | <a href="home.html">home</a></p>\n\n</body>\n</html>');
 
--- Dumping data for table `check_prerequisites`
+# Dumping data for table `check_prerequisites`
 
 INSERT INTO `check_prerequisites` (`check_id`, `prerequisite_check_id`) VALUES
 (2, 1),
@@ -1216,7 +1229,7 @@ INSERT INTO `check_prerequisites` (`check_id`, `prerequisite_check_id`) VALUES
 (240, 145),
 (273, 49);
 
--- Dumping data for table `color_mapping`
+# Dumping data for table `color_mapping`
 
 INSERT INTO `color_mapping` (`color_name`, `color_code`) VALUES
 ('aliceblue', 'F0F8FF'),
@@ -1360,12 +1373,12 @@ INSERT INTO `color_mapping` (`color_name`, `color_code`) VALUES
 ('yellow', 'FFFF00'),
 ('yellowgreen', '9ACD32');
 
--- Dumping data for table `guidelines`
+# Dumping data for table `guidelines`
 
 INSERT INTO `guidelines` (`guideline_id`, `user_id`, `title`, `abbr`, `long_name`, `published_date`, `earlid`, `preamble`, `status`, `open_to_public`, `seal_icon_name`, `subset`) VALUES
-(1, 0, 'BITV 1.0 (Level 2)', 'BITV1', '_GNAME_1', '2004-04-02', 'http://123barrierefrei.de/', NULL, 1, 1, 'icon_bitv.jpg', 0),
-(2, 0, 'Section 508', '508', '_GNAME_2', '2004-03-12', 'http://www.access-board.gov/sec508', NULL, 1, 1, 'icon_508.jpg', 0),
-(3, 0, 'Stanca Act', 'STANCA', '_GNAME_3', '2005-12-20', 'http://www.pubbliaccesso.it/index.htm', NULL, 1, 1, 'icon_stanca.jpg', 0),
+(1, 0, 'BITV 1.0 (Level 2)', 'BITV1', '_GNAME_1', '2004-04-02', 'http://123barrierefrei.de/', NULL, 1, 1, 'icon_bitv.jpg', '0'),
+(2, 0, 'Section 508', '508', '_GNAME_2', '2004-03-12', 'http://www.access-board.gov/sec508', NULL, 1, 1, 'icon_508.jpg', '0'),
+(3, 0, 'Stanca Act', 'STANCA', '_GNAME_3', '2005-12-20', 'http://www.pubbliaccesso.it/index.htm', NULL, 1, 1, 'icon_stanca.jpg', '0'),
 (4, 0, 'WCAG 1.0 (Level A)', 'WCAG1-A', '_GNAME_4', '2004-03-17', 'http://www.w3.org/TR/WCAG10/#a', NULL, 1, 1, 'icon_W1_a.jpg', 'WCAG1-1'),
 (5, 0, 'WCAG 1.0 (Level AA)', 'WCAG1-AA', '_GNAME_5', '2004-05-27', 'http://www.w3.org/TR/WCAG10/#aa', NULL, 1, 1, 'icon_W1_aa.jpg', 'WCAG1-2'),
 (6, 0, 'WCAG 1.0 (Level AAA)', 'WCAG1-AAA', '_GNAME_6', '2004-03-17', 'http://www.w3.org/TR/WCAG10/#aaa', NULL, 1, 1, 'icon_W1_aaa.jpg', 'WCAG1-3'),
@@ -1373,7 +1386,7 @@ INSERT INTO `guidelines` (`guideline_id`, `user_id`, `title`, `abbr`, `long_name
 (8, 0, 'WCAG 2.0 (Level AA)', 'WCAG2-AA', '_GNAME_8', '2006-06-19', 'http://www.w3.org/TR/WCAG20/#a', '', 1, 1, 'icon_W2_aa.jpg', 'WCAG2-2'),
 (9, 0, 'WCAG 2.0 (Level AAA)', 'WCAG2-AAA', '_GNAME_9', '2006-06-19', 'http://www.w3.org/TR/WCAG20/#aaa', '', 1, 1, 'icon_W2_aaa.jpg', 'WCAG2-3');
 
--- Dumping data for table `guideline_groups`
+# Dumping data for table `guideline_groups`
 
 INSERT INTO `guideline_groups` (`group_id`, `guideline_id`, `name`, `abbr`, `principle`) VALUES
 (1, 1, '_GROUPNAME_1', 'L1', ''),
@@ -1457,9 +1470,31 @@ INSERT INTO `guideline_groups` (`group_id`, `guideline_id`, `name`, `abbr`, `pri
 (86, 9, '_GROUPNAME_86', '', ''),
 (82, 9, '_GROUPNAME_82', '', ''),
 (83, 9, '_GROUPNAME_83', '', ''),
-(84, 9, '_GROUPNAME_84', '', '');
+(84, 9, '_GROUPNAME_84', '', ''),
+(100, 10, '_GROUPNAME_100', '', 'Requisito 1'),
+(101, 10, '_GROUPNAME_101', '', 'Requisito 2'),
+(102, 10, '_GROUPNAME_102', '', 'Requisito 3'),
+(106, 10, '_GROUPNAME_106', '', 'Requisito 7'),
+(107, 10, '_GROUPNAME_107', '', 'Requisito 8'),
+(117, 10, '_GROUPNAME_117', '', 'Requisito 18'),
+(110, 10, '_GROUPNAME_110', '', 'Requisito 11'),
+(111, 10, '_GROUPNAME_111', '', 'Requisito 12'),
+(105, 10, '_GROUPNAME_105', '', 'Requisito 6'),
+(120, 10, '_GROUPNAME_120', '', 'Requisito 21'),
+(103, 10, '_GROUPNAME_103', '', 'Requisito 4'),
+(104, 10, '_GROUPNAME_104', '', 'Requisito 5'),
+(113, 10, '_GROUPNAME_113', '', 'Requisito 14'),
+(108, 10, '_GROUPNAME_108', '', 'Requisito 9'),
+(109, 10, '_GROUPNAME_109', '', 'Requisito 10'),
+(112, 10, '_GROUPNAME_112', '', 'Requisito 13'),
+(114, 10, '_GROUPNAME_114', '', 'Requisito 15'),
+(115, 10, '_GROUPNAME_115', '', 'Requisito 16'),
+(116, 10, '_GROUPNAME_116', '', 'Requisito 17'),
+(118, 10, '_GROUPNAME_118', '', 'Requisito 19'),
+(119, 10, '_GROUPNAME_119', '', 'Requisito 20'),
+(121, 10, '_GROUPNAME_121', '', 'Requisito 22');
 
--- Dumping data for table `guideline_subgroups`
+# Dumping data for table `guideline_subgroups`
 
 INSERT INTO `guideline_subgroups` (`subgroup_id`, `group_id`, `name`, `abbr`) VALUES
 (1, 1, '_SUBGROUPNAME_1', 'L1'),
@@ -1810,14 +1845,45 @@ INSERT INTO `guideline_subgroups` (`subgroup_id`, `group_id`, `name`, `abbr`) VA
 (374, 88, '_SUBGROUPNAME_374', ''),
 (375, 88, '_SUBGROUPNAME_375', ''),
 (376, 88, '_SUBGROUPNAME_376', ''),
-(377, 88, '_SUBGROUPNAME_377', '');
+(377, 88, '_SUBGROUPNAME_377', ''),
+(1000, 100, '_SUBGROUPNAME_100', 'R1'),
+(1001, 101, '_SUBGROUPNAME_101', 'R2'),
+(2000, 100, '_SUBGROUPNAME_200', 'R1n'),
+(2001, 101, '_SUBGROUPNAME_201', 'R2n'),
+(1002, 102, '_SUBGROUPNAME_102', 'R3'),
+(1006, 106, '_SUBGROUPNAME_106', 'R7'),
+(1007, 107, '_SUBGROUPNAME_107', 'R8'),
+(1017, 117, '_SUBGROUPNAME_117', 'R18'),
+(1010, 110, '_SUBGROUPNAME_110', 'R11'),
+(1011, 111, '_SUBGROUPNAME_111', 'R12 no check css'),
+(1005, 105, '_SUBGROUPNAME_105', 'R6 no check css'),
+(1020, 120, '_SUBGROUPNAME_120', 'R21 no check css'),
+(1003, 103, '_SUBGROUPNAME_1003', 'R4'),
+(1004, 104, '_SUBGROUPNAME_1004', 'R5 no check css'),
+(2010, 110, '_SUBGROUPNAME_210', 'R11n'),
+(1013, 113, '_SUBGROUPNAME_113', 'R14'),
+(2004, 104, '_SUBGROUPNAME_1004', 'R5 solo check css'),
+(2005, 105, '_SUBGROUPNAME_105', 'R6 solo check css'),
+(2011, 111, '_SUBGROUPNAME_111', 'R12 solo check css'),
+(2020, 120, '_SUBGROUPNAME_120', 'R21 solo check css'),
+(1022, 122, '_SUBGROUPNAME_122', 'req 23'),
+(1023, 123, '_SUBGROUPNAME_123', 'req 24'),
+(1008, 108, '_SUBGROUPNAME_1008', 'R9'),
+(1009, 109, '_SUBGROUPNAME_1009', 'R10'),
+(1012, 112, '_SUBGROUPNAME_1012', 'R13'),
+(1014, 114, '_SUBGROUPNAME_1014', 'R15'),
+(1015, 115, '_SUBGROUPNAME_1015', 'R16'),
+(1016, 116, '_SUBGROUPNAME_1016', 'R17'),
+(1018, 118, '_SUBGROUPNAME_1018', 'R19'),
+(1019, 119, '_SUBGROUPNAME_1019', 'R20'),
+(1021, 121, '_SUBGROUPNAME_1021', 'R22');
 
--- Dumping data for table `languages`
+# Dumping data for table `languages`
 
 INSERT INTO `languages` (`language_code`, `charset`, `reg_exp`, `native_name`, `english_name`, `status`) VALUES
 ('eng', 'utf-8', 'en([-_][[:alpha:]]{2})?|english', 'English', 'English', 1);
 
--- Dumping data for table `lang_codes`
+# Dumping data for table `lang_codes`
 
 INSERT INTO `lang_codes` (`code_3letters`, `direction`, `code_2letters`, `description`) VALUES
 ('aar', 'ltr', 'aa', 'Afar'),
@@ -2294,7 +2360,7 @@ INSERT INTO `lang_codes` (`code_3letters`, `direction`, `code_2letters`, `descri
 ('vai', 'ltr', '', 'Vai'),
 ('ven', 'ltr', 've', 'Venda'),
 ('vie', 'ltr', 'vi', 'Vietnamese'),
-('vol', 'ltr', 'vo', 'VolapÃ‚Âk'),
+('vol', 'ltr', 'vo', 'VolapÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âk'),
 ('vot', 'ltr', '', 'Votic'),
 ('wak', 'ltr', '', 'Wakashanlanguages'),
 ('wal', 'ltr', '', 'Walamo'),
@@ -2318,7 +2384,19 @@ INSERT INTO `lang_codes` (`code_3letters`, `direction`, `code_2letters`, `descri
 ('zun', 'ltr', '', 'Zuni'),
 ('zxx', 'ltr', '', 'Nolinguisticcontent');
 
--- Dumping data for table `subgroup_checks`
+# Dumping data for table `privileges`
+
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES
+(1, 'web_accessibility_checker', 'Web accessibility checker', '2010-05-23 22:42:45', 'checker/index.php', 1, 1),
+(2, 'users', 'User management: Create, edit, delete users.', '2010-05-23 22:42:45', 'user/index.php', 2, 0),
+(3, 'guidelines', 'Guideline management: Create, edit, delete, enable, disable guidelines.', '2010-05-23 22:42:45', 'guideline/index.php', 3, 0),
+(4, 'checks', 'Check management: Create, edit, delete, enable, disable checks.', '2010-05-23 22:42:45', 'check/index.php', 4, 0),
+(5, 'language', 'Language management: Create, edit, delete, enable, disable languages.', '2010-05-23 22:42:45', 'language/index.php', 5, 0),
+(6, 'translation', 'Translation: Translate all Achecker terms into other languages.', '2010-05-23 22:42:45', 'translation/index.php', 6, 0),
+(7, 'profile', 'Profile management: Edit profile, change password or email.', '2010-05-23 22:42:45', 'profile/index.php', 8, 0),
+(8, 'updater', 'Updater: Install, create, edit updates.', NOW(), 'updater/index.php', 7, 0);
+
+# Dumping data for table `subgroup_checks`
 
 INSERT INTO `subgroup_checks` (`subgroup_id`, `check_id`) VALUES
 (1, 1),
@@ -3028,10 +3106,6 @@ INSERT INTO `subgroup_checks` (`subgroup_id`, `check_id`) VALUES
 (253, 55),
 (253, 73),
 (253, 86),
-(253, 221),
-(253, 222),
-(253, 223),
-(253, 224),
 (253, 251),
 (253, 252),
 (255, 26),
@@ -3159,10 +3233,11 @@ INSERT INTO `subgroup_checks` (`subgroup_id`, `check_id`) VALUES
 (293, 224),
 (293, 251),
 (293, 252),
-(295, 221),
-(295, 222),
-(295, 223),
-(295, 224),
+(295, 301),
+(295, 302),
+(295, 303),
+(295, 304),
+(295, 305),
 (296, 76),
 (296, 89),
 (296, 103),
@@ -3228,10 +3303,11 @@ INSERT INTO `subgroup_checks` (`subgroup_id`, `check_id`) VALUES
 (332, 176),
 (332, 177),
 (333, 253),
-(333, 254),
-(333, 255),
-(333, 256),
-(333, 257),
+(333, 306),
+(333, 307),
+(333, 308),
+(333, 309),
+(333, 310),
 (334, 11),
 (342, 261),
 (343, 98),
@@ -3272,10 +3348,11 @@ INSERT INTO `subgroup_checks` (`subgroup_id`, `check_id`) VALUES
 (358, 86),
 (358, 251),
 (358, 252),
-(360, 221),
-(360, 222),
-(360, 223),
-(360, 224),
+(360, 301),
+(360, 302),
+(360, 303),
+(360, 304),
+(360, 305),
 (361, 116),
 (361, 117),
 (361, 176),
@@ -3330,7 +3407,7 @@ INSERT INTO `subgroup_checks` (`subgroup_id`, `check_id`) VALUES
 (377, 269),
 (377, 272);
 
--- Dumping data for table `techniques`
+# Dumping data for table `techniques`
 
 INSERT INTO `techniques` (`subgroup_id`, `check_id`, `technique`) VALUES
 (224, 1, 'F38'),
@@ -3715,7 +3792,7 @@ INSERT INTO `techniques` (`subgroup_id`, `check_id`, `technique`) VALUES
 (321, 274, 'G107'),
 (322, 276, 'G61');
 
--- Dumping data for table `test_pass`
+# Dumping data for table `test_pass`
 
 INSERT INTO `test_pass` (`check_id`, `next_check_id`) VALUES
 (1, 3),
@@ -3758,40 +3835,47 @@ INSERT INTO `test_pass` (`check_id`, `next_check_id`) VALUES
 (255, 223),
 (256, 224);
 
-# insert the default theme
-INSERT INTO `themes` VALUES ('AChecker', '0.1', 'default', NOW(), 'This is the default AChecker theme and cannot be deleted as other themes inherit from it. Please do not alter this theme directly as it would complicate upgrading. Instead, create a new theme derived from this one.', 2);
+# Dumping data for table `themes`
 
-# insert privileges, user groups and user group privileges
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (1, 'web_accessibility_checker', 'Web accessibility checker', NOW(), 'checker/index.php', 1, 1);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (2, 'users', 'User management: Create, edit, delete users.', NOW(), 'user/index.php', 2, 0);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (3, 'guidelines', 'Guideline management: Create, edit, delete, enable, disable guidelines.', NOW(), 'guideline/index.php', 3, 0);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (4, 'checks', 'Check management: Create, edit, delete, enable, disable checks.', NOW(), 'check/index.php', 4, 0);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (5, 'language', 'Language management: Create, edit, delete, enable, disable languages.', NOW(), 'language/index.php', 5, 0);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (6, 'translation', 'Translation: Translate all Achecker terms into other languages.', NOW(), 'translation/index.php', 6, 0);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (7, 'profile', 'Profile management: Edit profile, change password or email.', NOW(), 'profile/index.php', 8, 0);
-INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `link`, `menu_sequence`, `open_to_public`) VALUES (8, 'updater', 'Updater: Install, create, edit updates.', NOW(), 'updater/index.php', 7, 0);
 
-INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (1, 'Administrator', 'Administrate guidelines, checks, users, languages.', now());
-INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (2, 'User', 'Regular user. Can make decision on likely and potential problems. When a user revisits a report, decisions previously made for Likely and Potential problems will be restored for the matching URL. Regular users can create custom guidelines.', now());
-INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (3, 'Guideline/Check editor', 'Create, edit, delete custom checks and guidelines.', now());
-INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`) VALUES (4, 'Translator', 'Translate AChecker terms into a foreign lanugage.', now());
+INSERT INTO `themes` (`title`, `version`, `dir_name`, `last_updated`, `extra_info`, `status`) VALUES
+('AChecker', '0.1', 'default', '2010-05-23', 'This is the default AChecker theme and cannot be deleted as other themes inherit from it. Please do not alter this theme directly as it would complicate upgrading. Instead, create a new theme derived from this one.', 2);
 
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 1);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 2);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 3);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 4);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 5);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 7);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (1, 8);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 1);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 3);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (2, 7);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 1);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 3);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 4);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (3, 7);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (4, 1);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (4, 6);
-INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES (4, 7);
+-- --------------------------------------------------------
 
-INSERT INTO `users` (`user_id`, `login`, `password`, `user_group_id`, `first_name`, `last_name`, `web_service_id`, `status`, `create_date`) VALUES (1, 'ATutor', '0cbab2aec26a53b0107487d43b1b8eb29384ad10', 2, 'ATutor', 'ATutor', '2f4149673d93b7f37eb27506905f19d63fbdfe2d', 1, '2009-03-11 10:16:55');
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `login`, `password`, `user_group_id`, `first_name`, `last_name`, `email`, `web_service_id`, `status`, `create_date`, `last_login`, `preferences`) VALUES
+(1, 'ATutor', '0cbab2aec26a53b0107487d43b1b8eb29384ad10', 2, 'ATutor', 'ATutor', NULL, '2f4149673d93b7f37eb27506905f19d63fbdfe2d', 1, '2009-03-11 10:16:55', NULL, NULL);
+
+# Dumping data for table `user_groups`
+
+INSERT INTO `user_groups` (`user_group_id`, `title`, `description`, `create_date`, `last_update`) VALUES
+(1, 'Administrator', 'Administrate guidelines, checks, users, languages.', '2010-05-23 22:42:45', NULL),
+(2, 'User', 'Regular user. Can make decision on likely and potential problems. When a user revisits a report, decisions previously made for Likely and Potential problems will be restored for the matching URL. Regular users can create custom guidelines.', '2010-05-23 22:42:45', NULL),
+(3, 'Guideline/Check editor', 'Create, edit, delete custom checks and guidelines.', '2010-05-23 22:42:45', NULL),
+(4, 'Translator', 'Translate AChecker terms into a foreign lanugage.', '2010-05-23 22:42:45', NULL);
+
+# Dumping data for table `user_group_privilege`
+
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5),
+(1, 7),
+(1, 8),
+(2, 1),
+(2, 3),
+(2, 7),
+(3, 1),
+(3, 3),
+(3, 4),
+(3, 7),
+(4, 1),
+(4, 6),
+(4, 7);
+

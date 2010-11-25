@@ -2,13 +2,14 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto          */
+/* Copyright (c) 2008 - 2010                                            */
+/* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
+// $Id$
 
 define('AC_INCLUDE_PATH', '../include/');
 
@@ -92,6 +93,12 @@ if ($_GET['uri'] == 'referer')
 // a flag to record if there's problem validating html thru 3rd party web service
 $error_happen = false;
 
+// CSS Validation
+if (isset($_POST["enable_css_validation"]))
+	include(AC_INCLUDE_PATH. "classes/CSSValidator.class.php");
+
+
+
 // validate html
 if (isset($_POST["enable_html_validation"]))
 	include(AC_INCLUDE_PATH. "classes/HTMLValidator.class.php");
@@ -121,6 +128,10 @@ if ($_POST["validate_uri"])
 		
 		if (isset($_POST["enable_html_validation"]))
 			$htmlValidator = new HTMLValidator("uri", $uri);
+	
+		//CSS Validator
+		if (isset($_POST["enable_css_validation"]))
+			$cssValidator = new CSSValidator("uri", $uri);	
 
 		if (isset($_POST["show_source"]))
 			$source_array = file($uri);

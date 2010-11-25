@@ -2,13 +2,14 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto          */
+/* Copyright (c) 2008 - 2010                                            */
+/* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
+// $Id$
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 
@@ -134,6 +135,9 @@ define('CACHE_TIME_OUT',	60);
 
 /* the folder where seal icons locate*/
 define('SEAL_ICON_FOLDER', 'images/');
+
+/* the default height of the image preview */
+define("DISPLAY_PREVIEW_IMAGE_HEIGHT", 50);
 
 // separator used in composing URL
 if (strpos(@ini_get('arg_separator.input'), ';') !== false) {

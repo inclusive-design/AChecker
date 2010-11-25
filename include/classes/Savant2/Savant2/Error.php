@@ -4,7 +4,7 @@
 * 
 * Provides a simple error class for Savant.
 *
-* $Id: Error.php,v 1.2 2005/08/09 22:19:39 pmjones Exp $
+* $Id$
 * 
 * @author Paul M. Jones <pmjones@ciaweb.net>
 * 

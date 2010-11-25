@@ -14,7 +14,7 @@ class Savant2_Exception extends Exception { };
 * 
 * Throws PHP5 exceptions for Savant.
 *
-* $Id: Savant2_Error_exception.php,v 1.4 2005/08/09 22:19:39 pmjones Exp $
+* $Id$
 * 
 * @author Paul M. Jones <pmjones@ciaweb.net>
 * 

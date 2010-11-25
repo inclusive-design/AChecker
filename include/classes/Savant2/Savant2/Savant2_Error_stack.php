@@ -14,7 +14,7 @@ require_once 'PEAR/ErrorStack.php';
 * 
 * Provides an interface to PEAR_ErrorStack class for Savant.
 *
-* $Id: Savant2_Error_stack.php,v 1.2 2005/08/09 22:19:39 pmjones Exp $
+* $Id$
 * 
 * @author Paul M. Jones <pmjones@ciaweb.net>
 * 

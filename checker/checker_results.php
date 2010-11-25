@@ -2,13 +2,14 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto          */
+/* Copyright (c) 2008 - 2010                                            */
+/* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
+// $Id$
 
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined in checker_input_form.php.");
 
@@ -19,10 +20,28 @@ include_once(AC_INCLUDE_PATH. "classes/Utility.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/UserLinksDAO.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/UserDecisionsDAO.class.php");
 
+
+if (isset($htmlValidator))
+{
+	$num_of_html_errors = $htmlValidator->getNumOfValidateError();
+
+	$savant->assign('htmlValidator', $htmlValidator);
+	$savant->assign('num_of_html_errors', $num_of_html_errors);
+}
+
+// CSS Validator
+if (isset($cssValidator))
+{
+	$num_of_css_errors = $cssValidator->getNumOfValidateError();
+
+	$savant->assign('cssValidator', $cssValidator);
+	$savant->assign('num_of_css_errors', $num_of_css_errors);
+}
+
 if (isset($aValidator))
 {
 	// find out selected guidelines
-	foreach ($_POST["gid"] as $gid)
+	foreach ($_REQUEST["gid"] as $gid)
 		$gids .= $gid . ",";
 	
 	$gids = substr($gids, 0, -1);
@@ -64,20 +83,20 @@ if (isset($aValidator))
 			if ($_SESSION['user_id'] > 0) $allow_set_decision = 'true';
 		}
 	}
-	else if (isset($_POST['referer_report']))
+	else if (isset($_REQUEST['referer_report']))
 	{
 		$from_referer = 'true';
-		if (isset($_POST['referer_user_link_id'])) 
+		if (isset($_REQUEST['referer_user_link_id'])) 
 		{
-			$user_link_id = $_POST['referer_user_link_id'];
+			$user_link_id = $_REQUEST['referer_user_link_id'];
 			if ($_SESSION['user_id'] > 0) $allow_set_decision = 'true';
 		}
 	}
-	else if (isset($_SESSION['user_id']) && $_POST["validate_uri"])
+	else if (isset($_SESSION['user_id']) && $_REQUEST["validate_uri"])
 	{
 		// save errors into user_links
 		$userLinksDAO = new UserLinksDAO();
-		$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_POST['uri'], $gids);
+		$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_REQUEST['uri'], $gids);
 		
 		// save errors into user_decisions 
 		$userDecisionsDAO = new UserDecisionsDAO();
@@ -89,7 +108,7 @@ if (isset($aValidator))
 	$a_rpt = new HtmlRpt($errors, $user_link_id);
 	$a_rpt->setAllowSetDecisions($allow_set_decision);
 	$a_rpt->setFromReferer($from_referer);
-	if (isset($_POST['show_source'])) $a_rpt->setShowSource('true', $source_array);
+	if (isset($_REQUEST['show_source'])) $a_rpt->setShowSource('true', $source_array);
 	
 	$a_rpt->generateHTMLRpt();
 
@@ -99,6 +118,7 @@ if (isset($aValidator))
 	$num_of_potential_problems = $a_rpt->getNumOfPotentialProblems();
 	$num_of_potential_problems_no_decision = $a_rpt->getNumOfPotentialWithFailDecisions();
 	
+
 	// no any problems or all problems have pass decisions, display seals when no errors
 	if ($num_of_errors == 0 && 
 	    ($num_of_likely_problems == 0 && $num_of_potential_problems == 0 ||
@@ -131,15 +151,6 @@ if (isset($aValidator))
 	}
 }
 
-if (isset($htmlValidator))
-{
-	$num_of_html_errors = $htmlValidator->getNumOfValidateError();
-
-	$savant->assign('htmlValidator', $htmlValidator);
-	$savant->assign('num_of_html_errors', $num_of_html_errors);
-	$savant->assign('num_of_html_errors', $num_of_html_errors);
-
-}
 
 $savant->display('checker/checker_results.tmpl.php');
 ?>

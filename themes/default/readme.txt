@@ -1,4 +1,3 @@
-
 Theme:	AChecker Default Theme
 Date:		December 2008
 

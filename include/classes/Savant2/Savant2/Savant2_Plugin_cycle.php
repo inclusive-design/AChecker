@@ -9,7 +9,7 @@ require_once 'Savant2/Plugin.php';
 * 
 * Cycles through a series of values.
 * 
-* $Id: Savant2_Plugin_cycle.php,v 1.2 2005/08/09 22:19:39 pmjones Exp $
+* $Id$
 * 
 * @author Paul M. Jones <pmjones@ciaweb.net>
 * 

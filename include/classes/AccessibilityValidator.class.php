@@ -2,13 +2,14 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 by Greg Gay, Cindy Li                             */
-/* Adaptive Technology Resource Centre / University of Toronto          */
+/* Copyright (c) 2008 - 2010                                            */
+/* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
+// $Id$
 
 /**
 * AccessibilityValidator
@@ -33,6 +34,7 @@ define("DISPLAY_PREVIEW_HTML_LENGTH", 100);
 class AccessibilityValidator {
 
 	// all private
+	var $num_success;
 	var $num_of_errors = 0;              // number of errors
 	
 	var $validate_content;               // html content to check
@@ -87,7 +89,7 @@ class AccessibilityValidator {
 	}
 	
 	/** private
-	 * set global vars used in BasicChecks.class.php and BasicFunctions.class.php
+	 * set global vars used in Checks.class.php and BasicFunctions.class.php
 	 * to fasten the validation process.
 	 * return nothing.
 	 */
@@ -136,8 +138,7 @@ class AccessibilityValidator {
 		
 		if (count($dom->find('html')) == 0)
 		{
-			$dom = str_get_dom("<html>\n".$content."\n</html>");
-			$this->line_offset += 1;
+			$dom = str_get_dom("<html>".$content."</html>");
 		}
 			
 		return $dom;
@@ -232,22 +233,7 @@ class AccessibilityValidator {
 			}
 			$this->prerequisite_check_array = $prerequisite_check_array;
 
-			// generate array of next check_ids
-//			$rows = $checksDAO->getOpenNextChecksByGuidelineIDs($guideline_query);
-//
-//			if (is_array($rows))
-//			{
-//				foreach ($rows as $id => $row)
-//				{
-//					if ($row["check_id"] <> $prev_check_id)  $next_check_array[$row["check_id"]] = array();
-//					
-//					array_push($next_check_array[$row["check_id"]], $row["next_check_id"]);
-//					
-//					$prev_check_id = $row["check_id"];
-//				}
-//			}
-//			$this->next_check_array = $next_check_array;
-//			debug($this->next_check_array);
+
 			return true;
 		}
 	}
@@ -270,9 +256,7 @@ class AccessibilityValidator {
 			{
 				// check prerequisite ids first, if fails, report failure and don't need to proceed with $check_id
 				$prerequisite_failed = false;
-//debug($check_id);
-//debug($this->prerequisite_check_array[$check_id]);
-//debug($this->next_check_array[$check_id]);
+
 				if (is_array($this->prerequisite_check_array[$check_id]))
 				{
 					foreach ($this->prerequisite_check_array[$check_id] as $prerequisite_check_id)
@@ -292,15 +276,6 @@ class AccessibilityValidator {
 				{
 					$check_result = $this->check($e, $check_id);
 					
-					// if check_id passes, proceed with next checks
-//					if ($check_result == SUCCESS_RESULT)
-//					{
-//						if (is_array($this->next_check_array[$check_id]))
-//							foreach ($this->next_check_array[$check_id] as $next_check_id)
-//							{
-//								$this->check($e, $next_check_id);
-//							}
-//					}
 				}
 			}
 			
@@ -319,8 +294,7 @@ class AccessibilityValidator {
 	 */
 	private function check($e, $check_id)
 	{
-		global $msg, $base_href;
-		
+		global $msg, $base_href, $tag_size;
 		// don't check the lines before $line_offset
 		if ($e->linenumber <= $this->line_offset) return;
 		
@@ -329,11 +303,18 @@ class AccessibilityValidator {
 		// has not been checked
 		if (!$result)
 		{
-			// run function for $check_id
+		
+			
+			
 			$check_result = eval($this->check_func_array[$check_id]);
 			
+			//CSS code variable
+			$css_code = BasicChecks::getCssOutput();
+		
+								
 			$checksDAO = new ChecksDAO();
 			$row = $checksDAO->getCheckByID($check_id);
+			
 			if (is_null($check_result))
 			{ // when $check_result is not true/false, must be something wrong with the check function.
 			  // show warning message and skip this check
@@ -343,23 +324,26 @@ class AccessibilityValidator {
 				$check_result = true;
 			}
 			
-			if ($check_result)  // success
+			if ($check_result===true)  // success
 			{
 				$result = SUCCESS_RESULT;
-			}
+				
+				//MB 
+				// number of success checks
+				if(isset($this->num_success[$check_id]))
+					$this->num_success[$check_id]++;
+				else 
+					$this->num_success[$check_id]=1;
+			} 
 			else
 			{
 				$result = FAIL_RESULT;
 			}
-
-			// minus out the $line_offset from $linenumber 
+			
+				
 			if ($result == FAIL_RESULT)
 			{
-				// find out checked html code
-				// http://www.atutor.ca/atutor/mantis/view.php?id=3768
-				// http://www.atutor.ca/atutor/mantis/view.php?id=3797
-				// Display not only the start tag, but a substring from start tag to end tag.
-				// Displaying checked html is in HTMLRpt.class.php
+
 				if (strlen($e->outertext) > DISPLAY_PREVIEW_HTML_LENGTH) 
 					$html_code = substr($e->outertext, 0, DISPLAY_PREVIEW_HTML_LENGTH) . " ...";
 				else 
@@ -382,11 +366,21 @@ class AccessibilityValidator {
 				    else $image_alt = $e->attr['alt'];
 				}
 				
-				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result, $image, $image_alt);
+				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result, $image, $image_alt, $css_code);
 			}
 		}
 		
 		return $result;
+	}
+	
+	//MB
+	/**
+	 * public 
+	 * get number of success errors
+	 */
+	public function get_num_success()
+	{
+		return $this->num_success;
 	}
 	
 	/**
@@ -415,9 +409,9 @@ class AccessibilityValidator {
 	 * $check_id: check id
 	 * $result: result to save
 	 */
-	private function save_result($line_number, $col_number, $html_code, $check_id, $result, $image, $image_alt)
+	private function save_result($line_number, $col_number, $html_code, $check_id, $result, $image, $image_alt, $css_code)
 	{
-		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result, "image"=>$image, "image_alt"=>$image_alt));
+		array_push($this->result, array("line_number"=>$line_number, "col_number"=>$col_number, "html_code"=>$html_code, "check_id"=>$check_id, "result"=>$result, "image"=>$image, "image_alt"=>$image_alt, "css_code"=>$css_code));
 		
 		return true;
 	}
@@ -521,6 +515,5 @@ class AccessibilityValidator {
 	
 		return $rtn;
 	}
-
 }
 ?>
