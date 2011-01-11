@@ -738,19 +738,21 @@ class BasicChecks {
 			
 			if(stripos($uri,".php")!==false || stripos($uri,".html")!==false || stripos($uri,".asp")!==false || stripos($uri,".htm")!==false || stripos($uri,".xhtml")!==false || stripos($uri,".xhtm")!==false)
 			{	
+				// must remove part after finished
 				//devo eliminare la parte dopo l'ultimo /
 				$uri=strrev($uri);
 				$posizione= stripos($uri,"/");
 				$uri=strrev($uri);
 				$uri=substr($uri,0,-$posizione);
 			}
+			// if there ', delete the / at the end of the url
 			//se c'e', elimino lo / alla fine dell'url
 			if(substr($uri,-1)=="/")
 				$uri=substr($uri,0,-1);
 				
 			return $uri;
 	}
-	
+	// removes all elements figlil children of $ e returns the contents as "plaintext"
 	//rimuove tutti gli elementi figlil figli di $e e restituisce il contenuto sotto forma di "plaintext"
 	public static function remove_children($e)
 	{
@@ -774,6 +776,10 @@ class BasicChecks {
 	
 	
 	/*
+	* Search and returns the value of a property 'CSS (the value between "" and ";")
+	* Searches in style and inline style sheet (id, class, property name)
+	* It takes as parameters the item and the name of the property 
+	*
 	* Ricerca e restituisce il valore di una proprieta' CSS (il valore compreso tra ":" e ";")
 	* Esegue la ricerca nello stile inline e nel foglio di stile (id, class, nome proprietà)
 	* Prende come parametri l'elemento e il nome della proprieta'
@@ -797,6 +803,10 @@ class BasicChecks {
 			}
 		}
 		
+		//Internal control over the style and the external styles
+		//$best: will store 'the value of the priority rule that has'more' contained in the high-style indoor / outdoor
+		//about the item and its $ e '$ p
+
 		//controllo sullo stile interno e sugli stili esterni
 		//$best: memorizzera' il valore della regola che ha priorita' piu' alta contenuta nello stile interno/esterno
 		//relativamente all'elemento $e e alla proprita' $p
@@ -817,6 +827,11 @@ class BasicChecks {
 		
 		$best = BasicChecks::getPriorityInfo ( $best, $tag );
 		
+		// * try, in the instructions inside / outside
+		// apply any property 'of * if:
+		// internal or external style is not 'declare the property' for the element $ p $ and
+		// if that is declared in * important, but not that of the IOE and style '
+		//
 		//cerco *, nel foglio interno/esterno
 		//applico l'eventuale proprieta' di * se:
 		//nello stile interno o esterno non e' dichiarata la proprieta' $p per l'elemento $e
@@ -828,6 +843,9 @@ class BasicChecks {
 		if ($best == null || (stripos ( $best ["valore"], "!important" ) === false && stripos ( $best_all ["valore"], "!important" ) !== false))
 			$best = $best_all;
 			
+		// if coming here was not the style inline! important since the early control
+		// inline style has always priority 'rule, unless a rule in a style indoor / outdoor does not contain! important
+		//
 		//se arrivo qui lo stile inline non ha !important dato che lo controllo all'inizio
 		//lo stile inline ha sempre priorita' massima, a meno che una regola in uno stile interno/esterno non contenga  !important
 		
@@ -838,11 +856,13 @@ class BasicChecks {
 
 				return $inline;
 		}
+		// inline style if there is not $ p 'returns the value of $ best
+		//
 		//se nello stile inline $p non c'e' restituisco il valore di $best
 		//echo("<p>regola</p>");
 		//print_r($best["css_rule"]);
 		
-
+		//css array containing the CSS rules are printed in output
 		//array css contiene le regole dei css che verranno stampate in output
 		
 
@@ -879,6 +899,9 @@ class BasicChecks {
 	
 	public static function get_p_css_a($e, $p, $link_sel) {
 		
+		// $ best: will store 'the value of the priority rule that has'more' contained in the high-style, indoor / outdoor
+		// relative to the element $ e '$ p
+		//
 		//$best: memorizzera' il valore della regola che ha priorita' piu' alta contenuta nello stile interno/esterno,
 		//relativamente all'elemento $e e alla proprita' $p
 		$best = null;
@@ -897,6 +920,7 @@ class BasicChecks {
 		$tag = BasicChecks::GetElementStyle ( $e, $e->tag . ":" . $link_sel, $p );
 		$best = BasicChecks::getPriorityInfo ( $best, $tag );
 		
+		// if $ p style inline there is no 'I return the best value of $
 		//se nello stile inline $p non c'e' restituisco il valore di $best
 		//echo("<p>regola</p>");
 		//print_r($best["css_rule"]);
@@ -933,7 +957,13 @@ class BasicChecks {
 	
 	}
 	
-	/*Prende in input due strutture dati rappresentanti due regole css
+	/*
+	It takes in input two data structures representing two css rules
+	(every frame contains the value of property 'and the number of id, class, and tag content in the selector)
+	Returns the rule that has highest priority according to the type of selectors
+	If the two rules have the same priority, it returns the position with more
+
+	Prende in input due strutture dati rappresentanti due regole css
 	(ogni struttura contiene il valore della proprieta' e il numero di id, class e tag contenuti nel selettore)
 	Restituisce la regola che ha priorità più alta in base alla tipologia dei selettori
 	Se le due regole hanno identica priorita, restituisce quella con posizione maggiore
@@ -949,35 +979,44 @@ class BasicChecks {
 			$best = $info1;
 		} elseif (stripos ( $info1 ["valore"], "!important" ) === false && stripos ( $info2 ["valore"], "!important" ) !== false) {
 			$best = $info2;
-		} else //hanno entrambe !important o non lo hanno nessuna della due, quindi verifico il numeo di id
+		} else //have both! important or do not have any of the two, so I check the id
+				//hanno entrambe !important o non lo hanno nessuna della due, quindi verifico il numeo di id
 		{
 			
 			if ($info1 ["num_id"] > $info2 ["num_id"]) {
 				$best = $info1;
 			} elseif ($info1 ["num_id"] < $info2 ["num_id"]) {
 				$best = $info2;
-			} else { //stesso numero di id, controllo il numero di class
+			} else { // same id number, control the number of class
+					//stesso numero di id, controllo il numero di class
 				
 
 				if ($info1 ["num_class"] > $info2 ["num_class"]) {
 					$best = $info1;
 				} elseif ($info1 ["num_class"] < $info2 ["num_class"]) {
 					$best = $info2;
-				} else { //stesso numero di id e class, controllo in numero di tag
+				} else { // same id and class number, check number of tags
+						//stesso numero di id e class, controllo in numero di tag
 					
 
-					if ($info1 ["num_tag"] > $info2 ["num_tag"]) { //stesso o maggiore numero di id, class e tag: la priorità è della nuova regola
+					if ($info1 ["num_tag"] > $info2 ["num_tag"]) { 
+								// same or greater number of id, class and tags: is the priority of the new rule
+								//stesso o maggiore numero di id, class e tag: la priorità è della nuova regola
 						$best = $info1;
 					} elseif ($info1 ["num_tag"] < $info2 ["num_tag"]) {
 						$best = $info2;
 					} else {
+
+						// the two rules are completely equivalent, and returns
+						// with a smaller css id (the inner leaf idcss == 0).
 						//le due regole sono perfettamente equivalenti, quindi restituisco
-						// con idcss piu' piccolo (idcss == 0 � il foglio interno).
+						// con id css piu' piccolo (idcss == 0 � il foglio interno).
 						if ($info1 ["css_rule"] ["idcss"] > $info2 ["css_rule"] ["idcss"])
 							$best = $info1;
 						elseif ($info1 ["css_rule"] ["idcss"] < $info2 ["css_rule"] ["idcss"])
 							$best = $info2;
-						else { //le due regole equivalenti sono nello stesso css (interno o esterno)
+						else { // the two rules are equivalent in the same css (internal or external)
+								//le due regole equivalenti sono nello stesso css (interno o esterno)
 							
 
 							if ($info1 ["css_rule"] ["posizione"] > $info2 ["css_rule"] ["posizione"])
@@ -997,6 +1036,7 @@ class BasicChecks {
 	}
 	
 	/*
+	* Check for text-decoration: blink
 	* Controlla la presenza di text-decoration: blink
 	*/
 	public static function check_blink($e, $content_dom) {
@@ -1010,6 +1050,7 @@ class BasicChecks {
 	}
 	
 	/**
+	 * Function that tries to separate the structure of a style (internal or external) and derives from the selectors and attributes
 	 * Funzione che cerca suddivide la struttura di uno stile (interno o esterno) e ne ricava i selettori e gli attributi
 	 */
 	public static function GetCSSDom($css_content, $b) {
@@ -1018,6 +1059,9 @@ class BasicChecks {
 		global $attributi;
 		global $attributo_selettore;
 		
+
+		// position 0 memorize the interior style (all those in <style> </ style>, including @ import
+		// to initialize the array (), even though there is no style interior.
 		//in posizione 0 memorizzo lo stile interno (tutti quelli in <style></style>, inclusi gli @import
 		//lo inizializzo a array(), anche se non c'è nessuno stile interno.
 		//$selettori[0]=array();
@@ -1043,7 +1087,10 @@ class BasicChecks {
 		//MB elimino i commenti
 		$css_content = preg_replace ( '/\/\*(.|\s)*?\*\//', '', $css_content );
 		
-		/* Inserisco all'inizio del codice del CSS la parentesi graffa '}' per facilitare
+		/* Inserted at the beginning of the CSS code brace '}' to facilitate
+				the extraction of elements: each reading taken from '}' to '}'
+
+		Inserisco all'inizio del codice del CSS la parentesi graffa '}' per facilitare
 			   l'estrazione degli elementi: ad ogni lettura prendo da '}' a '}' */
 		$css_content = '}' . $css_content;
 		$i = 0;
@@ -1054,7 +1101,7 @@ class BasicChecks {
 			$elemento [$i] = trim ( $elemento [1] );
 			$selettore = substr ( $elemento [1], 0, strpos ( $elemento [1], '{' ) );
 			$selettori [$b] [$i] = trim ( $selettore ) . "{";
-			
+			// Inside  list $selectori have selectors;
 			// Dentro $selettori ho la lisat dei selettori;
 			if (eregi ( '\{(.*)\}', $elemento [1], $attributo )) {
 				$attributo [1] = trim ( $attributo [1] );
@@ -1064,7 +1111,7 @@ class BasicChecks {
 			while ( eregi ( '^([^;]*);', $attributi [$b] [$i], $singolo ) ) {
 				$attributi [$b] [$i] = substr ( $attributi [$b] [$i], strlen ( $singolo [1] ) + 1 );
 				$attributo_selettore [$b] [$i] [$cont] = trim ( $singolo [1] );
-				
+				// controls to eliminate the white spaces by the selectors
 				//Controlli per eliminiare gli spazi bianchi dai selettori
 				$pos_spazio = strpos ( $attributo_selettore [$b] [$i] [$cont], ':' );
 				$stringa_prima = substr ( $attributo_selettore [$b] [$i] [$cont], 0, $pos_spazio );
@@ -1080,10 +1127,10 @@ class BasicChecks {
 		}
 	
 	}
-	
+	// return the property value of $val in inline style $stile
 	//restituisce il valore della proprieta $val in uno stile inline $stile
 	public static function GetElementStyleInline($stile, $val) {
-		
+		// create an array containing all the rules are separated by ";"
 		//creo un array contenente tutte le regole separate da ";"
 		$array_pr = split ( ";", $stile );
 		$arr_val = array ();
@@ -1091,6 +1138,7 @@ class BasicChecks {
 		
 		$i = 0;
 		foreach ( $array_pr as $regola ) {
+			// break every rule, separated by ':' in: property => value
 			//spezzo ogni regola, separata dai ":" in: proprieta=>valore
 			$appoggio = split ( ":", trim ( $regola ) );
 			if (isset ( $array_val [trim ( $appoggio [0] )] ) && stripos ( $array_val [$appoggio [0]] ["val"], "!important" ) !== false) {
@@ -1105,7 +1153,7 @@ class BasicChecks {
 			}
 			$i ++;
 		}
-		
+		// Find if the prpertiy $val is defined and returned
 		//cerco se la proprieta' $val è definita e la restituisco
 		switch ($val) {
 			case "margin-top" :
@@ -1149,6 +1197,7 @@ class BasicChecks {
 				break;
 			
 			case "background-color" :
+				// Check if there is a background image, if the property exists set to -1
 				//verifico se c'è un'immagine di sfondo, nel caso setto la proprietà a -1
 				if (isset ( $array_regole ["regole"] ["background-image"] ))
 					$valore_proprieta_new = "-1";
@@ -1169,7 +1218,8 @@ class BasicChecks {
 		return $valore_proprieta;
 	
 	}
-	
+	// gets the contents of the 'background / background-color
+	// and returns the background color if defined
 	//riceve il contenuto della proprieta' background/background-color
 	//e restituisce il colore di background se definito
 	public static function getBgColor($stringa_valori) {
@@ -1190,11 +1240,12 @@ class BasicChecks {
 		}
 	
 	}
-	
+	// gets the contents of the property 'margin / padding and returns the value of the margin / padding left
 	//riceve il contenuto della proprieta' margin/padding e restituisce il valore del margin/padding sinistro
 	public static function getLeft($stringa_valori) {
 		
 		$has_important = stripos ( $stringa_valori, "!important" );
+		// remove if there is! important and attach at the end
 		//se c'è rimuovo !important e lo attacco alla fine
 		if ($has_important !== false) {
 			$stringa_valori = str_ireplace ( "!important", "", $stringa_valori );
@@ -1205,7 +1256,7 @@ class BasicChecks {
 		if ($size <= 0)
 			return "";
 		else
-			$val_ret = $array_valori [$size - 1]; //ultimo valore, quindi left
+			$val_ret = $array_valori [$size - 1]; //last value, then left -ultimo valore, quindi left
 		
 
 		if ($has_important === false)
@@ -1214,10 +1265,11 @@ class BasicChecks {
 			return "" . $val_ret . " !important";
 	
 	}
-	
+	// gets the contents of the property margin / padding and returns the value of the margin / padding right
 	//riceve il contenuto della proprieta' margin/padding e restituisce il valore del margin/padding destro
 	public static function getRight($stringa_valori) {
 		$has_important = stripos ( $stringa_valori, "!important" );
+		// if there is !important, remove it
 		//se c'è rimuovo !important
 		if ($has_important !== false) {
 			$stringa_valori = str_ireplace ( "!important", "", $stringa_valori );
@@ -1230,10 +1282,10 @@ class BasicChecks {
 			return "";
 		else {
 			if ($size >= 2)
-				$val_ret = $array_valori [1]; //secondo valore, quindi right
+				$val_ret = $array_valori [1]; //second value, then right - secondo valore, quindi right
 			else
 				
-				$val_ret = $array_valori [0]; //primo valore
+				$val_ret = $array_valori [0]; //first value - primo valore
 		}
 		
 		if ($has_important === false)
@@ -1242,12 +1294,12 @@ class BasicChecks {
 			return "" . $val_ret . " !important";
 	
 	}
-	
+	// gets the contents of the property margin / padding and returns the value of the margin / padding top
 	//riceve il contenuto della proprietà margin/padding e restituisce il valore del margin/padding alto
 	public static function getTop($stringa_valori) {
 		
 		$has_important = stripos ( $stringa_valori, "!important" );
-		//se c'e' rimuovo !important
+		//if there 'remove !important - se c'e' rimuovo !important
 		if ($has_important !== false) {
 			$stringa_valori = str_ireplace ( "!important", "", $stringa_valori );
 			$stringa_valori = trim ( $stringa_valori );
@@ -1257,7 +1309,7 @@ class BasicChecks {
 		if (sizeof ( $array_valori ) <= 0)
 			return "";
 		else
-			$val_ret = $array_valori [0]; //primo valore, quindi top
+			$val_ret = $array_valori [0]; //first value, then top - primo valore, quindi top
 		
 
 		if ($has_important === false)
@@ -1266,12 +1318,12 @@ class BasicChecks {
 			return "" . $val_ret . " !important";
 	
 	}
-	
+	// gets the contents of the property margin / padding and returns the value of the margin / padding bottom
 	//riceve il contenuto della proprietà margin/padding e restituisce il valore del margin/padding basso
 	public static function getBottom($stringa_valori) {
 		
 		$has_important = stripos ( $stringa_valori, "!important" );
-		//se c'e' rimuovo !important
+		//if there 'remove !important - se c'e' rimuovo !important
 		if ($has_important !== false) {
 			$stringa_valori = str_ireplace ( "!important", "", $stringa_valori );
 			$stringa_valori = trim ( $stringa_valori );
@@ -1283,9 +1335,9 @@ class BasicChecks {
 			return "";
 		else {
 			if ($size >= 3)
-				$val_ret = $array_valori [2]; //terzo valore, quindi bottom
+				$val_ret = $array_valori [2]; //thied value, then bottom - terzo valore, quindi bottom
 			else
-				$val_ret = $array_valori [$size - 1]; //secondo o primo valore	
+				$val_ret = $array_valori [$size - 1]; //second or first value -secondo o primo valore	
 		}
 		
 		if ($has_important === false)
@@ -1294,7 +1346,8 @@ class BasicChecks {
 			return "" . $val_ret . " !important";
 	
 	}
-	
+	// function to parameterize the search in the style sheets id, class or generic elements (tags).
+	// $ marker contains "#", ". " or "" for id, respectively, classes, or generics.
 	//funzione per parametrizzare la ricerca nei fogli di stile di id, class o elementi generici (tag).
 	//$marker contiene "#", "." o "" rispettivamente per id, classi o elementi generici.
 	//vecchia: public static function getElementStyleGeneric($e,$marker,$tag,$val,$idcss){
@@ -1317,7 +1370,8 @@ class BasicChecks {
 		return $info_proprieta;
 	
 	}
-	
+	// returns the value of the property  'priority of' higher based on location or "! important"
+	// for example is used to those rules that contain both the definition of margin  and margin-top
 	//restituisce il valore della proprieta' di priorita' più alta in base alla posizione o a "!important"
 	//ad esempio viene usata per quelle regole che contengono sia la definizione di margin che di margin-top
 	public static function get_priority_prop($reg1, $reg2) {
@@ -1341,6 +1395,13 @@ class BasicChecks {
 	}
 	
 	/*
+		$ array_subset_selettori contains all the rules (simple and compound) that ultimately
+		position of the selectors of the rule (eg for elem p: p {} div> p {}. class {p}), the element
+		$ elemento_radice (ie, a tag, id or class)
+		$ val = property to search
+		e_original = $item itself, necessary to verify the association of rules made,
+		checking the children ($ e-> parent () for "or "> ", $ e-> prev_sibling () for" + ")
+
 		$array_subset_selettori contiene tutte le regole (semplici e composte) che hanno in ultima
 		posizione dei selettori della regola (es per elem p: p{}, div>p{}, .class p{}) l'elemento
 		$elemento_radice (cioè un tag, un id o un class)
@@ -1355,12 +1416,19 @@ class BasicChecks {
 		$num_id = 0;
 		$num_class = 0;
 		$num_tag = 0;
-		$num_regola = 0; //lo uso nel foreach per tenere traccia della posizione della regola di priorita' maggiore associata a $elem_radice
+		$num_regola = 0; 
+		// use the foreach to track the location of the rule priority associated with $elem_radice
+		//lo uso nel foreach per tenere traccia della posizione della regola di priorita' maggiore associata a $elem_radice
 		
 
-		$spazio = "{_}"; //serve per i casi in cui uno spazio tra due elementi è significativo. es: "div.class" e "div .class"
+		$spazio = "{_}"; // used for cases in which a space between the two is significant. eg: "div.class" and "div .class"
+						//serve per i casi in cui uno spazio tra due elementi è significativo. es: "div.class" e "div .class"
 		foreach ( $array_subset_selettori as $array_regole ) {
-			
+			// Check if [$regalo]['regole'] contained the property' $val and store it in $valore_proprieta_new
+			// use a case for special properties like margin and padding
+			// for these properties' function BasicChecks: get_priority_prop consider what property has priority more
+			// eg between margin and margin-top (that is, if one then overwrite the other)
+
 			//verifico se in [$regola]["regole"] e' contenuta la proprieta' $val e la memorizzo in $valore_proprieta_new
 			//uso un case per le proprietà particolari come margin e padding
 			//per queste proprieta' la funzione BasicChecks::get_priority_prop valuta quale proprieta' ha la priorita' maggiore
@@ -1371,7 +1439,7 @@ class BasicChecks {
 			$num_class_new = 0;
 			$num_tag_new = 0;
 			$valore_proprieta_new = null;
-			
+			// NOTE: This switch may be included in a function also reused getElementStyleInline
 			//NOTA: questo switch potrebbe essere incluso in una funzione riutilizzata anche da getElementStyleInline
 			switch ($val) {
 				
@@ -1434,6 +1502,7 @@ class BasicChecks {
 			}
 			
 			$ris = null;
+			// if the value of a property  was found, confirm it can be applied to the element considered
 			// se il valore di una proprieta è stato trovato verifico se puo' essere applicata all'elemento considerato	
 			if ($valore_proprieta_new != null) {
 				
@@ -1444,22 +1513,34 @@ class BasicChecks {
 				else
 					$num_tag_new = 1;
 				
-				if (sizeof ( $array_regole ["prev"] ) == 1) //la regola corrente e' "semplice", non ci sono predecessori
+				if (sizeof ( $array_regole ["prev"] ) == 1) // the current rule is '"simple", there are no predecessors
+															//la regola corrente e' "semplice", non ci sono predecessori
 				{
 					$ris = true;
 				
-				} else //la regola e' "composta" (es: div > p a)
+				} else  // the rule is '"compound" (ie: div > p a)
+						//la regola e' "composta" (es: div > p a)
 				{
 					
+					// verification takes into account that a compound rule takes precedence over a simple rule, even if it follows!
+					// eg: "div > p {}" & "{p}" => to <div><p></p></ div> wins over "div > p {}"
+					// check whether the item falls under the "compound"
+					// if so, I check if [$ rule] ['rules'] contained the $ val
+
 					//la verifica tiene conto che una regola composta ha priorità su una "semplice", anche se la semplice è successiva!
 					//es: "div > p{}" & "p{}" => per <div><p></p></div> vince "div > p{}"
 					//controllo se l'elemento rientra nella regola "composta"
 					//se si, verifico se in [$regola]["regole"] � contenuta la propriet� $val
-					$i = 1; //inizio dal primo padre dell'elemento corrente
+
+
+					$i = 1; //start from the first parent of the current element
+							//inizio dal primo padre dell'elemento corrente
 					$e = $e_original;
 					
 					while ( $i < sizeof ( $array_regole ["prev"] ) && $ris !== false ) {
-						
+						// NOTE: This series of if / elseif and switch could be next
+						// be merged into a single set of if / else
+						// $ element can 'contain'> ',' + ', id, class, a tag
 						//NOTA: questa serie di if/elseif e lo switch successivo potrebbero
 						//essere unificati in un unica serie di if/else
 						//$elemento puo' contenere '>', '+', un id, una classe un tag
@@ -1488,7 +1569,8 @@ class BasicChecks {
 								//casi div > p, #id > p, .class > p
 								if (stripos ( $array_regole ["prev"] [$i + 1], "#" ) !== false) {
 									$e = $e->parent ();
-									//id: controllo che il predecessore abbia l'id della regola
+									// id: the control that has the id of the predecessor rule
+									// id: controllo che il predecessore abbia l'id della regola
 									
 
 									if ($e != null && $e->id == str_replace ( '#', '', $array_regole ["prev"] [$i + 1] )) {
@@ -1498,6 +1580,7 @@ class BasicChecks {
 										$ris = false;
 								} elseif (stripos ( $array_regole ["prev"] [$i + 1], "." ) !== false) {
 									$e = $e->parent ();
+									// class: the control of a predecessor has the class rule
 									//class: controllo che il predecessore abbia la class della regola
 									if ($e != null && $e->class == str_replace ( '.', '', $array_regole ["prev"] [$i + 1] )) {
 										$ris = true;
@@ -1506,6 +1589,7 @@ class BasicChecks {
 										$ris = false;
 								} else {
 									$e = $e->parent ();
+									// tag: check that the predecessor is the tag of the rule
 									//tag: controllo che il predecessore sia il tag della regola
 									if ($e != null && $e->tag == $array_regole ["prev"] [$i + 1]) {
 										$ris = true;
@@ -1519,6 +1603,7 @@ class BasicChecks {
 							case "+" :
 								if (stripos ( $array_regole ["prev"] [$i + 1], "#" ) !== false) {
 									$e->prev_sibling ();
+									// id: the control that has the id of the predecessor rule
 									//id: controllo che il predecessore abbia l'id della regola
 									if ($e != null && $e->id == str_replace ( '#', '', $array_regole ["prev"] [$i + 1] )) {
 										$ris = true;
@@ -1527,6 +1612,7 @@ class BasicChecks {
 										$ris = false;
 								} elseif (stripos ( $array_regole ["prev"] [$i + 1], "." ) !== false) {
 									$e->prev_sibling ();
+									// class: the control that his predecessor has the class rule
 									//class: controllo che il predecessore abbia la class della regola
 									if ($e != null && $e->class == str_replace ( '.', '', $array_regole ["prev"] [$i + 1] )) {
 										$ris = true;
@@ -1535,6 +1621,7 @@ class BasicChecks {
 										$ris = false;
 								} else {
 									$e->prev_sibling ();
+									// tag: check that the predecessor is the tag of the rule
 									//tag: controllo che il predecessore sia il tag della regola
 									if ($e != null && $e->tag == $array_regole ["prev"] [$i + 1]) {
 										$ris = true;
@@ -1552,7 +1639,7 @@ class BasicChecks {
 									$e = $e->parent ();
 									while ( $e != null && $e->id != str_replace ( '#', '', $array_regole ["prev"] [$i + 1] ) )
 										$e = $e->parent ();
-										
+									// id: the control that has the id of the predecessor rule
 									//id: controllo che il predecessore abbia l'id della regola
 									if ($e != null && $e->id == str_replace ( '#', '', $array_regole ["prev"] [$i + 1] )) {
 										$ris = true;
@@ -1563,8 +1650,8 @@ class BasicChecks {
 									$e = $e->parent ();
 									while ( $e != null && $e->class != str_replace ( '.', '', $array_regole ["prev"] [$i + 1] ) )
 										$e = $e->parent ();
-										
-									//class: controllo che il predecessore abbia la class della regola
+									// class: the control that his predecessor has the class rule	
+									// class: controllo che il predecessore abbia la class della regola
 									if ($e != null && $e->class == str_replace ( '.', '', $array_regole ["prev"] [$i + 1] )) {
 										$ris = true;
 										$num_class_new ++;
@@ -1574,7 +1661,7 @@ class BasicChecks {
 									$e = $e->parent ();
 									while ( $e != null && $e->tag != $array_regole ["prev"] [$i + 1] )
 										$e = $e->parent ();
-										
+									// tag: check that the predecessor is the tag of the rule	
 									//tag: controllo che il predecessore sia il tag della regola
 									if ($e != null && $e->tag == $array_regole ["prev"] [$i + 1]) {
 										$ris = true;
@@ -1609,6 +1696,7 @@ class BasicChecks {
 										
 										$e = $e->parent ();
 									}
+									// tag: check that the predecessor is the tag of the rule
 									//tag: controllo che il predecessore sia il tag della regola
 									if ($e != null /*&& $e->tag == $array_regole["prev"][$i]*/)
 																{
@@ -1628,7 +1716,7 @@ class BasicChecks {
 									
 									$e = $e->parent ();
 								}
-								
+								// tag: check that the predecessor is the tag of the rule
 								//tag: controllo che il predecessore sia il tag della regola
 								if ($e != null /*&& $e->tag == $array_regole["prev"][$i]*/)
 															{
@@ -1647,6 +1735,7 @@ class BasicChecks {
 								while ( $e != null && $e->class != str_replace ( '.', '', $array_regole ["prev"] [$i] ) ) {
 									$e = $e->parent ();
 								}
+								// tag: check that the predecessor is the tag of the rul
 								//tag: controllo che il predecessore sia il tag della regola
 								//if($e != null && $e->tag == $array_regole["prev"][$i])
 								if ($e != null /*&& $e->class == str_replace('.','',$array_regole["prev"][$i])*/)
@@ -1665,14 +1754,17 @@ class BasicChecks {
 					} //end while
 				
 
-				} //end else regola composta
+				} //end else regola composta - compound rule
 				
 
-				if ($ris == true) { //la nuova regola analizzata è applicabile
-					//controllo se la priorita della nuova supera quella della precedente															
+				if ($ris == true) { // analyze and apply the new rule
+									// check if the priority of the new greater than previous
+									//la nuova regola analizzata è applicabile
+									//controllo se la priorita della nuova supera quella della precedente															
 					
 
 					if (stripos ( $valore_proprieta_new, "!important" ) !== false && stripos ( $valore_proprieta, "!important" ) === false) {
+						// $proprieta is not !important while $proprietà_new is, then override $proprieta
 						//$proprieta non è !important mentre $proprietà_new si, quindi sovrascrivo $proprieta
 						$valore_proprieta = $valore_proprieta_new;
 						$num_id = $num_id_new;
@@ -1681,7 +1773,8 @@ class BasicChecks {
 						$num_regola_best = $num_regola;
 					} elseif (stripos ( $valore_proprieta_new, "!important" ) === false && stripos ( $valore_proprieta, "!important" ) === false || stripos ( $valore_proprieta_new, "!important" ) !== false && stripos ( $valore_proprieta, "!important" ) !== false) 
 
-					//hanno entrambe !important o non lo hanno nessuna della due, quindi verifico il numeo di id
+					// have both are !important or niether is, then check the id
+					// hanno entrambe !important o non lo hanno nessuna della due, quindi verifico il numeo di id
 					{
 						
 						if ($num_id_new > $num_id) {
@@ -1690,7 +1783,8 @@ class BasicChecks {
 							$num_class = $num_class_new;
 							$num_tag = $num_tag_new;
 							$num_regola_best = $num_regola;
-						} elseif ($num_id_new == $num_id) { //stesso numero di id, controllo il numero di class
+						} elseif ($num_id_new == $num_id) { // same ID number, control the number of class
+															//stesso numero di id, controllo il numero di class
 							
 
 							if ($num_class_new > $num_class) {
@@ -1699,10 +1793,11 @@ class BasicChecks {
 								$num_class = $num_class_new;
 								$num_tag = $num_tag_new;
 								$num_regola_best = $num_regola;
-							} elseif ($num_class_new == $num_class) { //stesso numero di id e class, controllo in numero di tag
+							} elseif ($num_class_new == $num_class) { // same id and class number, check number of tags
+																	//stesso numero di id e class, controllo in numero di tag
 								
 
-								if ($num_tag_new >= $num_tag) { //stesso o maggiore numero di id, class e tag: la priorità è della nuova regola
+								if ($num_tag_new >= $num_tag) { // same or greater number of id, class and tags: is the priority of the new rule  //stesso o maggiore numero di id, class e tag: la priorità è della nuova regola
 									$valore_proprieta = $valore_proprieta_new;
 									$num_id = $num_id_new;
 									$num_class = $num_class_new;
@@ -1724,7 +1819,14 @@ class BasicChecks {
 		
 		if ($valore_proprieta == null)
 			return null;
-			//creo la struttura info_proprieta'
+
+		// create the structure info_proprieta 
+		// store the id number, class and tag  necessary to verify the priority 
+		// rules are starting from an id, a class or a tag
+		// it is not always a rule that has the selectors as the last (or only) a descendant of id or a class that takes
+		// ends with a tag
+		
+		//creo la struttura info_proprieta'
 		//memorizzare il numero di id, class e tag è necessario per verificare la priorita'
 		//delle regole trovate partendo da un id, una class o un tag
 		// non sempre infatti una regola che nei selettori ha come ultimo (o unico) discendente un id o class batte una che
@@ -1740,7 +1842,7 @@ class BasicChecks {
 
 		return $info_proprieta;
 	}
-	
+	// reorganize the style sheets, starting from the array of Filippo, in a data structure more 'structured
 	//riorganizzo i fogli di stile, partendo dagli array di Filippo, in una struttura dati piu' articolata
 	public static function setCssSelectors($content_dom) {
 		
@@ -1780,10 +1882,11 @@ class BasicChecks {
 		//echo("<p>Stampo la lista di stili</p>");
 		//print_r($csslist);
 		//print_r($cssinternal);
+		// MB I create the data structure containing the css information
 		//MB creo la struttura dati contenente i dati dei css
 		BasicChecks::prepare_css_arrays ( $csslist, $cssinternal );
 		
-		//fine parte in prova
+		//fine parte in prova - end part in test
 		for($idcss = 0; $idcss < sizeof ( $selettori ); $idcss ++) {
 			
 			//$selettori_appoggio[$idcss] =array();
@@ -1793,15 +1896,16 @@ class BasicChecks {
 
 				$sel_string = str_ireplace ( '>', ' > ', $sel_string ); // metto gli spazi tra i ">"
 				$sel_string = str_ireplace ( '+', ' + ', $sel_string ); // metto gli spazi tra i "+"
-				
+				// use the $spazio symbol to indicate that  an id or class is preceded by a space
+				// in fact "p.nome_classe" is different from "p .nome_classe"
 
 				//uso il simbolo $spazio e per indicare che un id o una classe e' preceduta da uno spazio
 				//infatti "p.nome_classe" è diverso da "p .nome_classe"
-				$sel_string = str_ireplace ( ' .', ' ' . $spazio . '.', $sel_string ); // metto uno $spazio prima di "."
+				$sel_string = str_ireplace ( ' .', ' ' . $spazio . '.', $sel_string ); //put a space before - metto uno $spazio prima di "."
 				$sel_string = str_ireplace ( ' #', ' ' . $spazio . '#', $sel_string ); // metto uno $spazio prima di "#"
 				
 
-				$sel_string = str_ireplace ( '.', ' .', $sel_string ); // metto uno spazio prima di "."
+				$sel_string = str_ireplace ( '.', ' .', $sel_string ); // put a space before -  metto uno spazio prima di "."
 				$sel_string = str_ireplace ( '#', ' #', $sel_string ); // metto uno spazio prima di "#"
 				//echo ("<p>1 sel_string =".$sel_string."</p>");
 				while ( stripos ( $sel_string, '  ' ) !== false ) //rimuovo gli spazzi multipli
@@ -1813,15 +1917,17 @@ class BasicChecks {
 				//rimuovo i {_} ridondanti
 				$sel_string = str_ireplace ( '> {_}', '>', $sel_string );
 				
-				$selettori_array = split ( ',', $sel_string ); //creo un array dei selettori che sono separati da ","
+				$selettori_array = split ( ',', $sel_string );  // create an array of switches that are separated by ", "
+																//creo un array dei selettori che sono separati da ","
 				foreach ( $selettori_array as $sel ) {
 					$sel = trim ( $sel );
-					//rimuovo eventuali $spazio all'inizio della stringa
+					//rimuovo eventuali $spazio all'inizio della stringa (remove spaces from beginning of strings )
 					$sel = preg_replace ( "/^" . $spazio . "/", "", $sel );
-					//rimuovo eventuali $spazio alla fine della stringa
+					//rimuovo eventuali $spazio alla fine della stringa (remove spaces from ends of strings)
 					$sel = preg_replace ( "/" . $spazio . "$/", "", $sel );
 					$sel = trim ( $sel );
 					$selettore_array = split ( " ", $sel );
+					// in the final position of $selettore_array ????
 					//nell'ultima posizione di $selettore_array c'� il selettore piu' a dx prima di una "," o di "{" 
 					$last = $selettore_array [sizeof ( $selettore_array ) - 1]; //ultimo elemento a dx, es: "div > p br" ---> br 
 					
@@ -1846,7 +1952,7 @@ class BasicChecks {
 								if (! isset ( $array_appoggio ["regole"] [$proprieta] )) {
 									$array_appoggio ["regole"] [$proprieta] ["val"] = $valore;
 									$array_appoggio ["regole"] [$proprieta] ["pos"] = $pos_prop;
-								} elseif (stripos ( $array_appoggio ["regole"] [$proprieta] ["val"], "!important" ) !== false) //la propriet� � gi� stata impostata ed � !important, la posso sovrascrivere solo se anche quella che sto analizzando � !important
+								} elseif (stripos ( $array_appoggio ["regole"] [$proprieta] ["val"], "!important" ) !== false) //la propriet  gi stata impostata ed  !important, la posso sovrascrivere solo se anche quella che sto analizzando  !important
 								{
 									if (stripos ( $valore, "!important" ) !== false)
 										$array_appoggio ["regole"] [$proprieta] ["val"] = $valore;
@@ -1863,14 +1969,14 @@ class BasicChecks {
 					}
 					
 					//memorizzo i "predecessori". es: il selettore =" div > p br", allora i predecessori di br (considero anche br stesso) sono br, p, > e div. li memorizzo da dx a sx
-					//if(sizeof($selettore_array)==1) //il selettore � formato da un solo elemento
+					//if(sizeof($selettore_array)==1) //il selettore  formato da un solo elemento
 					
 
 					for($j = sizeof ( $selettore_array ) - 1, $k = 0; $j >= 0; $j --, $k ++) {
 						$array_appoggio ["prev"] [$k] = $selettore_array [$j];
 					}
 					
-					//if(isset($selettori_appoggio[$idcss][$last])) //ho gi� inserito questo elemento (tag, id, class) almeno una volta 
+					//if(isset($selettori_appoggio[$idcss][$last])) //ho gi inserito questo elemento (tag, id, class) almeno una volta 
 					if (isset ( $selettori_appoggio [$last] )) //ho gia' inserito questo elemento (tag, id, class) almeno una volta 
 					{
 						//$posizione = sizeof($selettori_appoggio[$idcss][$last]);
@@ -1887,25 +1993,25 @@ class BasicChecks {
 		
 
 	}
-	
+	// Function to search within a particular attribute associated with an id tag
 	//Funzione che ricerca un determinato attributo all'interno dell'id associato ad un tag
 	public static function GetElementStyleId($e, $id, $val) {
 		
 		return BasicChecks::getElementStyleGeneric ( $e, '#', $id, $val );
 	}
-	
+	// A function that searches for a particular attribute within the class associated with a tag in an external style sheet
 	//Funzione che ricerca un determinato attributo all'interno della class associata ad un tag, in un foglio di stile esterno
 	public static function GetElementStyleClass($e, $class, $val) {
 		
 		return BasicChecks::getElementStyleGeneric ( $e, '.', $class, $val );
 	}
-	
+	// A function that searches for a particular attribute in a tag identified by the selector in an external style sheet
 	//Funzione che ricerca un determinato attributo all'interno di un selettore identificato con il tag in un foglio di stile esterno
 	public static function GetElementStyle($e, $child, $val) {
 		//return BasicChecks::getElementStyleGeneric($e,'',$child,$val,$idcss);
 		return BasicChecks::getElementStyleGeneric ( $e, '', $child, $val );
 	}
-	
+	// Function for requirement 21 which retrieves the values of them away Vetical
 	//Funzione per il requsitio 21 che recupera i valori di distanza veticali di un li
 	public static function GetVerticalDistance($e) {
 		
@@ -1930,7 +2036,7 @@ class BasicChecks {
 		$p_top = trim ( str_ireplace ( "!important", "", $p_top ) );
 	
 	}
-	
+	// Function for requirement 21 which retrieves the values of a horizontal distance of them
 	//Funzione per il requsitio 21 che recupera i valori di distanza orizzontali di un li
 	public static function GetHorizontalDistance($e) {
 		
@@ -1955,7 +2061,7 @@ class BasicChecks {
 		$p_left = trim ( str_ireplace ( "!important", "", $p_left ) );
 	
 	}
-	
+	// Function for requirement 21 which retrieves the values of distance down the listings vetical
 	//Funzione per il requsitio 21 che recupera i valori di distanza veticali basso delle liste
 	public static function GetVerticalListBottomDistance($tag) {
 		
@@ -1970,7 +2076,7 @@ class BasicChecks {
 		$p_bottom = trim ( str_ireplace ( "!important", "", $p_bottom ) );
 	
 	}
-	
+	// Function for requirement  21 which retrieves the values of distance Vetical top of the lists
 	//Funzione per il requsitio 21 che recupera i valori di distanza veticali alto delle liste
 	public static function GetVerticalListTopDistance($tag) {
 		
@@ -1984,7 +2090,7 @@ class BasicChecks {
 		$p_top = trim ( str_ireplace ( "!important", "", $p_top ) );
 	
 	}
-	
+	// Function for requirment 21 which retrieves the values of horizontal distance from the left of the lists
 	//Funzione per il requsitio 21 che recupera i valori di distanza orizzontale sinistra delle liste
 	public static function GetHorizontalListLeftDistance($tag) {
 		
@@ -1997,7 +2103,7 @@ class BasicChecks {
 		$m_left = trim ( str_ireplace ( "!important", "", $m_left ) );
 		$p_left = trim ( str_ireplace ( "!important", "", $p_left ) );
 	}
-	
+	// Function for requirment 21 which retrieves the values of horizontal distance right of the list
 	//Funzione per il requsitio 21 che recupera i valori di distanza orizzontale destra delle liste
 	public static function GetHorizontalListRightDistance($tag) {
 		
@@ -2012,7 +2118,7 @@ class BasicChecks {
 	}
 	
 	public static function getForegroundA($e, $link_sel) {
-		
+		// Find the value of foreground explicitly defined for the link element $e
 		//cerco il valore di foreground esplicitamente definito per l'elemento link $e
 		$foreground = BasicChecks::get_p_css_a ( $e, "color", $link_sel );
 		
@@ -2024,7 +2130,7 @@ class BasicChecks {
 	}
 	
 	public static function getBackgroundA($e, $link_sel) {
-		
+		// Find the value of explicitly defined background for the element $e
 		//cerco il valore di background esplicitamente definito per l'elemento $e
 		$background = BasicChecks::get_p_css_a ( $e, "background-color", $link_sel );
 		$background = str_replace ( "'", "", $background );
@@ -2035,20 +2141,21 @@ class BasicChecks {
 	}
 	
 	public static function getForeground($e) {
-		
+		// Find the value of foreground explicitly defined for the element $e
 		//cerco il valore di foreground esplicitamente definito per l'elemento $e
 		$foreground = BasicChecks::get_p_css ( $e, "color" );
-		
+		// links do not inherit the "color"defined style
 		//i link non ereditano "color" definito in style
 		if ($foreground == "" && $e->tag == "a")
 			return $foreground;
-			
+		// for the normal elements if foreground == "" means that the value is not defined for $e: Searches its parents
 		//per gli elementi normali se foreground == "" significa che il valore non è stato definito per $e: ricerco tra i suoi genitori
 		while ( ($foreground == "" || $foreground == null) && $e->tag != null && $e->tag != "body" ) {
 			$e = $e->parent ();
 			$foreground = BasicChecks::get_p_css ( $e, "color" );
 		}
-		
+		// if a foreground, is found, check if it is defined in the body, if not check the if it is  black
+		// NOTE: must be added to the control link, alink, ...
 		//se non trovo nessun foreground, controllo se è definito nel body, se no gli assegno il nero
 		//NOTA: va aggiunto il controllo su link, alink, ...
 		if ($foreground == "" || $foreground == null) {
@@ -2066,25 +2173,28 @@ class BasicChecks {
 	}
 	
 	public static function getBackground($e) {
-		
+		// Find the value of explicitly defined background for the element $ e
 		//cerco il valore di background esplicitamente definito per l'elemento $e
 		$background = BasicChecks::get_p_css ( $e, "background-color" );
 		
+		// if background == "" means that the value is not defined for $e: Searches its parents
 		//se background == "" significa che il valore non è stato definito per $e: ricerco tra i suoi genitori
 		while ( ($background == "" || $background == null) && $e->tag != null && $e->tag != "body" ) {
 			$e = $e->parent ();
 			
 			$background = BasicChecks::get_p_css ( $e, "background-color" );
-			if ($background == "" || $background == null) //controllo se c'� bgcolor che ha priorit� inferiore dello stile
-{
+			if ($background == "" || $background == null) //controllo se c'e bgcolor che ha priorita' inferiore dello stile
+			{
 				if (($e->tag == "table" || $e->tag == "tr" || $e->tag == "td") && isset ( $e->attr ["bgcolor"] ))
 					$background = $e->attr ["bgcolor"];
 			}
+			// if the element has an absolute position and background not defined (default: transparent)
 			//se l'elemento ha posizione assoluta e background non definito (default:transparent)
 			if (BasicChecks::get_p_css ( $e, "position" ) == "absolute" && ($background == "" || $background == null))
 				$background = - 1;
 		}
 		
+		// if I find any background check that is defined within the body, if not assign white
 		//se non trovo nessun background controllo che sia definito nel body, se no gli assegno il bianco
 		if ($background == "" || $background == null || $background == "transparent") {
 			
@@ -2100,13 +2210,13 @@ class BasicChecks {
 		return $background;
 	
 	}
-	
+	// traverse the tree until you find a parent element that has the $propriety  style value $value
 	//sale l'albero fino a trovare un elemento genitore che abbia nel suo stile $propriety di valore $value
 	public static function isProprietyInerited($e, $propriety, $value) {
-		
+		// Find the value of $propriety explicitly defined for the element $e
 		//cerco il valore di $propriety esplicitamente definito per l'elemento $e
 		$p = BasicChecks::get_p_css ( $e, $propriety );
-		
+		// if background == "" means that the value is not defined for $e: Searches the parents
 		//se background == "" significa che il valore non è stato definito per $e: ricerco tra i suoi genitori
 		while ( ($p == "" || $p == null || $p !== $value) && $e->tag != null && $e->tag != "html" ) {
 			$e = $e->parent ();
@@ -2118,7 +2228,7 @@ class BasicChecks {
 		else
 			return true;
 	}
-	
+	// check if the item is contained in an element with absolute position outside the page
 	//controllo se l'elemento è contenuto in un elemento con posizione assoluta esterna alla pagina
 	public static function isPositionOutOfPage($e) {
 		$p = BasicChecks::get_p_css ( $e, "display" );
@@ -2142,13 +2252,13 @@ class BasicChecks {
 		
 		return false;
 	}
-	
-	//controllo che l'elemento sia visibile
+	// check that the element is visible
+	// controllo che l'elemento sia visibile
 	public static function isElementVisible($e) {
 		//visibility:hidden o display:none
 		if (BasicChecks::isProprietyInerited ( $e, "visible", "hidden" ) || BasicChecks::isProprietyInerited ( $e, "display", "none" ))
 			return false;
-			
+		// check if the item is within an element with absolute position outside the page	
 		//controllo se l'elemento è all'interno di un elemento con posizione assoluta esterna alla pagina
 		if (BasicChecks::isPositionOutOfPage ( $e ))
 			return false;
@@ -2156,7 +2266,7 @@ class BasicChecks {
 		return true;
 	
 	}
-	
+	// Return true if the amount of $ value is relative
 	//Restituisce true se la misura di $value è relativa
 	public static function isRelative($value) {
 		
@@ -2176,7 +2286,7 @@ class BasicChecks {
 		}
 		return true;
 	}
-	
+	// check to see if the size of the property $val associated with the element $e' is relative
 	//check per verificare se la misura della proprieta' $val associata all'elemento $e e' relativa
 	public static function checkRelative($e, $val) {
 		
@@ -2187,7 +2297,7 @@ class BasicChecks {
 		} else
 			return true;
 	}
-	
+	// Return true if the amount of $value is in px
 	//Restituisce true se la misura di $value è in px
 	public static function isPx($value) {
 		
@@ -2204,7 +2314,7 @@ class BasicChecks {
 		}
 		return $ret;
 	}
-	
+	// check for the presence of px in the property $val relative to the element $e
 	//check per verificare la presenza di px nella proprieta' $val relativa all'elemento $e
 	public static function checkPx($e, $val) {
 		
@@ -2215,7 +2325,8 @@ class BasicChecks {
 		} else
 			return true;
 	}
-	
+	// CHANGE FILE SPETTAZA FROM THE ORIGINAL
+	// FUNCTION TO CALCULATE THE RATIO OF BRILLIANCE
 	//MODIFICA FILO SPETTAZA DALL'ORIGINALE
 	//FUNZIONE PER CALCOLARE IL RAPPORTO DI BRILLANTEZZA
 	public static function CalculateBrightness($color1, $color2) {
@@ -2410,6 +2521,7 @@ class BasicChecks {
 			}
 		}
 	}
+	// Return the multiplication factor of heading tags
 	//Ritorna il fattore moltiplicativo degli heading tag
 	private static function checkHeadingLevel($e) {
 		switch ($e->tag) {
@@ -2430,17 +2542,17 @@ class BasicChecks {
 		}
 	
 	}
-	
+	//LINE CHANGE: A function to convert color
 	//MODIFICA FILO: Funzione per la conversione del colore
 	public static function convert_color_to_hex($f_color) {
-		/* Se il colore e' indicato in esadecimale lo restituisco cos� com'� */
+		/* Se il colore e' indicato in esadecimale lo restituisco cos com' */
 		$a = strpos ( $f_color, "#" );
 		
 		//MBif($a!=0){
 		if ($a !== false) {
 			$f_color = substr ( $f_color, $a + 1 );
 			return $f_color;
-		} /* Se � in formato RGB lo converto in esadecimale poi lo restituisco */
+		} /* Se  in formato RGB lo converto in esadecimale poi lo restituisco */
 		elseif (eregi ( 'rgb', $f_color )) {
 			if (eregi ( '\(([^,]+),', $f_color, $red )) {
 				$red = dechex ( $red [1] );
@@ -2453,7 +2565,7 @@ class BasicChecks {
 			}
 			$f_color = $red . $green . $blue;
 			return $f_color;
-		} /* La stessa cosa faccio se � indicato con il prprio nome */
+		} /* La stessa cosa faccio se  indicato con il proprio nome */
 		else {
 			switch ($f_color) {
 				
@@ -2496,7 +2608,7 @@ class BasicChecks {
 			}
 		}
 	}
-	
+	// get input and returns an item on the table
 	//prende in input un elemento e restituisce la relativa table
 	public static function getTable($e) {
 		
@@ -2509,7 +2621,7 @@ class BasicChecks {
 			return $e->parent ();
 	
 	}
-	
+	// gets an array of id (headers attribute of a td element) and verifies that each id is associated with an th
 	//prende un array di id (attributo headers di un elemento td) e verifica che ogni id sia associato a un th
 	public static function checkIdInTable($t, $ids) {
 		
@@ -2533,7 +2645,7 @@ class BasicChecks {
 		else
 			return false;
 	}
-	
+	// verify the existence of a row for an element td
 	//verifica l'esistenza di un'intestazione di riga per un elemento td
 	public static function getRowHeader($e) {
 		
@@ -2555,11 +2667,13 @@ class BasicChecks {
 			*/
 	
 	}
+	// checks for the existence of a column header for a td element
 	//verifica l'esistenza di un'intestazione di colonna per un elemento td
 	public static function getColHeader($e) {
 		
 		$pos = 0;
 		$e_count = $e;
+		//find the position in the row of td
 		//trovo la posizione nella riga di td
 		while ( $e_count->prev_sibling () != null ) {
 			$pos ++;
@@ -2567,6 +2681,7 @@ class BasicChecks {
 		}
 		
 		$t = BasicChecks::getTable ( $e );
+		// there isn't a <table> tag
 		//non c'è il tag <table>
 		if ($t == null) {
 			return true; //tabella mal composta
@@ -2575,16 +2690,17 @@ class BasicChecks {
 		$tr = $t->find ( "tr" );
 		
 		if ($tr == null || sizeof ( $tr ) == 0)
-			return true; //tabella mal composta
+			return true; //tabella mal composta - table is not well formed
 		
 
 		for($i = 0; $i < sizeof ( $tr ) - 1; $i ++) {
 			$th_next = $tr [$i + 1]->find ( "th" );
 			if ($th_next == null || sizeof ( $th_next ) == 0)
-				break; //l'i-esima tr contiene l'intestazione pi� interna
+				break; //l'i-esima tr contiene l'intestazione pi interna
 		}
 		
 		$h = $tr [$i]->childNodes ();
+		// Verify that the header box in place $pos  is actually a header
 		//verifico che la casella in posizione $pos della presunta riga di intestazione sia effettivamente un'intestazione 
 		if (isset ( $h [$pos] ) && $h [$pos]->tag == "th" /*&& isset($h[$pos]->attr["scope"]) && $h[$pos]->attr["scope"]=="col"*/)
 			return $h [$pos];
@@ -2611,7 +2727,7 @@ class BasicChecks {
 	
 	// funzioni per i css
 	
-
+	/* returns the list of external styles on the page */
 	/* ritorna la lista degli stili esterni presenti nella pagina */
 	public static function get_style_external($content_dom) {
 		
@@ -2637,6 +2753,7 @@ class BasicChecks {
 		$uri2 = BasicChecks::getSiteUri ( $uri );
 		
 		$i = 0;
+		// change the relative addresses of style sheets
 		//modifico gli indirizzi relativi dei fogli di stile
 		foreach ( $csslist as $foglio ) {
 			
@@ -2657,7 +2774,7 @@ class BasicChecks {
 		//print_r($csslist);
 		return $csslist;
 	}
-	
+	// The function returns the css of a page
 	//La funzione ritorna i css di una pagina
 	public static function get_style_internal($content_dom) {
 		
@@ -2666,7 +2783,7 @@ class BasicChecks {
 		//$dom=str_get_dom($content);
 		$dom = $content_dom;
 		//echo("<p> contenuto di style: </p>");
-
+		// change the URL of the site to be validated in order to set add the address of a relative css
 		//modifico l'url del sito da validare in modo da porterci aggiungere l'indirizzo di un css relativo
 		global $uri;
 		$uri2 = BasicChecks::getSiteUri ( $uri );
@@ -2701,7 +2818,7 @@ class BasicChecks {
 		}
 		return $cssint;
 	}
-	
+	// The function creates an array of styles (internal and external) to be submitted for validation.
 	//La funzione crea l'array degli stili (interni ed esterni) da sottoporre alla validazione.
 	public static function prepare_css_arrays($array_css_esterni, $ci) {
 		
@@ -2711,19 +2828,25 @@ class BasicChecks {
 		}
 		
 		//MB
+		// last position Insrisco interior style
 		//Insrisco nell'ultima posizione lo stile interno
 		if ($ci != "") {
 			
 			BasicChecks::GetCSSDom ( $ci, $b );
 		}
 	}
-	
+	// get the css code that caused an error, for the last check that was performed on css
+	// is called in after the Procedure AccessibilityValidator of each check
+	// return $ css_code that, if the check has not found errors on a CSS internal / external or
+	// not a check on the css is set to ""
 	//restituisce il codice css che ha provocato un errore, relativamente all'ultimo check sui css che � stato eseguito
 	//viene richiamata in AccessibilityValidator dopo l'esecuizione di ogni check
 	//restituisce $css_code che, nel caso in cui il check non abbia riscontrato errori su un css interno/esterno o
 	//non sia un check sui css, viene impostata a ""
 	public static function getCssOutput() {
-			
+		// MB: To print the check on the rules of CSS
+		// css rulesrelating the error
+		// CSS: default font size and default font format
 		//MB:per stampare le regole dei check sui CSS														
 		//regole css relative all'errore
 		//CSS: default font size e default font format
@@ -2835,6 +2958,7 @@ class BasicChecks {
 		$foreground = '';
 		
 		if (trim ( BasicChecks::remove_children ( $e ) ) == "" || trim ( BasicChecks::remove_children ( $e ) ) == "&nbsp;") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+		// the element has no visible text: Do not run the contrast control
 			return true;
 		
 		$foreground = BasicChecks::getForegroundA ( $e, $cssPropriety );
@@ -2909,6 +3033,7 @@ class BasicChecks {
 		$foreground = '';
 		
 		if (trim ( BasicChecks::remove_children ( $e ) ) == "" || trim ( BasicChecks::remove_children ( $e ) ) == "&nbsp;") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+		// the element has no text "visible": Do not run the contrast control
 			return true;
 		
 		$foreground = BasicChecks::getForegroundA ( $e, $cssPropriety );
