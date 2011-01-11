@@ -84,10 +84,12 @@ class CSSValidator {
 		exec($sys_command . $uri, $retval);
 
 		if (sizeof($retval) == 0)
-		{// Se non trovo output dal validatore interno, uso il validatore esterno
+		{   // If output from the internal validiator is not found, use the external validator
+			// Se non trovo output dal validatore interno, uso il validatore esterno
 			$content = @file_get_contents($this->validator_url. "?uri=".$uri."&warning=0&lang=it");
 		}
 		else {
+			// Internal validator result
 			// Risultato validatore interno
 			//echo "validatore interno";
 			$content = implode($retval);
@@ -108,7 +110,7 @@ class CSSValidator {
 	function stripOutResult($full_result)
 	{
 
-		$pattern1 = '/('.preg_quote("<div id='congrats'>", '/').'.*)/s'; // nessun errore
+		$pattern1 = '/('.preg_quote("<div id='congrats'>", '/').'.*)/s'; // nessun errore -- no errors
 		//$pattern2 = '/('.preg_quote('<div id="errors">', '/').'.*)/s'; // when has errors
 		$pattern2 = '/('.preg_quote("<div class='error-section-all'>", '/').'.*)/s'; // when has errors
 		$pattern3 = '/('.preg_quote('<p class="backtop"><a href="#banner">&uarr; Top</a></p>', '/').'.*)/s'; // when has errors
@@ -135,7 +137,7 @@ class CSSValidator {
 			
 			$res_exp = explode("<div class='error-section'>", $result);
 			
-			// Formatta il risultato
+			// Formatta il risultato - format the results
 			for ($i=0; $i<sizeof($res_exp); $i++)
 			{
 				if ($i==0)
@@ -163,7 +165,7 @@ class CSSValidator {
 						}
 						else if ($j==sizeof($res_exp_int)-2)
 						{		
-							//"ultimo ciclo interno";
+							//"ultimo ciclo interno - last inner loop";
 						//	$res_exp_int[$j] = "</div>";
 						}
 						else 
@@ -177,7 +179,7 @@ class CSSValidator {
 				}
 				else 
 				{
-					// "ciclo nel mezzo";
+					// "ciclo nel mezzo - cycle in the middle"; 
 					$res_exp[$i] =  '<li class="msg_err">'. $res_exp[$i];
 					$res_exp[$i] = str_replace("</div>", "</li>", $res_exp[$i]);
 					$res_exp[$i] = str_replace("<h4>", '<span class="msg"><strong>', $res_exp[$i]);
@@ -211,7 +213,8 @@ class CSSValidator {
 
 		$pattern1 = '/Errori \((\w+)\)/';
 			
-		if (preg_match($pattern1, $full_result, $matches))  // se fa match restituisce il numero degli errori trovati
+		if (preg_match($pattern1, $full_result, $matches)) // match if it returns the number of errors found
+															// se fa match restituisce il numero degli errori trovati
 		{
 			return $matches[1];}
 		else
