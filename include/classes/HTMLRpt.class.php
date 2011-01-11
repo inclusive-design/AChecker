@@ -166,8 +166,7 @@ class HTMLRpt extends AccessibilityRpt {
 		$checksDAO = new ChecksDAO();
 		// generate section details
 		foreach ($this->errors as $error)
-		{	
-		
+		{
 			$row = $checksDAO->getCheckByID($error["check_id"]);
 			if ($row["confidence"] == KNOWN )
 			{ // no decision to make on known problems
@@ -358,9 +357,13 @@ class HTMLRpt extends AccessibilityRpt {
 		
 		if ($image <> '') 
 		{
-			$dimensions = getimagesize($image);
-			if ($dimensions[1] > DISPLAY_PREVIEW_IMAGE_HEIGHT) $height = DISPLAY_PREVIEW_IMAGE_HEIGHT;
-			else $height = $dimensions[1];
+			// COMMENTTED OUT the way to determine the image display size by measuring the actual image size
+			// since the fetch of the remote images slows down the process a lot. 
+//			$dimensions = getimagesize($image);
+//			if ($dimensions[1] > DISPLAY_PREVIEW_IMAGE_HEIGHT) $height = DISPLAY_PREVIEW_IMAGE_HEIGHT;
+//			else $height = $dimensions[1];
+			
+			$height = DISPLAY_PREVIEW_IMAGE_HEIGHT;
 			
 			if ($image_alt == '_NOT_DEFINED') $alt = '';
 			else if ($image_alt == '_EMPTY') $alt = 'alt=""';
