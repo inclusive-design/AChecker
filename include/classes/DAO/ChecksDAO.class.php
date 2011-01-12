@@ -46,28 +46,31 @@ class ChecksDAO extends DAO {
 		global $addslashes;
 		
 		$html_tag = $addslashes(strtolower(trim($html_tag)));
-		$note = $addslashes(trim($note));
-		$name = $addslashes(trim($name));
-		$err = $addslashes(trim($err));
-		$desc = $addslashes(trim($desc));
-		$search_str = $addslashes(trim($search_str));
-		$long_desc = $addslashes(trim($long_desc));
-		$rationale = $addslashes(trim($rationale));
-		$how_to_repair = $addslashes(trim($how_to_repair));
-		$repair_example = $addslashes(trim($repair_example));
-		$question = $addslashes(trim($question));
-		$decision_pass = $addslashes(trim($decision_pass));
-		$decision_fail = $addslashes(trim($decision_fail));
-		$test_procedure = $addslashes(trim($test_procedure));
-		$test_expected_result = $addslashes(trim($test_expected_result));
-		$test_failed_result = $addslashes(trim($test_failed_result));
+
+		// $addslashes are not needed on the following fields since they are eventually
+		// calling LanguageTextDAO->setText() where $addslashes is used.
+		$note = trim($note);
+		$name = trim($name);
+		$err = trim($err);
+		$desc = trim($desc);
+		$search_str = trim($search_str);
+		$long_desc = trim($long_desc);
+		$rationale = trim($rationale);
+		$how_to_repair = trim($how_to_repair);
+		$repair_example = trim($repair_example);
+		$question = trim($question);
+		$decision_pass = trim($decision_pass);
+		$decision_fail = trim($decision_fail);
+		$test_procedure = trim($test_procedure);
+		$test_expected_result = trim($test_expected_result);
+		$test_failed_result = trim($test_failed_result);
 		
 		if (!$this->isFieldsValid($html_tag, $confidence, $name, $err, $open_to_public)) return false;
 		
 		$sql = "INSERT INTO ".TABLE_PREFIX."checks
 				(`user_id`, `html_tag`, `confidence`, `open_to_public`, `create_date`) 
 				VALUES
-				(".$userID.",'".$addslashes($html_tag)."', '".$confidence."', ".
+				(".$userID.",'".$html_tag."', '".$confidence."', ".
 		           $open_to_public.", now())";
 
 		if (!$this->execute($sql))
@@ -181,27 +184,30 @@ class ChecksDAO extends DAO {
 		global $addslashes;
 		
 		$html_tag = $addslashes(strtolower(trim($html_tag)));
-		$note = $addslashes(trim($note));
-		$name = $addslashes(trim($name));
-		$err = $addslashes(trim($err));
-		$desc = $addslashes(trim($desc));
-		$search_str = $addslashes(trim($search_str));
-		$long_desc = $addslashes(trim($long_desc));
-		$rationale = $addslashes(trim($rationale));
-		$how_to_repair = $addslashes(trim($how_to_repair));
-		$repair_example = $addslashes(trim($repair_example));
-		$question = $addslashes(trim($question));
-		$decision_pass = $addslashes(trim($decision_pass));
-		$decision_fail = $addslashes(trim($decision_fail));
-		$test_procedure = $addslashes(trim($test_procedure));
-		$test_expected_result = $addslashes(trim($test_expected_result));
-		$test_failed_result = $addslashes(trim($test_failed_result));
+		
+		// $addslashes are not needed on the following fields since they are eventually
+		// calling LanguageTextDAO->setText() where $addslashes is used.
+		$note = trim($note);
+		$name = trim($name);
+		$err = trim($err);
+		$desc = trim($desc);
+		$search_str = trim($search_str);
+		$long_desc = trim($long_desc);
+		$rationale = trim($rationale);
+		$how_to_repair = trim($how_to_repair);
+		$repair_example = trim($repair_example);
+		$question = trim($question);
+		$decision_pass = trim($decision_pass);
+		$decision_fail = trim($decision_fail);
+		$test_procedure = trim($test_procedure);
+		$test_expected_result = trim($test_expected_result);
+		$test_failed_result = trim($test_failed_result);
 		
 		if (!$this->isFieldsValid($html_tag, $confidence, $name, $err, $open_to_public)) return false;
 		
 		$sql = "UPDATE ".TABLE_PREFIX."checks
 				   SET `user_id`=".$userID.", 
-				       `html_tag` = '".$addslashes($html_tag)."', 
+				       `html_tag` = '".$html_tag."', 
 				       `confidence` = '".$confidence."', 
 				       `open_to_public` = ".$open_to_public." 
 				 WHERE check_id = ".$checkID;

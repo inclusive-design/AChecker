@@ -39,7 +39,7 @@ class GuidelineSubgroupsDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$name = $addslashes(trim($name));	
+		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTxetDAO->Create()
 		$abbr = $addslashes(trim($abbr));
 		
 		$sql = "INSERT INTO ".TABLE_PREFIX."guideline_subgroups
@@ -88,7 +88,7 @@ class GuidelineSubgroupsDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$name = $addslashes(trim($name));	
+		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTxetDAO->updateLang()
 		$abbr = $addslashes(trim($abbr));
 		
 		$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups

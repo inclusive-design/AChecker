@@ -46,7 +46,7 @@ class GuidelinesDAO extends DAO {
 		
 		$title = $addslashes(trim($title));	
 		$abbr = $addslashes(trim($abbr));	
-		$long_name = $addslashes(trim($long_name));	
+		$long_name = trim($long_name);   // $addslashes is not necessary as it's called in LanguageTextDAO->Create()
 		$earlid = $addslashes(trim($earlid));
 		$preamble = $addslashes(trim($preamble));
 		
@@ -108,7 +108,7 @@ class GuidelinesDAO extends DAO {
 		
 		$title = $addslashes(trim($title));	
 		$abbr = $addslashes(trim($abbr));	
-		$long_name = $addslashes(trim($long_name));	
+		$long_name = trim($long_name);   // $addslashes is not necessary as it's called in LanguageTextDAO->setText()
 		$earlid = $addslashes(trim($earlid));
 		$preamble = $addslashes(trim($preamble));
 		

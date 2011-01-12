@@ -40,7 +40,7 @@ class GuidelineGroupsDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$name = $addslashes(trim($name));	
+		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTextDAO->Create()
 		$abbr = $addslashes(trim($abbr));
 		$principle = $addslashes(trim($principle));
 		
@@ -91,7 +91,7 @@ class GuidelineGroupsDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$name = $addslashes(trim($name));	
+		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTextDAO->updateLang()
 		$abbr = $addslashes(trim($abbr));
 		$principle = $addslashes(trim($principle));
 		
