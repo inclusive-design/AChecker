@@ -35,7 +35,7 @@ class HTMLRpt extends AccessibilityRpt {
 	var $html_problem_achecker =
 '      <li class="{MSG_TYPE}">
          <span class="err_type"><img src="{BASE_HREF}images/{IMG_SRC}" alt="{IMG_TYPE}" title="{IMG_TYPE}" width="15" height="15" /></span>
-         <em>Line {LINE_NUMBER}, Column {COL_NUMBER}</em>:
+         <em>{LINE_TEXT} {LINE_NUMBER}, {COL_TEXT} {COL_NUMBER}</em>:
          <span class="msg">
             <a href="{BASE_HREF}checker/suggestion.php?id={CHECK_ID}"
                onclick="popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\'); return false;" 
@@ -375,7 +375,9 @@ class HTMLRpt extends AccessibilityRpt {
 		return str_replace(array("{MSG_TYPE}", 
 		                         "{IMG_SRC}", 
 		                         "{IMG_TYPE}", 
+		                         "{LINE_TEXT}", 
 		                         "{LINE_NUMBER}", 
+		                         "{COL_TEXT}", 
 		                         "{COL_NUMBER}", 
 		                         "{HTML_CODE}",
 		                         "{CSS_CODE}", 
@@ -388,8 +390,10 @@ class HTMLRpt extends AccessibilityRpt {
 		                         "{DECISION}"),
 		                   array($msg_type, 
 		                         $img_src, 
-		                         $img_type, 
+		                         $img_type,
+		                         _AC('line'), 
 		                         $line_number, 
+		                         _AC('column'),
 		                         $col_number, 
 		                         htmlentities($html_code),
 		                         $css_code, 
