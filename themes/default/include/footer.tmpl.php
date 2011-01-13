@@ -47,8 +47,8 @@ if($languageManager->getNumEnabledLanguages() > 1)
 </div> <!--  end center-content div -->
 <div class="bottom"><span></span></div><!--  bottom for liquid-round theme -->
 </div> <!-- end liquid-round div -->
-<div style="margin-left:auto; margin-right:auto; width:300px;">
-		<a href="http://atrc.utoronto.ca/"><img width="84" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/atrclogo.gif" height="52" alt="Adaptive Technology Resource Centre" title="Adaptive Technology Resource Centre" style="border:none;float:left;"/></a> <a href="http://www.mcss.gov.on.ca/mcss/english/pillars/accessibilityOntario/accesson/partners.htm"><img src="images/ontario.gif" alt="<?php echo _AC("support_by_ontario"); ?>" title="<?php echo _AC("support_by_ontario"); ?>" style="border:none;float:right;"/></a>
+<div style="margin-left:auto; margin-right:auto; width:56px;">
+		<a href="http://inclusivedesign.ca/"><img width="56" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/IDI.png" height="73" alt="Inclusive Design Institute" title="Inclusive Design Institute" style="border:none;"/></a> 
 	</div>
 <script language="javascript" type="text/javascript">
 //<!--
