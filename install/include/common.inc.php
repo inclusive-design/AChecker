@@ -59,46 +59,46 @@ function queryFromFile($sql_file_path)
 
 	$tables = array();
 
-  if (!file_exists($sql_file_path)) {
-    $progress[] = $sql_file_path . ': file not exists.';
-    return false;
-  }
+	if (!file_exists($sql_file_path)) {
+		$progress[] = $sql_file_path . ': file not exists.';
+		return false;
+	}
 
-  $sql_query = trim(fread(fopen($sql_file_path, 'r'), filesize($sql_file_path)));
-  SqlUtility::splitSqlFile($pieces, $sql_query);
+	$sql_query = trim(fread(fopen($sql_file_path, 'r'), filesize($sql_file_path)));
+	SqlUtility::splitSqlFile($pieces, $sql_query);
+	
+	foreach ($pieces as $piece) 
+	{
+		$piece = trim($piece);
+		// [0] contains the prefixed query
+		// [4] contains unprefixed table name
 
-  foreach ($pieces as $piece) 
-  {
-  	$piece = trim($piece);
-    // [0] contains the prefixed query
-    // [4] contains unprefixed table name
-
-
-		if ($_POST['tb_prefix'] || ($_POST['tb_prefix'] == '')) 
+		if ($_POST['tb_prefix'] || ($_POST['tb_prefix'] == '')){ 
 			$prefixed_query = SqlUtility::prefixQuery($piece, $_POST['tb_prefix']);
-		else
+		}else{
 			$prefixed_query = $piece;
-
+		}
+	
 		if ($prefixed_query != false ) 
 		{
-    	$table = $_POST['tb_prefix'].$prefixed_query[4];
-      
-      if($prefixed_query[1] == 'CREATE TABLE')
-      {
-      	if (mysql_query($prefixed_query[0],$db) !== false)
+			$table = $_POST['tb_prefix'].$prefixed_query[4];
+
+			if($prefixed_query[1] == 'CREATE TABLE')
+			{
+				if (mysql_query($prefixed_query[0],$db) !== false)
 					$progress[] = 'Table <strong>'.$table . '</strong> created successfully.';
-        else 
+				else 
 					if (mysql_errno($db) == 1050)
 						$progress[] = 'Table <strong>'.$table . '</strong> already exists. Skipping.';
 					else
 						$errors[] = 'Table <strong>' . $table . '</strong> creation failed.';
-      }
-			elseif($prefixed_query[1] == 'INSERT INTO')
+			}elseif($prefixed_query[1] == 'INSERT INTO'){
 				mysql_query($prefixed_query[0],$db);
-      elseif($prefixed_query[1] == 'REPLACE INTO')
-        mysql_query($prefixed_query[0],$db);
-      elseif($prefixed_query[1] == 'ALTER TABLE')
-      {
+			}elseif($prefixed_query[1] == 'DELETE FROM'){
+				mysql_query($prefixed_query[0],$db);
+			}elseif($prefixed_query[1] == 'REPLACE INTO'){
+				mysql_query($prefixed_query[0],$db);
+			}elseif($prefixed_query[1] == 'ALTER TABLE'){
 				if (mysql_query($prefixed_query[0],$db) !== false)
 					$progress[] = 'Table <strong>'.$table.'</strong> altered successfully.';
 				else
@@ -108,11 +108,11 @@ function queryFromFile($sql_file_path)
 						$progress[] = 'Table <strong>'.$table . '</strong> fields already dropped. Skipping.';
 					else
 						$errors[] = 'Table <strong>'.$table.'</strong> alteration failed.';
-      }
-      elseif($prefixed_query[1] == 'DROP TABLE')
+			}elseif($prefixed_query[1] == 'DROP TABLE'){
 				mysql_query($prefixed_query[1] . ' ' .$table,$db);
-      elseif($prefixed_query[1] == 'UPDATE')
-                mysql_query($prefixed_query[0],$db);
+			}elseif($prefixed_query[1] == 'UPDATE'){
+				mysql_query($prefixed_query[0],$db);
+			}
 		}
 	}
 	return true;

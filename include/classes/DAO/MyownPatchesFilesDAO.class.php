@@ -52,7 +52,7 @@ class MyownPatchesFilesDAO extends DAO {
 	                '".$location."', 
 	                '".$code_from."', 
 	                '".$code_to."',
-	                '".$addslashes($uploaded_file)."')";
+	                '".mysql_real_escape_string($uploaded_file)."')";
 		
 		if (!$this->execute($sql))
 		{
@@ -62,45 +62,6 @@ class MyownPatchesFilesDAO extends DAO {
 		else
 		{
 			return mysql_insert_id();
-		}
-	}
-
-	/**
-	 * Create new user
-	 * @access  public
-	 * @param   user_group_id: user group ID (1 [admin] or 2 [user])
-	 *          login: login name
-	 *          pwd: password
-	 *          email: email
-	 *          first_name: first name
-	 *          last_name: last name
-	 * @return  user id, if successful
-	 *          false and add error into global var $msg, if unsuccessful
-	 * @author  Cindy Qi Li
-	 */
-	public function Update($userID, $user_group_id, $login, $email, $first_name, $last_name, $status)
-	{
-		global $addslashes, $msg;
-
-		/* email check */
-		$login = $addslashes(strtolower(trim($login)));
-		$email = $addslashes(trim($email));
-		$first_name = $addslashes(str_replace('<', '', trim($first_name)));
-		$last_name = $addslashes(str_replace('<', '', trim($last_name)));
-
-		if ($this->isFieldsValid('update', $user_group_id,$login, $email,$first_name, $last_name))
-		{
-			/* insert into the db */
-			$sql = "UPDATE ".TABLE_PREFIX."users
-			           SET login = '".$login."',
-			               user_group_id = '".$user_group_id."',
-			               first_name = '".$first_name."',
-			               last_name = '".$last_name."',
-			               email = '".$email."',
-			               status = '".$status."'
-			         WHERE user_id = ".$userID;
-
-			return $this->execute($sql);
 		}
 	}
 

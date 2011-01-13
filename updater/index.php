@@ -271,7 +271,7 @@ if ($patch_id > 0)
 	// display backup file info after remove permission step
 	if ($row["remove_permission_files"] == "")
 	{
-		$msg->printFeedbacks('PATCH_INSTALLED_SUCCESSFULLY');
+		$msg->printFeedbacks('UPDATE_INSTALLED_SUCCESSFULLY');
 		
 		if ($row["backup_files"]<> "")
 		{
@@ -292,7 +292,7 @@ if ($patch_id > 0)
 	
 			if (count($patch_files) > 0)
 			{
-				$feedbacks[] = _AC('updater_show_patch_files');
+				$feedbacks[] = _AC('updater_show_update_files');
 				
 				foreach($patch_files as $patch_file)
 					if ($patch_file <> "") $feedbacks[count($feedbacks)-1] .= "<strong>" . $patch_file . "</strong><br />";
