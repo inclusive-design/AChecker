@@ -17,7 +17,7 @@ CREATE TABLE `language_text` (
   `term` varchar(50) NOT NULL default '',
   `text` blob NOT NULL,
   `revised_date` datetime NOT NULL default '0000-00-00 00:00:00',
-  `context` text NOT NULL,
+  `context` text,
   PRIMARY KEY  (`language_code`,`variable`,`term`),
   UNIQUE KEY `idx_unique_lang_term` (`language_code`,`term`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
