@@ -1016,6 +1016,7 @@ class BasicFunctions {
 			}
 		}
 		$doctypes = $global_content_dom->find("doctype");
+		
 		if (count($doctypes) == 0) return false;
 		
 		foreach ($doctypes as $doctype)
@@ -1023,8 +1024,9 @@ class BasicFunctions {
 			foreach ($doctype->attr as $doctype_content => $garbage)
 			{
 				// If the content is HTML, check the value of the html element's lang attribute
-				if (stristr($doctype_content, " HTML "))
+				if (stristr($doctype_content, "HTML") && !stristr($doctype_content, "XHTML")) {
 					return BasicChecks::isValidLangCode(trim($global_e->attr['lang']));
+				}
 				
 				// If the content is XHTML 1.0, or any version of XHTML served as "text/html", 
 				// check the values of both the html element's lang attribute and xml:lang attribute.
