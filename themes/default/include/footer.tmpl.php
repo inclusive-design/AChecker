@@ -19,7 +19,7 @@ if($languageManager->getNumEnabledLanguages() > 1)
 {
 ?>
 
-<div align="center" id="lang" style="clear: left"><br />
+<div align="center" id="lang" style="clear: both;"><br />
 <?php
 
 	if ($languageManager->getNumEnabledLanguages() > 5) {
@@ -33,7 +33,7 @@ if($languageManager->getNumEnabledLanguages() > 1)
 		$languageManager->printList($_SESSION['lang'], 'lang', 'lang', htmlspecialchars($_my_uri));
 	}
 ?>
-</div>
+</div><br /><br />
 <?php } ?>
 
 
