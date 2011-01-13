@@ -41,7 +41,7 @@ class LanguageEditor extends Language {
 		global $db, $addslashes, $msg;
 		
 		global $savant;
-		$this->msg =& $msg;
+		$this->msg = $msg;
 
 		$this->addslashes = $addslashes;
 
@@ -134,7 +134,7 @@ class LanguageEditor extends Language {
 			$update_check = ' checked="checked"';
 		}
 
-		$fromLanguage =& $languageManager->getLanguage(DEFAULT_LANGUAGE_CODE);
+		$fromLanguage = $languageManager->getLanguage(DEFAULT_LANGUAGE_CODE);
 
 		echo '<form method="post" action="'.htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES).'">';
 		echo '<table border="0" cellpadding="0" cellspacing="2">';
@@ -228,7 +228,7 @@ class LanguageEditor extends Language {
 		// check if this language exists before calling this method
 
 		require_once(AC_INCLUDE_PATH . 'classes/sqlutility.class.php');
-		$sqlUtility =& new SqlUtility();
+		$sqlUtility = new SqlUtility();
 
 		$sqlUtility->queryFromFile($language_sql_file, TABLE_PREFIX);
 	}
@@ -270,7 +270,7 @@ class LanguageEditor extends Language {
 		$readme = 'This is an AChecker language pack. Use the administrator Language section to import this language pack or manually import the contents of the SQL file into your [table_prefix]language_text table, where `table_prefix` should be replaced with your correct AChecker table prefix as defined in ./include/config.inc.php .';
 
 		require(AC_INCLUDE_PATH . 'classes/zipfile.class.php');
-		$zipfile =& new zipfile();
+		$zipfile = new zipfile();
 
 		$zipfile->add_file($sql_dump, 'language_text.sql');
 		$zipfile->add_file($readme, 'readme.txt');

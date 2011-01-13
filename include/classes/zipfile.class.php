@@ -283,7 +283,7 @@ class zipfile {
 		unset($this->central_directory_headers);
 		unset($this->num_entries);
 
-		$this->zip_file =& $this->files_data;
+		$this->zip_file = $this->files_data;
 		$this->is_closed = true;
 	}
 

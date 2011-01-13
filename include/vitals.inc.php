@@ -111,7 +111,7 @@ define('SITE_NAME',                 $_config['site_name']);
 	require(AC_INCLUDE_PATH . 'classes/Language/LanguageManager.class.php');
 	$languageManager = new LanguageManager();
 
-	$myLang =& $languageManager->getMyLanguage();
+	$myLang = $languageManager->getMyLanguage();
 
 	if ($myLang === FALSE) {
 		echo 'There are no languages installed!';
