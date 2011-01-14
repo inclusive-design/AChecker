@@ -41,12 +41,12 @@ function encrypt_password() {
 
 				<tr>
 					<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="login"><?php echo _AC('login_name_or_email'); ?></label></td>
-					<td><input type="text" name="form_login" size="50" id="login"  class="formfield" style="max-width:70%;width:70%;"/><br /></td>
+					<td><input type="text" name="form_login" size="50" id="login"  class="formfield" /><br /></td>
 				</tr>
 				
 				<tr>
 					<td align="left"><div class="required" align="right" title="<?php echo _AC('required_field'); ?>">*</div><label for="pass"><?php echo _AC('password'); ?></label></td>
-					<td><input type="password" class="formfield" name="form_password" size="50" id="pass" style="max-width:70%;width:70%;"/></td>
+					<td><input type="password" class="formfield" name="form_password" size="50" id="pass"/></td>
 				</tr>
 
 				<tr>
