@@ -75,10 +75,6 @@ if (isset($_REQUEST["save"]))
 {
 	$sql_save	= "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ('".$_POST["lang_code"]."', '".$_POST["variable"]."', '".$_POST["term"]."', '".$addslashes($_POST["translated_text"])."', NOW(), '')";
 
-	$trans = get_html_translation_table(HTML_ENTITIES);
-	$trans = array_flip($trans);
-	$sql_save = strtr($sql_save, $trans);
-
 	if (!$dao->execute($sql_save)) {
 		$success_error = '<div class="error">Error: changes not saved!</div>';
 	}
@@ -87,18 +83,10 @@ if (isset($_REQUEST["save"]))
 	}
 }
 
-//$rows_lang = $languagesDAO->getAllExceptLangCode(DEFAULT_LANGUAGE_CODE);				
 $rows_lang = $languagesDAO->getAll();				
 
 include(AC_INCLUDE_PATH.'header.inc.php');
 
-//if (!is_array($rows_lang))
-//{
-//	$msg->addFeedback('ONLY_ENGLISH');
-//	$msg->printAll();
-//	include(AC_INCLUDE_PATH.'footer.inc.php'); 
-//	exit;
-//}
 ?>
 
 <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
@@ -146,6 +134,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		</div>
 
 		<div>
+			<input type="submit" name="search" value="<?php echo _AC('search_phase'); ?>" class="submit" style="display:none;" />
 			<input type="submit" name="submit" value="<?php echo _AC('submit'); ?>" class="submit" />
 			<input type="submit" name="reset_filter" value="<?php echo _AC('reset_filter'); ?>" class="submit" />
 		</div>
