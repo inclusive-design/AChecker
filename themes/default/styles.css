@@ -1125,11 +1125,6 @@ pre.badgeSnippet {
 	background: url(images/navrh.gif) right top no-repeat;
 	padding-right: 10px
 }
-.navigation a:active span
-{
-	background: url(images/navlh.gif) right top no-repeat;
-	padding-right: 10px
-}
 
 .navigation ul
 {
