@@ -1127,7 +1127,7 @@ pre.badgeSnippet {
 }
 .navigation a:active span
 {
-	background: url(images/navrh.gif) right top no-repeat;
+	background: url(images/navlh.gif) right top no-repeat;
 	padding-right: 10px
 }
 
@@ -1160,7 +1160,7 @@ ul.navigation li a:hover, ul.navigation li a:focus, ul.navigation li a.active {
 	text-decoration:none;
 }
 
-ul.navigation li a.active span{
+ul.navigation li a.active span, li a:focus span{
     	background-color: #781351; 
 	background: #781351 url(images/navrh.gif) right top no-repeat;
 	padding-right: 10px;
