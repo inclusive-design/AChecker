@@ -53,8 +53,8 @@ if (isset($_GET['asc'])) {
 	$col   = isset($cols[$_GET['desc']]) ? $_GET['desc'] : 'login';
 } else {
 	// no order set
-	$order = 'asc';
-	$col   = 'login';
+	$order = 'desc';
+	$col   = 'last_login';
 }
 if (isset($_GET['status']) && ($_GET['status'] != '')) {
 	$_GET['status'] = intval($_GET['status']);
