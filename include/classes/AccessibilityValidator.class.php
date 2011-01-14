@@ -217,7 +217,6 @@ class AccessibilityValidator {
 			}
 			
 			// generate array of prerequisite check_ids
-			
 			$rows = $checksDAO->getOpenPreChecksByGuidelineIDs($guideline_query);
 
 			if (is_array($rows))
@@ -232,7 +231,6 @@ class AccessibilityValidator {
 				}
 			}
 			$this->prerequisite_check_array = $prerequisite_check_array;
-
 
 			return true;
 		}
@@ -275,7 +273,6 @@ class AccessibilityValidator {
 				if (!$prerequisite_failed)
 				{
 					$check_result = $this->check($e, $check_id);
-					
 				}
 			}
 			
@@ -303,14 +300,10 @@ class AccessibilityValidator {
 		// has not been checked
 		if (!$result)
 		{
-		
-			
-			
 			$check_result = eval($this->check_func_array[$check_id]);
 			
 			//CSS code variable
 			$css_code = BasicChecks::getCssOutput();
-		
 								
 			$checksDAO = new ChecksDAO();
 			$row = $checksDAO->getCheckByID($check_id);
@@ -340,7 +333,6 @@ class AccessibilityValidator {
 				$result = FAIL_RESULT;
 			}
 			
-				
 			if ($result == FAIL_RESULT)
 			{
 
@@ -348,8 +340,6 @@ class AccessibilityValidator {
 					$html_code = substr($e->outertext, 0, DISPLAY_PREVIEW_HTML_LENGTH) . " ...";
 				else 
 					$html_code = $e->outertext;
-//				else
-//					$html_code = substr($e->outertext, 0, strpos($e->outertext, '>')+1);
 
 				// find out preview images for validation on <img>
 				if (strtolower(trim($row['html_tag'])) == 'img')
@@ -478,7 +468,6 @@ class AccessibilityValidator {
 		return $this->result;
 	}
 	
-
 	/**
 	 * public 
 	 * return number of errors
