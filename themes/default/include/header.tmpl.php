@@ -76,6 +76,9 @@ $starttime = $mtime;
 	<link rel="shortcut icon" href="<?php echo $this->base_path; ?>images/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/forms.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/styles.css" type="text/css" />
+	<!--[if IE]>
+	  <link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/ie_styles.css" type="text/css" />
+	<![endif]-->
 	<?php echo $this->rtl_css; ?>
 	<?php echo $this->custom_head; ?>
 
@@ -179,7 +182,7 @@ $starttime = $mtime;
 		<!-- guide -->
 		<?php if (isset($this->guide)) {?>
 		<div>
-			<a href="<?php echo $this->guide; ?>" onclick="popup('<?php echo $this->guide; ?>'); return false;" id="guide" target="_new"><em><?php echo $this->page_title; ?></em></a>
+			<a href="<?php echo $this->guide; ?>" onclick="popup('<?php echo $this->guide; ?>'); return false;" id="guide" target="_new" title="<?php echo _AC('achecker_handbook').': '.$this->page_title; ?>"><em><?php echo $this->page_title; ?></em></a>
 		</div>
 		<?php }?>
 
