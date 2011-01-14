@@ -39,7 +39,7 @@ class HTMLRpt extends AccessibilityRpt {
          <span class="msg">
             <a href="{BASE_HREF}checker/suggestion.php?id={CHECK_ID}"
                onclick="popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\'); return false;" 
-               title="{TITLE}" target="_new">{ERROR}</a>
+               target="_new">{ERROR}</a>
          </span>
          <pre><code class="input">{HTML_CODE}</code></pre>
          {IMAGE}
