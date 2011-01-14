@@ -18,7 +18,7 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 
 <div class="center-input-form">
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="form">
-	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("updates"); ?></legend>
+<fieldset class="group_form"><legend class="group_form"><?php echo _AC("updates"); ?></legend>
 
 <table summary="" class="data" rules="rows">
 <thead>
@@ -102,7 +102,7 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 
 <?php } ?>
 </table>
-
+</fieldset>
 </form>
 </div>
 
