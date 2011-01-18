@@ -3154,6 +3154,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','password_request2','Dear
 INSERT INTO `language_text` VALUES ('eng', '_template','pass_example','Pass HTML Example','2009-04-02 11:08:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','pass_examples','Pass Examples','2009-04-02 13:16:21','');
 INSERT INTO `language_text` VALUES ('eng', '_template','pass_example_desc','Pass Example Description','2009-04-02 11:08:06','');
+INSERT INTO `language_text` VALUES ('eng', '_template','path_not_allowed','Cannot proceed! The listed file path(s) is not allowed:<br />','2011-01-13 10:39:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','points','points','2010-09-22 00:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','potential','Potential','2008-11-24 13:04:52','');
 INSERT INTO `language_text` VALUES ('eng', '_template','potential_problem','Potential Problem','2009-03-10 15:00:57','');
