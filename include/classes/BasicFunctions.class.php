@@ -673,6 +673,19 @@ class BasicFunctions {
 	}
 
 	/**
+	* check if the tag plain text contains a line that is separated by more than one tab or vertical line
+	* return true if yes, otherwise, false
+	*/
+	public static function hasTabularInfo()
+	{
+		global $global_e;
+
+		$text = $global_e->plaintext;
+		
+		return (preg_match("/.*\t.+\t.*/", $text) || preg_match("/.*\|.+\|.*/", $text));
+	}
+	
+	/**
 	* check if there's given tag in children.
 	* return true if has, otherwise, false
 	*/
