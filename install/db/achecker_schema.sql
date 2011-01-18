@@ -158,8 +158,8 @@ CREATE TABLE `mail_queue` (
   `from_email` varchar(50) NOT NULL DEFAULT '',
   `from_name` varchar(50) NOT NULL DEFAULT '',
   `char_set` varchar(20) NOT NULL DEFAULT '',
-  `subject` varchar(255) NOT NULL,
-  `body` text NOT NULL,
+  `subject` varchar(255) DEFAULT NULL,
+  `body` text,
   PRIMARY KEY (`mail_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -179,10 +179,10 @@ CREATE TABLE `patches` (
   `remove_permission_files` text,
   `backup_files` text,
   `patch_files` text,
-  `author` VARCHAR(255) NOT NULL,
+  `author` VARCHAR(255) NOT NULL default '',
   `installed_date` datetime NOT NULL,
   PRIMARY KEY  (`patches_id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 # --------------------------------------------------------
@@ -196,7 +196,7 @@ CREATE TABLE `patches_files` (
   `name` TEXT,
   `location` VARCHAR(250) NOT NULL default '',
   PRIMARY KEY  (`patches_files_id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `patches_files_actions`
@@ -209,7 +209,7 @@ CREATE TABLE `patches_files_actions` (
   `code_from` TEXT,
   `code_to` TEXT,
   PRIMARY KEY  (`patches_files_actions_id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `myown_patches`
@@ -224,7 +224,7 @@ CREATE TABLE `myown_patches` (
   `status` varchar(20) NOT NULL default '',
   `last_modified` datetime NOT NULL,
   PRIMARY KEY  (`myown_patch_id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `myown_patches_dependent`
@@ -235,7 +235,7 @@ CREATE TABLE `myown_patches_dependent` (
   `myown_patch_id` MEDIUMINT UNSIGNED NOT NULL,
   `dependent_patch_id` VARCHAR(50) NOT NULL default '',
   PRIMARY KEY  (`myown_patches_dependent_id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `myown_patches_files`
@@ -251,7 +251,7 @@ CREATE TABLE `myown_patches_files` (
   `code_to` TEXT,
   `uploaded_file` TEXT,
   PRIMARY KEY  (`myown_patches_files_id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 # Table structure for table `privileges`
@@ -260,7 +260,7 @@ CREATE TABLE `myown_patches_files` (
 CREATE TABLE `privileges` (
   `privilege_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `title_var` varchar(255) NOT NULL DEFAULT '',
-  `description` text NOT NULL,
+  `description` text,
   `create_date` datetime NOT NULL,
   `last_update` datetime DEFAULT NULL,
   `link` varchar(255) NOT NULL DEFAULT '',
@@ -309,7 +309,7 @@ CREATE TABLE `themes` (
   `version` varchar(10) NOT NULL DEFAULT '',
   `dir_name` varchar(20) NOT NULL DEFAULT '',
   `last_updated` date NOT NULL DEFAULT '0000-00-00',
-  `extra_info` text NOT NULL,
+  `extra_info` text,
   `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`title`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -357,7 +357,7 @@ CREATE TABLE `user_decisions` (
 CREATE TABLE `user_groups` (
   `user_group_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL DEFAULT '',
-  `description` text NOT NULL,
+  `description` text,
   `create_date` datetime NOT NULL,
   `last_update` datetime DEFAULT NULL,
   PRIMARY KEY (`user_group_id`)
@@ -380,12 +380,14 @@ CREATE TABLE `user_group_privilege` (
 CREATE TABLE `user_links` (
   `user_link_id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
-  `URI` text NOT NULL,
+  `URI` text,
   `last_guideline_ids` varchar(50) NOT NULL,
-  `last_sessionID` varchar(40) NOT NULL,
+  `last_sessionID` varchar(40),
   `last_update` datetime NOT NULL,
   PRIMARY KEY (`user_link_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+############ DO NOT remove this line. Below are the required data insert ############
 
 # Dumping data for table `checks`
 
@@ -555,7 +557,7 @@ INSERT INTO `checks` (`check_id`, `user_id`, `html_tag`, `confidence`, `note`, `
 (168, 0, 'form', 0, '', '_CNAME_168', '_ERR_168', '_DESC_168', NULL, NULL, '', '_HOWTOREPAIR_168', '', '', '', '', '_PROCEDURE_168', '_EXPECTEDRESULT_168', '_FAILEDRESULT_168', 'return BasicFunctions::isRadioButtonsGrouped();', 1, '0000-00-00 00:00:00'),
 (169, 0, 'select', 1, '', '_CNAME_169', '_ERR_169', '_DESC_169', NULL, NULL, '', '', '', '_QUESTION_169', '_DECISIONPASS_169', '_DECISIONFAIL_169', '_PROCEDURE_169', '_EXPECTEDRESULT_169', '_FAILEDRESULT_169', '$num_of_options = BasicFunctions::getNumOfTagRecursiveInChildren("option");\r\n$num_of_optgroups = BasicFunctions::getNumOfTagRecursiveInChildren("optgroup");\r\n\r\nreturn !($num_of_options > 3 && $num_of_optgroups < 2);', 1, '0000-00-00 00:00:00'),
 (173, 0, 'a', 1, '', '_CNAME_173', '_ERR_173', '_DESC_173', '_SEARCHSTR_173', NULL, '', '', '', '_QUESTION_173', '_DECISIONPASS_173', '_DECISIONFAIL_173', '_PROCEDURE_173', '_EXPECTEDRESULT_173', '_FAILEDRESULT_173', 'return !BasicFunctions::isPlainTextInSearchString();', 1, '0000-00-00 00:00:00'),
-(174, 0, 'a', 0, '', '_CNAME_174', '_ERR_174', '_DESC_174', NULL, NULL, '', '_HOWTOREPAIR_174', '', '', '', '', '_PROCEDURE_174', '_EXPECTEDRESULT_174', '_FAILEDRESULT_174', 'return ((BasicFunctions::getPlainTextLength() > 0 || BasicFunctions::getAttributeTrimedValueLength(''title'') > 0 || BasicFunctions::getLengthOfAttributeValueWithGivenTagInChildren(''img'', ''alt'') > 0) || !BasicFunctions::hasAttribute(''href''));', 1, '0000-00-00 00:00:00'),
+(174, 0, 'a', 0, '', '_CNAME_174', '_ERR_174', '_DESC_174', NULL, NULL, '', '_HOWTOREPAIR_174', '', '', '', '', '_PROCEDURE_174', '_EXPECTEDRESULT_174', '_FAILEDRESULT_174', 'return ((BasicFunctions::getInnerTextLength() > 0 || BasicFunctions::getAttributeTrimedValueLength(''title'') > 0 || BasicFunctions::getLengthOfAttributeValueWithGivenTagInChildren(''img'', ''alt'') > 0) || !BasicFunctions::hasAttribute(''href''));', 1, '0000-00-00 00:00:00'),
 (175, 0, 'a', 0, '', '_CNAME_175', '_ERR_175', '_DESC_175', NULL, NULL, '', '_HOWTOREPAIR_175', '', '', '', '', '_PROCEDURE_175', '_EXPECTEDRESULT_175', '_FAILEDRESULT_175', '$alt_value = BasicFunctions::getLowerCaseAttributeValueWithGivenTagInChildren(''img'', ''alt'');\r\n\r\nreturn !($alt_value <> "" && $alt_value == BasicFunctions::getPlainTextInLowerCase());', 1, '0000-00-00 00:00:00'),
 (176, 0, 'basefont', 0, '', '_CNAME_176', '_ERR_176', '_DESC_176', NULL, NULL, '', '_HOWTOREPAIR_176', '', '', '', '', '_PROCEDURE_176', '_EXPECTEDRESULT_176', '_FAILEDRESULT_176', 'return false;', 1, '0000-00-00 00:00:00'),
 (177, 0, 'font', 0, '', '_CNAME_177', '_ERR_177', '_DESC_177', NULL, NULL, '', '_HOWTOREPAIR_177', '', '', '', '', '_PROCEDURE_177', '_EXPECTEDRESULT_177', '_FAILEDRESULT_177', 'return false;', 1, '0000-00-00 00:00:00'),
@@ -621,7 +623,7 @@ INSERT INTO `checks` (`check_id`, `user_id`, `html_tag`, `confidence`, `note`, `
 (238, 0, 'input', 0, '', '_CNAME_238', '_ERR_238', '_DESC_238', NULL, NULL, '', '_HOWTOREPAIR_238', '', '', '', '', '_PROCEDURE_238', '_EXPECTEDRESULT_238', '_FAILEDRESULT_238', 'return !(BasicFunctions::getAttributeValueInLowerCase("type") <> "image" && BasicFunctions::hasAttribute("alt"));', 1, '0000-00-00 00:00:00'),
 (239, 0, 'img', 2, '', '_CNAME_239', '_ERR_239', '_DESC_239', NULL, NULL, '', '', '', '_QUESTION_239', '_DECISIONPASS_239', '_DECISIONFAIL_239', '_PROCEDURE_239', '_EXPECTEDRESULT_239', '_FAILEDRESULT_239', 'return (BasicFunctions::getAttributeValue(''title'') == "");', 1, '0000-00-00 00:00:00'),
 (240, 0, 'a', 2, '', '_CNAME_240', '_ERR_240', '_DESC_240', NULL, NULL, '', '', '', '_QUESTION_240', '_DECISIONPASS_240', '_DECISIONFAIL_240', '_PROCEDURE_240', '_EXPECTEDRESULT_240', '_FAILEDRESULT_240', '$ext = BasicFunctions::getLast4CharsFromAttributeValue(''href'');\r\n\r\nreturn !($ext == ".wmv" || $ext == ".mpg" || $ext == ".mov" || $ext == ".ram" || $ext == ".aif");', 1, '0000-00-00 00:00:00'),
-(241, 0, 'body', 2, '', '_CNAME_241', '_ERR_241', '_DESC_241', NULL, NULL, '', '', '', '_QUESTION_241', '_DECISIONPASS_241', '_DECISIONFAIL_241', '_PROCEDURE_241', '_EXPECTEDRESULT_241', '_FAILEDRESULT_241', 'return (BasicFunctions::getPlainTextLength() < 21);', 1, '0000-00-00 00:00:00'),
+(241, 0, 'body', 2, '', '_CNAME_241', '_ERR_241', '_DESC_241', NULL, NULL, '', '', '', '_QUESTION_241', '_DECISIONPASS_241', '_DECISIONFAIL_241', '_PROCEDURE_241', '_EXPECTEDRESULT_241', '_FAILEDRESULT_241', 'return (BasicFunctions::getPlainTextLength() < 21 || !BasicFunctions::hasTabularInfo());', 1, '0000-00-00 00:00:00'),
 (242, 0, 'caption', 2, '', '_CNAME_242', '_ERR_242', '_DESC_242', NULL, NULL, '', '', '', '_QUESTION_242', '_DECISIONPASS_242', '_DECISIONFAIL_242', '_PROCEDURE_242', '_EXPECTEDRESULT_242', '_FAILEDRESULT_242', 'return false;', 1, '0000-00-00 00:00:00'),
 (243, 0, 'table', 0, '', '_CNAME_243', '_ERR_243', '_DESC_243', NULL, NULL, '', '_HOWTOREPAIR_243', '', '', '', '', '_PROCEDURE_243', '_EXPECTEDRESULT_243', '_FAILEDRESULT_243', 'if (BasicFunctions::getAttributeValue("summary") == "") return true;\r\n\r\n$caption = BasicFunctions::getLowerCasePlainTextWithGivenTagInChildren(''caption'');\r\n\r\nreturn (BasicFunctions::getAttributeValueInLowerCase("summary") <> $caption);', 1, '0000-00-00 00:00:00'),
 (244, 0, 'table', 0, '', '_CNAME_244', '_ERR_244', '_DESC_244', NULL, NULL, '', '_HOWTOREPAIR_244', '', '', '', '', '_PROCEDURE_244', '_EXPECTEDRESULT_244', '_FAILEDRESULT_244', 'if (!BasicFunctions::isDataTable()) \r\n   return true;\r\nelse\r\n   return BasicFunctions::hasScope();', 1, '0000-00-00 00:00:00'),
@@ -664,7 +666,6 @@ INSERT INTO `checks` (`check_id`, `user_id`, `html_tag`, `confidence`, `note`, `
 (305, 0, 'a', 0, NULL, '_NAME_305', '_ERR_305', '_DESC_305', '999', NULL, NULL, NULL, NULL, '_QUESTION_305', '_DECISIONPASS_305', '_DECISIONFAIL_305', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForNotVisitedLinkWCAG2AA();', 1, '0000-00-00 00:00:00'),
 (306, 0, 'all elements', 0, NULL, '_NAME_306', '_ERR_306', '_DESC_306', '999', NULL, NULL, NULL, NULL, '_QUESTION_306', '_DECISIONPASS_306', '_DECISIONFAIL_306', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForGeneralElementWCAG2AAA();', 1, '0000-00-00 00:00:00'),
 (307, 0, 'a', 0, NULL, '_NAME_307', '_ERR_307', '_DESC_307', '999', NULL, NULL, NULL, NULL, '_QUESTION_307', '_DECISIONPASS_307', '_DECISIONFAIL_307', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForVisitedLinkWCAG2AAA();', 1, '0000-00-00 00:00:00'),
-(6019, 0, 'a', 0, NULL, '_NAME_308', '_ERR_308', '_DESC_308', '999', NULL, NULL, NULL, NULL, '_QUESTION_308', '_DECISIONPASS_308', '_DECISIONFAIL_308', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForActiveLinkWCAG2AAA();', 1, '0000-00-00 00:00:00'),
 (309, 0, 'a', 0, NULL, '_NAME_309', '_ERR_309', '_DESC_309', '999', NULL, NULL, NULL, NULL, '_QUESTION_309', '_DECISIONPASS_309', '_DECISIONFAIL_309', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForHoverLinkWCAG2AAA();', 1, '0000-00-00 00:00:00'),
 (310, 0, 'a', 0, NULL, '_NAME_310', '_ERR_310', '_DESC_310', '999', NULL, NULL, NULL, NULL, '_QUESTION_310', '_DECISIONPASS_310', '_DECISIONFAIL_310', NULL, NULL, NULL, 'return BasicFunctions::checkColorContrastForNotVisitedLinkWCAG2AAA();', 1, '0000-00-00 00:00:00');
 
