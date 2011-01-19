@@ -41,8 +41,7 @@ $handbook_pages = array(
                                         'profile/change_password.php',
                                         'profile/change_email.php'
                                         ),
-               'updater/index.php' => array('updater/myown_patches.php',
-                                            'updater/patch_create.php')
+               'updater/index.php' => array('updater/patch_create.php')
 );
 
 ?>
