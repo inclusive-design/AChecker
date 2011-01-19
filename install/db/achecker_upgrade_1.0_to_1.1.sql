@@ -158,3 +158,12 @@ INSERT INTO `subgroup_checks` (subgroup_id, check_id) VALUES
 (360, 303),
 (360, 304),
 (360, 305);
+
+UPDATE `privileges` SET `menu_sequence`=8 WHERE `privilege_id`=7;
+
+INSERT INTO `privileges` (`privilege_id`, `title_var`, `description`, `create_date`, `last_update`, `link`, `menu_sequence`, `open_to_public`) VALUES
+(8, 'updater', 'Updater: Install, create, edit updates.', '2011-01-11 13:48:03', NULL, 'updater/index.php', 7, 0);
+
+INSERT INTO `user_group_privilege` (`user_group_id`, `privilege_id`) VALUES
+(1, 6),
+(1, 8);
