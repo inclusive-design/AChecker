@@ -9,7 +9,7 @@
 set now = `date +"%Y_%m_%d"`
 set achecker_dir = "AChecker_$now"
 set bundle = "AChecker"
-set svndir = "http://atutorsvn.atrc.utoronto.ca/repos/achecker/trunk/"
+set svndir = "http://svn.atutor.ca/repos/achecker/trunk/"
 set svnexec = "svn"
 
 echo "\033[1mAChecker Bundle Script [for CVS 1.3.1+] \033[0m"
@@ -18,7 +18,7 @@ echo "--------------------"
 if ($#argv > 0) then
 	set extension = "-$argv[1]"
 else 
-	echo "No argument given. Run \033[1m./bundle.sh [VERSION]\033[0m to specify bundle version."
+	echo "No argument given. Run \033[1m./achecker_bundle.sh [VERSION]\033[0m to specify bundle version."
 	set extension = ""
 endif
 
@@ -74,7 +74,7 @@ mv $achecker_dir/vitals.inc.php $achecker_dir/AChecker/include/vitals.inc.php
 #sleep 1
 
 echo -n "<?php "'$svn_data = '"'" >> $achecker_dir/AChecker/svn.php
-$svnexec log  -q -r HEAD http://atutorsvn.atrc.utoronto.ca/repos/achecker/trunk/  >> $achecker_dir/AChecker/svn.php
+$svnexec log  -q -r HEAD http://svn.atutor.ca/repos/achecker/trunk/  >> $achecker_dir/AChecker/svn.php
 echo -n "';?>" >> $achecker_dir/AChecker/svn.php
 
 echo "Targz'ing $bundle${extension}.tar.gz $achecker_dir/AChecker/"
