@@ -367,7 +367,7 @@ function del(type, id) {
 	check_unsaved_info();
 
 	if (get_confirm()) {
-		location.href="<?php echo AC_BASE_HREF; ?>guideline/create_edit_guideline.php?action=remove&"+type+"="+id+"&id="+<?php echo $gid?>;
+		location.href="<?php echo AC_BASE_HREF; ?>guideline/create_edit_guideline.php?action=remove&"+type+"="+id+"&id="+"<?php echo $gid?>";
 		return true;
 	}
 	else {
