@@ -28,11 +28,14 @@ class CSSValidator {
 	var $validator_url = "http://jigsaw.w3.org/css-validator/validator";
 	var $local_validator_command = "java -jar ";
 	var $local_validator_path = "../local_validator/local_css_validator/css-validator.jar "; // path validatore 
+
+	// we need a way to pass in the interface language of AChecker (e.g. ita) and have it set the CSS Validator language 
+	// supports en, fr, it, ko, ja, es, zh-cn, nl, de, it, pl.
 	var $local_validator_option = "--output=xhtml --warning=0 --lang=it ";
-	
+	//var $local_validator_option = "--output=xhtml --warning=0 --lang-en";
 	
 	var $full_return;             // full return from the 3rd party validator
-	var $result;                  // result section stripped from $full_return
+	var $result;                  // result section stripped from $full_returns.spagnoli@unibo.it
 	var $num_of_errors = 0;       // number of errors
 	
 	var $contain_errors = false;  // true or false. if error happens in process
@@ -55,7 +58,7 @@ class CSSValidator {
 			if (Utility::getValidURI($this->validate_content) === false)
 			{
 				$this->contain_errors = true;
-				$this->msg = "Error: Cannot connect to <strong>".$uri. "</strong>";
+				$this->msg = _AC('AC_ERROR_CANT_CONNECT', $uri); //"Error: Cannot connect to <strong>".$uri. "</strong>";
 				return false;
 			}
 			$result = $this->validate_uri($this->validate_content);
@@ -86,7 +89,10 @@ class CSSValidator {
 		if (sizeof($retval) == 0)
 		{   // If output from the internal validiator is not found, use the external validator
 			// Se non trovo output dal validatore interno, uso il validatore esterno
+			// we need a way to pass in the interface language of AChecker (e.g. ita) and have it set the CSS Validator language 
 			$content = @file_get_contents($this->validator_url. "?uri=".$uri."&warning=0&lang=it");
+			//$content = @file_get_contents($this->validator_url. "?uri=".$uri."&warning=0&lang=en");
+		
 		}
 		else {
 			// Internal validator result
@@ -113,7 +119,7 @@ class CSSValidator {
 		$pattern1 = '/('.preg_quote("<div id='congrats'>", '/').'.*)/s'; // nessun errore -- no errors
 		//$pattern2 = '/('.preg_quote('<div id="errors">', '/').'.*)/s'; // when has errors
 		$pattern2 = '/('.preg_quote("<div class='error-section-all'>", '/').'.*)/s'; // when has errors
-		$pattern3 = '/('.preg_quote('<p class="backtop"><a href="#banner">&uarr; Top</a></p>', '/').'.*)/s'; // when has errors
+		$pattern3 = '/('.preg_quote('<p class="backtop"><a href="#banner">&uarr; '._AC('cssv_top').'</a></p>', '/').'.*)/s'; // when has errors
 		$pattern4 = '/('.preg_quote('<div id="warnings">', '/').'.*)/s'; // when has errors
 
 		
@@ -125,7 +131,7 @@ class CSSValidator {
 
 			if (preg_match($pattern3, $full_result, $matches2))
 			{
-				$result_exp = explode('<p class="backtop"><a href="#banner">&uarr; Top</a></p>', $matches[0]);
+				$result_exp = explode('<p class="backtop"><a href="#banner">&uarr; '._AC('cssv_top').'</a></p>', $matches[0]);
 			}
 			else if (preg_match($pattern4, $full_result, $matches2))
 			{
@@ -153,7 +159,7 @@ class CSSValidator {
 					$res_exp[$i] =  '<li class="msg_err">'. $res_exp[$i];
 					$res_exp[$i] = str_replace("<h4>", '<span class="msg"><strong>', $res_exp[$i]);
 					$res_exp[$i] = str_replace("</h4>", '</strong></span>', $res_exp[$i]);
-					$res_exp[$i] = str_replace("<table>", "<table class='css_error' cellspacing='4px'><tr><th>Riga</th><th>Selettore</th><th>Errore</th></tr>", $res_exp[$i]);
+					$res_exp[$i] = str_replace("<table>", "<table class='css_error' cellspacing='4px'><tr><th>"._AC('line')."</th><th>"._AC('element')."</th><th>"._AC('error')."</th></tr>", $res_exp[$i]);
 					
 					$res_exp_int = explode("</div>", $res_exp[$i]);	
 					for ($j=0; $j<sizeof($res_exp_int)-1; $j++)
@@ -184,7 +190,7 @@ class CSSValidator {
 					$res_exp[$i] = str_replace("</div>", "</li>", $res_exp[$i]);
 					$res_exp[$i] = str_replace("<h4>", '<span class="msg"><strong>', $res_exp[$i]);
 					$res_exp[$i] = str_replace("</h4>", '</strong></span>', $res_exp[$i]);
-					$res_exp[$i] = str_replace("<table>", "<table class='css_error' cellspacing='4px'><tr><th>Riga</th><th>Selettore</th><th>Errore</th></tr>", $res_exp[$i]);
+					$res_exp[$i] = str_replace("<table>", "<table class='css_error' cellspacing='4px'><tr><th>"._AC('line')."</th><th>"._AC('element')."</th><th>"._AC('error')."</th></tr>", $res_exp[$i]);
 					
 				}				
 			}
@@ -198,7 +204,7 @@ class CSSValidator {
 		else
 		{
 			$this->contain_errors = true;
-			$this->msg = '<p class="msg_err">Errore nel validatore CSS. Non &egrave; stato possibile trovare il report dei risultati dal validatore.</p><br/>';
+			$this->msg = '<p class="msg_err">'._AC('AC_ERROR_CSS_VALIDATOR_ERROR').'</p><br/>';
 			return false;
 		}
 
