@@ -124,7 +124,7 @@ $starttime = $mtime;
 <div id="liquid-round"><div class="top"><span></span></div>
 <div class="center-content">
 		<div id="logo">
-			<a href="http://www.atutor.ca/achecker/"><img width="100" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/checker_logo.gif" height="30" alt="AChecker" style="border:none;" /></a>
+			<a href="http://www.atutor.ca/achecker/"><img src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/checker_logo.png"  alt="AChecker" style="border:none;" /></a>
 		</div>
 	<div id="banner">
 
