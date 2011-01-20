@@ -86,7 +86,7 @@ CREATE TABLE `guidelines` (
   `title` varchar(255) DEFAULT NULL,
   `abbr` varchar(100) DEFAULT NULL,
   `long_name` varchar(255) DEFAULT NULL,
-  `published_date` date DEFAULT NULL,
+  `published_date` date,
   `earlid` varchar(255) DEFAULT NULL,
   `preamble` text,
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -262,7 +262,7 @@ CREATE TABLE `privileges` (
   `title_var` varchar(255) NOT NULL DEFAULT '',
   `description` text,
   `create_date` datetime NOT NULL,
-  `last_update` datetime DEFAULT NULL,
+  `last_update` datetime,
   `link` varchar(255) NOT NULL DEFAULT '',
   `menu_sequence` tinyint(4) NOT NULL,
   `open_to_public` tinyint(4) NOT NULL DEFAULT '0',
@@ -329,7 +329,7 @@ CREATE TABLE `users` (
   `web_service_id` varchar(40) NOT NULL,
   `status` tinyint(3) NOT NULL DEFAULT '1',
   `create_date` datetime NOT NULL,
-  `last_login` datetime DEFAULT NULL,
+  `last_login` datetime,
   `preferences` text,
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -359,7 +359,7 @@ CREATE TABLE `user_groups` (
   `title` varchar(255) NOT NULL DEFAULT '',
   `description` text,
   `create_date` datetime NOT NULL,
-  `last_update` datetime DEFAULT NULL,
+  `last_update` datetime,
   PRIMARY KEY (`user_group_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 

@@ -101,6 +101,7 @@ UPDATE `checks` SET func = 'return (BasicFunctions::getPlainTextLength() < 21 ||
 # --------------------------------------------------------
 # Altered unnecessary "NOT NULL" fields
 
+ALTER TABLE `guidelines` MODIFY `published_date` date;
 ALTER TABLE `language_text` MODIFY `context` text;
 ALTER TABLE `privileges` MODIFY `description` text, MODIFY `last_update` datetime DEFAULT NULL;
 ALTER TABLE `themes` MODIFY `extra_info` text;
