@@ -128,7 +128,7 @@ $starttime = $mtime;
 		</div>
 	<div id="banner">
 
-	<span id="logininfo">
+	<span id="logininfo"> 
         <?php
         if (isset($this->user_name))
         {
