@@ -21,6 +21,7 @@
 if (!defined('AC_INCLUDE_PATH')) exit;
 
 require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
+require_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 
 class PrivilegesDAO extends DAO {
 
@@ -66,6 +67,8 @@ class PrivilegesDAO extends DAO {
 	*/
 	function getUserPrivileges($userID)
 	{
+		$userID = intval($userID);
+		
 		$sql = 'SELECT *
 				FROM '.TABLE_PREFIX.'users u, '.TABLE_PREFIX.'user_groups ug, '.TABLE_PREFIX.'user_group_privilege ugp, '.TABLE_PREFIX.'privileges p
 				WHERE u.user_id = '.$userID.'
@@ -86,6 +89,8 @@ class PrivilegesDAO extends DAO {
 	*/
 	function getUserGroupPrivileges($userGroupID)
 	{
+		$userGroupID = intval($userGroupID);
+		
 		$sql = 'SELECT *, ug.description user_group_desc, p.description privilege_desc
 				FROM '.TABLE_PREFIX.'user_groups ug, '.TABLE_PREFIX.'user_group_privilege ugp, '.TABLE_PREFIX.'privileges p
 				WHERE ug.user_group_id = '.$userGroupID.'
@@ -105,12 +110,17 @@ class PrivilegesDAO extends DAO {
 	*/
 	function getAllPrivsExceptListed($privilegeIDs)
 	{
-		if (trim($privilegeIDs) == '')
+		if (!is_array($privilegeIDs)) return false;
+		
+		$sanitized_privs = Utility::sanitizeIntArray($privilegeIDs);
+		
+		if (count($sanitized_privs) == 0)
 			return $this->getAll();
 		else
 		{
+			$sanitized_privs_str = implode(",", $sanitized_privs);
 			$sql = "SELECT * FROM ". TABLE_PREFIX ."privileges 
-			         WHERE privilege_id NOT IN (".$privilegeIDs.")";
+			         WHERE privilege_id NOT IN (".$sanitized_privs_str.")";
 			return $this->execute($sql);
 		}
 	}

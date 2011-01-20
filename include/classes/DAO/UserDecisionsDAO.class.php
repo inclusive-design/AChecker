@@ -40,6 +40,12 @@ class UserDecisionsDAO extends DAO {
 	{
 		global $addslashes;
 		
+		$user_link_id = intval($user_link_id);
+		$line_num = intval($line_num);
+		$column_num = intval($column_num);
+		$check_id = intval($check_id);
+		$decision = $addslashes($decision);
+		
 		/* insert into the db */
 		$sequence_id = $this->getMaxSequenceID($user_link_id)+1;
 		
@@ -57,7 +63,7 @@ class UserDecisionsDAO extends DAO {
 		               ".$column_num.",
 		               ".$check_id.",
 		               ".$sequence_id.",
-		               '".$addslashes($decision)."',
+		               '".$decision."',
 		               now())";
 
 		if (!$this->execute($sql)) return false;
@@ -74,6 +80,8 @@ class UserDecisionsDAO extends DAO {
 	 */
 	public function DeleteByUserLinkID($user_link_id)
 	{
+		$user_link_id = intval($user_link_id);
+		
 		// delete customized guidelines created by user but yet open to public
 		$sql = "DELETE FROM ".TABLE_PREFIX."user_decisions
 		         WHERE user_link_id = ".$user_link_id;
@@ -91,6 +99,8 @@ class UserDecisionsDAO extends DAO {
 	 */
 	public function DeleteByUserID($user_id)
 	{
+		$user_id = intval($user_id);
+		
 		// delete customized guidelines created by user but yet open to public
 		$sql = "DELETE FROM ".TABLE_PREFIX."user_decisions
 		         WHERE user_link_id in (SELECT DISTINCT user_link_id 
@@ -123,6 +133,9 @@ class UserDecisionsDAO extends DAO {
 	 */
 	public function getByUserLinkIDAndSequenceID($user_link_id, $sequence_id)
 	{
+		$user_link_id = intval($user_link_id);
+		$sequence_id = intval($sequence_id);
+		
 		$sql = 'SELECT * FROM '.TABLE_PREFIX.'user_decisions 
 		         WHERE user_link_id='.$user_link_id.'
 		           AND sequence_id = '.$sequence_id;
@@ -139,6 +152,11 @@ class UserDecisionsDAO extends DAO {
 	 */
 	public function getByUserLinkIDAndLineNumAndColNumAndCheckID($user_link_id, $line_num, $column_num, $check_id)
 	{
+		$user_link_id = intval($user_link_id);
+		$line_num = intval($line_num);
+		$column_num = intval($column_num);
+		$check_id = intval($check_id);
+		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."user_decisions 
 		         WHERE user_link_id = ".$user_link_id."
 		           AND line_num = ".$line_num."
@@ -165,6 +183,8 @@ class UserDecisionsDAO extends DAO {
 	 */
 	public function getMaxSequenceID($user_link_id)
 	{
+		$user_link_id = intval($user_link_id);
+		
 		$sql = 'SELECT max(sequence_id) max_sequence_id FROM '.TABLE_PREFIX.'user_decisions 
 		         WHERE user_link_id='.$user_link_id;
 		$rows = $this->execute($sql);
@@ -190,8 +210,12 @@ class UserDecisionsDAO extends DAO {
 	{
 		global $addslashes;
 		
+		$user_link_id = intval($user_link_id);
+		$sequence_id = intval($sequence_id);
+		$decision = $addslashes($decision);
+		
 		$sql = "UPDATE ".TABLE_PREFIX."user_decisions 
-		           SET decision='".$addslashes($decision)."'
+		           SET decision='".$decision."'
 		         WHERE user_link_id = ".$user_link_id."
 		           AND sequence_id = ".$sequence_id;
 		return $this->execute($sql);
@@ -208,7 +232,8 @@ class UserDecisionsDAO extends DAO {
 	 */
 	public function reverseDecision($user_link_id, $sequence_id)
 	{
-		global $addslashes;
+		$user_link_id = intval($user_link_id);
+		$sequence_id = intval($sequence_id);
 		
 		$sql = "UPDATE ".TABLE_PREFIX."user_decisions 
 		           SET decision='".AC_NO_DECISION."'
@@ -230,6 +255,8 @@ class UserDecisionsDAO extends DAO {
 	 */
 	public function saveErrors($user_link_id, $errors)
 	{
+		$user_link_id = intval($user_link_id);
+		
 		foreach ($errors as $error)
 		{
 			$rows = $this->getByUserLinkIDAndLineNumAndColNumAndCheckID

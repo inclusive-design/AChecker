@@ -21,6 +21,7 @@
 if (!defined('AC_INCLUDE_PATH')) exit;
 
 require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
+require_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 
 class UserLinksDAO extends DAO {
 
@@ -38,6 +39,9 @@ class UserLinksDAO extends DAO {
 	{
 		global $addslashes;
 		
+		$user_id = intval($user_id);
+		$URI = $addslashes($URI);
+		
 		if ($this->isFieldsValid($guideline_ids, $URI))
 		{
 			/* insert into the db */
@@ -49,7 +53,7 @@ class UserLinksDAO extends DAO {
 			               )
 			       VALUES (".$user_id.",
 			               '".$guideline_ids."',
-			               '".$addslashes($URI)."',
+			               '".$URI."',
 			               now())";
 
 			if (!$this->execute($sql))
@@ -85,11 +89,15 @@ class UserLinksDAO extends DAO {
 
 		if ($this->isFieldsValid($guideline_ids, $URI))
 		{
+			$user_link_id = intval($user_link_id);
+			$user_id = intval($user_id);
+			$URI = $addslashes($URI);
+			
 			/* insert into the db */
 			$sql = "UPDATE ".TABLE_PREFIX."user_links
 			           SET user_id = ".$user_id.",
 			               last_guideline_ids = '".$guideline_ids."',
-			               URI = '".$addslashes($URI)."',
+			               URI = '".$URI."',
 			               last_update = now()
 			         WHERE user_link_id = ".$user_link_id;
 
@@ -110,6 +118,8 @@ class UserLinksDAO extends DAO {
 		// delete customized guidelines created by user but yet open to public
 		include_once(AC_INCLUDE_PATH.'classes/DAO/UserDecisionsDAO.class.php');
 		$userDecisionsDAO = new UserDecisionsDAO();
+		
+		$user_link_id = intval($user_link_id);
 		
 		// delete according records from table user_decisions
 		if (!$userDecisionsDAO->DeleteByUserLinkID($user_link_id))
@@ -135,6 +145,7 @@ class UserLinksDAO extends DAO {
 		include_once(AC_INCLUDE_PATH.'classes/DAO/UserDecisionsDAO.class.php');
 		$userDecisionsDAO = new UserDecisionsDAO();
 		
+		$user_id = intval($user_id);
 		// delete according records from table user_decisions
 		if (!$userDecisionsDAO->DeleteByUserID($user_id))
 			return false;
@@ -157,6 +168,11 @@ class UserLinksDAO extends DAO {
 	 */
 	public function setLastSessionID($user_link_id, $sessionID)
 	{
+		global $addslashes;
+		
+		$user_link_id = intval($user_link_id);
+		$sessionID = $addslashes($sessionID);
+		
 		$sql = "UPDATE ".TABLE_PREFIX."user_links SET last_sessionID = '".$sessionID."'
 		         WHERE user_link_id = ".$user_link_id;
 		return $this->execute($sql);
@@ -184,6 +200,8 @@ class UserLinksDAO extends DAO {
 	 */
 	public function getByUserLinkID($user_link_id)
 	{
+		$user_link_id = intval($user_link_id);
+		
 		$sql = 'SELECT * FROM '.TABLE_PREFIX.'user_links WHERE user_link_id='.$user_link_id;
 		if ($rows = $this->execute($sql))
 		{
@@ -203,9 +221,12 @@ class UserLinksDAO extends DAO {
 	{
 		global $addslashes;
 
+		$user_id = intval($user_id);
+		$URI = $addslashes($URI);
+		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."user_links 
 		         WHERE user_id=".$user_id."
-		           AND URI ='".$addslashes($URI)."'";
+		           AND URI ='".$URI."'";
 		
 		return $this->execute($sql);
 	}
@@ -222,10 +243,14 @@ class UserLinksDAO extends DAO {
 	public function getByUserIDAndURIAndSession($user_id, $URI, $sessionID)
 	{
 		global $addslashes;
+		
+		$user_id = intval($user_id);
+		$URI = $addslashes($URI);
+		$sessionID = $addslashes($sessionID);
 
 		$sql = "SELECT * FROM ".TABLE_PREFIX."user_links 
 		         WHERE user_id=".$user_id."
-		           AND URI ='".$addslashes($URI)."'
+		           AND URI ='".$URI."'
 		           AND last_sessionID = '".$sessionID."'";
 		
 		return $this->execute($sql);
@@ -243,6 +268,12 @@ class UserLinksDAO extends DAO {
 	 */
 	public function getUserLinkID($user_id, $URI, $gids)
 	{
+		// sanitize array gids
+		if (!is_array($gids)) return false;
+		
+		$sanitized_gids = Utility::sanitizeIntArray($gids);
+		$sanitized_gids_str = implode(",", $sanitized_gids);
+		
 		$rows = $this->getByUserIDAndURI($user_id, $URI);
 			
 		if (is_array($rows))
@@ -250,14 +281,14 @@ class UserLinksDAO extends DAO {
 			$user_link_id = $rows[0]['user_link_id'];
 
 			// if guidelines selected are changed, save into table
-			if ($rows[0]['last_guideline_ids'] <> $gids)
+			if ($rows[0]['last_guideline_ids'] <> $sanitized_gids_str)
 			{
-				$this->Update($user_link_id, $user_id, $gids, $URI);
+				$this->Update($user_link_id, $user_id, $sanitized_gids_str, $URI);
 			}
 		}
 		else
 		{
-			$user_link_id = $this->Create($user_id, $gids, $URI);
+			$user_link_id = $this->Create($user_id, $sanitized_gids_str, $URI);
 		}
 		
 		return $user_link_id;

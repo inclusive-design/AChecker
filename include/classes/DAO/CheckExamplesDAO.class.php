@@ -47,7 +47,7 @@ class CheckExamplesDAO extends DAO {
 		$sql = "INSERT INTO ".TABLE_PREFIX."check_examples
 				(`check_id`, `type`, `description`, `content`) 
 				VALUES
-				(".$checkID.",".$type.",'".$addslashes($description)."', ".
+				(".intval($checkID).",".$addslashes($type).",'".$addslashes($description)."', ".
 		         "'".$addslashes($content)."')";
 
 		if (!$this->execute($sql))
@@ -71,9 +71,11 @@ class CheckExamplesDAO extends DAO {
 	*/
 	public function getByCheckIDAndType($checkID, $type)
 	{
+		global $addslashes;
+		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."check_examples
-				WHERE check_id = ".$checkID."
-				  AND type = ".$type;
+				WHERE check_id = ".intval($checkID)."
+				  AND type = ".$addslashes($type);
 
 		return $this->execute($sql);
 	}
@@ -89,7 +91,7 @@ class CheckExamplesDAO extends DAO {
 	public function DeleteByCheckID($checkID)
 	{
 		$sql = "DELETE FROM ".TABLE_PREFIX."check_examples
-				WHERE check_id = ".$checkID;
+				WHERE check_id = ".intval($checkID);
 
 		return $this->execute($sql);
 	}

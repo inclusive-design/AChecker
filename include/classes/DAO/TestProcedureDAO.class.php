@@ -33,6 +33,8 @@ class TestProcedureDAO extends DAO {
 	*/
 	function getProcedureByID($checkID)
 	{
+		$checkID = intval($checkID);
+		
 		$sql = "SELECT step_id, step
 						FROM ". TABLE_PREFIX ."test_procedure 
 						WHERE check_id=". $checkID ."

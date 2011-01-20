@@ -36,7 +36,7 @@ class CheckPrerequisitesDAO extends DAO {
 	public function Create($checkID, $prerequisiteCheckID)
 	{
 		$sql = "INSERT INTO ".TABLE_PREFIX."check_prerequisites (check_id, prerequisite_check_id) 
-		        VALUES (".$checkID.", ".$prerequisiteCheckID.")";
+		        VALUES (".intval($checkID).", ".intval($prerequisiteCheckID).")";
 		return $this->execute($sql);
 	}
 	
@@ -52,7 +52,7 @@ class CheckPrerequisitesDAO extends DAO {
 	public function Delete($checkID, $prerequisiteCheckID)
 	{
 		$sql = "DELETE FROM ".TABLE_PREFIX."check_prerequisites 
-		         WHERE check_id=".$checkID." AND prerequisite_check_id=".$prerequisiteCheckID;
+		         WHERE check_id=".intval($checkID)." AND prerequisite_check_id=".intval($prerequisiteCheckID);
 		return $this->execute($sql);
 	}
 	
@@ -66,7 +66,7 @@ class CheckPrerequisitesDAO extends DAO {
 	*/
 	public function DeleteByCheckID($checkID)
 	{
-		$sql = "DELETE FROM ".TABLE_PREFIX."check_prerequisites WHERE check_id=".$checkID;
+		$sql = "DELETE FROM ".TABLE_PREFIX."check_prerequisites WHERE check_id=".intval($checkID);
 		return $this->execute($sql);
 	}
 	
@@ -83,7 +83,7 @@ class CheckPrerequisitesDAO extends DAO {
 		$sql = "SELECT * FROM ".TABLE_PREFIX."checks 
 		         WHERE check_id in (SELECT prerequisite_check_id 
 		                              FROM ".TABLE_PREFIX."check_prerequisites 
-		                             WHERE check_id=".$checkID.")";
+		                             WHERE check_id=".intval($checkID).")";
 		return $this->execute($sql);
 	}
 	

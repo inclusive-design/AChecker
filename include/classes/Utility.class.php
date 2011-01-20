@@ -303,5 +303,24 @@ class Utility {
 		}
 		return true;
 	}
+
+	/**
+	 * This function accepts an array that is supposed to only have integer values.
+	 * The function returns a sanitized array by ensuring all the array values are integers.
+	 * To pervent the SQL injection. 
+	 * @access  public
+	 * @param   $int_array : an array
+	 * @return  $sanitized_int_array : an array that all the values are sanitized to integer
+	 * @author  Cindy Qi Li
+	 */
+	public static function sanitizeIntArray($int_array) {
+		if (!is_array($int_array)) return false;
+		
+		$sanitized_array = array();
+		foreach ($int_array as $i => $value) {
+			$sanitized_array[$i] = intval($value);
+		}
+		return $sanitized_array;
+	}
 }
 ?>

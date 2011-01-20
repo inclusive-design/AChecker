@@ -35,6 +35,9 @@ class TestPassDAO extends DAO {
 	*/
 	public function Create($checkID, $nextCheckID)
 	{
+		$checkID = intval($checkID);
+		$nextCheckID = intval($nextCheckID);
+		
 		$sql = "INSERT INTO ".TABLE_PREFIX."test_pass (check_id, next_check_id) 
 		        VALUES (".$checkID.", ".$nextCheckID.")";
 		return $this->execute($sql);
@@ -51,6 +54,9 @@ class TestPassDAO extends DAO {
 	*/
 	public function Delete($checkID, $nextCheckID)
 	{
+		$checkID = intval($checkID);
+		$nextCheckID = intval($nextCheckID);
+		
 		$sql = "DELETE FROM ".TABLE_PREFIX."test_pass 
 		         WHERE check_id=".$checkID." AND next_check_id=".$nextCheckID;
 		return $this->execute($sql);
@@ -66,6 +72,8 @@ class TestPassDAO extends DAO {
 	*/
 	public function DeleteByCheckID($checkID)
 	{
+		$checkID = intval($checkID);
+		
 		$sql = "DELETE FROM ".TABLE_PREFIX."test_pass WHERE check_id=".$checkID;
 		return $this->execute($sql);
 	}
@@ -80,6 +88,8 @@ class TestPassDAO extends DAO {
 	*/
 	public function getNextChecksByCheckID($checkID)
 	{
+		$checkID = intval($checkID);
+		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."checks 
 		         WHERE check_id in (SELECT next_check_id 
 		                              FROM ".TABLE_PREFIX."test_pass 

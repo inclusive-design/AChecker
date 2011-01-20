@@ -41,12 +41,8 @@ if (isset($cssValidator))
 if (isset($aValidator))
 {
 	// find out selected guidelines
-	foreach ($_REQUEST["gid"] as $gid)
-		$gids .= $gid . ",";
-	
-	$gids = substr($gids, 0, -1);
 	$guidelinesDAO = new GuidelinesDAO();
-	$guideline_rows = $guidelinesDAO->getGuidelineByIDs($gids);
+	$guideline_rows = $guidelinesDAO->getGuidelineByIDs($_REQUEST["gid"]);
 	
 	unset($guidelines_text);
 	if (is_array($guideline_rows))
@@ -96,7 +92,7 @@ if (isset($aValidator))
 	{
 		// save errors into user_links
 		$userLinksDAO = new UserLinksDAO();
-		$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_REQUEST['uri'], $gids);
+		$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_REQUEST['uri'], $_REQUEST["gid"]);
 		
 		// save errors into user_decisions 
 		$userDecisionsDAO = new UserDecisionsDAO();

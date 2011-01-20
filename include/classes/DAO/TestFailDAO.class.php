@@ -33,6 +33,7 @@ class TestFailDAO extends DAO {
 	*/
 	function getFailStepsByID($checkID)
 	{
+		$checkID = intval($checkID);
 		$sql = "SELECT step_id, step
 						FROM ". TABLE_PREFIX ."test_fail 
 						WHERE check_id=". $checkID ."

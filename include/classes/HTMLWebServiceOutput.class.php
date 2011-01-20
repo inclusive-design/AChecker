@@ -123,14 +123,8 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 	{
 		if (!is_array($this->guidelineIDs)) return '';
 		
-		$guidelineDAO = new GuidelinesDAO();
-		
-		foreach ($this->guidelineIDs as $gid)
-			$gids .= $gid . ",";
-		
-		$gids = substr($gids, 0, -1);
 		$guidelinesDAO = new GuidelinesDAO();
-		$rows = $guidelinesDAO->getGuidelineByIDs($gids);
+		$rows = $guidelinesDAO->getGuidelineByIDs($this->guidelineIDs);
 		
 		unset($this->guidelineStr);
 		if (is_array($rows))

@@ -111,6 +111,11 @@ class LanguageTextDAO extends DAO {
 	*/
 	function getMsgByTermAndLang($term, $lang)
 	{
+		global $addslashes;
+		
+		$term = $addslashes($term);
+		$lang = $addslashes($lang);
+		
 		$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text 
 						WHERE term="' . $term . '" 
 						AND variable="_msgs" 
@@ -130,6 +135,11 @@ class LanguageTextDAO extends DAO {
 	*/
 	function getByTermAndLang($term, $lang)
 	{
+		global $addslashes;
+		
+		$term = $addslashes($term);
+		$lang = $addslashes($lang);
+		
 		$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text 
 						WHERE term="' . $term . '" 
 						AND language_code="'.$lang.'" 
@@ -148,9 +158,14 @@ class LanguageTextDAO extends DAO {
 	*/
 	function getHelpByMatchingText($text, $lang)
 	{
+		global $addslahes;
+		
+		$text = $addslahes(strtolower($text));
+		$lang = $addslahes($lang);
+		
 		$sql	= "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE term like 'AC_HELP_%'
-						AND lower(cast(text as char)) like '%".strtolower($text)."%' 
+						AND lower(cast(text as char)) like '%".$text."%' 
 						AND language_code='".$lang."' 
 						ORDER BY variable";
 
@@ -166,6 +181,10 @@ class LanguageTextDAO extends DAO {
 	*/
 	function getAllByLang($lang)
 	{
+		global $addslashes;
+		
+		$lang = $addslashes($lang);
+		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE language_code='".$lang."' 
 						ORDER BY variable, term ASC";
@@ -182,6 +201,10 @@ class LanguageTextDAO extends DAO {
 	*/
 	function getAllTemplateByLang($lang)
 	{
+		global $addslashes;
+		
+		$lang = $addslashes($lang);
+		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE language_code='".$lang."' 
 						AND variable='_template' 
@@ -205,14 +228,19 @@ class LanguageTextDAO extends DAO {
 	{
 		global $addslashes;
 		
+		$languageCode = $addslashes($languageCode);
+		$variable = $addslashes($variable);
+		$term = $addslashes($term);
+		$text = $addslashes($text);
+		
 		$sql = "UPDATE ".TABLE_PREFIX."language_text 
-		           SET text='".$addslashes($text)."',
+		           SET text='".$text."',
 		               revised_date = now()
-		         WHERE language_code = '".$_SESSION['lang']."' 
+		         WHERE language_code = '".$languageCode."' 
 		           AND variable='".$variable."' 
 		           AND term = '".$term."'";
 
-    return $this->execute($sql);
+		return $this->execute($sql);
   }
 }
 ?>

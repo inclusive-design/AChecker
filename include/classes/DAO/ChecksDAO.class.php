@@ -21,6 +21,7 @@
 if (!defined('AC_INCLUDE_PATH')) exit;
 
 require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
+require_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 
 class ChecksDAO extends DAO {
 
@@ -45,7 +46,10 @@ class ChecksDAO extends DAO {
 	{
 		global $addslashes;
 		
+		$userID = intval($userID);
 		$html_tag = $addslashes(strtolower(trim($html_tag)));
+		$confidence = intval($confidence);
+		$open_to_public = intval($open_to_public);
 
 		// $addslashes are not needed on the following fields since they are eventually
 		// calling LanguageTextDAO->setText() where $addslashes is used.
@@ -183,7 +187,10 @@ class ChecksDAO extends DAO {
 	{
 		global $addslashes;
 		
+		$userID = intval($userID);
 		$html_tag = $addslashes(strtolower(trim($html_tag)));
+		$confidence = intval($confidence);
+		$open_to_public = intval($open_to_public);
 		
 		// $addslashes are not needed on the following fields since they are eventually
 		// calling LanguageTextDAO->setText() where $addslashes is used.
@@ -386,6 +393,8 @@ class ChecksDAO extends DAO {
 	*/
 	function Delete($checkID)
 	{
+		$checkID = intval($checkID);
+		
 		// delete all languages
 		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/CheckPrerequisitesDAO.class.php');
@@ -446,7 +455,7 @@ class ChecksDAO extends DAO {
 		
 		$sql = "UPDATE ". TABLE_PREFIX ."checks 
 		           SET func = '".$addslashes($func)."' 
-		         WHERE check_id=".$checkID;
+		         WHERE check_id=".intval($checkID);
 		
 		return $this->execute($sql);
 	}
@@ -491,26 +500,6 @@ class ChecksDAO extends DAO {
 	}
 
 	/**
-	* Return all open-to-public checks except the check ids in given string  
-	* @access  public
-	* @param   $checkIDs : a string of check ids separated by comma. for example: 1, 2, 3
-	* @return  table rows
-	* @author  Cindy Qi Li
-	*/
-	function getAllOpenChecksExceptListed($checkIDs)
-	{
-		if (trim($checkIDs) == '')
-			return $this->getAllOpenChecks();
-		else
-		{
-			$sql = "SELECT * FROM ". TABLE_PREFIX ."checks 
-			         WHERE open_to_public=1
-			           AND check_id NOT IN (".$checkIDs.")";
-			return $this->execute($sql);
-		}
-	}
-	
-	/**
 	* Return check info of given check id
 	* @access  public
 	* @param   $checkID : check id
@@ -519,7 +508,7 @@ class ChecksDAO extends DAO {
 	*/
 	function getCheckByID($checkID)
 	{
-		$sql = "SELECT * FROM ". TABLE_PREFIX ."checks WHERE check_id=". $checkID;
+		$sql = "SELECT * FROM ". TABLE_PREFIX ."checks WHERE check_id=". intval($checkID);
 		$rows = $this->execute($sql);
 
 	    if (is_array($rows))
@@ -537,7 +526,7 @@ class ChecksDAO extends DAO {
 	*/
 	function getCheckByUserID($userID)
 	{
-		$sql = "SELECT * FROM ". TABLE_PREFIX ."checks WHERE user_id=". $userID;
+		$sql = "SELECT * FROM ". TABLE_PREFIX ."checks WHERE user_id=". intval($userID);
 		return $this->execute($sql);
 	}
 
@@ -556,7 +545,7 @@ class ChecksDAO extends DAO {
 								". TABLE_PREFIX ."guideline_subgroups gs, 
 								". TABLE_PREFIX ."subgroup_checks gc,
 								". TABLE_PREFIX ."checks c
-						where g.guideline_id = ".$gid."
+						where g.guideline_id = ".intval($gid)."
 							and g.guideline_id = gg.guideline_id
 							and gg.group_id = gs.group_id
 							and gs.subgroup_id = gc.subgroup_id
@@ -569,19 +558,23 @@ class ChecksDAO extends DAO {
   /**
 	* Return checks for all html elements by given guideline ids
 	* @access  public
-	* @param   $gids : guideline IDs
+	* @param   $gids : an array of guideline IDs
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
 	function getOpenChecksForAllByGuidelineIDs($gids)
 	{
+		if (!is_array($gids)) return false;
+		
+		$sanitized_gids = Utility::sanitizeIntArray($gids);
+		
 		$sql = "select distinct gc.check_id, c.html_tag
 						from ". TABLE_PREFIX ."guidelines g, 
 								". TABLE_PREFIX ."guideline_groups gg, 
 								". TABLE_PREFIX ."guideline_subgroups gs, 
 								". TABLE_PREFIX ."subgroup_checks gc,
 								". TABLE_PREFIX ."checks c
-						where g.guideline_id in (".$gids.")
+						where g.guideline_id in (".implode(",", $sanitized_gids).")
 							and g.guideline_id = gg.guideline_id
 							and gg.group_id = gs.group_id
 							and gs.subgroup_id = gc.subgroup_id
@@ -602,13 +595,17 @@ class ChecksDAO extends DAO {
 	*/
 	function getOpenChecksNotForAllByGuidelineIDs($gids)
 	{
-			$sql = "select distinct gc.check_id, c.html_tag
+		if (!is_array($gids)) return false;
+		
+		$sanitized_gids = Utility::sanitizeIntArray($gids);
+		
+		$sql = "select distinct gc.check_id, c.html_tag
 							from ". TABLE_PREFIX ."guidelines g, 
 									". TABLE_PREFIX ."guideline_groups gg, 
 									". TABLE_PREFIX ."guideline_subgroups gs, 
 									". TABLE_PREFIX ."subgroup_checks gc,
 									". TABLE_PREFIX ."checks c
-							where g.guideline_id in (".$gids.")
+							where g.guideline_id in (".implode(",", $sanitized_gids).")
 								and g.guideline_id = gg.guideline_id
 								and gg.group_id = gs.group_id
 								and gs.subgroup_id = gc.subgroup_id
@@ -629,6 +626,10 @@ class ChecksDAO extends DAO {
 	*/
 	function getOpenPreChecksByGuidelineIDs($gids)
 	{
+		if (!is_array($gids)) return false;
+		
+		$sanitized_gids = Utility::sanitizeIntArray($gids);
+		
 		$sql = "select distinct c.check_id, cp.prerequisite_check_id
 					from ". TABLE_PREFIX ."guidelines g, 
 					     ". TABLE_PREFIX ."guideline_groups gg, 
@@ -636,7 +637,7 @@ class ChecksDAO extends DAO {
 					     ". TABLE_PREFIX ."subgroup_checks gc,
 					     ". TABLE_PREFIX ."checks c,
 					     ". TABLE_PREFIX ."check_prerequisites cp
-					where g.guideline_id in (".$gids.")
+					where g.guideline_id in (".implode(",", $sanitized_gids).")
 					  and g.guideline_id = gg.guideline_id
 					  and gg.group_id = gs.group_id
 					  and gs.subgroup_id = gc.subgroup_id
@@ -647,34 +648,6 @@ class ChecksDAO extends DAO {
 
     return $this->execute($sql);
   }
-
-	/**
-	* Return next checks by given guideline ids
-	* @access  public
-	* @param   $gids : guideline IDs
-	* @return  table rows
-	* @author  Cindy Qi Li
-	*/
-	function getOpenNextChecksByGuidelineIDs($gids)
-	{
-		$sql = "select distinct c.check_id, tp.next_check_id
-							from ". TABLE_PREFIX ."guidelines g, 
-							     ". TABLE_PREFIX ."guideline_groups gg, 
-							     ". TABLE_PREFIX ."guideline_subgroups gs, 
-							     ". TABLE_PREFIX ."subgroup_checks gc,
-							     ". TABLE_PREFIX ."checks c,
-							     ". TABLE_PREFIX ."test_pass tp
-							where g.guideline_id in (".$gids.")
-							  and g.guideline_id = gg.guideline_id
-							  and gg.group_id = gs.group_id
-							  and gs.subgroup_id = gc.subgroup_id
-							  and gc.check_id = c.check_id
-							  and c.open_to_public = 1
-							  and c.check_id = tp.check_id
-							order by c.check_id, tp.next_check_id";
-
-		return $this->execute($sql);
-	}
 
 	/**
 	* Return checks from the groups which group name is NULL. These groups are created by system
@@ -690,7 +663,7 @@ class ChecksDAO extends DAO {
 							     ". TABLE_PREFIX ."guideline_subgroups gs, 
 							     ". TABLE_PREFIX ."subgroup_checks gc,
 							     ". TABLE_PREFIX ."checks c
-							where gg.guideline_id = ".$gid."
+							where gg.guideline_id = ".intval($gid)."
 							  and gg.name is NULL
 							  and gg.group_id = gs.group_id
 							  and gs.subgroup_id = gc.subgroup_id
@@ -714,7 +687,7 @@ class ChecksDAO extends DAO {
 							from ". TABLE_PREFIX ."guideline_subgroups gs, 
 							     ". TABLE_PREFIX ."subgroup_checks gc,
 							     ". TABLE_PREFIX ."checks c
-							where gs.group_id = ".$group_id."
+							where gs.group_id = ".intval($group_id)."
 							  and gs.name is NULL
 							  and gs.subgroup_id = gc.subgroup_id
 							  and gc.check_id = c.check_id
@@ -737,7 +710,7 @@ class ChecksDAO extends DAO {
 		$sql = "SELECT c.* 
 		          FROM ".TABLE_PREFIX."subgroup_checks gs,"
 		                .TABLE_PREFIX."checks c
-                 WHERE gs.subgroup_id = ".$subgroupID."
+                 WHERE gs.subgroup_id = ".intval($subgroupID)."
                    AND gs.check_id = c.check_id
                    AND c.open_to_public = 1
                  ORDER BY c.html_tag";
@@ -847,11 +820,10 @@ class ChecksDAO extends DAO {
 
 		$langTextDAO->DeleteByVarAndTerm('_check', $term);
 			
-		$sql = "UPDATE ".TABLE_PREFIX."checks SET ".$fieldName."='' WHERE check_id=".$checkID;
+		$sql = "UPDATE ".TABLE_PREFIX."checks SET ".$fieldName."='' WHERE check_id=".intval($checkID);
 		$this->execute($sql);
 		
 		return true;
 	}
-	
 }
 ?>

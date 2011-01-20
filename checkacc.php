@@ -98,14 +98,9 @@ foreach ($guides as $abbr)
 // set to default guideline if no input guidelines
 if (!is_array($gids)) $gids[] = DEFAULT_GUIDELINE;
 
-foreach ($gids as $gid)
-	$gidStr .= $gid . ",";
-
-$gidStr = substr($gidStr, 0, -1);
-
 // retrieve user link ID
 $userLinksDAO = new UserLinksDAO();
-$user_link_id = $userLinksDAO->getUserLinkID($user_id, $uri, $gidStr);
+$user_link_id = $userLinksDAO->getUserLinkID($user_id, $uri, $gids);
 
 // set new session id
 $userLinksDAO->setLastSessionID($user_link_id, Utility::getSessionID());

@@ -33,6 +33,8 @@ class TestExpectedDAO extends DAO {
 	*/
 	function getExpectedStepsByID($checkID)
 	{
+		$checkID = intval($checkID);
+		
 		$sql = "SELECT step_id, step
 						FROM ". TABLE_PREFIX ."test_expected 
 						WHERE check_id=". $checkID ."

@@ -108,7 +108,7 @@ class ACheckerMailer extends PHPMailer {
 		$mailQueueDAO = new MailQueueDAO();
 		$rows = $mailQueueDAO->getAll();
 
-		$mail_ids = '';
+		$mail_ids = array();
 		
 		if (is_array($rows))
 		{
@@ -125,14 +125,13 @@ class ACheckerMailer extends PHPMailer {
 	
 				parent::Send();
 	
-				$mail_ids .= $row['mail_id'].',';
+				$mail_ids[] = $row['mail_id'];
 			}
 			if ($mail_ids) 
 			{
 				include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
 				$mailQueueDAO = new MailQueueDAO();
 	
-				$mail_ids = substr($mail_ids, 0, -1); // remove the last comma
 				$mailQueueDAO->DeleteByIDs($mail_ids);
 			}
 		}

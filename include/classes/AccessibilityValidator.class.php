@@ -183,8 +183,7 @@ class AccessibilityValidator {
 	 */
 	private function prepare_check_arrays($guidelines)
 	{
-		
-		if (!($guideline_query = $this->convert_array_to_string($guidelines, ',')))
+		if (!is_array($guidelines))
 			return false;
 		// validation process
 		else  
@@ -192,7 +191,7 @@ class AccessibilityValidator {
 			$checksDAO = new ChecksDAO();
 			
 			// generate array of "all element"
-			$rows = $checksDAO->getOpenChecksForAllByGuidelineIDs($guideline_query);
+			$rows = $checksDAO->getOpenChecksForAllByGuidelineIDs($guidelines);
 			
 			$count = 0;
 			if (is_array($rows))
@@ -202,7 +201,7 @@ class AccessibilityValidator {
 			}
 			
 			// generate array of check_id
-			$rows = $checksDAO->getOpenChecksNotForAllByGuidelineIDs($guideline_query);
+			$rows = $checksDAO->getOpenChecksNotForAllByGuidelineIDs($guidelines);
 
 			if (is_array($rows))
 			{
@@ -217,7 +216,7 @@ class AccessibilityValidator {
 			}
 			
 			// generate array of prerequisite check_ids
-			$rows = $checksDAO->getOpenPreChecksByGuidelineIDs($guideline_query);
+			$rows = $checksDAO->getOpenPreChecksByGuidelineIDs($guidelines);
 
 			if (is_array($rows))
 			{

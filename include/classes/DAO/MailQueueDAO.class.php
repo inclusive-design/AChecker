@@ -21,6 +21,7 @@
 if (!defined('AC_INCLUDE_PATH')) exit;
 
 require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
+require_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 
 class MailQueueDAO extends DAO {
 
@@ -34,6 +35,16 @@ class MailQueueDAO extends DAO {
 	*/
 	function Create($to_email, $to_name, $from_email, $from_name, $subject, $body, $charset)
 	{
+		global $addslashes;
+		
+		$to_email = $addslashes($to_email);
+		$to_name = $addslashes($to_name);
+		$from_email = $addslashes($from_email);
+		$from_name = $addslashes($from_name);
+		$subject = $addslashes($subject);
+		$body = $addslashes($body);
+		$charset = $addslashes($charset);
+		
 		$sql = "INSERT INTO ".TABLE_PREFIX."mail_queue 
 						VALUES (NULL, '$to_email', '$to_name', '$from_email', '$from_name', '$charset', '$subject', '$body')";
 		
@@ -71,7 +82,12 @@ class MailQueueDAO extends DAO {
 	*/
 	function DeleteByIDs($mids)
 	{
-		$sql = "DELETE FROM ".TABLE_PREFIX."mail_queue WHERE mail_id IN (".$mids.")";
+		if (!is_array($mids)) return false;
+		
+		$sanitized_mids = Utility::sanitizeIntArray($mids);
+		$sanitized_mids_str = implode(",", $sanitized_mids);
+		
+		$sql = "DELETE FROM ".TABLE_PREFIX."mail_queue WHERE mail_id IN (".$sanitized_mids_str.")";
 		
 		return $this->execute($sql);
 	}

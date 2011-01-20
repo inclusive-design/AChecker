@@ -35,6 +35,9 @@ class SubgroupChecksDAO extends DAO {
 	*/
 	public function Create($subgroupID, $checkID)
 	{
+		$subgroupID = intval($subgroupID);
+		$checkID = intval($checkID);
+		
 		$sql = "INSERT INTO ".TABLE_PREFIX."subgroup_checks
 				(`subgroup_id`, `check_id`) 
 				VALUES
@@ -65,6 +68,9 @@ class SubgroupChecksDAO extends DAO {
 	*/
 	public function deleteChecksByTypeAndID($type, $typeID, $checkID)
 	{
+		$typeID = intval($typeID);
+		$checkID = intval($checkID);
+		
 		if ($type == "guideline")
 		{
 			$sql = "DELETE FROM ".TABLE_PREFIX."subgroup_checks
@@ -107,6 +113,7 @@ class SubgroupChecksDAO extends DAO {
 	*/
 	public function DeleteByCheckID($checkID)
 	{
+		$checkID = intval($checkID);
 		$sql = "DELETE FROM ".TABLE_PREFIX."subgroup_checks
 				WHERE check_id = ".$checkID;
 
@@ -124,6 +131,8 @@ class SubgroupChecksDAO extends DAO {
 	*/
 	public function DeleteBySubgroupID($subgroupID)
 	{
+		$subgroupID = intval($subgroupID);
+		
 		$sql = "DELETE FROM ".TABLE_PREFIX."subgroup_checks
 				WHERE subgroup_id = ".$subgroupID;
 

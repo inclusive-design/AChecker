@@ -35,6 +35,9 @@ class UserGroupPrivilegeDAO extends DAO {
 	 */
 	public function Create($userGroupID, $privilegeID)
 	{
+		$userGroupID = intval($userGroupID);
+		$privilegeID = intval($privilegeID);
+		
 		$sql = "INSERT INTO ".TABLE_PREFIX."user_group_privilege
 		              (user_group_id,
 		               privilege_id
@@ -57,6 +60,9 @@ class UserGroupPrivilegeDAO extends DAO {
 	 */
 	public function Delete($userGroupID, $privilegeID)
 	{
+		$userGroupID = intval($userGroupID);
+		$privilegeID = intval($privilegeID);
+		
 		$sql = "DELETE FROM ".TABLE_PREFIX."user_group_privilege
 		         WHERE user_group_id = ".$userGroupID."
 		           AND privilege_id = ".$privilegeID;
@@ -74,6 +80,8 @@ class UserGroupPrivilegeDAO extends DAO {
 	 */
 	public function DeleteByUserGroupID($userGroupID)
 	{
+		$userGroupID = intval($userGroupID);
+		
 		$sql = "DELETE FROM ".TABLE_PREFIX."user_group_privilege
 		         WHERE user_group_id = ".$userGroupID;
 

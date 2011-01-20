@@ -97,17 +97,16 @@ else
 	$privs_rows = $privilegesDAO->getUserGroupPrivileges($id);
 
 	// get privs that are not in user group
-	unset($str_existing_privs);
+	$privs = array();
 	if (is_array($privs_rows))
 	{
 		foreach($privs_rows as $priv_row)
-			$str_existing_privs .= $priv_row['privilege_id'] .',';
-		$str_existing_privs = substr($str_existing_privs, 0, -1);
+			$privs[] .= $priv_row['privilege_id'];
 	}
 	
 	$savant->assign('user_group_row', $userGroupsDAO->getUserGroupByID($id));
 	$savant->assign('privs_rows', $privs_rows);
-	$savant->assign('privs_to_add_rows', $privilegesDAO->getAllPrivsExceptListed($str_existing_privs));
+	$savant->assign('privs_to_add_rows', $privilegesDAO->getAllPrivsExceptListed($privs));
 }
 
 $savant->display('user/user_group_create_edit.tmpl.php');

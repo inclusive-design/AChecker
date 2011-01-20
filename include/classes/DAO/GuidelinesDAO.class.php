@@ -21,6 +21,7 @@
 if (!defined('AC_INCLUDE_PATH')) exit;
 
 require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
+require_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 
 class GuidelinesDAO extends DAO {
 
@@ -44,11 +45,13 @@ class GuidelinesDAO extends DAO {
 	{
 		global $addslashes;
 		
+		$userID = intval($userID);
 		$title = $addslashes(trim($title));	
 		$abbr = $addslashes(trim($abbr));	
 		$long_name = trim($long_name);   // $addslashes is not necessary as it's called in LanguageTextDAO->Create()
 		$earlid = $addslashes(trim($earlid));
 		$preamble = $addslashes(trim($preamble));
+		if ($published_date == '' || is_null($published_date)) $published_date = '0000-00-00';
 		
 		if (!$this->isFieldsValid($title, $abbr, true)) return false;
 		
@@ -106,6 +109,8 @@ class GuidelinesDAO extends DAO {
 	{
 		global $addslashes;
 		
+		$guidelineID = intval($guidelineID);
+		$userID = intval($userID);
 		$title = $addslashes(trim($title));	
 		$abbr = $addslashes(trim($abbr));	
 		$long_name = trim($long_name);   // $addslashes is not necessary as it's called in LanguageTextDAO->setText()
@@ -161,7 +166,8 @@ class GuidelinesDAO extends DAO {
 		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
 		
-		if (intval($guidelineID) == 0)
+		$guidelineID = intval($guidelineID);
+		if ($guidelineID == 0)
 		{
 			$msg->addError('MISSING_GID');
 			return false;
@@ -191,8 +197,13 @@ class GuidelinesDAO extends DAO {
 				
 				if (is_array($cids))
 				{
-					foreach ($cids as $cid)
-						$subgroupChecksDAO->Create($subgroup_id, $cid);
+					foreach ($cids as $cid) {
+						$cid = intval($cid);
+						
+						if ($cid > 0) {
+							$subgroupChecksDAO->Create($subgroup_id, $cid);
+						}
+					}
 				}
 			}
 			else return false;
@@ -213,6 +224,8 @@ class GuidelinesDAO extends DAO {
 	public function Delete($guidelineID)
 	{
 		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
+		
+		$guidelineID = intval($guidelineID);
 		
 		// Delete all subgroups
 		$guidelineGroupsDAO = new GuidelineGroupsDAO();
@@ -242,15 +255,22 @@ class GuidelinesDAO extends DAO {
 	/**
 	* Return guideline info by given guideline id
 	* @access  public
-	* @param   $guidelineIDs : a string of all guideline ids, for example: 1, 2, 3
+	* @param   $guidelineIDs : an array of guideline ids or one guide id
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
 	public function getGuidelineByIDs($guidelineIDs)
 	{
-		$sql = "select *
-						from ". TABLE_PREFIX ."guidelines
-						where guideline_id in (" . $guidelineIDs . ")
+		// sanitize array gids
+		if (is_array($guidelineIDs)) {
+			$sanitized_gids = Utility::sanitizeIntArray($guidelineIDs);
+			$sanitized_gids_str = implode(",", $sanitized_gids);
+		} else {
+			$sanitized_gids_str = intval($guidelineIDs);
+		}
+		
+		$sql = "select * from ". TABLE_PREFIX ."guidelines
+						where guideline_id in (" . $sanitized_gids_str . ")
 						order by title";
 
 		return $this->execute($sql);
@@ -265,8 +285,11 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function getGuidelineByAbbr($abbr)
 	{
-		$sql = "select *
-						from ". TABLE_PREFIX ."guidelines
+		global $addslashes;
+		
+		$abbr = $addslashes($abbr);
+		
+		$sql = "select * from ". TABLE_PREFIX ."guidelines
 						where abbr = '" . $abbr . "'";
     
 		return $this->execute($sql);
@@ -281,6 +304,8 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function getGuidelineByUserID($userID)
 	{
+		$userID = intval($userID);
+		
 		$sql = "select *
 				from ". TABLE_PREFIX ."guidelines
 				where user_id = " . $userID . "
@@ -298,6 +323,8 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function getClosedEnabledGuidelinesByUserID($userID)
 	{
+		$userID = intval($userID);
+		
 		$sql = "select *
 				from ". TABLE_PREFIX ."guidelines
 				where user_id = " . $userID . "
@@ -317,6 +344,8 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function getEnabledGuidelinesByCheckID($checkID)
 	{
+		$checkID = intval($checkID);
+		
 		$sql = "select *
 				from ". TABLE_PREFIX ."guidelines
 				where guideline_id in 
@@ -343,6 +372,10 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function getEnabledGuidelinesByAbbr($abbr, $ignoreCase=1)
 	{
+		global $addslashes;
+		
+		$abbr = $addslashes($abbr);
+		
 		if ($ignoreCase) $sql_abbr = "lower(abbr) = '".strtolower($abbr)."'";
 		else $sql_abbr = "abbr = '".$abbr."'";
 		
@@ -416,6 +449,9 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function setStatus($guidelineID, $status)
 	{
+		$guidelineID = intval($guidelineID);
+		$status = intval($status);
+		
 		$sql = "update ". TABLE_PREFIX ."guidelines
 				set status = " . $status . "
 				where guideline_id=".$guidelineID;
@@ -434,6 +470,9 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function setOpenToPublicFlag($guidelineID, $open_to_public)
 	{
+		$guidelineID = intval($guidelineID);
+		$open_to_public = intval($open_to_public);
+		
 		$sql = "update ". TABLE_PREFIX ."guidelines
 				set open_to_public = " . $open_to_public . "
 				where guideline_id=".$guidelineID;
@@ -501,6 +540,11 @@ class GuidelinesDAO extends DAO {
 	// Restituisce una stringa con tutti gli id dei check, separati da virgola, che riguardano la guideline e l'elemento specificato
 	public function getCheckByTagAndGuideline($tag, $guideline)
 	{
+		global $addslashes;
+		
+		$tag = $addslashes($tag);
+		$guideline = intval($guideline);
+		
 		$sql = "select distinct c.check_id,c.html_tag
 					from ". TABLE_PREFIX ."guidelines g, 
 					     ". TABLE_PREFIX ."guideline_groups gg, 

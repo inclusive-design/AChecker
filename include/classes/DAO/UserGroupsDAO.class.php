@@ -41,6 +41,7 @@ class UserGroupsDAO extends DAO {
 
 		/* email check */
 		$title = $addslashes(trim($title));
+		$description = $addslashes(trim($description));
 
 		/* login name check */
 		if ($title == '')
@@ -99,8 +100,9 @@ class UserGroupsDAO extends DAO {
 
 		$missing_fields = array();
 
-		/* email check */
+		$user_group_id = intval($user_group_id);
 		$title = $addslashes(trim($title));
+		$description = $addslashes(trim($description));
 
 		/* login name check */
 		if ($title == '')
@@ -136,6 +138,8 @@ class UserGroupsDAO extends DAO {
 	 */
 	public function Delete($userGroupID)
 	{
+		$userGroupID = intval($userGroupID);
+		
 		// delete user_group_privilege
 		include_once(AC_INCLUDE_PATH.'classes/DAO/UserGroupPrivilegeDAO.class.php');
 		
@@ -169,7 +173,9 @@ class UserGroupsDAO extends DAO {
 	 * @author  Cindy Qi Li
 	 */
 	public function getUserGroupByID($user_group_id)
-		{
+	{
+		$user_group_id = intval($user_group_id);
+		
 		$sql = 'SELECT * FROM '.TABLE_PREFIX.'user_groups WHERE user_group_id='.$user_group_id;
 		if ($rows = $this->execute($sql))
 		{

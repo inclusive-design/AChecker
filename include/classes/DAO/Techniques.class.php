@@ -34,6 +34,7 @@ class Techniques extends DAO {
 	*/
 	public function DeleteByCheckID($checkID)
 	{
+		$checkID = intval($checkID);
 		$sql = "DELETE FROM ".TABLE_PREFIX."techniques
 				WHERE check_id = ".$checkID;
 

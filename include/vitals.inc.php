@@ -89,6 +89,22 @@ require_once(AC_INCLUDE_PATH.'constants.inc.php');
 
 /***** end session initilization block ****/
 
+function my_add_null_slashes( $string ) {
+    return mysql_real_escape_string(stripslashes($string));
+}
+
+function my_null_slashes($string) {
+	return $string;
+}
+
+if ( get_magic_quotes_gpc() == 1 ) {
+	$addslashes   = 'my_add_null_slashes';
+	$stripslashes = 'stripslashes';
+} else {
+	$addslashes   = 'mysql_real_escape_string';
+	$stripslashes = 'my_null_slashes';
+}
+
 require(AC_INCLUDE_PATH.'phpCache/phpCache.inc.php'); // cache library
 require(AC_INCLUDE_PATH.'classes/DAO/ThemesDAO.class.php');
 require(AC_INCLUDE_PATH.'classes/DAO/ConfigDAO.class.php');
@@ -191,6 +207,17 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
 /*** 9. register pages based on user's priviledge ***/
 require_once(AC_INCLUDE_PATH.'page_constants.inc.php');
 
+// used in AC_print @ include/lib/output.inc.php
+function query_bit( $bitfield, $bit ) {
+	if (!is_int($bitfield)) {
+		$bitfield = intval($bitfield);
+	}
+	if (!is_int($bit)) {
+		$bit = intval($bit);
+	}
+	return ( $bitfield & $bit ) ? true : false;
+} 
+
 /**
  * This function is used for printing variables for debugging.
  * @access  public
@@ -225,52 +252,36 @@ function debug($var, $title='') {
 
 /****************************************************/
 /* compute the $_my_uri variable					*/
-	$bits	  = explode(SEP, getenv('QUERY_STRING'));
-	$num_bits = count($bits);
-	$_my_uri  = '';
+$bits	  = explode(SEP, getenv('QUERY_STRING'));
+$num_bits = count($bits);
+$_my_uri  = '';
 
-	for ($i=0; $i<$num_bits; $i++) {
-//		if (	(strpos($bits[$i], 'enable=')	=== 0) 
-//			||	(strpos($bits[$i], 'disable=')	=== 0)
-//			||	(strpos($bits[$i], 'expand=')	=== 0)
-//			||	(strpos($bits[$i], 'collapse=')	=== 0)
-//			||	(strpos($bits[$i], 'lang=')		=== 0)
-//			) {
-		if (	(strpos($bits[$i], 'lang=')		=== 0)
-			) {
-			/* we don't want this variable added to $_my_uri */
-			continue;
-		}
-
-		if (($_my_uri == '') && ($bits[$i] != '')) {
-			$_my_uri .= '?';
-		} else if ($bits[$i] != ''){
-			$_my_uri .= SEP;
-		}
-		$_my_uri .= $bits[$i];
+for ($i=0; $i<$num_bits; $i++) {
+//	if (	(strpos($bits[$i], 'enable=')	=== 0) 
+//		||	(strpos($bits[$i], 'disable=')	=== 0)
+//		||	(strpos($bits[$i], 'expand=')	=== 0)
+//		||	(strpos($bits[$i], 'collapse=')	=== 0)
+//		||	(strpos($bits[$i], 'lang=')		=== 0)
+//		) {
+	if (	(strpos($bits[$i], 'lang=')		=== 0)
+		) {
+		/* we don't want this variable added to $_my_uri */
+		continue;
 	}
-	if ($_my_uri == '') {
+
+	if (($_my_uri == '') && ($bits[$i] != '')) {
 		$_my_uri .= '?';
-	} else {
+	} else if ($bits[$i] != ''){
 		$_my_uri .= SEP;
 	}
-	$_my_uri = $_SERVER['PHP_SELF'].$_my_uri;
-
-function my_add_null_slashes( $string ) {
-    return mysql_real_escape_string(stripslashes($string));
+	$_my_uri .= $bits[$i];
 }
-
-function my_null_slashes($string) {
-	return $string;
-}
-
-if ( get_magic_quotes_gpc() == 1 ) {
-	$addslashes   = 'my_add_null_slashes';
-	$stripslashes = 'stripslashes';
+if ($_my_uri == '') {
+	$_my_uri .= '?';
 } else {
-	$addslashes   = 'mysql_real_escape_string';
-	$stripslashes = 'my_null_slashes';
+	$_my_uri .= SEP;
 }
+$_my_uri = $_SERVER['PHP_SELF'].$_my_uri;
 
 function get_default_theme() {
 	$themesDAO = new ThemesDAO();

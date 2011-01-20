@@ -33,9 +33,9 @@ class ThemesDAO extends DAO {
 	*/
 	function getAll()
 	{
-    $sql = 'SELECT * FROM '.TABLE_PREFIX.'themes ORDER BY dir_name';
-    return $this->execute($sql);
-  }
+		$sql = 'SELECT * FROM '.TABLE_PREFIX.'themes ORDER BY dir_name';
+		return $this->execute($sql);
+	}
 
 	/**
 	* Return theme by theme dir name
@@ -46,10 +46,14 @@ class ThemesDAO extends DAO {
 	*/
 	function getByID($dirName)
 	{
-    $sql = "SELECT * FROM '.TABLE_PREFIX.'themes WHERE dir_name='".$dirName."'";
-    if ($rows = $this->execute($sql))
-    	return $rows[0];
-  }
+		global $addslashes;
+		$dirName = $addslashes($dirName);
+		
+		$sql = "SELECT * FROM '.TABLE_PREFIX.'themes WHERE dir_name='".$dirName."'";
+		if ($rows = $this->execute($sql)){ 
+			return $rows[0];
+		}
+	}
 
 	/**
 	* Return all default themes
@@ -60,9 +64,8 @@ class ThemesDAO extends DAO {
 	*/
 	function getDefaultTheme()
 	{
-    $sql = "SELECT * FROM ".TABLE_PREFIX."themes WHERE status=".AC_STATUS_DEFAULT;
-    return $this->execute($sql);
-  }
-
+		$sql = "SELECT * FROM ".TABLE_PREFIX."themes WHERE status=".AC_STATUS_DEFAULT;
+		return $this->execute($sql);
+	}
 }
 ?>

@@ -47,6 +47,10 @@ class LangCodesDAO extends DAO {
 	*/
 	public function GetLangCodeBy2LetterCode($code)
 	{
+		global $addslashes;
+		
+		$code = $addslashes($code);
+		
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
 					WHERE code_2letters = '".$code ."'";
 		
@@ -62,6 +66,10 @@ class LangCodesDAO extends DAO {
 	*/
 	public function GetLangCodeBy3LetterCode($code)
 	{
+		global $addslashes;
+
+		$code = $addslashes($code);
+		
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
 					WHERE code_3letters = '".$code ."'";
 		
@@ -82,6 +90,10 @@ class LangCodesDAO extends DAO {
 	*/
 	public function GetLangCodeByDirection($direction)
 	{
+		global $addslashes;
+		
+		$direction = $addslashes($direction);
+		
 		$rtn_array = array();
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
 					WHERE direction = '".$direction ."'";
