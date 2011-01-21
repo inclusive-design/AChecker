@@ -1065,7 +1065,7 @@ pre.badgeSnippet {
 
 .top {
   	width:100%;
-	height:15px;
+ 	height:20px; 
 	background:url(images/top.gif) no-repeat left top;
 }
 .top span {
@@ -1144,7 +1144,7 @@ pre.badgeSnippet {
 #logo{
 	float:right;
 	margin-right:1em;
-	margin-top:-1em;
+	margin-top:-1.6em;
 }
 
 
