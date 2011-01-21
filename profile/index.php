@@ -45,11 +45,11 @@ if (isset($_POST['submit'])) {
 	$_POST['first_name'] = str_replace('<', '', $_POST['first_name']);
 	$_POST['last_name'] = str_replace('<', '', $_POST['last_name']);
 
-	$usersDAO = new UsersDAO();
-	if ($usersDAO->getUserByName($_POST['first_name'], $_POST['last_name']))
-	{
-		$msg->addError('FIRST_LAST_NAME_UNIQUE');
-	}
+//	$usersDAO = new UsersDAO();
+//	if ($usersDAO->getUserByName($_POST['first_name'], $_POST['last_name']))
+//	{
+//		$msg->addError('FIRST_LAST_NAME_UNIQUE');
+//	}
 
 	if ($missing_fields) {
 		$missing_fields = implode(', ', $missing_fields);
