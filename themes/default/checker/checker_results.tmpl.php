@@ -237,7 +237,7 @@ function showDiv(divName)
 
 	if (eButtonMakeDecision != null)
 	{
-		if (divName == "errors")
+		if (divName == "errors" || divName == "html_validation_result" || divName == "css_validation_result")
 		{
 			eButtonMakeDecision.style.display = 'none';
 		}
