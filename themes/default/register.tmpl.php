@@ -133,7 +133,7 @@ function encrypt_password()
 				<input type="radio" name="status" id="statusD" value="<?php echo AC_STATUS_DISABLED; ?>" <?php if ((isset($_POST['status']) && $_POST['status']==0) || (!isset($_POST['status']) && $this->user_row['status']==AC_STATUS_DISABLED)) echo 'checked="checked"'; ?> /><label for="statusD"><?php echo _AC('disabled'); ?></label> 
 				<input type="radio" name="status" id="statusE" value="<?php echo AC_STATUS_ENABLED; ?>" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $this->user_row['status']==AC_STATUS_ENABLED)) echo 'checked="checked"'; ?> /><label for="statusE"><?php echo _AC('enabled'); ?></label>
 				<?php if (defined('AC_EMAIL_CONFIRMATION') && AC_EMAIL_CONFIRMATION) {?>
-				<input type="radio" name="status" id="statusU" value="<?php echo AC_STATUS_UNCONFIRMED; ?>" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $this->user_row['status']==AC_STATUS_UNCONFIRMED)) echo 'checked="checked"'; ?> /><label for="statusU"><?php echo _AC('enabled'); ?></label>
+				<input type="radio" name="status" id="statusU" value="<?php echo AC_STATUS_UNCONFIRMED; ?>" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $this->user_row['status']==AC_STATUS_UNCONFIRMED)) echo 'checked="checked"'; ?> /><label for="statusU"><?php echo _AC('unconfirmed'); ?></label>
 				<?php }?>
 			</td>
 		</tr>
