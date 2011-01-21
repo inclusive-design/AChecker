@@ -92,8 +92,8 @@ class CSSValidator {
 			
 			$langCodesDAO = new LangCodesDAO();
 			$lang_code_2letters = $langCodesDAO->GetLangCodeBy3LetterCode($_SESSION['lang']);
-			
-			$content = @file_get_contents($this->validator_url. "?uri=".$uri."&warning=0&lang=".$lang_code_2letters["code_2letters"]);
+			// needed, a way to switch profiles, here defaulting to css3 (1, 2, 2.1, 3)
+			$content = @file_get_contents($this->validator_url. "?uri=".$uri."&warning=0&profile=css3&lang=".$lang_code_2letters["code_2letters"]);
 		}
 		else {
 			//echo "validatore interno";
