@@ -48,8 +48,6 @@ class ChecksDAO extends DAO {
 		
 		$userID = intval($userID);
 		$html_tag = $addslashes(strtolower(trim($html_tag)));
-		$confidence = intval($confidence);
-		$open_to_public = intval($open_to_public);
 
 		// $addslashes are not needed on the following fields since they are eventually
 		// calling LanguageTextDAO->setText() where $addslashes is used.

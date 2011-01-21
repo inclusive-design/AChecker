@@ -78,7 +78,6 @@ class UsersDAO extends DAO {
 		$email = $addslashes(trim($email));
 		$first_name = $addslashes(str_replace('<', '', trim($first_name)));
 		$last_name = $addslashes(str_replace('<', '', trim($last_name)));
-		$status = intval($status);
 
 		if ($this->isFieldsValid('new', $user_group_id,$login, $email,$first_name, $last_name))
 		{
@@ -355,10 +354,11 @@ class UsersDAO extends DAO {
 		$sql = "SELECT status FROM ".TABLE_PREFIX."users WHERE user_id='".$userID."'";
 		$rows = $this->execute($sql);
 
-		if ($rows)
-		return $rows[0]['status'];
-		else
-		return false;
+		if ($rows) {
+			return $rows[0]['status'];
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -372,7 +372,7 @@ class UsersDAO extends DAO {
 	 */
 	public function setStatus($userID, $status)
 	{
-		$sql = "Update ".TABLE_PREFIX."users SET status='".$status."' WHERE user_id='".$userID."'";
+		$sql = "Update ".TABLE_PREFIX."users SET status='".$status."' WHERE user_id='".intval($userID)."'";
 		return $this->execute($sql);
 	}
 
