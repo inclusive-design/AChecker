@@ -26,13 +26,12 @@ include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 class CSSValidator {
 
 	var $validator_url = "http://jigsaw.w3.org/css-validator/validator";
+	
+	// The variables to the locally installed css validator
+	// NOT IN USE generally. Handbook explanation is required to make use of this feature.
 	var $local_validator_command = "java -jar ";
 	var $local_validator_path = "../local_validator/local_css_validator/css-validator.jar "; // path validatore 
-
-	// we need a way to pass in the interface language of AChecker (e.g. ita) and have it set the CSS Validator language 
-	// supports en, fr, it, ko, ja, es, zh-cn, nl, de, it, pl.
 	var $local_validator_option = "--output=xhtml --warning=0 --lang=it ";
-	//var $local_validator_option = "--output=xhtml --warning=0 --lang-en";
 	
 	var $full_return;             // full return from the 3rd party validator
 	var $result;                  // result section stripped from $full_returns.spagnoli@unibo.it
@@ -87,15 +86,14 @@ class CSSValidator {
 		exec($sys_command . $uri, $retval);
 
 		if (sizeof($retval) == 0)
-		{   // If output from the internal validiator is not found, use the external validator
-			// Se non trovo output dal validatore interno, uso il validatore esterno
+		{
+			// If output from the internal validiator is not found, use the external validator
 			include_once(AC_INCLUDE_PATH.'classes/DAO/LangCodesDAO.class.php');
 			
 			$langCodesDAO = new LangCodesDAO();
 			$lang_code_2letters = $langCodesDAO->GetLangCodeBy3LetterCode($_SESSION['lang']);
 			
-			// If output from the internal validiator is not found, use the external validator
-			$content = @file_get_contents($this->validator_url. "?uri=".$uri."&warning=0&lang=".$lang_code_2letters);
+			$content = @file_get_contents($this->validator_url. "?uri=".$uri."&warning=0&lang=".$lang_code_2letters["code_2letters"]);
 		}
 		else {
 			//echo "validatore interno";
@@ -134,7 +132,6 @@ class CSSValidator {
 			{
 				$result_exp = explode('<div id="warnings">', $matches[0]);
 			}
-			
 			$result = $result_exp[0];
 			
 			$res_exp = explode("<div class='error-section'>", $result);
@@ -209,10 +206,8 @@ class CSSValidator {
 	*/
 	function stripOutNumOfErrors($full_result)
 	{
-		$pattern1 = '/\((\w+)\)/';
-			
+		$pattern1 = '/\((\d+)\)/';
 		if (preg_match($pattern1, $full_result, $matches)) // match if it returns the number of errors found
-															// se fa match restituisce il numero degli errori trovati
 		{
 			return $matches[1];}
 		else
