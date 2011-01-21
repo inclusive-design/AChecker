@@ -89,14 +89,15 @@ class CSSValidator {
 		if (sizeof($retval) == 0)
 		{   // If output from the internal validiator is not found, use the external validator
 			// Se non trovo output dal validatore interno, uso il validatore esterno
-			// we need a way to pass in the interface language of AChecker (e.g. ita) and have it set the CSS Validator language 
-			$content = @file_get_contents($this->validator_url. "?uri=".$uri."&warning=0&lang=it");
-			//$content = @file_get_contents($this->validator_url. "?uri=".$uri."&warning=0&lang=en");
-		
+			include_once(AC_INCLUDE_PATH.'classes/DAO/LangCodesDAO.class.php');
+			
+			$langCodesDAO = new LangCodesDAO();
+			$lang_code_2letters = $langCodesDAO->GetLangCodeBy3LetterCode($_SESSION['lang']);
+			
+			// If output from the internal validiator is not found, use the external validator
+			$content = @file_get_contents($this->validator_url. "?uri=".$uri."&warning=0&lang=".$lang_code_2letters);
 		}
 		else {
-			// Internal validator result
-			// Risultato validatore interno
 			//echo "validatore interno";
 			$content = implode($retval);
 		}
@@ -115,23 +116,19 @@ class CSSValidator {
 	*/
 	function stripOutResult($full_result)
 	{
-
 		$pattern1 = '/('.preg_quote("<div id='congrats'>", '/').'.*)/s'; // nessun errore -- no errors
-		//$pattern2 = '/('.preg_quote('<div id="errors">', '/').'.*)/s'; // when has errors
 		$pattern2 = '/('.preg_quote("<div class='error-section-all'>", '/').'.*)/s'; // when has errors
-		$pattern3 = '/('.preg_quote('<p class="backtop"><a href="#banner">&uarr; '._AC('cssv_top').'</a></p>', '/').'.*)/s'; // when has errors
+		$pattern3 = '/('.preg_quote('<p class="backtop"><a href="#banner">&uarr; ', '/').'.*)/s'; // when has errors
 		$pattern4 = '/('.preg_quote('<div id="warnings">', '/').'.*)/s'; // when has errors
-
-		
 	
-		if (preg_match($pattern1, $full_result, $matches))
+		if (preg_match($pattern1, $full_result, $matches)){
 			return $matches[0];
+		}
 		else if (preg_match($pattern2, $full_result, $matches))
 		{
-
 			if (preg_match($pattern3, $full_result, $matches2))
 			{
-				$result_exp = explode('<p class="backtop"><a href="#banner">&uarr; '._AC('cssv_top').'</a></p>', $matches[0]);
+				$result_exp = explode('<p class="backtop"><a href="#banner">', $matches[0]);
 			}
 			else if (preg_match($pattern4, $full_result, $matches2))
 			{
@@ -139,7 +136,6 @@ class CSSValidator {
 			}
 			
 			$result = $result_exp[0];
-
 			
 			$res_exp = explode("<div class='error-section'>", $result);
 			
@@ -159,7 +155,7 @@ class CSSValidator {
 					$res_exp[$i] =  '<li class="msg_err">'. $res_exp[$i];
 					$res_exp[$i] = str_replace("<h4>", '<span class="msg"><strong>', $res_exp[$i]);
 					$res_exp[$i] = str_replace("</h4>", '</strong></span>', $res_exp[$i]);
-					$res_exp[$i] = str_replace("<table>", "<table class='css_error' cellspacing='4px'><tr><th>"._AC('line')."</th><th>"._AC('element')."</th><th>"._AC('error')."</th></tr>", $res_exp[$i]);
+					$res_exp[$i] = str_replace("<table>", "<table class='css_error' cellspacing='4px'><tr><th>"._AC('line')."</th><th>"._AC('html_tag')."</th><th>"._AC('error')."</th></tr>", $res_exp[$i]);
 					
 					$res_exp_int = explode("</div>", $res_exp[$i]);	
 					for ($j=0; $j<sizeof($res_exp_int)-1; $j++)
@@ -197,8 +193,6 @@ class CSSValidator {
 			
 			$result = implode('', $res_exp);
 			
-
-			
 			return $result;
 		}
 		else
@@ -207,7 +201,6 @@ class CSSValidator {
 			$this->msg = '<p class="msg_err">'._AC('AC_ERROR_CSS_VALIDATOR_ERROR').'</p><br/>';
 			return false;
 		}
-
 	}
 	
 	/**
@@ -216,8 +209,7 @@ class CSSValidator {
 	*/
 	function stripOutNumOfErrors($full_result)
 	{
-
-		$pattern1 = '/Errori \((\w+)\)/';
+		$pattern1 = '/\((\w+)\)/';
 			
 		if (preg_match($pattern1, $full_result, $matches)) // match if it returns the number of errors found
 															// se fa match restituisce il numero degli errori trovati
@@ -261,7 +253,5 @@ class CSSValidator {
 	{
 		return $this->contain_errors;
 	}
-
-	
 }
 ?>  
