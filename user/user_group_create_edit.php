@@ -33,7 +33,7 @@ if (isset($_POST['cancel']))
 } 
 else if (isset($_POST['save']))
 {
-	$title = $addslashes(trim($_POST['title']));	
+	$title = trim($_POST['title']);	
 	
 	if ($title == '')
 	{
@@ -46,12 +46,12 @@ else if (isset($_POST['save']))
 		{
 			$userGroupsDAO->update($id,
 			                       $title, 
-			                       $addslashes(trim($_POST['description'])));
+			                       trim($_POST['description']));
 		}
 		else  // create a new user group
 		{
 			$id = $userGroupsDAO->Create($title, 
-			                       $addslashes(trim($_POST['description'])));
+			                       trim($_POST['description']));
 		}
 			                       
 		if (!$msg->containsErrors())

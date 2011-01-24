@@ -55,7 +55,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<th><label for="locale">&nbsp;&nbsp;&nbsp;<?php echo _AC('locale'); ?></label></th>
 			<td>
 <?php if (isset($this->row['language_code'])) if ($this->row['locale'] == '') echo _AC('na'); else echo $this->row['locale']; else {?>
-				<input id="locale" name="locale" type="text" size="2" maxlength="2" value="<?php if (isset($_POST['locale'])) echo $_POST['locale']; else echo $this->row['locale']; ?>" />
+				<input id="locale" name="locale" type="text" size="2" maxlength="2" value="<?php if (isset($_POST['locale'])) echo htmlspecialchars($_POST['locale']); else echo htmlspecialchars($this->row['locale']); ?>" />
 <?php }?>
 			</td>
 		</tr>
@@ -65,7 +65,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<label for="charset"><?php echo _AC('charset'); ?></label></th>
 			<td>
 <?php if (isset($this->row['language_code'])) echo $this->row['charset']; else {?>
-				<input type="text" name="charset" id="charset" value="<?php if (isset($_POST['charset'])) echo $_POST['charset']; else if (isset($this->row["charset"])) echo $this->row["charset"]; else echo DEFAULT_CHARSET; ?>" />
+				<input type="text" name="charset" id="charset" value="<?php if (isset($_POST['charset'])) echo htmlspecialchars($_POST['charset']); else if (isset($this->row["charset"])) echo htmlspecialchars($this->row["charset"]); else echo DEFAULT_CHARSET; ?>" />
 <?php }?>
 			</td>
 		</tr>
@@ -73,13 +73,13 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<tr align="left">
 			<th><div class="required" title="<?php echo _AC('required_field'); ?>">*</div>
 			<label for="native_name"><?php echo _AC('name_in_language'); ?></label></th>
-			<td><input type="text" name="native_name" id="native_name" value="<?php if (isset($_POST['native_name'])) echo $_POST['native_name']; else echo $this->row["native_name"]; ?>" /></td>
+			<td><input type="text" name="native_name" id="native_name" value="<?php if (isset($_POST['native_name'])) echo htmlspecialchars($_POST['native_name']); else echo htmlspecialchars($this->row["native_name"]); ?>" /></td>
 		</tr>
 
 		<tr align="left">
 			<th><div class="required" title="<?php echo _AC('required_field'); ?>">*</div>
 			<label for="english_name"><?php echo _AC('name_in_english'); ?></label></th>
-			<td><input type="text" name="english_name" id="english_name" value="<?php if (isset($_POST['english_name'])) echo $_POST['english_name']; else echo $this->row["english_name"]; ?>" /></td>
+			<td><input type="text" name="english_name" id="english_name" value="<?php if (isset($_POST['english_name'])) echo htmlspecialchars($_POST['english_name']); else echo htmlspecialchars($this->row["english_name"]); ?>" /></td>
 		</tr>
 
 		<tr align="left">

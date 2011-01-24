@@ -92,7 +92,7 @@ if (is_array($this->rows))
 ?>
 				<td>
 					<input type="checkbox" name="gid[]" id='gid_<?php echo $row["guideline_id"]; ?>' value='<?php echo $row["guideline_id"]; ?>' <?php foreach($_POST["gid"] as $gid) {if ($gid == $row["guideline_id"]) echo 'checked="checked"';} ?> />
-					<label for='gid_<?php echo $row["guideline_id"]; ?>'><?php echo $row["title"]; ?></label>
+					<label for='gid_<?php echo $row["guideline_id"]; ?>'><?php echo htmlspecialchars($row["title"]); ?></label>
 				</td>
 <?php
 		$count_guidelines_in_current_row++;

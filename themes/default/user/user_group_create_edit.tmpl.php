@@ -32,12 +32,12 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="title"><?php echo _AC('title'); ?></label></th>
-			<td><input type="text" name="title" size="100" id="title" value="<?php if (isset($_POST['title'])) echo $_POST['title']; else echo $this->user_group_row["title"]; ?>" /></td>
+			<td><input type="text" name="title" size="100" id="title" value="<?php if (isset($_POST['title'])) echo htmlspecialchars($_POST['title']); else echo htmlspecialchars($this->user_group_row["title"]); ?>" /></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="description"><?php echo _AC('description'); ?></label></th>
-			<td><textarea rows="3" cols="30" name="description" id="description"><?php if (isset($_POST['description'])) echo $_POST['description']; else echo $this->user_group_row["description"]; ?></textarea></td>
+			<td><textarea rows="3" cols="30" name="description" id="description"><?php if (isset($_POST['description'])) echo htmlspecialchars($_POST['description']); else echo htmlspecialchars($this->user_group_row["description"]); ?></textarea></td>
 		</tr>
 
 		<?php if (isset($this->user_group_row['user_group_id'])) {?>
@@ -85,7 +85,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 				<td><input type="checkbox" name="del_privileges_id[]" value="<?php echo $privs_row['privilege_id']; ?>" id="del_privileges_<?php echo $privs_row['privilege_id']; ?>" 
 				           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" 
 				           <?php if (is_array($_POST['del_privileges_id']) && in_array($privs_row['privilege_id'], $_POST['del_privileges_id'])) echo 'checked="checked"';?> /></td>
-				<td><label for="del_privileges_<?php echo $privs_row['privilege_id']; ?>"><?php echo $privs_row['description']; ?></label></td>
+				<td><label for="del_privileges_<?php echo $privs_row['privilege_id']; ?>"><?php echo htmlspecialchars($privs_row['description']); ?></label></td>
 			</tr>
 	<?php } // end of foreach?>
 			</tbody>
@@ -122,7 +122,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 				<td><input type="checkbox" name="add_privileges_id[]" value="<?php echo $privileges_to_add_row['privilege_id']; ?>" id="add_privileges_<?php echo $privileges_to_add_row['privilege_id']; ?>" 
 				           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" 
 				           <?php if (is_array($_POST['add_privileges_id']) && in_array($privileges_to_add_row['privilege_id'], $_POST['add_privileges_id'])) echo 'checked="checked"';?> /></td>
-				<td><label for="add_privileges_<?php echo $privileges_to_add_row['privilege_id']; ?>"><?php echo $privileges_to_add_row['description']; ?></label></td>
+				<td><label for="add_privileges_<?php echo $privileges_to_add_row['privilege_id']; ?>"><?php echo htmlspecialchars($privileges_to_add_row['description']); ?></label></td>
 			</tr>
 	<?php } // end of foreach?>
 			</tbody>

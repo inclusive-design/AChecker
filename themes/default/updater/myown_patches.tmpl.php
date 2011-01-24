@@ -50,10 +50,10 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 <?php foreach ($this->patch_rows as $row) { ?>
 		<tr onmousedown="document.form['m<?php echo $row['myown_patch_id']; ?>'].checked = true; rowselect(this);" id="r_<?php echo $row['myown_patch_id']; ?>">
 			<td width="10"><input type="radio" name="myown_patch_id" value="<?php echo $row['myown_patch_id']; ?>" id="m<?php echo $row['myown_patch_id']; ?>" <?php if ($row['myown_patch_id']==$_POST['myown_patch_id']) echo 'checked'; ?> /></td>
-			<td><label for="m<?php echo $row['myown_patch_id']; ?>"><?php echo $row['achecker_patch_id']; ?></label></td>
-			<td><?php echo $row['applied_version']; ?></td>
-			<td><?php echo $row['description']; ?></td>
-			<td><?php echo $row['last_modified']; ?></td>
+			<td><label for="m<?php echo $row['myown_patch_id']; ?>"><?php echo htmlspecialchars($row['achecker_patch_id']); ?></label></td>
+			<td><?php echo htmlspecialchars($row['applied_version']); ?></td>
+			<td><?php echo htmlspecialchars($row['description']); ?></td>
+			<td><?php echo htmlspecialchars($row['last_modified']); ?></td>
 		</tr>
 <?php } // end of foreach ?>
 </tbody>

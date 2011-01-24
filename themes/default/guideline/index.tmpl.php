@@ -49,8 +49,8 @@
 	    id="r_<?php echo $row["guideline_id"]; ?>">
 		<td><input type="radio" name="id" value="<?php echo $row["guideline_id"]; ?>" id="m<?php echo $row['guideline_id']; ?>" 
 		           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
-		<td><label for="m<?php echo $row["guideline_id"]; ?>"><?php echo $row["title"]; ?></label></td>
-		<td><?php echo _AC($row['long_name']); ?></td>
+		<td><label for="m<?php echo $row["guideline_id"]; ?>"><?php echo htmlspecialchars($row["title"]); ?></label></td>
+		<td><?php echo htmlspecialchars(_AC($row['long_name'])); ?></td>
 		<?php if ($this->showStatus) {?>
 		<td><?php if ($row['status']) echo _AC('enabled'); else echo _AC('disabled'); ?></td>
 		<?php }?>

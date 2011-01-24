@@ -46,10 +46,10 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	    id="r_<?php echo $row["language_code"]."_".$row["charset"]; ?>">
 		<td><input type="radio" name="id" value="<?php echo $row["language_code"]."_".$row["charset"]; ?>" id="m<?php echo $row['language_code']."_".$row["charset"]; ?>" 
 		           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
-		<td><label for="m<?php echo $row["language_code"]."_".$row["charset"]; ?>"><?php echo $row["native_name"]; ?></label></td>
-		<td><?php echo $row['english_name']; ?></td>
-		<td><?php echo $row['language_code']; ?></td>
-		<td><?php echo $row['charset']; ?></td>
+		<td><label for="m<?php echo $row["language_code"]."_".$row["charset"]; ?>"><?php echo htmlspecialchars($row["native_name"]); ?></label></td>
+		<td><?php echo htmlspecialchars($row['english_name']); ?></td>
+		<td><?php echo htmlspecialchars($row['language_code']); ?></td>
+		<td><?php echo htmlspecialchars($row['charset']); ?></td>
 		<td><?php if ($row['status']) echo _AC('enabled'); else echo _AC('disabled'); ?></td>
 	</tr>
 <?php }?>

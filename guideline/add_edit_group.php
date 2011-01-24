@@ -30,7 +30,7 @@ $guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
 
 if (isset($_POST['submit']))
 {
-	$name = $addslashes(trim($_POST['name']));	
+	$name = trim($_POST['name']);	
 	
 	if ($name == '')
 	{

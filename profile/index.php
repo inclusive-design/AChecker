@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
 
 	if (!$msg->containsErrors()) {
 		// insert into the db.
-		if (!$_current_user->setName($addslashes($_POST['first_name']), $addslashes($_POST['last_name']))) 
+		if (!$_current_user->setName($_POST['first_name'], $_POST['last_name'])) 
 		{
 			$msg->printErrors('DB_NOT_UPDATED');
 			exit;

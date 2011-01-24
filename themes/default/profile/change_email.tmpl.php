@@ -11,7 +11,7 @@
 /************************************************************************/
 // $Id$
 
-global $onload;
+global $onload, $stripslashes;
 $onload = 'document.form.form_password.focus();';
 require(AC_INCLUDE_PATH.'header.inc.php'); 
 
@@ -50,7 +50,7 @@ function encrypt_password()
 					<label for="email"><?php echo _AC('email_address'); ?></label>
 				</td>
 				<td align="left">
-					<input id="email" name="email" type="text" size="50" maxlength="50" value="<?php echo stripslashes(htmlspecialchars($_POST['email'])); ?>" />
+					<input id="email" name="email" type="text" size="50" maxlength="50" value="<?php echo $stripslashes(htmlspecialchars($_POST['email'])); ?>" />
 				</td>
 			</tr>
 		

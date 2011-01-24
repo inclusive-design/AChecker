@@ -144,10 +144,10 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 				<td><input type="checkbox" name="id[]" value="<?php echo $row['user_id']; ?>" id="m<?php echo $row['user_id']; ?>" 
 				           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
 				<td><label for="m<?php echo $row['user_id']; ?>"><?php echo $row['login']; ?></label></td>
-				<td><?php echo $row['first_name']; ?></td>
-				<td><?php echo $row['last_name']; ?></td>
-				<td><?php echo $row['user_group']; ?></td>
-				<td><?php echo $row['email']; ?></td>
+				<td><?php echo htmlspecialchars($row['first_name']); ?></td>
+				<td><?php echo htmlspecialchars($row['last_name']); ?></td>
+				<td><?php echo htmlspecialchars($row['user_group']); ?></td>
+				<td><?php echo htmlspecialchars($row['email']); ?></td>
 				<td><?php echo get_status_by_code($row['status']); ?></td>
 				<td nowrap="nowrap">
 					<?php if ($row['last_login'] == 0): ?>

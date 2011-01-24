@@ -54,9 +54,9 @@ function dispaly_check_table($checks_array, $prefix)
 		    id="rdel_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>">
 			<td><input type="checkbox" name="del_checks_id_<?php echo $prefix;?>[]" value="<?php echo $prefix.'_'.$check_row['check_id']; ?>" id="del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>" 
 			           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
-			<td><?php echo $check_row['html_tag']; ?></td>
+			<td><?php echo htmlspecialchars($check_row['html_tag']); ?></td>
 			<td><?php echo get_confidence_by_code($check_row['confidence']); ?></td>
-			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>'); return false;"><label for="del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>"><?php echo _AC($check_row['name']); ?></label></a></span></td>
+			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>'); return false;"><label for="del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>"><?php echo htmlspecialchars(_AC($check_row['name'])); ?></label></a></span></td>
 			<td><?php echo $check_row['check_id']; ?></td>
 		</tr>
 <?php } // end of foreach?>
@@ -91,7 +91,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <?php if (isset($this->row)) {?>
 	<input type="hidden" name="title_orig" value="<?php echo htmlspecialchars($this->row['title']); ?>" />
 	<input type="hidden" name="abbr_orig" value="<?php echo htmlspecialchars($this->row['abbr']); ?>" />
-	<input type="hidden" name="long_name_orig" value="<?php echo htmlspecialchars(_AC($this->row['long_name'])); ?>" />
+	<input type="hidden" name="long_name_orig" value="<?php echo htmlentities(_AC($this->row['long_name'])); ?>" />
 	<input type="hidden" name="published_date_orig" value="<?php echo $this->row['published_date']; ?>" />
 	<input type="hidden" name="earlid_orig" value="<?php echo htmlspecialchars($this->row['earlid']); ?>" />
 	<input type="hidden" name="status_orig" value="<?php echo $this->row['status']; ?>" />

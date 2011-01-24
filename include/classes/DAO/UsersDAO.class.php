@@ -402,6 +402,10 @@ class UsersDAO extends DAO {
 	 */
 	public function setName($userID, $firstName, $lastName)
 	{
+		global $addslashes;
+		$firstName = $addslashes($firstName);
+		$lastName = $addslashes($lastName);
+		
 		$sql = "Update ".TABLE_PREFIX."users SET first_name='".$firstName."', last_name='".$lastName."' WHERE user_id='".$userID."'";
 		return $this->execute($sql);
 	}
@@ -432,6 +436,10 @@ class UsersDAO extends DAO {
 	 */
 	public function setEmail($userID, $email)
 	{
+		global $addslahes;
+		
+		$email = $addslashes($email);
+		
 		$sql = "Update ".TABLE_PREFIX."users SET email='".$email."' WHERE user_id='".$userID."'";
 		return $this->execute($sql);
 	}

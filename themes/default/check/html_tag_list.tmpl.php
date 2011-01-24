@@ -39,7 +39,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	    id="r_<?php echo $html_tag_no_space; ?>">
 		<td><input type="radio" name="html_tag" value="<?php echo $row["html_tag"]; ?>" id="m<?php echo $html_tag_no_space; ?>" 
 		           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
-		<td><label for="m<?php echo $html_tag_no_space; ?>"><?php echo $row["html_tag"]; ?></label></td>
+		<td><label for="m<?php echo $html_tag_no_space; ?>"><?php echo htmlspecialchars($row["html_tag"]); ?></label></td>
 	</tr>
 <?php } ?>
 </tbody>

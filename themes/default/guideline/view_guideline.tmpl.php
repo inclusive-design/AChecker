@@ -40,9 +40,9 @@ function dispaly_check_table($checks_array)
 		<tbody>
 	<?php foreach ($checks_array as $check_row) { ?>
 		<tr>
-			<td><?php echo $check_row['html_tag']; ?></td>
+			<td><?php echo htmlspecialchars($check_row['html_tag']); ?></td>
 			<td><?php echo get_confidence_by_code($check_row['confidence']); ?></td>
-			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>'); return false;"><?php echo _AC($check_row['name']); ?></a></span></td>
+			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>'); return false;"><?php echo htmlspecialchars(_AC($check_row['name'])); ?></a></span></td>
 			<td><?php echo $check_row['check_id']; ?></td>
 		</tr>
 	<?php } // end of foreach?>

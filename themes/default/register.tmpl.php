@@ -31,6 +31,7 @@
  */
 $default_user_group_id = AC_USER_GROUP_USER;
 
+global $stripslashes;
 require(AC_INCLUDE_PATH.'header.inc.php'); 
 ?>
 
@@ -70,7 +71,7 @@ function encrypt_password()
 
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="login"><?php echo _AC('login_name'); ?></label>:</td>
-			<td align="left"><input id="login" name="login" type="text" maxlength="20" size="30" value="<?php if (isset($_POST['login'])) echo stripslashes(htmlspecialchars($_POST['login'])); else echo stripslashes(htmlspecialchars($this->user_row['login'])); ?>" /></td>
+			<td align="left"><input id="login" name="login" type="text" maxlength="20" size="30" value="<?php if (isset($_POST['login'])) echo $stripslashes(htmlspecialchars($_POST['login'])); else echo $stripslashes(htmlspecialchars($this->user_row['login'])); ?>" /></td>
 		</tr>
 
 		<tr>
@@ -113,17 +114,17 @@ function encrypt_password()
 
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="email"><?php echo _AC('email_address'); ?></label>:</td>
-			<td align="left"><input id="email" name="email" type="text" size="50" maxlength="50" value="<?php if (isset($_POST['email'])) echo stripslashes(htmlspecialchars($_POST['email'])); else echo stripslashes(htmlspecialchars($this->user_row['email'])); ?>" /></td>
+			<td align="left"><input id="email" name="email" type="text" size="50" maxlength="50" value="<?php if (isset($_POST['email'])) echo $stripslashes(htmlspecialchars($_POST['email'])); else echo $stripslashes(htmlspecialchars($this->user_row['email'])); ?>" /></td>
 		</tr>
 
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="first_name"><?php echo _AC('first_name'); ?></label>:</td>
-			<td align="left"><input id="first_name" name="first_name" type="text" value="<?php if (isset($_POST['first_name'])) echo stripslashes(htmlspecialchars($_POST['first_name'])); else echo stripslashes(htmlspecialchars($this->user_row['first_name'])); ?>" /></td>
+			<td align="left"><input id="first_name" name="first_name" type="text" value="<?php if (isset($_POST['first_name'])) echo $stripslashes(htmlspecialchars($_POST['first_name'])); else echo $stripslashes(htmlspecialchars($this->user_row['first_name'])); ?>" /></td>
 		</tr>
 
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="last_name"><?php echo _AC('last_name'); ?></label>:</td>
-			<td align="left"><input id="last_name" name="last_name" type="text" value="<?php if (isset($_POST['last_name'])) echo stripslashes(htmlspecialchars($_POST['last_name'])); else echo stripslashes(htmlspecialchars($this->user_row['last_name'])); ?>" /></td>
+			<td align="left"><input id="last_name" name="last_name" type="text" value="<?php if (isset($_POST['last_name'])) echo $stripslashes(htmlspecialchars($_POST['last_name'])); else echo $stripslashes(htmlspecialchars($this->user_row['last_name'])); ?>" /></td>
 		</tr>
 
 		<?php if ($this->show_status) {?>

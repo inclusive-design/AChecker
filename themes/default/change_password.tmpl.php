@@ -11,7 +11,7 @@
 /************************************************************************/
 // $Id$
 
-global $onload;
+global $onload, $stripslashes;
 $onload = 'document.form.password.focus();';
 
 require(AC_INCLUDE_PATH.'header.inc.php'); 
@@ -63,7 +63,7 @@ function encrypt_password()
 					<label for="password"><?php echo _AC('new_password'); ?></label>:
 				</td>
 				<td align="left">
-					<input id="password" name="password" type="password" size="25" maxlength="15" value="<?php echo stripslashes(htmlspecialchars($_POST['password'])); ?>" />
+					<input id="password" name="password" type="password" size="25" maxlength="15" value="<?php echo $stripslashes(htmlspecialchars($_POST['password'])); ?>" />
 				</td>
 			</tr>
 		
@@ -73,7 +73,7 @@ function encrypt_password()
 					<label for="password2"><?php echo _AC('password_again'); ?></label>:
 				</td>
 				<td align="left">
-					<input id="password2" name="password2" type="password" size="25" maxlength="15" value="<?php echo stripslashes(htmlspecialchars($_POST['password2'])); ?>" />
+					<input id="password2" name="password2" type="password" size="25" maxlength="15" value="<?php echo $stripslashes(htmlspecialchars($_POST['password2'])); ?>" />
 				</td>
 			</tr>
 

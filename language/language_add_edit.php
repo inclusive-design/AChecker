@@ -42,8 +42,8 @@ else if (isset($_POST['save']))
 		if ($languagesDAO->Update($lang_code, 
 		                      $charset,
 		                      '',
-		                      $addslashes(trim($_POST['native_name'])),
-		                      $addslashes(trim($_POST['english_name'])),
+		                      trim($_POST['native_name']),
+		                      trim($_POST['english_name']),
 		                      $_POST['status']))
 		{
 			$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
@@ -59,10 +59,10 @@ else if (isset($_POST['save']))
 			$language_code = $_POST['lang_code'];
 
 		if ($languagesDAO->Create($language_code, 
-		                      $addslashes(trim($_POST['charset'])),
+		                      trim($_POST['charset']),
 		                      '',
-		                      $addslashes(trim($_POST['native_name'])),
-		                      $addslashes(trim($_POST['english_name'])),
+		                      trim($_POST['native_name']),
+		                      trim($_POST['english_name']),
 		                      $_POST['status']))
 		{
 			$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');

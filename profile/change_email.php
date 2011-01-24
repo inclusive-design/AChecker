@@ -106,7 +106,7 @@ if (isset($_POST['submit']))
 		} else {
 
 		//insert into database
-		$_current_user->setEmail($addslashes($_POST[email]));
+		$_current_user->setEmail($_POST[email]);
 
 		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 		}

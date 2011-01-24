@@ -186,9 +186,9 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 			<td><input type="checkbox" name="id[]" value="<?php echo $row['check_id']; ?>" id="m<?php echo $row['check_id']; ?>" 
 			           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
 		<?php }?>
-			<td><?php echo $row['html_tag']; ?></td>
+			<td><?php echo htmlspecialchars($row['html_tag']); ?></td>
 			<td><?php echo get_confidence_by_code($row['confidence']); ?></td>
-			<td><label for="m<?php echo $row['check_id']; ?>"><?php echo _AC($row['name']); ?></label></td>
+			<td><label for="m<?php echo $row['check_id']; ?>"><?php echo htmlspecialchars(_AC($row['name'])); ?></label></td>
 			<td><?php if ($row['open_to_public']) echo _AC('yes'); else echo _AC('no'); ?></td>
 			<td><?php echo $row['check_id']; ?></td>
 		</tr>

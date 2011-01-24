@@ -11,6 +11,8 @@
 /************************************************************************/
 // $Id$
 
+global $stripslashes;
+
 require(AC_INCLUDE_PATH.'header.inc.php'); 
 ?>
 
@@ -28,7 +30,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><?php echo _AC('login_name'); ?>:</th>
-			<td align="left"><?php echo stripslashes(htmlspecialchars($_POST['login'])); ?></td>
+			<td align="left"><?php echo $stripslashes(htmlspecialchars($_POST['login'])); ?></td>
 		</tr>
 
 		<tr>
@@ -40,12 +42,12 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="first_name"><?php echo _AC('first_name'); ?></label>:</th>
-			<td align="left"><input id="first_name" name="first_name" type="text" value="<?php echo stripslashes(htmlspecialchars($_POST['first_name'])); ?>" /></td>
+			<td align="left"><input id="first_name" name="first_name" type="text" value="<?php echo $stripslashes(htmlspecialchars($_POST['first_name'])); ?>" /></td>
 		</tr>
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="last_name"><?php echo _AC('last_name'); ?></label>:</th>
-			<td align="left"><input id="last_name" name="last_name" type="text" value="<?php echo stripslashes(htmlspecialchars($_POST['last_name'])); ?>" /></td>
+			<td align="left"><input id="last_name" name="last_name" type="text" value="<?php echo $stripslashes(htmlspecialchars($_POST['last_name'])); ?>" /></td>
 		</tr>
 
 		<tr>

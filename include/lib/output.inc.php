@@ -34,7 +34,7 @@ require(AC_INCLUDE_PATH . 'classes/DAO/LanguageTextDAO.class.php');
 * @author	Joel Kronenberg
 */
 function _AC() {
-	global $_cache_template, $lang_et, $_rel_url;
+	global $_cache_template, $lang_et, $_rel_url, $stripslashes;
 	static $_template;
 
 	$args = func_get_args();
@@ -100,9 +100,9 @@ function _AC() {
 	
 					// saves us from doing an ORDER BY
 					if ($row['language_code'] == $_SESSION['lang']) {
-						$_cache_template[$row['term']] = stripslashes($row['text']);
+						$_cache_template[$row['term']] = $stripslashes($row['text']);
 					} else if (!isset($_cache_template[$row['term']])) {
-						$_cache_template[$row['term']] = stripslashes($row['text']);
+						$_cache_template[$row['term']] = $stripslashes($row['text']);
 					}
 				}
 			}
@@ -137,7 +137,7 @@ function _AC() {
 		if (is_array($rows))
 		{
 			$row = $rows[0];
-			$_template[$row['term']] = stripslashes($row['text']);
+			$_template[$row['term']] = $stripslashes($row['text']);
 			$outString = $_template[$row['term']];
 		}
 
@@ -161,13 +161,13 @@ function _AC() {
 	?? %a: Lowercase Ante meridiem and Post meridiem am or pm 
 	?? %A: Uppercase Ante meridiem and Post meridiem AM or PM 
 
-	valid formAC_types:
+	valid format types:
 	AC_DATE_MYSQL_DATETIME:		YYYY-MM-DD HH:MM:SS
 	AC_DATE_MYSQL_TIMESTAMP_14:	YYYYMMDDHHMMSS
 	AC_DATE_UNIX_TIMESTAMP:		seconds since epoch
 	AC_DATE_INDEX_VALUE:		0-x, index into a date array
 */
-function AC_date($format='%Y-%M-%d', $timestamp = '', $formAC_type=AC_DATE_MYSQL_DATETIME) {	
+function AC_date($format='%Y-%M-%d', $timestamp = '', $format_type=AC_DATE_MYSQL_DATETIME) {	
 	static $day_name_ext, $day_name_con, $month_name_ext, $month_name_con;
 	global $_config;
 
@@ -215,7 +215,7 @@ function AC_date($format='%Y-%M-%d', $timestamp = '', $formAC_type=AC_DATE_MYSQL
 								'date_dec');
 	}
 
-	if ($formAC_type == AC_DATE_INDEX_VALUE) {
+	if ($format_type == AC_DATE_INDEX_VALUE) {
 		// apply timezone offset
 		apply_timezone($timestamp);
 	
@@ -232,11 +232,11 @@ function AC_date($format='%Y-%M-%d', $timestamp = '', $formAC_type=AC_DATE_MYSQL
 
 	if ($timestamp == '') {
 		$timestamp = time();
-		$formAC_type = AC_DATE_UNIX_TIMESTAMP;
+		$format_type = AC_DATE_UNIX_TIMESTAMP;
 	}
 
 	/* convert the date to a Unix timestamp before we do anything with it */
-	if ($formAC_type == AC_DATE_MYSQL_DATETIME) {
+	if ($format_type == AC_DATE_MYSQL_DATETIME) {
 		$year	= substr($timestamp,0,4);
 		$month	= substr($timestamp,5,2);
 		$day	= substr($timestamp,8,2);
@@ -245,7 +245,7 @@ function AC_date($format='%Y-%M-%d', $timestamp = '', $formAC_type=AC_DATE_MYSQL
 		$sec	= substr($timestamp,17,2);
 	    $timestamp	= mktime($hour, $min, $sec, $month, $day, $year);
 
-	} else if ($formAC_type == AC_DATE_MYSQL_TIMESTAMP_14) {
+	} else if ($format_type == AC_DATE_MYSQL_TIMESTAMP_14) {
 	    $year		= substr($timestamp,0,4);
 	    $month		= substr($timestamp,4,2);
 	    $day		= substr($timestamp,6,2);
@@ -300,80 +300,76 @@ function AC_date($format='%Y-%M-%d', $timestamp = '', $formAC_type=AC_DATE_MYSQL
 }
 
 /**********************************************************************************************************/
-	/**
-	* 	Transforms text based on formatting preferences.  Original $input is also changed (passed by reference).
-	*	Can be called as:
-	*	1) $output = AC_print($input, $name);
-	*	   echo $output;
-	*
-	*	2) echo AC_print($input, $name); // prefered method
-	*
-	* @access	public
-	* @param	string $input			text being transformed
-	* @param	string $name			the unique name of this field (convension: table_name.field_name)
-	* @param	boolean $runtime_html	forcefully disables html formatting for $input (only used by fields that 
-	*									have the 'formatting' option
-	* @return	string					transformed $input
-	* @see		AC_FORMAT constants		in include/lib/constants.inc.php
-	* @see		query_bit()				in include/vitals.inc.php
-	* @author	Joel Kronenberg
-	*/
-	function AC_print($input, $name, $runtime_html = true) {
-		global $_field_formatting;
+/**
+* 	Transforms text based on formatting preferences.  Original $input is also changed (passed by reference).
+*	Can be called as:
+*	1) $output = AC_print($input, $name);
+*	   echo $output;
+*
+*	2) echo AC_print($input, $name); // prefered method
+*
+* @access	public
+* @param	string $input			text being transformed
+* @param	string $name			the unique name of this field (convension: table_name.field_name)
+* @param	boolean $runtime_html	forcefully disables html formatting for $input (only used by fields that 
+*									have the 'formatting' option
+* @return	string					transformed $input
+* @see		AC_FORMAT constants		in include/lib/constants.inc.php
+* @see		query_bit()				in include/vitals.inc.php
+* @author	Joel Kronenberg
+*/
+function AC_print($input, $name, $runtime_html = true) {
+	global $_field_formatting;
 
-		if (!isset($_field_formatting[$name])) {
-			/* field not set, check if there's a global setting */
-			$parts = explode('.', $name);
-			
-			/* check if wildcard is set: */
-			if (isset($_field_formatting[$parts[0].'.*'])) {
-				$name = $parts[0].'.*';
-			} else {
-				/* field not set, and there's no global setting */
-				/* same as AC_FORMAC_NONE */
-				return $input;
-			}
-		}
-
-		if (query_bit($_field_formatting[$name], AC_FORMAC_QUOTES)) {
-			$input = str_replace('"', '&quot;', $input);
-		}
-
-		if (query_bit($_field_formatting[$name], AC_FORMAC_CONTENT_DIR)) {
-			$input = str_replace('CONTENT_DIR/', '', $input);
-		}
-
-		if (query_bit($_field_formatting[$name], AC_FORMAC_HTML) && $runtime_html) {
-			/* what special things do we have to do if this is HTML ? remove unwanted HTML? validate? */
+	if (!isset($_field_formatting[$name])) {
+		/* field not set, check if there's a global setting */
+		$parts = explode('.', $name);
+		
+		/* check if wildcard is set: */
+		if (isset($_field_formatting[$parts[0].'.*'])) {
+			$name = $parts[0].'.*';
 		} else {
-			$input = str_replace('<', '&lt;', $input);
-			$input = nl2br($input);
-		}
-
-		/* this has to be here, only because AC_FORMAC_HTML is the only check that has an else-block */
-		if ($_field_formatting[$name] === AC_FORMAC_NONE) {
+			/* field not set, and there's no global setting */
+			/* same as AC_FORMAT_NONE */
 			return $input;
 		}
+	}
 
-		if (query_bit($_field_formatting[$name], AC_FORMAC_EMOTICONS)) {
-			$input = smile_replace($input);
-		}
+	if (query_bit($_field_formatting[$name], AC_FORMAT_QUOTES)) {
+		$input = str_replace('"', '&quot;', $input);
+	}
 
-		if (query_bit($_field_formatting[$name], AC_FORMAC_ATCODES)) {
-			$input = trim(myCodes(' ' . $input . ' '));
-		}
+	if (query_bit($_field_formatting[$name], AC_FORMAT_HTML) && $runtime_html) {
+		/* what special things do we have to do if this is HTML ? remove unwanted HTML? validate? */
+	} else {
+		$input = str_replace('<', '&lt;', $input);
+		$input = nl2br($input);
+	}
 
-		if (query_bit($_field_formatting[$name], AC_FORMAC_LINKS)) {
-			$input = trim(make_clickable(' ' . $input . ' '));
-		}
-
-		if (query_bit($_field_formatting[$name], AC_FORMAC_IMAGES)) {
-			$input = trim(image_replace(' ' . $input . ' '));
-		}
-
-	
+	/* this has to be here, only because AC_FORMAT_HTML is the only check that has an else-block */
+	if ($_field_formatting[$name] === AC_FORMAT_NONE) {
 		return $input;
 	}
+
+	if (query_bit($_field_formatting[$name], AC_FORMAT_EMOTICONS)) {
+		$input = smile_replace($input);
+	}
+
+	if (query_bit($_field_formatting[$name], AC_FORMAT_ATCODES)) {
+		$input = trim(myCodes(' ' . $input . ' '));
+	}
+
+	if (query_bit($_field_formatting[$name], AC_FORMAT_LINKS)) {
+		$input = trim(make_clickable(' ' . $input . ' '));
+	}
+
+	if (query_bit($_field_formatting[$name], AC_FORMAT_IMAGES)) {
+		$input = trim(image_replace(' ' . $input . ' '));
+	}
+
+
+	return $input;
+}
 
 /********************************************************************************************/
 // Global variables for emoticons
@@ -701,7 +697,7 @@ function image_replace($text) {
 	return $text;
 }
 
-function formAC_final_output($text, $nl2br = true) {
+function format_final_output($text, $nl2br = true) {
 	global $_base_path;
 
 	$text = str_replace('CONTENT_DIR/', '', $text);
@@ -741,7 +737,7 @@ function highlight($input, $var) {//$input is the string, $var is the text to be
 
 
 /* @See: ./index.php */
-function formAC_content($input, $html = 0, $glossary, $simple = false) {
+function format_content($input, $html = 0, $glossary, $simple = false) {
 	global $_base_path, $_config_defaults;
 
 	if (!$html) {
@@ -793,11 +789,11 @@ function formAC_content($input, $html = 0, $glossary, $simple = false) {
 	}
 
 	if ($html) {
-		$x = formAC_final_output($input, false);
+		$x = format_final_output($input, false);
 		return $x;
 	}
 
-	$output = formAC_final_output($input);
+	$output = format_final_output($input);
 
 	$output = '<p>'.$output.'</p>';
 
