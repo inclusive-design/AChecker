@@ -738,7 +738,7 @@ class ChecksDAO extends DAO {
 		{
 			$missing_fields[] = _AC('html_tag');
 		}
-		if ($confidence == '' || ($confidence <> KNOWN && $confidence <> LIKELY && $confidence <> POTENTIAL))
+		if ($confidence <> KNOWN && $confidence <> LIKELY && $confidence <> POTENTIAL)
 		{
 			$missing_fields[] = _AC('error_type');
 		}
@@ -750,7 +750,7 @@ class ChecksDAO extends DAO {
 		{
 			$missing_fields[] = _AC('error');
 		}
-		if ($open_to_public == '' || ($open_to_public <> 0 && $open_to_public <> 1))
+		if ($open_to_public <> 0 && $open_to_public <> 1)
 		{
 			$missing_fields[] = _AC('open_to_public');
 		}
