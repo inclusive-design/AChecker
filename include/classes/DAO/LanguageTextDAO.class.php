@@ -158,10 +158,10 @@ class LanguageTextDAO extends DAO {
 	*/
 	function getHelpByMatchingText($text, $lang)
 	{
-		global $addslahes;
+		global $addslashes;
 		
-		$text = $addslahes(strtolower($text));
-		$lang = $addslahes($lang);
+		$text = $addslashes(strtolower($text));
+		$lang = $addslashes($lang);
 		
 		$sql	= "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE term like 'AC_HELP_%'
