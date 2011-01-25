@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2010                                            */
+/* Copyright (c) 2008 - 2011                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -54,7 +54,7 @@ $config_template = "<"."?php
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2010                                            */
+/* Copyright (c) 2008 - 2011                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
