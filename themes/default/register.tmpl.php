@@ -88,7 +88,7 @@ function encrypt_password()
 			<select name="user_group_id" id="user_group_id">
 				<option value="-1">- <?php echo _AC('select'); ?> -</option>
 				<?php foreach ($this->all_user_groups as $user_group) {?>
-				<option value="<?php echo $user_group['user_group_id']; ?>" <?php if ((isset($_POST['user_group_id']) && $_POST['user_group_id']==$user_group['user_group_id']) || (!isset($_POST['user_group_id']) && !isset($this->user_row['user_group_id']) && $user_group['user_group_id'] == $default_user_group_id) || (!isset($_POST['user_group_id']) && isset($this->user_row['user_group_id']) && $this->user_row['user_group_id'] == $user_group['user_group_id'] )) echo 'selected="selected"'; ?>><?php echo $user_group['title']; ?></option>
+				<option value="<?php echo $user_group['user_group_id']; ?>" <?php if ((isset($_POST['user_group_id']) && $_POST['user_group_id']==$user_group['user_group_id']) || (!isset($_POST['user_group_id']) && !isset($this->user_row['user_group_id']) && $user_group['user_group_id'] == $default_user_group_id) || (!isset($_POST['user_group_id']) && isset($this->user_row['user_group_id']) && $this->user_row['user_group_id'] == $user_group['user_group_id'] )) echo 'selected="selected"'; ?>><?php echo htmlspecialchars($user_group['title']); ?></option>
 				<?php } ?>
 			</select>
 			</td>

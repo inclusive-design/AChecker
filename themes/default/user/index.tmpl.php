@@ -38,7 +38,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<select name="user_group_id" id="user_group_id">
 				<option value="-1">- <?php echo _AC('select'); ?> -</option>
 				<?php foreach ($this->all_user_groups as $user_group) {?>
-				<option value="<?php echo $user_group['user_group_id']; ?>" <?php if($_GET['user_group_id']==$user_group['user_group_id']) { echo 'selected="selected"';}?>><?php echo $user_group['title']; ?></option>
+				<option value="<?php echo $user_group['user_group_id']; ?>" <?php if($_GET['user_group_id']==$user_group['user_group_id']) { echo 'selected="selected"';}?>><?php echo htmlspecialchars($user_group['title']); ?></option>
 				<?php } ?>
 			</select>
 			</td>

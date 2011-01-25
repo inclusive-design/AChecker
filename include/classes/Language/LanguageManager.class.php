@@ -215,7 +215,7 @@ class LanguageManager {
 				if ($language->getCode() == $current_language) {
 					echo ' selected="selected"';
 				}
-				echo '>'.$language->getNativeName().'</option>';
+				echo '>'.htmlspecialchars($language->getNativeName()).'</option>';
 			}
 		}
 		echo '</select>';

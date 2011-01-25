@@ -99,7 +99,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	foreach ($rows_lang as $row_lang)
 	{
 ?>
-				<option value="<?php echo $row_lang['language_code']; ?>" <?php if ($_REQUEST["lang_code"] == $row_lang['language_code'] || $row_lang['language_code'] == $_SESSION['lang']) echo 'selected="selected"'; ?>><?php echo $row_lang["english_name"]; ?></option>
+				<option value="<?php echo $row_lang['language_code']; ?>" <?php if ($_REQUEST["lang_code"] == $row_lang['language_code'] || $row_lang['language_code'] == $_SESSION['lang']) echo 'selected="selected"'; ?>><?php echo htmlspecialchars($row_lang["english_name"]); ?></option>
 <?php
 	}
 ?>
