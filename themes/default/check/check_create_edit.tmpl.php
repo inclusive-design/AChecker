@@ -411,25 +411,25 @@ function check_unsaved_info() {
 	else if (document.input_form.err.value != document.input_form.err_orig.value) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.description.value != document.input_form.description_orig.value) {
+	else if (document.input_form.description.value.replace(/\n|\r/g,'') != document.input_form.description_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.search_str.value != document.input_form.search_str_orig.value) {
+	else if (document.input_form.search_str.value.replace(/\n|\r/g,'') != document.input_form.search_str_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.long_description.value != document.input_form.long_description_orig.value) {
+	else if (document.input_form.long_description.value.replace(/\n|\r/g,'') != document.input_form.long_description_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.rationale.value != document.input_form.rationale_orig.value) {
+	else if (document.input_form.rationale.value.replace(/\n|\r/g,'') != document.input_form.rationale_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.how_to_repair.value != document.input_form.how_to_repair_orig.value) {
+	else if (document.input_form.how_to_repair.value.replace(/\n|\r/g,'') != document.input_form.how_to_repair_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.repair_example.value != document.input_form.repair_example_orig.value) {
+	else if (document.input_form.repair_example.value.replace(/\n|\r/g,'') != document.input_form.repair_example_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.note.value != document.input_form.note_orig.value) {
+	else if (document.input_form.note.value.replace(/\n|\r/g,'') != document.input_form.note_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
 	else if (document.input_form.question.value != document.input_form.question_orig.value) {
@@ -441,25 +441,25 @@ function check_unsaved_info() {
 	else if (document.input_form.decision_fail.value != document.input_form.decision_fail_orig.value) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.test_procedure.value != document.input_form.test_procedure_orig.value) {
+	else if (document.input_form.test_procedure.value.replace(/\n|\r/g,'') != document.input_form.test_procedure_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.test_expected_result.value != document.input_form.test_expected_result_orig.value) {
+	else if (document.input_form.test_expected_result.value.replace(/\n|\r/g,'') != document.input_form.test_expected_result_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.test_failed_result.value != document.input_form.test_failed_result_orig.value) {
+	else if (document.input_form.test_failed_result.value.replace(/\n|\r/g,'') != document.input_form.test_failed_result_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
 	else if (document.input_form.pass_example_desc.value != document.input_form.pass_example_desc_orig.value) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.pass_example.value != document.input_form.pass_example_orig.value) {
+	else if (document.input_form.pass_example.value.replace(/\n|\r/g,'') != document.input_form.pass_example_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
 	else if (document.input_form.fail_example_desc.value != document.input_form.fail_example_desc_orig.value) {
 		has_unsaved_info = true;
 	}
-	else if (document.input_form.fail_example.value != document.input_form.fail_example_orig.value) {
+	else if (document.input_form.fail_example.value.replace(/\n|\r/g,'') != document.input_form.fail_example_orig.value.replace(/\n|\r/g,'')) {
 		has_unsaved_info = true;
 	}
 
@@ -491,7 +491,6 @@ function getValue(Obj) {
 
 	return "";
 }
-
 //  End -->
 //-->
 </script>
