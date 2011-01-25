@@ -164,19 +164,6 @@ $starttime = $mtime;
 		</ul>
 	</div>
 
-<!--
-	<div class="topnavlistcontainer">
-		<ul class="topnavlist">
-			<?php foreach ($this->top_level_pages as $page): ?>
-				<?php if ($page['url'] == $this->current_top_level_page): ?>
-					<li><a href="<?php echo $page['url']; ?>" title="<?php echo $page['title']; ?>" class="active"><?php echo $page['title']; ?></a></li>
-				<?php else: ?>
-					<li><a href="<?php echo $page['url']; ?>"  title="<?php echo $page['title']; ?>"><?php echo $page['title']; ?></a></li>
-				<?php endif; ?>
-			<?php endforeach; ?>
-		</ul>
-	</div>
--->
 	<!-- the sub navigation and guide -->
 	<div id="sub-menu">
 		<!-- guide -->
@@ -210,19 +197,6 @@ $starttime = $mtime;
 		</div>
 	</div>
 
-<!--<div>
-	 the bread crumbs 
-	<div id="breadcrumbs">
-		<?php if (is_array($this->path)) {?>
-		<?php foreach ($this->path as $page){ ?>
-			<a href="<?php echo $page['url']; ?>"><?php echo $page['title']; ?></a> > 
-		<?php }} echo $this->page_title; ?>
-	</div>
 
-	<?php if (isset($this->guide)) {?>
-		<a href="<?php echo $this->guide; ?>" id="guide" onclick="poptastic('<?php echo $this->guide; ?>'); return false;" target="_new"><em><?php echo $this->page_title; ?></em></a>
-	<?php } ?>
-</div>
--->
 <a name="content" title="<?php echo _AC("content_start"); ?>"></a>
 <?php global $msg; $msg->printAll();?>
