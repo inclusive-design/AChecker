@@ -25,7 +25,7 @@ $onload = "initial();";
 
 if (!isset($this->check_row))
 {
-	$onload .= "disableDiv('div_pre_next_checks');";
+	$onload .= "disableDiv('div_pre_next_checks', 'check_input_form');";
 }
 
 require(AC_INCLUDE_PATH.'header.inc.php'); 
@@ -34,7 +34,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 <h2 align="center"><?php echo _AC("create_edit_check"); ?></h2>
 <form method="post" action="<?php $id_str = ''; if (isset($_GET['id'])) $id_str='?id='.$_GET['id']; echo $_SERVER['PHP_SELF'].$id_str; ?>" name="input_form">
 
-<div class="input-form">
+<div class="input-form" id="check_input_form">
 <fieldset class="group_form"><legend class="group_form"><?php echo _AC('create_edit_check'); ?></legend>
 
 <?php if (isset($this->check_row)) { // save raw information ?>
@@ -353,10 +353,10 @@ function initial()
 
 cDivs = new Array();
 
-function disableDiv(divID)
+function disableDiv(divID, parentDivID)
 {
-	d = document.getElementsByTagName("BODY")[0];
-
+	d = document.getElementById(parentDivID);
+	
 	e = document.getElementById(divID);
 
     xPos = e.offsetLeft;
