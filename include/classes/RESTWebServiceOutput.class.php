@@ -66,7 +66,7 @@ class RESTWebServiceOutput {
       <lineNum>{LINENUM}</lineNum>
       <columnNum>{COLUMNNUM}</columnNum>
       <errorMsg>&lt;a href=&quot;{BASE_HREF}checker/suggestion.php?id={CHECK_ID}&quot;
-               onclick=&quot;popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\'); return false;&quot; 
+               onclick=&quot;AChecker.popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\'); return false;&quot; 
                title=&quot;{TITLE}&quot; target=&quot;_new&quot;&gt;{ERRORMSG}&lt;/a&gt;
       </errorMsg>
       <errorSourceCode>{ERRORSOURCECODE}</errorSourceCode>

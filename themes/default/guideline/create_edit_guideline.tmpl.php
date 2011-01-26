@@ -56,7 +56,7 @@ function dispaly_check_table($checks_array, $prefix)
 			           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
 			<td><?php echo htmlspecialchars($check_row['html_tag']); ?></td>
 			<td><?php echo get_confidence_by_code($check_row['confidence']); ?></td>
-			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>'); return false;"><label for="del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>"><?php echo htmlspecialchars(_AC($check_row['name'])); ?></label></a></span></td>
+			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>" onclick="AChecker.popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $check_row["check_id"]; ?>'); return false;"><label for="del_checks_<?php echo $prefix.'_'.$check_row['check_id']; ?>"><?php echo htmlspecialchars(_AC($check_row['name'])); ?></label></a></span></td>
 			<td><?php echo $check_row['check_id']; ?></td>
 		</tr>
 <?php } // end of foreach?>
@@ -175,12 +175,12 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		<?php echo _AC('checks');?>
 		<a href="<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;gid=<?php echo $this->gid; ?>'); return false;" 
 		       title="<?php echo _AC("add_group");?>"
-		       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;gid=<?php echo $this->gid; ?>'); return false;" >
+		       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;gid=<?php echo $this->gid; ?>'); return false;" >
 		<img alt="<?php echo _AC("add_group");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add_group.gif" />
 		</a>
 		<a href="<?php echo AC_BASE_HREF; ?>check/index.php?list=guideline&amp;gid=<?php echo $this->gid; ?>'); return false;" 
 		       title="<?php echo _AC("add_checks_into_guideline");?>"
-		       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=guideline&amp;gid=<?php echo $this->gid; ?>'); return false;" >
+		       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=guideline&amp;gid=<?php echo $this->gid; ?>'); return false;" >
 		<img alt="<?php echo _AC("add_checks_into_guideline");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add.gif" />
 		</a>
 	</h2><br/>
@@ -205,17 +205,17 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<?php echo _AC($group['name']);?>
 			<a href="<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;ggid=<?php echo $group['group_id']; ?>" 
 			       title="<?php echo _AC('add_subgroup'); ?>" 
-			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;ggid=<?php echo $group['group_id']; ?>'); return false;" >
+			       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;ggid=<?php echo $group['group_id']; ?>'); return false;" >
 			<img alt="<?php echo _AC("add_subgroup");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add_group.gif" />
 			</a>
 			<a href="<?php echo AC_BASE_HREF; ?>check/index.php?list=group&amp;ggid=<?php echo $group['group_id']; ?>" 
 			       title="<?php echo _AC('add_checks_into_group'); ?>" 
-			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=group&amp;ggid=<?php echo $group['group_id']; ?>'); return false;" >
+			       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=group&amp;ggid=<?php echo $group['group_id']; ?>'); return false;" >
 			<img alt="<?php echo _AC("add_checks_into_group");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add.gif" />
 			</a>
 			<a href="<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=edit&amp;ggid=<?php echo $group['group_id']; ?>" 
 			       title="<?php echo _AC('edit_group_name'); ?>" 
-			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=edit&amp;ggid=<?php echo $group['group_id']; ?>'); return false;" >
+			       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=edit&amp;ggid=<?php echo $group['group_id']; ?>'); return false;" >
 			<img alt="<?php echo _AC("edit_group_name");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/edit.gif" />
 			</a>
 			<a href="<?php echo AC_BASE_HREF; ?>guideline/create_edit_guideline.php?id=<?php echo $gid?>" 
@@ -244,12 +244,12 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			<?php echo _AC($subgroup['name']);?>
 			<a href="<?php echo AC_BASE_HREF; ?>check/index.php?list=subgroup&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>" 
 			       title="<?php echo _AC('add_checks_into_subgroup'); ?>" 
-			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=subgroup&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>'); return false;" >
+			       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=subgroup&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>'); return false;" >
 			<img alt="<?php echo _AC("add_checks_into_subgroup");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add.gif" />
 			</a>
 			<a href="<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=edit&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>" 
 			       title="<?php echo _AC('edit_subgroup_name'); ?>" 
-			       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=edit&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>'); return false;" >
+			       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=edit&amp;gsgid=<?php echo $subgroup['subgroup_id']; ?>'); return false;" >
 			<img alt="<?php echo _AC("edit_subgroup_name");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/edit.gif" />
 			</a>
 			<a href="<?php echo AC_BASE_HREF; ?>guideline/create_edit_guideline.php?id=<?php echo $gid?>" 

@@ -578,33 +578,14 @@ table.data.static tbody tr:hover {
 
 
 /* report styles */
-#errors{
+#by_uri, #by_upload, #by_paste,
+#errors, #likely_problems, #potential_problems, #html_validation_result, #css_validation_result{
 	width:95%;
 	border:thin #cccccc solid;
 	padding:1em;
 }
-#likely_problems{
-	width:95%;
-	border:thin #cccccc solid;
-	padding:1em;
-}
-#potential_problems{
-	width:95%;
-	border:thin #cccccc solid;
-	padding:1em;
-}
-#html_validation_result{
-        white-space:nowrap;
-	width:95%;
-	border:thin #cccccc solid;
-	padding:1em;
-}
-
-#css_validation_result{
-        white-space:nowrap;
-	width:95%;
-	border:thin #cccccc solid;
-	padding:1em;
+#html_validation_result, #css_validation_result{
+	white-space:nowrap;
 }
 
 #errors_10{

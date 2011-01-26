@@ -127,11 +127,6 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 
 <script language="JavaScript">
 <!--
-
-String.prototype.trim = function() {
-	return this.replace(/^\s+|\s+$/g,"");
-}
-
 // This function validates if and only if a zip file is given
 function validate_filename() {
   // check file type

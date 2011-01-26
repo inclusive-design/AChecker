@@ -149,6 +149,17 @@ if ($_POST["validate_file"])
 		$source_array = file($_FILES['uploadfile']['tmp_name']);
 }
 
+if ($_POST["validate_paste"])
+{
+	$validate_content = $_POST["pastehtml"];
+
+	if (isset($_POST["enable_html_validation"]))
+		$htmlValidator = new HTMLValidator("fragment", $validate_content);
+
+	if (isset($_POST["show_source"]))
+		$source_array = preg_split("/(?:\r\n?|\n)/", $validate_content);
+}
+
 if ($_POST["validate_content"] && $_POST["validate_content"] <> '')
 {
 	$validate_content = $_POST["validate_content"];
@@ -168,7 +179,7 @@ if (isset($validate_content) && !Utility::hasEnoughMemory(strlen($validate_conte
 include ("checker_input_form.php");
 
 // validation and display result
-if ($_POST["validate_uri"] || $_POST["validate_file"] || $_POST["validate_content"])
+if ($_POST["validate_uri"] || $_POST["validate_file"] || $_POST["validate_content"] || $_POST["validate_paste"])
 {
 	// check accessibility
 	include(AC_INCLUDE_PATH. "classes/AccessibilityValidator.class.php");

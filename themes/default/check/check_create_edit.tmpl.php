@@ -71,7 +71,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="html_tag"><?php echo _AC('html_tag'); ?></label>:</th>
 			<td align="left">
 				<input name="html_tag" id="html_tag" value="<?php if (isset($_POST['html_tag'])) echo htmlspecialchars($_POST['html_tag']); else echo htmlspecialchars($this->check_row['html_tag']); ?>" />
-				<a href="<?php echo AC_BASE_HREF; ?>check/html_tag_list.php" onclick="popup('<?php echo AC_BASE_HREF; ?>check/html_tag_list.php'); return false;" title="<?php echo _AC('select_from_tag_list'); ?>"><?php echo _AC('select_from_tag_list'); ?></a>
+				<a href="<?php echo AC_BASE_HREF; ?>check/html_tag_list.php" onclick="AChecker.popup('<?php echo AC_BASE_HREF; ?>check/html_tag_list.php'); return false;" title="<?php echo _AC('select_from_tag_list'); ?>"><?php echo _AC('select_from_tag_list'); ?></a>
 			</td>
 		</tr>
 
@@ -241,7 +241,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<h2>
 		<?php echo _AC('pre_checks');?>
 		<input type="button" name="add_pre_checks" value="<?php echo _AC('add_pre_checks'); ?>" 
-		       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&amp;cid=<?php echo $_GET['id']; ?>'); return false;" />
+		       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=pre&amp;cid=<?php echo $_GET['id']; ?>'); return false;" />
 	</h2><br/>
 	<table class="data" summary="" rules="rows" >
 		<thead>
@@ -272,7 +272,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			           <?php if (is_array($_POST['del_pre_checks_id']) && in_array($pre_row['check_id'], $_POST['del_pre_checks_id'])) echo 'checked="checked"';?> /></td>
 			<td><?php echo $pre_row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($pre_row['confidence']); ?></td>
-			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>'); return false;"><?php echo _AC($pre_row['name']); ?></a></span></td>
+			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>" onclick="AChecker.popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $pre_row["check_id"]; ?>'); return false;"><?php echo _AC($pre_row['name']); ?></a></span></td>
 			<td><?php echo $next_row['check_id']; ?></td>
 		</tr>
 	<?php } // end of foreach?>
@@ -288,7 +288,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<h2>
 		<?php echo _AC('next_checks');?>
 		<input type="button" name="add_next_checks" value="<?php echo _AC('add_next_checks'); ?>" 
-		       onclick="check_unsaved_info(); popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=next&amp;cid=<?php echo $_GET['id']; ?>'); return false;" />
+		       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=next&amp;cid=<?php echo $_GET['id']; ?>'); return false;" />
 	</h2><br/>
 	<table class="data" summary="" rules="rows" >
 		<thead>
@@ -319,7 +319,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 			           <?php if (is_array($_POST['del_next_checks_id']) && in_array($next_row['check_id'], $_POST['del_next_checks_id'])) echo 'checked="checked"';?> /></td>
 			<td><?php echo $next_row['html_tag']; ?></td>
 			<td><?php echo get_confidence_by_code($next_row['confidence']); ?></td>
-			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $next_row["check_id"]; ?>" onclick="popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $next_row["check_id"]; ?>'); return false;"><?php echo _AC($next_row['name']); ?></a></span></td>
+			<td><span class="msg"><a target="_new" href="<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $next_row["check_id"]; ?>" onclick="AChecker.popup('<?php echo AC_BASE_HREF; ?>checker/suggestion.php?id=<?php echo $next_row["check_id"]; ?>'); return false;"><?php echo _AC($next_row['name']); ?></a></span></td>
 			<td><?php echo $next_row['check_id']; ?></td>
 		</tr>
 	<?php } // end of foreach?>

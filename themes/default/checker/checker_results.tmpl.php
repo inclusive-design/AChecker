@@ -91,11 +91,11 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 
 	<div class="topnavlistcontainer"><br />
 		<ul class="navigation">
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="showDiv('errors');return false;"><span><?php echo _AC("known_problems"); ?>(<?php echo $this->num_of_errors; ?>)</span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="showDiv('likely_problems');return false;"><span><?php echo _AC("likely_problems"); ?> (<?php echo $this->num_of_likely_problems_no_decision; ?>)</span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="showDiv('potential_problems');return false;"><span><?php echo _AC("potential_problems"); ?> (<?php echo $this->num_of_potential_problems_no_decision; ?>)</span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="showDiv('html_validation_result');return false;"><span><?php echo _AC("html_validation_result"); ?> <?php if (isset($_POST["enable_html_validation"])) echo "(".$this->num_of_html_errors.")"; ?></span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="5" title="<?php echo _AC("css_validation_result"); ?> Alt+5" id="menu_css_validation_result" onclick="showDiv('css_validation_result');return false;"><span><?php echo _AC("css_validation_result"); ?> <?php if (isset($_POST["enable_css_validation"])) echo "(".$this->num_of_css_errors.")"; ?></span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="AChecker.output.onClickTab('errors');"><span><?php echo _AC("known_problems"); ?>(<?php echo $this->num_of_errors; ?>)</span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="AChecker.output.onClickTab('likely_problems');"><span><?php echo _AC("likely_problems"); ?> (<?php echo $this->num_of_likely_problems_no_decision; ?>)</span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="AChecker.output.onClickTab('potential_problems');"><span><?php echo _AC("potential_problems"); ?> (<?php echo $this->num_of_potential_problems_no_decision; ?>)</span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="AChecker.output.onClickTab('html_validation_result');"><span><?php echo _AC("html_validation_result"); ?> <?php if (isset($_POST["enable_html_validation"])) echo "(".$this->num_of_html_errors.")"; ?></span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="5" title="<?php echo _AC("css_validation_result"); ?> Alt+5" id="menu_css_validation_result" onclick="AChecker.output.onClickTab('css_validation_result');"><span><?php echo _AC("css_validation_result"); ?> <?php if (isset($_POST["enable_css_validation"])) echo "(".$this->num_of_css_errors.")"; ?></span></a></li>
 		</ul>
 	</div>
 
@@ -113,7 +113,7 @@ if (isset($this->aValidator))
 ?>
 	</div>
 
-	<div id="likely_problems">
+	<div id="likely_problems" style="display:none;">
 <?php
 
 if (isset($this->aValidator))
@@ -127,7 +127,7 @@ if (isset($this->aValidator))
 ?>
 	</div>
 
-	<div id="potential_problems" style="margin-top:1em">
+	<div id="potential_problems" style="margin-top:1em; display:none;">
 <?php
 
 if (isset($this->aValidator))
@@ -141,7 +141,7 @@ if (isset($this->aValidator))
 ?>
 	</div>
 
-	<div id="html_validation_result" style="margin-top:1em">
+	<div id="html_validation_result" style="margin-top:1em; display:none;">
 <?php
 if (isset($this->htmlValidator))
 {
@@ -162,7 +162,7 @@ else
 ?>
 	</div>
 	
-		<div id="css_validation_result" style="margin-top:1em">
+		<div id="css_validation_result" style="margin-top:1em; display:none;">
 <?php
 if (isset($this->cssValidator))
 {
@@ -208,44 +208,23 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 <?php }?>
 </div><br />
 <script language="JavaScript" type="text/javascript">
-<!--
+(function() {
+	/**
+	 * Show the div with id == the given divId while hide all other divs in the array allDivIds
+	 * @param divId: the id of the div to show
+	 *        allDivIds: The array of div Ids that are in the same group of divId. divId must be in this array. 
+	 */
+	AChecker.output.onClickTab = function (divId) {
+		window.location.hash = 'output_div';
+		AChecker.showDivOutof(divId, AChecker.output.outputDivIds);
 
-// show and highlight the given div, hide other output divs. 
-function showDiv(divName)
-{
-	window.location.hash = 'output_div';
-	// all ids of dives to hide/show
-	var allDivIDs = new Array("errors", "likely_problems", "potential_problems", "html_validation_result","css_validation_result");
-	var i;
-	
-	for (i in allDivIDs)
-	{
-		if (allDivIDs[i] == divName)
-		{
-			document.getElementById(allDivIDs[i]).style.display = 'block';
-			eval('document.getElementById("menu_'+ allDivIDs[i] +'").className = "active"');
+		if (divId == "errors" || divId == "html_validation_result" || divId == "css_validation_result") {
+			AChecker.hideByID(AChecker.output.makeDecisionButtonId);
+		} else {
+			AChecker.showByID(AChecker.output.makeDecisionButtonId);
 		}
-		else
-		{
-			document.getElementById(allDivIDs[i]).style.display = 'none';
-			eval('document.getElementById("menu_'+ allDivIDs[i] +'").className = ""');
-		}
-	}
-
-	// hide button "make decision" when "known problems" tab is selected
-	eButtonMakeDecision = document.getElementById('make_decision');
-
-	if (eButtonMakeDecision != null)
-	{
-		if (divName == "errors" || divName == "html_validation_result" || divName == "css_validation_result")
-		{
-			eButtonMakeDecision.style.display = 'none';
-		}
-		else	
-		{
-			eButtonMakeDecision.style.display = 'block';
-		}
-	}
-}
-//-->
+		
+		return false;
+	};
+})();
 </script>

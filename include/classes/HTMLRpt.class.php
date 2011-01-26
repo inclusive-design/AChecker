@@ -38,7 +38,7 @@ class HTMLRpt extends AccessibilityRpt {
          <em>{LINE_TEXT} {LINE_NUMBER}, {COL_TEXT} {COL_NUMBER}</em>:
          <span class="msg">
             <a href="{BASE_HREF}checker/suggestion.php?id={CHECK_ID}"
-               onclick="popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\'); return false;" 
+               onclick="AChecker.popup(\'{BASE_HREF}checker/suggestion.php?id={CHECK_ID}\'); return false;" 
                target="_new">{ERROR}</a>
          </span>
          <pre><code class="input">{HTML_CODE}</code></pre>

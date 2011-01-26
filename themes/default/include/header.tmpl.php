@@ -79,41 +79,9 @@ $starttime = $mtime;
 	<!--[if IE]>
 	  <link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/ie_styles.css" type="text/css" />
 	<![endif]-->
+	<script src="<?php echo $this->base_path; ?>jscripts/AChecker.js" type="text/javascript"></script>   
 	<?php echo $this->rtl_css; ?>
 	<?php echo $this->custom_head; ?>
-
-	<script type="text/javascript">
-	//<!--
-	var newwindow;
-	function popup(url) 
-	{
-		newwindow=window.open(url,'popup','height=600,width=800,scrollbars=yes,resizable=yes');
-		if (window.focus) {newwindow.focus()}
-	}
-	
-	function toggleToc(objId) {
-		var toc = document.getElementById(objId);
-		if (toc == null) return;
-
-		if (toc.style.display == 'none')
-		{
-			toc.style.display = '';
-			document.getElementById("toggle_image").src = "images/arrow-open.png";
-			document.getElementById("toggle_image").alt = "Collapse";
-			document.getElementById("toggle_image").title = "Collapse";
-		}
-		else
-		{
-			toc.style.display = 'none';
-			document.getElementById("toggle_image").src = "images/arrow-closed.png";
-			document.getElementById("toggle_image").alt = "Expand";
-			document.getElementById("toggle_image").title = "Expand";
-		}
-	}
-
-	//-->
-	</script>
-
 </head>
 
 <body onload="<?php echo $this->onload; ?>">
@@ -169,7 +137,7 @@ $starttime = $mtime;
 		<!-- guide -->
 		<?php if (isset($this->guide)) {?>
 		<div>
-			<a href="<?php echo $this->guide; ?>" onclick="popup('<?php echo $this->guide; ?>'); return false;" id="guide" target="_new" title="<?php echo _AC('achecker_handbook').': '.$this->page_title; ?>"><em><?php echo $this->page_title; ?></em></a>
+			<a href="<?php echo $this->guide; ?>" onclick="AChecker.popup('<?php echo $this->guide; ?>'); return false;" id="guide" target="_new" title="<?php echo _AC('achecker_handbook').': '.$this->page_title; ?>"><em><?php echo $this->page_title; ?></em></a>
 		</div>
 		<?php }?>
 
