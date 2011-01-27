@@ -11,8 +11,18 @@
 /************************************************************************/
 // $Id$
 
-global $onload;
-$onload="AChecker.initialize()";
+global $onload, $_custom_head;
+
+if (isset($_POST["validate_file"])){
+	$init_tab = "by_upload";
+} else if (isset($_POST["validate_paste"])){
+	$init_tab = "by_paste";
+} else {
+	$init_tab = "by_uri";
+}
+
+$onload="AChecker.input.initialize('".$init_tab."');";
+$_custom_head .= '<script src="'.AC_BASE_HREF.'checker/js/checker.js" type="text/javascript"></script>';
 
 include(AC_INCLUDE_PATH.'header.inc.php');
 
@@ -29,39 +39,54 @@ if (isset($this->error)) echo $this->error;
 
 		<div class="topnavlistcontainer"><br />
 			<ul class="navigation">
-				<li class="navigation"><a href="#" accesskey="a" title="<?php echo _AC("check_by_uri"); ?> Alt+1" id="menu_by_uri" onclick="return AChecker.input.onClickTab('by_uri');"><span><?php echo _AC("check_by_uri"); ?></span></a></li>
-				<li class="navigation"><a href="#" accesskey="b" title="<?php echo _AC("check_by_upload"); ?> Alt+2" id="menu_by_upload" onclick="return AChecker.input.onClickTab('by_upload');"><span><?php echo _AC("check_by_upload"); ?></span></a></li>
-				<li class="navigation"><a href="#" accesskey="c" title="<?php echo _AC("check_by_paste"); ?> Alt+3" id="menu_by_paste" onclick="return AChecker.input.onClickTab('by_paste');"><span><?php echo _AC("check_by_paste"); ?></span></a></li>
+				<li class="navigation"><a href="#" accesskey="a" title="<?php echo _AC("check_by_uri"); ?> Alt+1" id="menu_by_uri" onclick="return AChecker.input.onClickTab('by_uri');" <?php if (!isset($_POST["validate_paste"]) && !isset($_POST["validate_file"])) echo 'class="active"'; ?>><span><?php echo _AC("check_by_uri"); ?></span></a></li>
+				<li class="navigation"><a href="#" accesskey="b" title="<?php echo _AC("check_by_upload"); ?> Alt+2" id="menu_by_upload" onclick="return AChecker.input.onClickTab('by_upload');" <?php if (isset($_POST["validate_file"])) echo 'class="active"'; ?>><span><?php echo _AC("check_by_upload"); ?></span></a></li>
+				<li class="navigation"><a href="#" accesskey="c" title="<?php echo _AC("check_by_paste"); ?> Alt+3" id="menu_by_paste" onclick="return AChecker.input.onClickTab('by_paste');" <?php if (isset($_POST["validate_paste"])) echo 'class="active"'; ?>)><span><?php echo _AC("check_by_paste"); ?></span></a></li>
 			</ul>
 		</div>
 		
-		<div id="by_uri" style="display:none;">
+		<div id="by_uri" style="<?php if (!isset($_POST["validate_file"]) && !isset($_POST["validate_paste"])) echo "display:block"; else echo "display:none"; ?>">
 			<div style="text-align:center;">
-			<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $this->default_uri_value; ?>" size="50"   />
-			<p class="submit_button"  style="text-align:center;">
-				<input type="submit" name="validate_uri" size="100" value="<?php echo _AC("check_it"); ?>" onclick="return AChecker.input.validateURI();" class="submit"/>
-			</p>
+				<label for="checkuri"><?php echo _AC('URL'); ?>:</label>
+				<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $this->default_uri_value; ?>" size="50"   />
+				<div class="validation_submit_div">
+					<div class="spinner_div">
+						<img class="spinner_img" id="spinner_by_uri" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
+						&nbsp;
+					</div>
+					<input class="validation_button" type="submit" name="validate_uri" id="validate_uri" size="100" value="<?php echo _AC("check_it"); ?>" onclick="return AChecker.input.validateURI();" class="submit"/>
+				</div>
 			</div>
 		</div>
 		
-		<div id="by_upload" style="display:none">
-			<div  style="text-align:center;">
-			<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
-			<input type="file" id="checkfile" name="uploadfile" size="47" />
-		
-			<p class="submit_button">
-				<input type="submit" name="validate_file" value="<?php echo _AC("check_it"); ?>" onclick="return AChecker.input.validateUpload();" class="submit" />
-			</p>
+		<div id="by_upload" style="<?php if (isset($_POST["validate_file"])) echo "display:block"; else echo "display:none"; ?>">
+			<div style="text-align:center;">
+				<label for="checkfile"><?php echo _AC('file'); ?>:</label>
+				<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
+				<input type="file" id="checkfile" name="uploadfile" size="47" />
+			
+				<div class="validation_submit_div">
+					<div class="spinner_div">
+						<img class="spinner_img" id="spinner_by_file" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
+						&nbsp;
+					</div>
+					<input class="validation_button" type="submit" name="validate_file" id="validate_file" value="<?php echo _AC("check_it"); ?>" onclick="return AChecker.input.validateUpload();" class="submit" />
+				</div>
 			</div>
 		</div>
 		
-		<div id="by_paste" style="display:none">
-			<div  style="text-align:center;">
-			<textarea rows="20" cols="75" name="pastehtml" id="checkpaste"><?php if (isset($_POST['pastehtml'])) echo htmlspecialchars($_POST['pastehtml']); ?></textarea>
+		<div id="by_paste" style="<?php if (isset($_POST["validate_paste"])) echo "display:block"; else echo "display:none"; ?>">
+			<label for="checkpaste"><?php echo _AC('enter'); ?>:</label>
+			<div style="text-align:center;">
+				<textarea rows="20" cols="75" name="pastehtml" id="checkpaste"><?php if (isset($_POST['pastehtml'])) echo htmlspecialchars($_POST['pastehtml']); ?></textarea>
 		
-			<p class="submit_button">
-				<input type="submit" name="validate_paste" value="<?php echo _AC("check_it"); ?>" onclick="return AChecker.input.validatePaste();" class="submit" />
-			</p>
+				<div class="validation_submit_div">
+					<div class="spinner_div">
+						<img class="spinner_img" id="spinner_by_paste" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
+						&nbsp;
+					</div>
+				<input class="validation_button" type="submit" name="validate_paste" id="validate_paste" value="<?php echo _AC("check_it"); ?>" onclick="return AChecker.input.validatePaste();" class="submit" />
+				</div>
 			</div>
 		</div>
 		
@@ -147,85 +172,3 @@ if (is_array($this->rows))
 </td>
 </tr>
 </table>
-
-<script language="JavaScript" type="text/javascript">
-(function() {
-	AChecker.initialize = function () {
-		// initialize input form
-		<?php if (isset($_POST["validate_file"])) {?>
-		AChecker.showDivOutof("by_upload", AChecker.input.inputDivIds);
-		<?php } else if (isset($_POST["validate_paste"])) { ?>
-		AChecker.showDivOutof("by_paste", AChecker.input.inputDivIds);
-		<?php } else {?>
-		AChecker.showDivOutof("by_uri", AChecker.input.inputDivIds);
-		<?php }?>
-		
-		// initialize output form
-		var div_errors = document.getElementById("errors");
-
-		if (div_errors != null)
-		{
-			// show tab "errors", hide other tabs
-			AChecker.showDivOutof("errors", AChecker.output.outputDivIds);			
-
-			// hide button "make decision" as tab "errors" are selected
-			AChecker.hideByID(AChecker.output.makeDecisionButtonId);
-		} else { //if (div_errors == null) {
-			document.input_form.uri.focus();
-		}
-	};
-	
-	/**
-	 * Show the div with id == the given divId while hide all other divs in the array allDivIds
-	 * @param divId: the id of the div to show
-	 *        allDivIds: The array of div Ids that are in the same group of divId. divId must be in this array. 
-	 */
-	AChecker.input.onClickTab = function (divId) {
-		AChecker.showDivOutof(divId, AChecker.input.inputDivIds);
-		return false;
-	};
-
-	/**
-	 * Validates if a uri is provided
-	 */
-	AChecker.input.validateURI = function () {
-		// check uri
-		var uri = document.input_form.uri.value;
-		if (!uri || uri=="<?php echo $default_uri_value; ?>" ) {
-			alert('Please provide a uri!');
-			return false;
-		}
-	};
-		
-	/**
-	 * Validates if a html file is provided
-	 */
-	AChecker.input.validateUpload = function () {
-		// check file type
-		var upload_file = document.input_form.uploadfile.value;
-		if (!upload_file || upload_file.trim()=='') {
-			alert('Please provide a html file!');
-			return false;
-		}
-		
-		file_extension = upload_file.slice(upload_file.lastIndexOf(".")).toLowerCase();
-		if(file_extension != '.html' && file_extension != '.htm') {
-			alert('Please upload html (or htm) file only!');
-			return false;
-		}
-	};
-
-	/**
-	 * Validates if a html file is provided
-	 */
-	AChecker.input.validatePaste = function () {
-		// check file type
-		var paste_html = document.input_form.pastehtml.value;
-		if (!paste_html || paste_html.trim()=='') {
-			alert('Please provide a html input!');
-			return false;
-		}
-	};
-
-})();
-</script>

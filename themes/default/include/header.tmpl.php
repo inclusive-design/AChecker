@@ -90,7 +90,7 @@ $starttime = $mtime;
 <a href="checker/index.php#output_div"><img src="images/clr.gif" height="1" width="1" alt="<?php echo _AC("jump_to_report"); ?>" border="0" /></a>
 <?php } ?>
 <div id="liquid-round"><div class="top"><span></span></div>
-<div class="center-content">
+<div class="center-content" id="center-content">
 		<div id="logo">
 			<a href="http://www.atutor.ca/achecker/"><img src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/checker_logo.png"  alt="AChecker" style="border:none;" /></a>
 		</div>

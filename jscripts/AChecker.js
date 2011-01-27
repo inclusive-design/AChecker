@@ -11,18 +11,8 @@
 // $Id: checker_results.tmpl.php 460 2011-01-25 18:26:41Z cindy $
 
 var AChecker = AChecker || {};
-AChecker.utility = AChecker.utility || {};
-AChecker.input = AChecker.input || {};
-AChecker.output = AChecker.output || {};
 
 (function() {
-	// global vars on the input form of the validation index page
-	AChecker.input.inputDivIds = new Array("by_uri", "by_upload", "by_paste");
-
-	// global vars on the output form of the validation index page
-	AChecker.output.outputDivIds = new Array("errors", "likely_problems", "potential_problems", "html_validation_result","css_validation_result");
-	AChecker.output.makeDecisionButtonId = "make_decision";
-
 	/**
 	 * global string function of trim()
 	 */
@@ -107,5 +97,27 @@ AChecker.output = AChecker.output || {};
 				eval('document.getElementById("menu_'+ allDivIds[i] +'").className = ""');
 			}
 		}
+	};
+	
+	AChecker.disableDiv = function (divID, parentDivID) {
+		var cDivs = new Array();
+		
+		d = document.getElementById(parentDivID); // parent div to expand the disabled div
+		e = document.getElementById(divID);  // the dynamically generated disabled div
+
+	    xPos = e.offsetLeft;
+	    yPos = e.offsetTop;
+	    oWidth = e.offsetWidth;    
+	    oHeight = e.offsetHeight;
+	    cDivs[cDivs.length] = document.createElement("DIV");
+	    cDivs[cDivs.length-1].style.width = oWidth+"px";
+	    cDivs[cDivs.length-1].style.height = oHeight+"px";
+	    cDivs[cDivs.length-1].style.position = "absolute";
+	    cDivs[cDivs.length-1].style.left = xPos+"px";
+	    cDivs[cDivs.length-1].style.top = yPos+"px";
+	    cDivs[cDivs.length-1].style.backgroundColor = "#999999";
+	    cDivs[cDivs.length-1].style.opacity = .6;
+	    cDivs[cDivs.length-1].style.filter = "alpha(opacity=60)";
+	    d.appendChild(cDivs[cDivs.length-1]);
 	};
 })();

@@ -25,7 +25,7 @@ $onload = "initial();";
 
 if (!isset($this->check_row))
 {
-	$onload .= "disableDiv('div_pre_next_checks', 'check_input_form');";
+	$onload .= "AChecker.disableDiv('div_pre_next_checks', 'check_input_form');";
 }
 
 require(AC_INCLUDE_PATH.'header.inc.php'); 
@@ -349,30 +349,6 @@ function initial()
 {
 	// set cursor focus
 	document.input_form.html_tag.focus();
-}
-
-cDivs = new Array();
-
-function disableDiv(divID, parentDivID)
-{
-	d = document.getElementById(parentDivID);
-	
-	e = document.getElementById(divID);
-
-    xPos = e.offsetLeft;
-    yPos = e.offsetTop;
-    oWidth = e.offsetWidth;    
-    oHeight = e.offsetHeight;
-    cDivs[cDivs.length] = document.createElement("DIV");
-    cDivs[cDivs.length-1].style.width = oWidth+"px";
-    cDivs[cDivs.length-1].style.height = oHeight+"px";
-    cDivs[cDivs.length-1].style.position = "absolute";
-    cDivs[cDivs.length-1].style.left = xPos+"px";
-    cDivs[cDivs.length-1].style.top = yPos+"px";
-    cDivs[cDivs.length-1].style.backgroundColor = "#999999";
-    cDivs[cDivs.length-1].style.opacity = .6;
-    cDivs[cDivs.length-1].style.filter = "alpha(opacity=60)";
-    d.appendChild(cDivs[cDivs.length-1]);
 }
 
 function CheckAll(element_name, selectall_checkbox_name) {

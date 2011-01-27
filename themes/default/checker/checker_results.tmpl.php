@@ -207,24 +207,3 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 </div>
 <?php }?>
 </div><br />
-<script language="JavaScript" type="text/javascript">
-(function() {
-	/**
-	 * Show the div with id == the given divId while hide all other divs in the array allDivIds
-	 * @param divId: the id of the div to show
-	 *        allDivIds: The array of div Ids that are in the same group of divId. divId must be in this array. 
-	 */
-	AChecker.output.onClickTab = function (divId) {
-		window.location.hash = 'output_div';
-		AChecker.showDivOutof(divId, AChecker.output.outputDivIds);
-
-		if (divId == "errors" || divId == "html_validation_result" || divId == "css_validation_result") {
-			AChecker.hideByID(AChecker.output.makeDecisionButtonId);
-		} else {
-			AChecker.showByID(AChecker.output.makeDecisionButtonId);
-		}
-		
-		return false;
-	};
-})();
-</script>
