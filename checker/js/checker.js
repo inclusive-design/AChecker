@@ -8,7 +8,7 @@
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: checker_results.tmpl.php 460 2011-01-25 18:26:41Z cindy $
+// $Id: checker_input_form.tmpl.php 463 2011-01-27 20:39:26Z cindy $
 
 var AChecker = AChecker || {};
 AChecker.utility = AChecker.utility || {};
@@ -58,16 +58,6 @@ AChecker.output = AChecker.output || {};
 		return false;
 	};
 
-	var disableClickablesAndShowSpinner = function (spinnerID) {
-		IDsToDisable = AChecker.input.inputDivIds.concat(AChecker.input.inputButtonIds);
-		
-		for (var i in AChecker.input.inputButtonIds) {
-			e = document.getElementById(IDsToDisable[i]);
-			e.disabled = "disabled";
-		}
-		AChecker.showByID(spinnerID);
-	};
-	
 	/**
 	 * Validates if a uri is provided
 	 */
@@ -78,7 +68,7 @@ AChecker.output = AChecker.output || {};
 			alert('Please provide a uri!');
 			return false;
 		}
-		disableClickablesAndShowSpinner("spinner_by_uri");
+		AChecker.disableDiv("center-content", "liquid-round");
 	};
 		
 	/**
@@ -97,7 +87,7 @@ AChecker.output = AChecker.output || {};
 			alert('Please upload html (or htm) file only!');
 			return false;
 		}
-		disableClickablesAndShowSpinner("spinner_by_file");
+		AChecker.disableDiv("center-content", "liquid-round");
 	};
 
 	/**
@@ -110,7 +100,7 @@ AChecker.output = AChecker.output || {};
 			alert('Please provide a html input!');
 			return false;
 		}
-		disableClickablesAndShowSpinner("spinner_by_paste");
+		AChecker.disableDiv("center-content", "liquid-round");
 	};
 
 	/**

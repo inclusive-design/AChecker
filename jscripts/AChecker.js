@@ -8,7 +8,7 @@
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: checker_results.tmpl.php 460 2011-01-25 18:26:41Z cindy $
+// $Id: checker_input_form.tmpl.php 463 2011-01-27 20:39:26Z cindy $
 
 var AChecker = AChecker || {};
 
@@ -99,6 +99,14 @@ var AChecker = AChecker || {};
 		}
 	};
 	
+	/**
+	 * Covers the DIV (divID) with a dynamically-generated disabled look-and-feel div.
+	 * The disabled div has the same size of divID (the 1st parameter) and is appended
+	 * onto the parentDivID (the 2nd parameter).
+	 * and append it to the pa 
+	 * @param divID: the div to cover
+	 * @param parentDivID: the parent div of divID (1st parameter)
+	 */
 	AChecker.disableDiv = function (divID, parentDivID) {
 		var cDivs = new Array();
 		
