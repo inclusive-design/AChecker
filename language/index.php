@@ -34,7 +34,7 @@ else if ($_POST['delete'])
 
 	if ($lang_code == DEFAULT_LANGUAGE_CODE)
 	{
-		$msg->addError(array('CANNOT_DEL_DEFAULT_LANG', DEFAULT_LANGUAGE_CODE));
+		$msg->addConfirm(array('DEL_DEFAULT_LANG', DEFAULT_LANGUAGE_CODE));
 	}
 	
 	if (!$msg->containsErrors())
