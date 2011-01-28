@@ -69,6 +69,7 @@ AChecker.output = AChecker.output || {};
 			return false;
 		}
 		AChecker.disableDiv("center-content", "liquid-round");
+		AChecker.showByID("spinner_by_uri");
 	};
 		
 	/**
@@ -88,6 +89,7 @@ AChecker.output = AChecker.output || {};
 			return false;
 		}
 		AChecker.disableDiv("center-content", "liquid-round");
+		AChecker.showByID("spinner_by_file");
 	};
 
 	/**
@@ -101,6 +103,7 @@ AChecker.output = AChecker.output || {};
 			return false;
 		}
 		AChecker.disableDiv("center-content", "liquid-round");
+		AChecker.showByID("spinner_by_paste");
 	};
 
 	/**

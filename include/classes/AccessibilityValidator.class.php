@@ -74,6 +74,8 @@ class AccessibilityValidator {
 	{
 		// dom of the content to be validated
 		$this->content_dom = $this->get_simple_html_dom($this->validate_content);
+		
+		if (!$this->content_dom) return; // incomplete html
 
 		// prepare gobal vars used in BasicFunctions.class.php to fasten the validation
 		$this->prepare_global_vars();
@@ -134,14 +136,17 @@ class AccessibilityValidator {
 	 */
 	private function get_simple_html_dom($content)
 	{
+		global $msg;
+		
 		$dom = str_get_dom($content);
 		
 		if (count($dom->find('html')) == 0)
 		{
-			$dom = str_get_dom("<html>".$content."</html>");
+			$msg->addError("INCOMPLETE_HTML");
+			return false;
+		} else {
+			return $dom;
 		}
-			
-		return $dom;
 	}
 	
 	/**

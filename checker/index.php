@@ -175,9 +175,6 @@ if (isset($validate_content) && !Utility::hasEnoughMemory(strlen($validate_conte
 	$has_enough_memory = false;
 }
 
-// display initial validation form: input URI or upload a html file 
-include ("checker_input_form.php");
-
 // validation and display result
 if ($_POST["validate_uri"] || $_POST["validate_file"] || $_POST["validate_content"] || $_POST["validate_paste"])
 {
@@ -192,16 +189,23 @@ if ($_POST["validate_uri"] || $_POST["validate_file"] || $_POST["validate_conten
 		$aValidator->validate();
 	}
 	// end of checking accessibility
+}
+else
+{
+	$show_achecker_whatis = true;
+}
 
-	// display validation results
-	if (isset($aValidator) || isset($htmlValidator))
-	{
-		include ("checker_results.php");
-	}
-	else
-	{
-		$show_achecker_whatis = true;
-	}
+if ($msg->containsErrors()) {
+	$has_errors = true;
+}
+
+// display initial validation form: input URI or upload a html file 
+include ("checker_input_form.php");
+
+// display validation results
+if (!$has_errors && (isset($aValidator) || isset($htmlValidator)))
+{
+	include ("checker_results.php");
 }
 else
 {
