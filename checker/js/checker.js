@@ -8,7 +8,7 @@
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: checker_input_form.tmpl.php 463 2011-01-27 20:39:26Z cindy $
+// $Id: checker_results.tmpl.php 460 2011-01-25 18:26:41Z cindy $
 
 var AChecker = AChecker || {};
 AChecker.utility = AChecker.utility || {};
@@ -44,7 +44,7 @@ AChecker.output = AChecker.output || {};
 			// hide button "make decision" as tab "errors" are selected
 			AChecker.hideByID(AChecker.output.makeDecisionButtonId);
 		} else { //if (div_errors == null) {
-			document.input_form.uri.focus();
+			document.getElementById("checkuri").focus();
 		}
 	};
 	
@@ -58,18 +58,29 @@ AChecker.output = AChecker.output || {};
 		return false;
 	};
 
+	var disableClickablesAndShowSpinner = function (spinnerID) {
+		var menuIds = new Array("menu_by_uri", "menu_by_upload", "menu_by_paste");
+		// disable the tabs on the input form
+		for (var i in menuIds) {
+			e = document.getElementById(menuIds[i]);
+			e.onclick = function () {return false;};
+		}
+		
+		AChecker.showByID(spinnerID);
+		document.getElementById(spinnerID).focus();
+	};
+	
 	/**
 	 * Validates if a uri is provided
 	 */
 	AChecker.input.validateURI = function () {
 		// check uri
-		var uri = document.input_form.uri.value;
+		var uri = document.getElementById("checkuri").value;
 		if (!uri || uri=="<?php echo $default_uri_value; ?>" ) {
 			alert('Please provide a uri!');
 			return false;
 		}
-		AChecker.disableDiv("center-content", "liquid-round");
-		AChecker.showByID("spinner_by_uri");
+		disableClickablesAndShowSpinner("spinner_by_uri");
 	};
 		
 	/**
@@ -77,7 +88,7 @@ AChecker.output = AChecker.output || {};
 	 */
 	AChecker.input.validateUpload = function () {
 		// check file type
-		var upload_file = document.input_form.uploadfile.value;
+		var upload_file = document.getElementById("checkfile").value;
 		if (!upload_file || upload_file.trim()=='') {
 			alert('Please provide a html file!');
 			return false;
@@ -88,8 +99,7 @@ AChecker.output = AChecker.output || {};
 			alert('Please upload html (or htm) file only!');
 			return false;
 		}
-		AChecker.disableDiv("center-content", "liquid-round");
-		AChecker.showByID("spinner_by_file");
+		disableClickablesAndShowSpinner("spinner_by_file");
 	};
 
 	/**
@@ -97,13 +107,12 @@ AChecker.output = AChecker.output || {};
 	 */
 	AChecker.input.validatePaste = function () {
 		// check file type
-		var paste_html = document.input_form.pastehtml.value;
+		var paste_html = document.getElementById("checkpaste").value;
 		if (!paste_html || paste_html.trim()=='') {
 			alert('Please provide a html input!');
 			return false;
 		}
-		AChecker.disableDiv("center-content", "liquid-round");
-		AChecker.showByID("spinner_by_paste");
+		disableClickablesAndShowSpinner("spinner_by_paste");
 	};
 
 	/**

@@ -133,11 +133,7 @@ a:link, a:visited  {
     color: #1A4A72;
 }
 a:hover {
-    color: #932318;
-color:#ffffff;
-}
-a:active {
-    color: #932318;
+    color:#ffffff;
 }
 /* align text to the left */
 .left {
@@ -293,11 +289,8 @@ table.tabbed-table a, table.tabbed-table a:visited, table.tabbed-table a:hover {
 #banner a:visited {
     color: #365D95;
 }
-#banner a:hover {
-    color: white; background-color: #365D95
-}
-#banner a:active {
-    color: white; background-color: #365D95
+#banner a:hover, #banner a:active {
+    color: white; background-color: #365D95;
 }
 #banner #logininfo {
     font-size: 8pt; 
