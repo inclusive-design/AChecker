@@ -32,14 +32,14 @@ else if ($_POST['delete'])
 {
 	global $msg;
 
-	if ($lang_code == DEFAULT_LANGUAGE_CODE)
-	{
-		$msg->addConfirm(array('DEL_DEFAULT_LANG', DEFAULT_LANGUAGE_CODE));
-	}
+// 	if ($lang_code == DEFAULT_LANGUAGE_CODE)
+// 	{
+// 		$msg->addConfirm(array('DEL_DEFAULT_LANG', DEFAULT_LANGUAGE_CODE));
+// 	}
 	
 	if (!$msg->containsErrors())
 	{
-		$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
+		//$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 		header('Location: language_delete.php?id='.$_POST['id']);
 		exit;
 	}
