@@ -151,7 +151,7 @@ if ($_POST["validate_file"])
 
 if ($_POST["validate_paste"])
 {
-	$validate_content = $_POST["pastehtml"];
+	$validate_content = $_POST["pastehtml"] = $stripslashes($_POST["pastehtml"]);
 
 	if (isset($_POST["enable_html_validation"]))
 		$htmlValidator = new HTMLValidator("fragment", $validate_content);
