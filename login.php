@@ -32,12 +32,12 @@ if (isset($_POST['submit']))
 	}
 	else
 	{
-		if ($usersDAO->getStatus($user_id) == AC_STATUS_DISABLED)
-		{
+		if ($usersDAO->getStatus($user_id) == AC_STATUS_DISABLED) {
 			$msg->addError('ACCOUNT_DISABLED');
+		} else if ($usersDAO->getStatus($user_id) == AC_STATUS_UNCONFIRMED) {
+			$msg->addError('ACCOUNT_UNCONFIRMED');
 		}
-		else
-		{
+		else {
 			$usersDAO->setLastLogin($user_id);
 			$_SESSION['user_id'] = $user_id;
 			$msg->addFeedback('LOGIN_SUCCESS');
