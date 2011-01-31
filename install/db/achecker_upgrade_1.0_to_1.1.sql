@@ -97,6 +97,7 @@ CREATE TABLE `myown_patches_files` (
 
 UPDATE `checks` SET func = 'return ((BasicFunctions::getInnerTextLength() > 0 || BasicFunctions::getAttributeTrimedValueLength(''title'') > 0 || BasicFunctions::getLengthOfAttributeValueWithGivenTagInChildren(''img'', ''alt'') > 0) || !BasicFunctions::hasAttribute(''href''));' WHERE check_id = 174;
 UPDATE `checks` SET func = 'return (BasicFunctions::getPlainTextLength() < 21 || !BasicFunctions::hasTabularInfo());' WHERE check_id = 241;
+UPDATE `checks` SET confidence=2 WHERE check_id=19;
 
 # --------------------------------------------------------
 # Altered unnecessary "NOT NULL" fields
