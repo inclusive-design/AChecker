@@ -37,6 +37,35 @@ class RESTWebServiceOutput {
 	// REST templates
 	var $rest_main =
 '<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE resultset[
+<!ELEMENT resultset (summary,results)>
+<!ELEMENT summary (status,sessionID,NumOfErrors,NumOfLikelyProblems,NumOfPotentialProblems,guidelines)>
+<!ELEMENT status (#PCDATA)>
+<!ELEMENT sessionID (#PCDATA)>
+<!ELEMENT NumOfErrors (#PCDATA)>
+<!ELEMENT NumOfLikelyProblems (#PCDATA)>
+<!ELEMENT NumOfPotentialProblems (#PCDATA)>
+<!ELEMENT guidelines (guideline)*>
+<!ELEMENT guideline (#PCDATA)>
+<!ELEMENT results (result)*>
+<!ELEMENT result (resultType,lineNum,columnNum,errorMsg,errorSourceCode,repair*,sequenceID*,decisionPass*,decisionFail*,decisionMade*,decisionMadeDate*)>
+<!ELEMENT resultType (#PCDATA)>
+<!ELEMENT lineNum (#PCDATA)>
+<!ELEMENT columnNum (#PCDATA)>
+<!ELEMENT errorMsg (#PCDATA)>
+<!ELEMENT errorSourceCode (#PCDATA)>
+<!ELEMENT repair (#PCDATA)>
+<!ELEMENT sequenceID (#PCDATA)>
+<!ELEMENT decisionPass (#PCDATA)>
+<!ELEMENT decisionFail (#PCDATA)>
+<!ELEMENT decisionMade (#PCDATA)>
+<!ELEMENT decisionMadeDate (#PCDATA)>
+<!ENTITY lt "&#38;#60;">
+<!ENTITY gt "&#62;">
+<!ENTITY amp "&#38;#38;">
+<!ENTITY apos "&#39;">
+<!ENTITY quot "&#34;">
+]>
 <resultset>
   <summary>
     <status>{STATUS}</status>

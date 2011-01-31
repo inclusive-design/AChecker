@@ -3099,6 +3099,5 @@ class BasicChecks {
 	
 	}
 	
-
 }
-?>  
+?>
