@@ -2150,7 +2150,7 @@ class BasicChecks {
 			return $foreground;
 		// for the normal elements if foreground == "" means that the value is not defined for $e: Searches its parents
 		//per gli elementi normali se foreground == "" significa che il valore non è stato definito per $e: ricerco tra i suoi genitori
-		while ( ($foreground == "" || $foreground == null) && $e->tag != null && $e->tag != "body" ) {
+		while ( ($foreground == "" || $foreground == null) && $e->tag != null && $e->tag != "body" && $e->tag != "html") {
 			$e = $e->parent ();
 			$foreground = BasicChecks::get_p_css ( $e, "color" );
 		}
@@ -2159,7 +2159,7 @@ class BasicChecks {
 		//se non trovo nessun foreground, controllo se è definito nel body, se no gli assegno il nero
 		//NOTA: va aggiunto il controllo su link, alink, ...
 		if ($foreground == "" || $foreground == null) {
-			if ($e->tag == "body" && isset ( $e->attr ["text"] ))
+			if (($e->tag == "body" || $e->tag == "html") && isset ( $e->attr ["text"] ))
 				$foreground = $e->attr ["text"];
 			else
 				$foreground = "#000000";
@@ -2179,7 +2179,7 @@ class BasicChecks {
 		
 		// if background == "" means that the value is not defined for $e: Searches its parents
 		//se background == "" significa che il valore non è stato definito per $e: ricerco tra i suoi genitori
-		while ( ($background == "" || $background == null) && $e->tag != null && $e->tag != "body" ) {
+		while ( ($background == "" || $background == null) && $e->tag != null && $e->tag != "body" && $e->tag != "html") {
 			$e = $e->parent ();
 			
 			$background = BasicChecks::get_p_css ( $e, "background-color" );
@@ -2198,7 +2198,7 @@ class BasicChecks {
 		//se non trovo nessun background controllo che sia definito nel body, se no gli assegno il bianco
 		if ($background == "" || $background == null || $background == "transparent") {
 			
-			if ($e->tag == "body" && isset ( $e->attr ["bgcolor"] ))
+			if (($e->tag == "body" || $e->tag == "html") && isset ( $e->attr ["bgcolor"] ))
 				$background = $e->attr ["bgcolor"];
 			else
 				$background = "#ffffff";
@@ -2370,26 +2370,14 @@ class BasicChecks {
 	
 	//TOSI e VIRRUSO WCAG2
 	public static function ContrastRatio($color1, $color2) {
-		
 		include_once (AC_INCLUDE_PATH . "classes/ColorValue.class.php");
 		
-		//echo("<p>CalcolateContra</p>");
-		
-
 		$color1 = new ColorValue ( $color1 );
 		$color2 = new ColorValue ( $color2 );
 		
-		//echo("<p>Colori dopo ColorValue: color1=".$color1.  "color2=".$color2. "</p>");
-		
-
-		if (! $color1->isValid () || ! $color2->isValid ())
+		if (! $color1->isValid () || ! $color2->isValid ()) {
 			return true;
-			
-		/*
-			RsRGB = R8bit/255
-			GsRGB = G8bit/255
-			BsRGB = B8bit/255
-		*/
+		}
 		
 		$colorR1 = $color1->getRed () / 255;
 		$colorG1 = $color1->getGreen () / 255;
@@ -2399,16 +2387,6 @@ class BasicChecks {
 		$colorG2 = $color2->getGreen () / 255;
 		$colorB2 = $color2->getBlue () / 255;
 		
-		/*
-		CALCOLO LUMINANZA
-
-		L = 0.2126 * R + 0.7152 * G + 0.0722 * B where R, G and B are defined as:
-
-		if RsRGB <= 0.03928 then R = RsRGB/12.92 else R = ((RsRGB+0.055)/1.055) ^ 2.4
-		if GsRGB <= 0.03928 then G = GsRGB/12.92 else G = ((GsRGB+0.055)/1.055) ^ 2.4
-		if BsRGB <= 0.03928 then B = BsRGB/12.92 else B = ((BsRGB+0.055)/1.055) ^ 2.4
-		
-*/
 		if ($colorR1 <= 0.03928)
 			$colorR1 = $colorR1 / 12.92;
 		else
@@ -2442,13 +2420,6 @@ class BasicChecks {
 		$Lum1 = ($colorR1 * 0.2126) + ($colorG1 * 0.7152) + ($colorB1 * 0.0722);
 		$Lum2 = ($colorR2 * 0.2126) + ($colorG2 * 0.7152) + ($colorB2 * 0.0722);
 		
-		/*
-		ContrastRatio = (L1 + 0.05) / (L2 + 0.05)
-		L1 is the relative luminance of the lighter of the colors, and
-		L2 is the relative luminance of the darker of the colors.
-
-*/
-		
 		$ContrastRatio = 0;
 		if ($Lum1 > $Lum2) {
 			$ContrastRatio = ($Lum1 + 0.05) / ($Lum2 + 0.05);
@@ -2457,14 +2428,13 @@ class BasicChecks {
 		}
 		
 		return $ContrastRatio;
-	
 	}
 	
 	//TOSI e VIRRUSO risale al font-size e lo converte in pt
 	public static function fontSizeToPt($e) {
 		global $tag_size;
 		$tag_size = BasicChecks::get_p_css ( $e, "font-size" );
-		while ( $tag_size == null && $e->tag != "body" ) {
+		while ( $tag_size == null && ($e->tag != "body" && $e->tag != "html")) {
 			$h = BasicChecks::checkHeadingLevel ( $e );
 			if ($h != null && $tag_size == null) {
 				$tag_size = $h * BasicChecks::fontSizeToPt ( $e->parent () );
@@ -2472,8 +2442,10 @@ class BasicChecks {
 				return $tag_size;
 			} else {
 				//not an heading
-				$e = $e->parent ();
-				$tag_size = BasicChecks::get_p_css ( $e, "font-size" );
+				if ($e != null) {
+					$e = $e->parent();
+					$tag_size = BasicChecks::get_p_css ( $e, "font-size" );
+				}
 			}
 		}
 		if ($tag_size == null) {
@@ -2485,7 +2457,7 @@ class BasicChecks {
 				//percent
 				$s = substr ( $tag_size, 0, (strlen ( $tag_size ) - 1) ) / 100;
 				
-				if ($e->tag == "body") {
+				if ($e->tag == "body" || $e->tag == "html") {
 					$tag_size = DEFAULT_FONT_SIZE * $s;
 					return $tag_size;
 				} else {
@@ -2506,7 +2478,7 @@ class BasicChecks {
 						return $tag_size;
 						break;
 					case "em" :
-						if ($e->tag == "body") {
+						if ($e->tag == "body" || $e->tag == "html") {
 							$tag_size = DEFAULT_FONT_SIZE * $s;
 							return $tag_size;
 						} else {
@@ -2966,7 +2938,7 @@ class BasicChecks {
 			return true;
 		if (($foreground == "" || $foreground == null) && $bodyAttribute != null) {
 			$app = $e->parent ();
-			while ( $app->tag != "body" && $app->tag != null )
+			while ( $app->tag != "body" && $app->tag != "html" && $app->tag != null )
 				$app = $app->parent ();
 			if ($app != null && isset ( $app->attr [$bodyAttribute] ))
 				$foreground = $app->attr [$bodyAttribute];
@@ -3041,7 +3013,7 @@ class BasicChecks {
 			return true;
 		if (($foreground == "" || $foreground == null) && $bodyAttribute != null) {
 			$app = $e->parent ();
-			while ( $app->tag != "body" && $app->tag != null )
+			while ( $app->tag != "body" && $app->tag != "html" && $app->tag != null )
 				$app = $app->parent ();
 			if ($app != null && isset ( $app->attr [$bodyAttribute] ))
 				$foreground = $app->attr [$bodyAttribute];

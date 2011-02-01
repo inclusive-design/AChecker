@@ -1124,18 +1124,21 @@ class BasicFunctions {
 		$foreground = '';
 		//elementi testuali
 		if (($e->tag == "div" || $e->tag == "p" || $e->tag == "span" || $e->tag == "strong" || $e->tag == "em" || $e->tag == "q" || $e->tag == "cite" || $e->tag == "blockquote" || $e->tag == "li" || $e->tag == "dd" || $e->tag == "dt" || $e->tag == "td" || $e->tag == "th" || $e->tag == "h1" || $e->tag == "h2" || $e->tag == "h3" || $e->tag == "h4" || $e->tag == "h5" || $e->tag == "h6" || $e->tag == "label" || $e->tag == "acronym" || $e->tag == "abbr" || $e->tag == "code" || $e->tag == "pre") && BasicChecks::isElementVisible ( $e )) {
-			
-			if (trim ( BasicChecks::remove_children ( $e ) ) == "" || trim ( BasicChecks::remove_children ( $e ) ) == "&nbsp;") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+			 //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
+			if (trim ( BasicChecks::remove_children ( $e ) ) == "" || trim ( BasicChecks::remove_children ( $e ) ) == "&nbsp;"){
 				return true;
+			}
 			
 			$background = BasicChecks::getBackground ( $e );
 			$foreground = BasicChecks::getForeground ( $e );
 			
-			if ($foreground == "" || $foreground == null || $background == "undetermined")
+			if ($foreground == "" || $foreground == null || $background == "undetermined") {
 				return true;
+			}
 			
-			if ($background == "" || $background == null || $background == "-1" || $background == "undetermined")
+			if ($background == "" || $background == null || $background == "-1" || $background == "undetermined") {
 				return true;
+			}
 			
 			$background = BasicChecks::convert_color_to_hex ( $background );
 			$foreground = BasicChecks::convert_color_to_hex ( $foreground );
@@ -1143,7 +1146,6 @@ class BasicFunctions {
 			$ris = BasicChecks::ContrastRatio ( strtolower ( $background ), strtolower ( $foreground ) );
 			//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";	
 			
-
 			$size = BasicChecks::fontSizeToPt ( $e );
 			$bold = BasicChecks::get_p_css ( $e, "font-weight" );
 			if ($e->tag == "h1" || $e->tag == "h2" || $e->tag == "h3" || $e->tag == "h4" || $e->tag == "h5" || $e->tag == "h6")
@@ -1197,7 +1199,6 @@ class BasicFunctions {
 	}
 	
 	public static function checkColorContrastForGeneralElementWCAG2AAA() {
-		
 		//WCAG2.0 Contrast check
 		global $background, $foreground;
 		global $global_e, $global_content_dom;
