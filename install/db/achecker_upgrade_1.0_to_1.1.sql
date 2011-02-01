@@ -151,6 +151,7 @@ DELETE FROM `subgroup_checks` WHERE subgroup_id = 333 AND check_id in (254, 255,
 DELETE FROM `subgroup_checks` WHERE subgroup_id = 360 AND check_id in (221, 222, 223, 224);
 
 INSERT INTO `subgroup_checks` (subgroup_id, check_id) VALUES
+(136, 29),
 (333, 306),
 (333, 307),
 (333, 308),

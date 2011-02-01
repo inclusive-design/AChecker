@@ -2727,6 +2727,7 @@ INSERT INTO `subgroup_checks` (`subgroup_id`, `check_id`) VALUES
 (132, 31),
 (132, 32),
 (135, 135),
+(136, 29),
 (136, 232),
 (137, 176),
 (137, 177),
