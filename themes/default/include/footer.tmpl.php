@@ -79,6 +79,7 @@ function rowselectbox(obj, checked, handler) {
 <?php
 // Timer, calculate how much time to load the page
 // starttime is in include/header.inc.php
+global $starttime;
 $mtime = microtime(); 
 $mtime = explode(" ", $mtime); 
 $mtime = $mtime[1] + $mtime[0]; 

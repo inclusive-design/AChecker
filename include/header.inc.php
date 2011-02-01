@@ -23,14 +23,6 @@ global $_pages;
 global $_current_user;
 global $validate_content;
 
-//Timer, to display "Time Spent" in footer, debug information
-global $starttime;
-$mtime = microtime(); 
-$mtime = explode(' ', $mtime); 
-$mtime = $mtime[1] + $mtime[0]; 
-$starttime = $mtime; 
-//Timer Ends
-
 include_once(AC_INCLUDE_PATH.'classes/Menu.class.php');
 
 $menu =new Menu();

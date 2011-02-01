@@ -345,10 +345,12 @@ class AccessibilityValidator {
 				if (strtolower(trim($row['html_tag'])) == 'img')
 				{
 					$image = BasicChecks::getFile($e->attr['src'], $base_href, $this->uri);
-				    $handle = @fopen($image, 'r');
-				
-				    if (!$handle) $image = '';
-				    else @fclose($handle);
+
+					// The lines below to check the existence of the image slows down the validation process.
+					// So commented out.
+					//$handle = @fopen($image, 'r');
+				    //if (!$handle) $image = '';
+				    //else @fclose($handle);
 				    
 				    // find out image alt text for preview image
 				    if (!isset($e->attr['alt'])) $image_alt = '_NOT_DEFINED';

@@ -250,13 +250,14 @@ function debug($var, $title='') {
 	echo '</pre>';
 }
 
-   /**
-   * This function is used for printing variables into log file for debugging.
-   * @access  public
-   * @param   mixed $var	The variable to output
-   * @param   string $log	The location of the log file. If not provided, use the default one.
-   * @author  Cindy Qi Li
-   */
+/**
+ * This function is used for printing variables into a log file for debugging.
+ * if the the log path/name is not provided, use default log @ temp/achecker.log
+ * @access  public
+ * @param   mixed $var	The variable to output
+ * @param   string $log	The location of the log file. If not provided, use the default one.
+ * @author  Cindy Qi Li
+ */
 function debug_to_log($var, $log='') {
 	if (!defined('AC_DEVEL') || !AC_DEVEL) {
 		return;
