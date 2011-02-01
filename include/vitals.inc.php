@@ -250,6 +250,28 @@ function debug($var, $title='') {
 	echo '</pre>';
 }
 
+   /**
+   * This function is used for printing variables into log file for debugging.
+   * @access  public
+   * @param   mixed $var	The variable to output
+   * @param   string $log	The location of the log file. If not provided, use the default one.
+   * @author  Cindy Qi Li
+   */
+function debug_to_log($var, $log='') {
+	if (!defined('AC_DEVEL') || !AC_DEVEL) {
+		return;
+	}
+	
+	if ($log == '') $log = AC_TEMP_DIR. 'achecker.log';
+	$handle = fopen($log, 'a');
+	fwrite($handle, "\n\n");
+	fwrite($handle, date("F j, Y, g:i a"));
+	fwrite($handle, "\n");
+	fwrite($handle, var_export($var,1));
+	
+	fclose($handle);
+}
+
 /****************************************************/
 /* compute the $_my_uri variable					*/
 $bits	  = explode(SEP, getenv('QUERY_STRING'));
