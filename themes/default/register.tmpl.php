@@ -116,7 +116,14 @@ function encrypt_password()
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="email"><?php echo _AC('email_address'); ?></label>:</td>
 			<td align="left"><input id="email" name="email" type="text" size="50" maxlength="50" value="<?php if (isset($_POST['email'])) echo $stripslashes(htmlspecialchars($_POST['email'])); else echo $stripslashes(htmlspecialchars($this->user_row['email'])); ?>" /></td>
 		</tr>
+<?php if(AC_EMAIL_CONFIRMATION == 1){ ?>
+		<tr>
+			<td align="left" colspan="2">
+				<small>&middot; <?php echo _AC('email_confirmation_required'); ?></small>
+			</td>
+		</tr>
 
+<?php } ?>
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="first_name"><?php echo _AC('first_name'); ?></label>:</td>
 			<td align="left"><input id="first_name" name="first_name" type="text" value="<?php if (isset($_POST['first_name'])) echo $stripslashes(htmlspecialchars($_POST['first_name'])); else echo $stripslashes(htmlspecialchars($this->user_row['first_name'])); ?>" /></td>
