@@ -65,6 +65,9 @@ $_POST['db_password'] = urldecode($_POST['db_password']);
 //				}
 //			}
 
+			$sql = "DELETE FROM ".$_POST['tb_prefix']."language_text";
+			@mysql_query($sql, $db);
+
 			$sql = "DELETE FROM ".$_POST['tb_prefix']."languages WHERE language_code<>'eng'";
 			@mysql_query($sql, $db);
 
