@@ -14,7 +14,7 @@ div.center-input-form {
 	width: 95%; 
 	/* border: thin #CCCCCC solid; */
 	margin: 1em;
-	line-height:100%;
+	line-height:inherit;
 	/* background-color: #F8F8F8; */
 	padding:1em;
 }
