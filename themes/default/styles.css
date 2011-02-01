@@ -1013,7 +1013,7 @@ ul.navigation li a.active span, li a:focus span{
 .spinner_div {
     float:right;
     clear:both;
-    margin-right:18em;
+    margin-right:15em;
 }
 .spinner_img {
 	width:20px;
