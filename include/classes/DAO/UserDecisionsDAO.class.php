@@ -111,6 +111,32 @@ class UserDecisionsDAO extends DAO {
 	}
 
 	/**
+	 * Delete decision
+	 * @access  public
+	 * @param   $user_link_id : required
+	 *          $line_num: required
+	 *          $column_num: required
+	 *          $check_id :required
+	 * @return  true    if update successfully
+	 *          false   if update unsuccessful
+	 * @author  Cindy Qi Li
+	 */
+	public function DeleteDecision($user_link_id, $line_num, $column_num, $check_id)
+	{
+		$user_link_id = intval($user_link_id);
+		$line_num = intval($line_num);
+		$column_num = intval($column_num);
+		$check_id = intval($check_id);
+		
+		$sql = "DELETE FROM ".TABLE_PREFIX."user_decisions 
+		         WHERE user_link_id = ".$user_link_id."
+		           AND line_num = ".$line_num."
+		           AND column_num = ".$column_num."
+		           AND check_id = ".$check_id;
+		return $this->execute($sql);
+	}
+
+	/**
 	 * Return all users' information
 	 * @access  public
 	 * @param   none

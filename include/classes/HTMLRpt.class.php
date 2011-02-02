@@ -159,9 +159,6 @@ class HTMLRpt extends AccessibilityRpt {
 		$this->rpt_errors = "<ul>\n";
 		$this->rpt_likely_problems = "<ul>\n";
 		$this->rpt_potential_problems = "<ul>\n";
-
-		
-
 		
 		$checksDAO = new ChecksDAO();
 		// generate section details
