@@ -95,7 +95,7 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 			<li class="navigation"><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="AChecker.output.onClickTab('likely_problems');"><span><?php echo _AC("likely_problems"); ?> (<?php echo $this->num_of_likely_problems_no_decision; ?>)</span></a></li>
 			<li class="navigation"><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="AChecker.output.onClickTab('potential_problems');"><span><?php echo _AC("potential_problems"); ?> (<?php echo $this->num_of_potential_problems_no_decision; ?>)</span></a></li>
 			<li class="navigation"><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="AChecker.output.onClickTab('html_validation_result');"><span><?php echo _AC("html_validation_result"); ?> <?php if (isset($_POST["enable_html_validation"])) echo "(".$this->num_of_html_errors.")"; ?></span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="5" title="<?php echo _AC("css_validation_result"); ?> Alt+5" id="menu_css_validation_result" onclick="AChecker.output.onClickTab('css_validation_result');"><span><?php echo _AC("css_validation_result"); ?> <?php if (isset($_POST["enable_css_validation"])) echo "(".$this->num_of_css_errors.")"; ?></span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="5" title="<?php echo _AC("css_validation_result"); ?> Alt+5" id="menu_css_validation_result" onclick="AChecker.output.onClickTab('css_validation_result');"><span><?php echo _AC("css_validation_result"); ?> <?php if (isset($this->cssValidator)) echo "(".$this->num_of_css_errors.")"; ?></span></a></li>
 		</ul>
 	</div>
 
@@ -164,8 +164,11 @@ else
 	
 		<div id="css_validation_result" style="margin-top:1em; display:none;">
 <?php
-if (isset($this->cssValidator))
-{
+if (isset($_POST['validate_file']) || isset($_POST['validate_paste'])) {
+	// css validator is only available at validating url, not at validating a uploaded file or pasted html
+	echo '<span class="info_msg"><img src="'.AC_BASE_HREF.'images/info.png" width="15" height="15" alt="'._AC("info").'"/>  '._AC("css_validator_unavailable").'</span>';
+} else if (isset($this->cssValidator)) {
+	// validating url -> css validator option is turned ON
 	echo '		<ol><li class="msg_err">'. _AC("css_validator_provided_by") .'</li></ol>'. "\n";
 	
 	if ($this->cssValidator->containErrors())
@@ -177,9 +180,10 @@ if (isset($this->cssValidator))
 		else
 			echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_css_validation") ."</span>";
 	}
-}
-else
+} else {
+	// validating url -> css validator option is turned OFF
 	echo '<span class="info_msg"><img src="'.AC_BASE_HREF.'images/info.png" width="15" height="15" alt="'._AC("info").'"/>  '._AC("css_validator_disabled").'</span>';
+}
 ?>
 	</div>
 		

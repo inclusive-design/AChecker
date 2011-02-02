@@ -61,6 +61,8 @@ class CSSValidator {
 				return false;
 			}
 			$result = $this->validate_uri($this->validate_content);
+		} else {
+			return false;  // css validator is only available for url checking, not for file upload and paste 
 		}
 
 		if (!result) return false;
