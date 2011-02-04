@@ -44,7 +44,7 @@ foreach ($_REQUEST as $name => $value)
 
 foreach ($_REQUEST as $name => $value)
 {
-	if (is_int($name))
+	if (strpos($name, '_') > 0)
 	{
 		if ($reverse == 'true')  // reverse decisions. set to "No Decision"
 			$decisions[$name] = AC_NO_DECISION;

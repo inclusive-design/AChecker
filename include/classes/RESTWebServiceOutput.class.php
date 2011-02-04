@@ -125,7 +125,6 @@ class RESTWebServiceOutput {
 	*/
 	function RESTWebServiceOutput($errors, $userLinkID, $guidelineArray)
 	{
-//		debug($errors);exit;
 		$this->errors = $errors;
 		$this->userLinkID = $userLinkID;
 		$this->guidelineArray = $guidelineArray;
@@ -187,7 +186,7 @@ class RESTWebServiceOutput {
 				{
 					$result_type = _AC('likely_problem');
 					
-					if ($row_userDecision['decision'] == AC_NO_DECISION || $row_userDecision['decision'] == AC_DECISION_FAIL) 
+					if (!$row_userDecision || $row_userDecision['decision'] == AC_DECISION_FAIL) 
 						$num_of_likely_problems++;
 					
 				}
@@ -196,13 +195,13 @@ class RESTWebServiceOutput {
 				{
 					$result_type = _AC('potential_problem');
 					
-					if ($row_userDecision['decision'] == AC_NO_DECISION || $row_userDecision['decision'] == AC_DECISION_FAIL)
+					if (!$row_userDecision || $row_userDecision['decision'] == AC_DECISION_FAIL)
 						$num_of_potential_problems++;
 					
 				}
 				
 				$decision_questions = str_replace(array('{SEQUENCEID}', '{DECISIONPASS}', '{DECISIONFAIL}'),
-				                                  array($row_userDecision['sequence_id'], htmlentities(_AC($row_check['decision_pass'])), htmlentities(_AC($row_check['decision_fail']))),
+				                                  array($error['line_number'].'_'.$error['col_number'].'_'.$error['check_id'], htmlentities(_AC($row_check['decision_pass'])), htmlentities(_AC($row_check['decision_fail']))),
 				                                  $this->rest_decision_questions);
 				                                  
 				$decision = $decision_questions . $decision_made;

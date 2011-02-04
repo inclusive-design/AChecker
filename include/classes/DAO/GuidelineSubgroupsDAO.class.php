@@ -299,7 +299,6 @@ class GuidelineSubgroupsDAO extends DAO {
 			$langTextDAO->Create($_SESSION['lang'], '_guideline',$term,$text,'');
 			
 			$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups SET ".$fieldName."='".$term."' WHERE subgroup_id=".$subgroupID;
-			debug($sql);exit;
 			$this->execute($sql);
 		}
 		

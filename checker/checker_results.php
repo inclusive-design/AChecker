@@ -95,8 +95,8 @@ if (isset($aValidator))
 		$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_REQUEST['uri'], $_REQUEST["gid"]);
 		
 		// save errors into user_decisions 
-		$userDecisionsDAO = new UserDecisionsDAO();
-		$userDecisionsDAO->saveErrors($user_link_id, $errors);
+//		$userDecisionsDAO = new UserDecisionsDAO();
+//		$userDecisionsDAO->saveErrors($user_link_id, $errors);
 		
 		$allow_set_decision = 'true';
 	}

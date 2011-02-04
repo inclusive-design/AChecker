@@ -343,7 +343,6 @@ CREATE TABLE `user_decisions` (
   `line_num` int(10) NOT NULL,
   `column_num` int(10) NOT NULL,
   `check_id` mediumint(8) NOT NULL,
-  `sequence_id` int(8) NOT NULL,
   `decision` varchar(50) NOT NULL DEFAULT 'N',
   `last_update` datetime NOT NULL,
   PRIMARY KEY (`user_link_id`,`line_num`,`column_num`,`check_id`),

@@ -40,9 +40,7 @@ if (isset($_POST['make_decision']) || isset($_POST['reverse']))
 		if (isset($_POST['reverse'])) 
 		{
 			foreach ($_POST['reverse'] as $sequenceID => $garbage)
-				$sequences[] = $sequenceID;
-			
-			$decision->reverseDecisions($sequences);
+				$decision->makeDecisions(array($sequenceID=>AC_NO_DECISION));
 		}
 	}
 }
@@ -123,7 +121,7 @@ if ($_POST["validate_uri"])
 	
 	if (!$msg->containsErrors())
 	{
-		$_POST['uri'] = $uri;
+		$_POST['uri'] = $_REQUEST['uri'] = $uri;
 		$validate_content = @file_get_contents($uri);
 		
 		if (isset($_POST["enable_html_validation"]))

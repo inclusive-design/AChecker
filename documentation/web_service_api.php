@@ -380,20 +380,20 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
   &lt;table&gt;
     &lt;tr&gt;
       &lt;td&gt;
-      &lt;input value="P" type="radio" name="d[<span style="font-weight: bold; color: red">135</span>]" id="pass135"  /&gt;
-      &lt;label for="pass135"&gt;Anchor has text that identifies the link destination.&lt;/label&gt;
+      &lt;input value="P" type="radio" name="d[<span style="font-weight: bold; color: red">5_2_54</span>]" id="pass5_2_54"  /&gt;
+      &lt;label for="pass5_2_54"&gt;Anchor has text that identifies the link destination.&lt;/label&gt;
       &lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;
-      &lt;input value="F" type="radio" name="d[<span style="font-weight: bold; color: red">135</span>]" id="fail135"  /&gt;
-      &lt;label for="fail135"&gt;Anchor does not have text that identifies the link destination.&lt;/label&gt;
+      &lt;input value="F" type="radio" name="d[<span style="font-weight: bold; color: red">5_2_54</span>]" id="fail5_2_54"  /&gt;
+      &lt;label for="fail5_2_54"&gt;Anchor does not have text that identifies the link destination.&lt;/label&gt;
       &lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;
-      &lt;input value="N" type="radio" name="d[<span style="font-weight: bold; color: red">135</span>]" id="nodecision135" checked="checked" /&gt;
-      &lt;label for="nodecision135"&gt;No Decision&lt;/label&gt;
+      &lt;input value="N" type="radio" name="d[<span style="font-weight: bold; color: red">5_2_54</span>]" id="nodecision5_2_54" checked="checked" /&gt;
+      &lt;label for="nodecision5_2_54"&gt;No Decision&lt;/label&gt;
       &lt;/td&gt;
     &lt;/tr&gt;
   &lt;/table&gt;
@@ -425,7 +425,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td colspan="2"&gt;
-      &lt;input value="Reverse Decision" type="submit" name="reverse[<span style="font-weight: bold; color: red">134</span>]" /&gt;
+      &lt;input value="Reverse Decision" type="submit" name="reverse[<span style="font-weight: bold; color: red">5_2_54</span>]" /&gt;
       &lt;/td&gt;
     &lt;/tr&gt;
   &lt;/table&gt;
@@ -526,7 +526,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
   <th>[sequenceID]</th>
   <td>The sequence ID in the validation response that identifies each likely or potential problems. In REST format, 
   it's the value of element &lt;sequenceID&gt;. In HTML format, it's the key value of radio button array 
-  d[1], d[2] ... 1, 2 is the [sequenceID]. (This value is red-highlighted in above html sample response.)</td>
+  d[5_2_54], d[6_5_5] ... 5_2_54, 6_5_5 is the [sequenceID]. (This value is red-highlighted in above html sample response.)</td>
   <td>None. This parameter can appear as many times as user desires. The value of [sequenceID] can be one of 
   these: <br/>P : pass <br/>F : fail<br/>N : no decision</td>
 </tr>
@@ -542,11 +542,11 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 <br />
 
 <span style="font-weight: bold">Sample validation request</span>
-<p>http://localhost/achecker/decisons.php?uri=http%3A%2F%2Fatutor.ca&id=888ca9e3f856baa0120755ecd8ffae6be3142029
+<p>http://localhost/achecker/decisions.php?uri=http%3A%2F%2Fatutor.ca&id=888ca9e3f856baa0120755ecd8ffae6be3142029
 &session=c124694572284112cb54679565ec13dd57ed6ccf&output=html&1=P&2=F&3=N&4=P</p>
 <p>Goal: Set decision on problem sequence ID 1 to pass decision, 2 to fail decision, 3 to no decision, 4 to pass decision.
 Return response in HTML format.</p>
-<p>http://localhost/achecker/decisons.php?uri=http%3A%2F%2Fatutor.ca&id=888ca9e3f856baa0120755ecd8ffae6be3142029
+<p>http://localhost/achecker/decisions.php?uri=http%3A%2F%2Fatutor.ca&id=888ca9e3f856baa0120755ecd8ffae6be3142029
 &session=c124694572284112cb54679565ec13dd57ed6ccf&output=rest&1=P&2=F&3=N&4=P&reverse=true</p>
 <p>Goal: Reverse decisions on problem sequence ID 1, 2, 3, 4. All decisions for these sequence IDs are set to "decision
 has not been made". Return response in REST format.</p>

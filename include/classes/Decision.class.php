@@ -72,23 +72,15 @@ class Decision {
 	{
 		if (!is_array($decisions)) return false;
 
-		foreach ($decisions as $sequenceID => $decision)
-			$this->userDecisionsDAO->setDecision($this->userLinkID, $sequenceID, $decision);
-	}
-
-	/**
-	 * Reverse decision by given sequence ID
-	 * @access  public
-	 * @param   $sequences : sequenceID array
-	 * @return  true/false
-	 * @author  Cindy Qi Li
-	 */
-	public function reverseDecisions($sequences)
-	{
-		if (!is_array($sequences)) return false;
-
-		foreach ($sequences as $sequenceID)
-			$this->userDecisionsDAO->setDecision($this->userLinkID, $sequenceID, AC_NO_DECISION);
+		foreach ($decisions as $sequenceID => $decision) {
+			list($line_num, $col_num, $check_id) = explode("_", $sequenceID);
+			
+			$line_num = intval($line_num);
+			$col_num = intval($col_num);
+			$check_id = intval($check_id);
+			
+			$this->userDecisionsDAO->setDecision($this->userLinkID, $line_num, $col_num, $check_id, $decision);
+		}
 	}
 
 	/**

@@ -116,8 +116,8 @@ if (isset($validate_content))
 	$errors = $aValidator->getValidationErrorRpt();
 
 	// save errors into user_decisions 
-	$userDecisionsDAO = new UserDecisionsDAO();
-	$userDecisionsDAO->saveErrors($user_link_id, $errors);
+//	$userDecisionsDAO = new UserDecisionsDAO();
+//	$userDecisionsDAO->saveErrors($user_link_id, $errors);
 	
 	if ($output == 'html')
 	{ // generate html output

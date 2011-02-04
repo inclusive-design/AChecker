@@ -68,20 +68,20 @@ class HTMLRpt extends AccessibilityRpt {
   </tr>
   <tr>
     <td>
-      <input value="P" type="radio" name="d[{SEQUENCE_ID}]" id="pass{SEQUENCE_ID}" {PASS_CHECKED} />
-      <label for="pass{SEQUENCE_ID}">{DECISION_PASS}</label>
+      <input value="P" type="radio" name="d[{LINE_NUM}_{COL_NUM}_{CHECK_ID}]" id="pass{LINE_NUM}_{COL_NUM}_{CHECK_ID}" {PASS_CHECKED} />
+      <label for="pass{LINE_NUM}_{COL_NUM}_{CHECK_ID}">{DECISION_PASS}</label>
    </td>
   </tr>
   <tr>
     <td>
-	  <input value="F" type="radio" name="d[{SEQUENCE_ID}]" id="fail{SEQUENCE_ID}" {FAIL_CHECKED} />
-      <label for="fail{SEQUENCE_ID}">{DECISION_FAIL}</label>
+	  <input value="F" type="radio" name="d[{LINE_NUM}_{COL_NUM}_{CHECK_ID}]" id="fail{LINE_NUM}_{COL_NUM}_{CHECK_ID}" {FAIL_CHECKED} />
+      <label for="fail{LINE_NUM}_{COL_NUM}_{CHECK_ID}">{DECISION_FAIL}</label>
     </td>
   </tr>
   <tr>
     <td>
-	  <input value="N" type="radio" name="d[{SEQUENCE_ID}]" id="nodecision{SEQUENCE_ID}" {NODECISION_CHECKED} />
-      <label for="nodecision{SEQUENCE_ID}">{DECISION_NO}</label>
+	  <input value="N" type="radio" name="d[{LINE_NUM}_{COL_NUM}_{CHECK_ID}]" id="nodecision{LINE_NUM}_{COL_NUM}_{CHECK_ID}" {NODECISION_CHECKED} />
+      <label for="nodecision{LINE_NUM}_{COL_NUM}_{CHECK_ID}">{DECISION_NO}</label>
     </td>
   </tr>
 </table>
@@ -108,7 +108,7 @@ class HTMLRpt extends AccessibilityRpt {
 	var $html_reverse_decision = 
 '  <tr>
     <td colspan="2">
-	  <input value="{LABEL_REVERSE_DECISION}" type="submit" name="reverse[{SEQUENCE_ID}]" />
+	  <input value="{LABEL_REVERSE_DECISION}" type="submit" name="reverse[{LINE_NUM}_{COL_NUM}_{CHECK_ID}]" />
     </td>
   </tr>
 ';
@@ -234,17 +234,18 @@ class HTMLRpt extends AccessibilityRpt {
 		$userDecisionsDAO = new UserDecisionsDAO();
 		$row = $userDecisionsDAO->getByUserLinkIDAndLineNumAndColNumAndCheckID($this->user_link_id, $line_number, $col_number, $check_row['check_id']);
 		
-		if ($row['decision'] == AC_NO_DECISION || $row['decision'] == AC_DECISION_FAIL)
-		{
+		if (!$row || $row['decision'] == AC_DECISION_FAIL) { // no decision or decision of fail
 			if ($error_type == IS_WARNING) $this->num_of_likely_problems_fail++;
 			if ($error_type == IS_INFO) $this->num_of_potential_problems_fail++;
 		}
 		
-		if ($row['decision'] == AC_NO_DECISION)
+		if (!$row) // no decision
 		{
 			if ($this->allow_set_decision == 'true')
 			{
-				$decision_section = str_replace(array("{SEQUENCE_ID}", 
+				$decision_section = str_replace(array("{LINE_NUM}",
+				                                      "{COL_NUM}",
+				                                      "{CHECK_ID}",
 				                                      "{PASS_CHECKED}", 
 				                                      "{FAIL_CHECKED}", 
 				                                      "{NODECISION_CHECKED}", 
@@ -252,7 +253,9 @@ class HTMLRpt extends AccessibilityRpt {
 				                                      "{DECISION_PASS}", 
 				                                      "{DECISION_FAIL}", 
 				                                      "{DECISION_NO}"),
-				                                array($row['sequence_id'],
+				                                array($line_number,
+				                                      $col_number,
+				                                      $check_row['check_id'],
 				                                      "",
 				                                      "",
 				                                      'checked="checked"',
@@ -276,8 +279,14 @@ class HTMLRpt extends AccessibilityRpt {
 			
 			if ($this->allow_set_decision == 'true')
 			{
-				$reverse_decision = str_replace(array("{LABEL_REVERSE_DECISION}", "{SEQUENCE_ID}"),
-				                                array(_AC('reverse_decision'), $row['sequence_id']),
+				$reverse_decision = str_replace(array("{LABEL_REVERSE_DECISION}", 
+				                                      "{LINE_NUM}",
+				                                      "{COL_NUM}",
+				                                      "{CHECK_ID}"),
+				                                array(_AC('reverse_decision'), 
+				                                      $line_number,
+				                                      $col_number,
+				                                      $check_row['check_id']),
 				                                $this->html_reverse_decision);
 			}
 			                           
