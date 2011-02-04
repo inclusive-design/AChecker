@@ -259,10 +259,9 @@ class BasicChecks {
 	*/
 	public static function getFile($src_file, $base_href, $uri)
 	{
-		if (preg_match('/http.*(\:\/\/).*/', $src_file))
+		if (preg_match('/http.*(\:\/\/).*/', $src_file)) {
 			$file = $src_file;
-		else
-		{
+		} else {
 			// URI that image relatively located to
 			// Note: base_href is from <base href="...">
 			if (isset($base_href) && $base_href <> '') 
@@ -280,9 +279,14 @@ class BasicChecks {
 			{
 				if (isset($base_href) && $base_href <> '') 
 				{
-					$file = $base_href.substr($src_file, 1);
+					$prefix_uri = $base_href;
 				}
 				else if (isset($uri) && $uri <> '')
+				{
+					$prefix_uri = $uri;
+				}
+				
+				if (isset($prefix_uri) && $prefix_uri <> '') 
 				{
 					preg_match('/^(.*\:\/\/)(.*)/', $uri, $matches);
 					$root_uri = $matches[1].substr($matches[2], 0, strpos($matches[2], '/'));
