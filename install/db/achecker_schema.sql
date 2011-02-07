@@ -345,8 +345,7 @@ CREATE TABLE `user_decisions` (
   `check_id` mediumint(8) NOT NULL,
   `decision` varchar(50) NOT NULL DEFAULT 'N',
   `last_update` datetime NOT NULL,
-  PRIMARY KEY (`user_link_id`,`line_num`,`column_num`,`check_id`),
-  KEY `IDX_SEQUENCE` (`user_link_id`,`sequence_id`)
+  PRIMARY KEY (`user_link_id`,`line_num`,`column_num`,`check_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
