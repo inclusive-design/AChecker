@@ -56,7 +56,7 @@ if ($_current_user->isAdmin())
 }
 else
 {
-	$my_guidelines = $guidelinesDAO->getGuidelineByUserID($_SESSION['user_id']);
+	$my_guidelines = $guidelinesDAO->getGuidelineByUserIDs(array($_SESSION['user_id']));
 	$savant->assign('title', _AC('my_guidelines'));
 }
 

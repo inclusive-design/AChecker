@@ -146,6 +146,15 @@ if (isset($_GET['open_to_public']) && $_GET['open_to_public'] <> -1) {
 	}
 }
 
+if (isset($_GET['list'])) {
+	$page_string .= htmlspecialchars(SEP).'list='.urlencode($_GET['list']);
+	
+	if (isset($_GET['cid'])) $page_string .= htmlspecialchars(SEP).'cid='.intval($_GET['cid']);
+	if (isset($_GET['gid'])) $page_string .= htmlspecialchars(SEP).'gid='.intval($_GET['gid']);
+	if (isset($_GET['ggid'])) $page_string .= htmlspecialchars(SEP).'ggid='.intval($_GET['ggid']);
+	if (isset($_GET['gsgid'])) $page_string .= htmlspecialchars(SEP).'gsgid='.intval($_GET['gsgid']);
+}
+
 // Called by "create/edit checks": add pre-requisite checks, add next checks, 
 //           "create/edit guidelined", add checks into guideline or group. 
 // only list the checks that are not in the pre-requisite checks, or next checks, or guideline, or group

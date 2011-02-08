@@ -28,10 +28,7 @@ if (isset($_POST['submit_no']))
 } 
 else if (isset($_POST['submit_yes']))
 {
-	foreach($ids as $id) 
-	{
-		$usersDAO->Delete($id);
-	}
+	$usersDAO->Delete($ids);
 
 	$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 	header('Location: index.php');

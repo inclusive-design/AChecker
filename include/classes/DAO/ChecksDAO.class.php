@@ -408,6 +408,7 @@ class ChecksDAO extends DAO {
 		if ($row['name'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['name']);
 		if ($row['err'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['err']);
 		if ($row['description'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['description']);
+		if ($row['search_str'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['search_str']);
 		if ($row['long_description'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['long_description']);
 		if ($row['rationale'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['rationale']);
 		if ($row['how_to_repair'] <> '') $langTextDAO->DeleteByVarAndTerm('_check', $row['how_to_repair']);
@@ -517,14 +518,18 @@ class ChecksDAO extends DAO {
 
 	/**
 	* Return check info of given check id
+	* This function is only called by UsersDAO->Delete() for now.
 	* @access  public
 	* @param   $userID
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	function getCheckByUserID($userID)
+	function getCheckByUserIDs($userIDs)
 	{
-		$sql = "SELECT * FROM ". TABLE_PREFIX ."checks WHERE user_id=". intval($userID);
+		// $userIDs array has been sanitized in caller UsersDAO->Delete()
+		$userIDs_str = implode(",", $userIDs);
+		
+		$sql = "SELECT * FROM ". TABLE_PREFIX ."checks WHERE user_id in (". $userIDs_str.")";
 		return $this->execute($sql);
 	}
 

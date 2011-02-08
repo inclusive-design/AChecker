@@ -139,19 +139,18 @@ class UserLinksDAO extends DAO {
 	 *          false and add error into global var $msg, if unsuccessful
 	 * @author  Cindy Qi Li
 	 */
-	public function DeleteByUserID($user_id)
+	public function DeleteByUserID($userIDs)
 	{
 		// delete customized guidelines created by user but yet open to public
 		include_once(AC_INCLUDE_PATH.'classes/DAO/UserDecisionsDAO.class.php');
 		$userDecisionsDAO = new UserDecisionsDAO();
 		
-		$user_id = intval($user_id);
 		// delete according records from table user_decisions
-		if (!$userDecisionsDAO->DeleteByUserID($user_id))
+		if (!$userDecisionsDAO->DeleteByUserIDs($userIDs))
 			return false;
 		
 		$sql = "DELETE FROM ".TABLE_PREFIX."user_links
-		         WHERE user_id = ".$user_id;
+		         WHERE user_id in (".implode(",", $userIDs).")";
 
 		return $this->execute($sql);
 	}

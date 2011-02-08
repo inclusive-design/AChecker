@@ -302,13 +302,14 @@ class GuidelinesDAO extends DAO {
 	* @return  table rows
 	* @author  Cindy Qi Li
 	*/
-	public function getGuidelineByUserID($userID)
+	public function getGuidelineByUserIDs($userIDs)
 	{
-		$userID = intval($userID);
+		include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
+		$userIDs = Utility::sanitizeIntArray($userIDs);
 		
 		$sql = "select *
 				from ". TABLE_PREFIX ."guidelines
-				where user_id = " . $userID . "
+				where user_id in (" . implode(",", $userIDs) . ")
 				order by title";
 
 	    return $this->execute($sql);

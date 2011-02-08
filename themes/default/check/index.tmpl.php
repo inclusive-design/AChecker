@@ -149,11 +149,11 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 	<?php if ($this->row_button_type == 'checkbox') {?>
 	<th scope="col"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall" onclick="CheckAll();" /></th>
 	<?php }?>
-	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=html_tag<?php echo $page_string; ?>"><?php echo _AC('html_tag');      ?></a></th>
-	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=confidence<?php echo $page_string; ?>"><?php echo _AC('error_type'); ?></a></th>
-	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=description<?php echo $page_string; ?>"><?php echo _AC('description');   ?></a></th>
-	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=open_to_public<?php echo $page_string; ?>"><?php echo _AC('open_to_public'); ?></a></th>
-	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=check_id<?php echo $page_string; ?>"><?php echo _AC('check_id'); ?></a></th>
+	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=html_tag<?php echo htmlspecialchars(SEP).$this->page_string; ?>"><?php echo _AC('html_tag');      ?></a></th>
+	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=confidence<?php echo htmlspecialchars(SEP).$this->page_string; ?>"><?php echo _AC('error_type'); ?></a></th>
+	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=description<?php echo htmlspecialchars(SEP).$this->page_string; ?>"><?php echo _AC('description');   ?></a></th>
+	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=open_to_public<?php echo htmlspecialchars(SEP).$this->page_string; ?>"><?php echo _AC('open_to_public'); ?></a></th>
+	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=check_id<?php echo htmlspecialchars(SEP).$this->page_string; ?>"><?php echo _AC('check_id'); ?></a></th>
 </tr>
 
 </thead>
