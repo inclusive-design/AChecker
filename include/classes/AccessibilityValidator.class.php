@@ -336,11 +336,11 @@ class AccessibilityValidator {
 			
 			if ($result == FAIL_RESULT)
 			{
-
-				if (strlen($e->outertext) > DISPLAY_PREVIEW_HTML_LENGTH) 
-					$html_code = substr($e->outertext, 0, DISPLAY_PREVIEW_HTML_LENGTH) . " ...";
+				$preview_html = $e->outertext;
+				if (strlen($preview_html) > DISPLAY_PREVIEW_HTML_LENGTH) 
+					$html_code = substr($preview_html, 0, DISPLAY_PREVIEW_HTML_LENGTH) . " ...";
 				else 
-					$html_code = $e->outertext;
+					$html_code = $preview_html;
 
 				// find out preview images for validation on <img>
 				if (strtolower(trim($row['html_tag'])) == 'img')

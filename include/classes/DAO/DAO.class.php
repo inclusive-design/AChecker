@@ -62,19 +62,23 @@ class DAO {
 	*/
 	function execute($sql)
 	{
-//		debug($sql);
 		$sql = trim($sql);
 		$result = mysql_query($sql, $this->db) or die($sql . "<br />". mysql_error());
 
 		// for 'select' SQL, return retrieved rows
-		if (strtolower(substr($sql, 0, 6)) == 'select' && mysql_num_rows($result) > 0) 
+		if (strtolower(substr($sql, 0, 6)) == 'select') 
 		{
-			for($i = 0; $i < mysql_num_rows($result); $i++) 
+			$num_of_results = mysql_num_rows($result);
+			
+			if ($num_of_results > 0)
 			{
-				$rows[] = mysql_fetch_assoc($result);
+				for($i = 0; $i < $num_of_results; $i++) 
+				{
+					$rows[] = mysql_fetch_assoc($result);
+				}
+				mysql_free_result($result);
+				return $rows;
 			}
-			mysql_free_result($result);
-			return $rows;
 		}
 
 		return true;

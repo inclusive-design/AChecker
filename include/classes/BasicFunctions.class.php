@@ -136,13 +136,34 @@ class BasicFunctions {
 	*/
 	public static function getImageWidthAndHeight($attr)
 	{
-		global $global_e, $base_href, $uri;
+		global $global_e, $base_href, $uri, $global_array_image_sizes;
 		
 		$file = BasicChecks::getFile($global_e->attr[$attr], $base_href, $uri);
-		$dimensions = getimagesize($file);
 		
-		if (is_array($dimensions)) return array($dimensions[0], $dimensions[1]);
-		else return false;
+		// Check if the image has already been fetched.
+		// Since the remote fetching is the bottle neck that slows down the validation,
+		// $global_array_image_sizes is to save width/height of all the fetched images. 
+		if (is_array($global_array_image_sizes)) {
+			foreach ($global_array_image_sizes as $image=>$info) {
+				if ($image == $file) {
+					if (!$info["is_exist"]) {
+						return false;
+					} else {
+						return array($info["width"], $info["height"]);
+					}
+				}
+			}
+		} else {
+			$dimensions = @getimagesize($file);
+			
+			if (is_array($dimensions)) {
+				$global_array_image_sizes[$file] = array("is_exist"=>true, "width"=>$dimensions[0], "height"=>$dimensions[1]);
+				return array($dimensions[0], $dimensions[1]);
+			} else {
+				$global_array_image_sizes[] = array($file=>array("is_exist"=>false, "width"=>NULL, "height"=>NULL));
+				return false;
+			}
+		}
 	}
 
 	/**
@@ -853,27 +874,6 @@ class BasicFunctions {
 		return $is_data_table;
 	}
 	
-	/**
-	* check if the file specified in the given attribute exists
-	* return true if exists, otherwise, return false
-	*/
-	public static function isFileExists($attr)
-	{
-		global $global_e, $base_href, $uri;
-
-		$file = BasicChecks::getFile($global_e->attr[$attr], $base_href, $uri);
-		// use file_get_contents() instead of file_exists() because it might be a remote file specified in URL
-	    $handle = @fopen ($file, 'r');
-	
-	    if (!$handle) 
-	    	return false;
-	    else
-	    {
-	    	@fclose($handle);
-	    	return true;
-	    }
-	}
-
 	/**
 	* check if the inner text is in one of the search string defined in checks.search_str
 	* return true if in, otherwise, return false 

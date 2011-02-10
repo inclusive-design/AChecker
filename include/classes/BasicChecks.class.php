@@ -792,7 +792,6 @@ class BasicChecks {
 		
 		//controllo sullo stile inline
 		if (isset ( $e->attr ["style"] )) {
-			
 			$inline = BasicChecks::GetElementStyleInline ( $e->attr ["style"], $p );
 			//verifico "!important"
 			$posizione = stripos ( $inline, "!important" );
@@ -803,7 +802,6 @@ class BasicChecks {
 				$inline = str_ireplace ( ":", "", $inline );
 				$inline = str_ireplace ( "!important", "", $inline );
 				return $inline;
-			
 			}
 		}
 		
