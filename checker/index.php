@@ -20,6 +20,12 @@ include_once(AC_INCLUDE_PATH. 'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/UserLinksDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/Decision.class.php');
 
+global $starttime;
+$mtime = microtime(); 
+$mtime = explode(" ", $mtime); 
+$mtime = $mtime[1] + $mtime[0]; 
+$starttime = $mtime; 
+
 $guidelinesDAO = new GuidelinesDAO();
 
 // process to make decision

@@ -65,22 +65,13 @@ class DAO {
 		$sql = trim($sql);
 		$result = mysql_query($sql, $this->db) or die($sql . "<br />". mysql_error());
 
-		// for 'select' SQL, return retrieved rows
-		if (strtolower(substr($sql, 0, 6)) == 'select') 
-		{
-			$num_of_results = mysql_num_rows($result);
-			
-			if ($num_of_results > 0)
-			{
-				for($i = 0; $i < $num_of_results; $i++) 
-				{
-					$rows[] = mysql_fetch_assoc($result);
-				}
-				mysql_free_result($result);
-				return $rows;
+		if ($result !== true && $result !== false) { // result set for "select" statement
+			while ($row = mysql_fetch_assoc($result)){
+				$rows[] = $row;
 			}
+			mysql_free_result($result);
+			return $rows;
 		}
-
 		return true;
 	}
 
