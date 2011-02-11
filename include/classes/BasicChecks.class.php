@@ -872,11 +872,12 @@ class BasicChecks {
 		
 		if (isset ( $best ["css_rule"] )) {
 			$same = false;
-			if (sizeof ( $array_css ) > 0)
+			if (sizeof ( $array_css ) > 0) {
+				$size_of_best = sizeof ( $best ["css_rule"] ["prev"] );
 				foreach ( $array_css as $rule ) {
-					
-					if (sizeof ( $rule ["prev"] ) == sizeof ( $best ["css_rule"] ["prev"] )) {
-						for($i = 0; $i < sizeof ( $rule ["prev"] ); $i ++) {
+					$size_of_prev_rules = sizeof ( $rule ["prev"] );
+					if ($size_of_prev_rules == $size_of_best) {
+						for($i = 0; $i < $size_of_prev_rules; $i ++) {
 							if ($rule ["prev"] [$i] == $best ["css_rule"] ["prev"] [$i])
 								$same = true;
 							else {
@@ -884,15 +885,12 @@ class BasicChecks {
 								break;
 							}
 						}
-						if ($same == true)
-							break;
+						if ($same == true) break;
 					}
-				
 				}
+			}
 			
-			if ($same == false)
-				
-				array_push ( $array_css, $best ["css_rule"] );
+			if ($same == false) array_push ( $array_css, $best ["css_rule"] );
 		}
 		
 		return $best ["valore"];
@@ -932,11 +930,12 @@ class BasicChecks {
 		
 		if (isset ( $best ["css_rule"] )) {
 			$same = false;
-			if (sizeof ( $array_css ) > 0)
+			if (sizeof ( $array_css ) > 0) {
+				$size_of_best = sizeof ( $best ["css_rule"] ["prev"] );
 				foreach ( $array_css as $rule ) {
-					
-					if (sizeof ( $rule ["prev"] ) == sizeof ( $best ["css_rule"] ["prev"] )) {
-						for($i = 0; $i < sizeof ( $rule ["prev"] ); $i ++) {
+					$size_of_prev_rules = sizeof ( $rule ["prev"] );
+					if ($size_of_prev_rules == $size_of_best) {
+						for($i = 0; $i < $size_of_prev_rules; $i++) {
 							if ($rule ["prev"] [$i] == $best ["css_rule"] ["prev"] [$i])
 								$same = true;
 							else {
@@ -944,15 +943,12 @@ class BasicChecks {
 								break;
 							}
 						}
-						if ($same == true)
-							break;
+						if ($same == true) break;
 					}
-				
 				}
+			}
 			
-			if ($same == false)
-				
-				array_push ( $array_css, $best ["css_rule"] );
+			if ($same == false) array_push ( $array_css, $best ["css_rule"] );
 		}
 		
 		return $best ["valore"];
@@ -1061,31 +1057,6 @@ class BasicChecks {
 		global $attributi;
 		global $attributo_selettore;
 		
-
-		// position 0 memorize the interior style (all those in <style> </ style>, including @ import
-		// to initialize the array (), even though there is no style interior.
-		//in posizione 0 memorizzo lo stile interno (tutti quelli in <style></style>, inclusi gli @import
-		//lo inizializzo a array(), anche se non c'è nessuno stile interno.
-		//$selettori[0]=array();
-		
-
-		//tolgo questa parte di filippo
-		//while (eregi('/\*',$css_content)) {
-		/* Trovo il punto esatto dove inizia il commento */
-		//$start=strpos($css_content,'/*');
-		/* Prelevo tutto quello che si trova prima del commento */
-		//$prima=substr($css_content,0,$start);
-		/* Trovo il punto esatto dove finisce il commento */
-		//$end=strpos($css_content,'*/');
-		/* Ricavo tutto il codice che segue il commento */
-		//$dopo=stristr($css_content,'*/');
-		//$dopo=substr($dopo,2);
-		
-
-		//$css_content=$prima.$dopo;	
-		//}
-		
-
 		//MB elimino i commenti
 		$css_content = preg_replace ( '/\/\*(.|\s)*?\*\//', '', $css_content );
 		
@@ -1515,7 +1486,8 @@ class BasicChecks {
 				else
 					$num_tag_new = 1;
 				
-				if (sizeof ( $array_regole ["prev"] ) == 1) // the current rule is '"simple", there are no predecessors
+				$size_of_regole = sizeof ( $array_regole ["prev"] );
+				if ($size_of_regole == 1) // the current rule is '"simple", there are no predecessors
 															//la regola corrente e' "semplice", non ci sono predecessori
 				{
 					$ris = true;
@@ -1539,7 +1511,7 @@ class BasicChecks {
 							//inizio dal primo padre dell'elemento corrente
 					$e = $e_original;
 					
-					while ( $i < sizeof ( $array_regole ["prev"] ) && $ris !== false ) {
+					while ( $i < $size_of_regole && $ris !== false ) {
 						// NOTE: This series of if / elseif and switch could be next
 						// be merged into a single set of if / else
 						// $ element can 'contain'> ',' + ', id, class, a tag
@@ -1889,7 +1861,8 @@ class BasicChecks {
 		BasicChecks::prepare_css_arrays ( $csslist, $cssinternal );
 		
 		//fine parte in prova - end part in test
-		for($idcss = 0; $idcss < sizeof ( $selettori ); $idcss ++) {
+		$size_of_selettori = sizeof ( $selettori );
+		for($idcss = 0; $idcss < $size_of_selettori; $idcss ++) {
 			
 			//$selettori_appoggio[$idcss] =array();
 			for($i = 0; $i < count ( $selettori [$idcss] ); $i ++) {
@@ -1931,7 +1904,8 @@ class BasicChecks {
 					$selettore_array = split ( " ", $sel );
 					// in the final position of $selettore_array ????
 					//nell'ultima posizione di $selettore_array c'� il selettore piu' a dx prima di una "," o di "{" 
-					$last = $selettore_array [sizeof ( $selettore_array ) - 1]; //ultimo elemento a dx, es: "div > p br" ---> br 
+					$size_of_selettore = sizeof ( $selettore_array ) - 1;
+					$last = $selettore_array [$size_of_selettore]; //ultimo elemento a dx, es: "div > p br" ---> br 
 					
 
 					$array_appoggio = array ();
@@ -1971,30 +1945,23 @@ class BasicChecks {
 					}
 					
 					//memorizzo i "predecessori". es: il selettore =" div > p br", allora i predecessori di br (considero anche br stesso) sono br, p, > e div. li memorizzo da dx a sx
-					//if(sizeof($selettore_array)==1) //il selettore  formato da un solo elemento
-					
-
-					for($j = sizeof ( $selettore_array ) - 1, $k = 0; $j >= 0; $j --, $k ++) {
+					for($j = $size_of_selettore, $k = 0; $j >= 0; $j --, $k ++) {
 						$array_appoggio ["prev"] [$k] = $selettore_array [$j];
 					}
 					
 					//if(isset($selettori_appoggio[$idcss][$last])) //ho gi inserito questo elemento (tag, id, class) almeno una volta 
 					if (isset ( $selettori_appoggio [$last] )) //ho gia' inserito questo elemento (tag, id, class) almeno una volta 
 					{
-						//$posizione = sizeof($selettori_appoggio[$idcss][$last]);
 						$posizione = sizeof ( $selettori_appoggio [$last] );
 						$selettori_appoggio [$last] [$posizione] = $array_appoggio;
 					} else {
 						$selettori_appoggio [$last] [0] = $array_appoggio;
 					}
 				}
-			
 			}
-		
 		}
-		
-
 	}
+	
 	// Function to search within a particular attribute associated with an id tag
 	//Funzione che ricerca un determinato attributo all'interno dell'id associato ad un tag
 	public static function GetElementStyleId($e, $id, $val) {
@@ -2601,20 +2568,30 @@ class BasicChecks {
 		
 		$th = $t->find ( "th" );
 		$num = 0;
+		$size_of_ids = sizeof ( $ids );
 		
-		for($i = 0; $i < sizeof ( $ids ); $i ++) {
-			for($j = 0; $j < sizeof ( $th ); $j ++) {
-				
-				if (isset ( $th [$j]->attr ['id'] ) && $th [$j]->attr ['id'] == $ids [$i]) {
-					
+//		for($i = 0; $i < $size_of_ids; $i ++) {
+//			for($j = 0; $j < sizeof ( $th ); $j ++) {
+//				
+//				if (isset ( $th [$j]->attr ['id'] ) && $th [$j]->attr ['id'] == $ids [$i]) {
+//					
+//					$num ++;
+//					break;
+//				}
+//			
+//			}
+//		}
+		
+		foreach($ids as $one_id) {
+			foreach($th as $one_th) {
+				if (isset ( $one_th->attr ['id'] ) && $one_th->attr ['id'] == $one_id) {
 					$num ++;
 					break;
 				}
-			
 			}
 		}
 		
-		if ($num == sizeof ( $ids )) //ho trovato un id in un th per ogni id di un td
+		if ($num == $size_of_ids) //ho trovato un id in un th per ogni id di un td
 			return true;
 		else
 			return false;
@@ -2662,12 +2639,13 @@ class BasicChecks {
 		}
 		
 		$tr = $t->find ( "tr" );
+		$size_of_tr = sizeof ( $tr );
 		
-		if ($tr == null || sizeof ( $tr ) == 0)
+		if ($tr == null || $size_of_tr == 0)
 			return true; //tabella mal composta - table is not well formed
 		
 
-		for($i = 0; $i < sizeof ( $tr ) - 1; $i ++) {
+		for($i = 0; $i < $size_of_tr - 1; $i ++) {
 			$th_next = $tr [$i + 1]->find ( "th" );
 			if ($th_next == null || sizeof ( $th_next ) == 0)
 				break; //l'i-esima tr contiene l'intestazione pi interna
@@ -2764,9 +2742,9 @@ class BasicChecks {
 		
 		$vettore_stili_interni = $dom->find ( 'style' );
 		$cssint = "";
-		for($i = 0; $i < sizeof ( $vettore_stili_interni ); $i ++) {
-			if (! isset ( $vettore_stili_interni [$i]->attr ["media"] ) || $vettore_stili_interni [$i]->attr ["media"] == "all" || $vettore_stili_interni [$i]->attr ["media"] == "screen") {
-				$cssint = $cssint . $vettore_stili_interni [$i]->innertext;
+		foreach($vettore_stili_interni as $one) {
+			if (! isset ( $one->attr ["media"] ) || $one->attr ["media"] == "all" || $one->attr ["media"] == "screen") {
+				$cssint = $cssint . $one->innertext;
 				$cssint = trim ( $cssint );
 				while ( substr ( $cssint, 0, 7 ) == "@import" ) {
 					$import = substr ( $cssint, 7, stripos ( $cssint, ";" ) + 1 );
@@ -2869,11 +2847,14 @@ class BasicChecks {
 			$css_code .= "<p style='padding:1em'>" . _AC ( "element_CSS_rules" ) . ": </p>\n\t\n\t<pre>\n\t\n\t";
 			$int_css = '';
 			$ext_css = '';
+			$size_of_css_list = sizeof ( $csslist );
 			
 			foreach ( $array_css as $rule ) {
 				
 				$temp_css_code = '';
-				for($i = sizeof ( $rule ["prev"] ) - 1; $i >= 0; $i --) {
+				$num_to_end = sizeof ( $rule ["prev"] ) - 1;
+				
+				for($i = $num_to_end; $i >= 0; $i --) {
 					$temp_css_code .= " " . $rule ["prev"] [$i];
 				}
 				$temp_css_code = str_ireplace ( " .", ".", $temp_css_code );
@@ -2891,7 +2872,7 @@ class BasicChecks {
 				}
 				$temp_css_code = $temp_css_code . "      }\n\t\n\t";
 				
-				if ($rule ["idcss"] == sizeof ( $csslist )) //ultimo posto, stile interno
+				if ($rule ["idcss"] == $size_of_css_list) //ultimo posto, stile interno
 					$int_css .= $temp_css_code;
 					//$css_code=$css_code._AC("internal_CSS").":\n\t\n\t      ";
 				else
@@ -2907,8 +2888,6 @@ class BasicChecks {
 				}
 			
 			$css_code .= "</pre>\n\t";
-			
-		//echo($css_code);
 		}
 		$array_css = array ();
 		return $css_code;
