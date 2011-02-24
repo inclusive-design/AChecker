@@ -72,15 +72,15 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 	
 	var $html_tr_header =
 '           <tr>
-             <th>{PASS_TEXT}<br /><input type="checkbox" class="selectAllCheckBox" id="selectall_{CHECK_ID}" name="selectall_{CHECK_ID}" title="{SELECT_ALL_TEXT}" /></th>
-             <th>{SELECT_ALL_TEXT}</th>
+             <th width="5%">{PASS_TEXT}<br /><input type="checkbox" class="selectAllCheckBox" id="selectall_{CHECK_ID}" name="selectall_{CHECK_ID}" title="{SELECT_ALL_TEXT}" /></th>
+             <th width="95%">{SELECT_ALL_TEXT}</th>
            </tr>
 ';
 
 	var $html_tr_with_decision =
 '           <tr>
-             <td>{CHECKBOX}</td>
-             <td>{PROBLEM_DETAIL}</td>
+             <td width="5%">{CHECKBOX}</td>
+             <td width="95%">{PROBLEM_DETAIL}</td>
            </tr>
 ';
 
@@ -118,8 +118,10 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 	
 	var $html_make_decision_button = 
 '  <tr>
-    <td><input type="button" value="{LABEL_MAKE_DECISION}" id="btn_make_decision_{SUBGROUP_ID}" /></td>
-    <td><span id="server_response_{SUBGROUP_ID}"></span></td>
+    <td colspan="2">
+      <input type="button" value="{LABEL_MAKE_DECISION}" id="btn_make_decision_{SUBGROUP_ID}" />
+      <span id="server_response_{SUBGROUP_ID}"></span>
+    </td>
   </tr>
 ';
 
