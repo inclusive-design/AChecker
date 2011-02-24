@@ -18,7 +18,9 @@ global $_current_user, $decision_error;
 $default_uri_value = "";
 $num_of_guidelines_per_row = 3;  // default number of guidelines to display in a row on the page
 
-if (!isset($_POST["gid"])) $_POST["gid"] = array(DEFAULT_GUIDELINE);
+if (!isset($_POST["checkbox_gid"])) $_POST["checkbox_gid"] = array(DEFAULT_GUIDELINE);
+if (!isset($_POST["radio_gid"])) $_POST["radio_gid"] = array(DEFAULT_GUIDELINE);
+if (!isset($_POST["rpt_format"])) $_POST["rpt_format"] = REPORT_FORMAT_GUIDELINE;
 
 $guidelinesDAO = new GuidelinesDAO();
 $open_guidelines = $guidelinesDAO->getOpenGuidelines();

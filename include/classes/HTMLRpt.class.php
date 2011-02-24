@@ -56,7 +56,7 @@ class HTMLRpt extends AccessibilityRpt {
 ';
 
 	var $html_repair = 
-'         <span style="font-weight:bold">Repair: </span>{REPAIR_DETAIL}
+'         <span style="font-weight:bold">{REPAIR_LABEL}: </span>{REPAIR_DETAIL}
 ';
 	
 	var $html_decision_not_made = 
@@ -144,7 +144,7 @@ class HTMLRpt extends AccessibilityRpt {
 	* public
 	* main process to generate report in html format
 	*/
-	public function generateHTMLRpt()
+	public function generateRpt()
 	{
 		global $msg;
 
@@ -359,7 +359,10 @@ class HTMLRpt extends AccessibilityRpt {
 		$html_code = substr($html_code, 0, 100) . " ...";
 			
 		// generate repair string
-		if ($repair <> '') $html_repair = str_replace('{REPAIR_DETAIL}', $repair, $this->html_repair);
+		if ($repair <> '') {
+			$html_repair = str_replace(array('{REPAIR_LABEL}', '{REPAIR_DETAIL}'), 
+			                           array(_AC("repair"), $repair), $this->html_repair);
+		}
 		
 		if ($image <> '') 
 		{

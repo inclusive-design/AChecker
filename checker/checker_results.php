@@ -16,10 +16,10 @@ if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined in c
 if (!isset($aValidator) && !isset($htmlValidator)) die(_AC("no_instance"));
 
 include_once(AC_INCLUDE_PATH. "classes/HTMLRpt.class.php");
+include_once(AC_INCLUDE_PATH. "classes/HTMLByGuidelineRpt.class.php");
 include_once(AC_INCLUDE_PATH. "classes/Utility.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/UserLinksDAO.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/UserDecisionsDAO.class.php");
-
 
 if (isset($htmlValidator))
 {
@@ -40,9 +40,10 @@ if (isset($cssValidator))
 
 if (isset($aValidator))
 {
+	global $_gids;    // array of the guideline_ids that have been validated against. initialized in checker/index.php
 	// find out selected guidelines
 	$guidelinesDAO = new GuidelinesDAO();
-	$guideline_rows = $guidelinesDAO->getGuidelineByIDs($_REQUEST["gid"]);
+	$guideline_rows = $guidelinesDAO->getGuidelineByIDs($_gids);
 	
 	unset($guidelines_text);
 	if (is_array($guideline_rows))
@@ -92,7 +93,7 @@ if (isset($aValidator))
 	{
 		// save errors into user_links
 		$userLinksDAO = new UserLinksDAO();
-		$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_REQUEST['uri'], $_REQUEST["gid"]);
+		$user_link_id = $userLinksDAO->getUserLinkID($_SESSION['user_id'], $_REQUEST['uri'], $_gids);
 		
 		// save errors into user_decisions 
 //		$userDecisionsDAO = new UserDecisionsDAO();
@@ -101,12 +102,16 @@ if (isset($aValidator))
 		$allow_set_decision = 'true';
 	}
 
-	$a_rpt = new HtmlRpt($errors, $user_link_id);
+	if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) {
+		$a_rpt = new HTMLByGuidelineRpt($errors, $_gids[0], $user_link_id);
+	} else if ($_POST["rpt_format"] == REPORT_FORMAT_LINE) {
+		$a_rpt = new HtmlRpt($errors, $user_link_id);
+	}
 	$a_rpt->setAllowSetDecisions($allow_set_decision);
 	$a_rpt->setFromReferer($from_referer);
 	if (isset($_REQUEST['show_source'])) $a_rpt->setShowSource('true', $source_array);
 	
-	$a_rpt->generateHTMLRpt();
+	$a_rpt->generateRpt();
 
 	$num_of_errors = $a_rpt->getNumOfErrors();
 	$num_of_likely_problems = $a_rpt->getNumOfLikelyProblems();
@@ -114,7 +119,6 @@ if (isset($aValidator))
 	$num_of_potential_problems = $a_rpt->getNumOfPotentialProblems();
 	$num_of_potential_problems_no_decision = $a_rpt->getNumOfPotentialWithFailDecisions();
 	
-
 	// no any problems or all problems have pass decisions, display seals when no errors
 	if ($num_of_errors == 0 && 
 	    ($num_of_likely_problems == 0 && $num_of_potential_problems == 0 ||

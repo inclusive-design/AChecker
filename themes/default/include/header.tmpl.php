@@ -72,6 +72,8 @@ $lang_charset = "UTF-8";
 	<!--[if IE]>
 	  <link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/ie_styles.css" type="text/css" />
 	<![endif]-->
+	<script src="<?php echo $this->base_path; ?>jscripts/lib/jquery.js" type="text/javascript"></script>
+	<script src="<?php echo $this->base_path; ?>jscripts/lib/jquery-URLEncode.js" type="text/javascript"></script>
 	<script src="<?php echo $this->base_path; ?>jscripts/AChecker.js" type="text/javascript"></script>   
 	<?php echo $this->rtl_css; ?>
 	<?php echo $this->custom_head; ?>

@@ -95,7 +95,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 		
 		$this->htmlRpt = new HTMLRpt($aValidator->getValidationErrorRpt(), $userLinkID);
 		$this->htmlRpt->setAllowSetDecisions('true');
-		$this->htmlRpt->generateHTMLRpt();
+		$this->htmlRpt->generateRpt();
 		
 		$this->numOfErrors = $this->htmlRpt->getNumOfErrors();
 		$this->numOfNoDecision = $this->htmlRpt->getNumOfNoDecisions();

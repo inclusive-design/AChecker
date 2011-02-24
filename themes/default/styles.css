@@ -100,7 +100,7 @@ span.err_type{
   font-size: smaller;
 }
 span.msg{
-    font-family: Verdana, Helevetica, Arial, sans-serif;
+  font-family: Verdana, Helevetica, Arial, sans-serif;
   line-height: 150%;
 }
 span.congrats_msg{
@@ -1018,4 +1018,27 @@ ul.navigation li a.active span, li a:focus span{
 .spinner_img {
 	width:20px;
 	height:20px;
+}
+.one_third_width {
+	width: 33%;
+}
+.gd_question_section {
+	margin: 1em 2em 1em 2em;
+	background-color: #F7F3FF;
+}
+.gd_one_check {
+	margin: 0em 1em 1em 3em;
+}
+span.gd_msg{
+  font-family: Verdana, Helevetica, Arial, sans-serif;
+  line-height: 150%;
+  font-weight: bold;
+}
+span.gd_success {
+	color: 	#347C2C;
+	font-weight: bold;
+}
+span.gd_error {
+	color: #E41B17;
+	font-weight: bold;
 }

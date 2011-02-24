@@ -90,7 +90,7 @@ if ($_GET['uri'] == 'referer')
 	{
 		$_POST['validate_uri'] = 1;
 		$_POST['uri'] = $_SERVER['HTTP_REFERER'];
-		$_POST['gid'] = array($grow[0]['guideline_id']);
+		$_gids = array($grow[0]['guideline_id']);
 	}
 }
 
@@ -101,11 +101,15 @@ $error_happen = false;
 if (isset($_POST["enable_css_validation"]))
 	include(AC_INCLUDE_PATH. "classes/CSSValidator.class.php");
 
-
-
 // validate html
 if (isset($_POST["enable_html_validation"]))
 	include(AC_INCLUDE_PATH. "classes/HTMLValidator.class.php");
+
+if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) {
+	$_gids = $_POST["radio_gid"];
+} else if ($_POST["rpt_format"] == REPORT_FORMAT_LINE) {
+	$_gids = $_POST["checkbox_gid"];
+}
 
 if ($_POST["validate_uri"])
 {
@@ -189,7 +193,7 @@ if ($_POST["validate_uri"] || $_POST["validate_file"] || $_POST["validate_conten
 	
 	if (isset($validate_content) && $has_enough_memory)
 	{
-		$aValidator = new AccessibilityValidator($validate_content, $_POST["gid"], $check_uri);
+		$aValidator = new AccessibilityValidator($validate_content, $_gids, $check_uri);
 		$aValidator->validate();
 	}
 	// end of checking accessibility

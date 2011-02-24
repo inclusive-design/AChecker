@@ -661,7 +661,7 @@ class ChecksDAO extends DAO {
 	*/
 	function getGuidelineLevelChecks($gid)
 	{
-		$sql = "select distinct c.*
+		$sql = "select distinct c.*, gc.subgroup_id
 							from ". TABLE_PREFIX ."guideline_groups gg, 
 							     ". TABLE_PREFIX ."guideline_subgroups gs, 
 							     ". TABLE_PREFIX ."subgroup_checks gc,
@@ -686,7 +686,7 @@ class ChecksDAO extends DAO {
 	*/
 	function getGroupLevelChecks($group_id)
 	{
-		$sql = "select distinct c.*
+		$sql = "select distinct c.*, gc.subgroup_id
 							from ". TABLE_PREFIX ."guideline_subgroups gs, 
 							     ". TABLE_PREFIX ."subgroup_checks gc,
 							     ". TABLE_PREFIX ."checks c
@@ -710,7 +710,9 @@ class ChecksDAO extends DAO {
 	*/
 	public function getChecksBySubgroupID($subgroupID)
 	{
-		$sql = "SELECT c.* 
+		$subgroupID = intval($subgroupID);
+		
+		$sql = "SELECT c.*, ".$subgroupID ." subgroupID
 		          FROM ".TABLE_PREFIX."subgroup_checks gs,"
 		                .TABLE_PREFIX."checks c
                  WHERE gs.subgroup_id = ".intval($subgroupID)."

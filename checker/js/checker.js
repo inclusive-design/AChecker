@@ -27,8 +27,9 @@ AChecker.output = AChecker.output || {};
 	/**
 	 * Display the clicked tab and show/hide "made decision" button according to the displayed tab.
 	 * @param tab: "validate_uri", "validate_file", "validate_paste"
+	 *        rptFormat: "by_guideline", "by_line"
 	 */
-	AChecker.input.initialize = function (tab) {
+	AChecker.input.initialize = function (tab, rptFormat) {
 		// initialize input form
 		AChecker.hideByID("spinner");
 		AChecker.showDivOutof(tab, AChecker.input.inputDivIds);
@@ -46,6 +47,27 @@ AChecker.output = AChecker.output || {};
 		} else { //if (div_errors == null) {
 			document.getElementById("checkuri").focus();
 		}
+		
+		// link click event on radio buttons on "options" => "report format"
+		$("#option_rpt_gdl").click(clickOptionRptGDL);
+		$("#option_rpt_line").click(clickOptionRptLine);
+		
+		// initialized the "options" => "guidelines" section, based on the selected "report format"
+		if (rptFormat == "by_guideline") {
+			$("#option_rpt_gdl").trigger("click");
+		} else if (rptFormat == "by_line") {
+			$("#option_rpt_line").trigger("click");
+		}
+	};
+	
+	var clickOptionRptGDL = function() {
+		$("#guideline_in_checkbox").hide();
+		$("#guideline_in_radio").show();
+	};
+	
+	var clickOptionRptLine = function() {
+		$("#guideline_in_checkbox").show();
+		$("#guideline_in_radio").hide();
 	};
 	
 	/**
@@ -132,4 +154,146 @@ AChecker.output = AChecker.output || {};
 		
 		return false;
 	};
+	
+    /**
+     * private
+     * clicking the last unchecked or checked child checkbox should check or uncheck the parent "select all" checkbox
+     */
+	var undoSelectAll = function(this_child) {
+        if ($(this_child).parents('table:eq(0)').find('.selectAllCheckBox').attr('checked') == true && this_child.checked == false)
+            $(this_child).parents('table:eq(0)').find('.selectAllCheckBox').attr('checked', false);
+        if (this_child.checked == true) {
+            var flag = true;
+            $(this_child).parents('table:eq(0)').find('.childCheckBox').each(
+                function() {
+                    if (this_child.checked == false)
+                        flag = false;
+                }
+            );
+            $(this_child).parents('table:eq(0)').find('.selectAllCheckBox').attr('checked', flag);
+        }
+    };
+    
+    /**
+     * private
+     * Display server response message - success
+     */
+    var displaySuccessMsg = function(btn_make_decision, message) {
+	    serverMsgSpan = $(btn_make_decision).parents('tr:eq(0)').find('span[id^="server_response"]');
+	    serverMsgSpan.addClass("gd_success");
+	    serverMsgSpan.html(message);
+    };
+    
+    /**
+     * private
+     * Display server response message - error 
+     */
+    var displayErrorMsg = function(btn_make_decision, message) {
+	    serverMsgSpan = $(btn_make_decision).parents('tr:eq(0)').find('span[id^="server_response"]');
+	    serverMsgSpan.addClass("gd_error");
+	    serverMsgSpan.html(message);
+    };
+    
+    /**
+     * private
+     * When the pass decision is made, flip the likely/potential icons to green congrats icons;
+     * When the pass decision is cancelled, flip green congrats icons to the likely/potential icons. 
+     */
+    var flipMsgIcon = function(btn_make_decision) {
+    	$(btn_make_decision).parents('table:eq(0)').find('.childCheckBox').each(function () {
+    		// find out the id of message icon
+    		chckboxName = $(this).attr('name');
+    		msgIconID = checkboxName.replace('d[', '');
+    		msgIconID = msgIconID.replace(']', '');
+    		msgIconIDValue = "msg_icon_" + msgIconID;
+    		
+    		msgIcon = $("#"+msgIconIDValue);
+    		if ($(this).attr('checked') == true) {
+    			msgIcon.attr('src','images/feedback.gif');
+    		} else {
+    			// find out likely or potential icon needs to be displayed
+    			inLikelyDiv = msgIcon.parents('div[id="likely_problems"]');
+    			inPotentialDiv = msgIcon.parents('div[id="potential_problems"]');
+    		}
+    	});
+    };
+    
+    var setSelectedClass = function(this_checkbox) {
+    	   if ($(this_checkbox).attr("checked") == true)
+    	   {
+    	         $(this_checkbox).parent().parent().addClass("selected");  
+    	   } 
+    	   else
+    	  {   
+    	      $(this_checkbox).parent().parent().removeClass("seleted");
+
+    	  }    	
+    };
+    
+    /**
+     * Click event on "make decision" buttons. It does:
+     * 1. ajax post to save into db
+     * 2. prompt success or error msg returned from server besides the "make decision" button
+     * 3. flip warning/info icons besides problems with pass decisons made to green pass icons
+     * 4. change the number of problems on the tab bar
+     * 5. when the number of problems is reduced to 0, 
+     *    ajax request the seal html from server and display it in seal container
+     */
+    var makeDecision = function(btn_make_decision) {
+//    	checkboxes_status = $(btn_make_decision).parents('table:eq(0)').find('.childCheckBox').attr('checked');
+    	
+    	var ajaxPostStr = "";
+    	
+    	$(btn_make_decision).parents('table:eq(0)').find('.childCheckBox').each(function () {
+    		if ($(this).attr('checked') == true) {
+    			ajaxPostStr += $(this).attr('name') + "=" + "P" + "&";
+    		} else {
+    			ajaxPostStr += $(this).attr('name') + "=" + "N" + "&";
+    		}
+    	});
+    	
+    	ajaxPostStr += "uri" + "=" + $.URLEncode($('input[name="uri"]').attr('value')) + "&" + 
+    	               "output" + "=" + $('input[name="output"]').attr('value') + "&" +
+    	               "jsessionid" + "=" + $('input[name="jsessionid"]').attr('value');
+    	
+    	$.ajax({
+            type: "POST",
+            url: "checker/save_decisions.php",
+            data: ajaxPostStr,
+
+            success: function(data) {
+	            // display success message
+    		    displaySuccessMsg(btn_make_decision, data);
+    		    
+    		    // flip icon to green pass icon
+//    		    flipMsgIcon(btn_make_decision);
+	        }, 
+	        
+            error: function(xhr, errorType, exception) {
+	            // display error message
+	        	displayErrorMsg(btn_make_decision, $(xhr.responseText).text());
+	        }
+        });
+    };
+
+    $(document).ready(
+	    function() {
+	        //clicking the "select all" checkbox should check or uncheck all child checkboxes
+	        $(".selectAllCheckBox").click(function() {
+                $(this).parents('table:eq(0)').find('.childCheckBox').attr('checked', this.checked);
+            });
+	        
+	        //clicking the last unchecked or checked checkbox should check or uncheck the parent "select all" checkbox
+	        $('.childCheckBox').click(function() {
+	        	undoSelectAll(this);
+	        });
+	        
+	        // clicking on "make decision" button
+	        $('input[id^="btn_make_decision"]').click(function() {
+        		makeDecision(this);
+	        });
+	        
+	     }
+    );
 })();
+

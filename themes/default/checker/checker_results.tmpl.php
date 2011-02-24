@@ -80,8 +80,13 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 		echo '<input type="hidden" name="referer_user_link_id" value="'.$this->referer_user_link_id.'" />'."\n\r";
 	} 
 	
-	foreach ($_POST['gid'] as $gid)
-		echo '<input type="hidden" name="gid[]" value="'.$gid.'" />'."\n\r";
+	foreach ($_POST as $post_name => $value) {
+		if (substr($post_name, -4) == "_gid") {
+			foreach ($_POST[$post_name] as $gid_value) {
+				echo '<input type="hidden" name="'.$post_name.'[]" value="'.$gid_value.'" />'."\n\r";
+			}
+		}
+	}
 }
 ?>
 	<div class="center-input-form">

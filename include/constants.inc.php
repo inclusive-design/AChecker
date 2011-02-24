@@ -119,14 +119,18 @@ define('AC_NO_DECISION', 'N');
 // default output format on web service
 define('DEFAULT_WEB_SERVICE_OUTPUT', 'html');
 
-// default output format on web service
+// default guideline to validate against
 define('DEFAULT_GUIDELINE', 8);
+
+// report formats
+define('REPORT_FORMAT_GUIDELINE', 1);
+define('REPORT_FORMAT_LINE', 2);
 
 /* how many days until the password reminder link expires */
 define('AC_PASSWORD_REMINDER_EXPIRY', 2);
 
 /* send email confirmation by default */
-define('AC_EMAIL_CONFIRMATION', 1);
+define('AC_EMAIL_CONFIRMATION', 0);
 
 /* how long cache objects can persist	*/
 /* in seconds. should be low initially, but doesn't really matter. */

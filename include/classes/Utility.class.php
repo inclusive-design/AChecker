@@ -322,5 +322,31 @@ class Utility {
 		}
 		return $sanitized_array;
 	}
+	
+	/**
+	 * Return http fail status & message. Used to return error message on ajax call. 
+	 * @access  public
+	 * @param   $errString: error message
+	 * @author  Cindy Qi Li
+	 */
+	public static function returnError($errString)
+	{
+	    header("HTTP/1.0 400 Bad Request");
+	    header("Status: 400");
+	    echo $errString;
+	}
+	
+	/**
+	 * Return http success status & message. Used to return success message on ajax call. 
+	 * @access  public
+	 * @param   $errString: error message
+	 * @author  Cindy Qi Li
+	 */
+	public static function returnSuccess($successString)
+	{
+	    header("HTTP/1.0 200 OK");
+	    header("Status: 200");
+	    echo $successString;
+	}
 }
 ?>

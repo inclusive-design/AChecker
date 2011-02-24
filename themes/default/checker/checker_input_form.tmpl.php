@@ -21,12 +21,73 @@ if (isset($_POST["validate_file"])){
 	$init_tab = "by_uri";
 }
 
-$onload="AChecker.input.initialize('".$init_tab."');";
+if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) {
+	$rpt_format = "by_guideline";
+} else if ($_POST["rpt_format"] == REPORT_FORMAT_LINE) {
+	$rpt_format = "by_line";
+}
+
+$onload="AChecker.input.initialize('".$init_tab."', '".$rpt_format."');";
 $_custom_head .= '<script src="'.AC_BASE_HREF.'checker/js/checker.js" type="text/javascript"></script>';
 
 include(AC_INCLUDE_PATH.'header.inc.php');
 
 if (isset($this->error)) echo $this->error;
+
+/** return the string of a div html to display all the available guidelines
+ * 2 formats: checkbox or radio button in front of the guideline
+ * @param: $guideline_rows - array of available guidelines
+ *         $num_of_guidelines_per_row
+ *         $format: "checkbox" or "radio"
+ */ 
+function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format = "checkbox") {
+	$output = '				<div id="guideline_in_'.$format .'"';
+	if ($format == "checkbox") $output .= ' style="display:none"';
+	$output .= '>'."\n";
+	$output .= '				<table width="100%">'."\n";
+	
+	$count_guidelines_in_current_row = 0;
+	
+	if (is_array($guideline_rows))
+	{
+		foreach ($guideline_rows as $id => $row)
+		{
+			if ($count_guidelines_in_current_row == 0 || $count_guidelines_in_current_row == $num_of_guidelines_per_row)
+			{
+				$count_guidelines_in_current_row = 0;
+				$output .= "					<tr>\n";
+			}
+
+			$output .= '						<td class="one_third_width">'."\n";
+			$output .= '							<input type="';
+			
+			if ($format == "checkbox") $output .= "checkbox";
+			else $output .= "radio";
+			
+			$output .= '" name="'.$format.'_gid[]" id="'.$format.'_gid_'.$row["guideline_id"].'" value="'. $row["guideline_id"].'"';
+			
+			// the name of the array for the selected guidelines in the post value are different.
+			// "radio_gids" at guideline view and "checkbox_gids" at line view. 
+			$gid_name = $format."_gid";
+			foreach($_POST[$gid_name] as $gid) {
+				if ($gid == $row["guideline_id"]) $output .= ' checked="checked"';
+			} 
+			$output .= ' />'."\n";
+			
+			$output .= '							<label for="'.$format.'_gid_'. $row["guideline_id"].'">'. htmlspecialchars($row["title"]).'</label>'."\n";
+			$output .= "						</td>\n";
+			$count_guidelines_in_current_row++;
+		
+			if ($count_guidelines_in_current_row == $num_of_guidelines_per_row)
+				$output .= "					</tr>\n";
+		
+		}
+	}
+	$output .= "				</table>\n";
+	$output .= "			</div>\n";
+	
+	return $output;
+}
 ?>
 <table style="width:100%">
 <tr>
@@ -101,17 +162,17 @@ if (isset($this->error)) echo $this->error;
 
 		<table class="data static" style="background-colour:#eeeeee;">
 			<tr>
-				<td>
+				<td class="one_third_width">
 				<input type="checkbox" name="enable_html_validation" id="enable_html_validation" value="1" <?php if (isset($_POST["enable_html_validation"])) echo 'checked="checked"'; ?> />
 				<label for='enable_html_validation'><?php echo _AC("enable_html_validator"); ?></label>
 				</td>
 				
-				<td>
+				<td class="one_third_width">
 				<input type="checkbox" name="enable_css_validation" id="enable_css_validation" value="1" <?php if (isset($_POST["enable_css_validation"])) echo 'checked="checked"'; ?> />
 				<label for='enable_css_validation'><?php echo _AC("enable_css_validation"); ?></label>
 				</td>
 				
-				<td colspan="2">
+				<td class="one_third_width">
 				<input type="checkbox" name="show_source" id="show_source" value="1" <?php if (isset($_POST["show_source"])) echo 'checked="checked"'; ?> />
 				<label for='show_source'><?php echo _AC("show_source"); ?></label>
 				</td>
@@ -121,6 +182,7 @@ if (isset($this->error)) echo $this->error;
 			<tr>
 				<td colspan="3"><h3><?php echo _AC("guidelins_to_check"); ?></h3></td>
 			</tr>
+<!-- 
 <?php
 $count_guidelines_in_current_row = 0;
 
@@ -147,6 +209,23 @@ if (is_array($this->rows))
 	}
 }
 ?>
+ -->
+			<tr>
+			<td colspan="3">
+<?php 
+echo get_guideline_div($this->rows, $this->num_of_guidelines_per_row, "radio");  // used at "view by guideline"
+echo get_guideline_div($this->rows, $this->num_of_guidelines_per_row, "checkbox");  // used at "view by line"
+?>
+			</td>
+			</tr>
+			
+			<tr>
+				<td colspan="3"><h3><?php echo _AC("report_format"); ?></h3></td>
+			</tr>
+			<tr>
+				<td class="one_third_width"><input type="radio" name="rpt_format" value="<?php echo REPORT_FORMAT_GUIDELINE; ?>" id="option_rpt_gdl" <?php if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) echo 'checked="checked"'; ?> /><label for="rpt_gdl"><?php echo _AC("view_by_guideline"); ?></label></td>
+				<td class="one_third_width"><input type="radio" name="rpt_format" value="<?php echo REPORT_FORMAT_LINE; ?>" id="option_rpt_line" <?php if ($_POST["rpt_format"] == REPORT_FORMAT_LINE) echo 'checked="checked"'; ?> /><label for="rpt_line"><?php echo _AC("view_by_line"); ?></label></td>
+			</tr>
 		</table>
 		</div>
 	</fieldset>
