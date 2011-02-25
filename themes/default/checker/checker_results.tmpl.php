@@ -114,7 +114,7 @@ if (isset($this->aValidator))
 	if ($this->num_of_errors > 0)
 		echo $this->a_rpt->getErrorRpt();
 	else
-		echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_known") ."</span>";
+		echo "<br /><span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_known") ."</span>";
 }
 
 ?>
@@ -128,7 +128,7 @@ if (isset($this->aValidator))
 	if ($this->num_of_likely_problems > 0)
 		echo $this->a_rpt->getLikelyProblemRpt();
 	else
-		echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_likely") ."</span>";
+		echo "<br /><span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_likely") ."</span>";
 }
 
 ?>
@@ -142,7 +142,7 @@ if (isset($this->aValidator))
 	if ($this->num_of_potential_problems > 0)
 		echo $this->a_rpt->getPotentialProblemRpt();
 	else
-		echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_potential") ."</span>";
+		echo "<br /><span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_potential") ."</span>";
 }
 
 ?>
@@ -161,7 +161,7 @@ if (isset($this->htmlValidator))
 		if ($this->num_of_html_errors > 0)
 			echo $this->htmlValidator->getValidationRpt();
 		else
-			echo "<span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_html_validation") ."</span>";
+			echo "<br /><span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_html_validation") ."</span>";
 	}
 }
 else
