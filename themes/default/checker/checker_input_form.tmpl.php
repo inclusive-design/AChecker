@@ -100,9 +100,9 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 
 		<div class="topnavlistcontainer"><br />
 			<ul class="navigation">
-				<li class="navigation"><a href="#" accesskey="a" title="<?php echo _AC("check_by_uri"); ?> Alt+1" id="menu_by_uri" onclick="return AChecker.input.onClickTab('by_uri');" <?php if (!isset($_POST["validate_paste"]) && !isset($_POST["validate_file"])) echo 'class="active"'; ?>><span><?php echo _AC("check_by_uri"); ?></span></a></li>
-				<li class="navigation"><a href="#" accesskey="b" title="<?php echo _AC("check_by_upload"); ?> Alt+2" id="menu_by_upload" onclick="return AChecker.input.onClickTab('by_upload');" <?php if (isset($_POST["validate_file"])) echo 'class="active"'; ?>><span><?php echo _AC("check_by_upload"); ?></span></a></li>
-				<li class="navigation"><a href="#" accesskey="c" title="<?php echo _AC("check_by_paste"); ?> Alt+3" id="menu_by_paste" onclick="return AChecker.input.onClickTab('by_paste');" <?php if (isset($_POST["validate_paste"])) echo 'class="active"'; ?>><span><?php echo _AC("check_by_paste"); ?></span></a></li>
+				<li class="navigation"><a href="#" accesskey="a" title="<?php echo _AC("check_by_uri"); ?> Alt+1" id="menu_by_uri" onclick="return AChecker.input.onClickTab('by_uri');" <?php if (!isset($_POST["validate_paste"]) && !isset($_POST["validate_file"])) echo 'class="active"'; ?>><span class="nav"><?php echo _AC("check_by_uri"); ?></span></a></li>
+				<li class="navigation"><a href="#" accesskey="b" title="<?php echo _AC("check_by_upload"); ?> Alt+2" id="menu_by_upload" onclick="return AChecker.input.onClickTab('by_upload');" <?php if (isset($_POST["validate_file"])) echo 'class="active"'; ?>><span class="nav"><?php echo _AC("check_by_upload"); ?></span></a></li>
+				<li class="navigation"><a href="#" accesskey="c" title="<?php echo _AC("check_by_paste"); ?> Alt+3" id="menu_by_paste" onclick="return AChecker.input.onClickTab('by_paste');" <?php if (isset($_POST["validate_paste"])) echo 'class="active"'; ?>><span class="nav"><?php echo _AC("check_by_paste"); ?></span></a></li>
 			</ul>
 		</div>
 		
