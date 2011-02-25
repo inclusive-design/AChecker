@@ -119,9 +119,9 @@ $lang_charset = "UTF-8";
 		<ul class="navigation">
 			<?php foreach ($this->top_level_pages as $page): ?>
 				<?php if ($page['url'] == $this->current_top_level_page): ?>
-					<li class="navigation"><a href="<?php echo $page['url']; ?>" title="<?php echo $page['title']; ?>" class="active"><span><?php echo $page['title']; ?></span></a></li>
+					<li class="navigation"><a href="<?php echo $page['url']; ?>" title="<?php echo $page['title']; ?>" class="active"><span class="nav"><?php echo $page['title']; ?></span></a></li>
 				<?php else: ?>
-					<li class="navigation"><a href="<?php echo $page['url']; ?>"  title="<?php echo $page['title']; ?>"><span><?php echo $page['title']; ?></span></a></li>
+					<li class="navigation"><a href="<?php echo $page['url']; ?>"  title="<?php echo $page['title']; ?>"><span class="nav"><?php echo $page['title']; ?></span></a></li>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</ul>
