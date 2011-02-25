@@ -72,7 +72,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 	
 	var $html_tr_header =
 '           <tr>
-             <th width="5%">{PASS_TEXT}<br /><input type="checkbox" class="selectAllCheckBox" id="selectall_{CHECK_ID}" name="selectall_{CHECK_ID}" title="{SELECT_ALL_TEXT}" /></th>
+             <th width="5%">{PASS_TEXT}<br /><input type="checkbox" class="AC_selectAllCheckBox" id="selectall_{CHECK_ID}" name="selectall_{CHECK_ID}" title="{SELECT_ALL_TEXT}" /></th>
              <th width="95%">{SELECT_ALL_TEXT}</th>
            </tr>
 ';
@@ -91,11 +91,11 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 ';
 
 	var $html_image = 
-'<img id="msg_icon_{LINE_NUMBER}_{COL_NUMBER}_{CHECK_ID}" src="{SRC}" height="{HEIGHT}" border="1" {ALT} />
+'<img src="{SRC}" height="{HEIGHT}" border="1" {ALT} />
 ';
 
 	var $html_problem =
-'         <span class="err_type"><img src="{BASE_HREF}images/{IMG_SRC}" alt="{IMG_TYPE}" title="{IMG_TYPE}" width="15" height="15" /></span>
+'         <span class="err_type"><img id="msg_icon_{LINE_NUMBER}_{COL_NUMBER}_{CHECK_ID}" src="{BASE_HREF}images/{IMG_SRC}" alt="{IMG_TYPE}" title="{IMG_TYPE}" width="15" height="15" /></span>
          <em>{LINE_TEXT} {LINE_NUMBER}, {COL_TEXT} {COL_NUMBER}</em>:
          <pre><code class="input">{HTML_CODE}</code></pre>
          {IMAGE}
@@ -119,7 +119,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 	var $html_make_decision_button = 
 '  <tr>
     <td colspan="2">
-      <input type="button" value="{LABEL_MAKE_DECISION}" id="btn_make_decision_{SUBGROUP_ID}" />
+      <input type="button" value="{LABEL_MAKE_DECISION}" id="AC_btn_make_decision_{SUBGROUP_ID}" />
       <span id="server_response_{SUBGROUP_ID}"></span>
     </td>
   </tr>
@@ -167,7 +167,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		
 		if (is_array($guidelineLevel_checks))
 		{
-			$num_of_checks += count($guidelineLevel_checks);
+//			$num_of_checks += count($guidelineLevel_checks);
 			list($guideline_level_known_problems, $guideline_level_likely_problems, $guideline_level_potential_problems) =
 				$this->generateChecksTable($guidelineLevel_checks);
 		}
@@ -190,7 +190,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 				$groupLevel_checks = $this->checksDAO->getGroupLevelChecks($group['group_id']);
 				if (is_array($groupLevel_checks))
 				{
-					$num_of_checks += count($groupLevel_checks);
+//					$num_of_checks += count($groupLevel_checks);
 					
 					list($group_level_known_problems, $group_level_likely_problems, $group_level_potential_problems) = 
 						$this->generateChecksTable($groupLevel_checks);
@@ -206,7 +206,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 						
 						if (is_array($subgroup_checks))
 						{
-							$num_of_checks += count($subgroup_checks);
+//							$num_of_checks += count($subgroup_checks);
 							
 							// get html of all the problems in this subgroup
 							list($known_problems, $likely_problems, $potential_problems) = 
@@ -251,7 +251,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 			$this->rpt_potential_problems = $guideline_level_potential_problems . $group_potential_problems;
 		}
 		// display "none found" if no check is defined in this guideline
-		if ($num_of_checks == 0) echo _AC('congrats_no_problem');
+//		if ($num_of_checks == 0) echo _AC('congrats_no_problem');
 		
 		if ($this->show_source == 'true')
 		{
@@ -411,10 +411,8 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 				else if ($error["image_alt"] == '_EMPTY') $alt = 'alt=""';
 				else $alt = 'alt="'.$error["image_alt"].'"';
 				
-				$html_image = str_replace(array("{SRC}", "{HEIGHT}", "{ALT}",
-				                                "{LINE_NUMBER}", "{COL_NUMBER}", "{CHECK_ID}"), 
-				                          array($error["image"], $height, $alt,
-				                                $error["line_number"],$error["col_number"],$check_id), 
+				$html_image = str_replace(array("{SRC}", "{HEIGHT}", "{ALT}"), 
+				                          array($error["image"], $height, $alt), 
 				                          $this->html_image);
 			}
 		
@@ -444,6 +442,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		                         "{LINE_NUMBER}", 
 		                         "{COL_TEXT}", 
 		                         "{COL_NUMBER}", 
+			                     "{CHECK_ID}",
 		                         "{HTML_CODE}",
 		                         "{CSS_CODE}", 
 		                         "{BASE_HREF}", 
@@ -454,7 +453,8 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		                         _AC('line'), 
 		                         $error["line_number"], 
 		                         _AC('column'),
-		                         $error["col_number"], 
+		                         $error["col_number"],
+		                         $check_id, 
 		                         htmlentities($error["html_code"]),
 		                         $css_code, 
 		                         AC_BASE_HREF, 
@@ -464,9 +464,9 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		    // checkboxes only appear 
 		    // 1. when user is login. In other words, user can make decision.
 		    // 2. likely or potential reports, not error report
-			if ($this->allow_set_decision = "true" && $confidence <> KNOWN) {
+			if ($this->allow_set_decision == "true" && $confidence <> KNOWN) {
 				$checkbox_name = "d[".$error["line_number"]."_".$error["col_number"]."_".$error["check_id"]."]";
-				$checkbox_html = '<input type="checkbox" class="childCheckBox" name="'.$checkbox_name.'" value="1" ';
+				$checkbox_html = '<input type="checkbox" class="AC_childCheckBox" name="'.$checkbox_name.'" value="1" ';
 				
 				if ($row && $row['decision'] == AC_DECISION_PASS){
 					$checkbox_html .= 'checked="checked" ';

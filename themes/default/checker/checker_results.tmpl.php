@@ -15,14 +15,14 @@ global $addslashes;
 
 include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
+?>
+<div id="seals_div" class="validator-output-form">
 
+<?php 
 // display seals
 if (is_array($this->seals))
 {
 ?>
-
-<div id="seals_div" class="validator-output-form">
-
 <h3><?php echo _AC('valid_icons');?></h3>
 <p><?php echo _AC('valid_icons_text');?></p>
 <?php 
@@ -46,11 +46,9 @@ if (is_array($this->seals))
 
 <?php 
 	} // end of foreach (display seals)
-?>
-</div>
-<?php 
 } // end of if (display seals)
 ?>
+</div>
 
 <div id="output_div" >
 
@@ -96,15 +94,15 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 
 	<div class="topnavlistcontainer"><br />
 		<ul class="navigation">
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_errors" onclick="AChecker.output.onClickTab('errors');"><span><?php echo _AC("known_problems"); ?>(<?php echo $this->num_of_errors; ?>)</span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_likely_problems" onclick="AChecker.output.onClickTab('likely_problems');"><span><?php echo _AC("likely_problems"); ?> (<?php echo $this->num_of_likely_problems_no_decision; ?>)</span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_potential_problems" onclick="AChecker.output.onClickTab('potential_problems');"><span><?php echo _AC("potential_problems"); ?> (<?php echo $this->num_of_potential_problems_no_decision; ?>)</span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_html_validation_result" onclick="AChecker.output.onClickTab('html_validation_result');"><span><?php echo _AC("html_validation_result"); ?> <?php if (isset($_POST["enable_html_validation"])) echo "(".$this->num_of_html_errors.")"; ?></span></a></li>
-			<li class="navigation"><a href="checker/index.php#output_div" accesskey="5" title="<?php echo _AC("css_validation_result"); ?> Alt+5" id="menu_css_validation_result" onclick="AChecker.output.onClickTab('css_validation_result');"><span><?php echo _AC("css_validation_result"); ?> <?php if (isset($this->cssValidator)) echo "(".$this->num_of_css_errors.")"; ?></span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="menu_AC_errors" onclick="AChecker.output.onClickTab('AC_errors');"><span><?php echo _AC("known_problems"); ?>(<span id="num_of_errors"><?php echo $this->num_of_errors; ?></span>)</span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="menu_AC_likely_problems" onclick="AChecker.output.onClickTab('AC_likely_problems');"><div><?php echo _AC("likely_problems"); ?> (<span id="AC_num_of_likely"><?php echo $this->num_of_likely_problems_no_decision; ?></span>)</div></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="menu_AC_potential_problems" onclick="AChecker.output.onClickTab('AC_potential_problems');"><span><?php echo _AC("potential_problems"); ?> (<span id="AC_num_of_potential"><?php echo $this->num_of_potential_problems_no_decision; ?></span>)</span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="menu_AC_html_validation_result" onclick="AChecker.output.onClickTab('AC_html_validation_result');"><span><?php echo _AC("html_validation_result"); ?> <?php if (isset($_POST["enable_html_validation"])) echo '(<span id="num_of_html_errors">'.$this->num_of_html_errors."</span>)"; ?></span></a></li>
+			<li class="navigation"><a href="checker/index.php#output_div" accesskey="5" title="<?php echo _AC("css_validation_result"); ?> Alt+5" id="menu_AC_css_validation_result" onclick="AChecker.output.onClickTab('AC_css_validation_result');"><span><?php echo _AC("css_validation_result"); ?> <?php if (isset($this->cssValidator)) echo '(<span id="num_of_css_errors">'.$this->num_of_css_errors."</span>)"; ?></span></a></li>
 		</ul>
 	</div>
 
-	<div id="errors">
+	<div id="AC_errors">
 <?php
 
 if (isset($this->aValidator))
@@ -118,7 +116,7 @@ if (isset($this->aValidator))
 ?>
 	</div>
 
-	<div id="likely_problems" style="display:none;">
+	<div id="AC_likely_problems" style="display:none;">
 <?php
 
 if (isset($this->aValidator))
@@ -132,7 +130,7 @@ if (isset($this->aValidator))
 ?>
 	</div>
 
-	<div id="potential_problems" style="margin-top:1em; display:none;">
+	<div id="AC_potential_problems" style="margin-top:1em; display:none;">
 <?php
 
 if (isset($this->aValidator))
@@ -146,7 +144,7 @@ if (isset($this->aValidator))
 ?>
 	</div>
 
-	<div id="html_validation_result" style="margin-top:1em; display:none;">
+	<div id="AC_html_validation_result" style="margin-top:1em; display:none;">
 <?php
 if (isset($this->htmlValidator))
 {
@@ -167,7 +165,7 @@ else
 ?>
 	</div>
 	
-		<div id="css_validation_result" style="margin-top:1em; display:none;">
+		<div id="AC_css_validation_result" style="margin-top:1em; display:none;">
 <?php
 if (isset($_POST['validate_file']) || isset($_POST['validate_paste'])) {
 	// css validator is only available at validating url, not at validating a uploaded file or pasted html

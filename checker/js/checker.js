@@ -21,7 +21,7 @@ AChecker.output = AChecker.output || {};
 	AChecker.input.inputButtonIds = new Array("validate_uri", "validate_file", "validate_paste");
 
 	// global vars on the output form of the validation index page
-	AChecker.output.outputDivIds = new Array("errors", "likely_problems", "potential_problems", "html_validation_result","css_validation_result");
+	AChecker.output.outputDivIds = new Array("AC_errors", "AC_likely_problems", "AC_potential_problems", "AC_html_validation_result","AC_css_validation_result");
 	AChecker.output.makeDecisionButtonId = "make_decision";
 
 	/**
@@ -160,23 +160,24 @@ AChecker.output = AChecker.output || {};
      * clicking the last unchecked or checked child checkbox should check or uncheck the parent "select all" checkbox
      */
 	var undoSelectAll = function(this_child) {
-        if ($(this_child).parents('table:eq(0)').find('.selectAllCheckBox').attr('checked') == true && this_child.checked == false)
-            $(this_child).parents('table:eq(0)').find('.selectAllCheckBox').attr('checked', false);
+        if ($(this_child).parents('table:eq(0)').find('.AC_selectAllCheckBox').attr('checked') == true && this_child.checked == false)
+            $(this_child).parents('table:eq(0)').find('.AC_selectAllCheckBox').attr('checked', false);
         if (this_child.checked == true) {
             var flag = true;
-            $(this_child).parents('table:eq(0)').find('.childCheckBox').each(
+            $(this_child).parents('table:eq(0)').find('.AC_childCheckBox').each(
                 function() {
-                    if (this_child.checked == false)
+                    if (this.checked == false)
                         flag = false;
                 }
             );
-            $(this_child).parents('table:eq(0)').find('.selectAllCheckBox').attr('checked', flag);
+            $(this_child).parents('table:eq(0)').find('.AC_selectAllCheckBox').attr('checked', flag);
         }
     };
     
     /**
      * private
      * Display server response message - success
+     * Called by makeDecisions()
      */
     var displaySuccessMsg = function(btn_make_decision, message) {
 	    serverMsgSpan = $(btn_make_decision).parents('tr:eq(0)').find('span[id^="server_response"]');
@@ -186,7 +187,8 @@ AChecker.output = AChecker.output || {};
     
     /**
      * private
-     * Display server response message - error 
+     * Display server response message - error.
+     * Called by makeDecisions()
      */
     var displayErrorMsg = function(btn_make_decision, message) {
 	    serverMsgSpan = $(btn_make_decision).parents('tr:eq(0)').find('span[id^="server_response"]');
@@ -197,25 +199,60 @@ AChecker.output = AChecker.output || {};
     /**
      * private
      * When the pass decision is made, flip the likely/potential icons to green congrats icons;
-     * When the pass decision is cancelled, flip green congrats icons to the likely/potential icons. 
+     * When the pass decision is cancelled, flip green congrats icons to the likely/potential icons.
+     * Called by makeDecisions() 
      */
     var flipMsgIcon = function(btn_make_decision) {
-    	$(btn_make_decision).parents('table:eq(0)').find('.childCheckBox').each(function () {
-    		// find out the id of message icon
-    		chckboxName = $(this).attr('name');
-    		msgIconID = checkboxName.replace('d[', '');
-    		msgIconID = msgIconID.replace(']', '');
-    		msgIconIDValue = "msg_icon_" + msgIconID;
+        $(btn_make_decision).parents('table:eq(0)').find('.AC_childCheckBox').each(function () {
+            // find out the id of message icon
+            var checkboxName = $(this).attr('name')+"";
+            msgIconID = checkboxName.replace('d[', '');
+            msgIconID = msgIconID.replace(']', '');
+            msgIconIDValue = '#msg_icon_' + msgIconID;
     		
-    		msgIcon = $("#"+msgIconIDValue);
-    		if ($(this).attr('checked') == true) {
-    			msgIcon.attr('src','images/feedback.gif');
-    		} else {
-    			// find out likely or potential icon needs to be displayed
-    			inLikelyDiv = msgIcon.parents('div[id="likely_problems"]');
-    			inPotentialDiv = msgIcon.parents('div[id="potential_problems"]');
+            msgIcon = $(msgIconIDValue);
+            if (this.checked == true) {
+                msgIcon.attr('src','images/feedback.gif');
+            } else {
+                // find out the problem is a likely or a potential
+                inLikelyDiv = msgIcon.parents('div[id="AC_likely_problems"]');
+                inPotentialDiv = msgIcon.parents('div[id="AC_potential_problems"]');
+    			
+                if (inLikelyDiv.length){ // likely problem
+                	msgIcon.attr('src','images/warning.png');
+                } 
+                if (inPotentialDiv.length){ // potential problem
+                	msgIcon.attr('src','images/info.png');
+                } 
     		}
     	});
+    };
+    
+    /**
+     * private
+     * Modify the number of problems on the tab bar. 
+     * Called by makeDecisions()
+     */
+    var changeNumOfProblems = function(btn_make_decision) {
+        var inLikelyDiv = msgIcon.parents('div[id="AC_likely_problems"]');
+        var inPotentialDiv = msgIcon.parents('div[id="AC_potential_problems"]');
+        var numOfProblemsID, currentDiv;
+    	
+        // decide the tab to work on and number of problems
+        if (inLikelyDiv.length){ // likely problem
+            numOfProblemsID = '#AC_num_of_likely';
+        	currentDiv = inLikelyDiv;
+        } else if (inPotentialDiv.length){ // likely problem
+        	numOfProblemsID = '#AC_num_of_potential';
+        	currentDiv = inPotentialDiv;
+        }
+        
+        // find number of all problems (checkboxes) in the current tab
+        var total = $(currentDiv).find("input[class=AC_childCheckBox]").length;
+        var checked = $(currentDiv).find("input[class=AC_childCheckBox]:checked").length;
+        
+        var numOfProblems = total - checked;
+        $(numOfProblemsID).html(numOfProblems);
     };
     
     var setSelectedClass = function(this_checkbox) {
@@ -240,11 +277,9 @@ AChecker.output = AChecker.output || {};
      *    ajax request the seal html from server and display it in seal container
      */
     var makeDecision = function(btn_make_decision) {
-//    	checkboxes_status = $(btn_make_decision).parents('table:eq(0)').find('.childCheckBox').attr('checked');
-    	
     	var ajaxPostStr = "";
     	
-    	$(btn_make_decision).parents('table:eq(0)').find('.childCheckBox').each(function () {
+    	$(btn_make_decision).parents('table:eq(0)').find('.AC_childCheckBox').each(function () {
     		if ($(this).attr('checked') == true) {
     			ajaxPostStr += $(this).attr('name') + "=" + "P" + "&";
     		} else {
@@ -266,7 +301,10 @@ AChecker.output = AChecker.output || {};
     		    displaySuccessMsg(btn_make_decision, data);
     		    
     		    // flip icon to green pass icon
-//    		    flipMsgIcon(btn_make_decision);
+    		    flipMsgIcon(btn_make_decision);
+    		    
+    		    // modify number of problems on the tab bar
+    		    changeNumOfProblems(btn_make_decision);
 	        }, 
 	        
             error: function(xhr, errorType, exception) {
@@ -279,17 +317,17 @@ AChecker.output = AChecker.output || {};
     $(document).ready(
 	    function() {
 	        //clicking the "select all" checkbox should check or uncheck all child checkboxes
-	        $(".selectAllCheckBox").click(function() {
-                $(this).parents('table:eq(0)').find('.childCheckBox').attr('checked', this.checked);
+	        $(".AC_selectAllCheckBox").click(function() {
+                $(this).parents('table:eq(0)').find('.AC_childCheckBox').attr('checked', this.checked);
             });
 	        
 	        //clicking the last unchecked or checked checkbox should check or uncheck the parent "select all" checkbox
-	        $('.childCheckBox').click(function() {
+	        $('.AC_childCheckBox').click(function() {
 	        	undoSelectAll(this);
 	        });
 	        
 	        // clicking on "make decision" button
-	        $('input[id^="btn_make_decision"]').click(function() {
+	        $('input[id^="AC_btn_make_decision"]').click(function() {
         		makeDecision(this);
 	        });
 	        
