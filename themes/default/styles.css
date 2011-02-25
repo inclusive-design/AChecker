@@ -956,7 +956,7 @@ pre.badgeSnippet {
     text-decoration: none;
     padding-left: 10px;
 } 
-.navigation a span {
+.navigation a span.nav {
     background: url(images/navr.gif) right top no-repeat;
     padding-right: 10px;
 } 
@@ -965,7 +965,7 @@ pre.badgeSnippet {
     background: #781351 url(images/navlh.gif) left top no-repeat;
     padding-left: 10px
 }
-.navigation a:hover span {
+.navigation a:hover span.nav {
     background: url(images/navrh.gif) right top no-repeat;
     padding-right: 10px
 }
