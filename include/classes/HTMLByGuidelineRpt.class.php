@@ -73,7 +73,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 	var $html_tr_header =
 '           <tr>
              <th width="5%">{PASS_TEXT}<br /><input type="checkbox" class="AC_selectAllCheckBox" id="selectall_{CHECK_ID}" name="selectall_{CHECK_ID}" title="{SELECT_ALL_TEXT}" /></th>
-             <th width="95%">{SELECT_ALL_TEXT}</th>
+             <th width="95%"><label for="selectall_{CHECK_ID}">{SELECT_ALL_TEXT}</label></th>
            </tr>
 ';
 
@@ -96,13 +96,15 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 
 	var $html_problem =
 '         <span class="err_type"><img id="msg_icon_{LINE_NUMBER}_{COL_NUMBER}_{CHECK_ID}" src="{BASE_HREF}images/{IMG_SRC}" alt="{IMG_TYPE}" title="{IMG_TYPE}" width="15" height="15" /></span>
-         <em>{LINE_TEXT} {LINE_NUMBER}, {COL_TEXT} {COL_NUMBER}</em>:
+         <em>{LABEL_START}{LINE_TEXT} {LINE_NUMBER}, {COL_TEXT} {COL_NUMBER}{LABEL_END}</em>:
          <pre><code class="input">{HTML_CODE}</code></pre>
          {IMAGE}
          <p class="helpwanted">
          </p>
          {CSS_CODE}
 ';
+	var $label_start = '<label for="{CHECKBOX_ID}">';
+	var $label_end = '</label>';
 	
 	var $html_repair = 
 '         <span style="font-weight:bold">{REPAIR_LABEL}: </span>{REPAIR_DETAIL}
@@ -454,7 +456,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		    // 2. likely or potential reports, not error report
 			if ($this->allow_set_decision == "true" && $confidence <> KNOWN) {
 				$checkbox_name = "d[".$error["line_number"]."_".$error["col_number"]."_".$error["check_id"]."]";
-				$checkbox_html = '<input type="checkbox" class="AC_childCheckBox" name="'.$checkbox_name.'" value="1" ';
+				$checkbox_html = '<input type="checkbox" class="AC_childCheckBox" id="'.$checkbox_name.'" name="'.$checkbox_name.'" value="1" ';
 				
 				if ($row && $row['decision'] == AC_DECISION_PASS){
 					$checkbox_html .= 'checked="checked" ';
@@ -462,9 +464,19 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 				
 				$checkbox_html .= '/>';
 				
+				// associate checkbox label
+				$label_start = str_replace("{CHECKBOX_ID}", $checkbox_name, $this->label_start);
+				$problem_cell = str_replace(array("{LABEL_START}", "{LABEL_END}"), 
+				                            array($label_start, $this->label_end), 
+				                            $problem_cell);
+				                            
 				$tr_rows .= str_replace(array("{CHECKBOX}", "{PROBLEM_DETAIL}"), 
 				                       array($checkbox_html, $problem_cell), $this->html_tr_with_decision);
 			} else {
+				$problem_cell = str_replace(array("{LABEL_START}", "{LABEL_END}"), 
+				                            array("", ""), 
+				                            $problem_cell);
+				
 				$tr_rows .= str_replace(array("{PROBLEM_DETAIL}"), 
 				                       array($problem_cell), $this->html_tr_without_decision);
 			}
@@ -483,6 +495,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		$output .= "passDecisionText = '"._AC('passed_decision')."';\n";
 		$output .= "warningText = '"._AC('warning')."';\n";
 		$output .= "manualCheckText = '"._AC('manual_check')."';\n";
+		$output .= "getSealText = '"._AC('get_seal')."';\n";
 		$output .= '</script>'."\n";
 		return $output;
 	}

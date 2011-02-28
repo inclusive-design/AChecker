@@ -264,7 +264,7 @@ AChecker.output = AChecker.output || {};
      * retrieve and display seal
      * Called by makeDecisions()
      */
-    var showSeal = function() {
+    var showSeal = function(btn_make_decision) {
     	var ajaxPostStr = "uri" + "=" + $.URLEncode($('input[name="uri"]').attr('value')) + "&" + 
                           "jsessionid" + "=" + $('input[name="jsessionid"]').attr('value') + "&" +
                           "gids[]="+$('input[name="radio_gid[]"][type="hidden"]').attr('value');
@@ -275,7 +275,12 @@ AChecker.output = AChecker.output || {};
             data: ajaxPostStr,
             
             success: function(data) {
-    		    $('#seals_div').html(data);
+    		    // display seal
+    			$('#seals_div').html(data);
+    			
+    			// inform the user that the seal has been issued and displayed at the top seal container
+    		    serverMsgSpan = $(btn_make_decision).parents('tr:eq(0)').find('span[id^="server_response"]');
+    		    serverMsgSpan.html(serverMsgSpan.text() + getSealText);
     	    }
     	});
     };
@@ -337,7 +342,7 @@ AChecker.output = AChecker.output || {};
         		    numOfErrors = $('#AC_num_of_errors').text();
         		    
         		    if (numOfErrors == 0) {
-        		    	showSeal();
+        		    	showSeal(btn_make_decision);
         		    }
     		    }
 	        }, 
