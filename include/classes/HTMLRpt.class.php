@@ -349,7 +349,7 @@ class HTMLRpt extends AccessibilityRpt {
 		else if ($error_type == IS_INFO)
 		{
 			$msg_type = "msg_info";
-			$img_type = _AC('check');
+			$img_type = _AC('manual_check');
 			$img_src = "info.png";
 		}
 		

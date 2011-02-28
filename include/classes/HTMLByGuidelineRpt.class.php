@@ -167,7 +167,6 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		
 		if (is_array($guidelineLevel_checks))
 		{
-//			$num_of_checks += count($guidelineLevel_checks);
 			list($guideline_level_known_problems, $guideline_level_likely_problems, $guideline_level_potential_problems) =
 				$this->generateChecksTable($guidelineLevel_checks);
 		}
@@ -190,8 +189,6 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 				$groupLevel_checks = $this->checksDAO->getGroupLevelChecks($group['group_id']);
 				if (is_array($groupLevel_checks))
 				{
-//					$num_of_checks += count($groupLevel_checks);
-					
 					list($group_level_known_problems, $group_level_likely_problems, $group_level_potential_problems) = 
 						$this->generateChecksTable($groupLevel_checks);
 				}
@@ -206,8 +203,6 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 						
 						if (is_array($subgroup_checks))
 						{
-//							$num_of_checks += count($subgroup_checks);
-							
 							// get html of all the problems in this subgroup
 							list($known_problems, $likely_problems, $potential_problems) = 
 								$this->generateChecksTable($subgroup_checks);
@@ -245,13 +240,11 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 			$this->rpt_errors = $guideline_level_known_problems . $group_known_problems;
 		} 
 		if ($guideline_level_likely_problems <> "" || $group_likely_problems <> "") {
-			$this->rpt_likely_problems = $guideline_level_likely_problems . $group_likely_problems;
+			$this->rpt_likely_problems = $guideline_level_likely_problems . $group_likely_problems.$this->initJSVars();
 		} 
 		if ($guideline_level_potential_problems <> "" || $group_potential_problems <> "") {
-			$this->rpt_potential_problems = $guideline_level_potential_problems . $group_potential_problems;
+			$this->rpt_potential_problems = $guideline_level_potential_problems . $group_potential_problems.$this->initJSVars();
 		}
-		// display "none found" if no check is defined in this guideline
-//		if ($num_of_checks == 0) echo _AC('congrats_no_problem');
 		
 		if ($this->show_source == 'true')
 		{
@@ -377,20 +370,17 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 			if ($confidence == KNOWN) {
 				$this->num_of_errors++;
 				
-				$msg_type = "msg_err";
 				$img_type = _AC('error');
 				$img_src = "error.png";
 			} else if ($confidence == LIKELY) {
 				$this->num_of_likely_problems++;
 				
-				$msg_type = "msg_info";
 				$img_type = _AC('warning');
 				$img_src = "warning.png";
 			} else if ($confidence == POTENTIAL) {
 				$this->num_of_potential_problems++;
 				
-				$msg_type = "msg_info";
-				$img_type = _AC('check');
+				$img_type = _AC('manual_check');
 				$img_src = "info.png";
 			}
 			
@@ -430,13 +420,12 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 			
 			if ($row && $row['decision'] == AC_DECISION_PASS) { // pass decision has been made, display "congrats" icon
 				$msg_type = "msg_info";
-				$img_type = _AC('passed');
+				$img_type = _AC('passed_decision');
 				$img_src = "feedback.gif";
 			}
 			
 			// generate individual problem string
-			$problem_cell = str_replace(array("{MSG_TYPE}", 
-		                         "{IMG_SRC}", 
+			$problem_cell = str_replace(array("{IMG_SRC}", 
 		                         "{IMG_TYPE}", 
 		                         "{LINE_TEXT}", 
 		                         "{LINE_NUMBER}", 
@@ -447,8 +436,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		                         "{CSS_CODE}", 
 		                         "{BASE_HREF}", 
 		                         "{IMAGE}"),
-		                   array($msg_type, 
-		                         $img_src, 
+		                   array($img_src, 
 		                         $img_type,
 		                         _AC('line'), 
 		                         $error["line_number"], 
@@ -483,6 +471,20 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		}
 		
 		return $th_row . $tr_rows;
+	}
+	
+	/**
+	 * Return a string of javascript that initializes the variables required by checker.js
+	 * @ param: none
+	 * @ see: checker/js/checker.js
+	 */
+	private function initJSVars() {
+		$output = '<script type="text/javascript">'."\n";
+		$output .= "passDecisionText = '"._AC('passed_decision')."';\n";
+		$output .= "warningText = '"._AC('warning')."';\n";
+		$output .= "manualCheckText = '"._AC('manual_check')."';\n";
+		$output .= '</script>'."\n";
+		return $output;
 	}
 	
 	// generate $this->rpt_source

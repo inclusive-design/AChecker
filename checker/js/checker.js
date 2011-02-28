@@ -213,6 +213,8 @@ AChecker.output = AChecker.output || {};
             msgIcon = $(msgIconIDValue);
             if (this.checked == true) {
                 msgIcon.attr('src','images/feedback.gif');
+                msgIcon.attr('title',passDecisionText);
+                msgIcon.attr('alt',passDecisionText);
             } else {
                 // find out the problem is a likely or a potential
                 inLikelyDiv = msgIcon.parents('div[id="AC_likely_problems"]');
@@ -220,9 +222,13 @@ AChecker.output = AChecker.output || {};
     			
                 if (inLikelyDiv.length){ // likely problem
                 	msgIcon.attr('src','images/warning.png');
+                    msgIcon.attr('title',warningText);
+                    msgIcon.attr('alt',warningText);
                 } 
                 if (inPotentialDiv.length){ // potential problem
                 	msgIcon.attr('src','images/info.png');
+                    msgIcon.attr('title',manualCheckText);
+                    msgIcon.attr('alt',manualCheckText);
                 } 
     		}
     	});
@@ -233,26 +239,45 @@ AChecker.output = AChecker.output || {};
      * Modify the number of problems on the tab bar. 
      * Called by makeDecisions()
      */
-    var changeNumOfProblems = function(btn_make_decision) {
-        var inLikelyDiv = msgIcon.parents('div[id="AC_likely_problems"]');
-        var inPotentialDiv = msgIcon.parents('div[id="AC_potential_problems"]');
-        var numOfProblemsID, currentDiv;
+    var changeNumOfProblems = function() {
+        var divsToLookup = new Array("AC_likely_problems", "AC_potential_problems");
+    	var divIDsToUpdateErrorNum = new Array("AC_num_of_likely", "AC_num_of_potential");
+    	var arrayNumOfProblems = new Array(2);
     	
         // decide the tab to work on and number of problems
-        if (inLikelyDiv.length){ // likely problem
-            numOfProblemsID = '#AC_num_of_likely';
-        	currentDiv = inLikelyDiv;
-        } else if (inPotentialDiv.length){ // likely problem
-        	numOfProblemsID = '#AC_num_of_potential';
-        	currentDiv = inPotentialDiv;
+        for (i in divsToLookup) {
+        	currentDiv = $('div[id="'+divsToLookup[i]+'"]');
+            // find number of all problems (checkboxes) in the current tab
+            var total = $(currentDiv).find("input[class=AC_childCheckBox]").length;
+            var checked = $(currentDiv).find("input[class=AC_childCheckBox]:checked").length;
+            
+            var numOfProblems = total - checked;
+            $("#"+divIDsToUpdateErrorNum[i]).html(numOfProblems);
+            
+            arrayNumOfProblems[i] = numOfProblems;
         }
         
-        // find number of all problems (checkboxes) in the current tab
-        var total = $(currentDiv).find("input[class=AC_childCheckBox]").length;
-        var checked = $(currentDiv).find("input[class=AC_childCheckBox]:checked").length;
-        
-        var numOfProblems = total - checked;
-        $(numOfProblemsID).html(numOfProblems);
+        return arrayNumOfProblems;
+    };
+    
+    /**
+     * retrieve and display seal
+     * Called by makeDecisions()
+     */
+    var showSeal = function() {
+    	var ajaxPostStr = "uri" + "=" + $.URLEncode($('input[name="uri"]').attr('value')) + "&" + 
+                          "jsessionid" + "=" + $('input[name="jsessionid"]').attr('value') + "&" +
+                          "gids[]="+$('input[name="radio_gid[]"][type="hidden"]').attr('value');
+
+    	$.ajax({
+            type: "POST",
+            url: "checker/get_seal_html.php",
+            data: ajaxPostStr,
+            
+            success: function(data) {
+    		    $('#seals_div').html(data);
+    	    }
+    	});
     };
     
     var setSelectedClass = function(this_checkbox) {
@@ -279,8 +304,8 @@ AChecker.output = AChecker.output || {};
     var makeDecision = function(btn_make_decision) {
     	var ajaxPostStr = "";
     	
-    	$(btn_make_decision).parents('table:eq(0)').find('.AC_childCheckBox').each(function () {
-    		if ($(this).attr('checked') == true) {
+    	$('input[class="AC_childCheckBox"]').each(function () {
+    		if (this.checked == true) {
     			ajaxPostStr += $(this).attr('name') + "=" + "P" + "&";
     		} else {
     			ajaxPostStr += $(this).attr('name') + "=" + "N" + "&";
@@ -303,8 +328,18 @@ AChecker.output = AChecker.output || {};
     		    // flip icon to green pass icon
     		    flipMsgIcon(btn_make_decision);
     		    
-    		    // modify number of problems on the tab bar
-    		    changeNumOfProblems(btn_make_decision);
+    		    // modify and store the number of problems on the tab bar
+    		    arrayNumOfProblems = changeNumOfProblems();
+    		    
+    		    // if all errors, likely, potential problems are 0, retrieve seal
+    		    if (arrayNumOfProblems[0] == 0 && arrayNumOfProblems[1] == 0) {
+    		    	// find the number of errors
+        		    numOfErrors = $('#AC_num_of_errors').text();
+        		    
+        		    if (numOfErrors == 0) {
+        		    	showSeal();
+        		    }
+    		    }
 	        }, 
 	        
             error: function(xhr, errorType, exception) {

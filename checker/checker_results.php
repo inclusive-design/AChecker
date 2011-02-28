@@ -140,7 +140,10 @@ if (isset($aValidator))
 	$savant->assign('num_of_total_a_errors', $num_of_total_a_errors);
 	
 	// vars for displaying seals
-	if (is_array($seals)) $savant->assign('seals', $seals);
+	if (is_array($seals)) {
+		$savant->assign('savant', $savant);
+		$savant->assign('seals', $seals);
+	}
 	if ($user_link_id <> '') $savant->assign('user_link_id', $user_link_id);
 	
 	// vars for displaying report from referer URI

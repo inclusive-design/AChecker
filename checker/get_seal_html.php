@@ -18,21 +18,27 @@ define('AC_INCLUDE_PATH', '../include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
-include_once(AC_INCLUDE_PATH. 'classes/Decision.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/DAO/UserLinksDAO.class.php');
 
 // main process to save decisions
-$decision = new Decision($_SESSION['user_id'], $_POST['uri'], $_POST['output'], $_POST['jsessionid']);
+$guidelinesDAO = new GuidelinesDAO();
+$guideline_rows = $guidelinesDAO->getGuidelineByIDs($_POST['gids']);
 
-if ($decision->hasError())
-{
-	$decision_error = $decision->getErrorRpt();  // displays in checker_input_form.tmpl.php
-	Utility::returnError($decision_error);
+if (!is_array($guideline_rows)) {
+	echo _AC("AC_ERROR_EMPTY_GID");
+	exit;
 }
-else
-{
-	// make decisions
-	$decision->makeDecisions($_POST['d']);
-	Utility::returnSuccess(_AC('saved_successfully'));
+$utility = new Utility();
+$seals = $utility->getSeals($guideline_rows);
+
+if (is_array($seals)) {
+	$userLinksDAO = new UserLinksDAO();
+	$rows = $userLinksDAO->getByUserIDAndURIAndSession($_SESSION['user_id'], $_POST['uri'], $_POST['jsessionid']);
+	
+	$savant->assign('user_link_id', $rows[0]['user_link_id']);
+	$savant->assign('seals', $seals);
+	$savant->display('checker/seals.tmpl.php');
 }
 
 exit;
