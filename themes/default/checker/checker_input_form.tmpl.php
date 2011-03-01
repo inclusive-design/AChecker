@@ -223,8 +223,8 @@ echo get_guideline_div($this->rows, $this->num_of_guidelines_per_row, "checkbox"
 				<td colspan="3"><h3><?php echo _AC("report_format"); ?></h3></td>
 			</tr>
 			<tr>
-				<td class="one_third_width"><input type="radio" name="rpt_format" value="<?php echo REPORT_FORMAT_GUIDELINE; ?>" id="option_rpt_gdl" <?php if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) echo 'checked="checked"'; ?> /><label for="rpt_gdl"><?php echo _AC("view_by_guideline"); ?></label></td>
-				<td class="one_third_width"><input type="radio" name="rpt_format" value="<?php echo REPORT_FORMAT_LINE; ?>" id="option_rpt_line" <?php if ($_POST["rpt_format"] == REPORT_FORMAT_LINE) echo 'checked="checked"'; ?> /><label for="rpt_line"><?php echo _AC("view_by_line"); ?></label></td>
+				<td class="one_third_width"><input type="radio" name="rpt_format" value="<?php echo REPORT_FORMAT_GUIDELINE; ?>" id="option_rpt_gdl" <?php if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) echo 'checked="checked"'; ?> /><label for="option_rpt_gdl"><?php echo _AC("view_by_guideline"); ?></label></td>
+				<td class="one_third_width"><input type="radio" name="rpt_format" value="<?php echo REPORT_FORMAT_LINE; ?>" id="option_rpt_line" <?php if ($_POST["rpt_format"] == REPORT_FORMAT_LINE) echo 'checked="checked"'; ?> /><label for="option_rpt_line"><?php echo _AC("view_by_line"); ?></label></td>
 			</tr>
 		</table>
 		</div>

@@ -26,6 +26,11 @@ $mtime = explode(" ", $mtime);
 $mtime = $mtime[1] + $mtime[0]; 
 $starttime = $mtime; 
 
+// Used in themes/default/checker/checker_results.tmpl.php & include/classes/HTMLByGuidelineRpt.class.php
+global $congrats_msg_for_likely, $congrats_msg_for_potential;
+$congrats_msg_for_likely = '<img src="'.AC_BASE_HREF.'images/feedback.gif" alt="'._AC("feedback").'" />  '. _AC("congrats_no_likely");
+$congrats_msg_for_potential = '<img src="'.AC_BASE_HREF.'images/feedback.gif" alt="'._AC("feedback").'" />  '. _AC("congrats_no_potential");
+
 $guidelinesDAO = new GuidelinesDAO();
 
 // process to make decision

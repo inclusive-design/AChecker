@@ -11,7 +11,7 @@
 /************************************************************************/
 // $Id$
 
-global $addslashes;
+global $addslashes, $congrats_msg_for_likely, $congrats_msg_for_potential;;
 
 include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
@@ -106,43 +106,68 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 		</ul>
 	</div>
 
+<?php 
+$has_errors = false;
+if (isset($this->aValidator) && $this->num_of_errors > 0) {
+	$has_errors = true;
+}
+?>
 	<div id="AC_errors">
-<?php
-
-if (isset($this->aValidator))
-{
-	if ($this->num_of_errors > 0)
-		echo $this->a_rpt->getErrorRpt();
-	else
-		echo "<br /><span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_known") ."</span>";
+	<br />
+	<span id='AC_congrats_msg_for_errors' <?php if (!$has_errors) echo "class='congrats_msg'";?>>
+<?php 
+if (!$has_errors) {
+	echo "<img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_known");
 }
-
+?>
+	</span>
+<?php
+if ($has_errors) {
+	echo $this->a_rpt->getErrorRpt();
+}
 ?>
 	</div>
 
+<?php 
+$has_likely = false;
+if (isset($this->aValidator) && $this->num_of_likely_problems > 0) {
+	$has_likely = true;
+}
+?>
 	<div id="AC_likely_problems" style="display:none;">
-<?php
-
-if (isset($this->aValidator))
-{
-	if ($this->num_of_likely_problems > 0)
-		echo $this->a_rpt->getLikelyProblemRpt();
-	else
-		echo "<br /><span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_likely") ."</span>";
+	<br />
+	<span id="AC_congrats_msg_for_likely" <?php if (!$has_likely) echo "class='congrats_msg'"; ?>>
+<?php if (!$has_likely) {
+	echo $congrats_msg_for_likely;
 }
-
+?>
+	</span>
+<?php
+if ($has_likely) {
+	echo $this->a_rpt->getLikelyProblemRpt();
+}
 ?>
 	</div>
 
+<?php 
+$has_potential = false;
+if (isset($this->aValidator) && $this->num_of_potential_problems > 0) {
+	$has_potential = true;
+}
+?>
 	<div id="AC_potential_problems" style="margin-top:1em; display:none;">
+	<br />
+	<span id="AC_congrats_msg_for_potential" <?php if (!$has_potential) echo "class='congrats_msg'";?>>
+<?php 
+if (!$has_potential) {
+	echo $congrats_msg_for_potential;
+}
+?>
+	</span>
 <?php
 
-if (isset($this->aValidator))
-{
-	if ($this->num_of_potential_problems > 0)
-		echo $this->a_rpt->getPotentialProblemRpt();
-	else
-		echo "<br /><span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_no_potential") ."</span>";
+if ($has_potential) {
+	echo $this->a_rpt->getPotentialProblemRpt();
 }
 
 ?>

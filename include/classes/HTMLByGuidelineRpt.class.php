@@ -42,6 +42,8 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 	var $guidelineGroupsDAO;
 	var $guidelineSubgroupsDAO;
 	
+	var $jsVarsInited;                    // Ensure the initialization of javascript variables for checker.js is only output once
+	
 	var $html_group =
 '<h3>{GROUP_NAME}</h3><br/>
 ';
@@ -162,6 +164,8 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		$this->checksDAO = new ChecksDAO();
 		$this->guidelineGroupsDAO = new GuidelineGroupsDAO();
 		$this->guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
+		
+		$this->jsVarsInited = false;
 	}
 	
 	/**
@@ -459,7 +463,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		                         $error["col_number"],
 		                         $check_id, 
 		                         htmlentities($error["html_code"]),
-		                         $css_code, 
+		                         $error['css_code'], 
 		                         AC_BASE_HREF, 
 		                         $html_image),
 		                   $this->html_problem);
@@ -504,12 +508,21 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 	 * @ see: checker/js/checker.js
 	 */
 	private function initJSVars() {
+		global $congrats_msg_for_likely, $congrats_msg_for_potential;
+		
+		// DO NOT output this javascript more than once on the same page
+		if ($this->jsVarsInited) return;
+		
 		$output = '<script type="text/javascript">'."\n";
 		$output .= "passDecisionText = '"._AC('passed_decision')."';\n";
 		$output .= "warningText = '"._AC('warning')."';\n";
 		$output .= "manualCheckText = '"._AC('manual_check')."';\n";
 		$output .= "getSealText = '"._AC('get_seal')."';\n";
+		$output .= "congratsMsgForLikely = '".$congrats_msg_for_likely."';\n";
+		$output .= "congratsMsgForPotential = '".$congrats_msg_for_potential."';\n";
 		$output .= '</script>'."\n";
+		
+		$this->jsVarsInited = true;
 		return $output;
 	}
 	

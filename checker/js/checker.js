@@ -171,6 +171,9 @@ AChecker.output = AChecker.output || {};
                 }
             );
             $(this_child).parents('table:eq(0)').find('.AC_selectAllCheckBox').attr('checked', flag);
+            $(this_child).parent().parent().addClass('selected');
+        } else {
+        	$(this_child).parent().parent().removeClass('selected');
         }
     };
     
@@ -336,6 +339,18 @@ AChecker.output = AChecker.output || {};
     		    // modify and store the number of problems on the tab bar
     		    arrayNumOfProblems = changeNumOfProblems();
     		    
+    		    // No more likely problems, display congrats message on "likely problems" tab
+    		    if (arrayNumOfProblems[0] == 0) {
+    		    	$("#AC_congrats_msg_for_likely").html(congratsMsgForLikely);
+    		    	$("#AC_congrats_msg_for_likely").addClass("congrats_msg");
+    		    }
+    		    
+    		    // No more potential problems, display congrats message on "potential problems" tab
+    		    if (arrayNumOfProblems[0] == 0) {
+    		    	$("#AC_congrats_msg_for_potential").html(congratsMsgForPotential);
+    		    	$("#AC_congrats_msg_for_potential").addClass("congrats_msg");
+    		    }
+    		    
     		    // if all errors, likely, potential problems are 0, retrieve seal
     		    if (arrayNumOfProblems[0] == 0 && arrayNumOfProblems[1] == 0) {
     		    	// find the number of errors
@@ -358,7 +373,13 @@ AChecker.output = AChecker.output || {};
 	    function() {
 	        //clicking the "select all" checkbox should check or uncheck all child checkboxes
 	        $(".AC_selectAllCheckBox").click(function() {
-                $(this).parents('table:eq(0)').find('.AC_childCheckBox').attr('checked', this.checked);
+                var table = $(this).parents('table:eq(0)');
+	        	$(table).find('.AC_childCheckBox').attr('checked', this.checked);
+	        	if (this.checked == true) {
+	        		$(table).find('tr').addClass("selected");
+	        	} else {
+	        		$(table).find('tr').removeClass("selected");
+	        	}
             });
 	        
 	        //clicking the last unchecked or checked checkbox should check or uncheck the parent "select all" checkbox
