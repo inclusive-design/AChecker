@@ -96,7 +96,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 
 	var $html_problem =
 '         <span class="err_type"><img id="msg_icon_{LINE_NUMBER}_{COL_NUMBER}_{CHECK_ID}" src="{BASE_HREF}images/{IMG_SRC}" alt="{IMG_TYPE}" title="{IMG_TYPE}" width="15" height="15" /></span>
-         <em>{LABEL_START}{LINE_TEXT} {LINE_NUMBER}, {COL_TEXT} {COL_NUMBER}{LABEL_END}</em>:
+         <em>{LABEL_START}{LINE_TEXT} {LINE_NUMBER_TO_SOURCE}, {COL_TEXT} {COL_NUMBER}{LABEL_END}</em>:
          <pre><code class="input">{HTML_CODE}</code></pre>
          {IMAGE}
          <p class="helpwanted">
@@ -131,6 +131,16 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 '<p><img alt="{CONGRATS_ALT}" src="/images/feedback.gif" />{CONGRATS_TEXT}<br /></p>
 ';
 		
+	var $html_source = 
+'	<ol class="source">
+{SOURCE_CONTENT}
+	</ol>
+';
+	
+	var $html_source_line =
+'		<li id="line-{LINE_ID}">{LINE}</li>
+';
+	
 	/**
 	* public
 	* $errors: an array, output of AccessibilityValidator -> getValidationErrorRpt
@@ -386,9 +396,10 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 				$img_src = "info.png";
 			}
 			
-			if ($this->show_source == 'true')
-			{
-				$line_number = '<a href="checker/index.php#line-'.$error["line_number"].'">'.$error["line_number"].'</a>';
+			if ($this->show_source == 'true') {
+				$line_number_to_source = '<a href="checker/index.php#line-'.$error["line_number"].'">'.$error["line_number"].'</a>';
+			} else {
+				$line_number_to_source = $error["line_number"];
 			}
 			
 			// only display first 100 chars of $html_code
@@ -431,6 +442,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		                         "{IMG_TYPE}", 
 		                         "{LINE_TEXT}", 
 		                         "{LINE_NUMBER}", 
+			                     "{LINE_NUMBER_TO_SOURCE}",
 		                         "{COL_TEXT}", 
 		                         "{COL_NUMBER}", 
 			                     "{CHECK_ID}",
@@ -440,8 +452,9 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		                         "{IMAGE}"),
 		                   array($img_src, 
 		                         $img_type,
-		                         _AC('line'), 
-		                         $error["line_number"], 
+		                         _AC('line'),
+		                         $error['line_number'], 
+		                         $line_number_to_source, 
 		                         _AC('column'),
 		                         $error["col_number"],
 		                         $check_id, 
