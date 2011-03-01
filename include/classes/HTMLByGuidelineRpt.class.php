@@ -80,7 +80,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 ';
 
 	var $html_tr_with_decision =
-'           <tr>
+'           <tr{ROW_SELECTED}>
              <td width="5%">{CHECKBOX}</td>
              <td width="95%">{PROBLEM_DETAIL}</td>
            </tr>
@@ -475,8 +475,10 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 				$checkbox_name = "d[".$error["line_number"]."_".$error["col_number"]."_".$error["check_id"]."]";
 				$checkbox_html = '<input type="checkbox" class="AC_childCheckBox" id="'.$checkbox_name.'" name="'.$checkbox_name.'" value="1" ';
 				
+				$row_selected = "";
 				if ($row && $row['decision'] == AC_DECISION_PASS){
 					$checkbox_html .= 'checked="checked" ';
+					$row_selected = ' class="selected"';
 				}
 				
 				$checkbox_html .= '/>';
@@ -487,8 +489,8 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 				                            array($label_start, $this->label_end), 
 				                            $problem_cell);
 				                            
-				$tr_rows .= str_replace(array("{CHECKBOX}", "{PROBLEM_DETAIL}"), 
-				                       array($checkbox_html, $problem_cell), $this->html_tr_with_decision);
+				$tr_rows .= str_replace(array("{ROW_SELECTED}", "{CHECKBOX}", "{PROBLEM_DETAIL}"), 
+				                       array($row_selected, $checkbox_html, $problem_cell), $this->html_tr_with_decision);
 			} else {
 				$problem_cell = str_replace(array("{LABEL_START}", "{LABEL_END}"), 
 				                            array("", ""), 
