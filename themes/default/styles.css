@@ -503,7 +503,7 @@ table.data tfoot input:focus {
 
 /* used for static tables with no form elements: */
 table.data.static tbody tr:hover {
-    background-color: transparent;
+    background-color: #E9F4F3;
     cursor: auto;
 }
 
