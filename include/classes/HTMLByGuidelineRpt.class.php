@@ -323,7 +323,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 			}
 			$html_table_rows_for_one_check = $this->get_table_rows_for_one_check($this->errors_by_checks[$check_id], $check_id, $row["confidence"]);
 			
-			if ($this->allow_set_decision == "true") {
+			if (($row["confidence"] == LIKELY || $row["confidence"] == POTENTIAL) && $this->allow_set_decision == 'true') {
 				$html_make_decision_button = str_replace(array("{LABEL_MAKE_DECISION}", "{SUBGROUP_ID}"), 
 				                                         array(_AC("make_decision"), $check["subgroupID"]), 
 				                                         $this->html_make_decision_button);
