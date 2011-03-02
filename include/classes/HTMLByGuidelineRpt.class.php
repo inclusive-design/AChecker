@@ -80,7 +80,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 ';
 
 	var $html_tr_with_decision =
-'           <tr{ROW_SELECTED}>
+'           <tr class="AC_problem_row" {ROW_SELECTED}>
              <td width="5%">{CHECKBOX}</td>
              <td width="95%">{PROBLEM_DETAIL}</td>
            </tr>

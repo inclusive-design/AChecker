@@ -387,6 +387,16 @@ AChecker.output = AChecker.output || {};
 	        	undoSelectAll(this);
 	        });
 	        
+	        //clicking the last unchecked or checked checkbox should check or uncheck the parent "select all" checkbox
+	        $('.AC_problem_row').click(function() {
+	        	$(this).find('.AC_childCheckBox').each(
+                    function() {
+                    	$(this).attr('checked', !this.checked);
+                    	undoSelectAll(this);
+                    }
+                );
+	        });
+	        
 	        // clicking on "make decision" button
 	        $('input[id^="AC_btn_make_decision"]').click(function() {
         		makeDecision(this);
