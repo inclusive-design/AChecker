@@ -41,7 +41,7 @@ $install_steps[7] = array('name' => 'Done!');
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8"> 
 <head>
-<title>AChecher Upgrade</title>
+<title>AChecker Upgrade</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="stylesheet.css" type="text/css" />
 </head>
@@ -49,7 +49,7 @@ $install_steps[7] = array('name' => 'Done!');
 <body>
 <div style="height: 70px; vertical-align: bottom; background: #354A81">
 	<h1 id="header">AChecker <?php echo $new_version; ?> Upgrade</h1>
-	<img src="../images/header_logo_checker.gif" height="29" width="84" alt="AChecher Logo" id="logo" />
+	<img src="../images/achecker_logo.png" height="29" width="84" alt="AChecker Logo" id="logo" />
 </div>
 <div style="clear: all"></div>
 <div class="content">
