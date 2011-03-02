@@ -389,8 +389,8 @@ AChecker.output = AChecker.output || {};
 	        });
 	        
 	        //clicking the last unchecked or checked checkbox should check or uncheck the parent "select all" checkbox
-	        $('.AC_problem_row').click(function() {
-	        	$(this).find('.AC_childCheckBox').each(
+	        $('.AC_problem_detail').click(function() {
+	        	$(this).siblings().find('.AC_childCheckBox').each(
                     function() {
                     	$(this).attr('checked', !this.checked);
                     	undoSelectAll(this);
