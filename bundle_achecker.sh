@@ -54,8 +54,9 @@ $svnexec --force export $svndir $achecker_dir/AChecker
 
 echo "Dumping language_text"
 rm $achecker_dir/AChecker/install/db/language_text.sql
-echo "DROP TABLE `language_text`;" > $achecker_dir/AChecker/install/db/language_text.sql
-wget --output-document=- http://atutor.ca/achecker/translate/dump_achecker_lang.php >> $achecker_dir/AChecker/install/db/language_text.sql
+#echo "DROP TABLE `language_text`;" > $achecker_dir/AChecker/install/db/language_text.sql
+#wget --output-document=- http://atutor.ca/achecker/translate/dump_achecker_lang.php >> $achecker_dir/AChecker/install/db/language_text.sql
+wget --output-document=- http://atutor.ca/achecker/translate/dump_achecker_lang.php > $achecker_dir/AChecker/install/db/language_text.sql
 
 #sleep 1
 
