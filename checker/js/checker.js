@@ -35,16 +35,17 @@ AChecker.output = AChecker.output || {};
 		AChecker.showDivOutof(tab, AChecker.input.inputDivIds);
 		
 		// initialize output form
-		var div_errors = document.getElementById("errors");
+		var div_errors_id = "AC_errors";
+		var div_errors = document.getElementById(div_errors_id);
 
 		if (div_errors != null)
 		{
 			// show tab "errors", hide other tabs
-			AChecker.showDivOutof("errors", AChecker.output.outputDivIds);			
+			AChecker.showDivOutof(div_errors_id, AChecker.output.outputDivIds);			
 
 			// hide button "make decision" as tab "errors" are selected
 			AChecker.hideByID(AChecker.output.makeDecisionButtonId);
-		} else { //if (div_errors == null) {
+		} else { // no output yet, set focus on "check by uri" input box
 			document.getElementById("checkuri").focus();
 		}
 		
@@ -146,7 +147,7 @@ AChecker.output = AChecker.output || {};
 		window.location.hash = 'output_div';
 		AChecker.showDivOutof(divId, AChecker.output.outputDivIds);
 
-		if (divId == "errors" || divId == "html_validation_result" || divId == "css_validation_result") {
+		if (divId == "AC_errors" || divId == "AC_html_validation_result" || divId == "AC_css_validation_result") {
 			AChecker.hideByID(AChecker.output.makeDecisionButtonId);
 		} else {
 			AChecker.showByID(AChecker.output.makeDecisionButtonId);
