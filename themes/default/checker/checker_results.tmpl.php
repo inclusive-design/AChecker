@@ -177,7 +177,7 @@ if ($has_potential) {
 <?php
 if (isset($this->htmlValidator))
 {
-	echo '		<ol><li class="msg_err">'. _AC("html_validator_provided_by") .'</li></ol>'. "\n";
+	echo '		<br /><ol><li class="msg_err">'. _AC("html_validator_provided_by") .'</li></ol>'. "\n";
 	
 	if ($this->htmlValidator->containErrors())
 		echo $this->htmlValidator->getErrorMsg();
@@ -201,7 +201,7 @@ if (isset($_POST['validate_file']) || isset($_POST['validate_paste'])) {
 	echo '<br /><span class="info_msg"><img src="'.AC_BASE_HREF.'images/info.png" width="15" height="15" alt="'._AC("info").'"/>  '._AC("css_validator_unavailable").'</span>';
 } else if (isset($this->cssValidator)) {
 	// validating url -> css validator option is turned ON
-	echo '		<ol><li class="msg_err">'. _AC("css_validator_provided_by") .'</li></ol>'. "\n";
+	echo '		<br /><ol><li class="msg_err">'. _AC("css_validator_provided_by") .'</li></ol>'. "\n";
 	
 	if ($this->cssValidator->containErrors())
 		echo $this->cssValidator->getErrorMsg();
