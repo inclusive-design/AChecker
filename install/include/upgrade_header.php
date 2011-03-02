@@ -47,9 +47,9 @@ $install_steps[7] = array('name' => 'Done!');
 </head>
 
 <body>
-<div style="height: 70px; vertical-align: bottom; background: #354A81">
+<div style="height: 90px; vertical-align: bottom; background: #354A81">
 	<h1 id="header">AChecker <?php echo $new_version; ?> Upgrade</h1>
-	<img src="../images/achecker_logo.png" height="29" width="84" alt="AChecker Logo" id="logo" />
+	<img src="../images/achecker_logo.png" height="46" width="214" alt="AChecker Logo" id="logo" />
 </div>
 <div style="clear: all"></div>
 <div class="content">
