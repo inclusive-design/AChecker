@@ -106,13 +106,10 @@ div.input-form div.buttons {
 	text-align: right;
 	padding:8px;
 }
+
 div.input-form div.buttons input {
-	/* background-color: #efefef; */
 	font-weight: normal;
-	/* border:  #AAA  solid 1px; */
-}
-.formfield:focus{
-	background-color: #FFDAB9;
+
 }
 
 div.validator-output-form {
@@ -136,4 +133,28 @@ div.output-form {
 	margin-bottom: 30px;
 	line-height:100%;
 	/* background-color: #F8F8F8; */
+}
+
+/* main submit button */
+input[type=button] {
+    cursor:pointer;
+    border:outset 1px #ccc;
+    background:#eee;
+    color:#666;
+    font-weight:bold;
+    padding: 1px 2px;
+/*    background:url(images/formbg.gif) repeat-x left top;*/
+}
+input[type=submit] {
+    cursor:pointer;
+    border:outset 1px #ccc;
+    background:#eee;
+    color:#666;
+    font-weight:bold;
+    padding: 1px 2px;
+/*    background:url(images/formbg.gif) repeat-x left top;*/
+}
+
+.formfield:focus{
+	background-color: #FFDAB9;
 }

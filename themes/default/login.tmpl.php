@@ -48,7 +48,6 @@ function encrypt_password() {
 					<td align="left"><div class="required" align="right" title="<?php echo _AC('required_field'); ?>">*</div><label for="pass"><?php echo _AC('password'); ?></label></td>
 					<td><input type="password" class="formfield" name="form_password" size="50" id="pass"/></td>
 				</tr>
-
 				<tr>
 					<td colspan="2">
 					<p class="submit_button">

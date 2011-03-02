@@ -140,35 +140,6 @@ a:hover {
     text-align: left;
 }
 
-/* main submit button */
-input[type=button] {
-    cursor:pointer;
-    border:outset 1px #ccc;
-    background:#eee;
-    color:#666;
-    font-weight:bold;
-    padding: 1px 2px;
-/*    background:url(images/formbg.gif) repeat-x left top;*/
-}
-input[type=submit] {
-    cursor:pointer;
-    border:outset 1px #ccc;
-    background:#eee;
-    color:#666;
-    font-weight:bold;
-    padding: 1px 2px;
-/*    background:url(images/formbg.gif) repeat-x left top;*/
-}
-input[type=text] {
-    cursor:pointer;
-    border-bottom:solid 1px #ccc;
-    border-right:solid 1px #ccc;
-    border-top:solid 1px #000;
-    border-left:solid 1px #000;
-    font-weight:bold;
-    background:#fff;
-    padding: 1px 2px;
-}
 .button:focus {
     border:1px solid #A50707;
     background-color:  #FFDAB9;    
