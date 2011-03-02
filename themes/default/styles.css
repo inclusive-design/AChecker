@@ -438,7 +438,7 @@ table.data {
     margin-right: auto;
     text-align: left;
 } 
-table.data th {
+table.data th{
     background-color: #F6EAD6;
     padding: 3px;
     white-space: nowrap;
@@ -1041,4 +1041,9 @@ span.gd_success {
 span.gd_error {
 	color: #E41B17;
 	font-weight: bold;
+}
+tr.gd_th {
+    background-color: #F6EAD6;
+    padding: 3px;
+    white-space: nowrap;
 }

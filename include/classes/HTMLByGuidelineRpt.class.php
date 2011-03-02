@@ -73,9 +73,9 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 ';
 	
 	var $html_tr_header =
-'           <tr>
-             <th width="5%">{PASS_TEXT}<br /><input type="checkbox" class="AC_selectAllCheckBox" id="selectall_{CHECK_ID}" name="selectall_{CHECK_ID}" title="{SELECT_ALL_TEXT}" /></th>
-             <th width="95%"><label for="selectall_{CHECK_ID}">{SELECT_ALL_TEXT}</label></th>
+'           <tr class="gd_th">
+             <td width="5%">{PASS_TEXT}<br /><input type="checkbox" class="AC_selectAllCheckBox" id="selectall_{CHECK_ID}" name="selectall_{CHECK_ID}" title="{SELECT_ALL_TEXT}" /></th>
+             <td width="95%"><label for="selectall_{CHECK_ID}">{SELECT_ALL_TEXT}</label></th>
            </tr>
 ';
 
