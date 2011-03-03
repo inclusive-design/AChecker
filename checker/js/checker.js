@@ -23,6 +23,7 @@ AChecker.output = AChecker.output || {};
 	// global vars on the output form of the validation index page
 	AChecker.output.outputDivIds = new Array("AC_errors", "AC_likely_problems", "AC_potential_problems", "AC_html_validation_result","AC_css_validation_result");
 	AChecker.output.makeDecisionButtonId = "make_decision";
+	AChecker.output.sealDivID = "seals_div";
 
 	/**
 	 * Display the clicked tab and show/hide "made decision" button according to the displayed tab.
@@ -280,7 +281,7 @@ AChecker.output = AChecker.output || {};
             
             success: function(data) {
     		    // display seal
-    			$('#seals_div').html(data);
+    			$('#'+AChecker.output.sealDivID).html(data);
     			
     			// inform the user that the seal has been issued and displayed at the top seal container
     		    serverMsgSpan = $(btn_make_decision).parents('tr:eq(0)').find('span[id^="server_response"]');
@@ -344,12 +345,18 @@ AChecker.output = AChecker.output || {};
     		    if (arrayNumOfProblems[0] == 0) {
     		    	$("#AC_congrats_msg_for_likely").html(congratsMsgForLikely);
     		    	$("#AC_congrats_msg_for_likely").addClass("congrats_msg");
+    		    } else {
+    		    	$("#AC_congrats_msg_for_likely").html("");
+    		    	$("#AC_congrats_msg_for_likely").removeClass("congrats_msg");
     		    }
     		    
     		    // No more potential problems, display congrats message on "potential problems" tab
     		    if (arrayNumOfProblems[1] == 0) {
     		    	$("#AC_congrats_msg_for_potential").html(congratsMsgForPotential);
     		    	$("#AC_congrats_msg_for_potential").addClass("congrats_msg");
+    		    } else {
+    		    	$("#AC_congrats_msg_for_potential").html("");
+    		    	$("#AC_congrats_msg_for_potential").removeClass("congrats_msg");
     		    }
     		    
     		    // if all errors, likely, potential problems are 0, retrieve seal
@@ -360,6 +367,8 @@ AChecker.output = AChecker.output || {};
         		    if (numOfErrors == 0) {
         		    	showSeal(btn_make_decision);
         		    }
+    		    } else {
+    		    	$('#'+AChecker.output.sealDivID).html("");
     		    }
 	        }, 
 	        
