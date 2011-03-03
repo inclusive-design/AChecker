@@ -184,6 +184,9 @@ if (in_array(AC_PRIV_LANGUAGE_MANAGEMENT, $privs))
 	
 	$_pages['language/language_delete.php']['title_var'] = 'delete_language';
 	$_pages['language/language_delete.php']['parent'] = 'language/index.php';
+
+	$_pages['language/language_import_mismatched_version.php']['title_var'] = 'import_language';
+	$_pages['language/language_import_mismatched_version.php']['parent'] = 'language/index.php';
 }
 
 // 6. translation

@@ -61,7 +61,14 @@ else if (isset($_POST['export']))
 }
 
 if (isset($_POST['import']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
-	$languageManager->import($_FILES['file']['tmp_name']);
+	$rtn = $languageManager->import($_FILES['file']['tmp_name']);
+	
+	// the achecker version from the imported language pack does not match with the current version
+	// the array of ("imported version", "import path") is returned
+	if (is_array($rtn)) {
+		header('Location: language_import_mismatched_version.php?version='.urlencode($rtn["version"]).SEP.'path='.urlencode($rtn["import_path"]));
+		exit;
+	}	
 
 	header('Location: index.php');
 	exit;

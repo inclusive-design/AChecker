@@ -258,11 +258,9 @@ class LanguageManager {
 
 	// public
 	// import language pack from specified file
+	// return imported AChecker version if it does not match with the current version
 	function import($filename) {
 		require_once(AC_INCLUDE_PATH . 'lib/pclzip.lib.php');
-		require_once(AC_INCLUDE_PATH . 'classes/Language/LanguageParser.class.php');
-
-		global $languageManager, $msg;
 
 		$import_path = AC_TEMP_DIR . 'import/';
 
@@ -270,6 +268,24 @@ class LanguageManager {
 		if ($archive->extract(PCLZIP_OPT_PATH,	$import_path) == 0) {
 			exit('Error : ' . $archive->errorInfo(true));
 		}
+		
+		// import
+		$rtn = $this->import_from_path($import_path);
+		
+		// the achecker version from the imported language pack does not match with the current version
+		// the array of ("imported version", "import path") is returned
+		if (is_array($rtn)) return $rtn;
+		
+		// remove uploaded zip file
+		@unlink($filename);
+	}
+
+	// public
+	// import the languages from the files that are in the given folder 
+	public function import_from_path($import_path, $ignore_version=false) {
+		require_once(AC_INCLUDE_PATH . 'classes/Language/LanguageParser.class.php');
+
+		global $languageManager, $msg;
 
 		$language_xml = @file_get_contents($import_path.'language.xml');
 
@@ -277,9 +293,9 @@ class LanguageManager {
 		$languageParser->parse($language_xml);
 		$languageEditor = $languageParser->getLanguageEditor(0);
 
-		if ($languageEditor->getACheckerVersion() != VERSION) 
-		{
-				$msg->addError('LANG_WRONG_VERSION');
+		$import_version = $languageEditor->getACheckerVersion();
+		if ($import_version != VERSION && !$ignore_version) {
+			return array('version'=>$import_version, "import_path"=>$import_path);
 		}
 
 		if ($languageManager->exists($languageEditor->getCode())) {
@@ -290,14 +306,19 @@ class LanguageManager {
 			$languageEditor->import($import_path . 'language_text.sql');
 			$msg->addFeedback('IMPORT_LANG_SUCCESS');
 		}
-
+		$this->cleanup_language_files($import_path);
+		return true;
+	}
+	
+	// public
+	// remove language files in the given folder
+	public function cleanup_language_files($import_path) {
 		// remove the files:
 		@unlink($import_path . 'language.xml');
 		@unlink($import_path . 'language_text.sql');
 		@unlink($import_path . 'readme.txt');
-		@unlink($filename);
 	}
-
+	
 	// public
 	// imports LIVE language from the achecker language database
 	function liveImport($language_code) {
