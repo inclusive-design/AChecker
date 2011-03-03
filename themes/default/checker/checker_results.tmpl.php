@@ -65,6 +65,7 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 	echo '<input type="hidden" name="uri" value="'.$addslashes($_POST["uri"]).'" />'."\n\r";
 	echo '<input type="hidden" name="output" value="html" />'."\n\r";
 	echo '<input type="hidden" name="validate_uri" value="1" />'."\n\r";
+	echo '<input type="hidden" name="rpt_format" value="'.$addslashes($_POST['rpt_format']).'" />'."\n\r";
 
 	// report for referer URI
 	if (isset($this->referer_report))
