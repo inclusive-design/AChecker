@@ -129,44 +129,45 @@ if ($has_errors) {
 	</div>
 
 <?php 
-$has_likely = false;
-if (isset($this->aValidator) && $this->num_of_likely_problems > 0) {
-	$has_likely = true;
+$resolved_all_likely = false;
+if (isset($this->aValidator) && $this->num_of_likely_problems_no_decision == 0) {
+	$resolved_all_likely = true;
 }
 ?>
 	<div id="AC_likely_problems" style="display:none;">
 	<br />
-	<span id="AC_congrats_msg_for_likely" <?php if (!$has_likely) echo "class='congrats_msg'"; ?>>
-<?php if (!$has_likely) {
+	<span id="AC_congrats_msg_for_likely" <?php if ($resolved_all_likely) echo "class='congrats_msg'"; ?>>
+<?php 
+if ($resolved_all_likely) {
 	echo $congrats_msg_for_likely;
 }
 ?>
 	</span>
 <?php
-if ($has_likely) {
+if (isset($this->aValidator) && $this->num_of_likely_problems > 0) {
 	echo $this->a_rpt->getLikelyProblemRpt();
 }
 ?>
 	</div>
 
 <?php 
-$has_potential = false;
-if (isset($this->aValidator) && $this->num_of_potential_problems > 0) {
-	$has_potential = true;
+$resolved_all_potential = false;
+if (isset($this->aValidator) && $this->num_of_potential_problems_no_decision == 0) {
+	$resolved_all_potential = true;
 }
 ?>
 	<div id="AC_potential_problems" style="margin-top:1em; display:none;">
 	<br />
-	<span id="AC_congrats_msg_for_potential" <?php if (!$has_potential) echo "class='congrats_msg'";?>>
+	<span id="AC_congrats_msg_for_potential" <?php if ($resolved_all_potential) echo "class='congrats_msg'";?>>
 <?php 
-if (!$has_potential) {
+if ($resolved_all_potential) {
 	echo $congrats_msg_for_potential;
 }
 ?>
 	</span>
 <?php
 
-if ($has_potential) {
+if (isset($this->aValidator) && $this->num_of_potential_problems > 0) {
 	echo $this->a_rpt->getPotentialProblemRpt();
 }
 

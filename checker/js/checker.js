@@ -347,7 +347,7 @@ AChecker.output = AChecker.output || {};
     		    }
     		    
     		    // No more potential problems, display congrats message on "potential problems" tab
-    		    if (arrayNumOfProblems[0] == 0) {
+    		    if (arrayNumOfProblems[1] == 0) {
     		    	$("#AC_congrats_msg_for_potential").html(congratsMsgForPotential);
     		    	$("#AC_congrats_msg_for_potential").addClass("congrats_msg");
     		    }
