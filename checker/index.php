@@ -57,7 +57,8 @@ if (isset($_POST['make_decision']) || isset($_POST['reverse']))
 }
 // end of process to made decision
 
-// validate referer URI: error check and initialization
+// validate referer URIs that has passed validation and received seal. The click on the seal triggers 
+// the if - else below.
 if ($_GET['uri'] == 'referer')
 {
 	// validate if the URI from referer matches the URI defined in user_links.user_link_id
@@ -110,10 +111,14 @@ if (isset($_POST["enable_css_validation"]))
 if (isset($_POST["enable_html_validation"]))
 	include(AC_INCLUDE_PATH. "classes/HTMLValidator.class.php");
 
-if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) {
-	$_gids = $_POST["radio_gid"];
-} else if ($_POST["rpt_format"] == REPORT_FORMAT_LINE) {
-	$_gids = $_POST["checkbox_gid"];
+if (!is_array($_gids)) { // $_gids hasn't been set at validating referer URIs
+	if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) {
+		$_gids = $_POST["radio_gid"];
+	} else if ($_POST["rpt_format"] == REPORT_FORMAT_LINE) {
+		$_gids = $_POST["checkbox_gid"];
+	} else {
+		$_gids = $_POST["gid"];
+	}
 }
 
 if ($_POST["validate_uri"])
