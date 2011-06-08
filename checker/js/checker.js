@@ -138,6 +138,49 @@ AChecker.output = AChecker.output || {};
 		}
 		disableClickablesAndShowSpinner("spinner_by_paste");
 	};
+	
+	/**
+	 * Validates file select menu, sends file & problem type to start_export.php---------------------------------------------------------------------------------
+	 */
+	AChecker.input.validateFile = function (data) {
+		// check selected items
+		var file = document.getElementById("fileselect").value;
+		var problem = document.getElementById("problemselect").value;
+		if ((!file || file=="<?php echo _AC('select_file'); ?>") && (!problem || problem=="<?php echo _AC('select_problem'); ?>")) {
+			alert('Please provide file type and problem!');
+			return false;
+		}
+		if (!file || file=="<?php echo _AC('select_file'); ?>") {
+			alert('Please provide a file type!');
+			return false;
+		}
+		if (!problem || problem=="<?php echo _AC('select_problem'); ?>") {
+			alert('Please provide a problem!');
+			return false;
+		}
+		
+		// show spinner		
+		disableClickablesAndShowSpinner(data);
+		//var progress = document.getElementById(array[1]);
+		//if (progress.style.display == 'none') {
+		//	progress.style.display = '';
+		//}			     
+		
+		// make dataString and send it
+		var dataString = 'file=' + file + '&problem=' + problem;
+		$.ajax({
+		type: "POST",
+		url: "checker/start_export.php",
+		data: dataString,
+		success: function(){
+	        progress.innerHTML = 'processing ' + dataString;
+		},
+		
+		error: function(xhr, errorType, exception) {
+        	progress.innerHTML = 'Error';
+        }
+		});
+	};
 
 	/**
 	 * Show the div with id == the given divId while hide all other divs in the array allDivIds

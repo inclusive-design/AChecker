@@ -50,6 +50,48 @@ if (is_array($this->seals))
 ?>
 </div>
 
+<!-- ============================================================== -->
+<form name="file_form" enctype="multipart/form-data" method="post" >
+
+	<div class="left-col" style="float:left;clear:left;margin: 1em;padding: 1em; max-width:669px"><br />
+	<fieldset class="group_form" style="min-height: 122px; margin-bottom:7px;"><legend class="group_form"><?php echo _AC("file_export"); ?></legend>
+		<div style="text-align: center; padding: 0.5em;">
+			<label for="file_type"><?php echo _AC('file_type'); ?>:</label>
+			<select name="file_menu" id="fileselect">
+				<option value="" selected="selected"><?php echo _AC('select_file'); ?></option>
+				<option value="pdf" >PDF</option>
+				<option value="earl">EARL</option>
+				<option value="csv">CSV</option>
+			</select>
+			
+			<label for="problem_type" style="margin-left: 2em;"><?php echo _AC('problem_type'); ?>:</label>
+			<select name="problem_menu" id="problemselect">
+				<option value="" selected="selected"><?php echo _AC('select_problem'); ?></option>
+				<option value="pr_known" ><?php echo _AC('known'); ?></option>
+				<option value="pr_likely"><?php echo _AC('likely'); ?></option>
+				<option value="pr_potential"><?php echo _AC('potential'); ?></option>
+				<option value="pr_all"><?php echo _AC('all'); ?></option>
+			</select></br>
+			
+			<div id="progress" style="display:none">
+				<div style="padding:0.5em 1em;">
+
+				</div>
+			</div>
+			
+			<div class="validation_submit_div">	
+					<div class="spinner_div">
+						<img class="spinner_img" id="spinner_export" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
+						&nbsp;
+					</div>
+					<input class="validation_button" type="button" name="validate_export" id="validate_file" value="<?php echo 'Get File'; ?>" onclick="return AChecker.input.validateFile('spinner_export');" />
+			</div>
+		</div>
+	</fieldset>
+	</div>
+</form>
+<!-- ============================================================== -->
+
 <div id="output_div" >
 
 <?php
