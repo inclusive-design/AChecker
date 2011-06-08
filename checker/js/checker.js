@@ -95,7 +95,7 @@ AChecker.output = AChecker.output || {};
 	};
 	
 	/**
-	 * Validates if a uri is provided
+	 * Validates if a uri is provided=========================================================================================================
 	 */
 	AChecker.input.validateURI = function () {
 		// check uri
@@ -105,6 +105,49 @@ AChecker.output = AChecker.output || {};
 			return false;
 		}
 		disableClickablesAndShowSpinner("spinner_by_uri");
+		
+		// make dataString and send it
+		var checkuri = document.getElementById("checkuri").value;				
+		
+		// checkboxes
+		var enable_html_validation = document.getElementById("enable_html_validation").checked;	
+		var enable_css_validation = document.getElementById("enable_css_validation").checked;	
+		var show_source = document.getElementById("show_source").checked;			
+		
+		// radiobuttons
+		var option_rpt_line = document.getElementById("option_rpt_line").checked;			
+		var option_rpt_gdl = document.getElementById("option_rpt_gdl").checked;			
+
+		// Guidelines to Check Against
+		if (option_rpt_gdl) {	// radio radio_gid[] guideline_in_checkbox
+			var radioLength = radio_gid[].length;
+			if(radioLength == undefined)
+				if(radio_gid[].checked)
+					radio =  radio_gid[].value;
+				else
+					radio =  "";
+			for(var i = 0; i < radioLength; i++) {
+				if(radio_gid[][i].checked) {
+					radio =  radio_gid[][i].value;
+				}
+			}
+		}
+		
+		alert("uri-" + checkuri + " html-" + enable_html_validation + " css-" + enable_css_validation + " source-" + show_source + " line-" + option_rpt_line + " gline-" + option_rpt_gdl + " radio-" + radio);
+		
+		var dataString = 'file=' + file + '&problem=' + problem;
+		$.ajax({
+		type: "POST",
+		url: "checker/start_export.php",
+		data: dataString,
+		success: function(){
+	        progress.innerHTML = 'processing ' + dataString;
+		},
+		
+		error: function(xhr, errorType, exception) {
+        	progress.innerHTML = 'Error';
+        }
+		});
 	};
 		
 	/**
@@ -140,7 +183,7 @@ AChecker.output = AChecker.output || {};
 	};
 	
 	/**
-	 * Validates file select menu, sends file & problem type to start_export.php---------------------------------------------------------------------------------
+	 * Validates file select menu, sends file & problem type to start_export.php==============================================================
 	 */
 	AChecker.input.validateFile = function (data) {
 		// check selected items
@@ -364,6 +407,7 @@ AChecker.output = AChecker.output || {};
     			ajaxPostStr += $(this).attr('name') + "=" + "N" + "&";
     		}
     	});
+    	alert(ajaxPostStr);  				//================================
     	
     	ajaxPostStr += "uri" + "=" + $.URLEncode($('input[name="uri"]').attr('value')) + "&" + 
     	               "output" + "=" + $('input[name="output"]').attr('value') + "&" +
