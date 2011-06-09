@@ -94,8 +94,77 @@ AChecker.output = AChecker.output || {};
 		document.getElementById(spinnerID).focus();
 	};
 	
+    /**
+     * private
+     * getting values from input_form, sending them to form_to_session.php to write in session =======================================================
+     */
+	var sendFormValues = function(provided_obj, type) {		
+		// checkboxes
+		var enable_html_validation = document.getElementById("enable_html_validation").checked;	
+		var enable_css_validation = document.getElementById("enable_css_validation").checked;	
+		var show_source = document.getElementById("show_source").checked;			
+		
+		// radiobuttons
+		var option_rpt_line = document.getElementById("option_rpt_line").checked;			
+		var option_rpt_gdl = document.getElementById("option_rpt_gdl").checked;			
+
+		// get value of checked radio or
+		// get array of checkboxes checked
+		if (option_rpt_gdl) {					// report by guidelines => guideline_in_radio 
+	        for (i=0; i<9; i++) {
+	        	if (document.getElementById("guideline_in_radio").getElementsByTagName("input")[i].checked) {
+	        		radio_checked = document.getElementById("guideline_in_radio").getElementsByTagName("input")[i].value;
+	        	}
+	        }
+	        var dataString = 'option_rpt_gdl=' + option_rpt_gdl + 
+	        				'&radio_checked=' + radio_checked;
+		} else { 								// report by lines => guideline_in_checkbox
+
+			var curr_pos = 0;
+			var checkbox_array = new Array();
+	        for (i=0; i<9; i++) {
+	        	if (document.getElementById("guideline_in_checkbox").getElementsByTagName("input")[i].checked) {
+	        		checkbox_array[curr_pos] = document.getElementById("guideline_in_checkbox").getElementsByTagName("input")[i].value;
+	        		curr_pos++;
+	        	}
+	        }
+	        var dataString = 'option_rpt_line=' + option_rpt_line +
+	        				'&checkbox_array=' + checkbox_array;
+		}
+		
+		// determine provided obj type, form dataString
+		if (type == "uri") {
+			dataString += '&uri=' + provided_obj;
+		}
+		if (type == "file") {
+			dataString += '&file=' + provided_obj;
+		}
+		if (type == "paste") {
+			dataString += '&paste=' + provided_obj;
+		}
+
+		// finish forming string
+		dataString +=	'&enable_html_validation=' + enable_html_validation +
+						'&enable_css_validation=' + enable_css_validation +
+						'&show_source=' + show_source;
+		
+		alert(dataString);
+		
+		$.ajax({
+		type: "POST",
+		url: "checker/form_to_session.php",
+		data: dataString,
+		success: function(){
+	        alert("form_to_session.php => ok");
+		},		
+		error: function(xhr, errorType, exception) {
+	        alert("form_to_session.php => error");
+        }
+		});
+	};
+	
 	/**
-	 * Validates if a uri is provided=========================================================================================================
+	 * Validates if a uri is provided, if was sends to form_to_session.php =========================================================================================================
 	 */
 	AChecker.input.validateURI = function () {
 		// check uri
@@ -106,52 +175,13 @@ AChecker.output = AChecker.output || {};
 		}
 		disableClickablesAndShowSpinner("spinner_by_uri");
 		
-		// make dataString and send it
+		// get provided to validate object 
 		var checkuri = document.getElementById("checkuri").value;				
-		
-		// checkboxes
-		var enable_html_validation = document.getElementById("enable_html_validation").checked;	
-		var enable_css_validation = document.getElementById("enable_css_validation").checked;	
-		var show_source = document.getElementById("show_source").checked;			
-		
-		// radiobuttons
-		var option_rpt_line = document.getElementById("option_rpt_line").checked;			
-		var option_rpt_gdl = document.getElementById("option_rpt_gdl").checked;			
-
-		// Guidelines to Check Against
-		if (option_rpt_gdl) {	// radio radio_gid[] guideline_in_checkbox
-			var radioLength = radio_gid[].length;
-			if(radioLength == undefined)
-				if(radio_gid[].checked)
-					radio =  radio_gid[].value;
-				else
-					radio =  "";
-			for(var i = 0; i < radioLength; i++) {
-				if(radio_gid[][i].checked) {
-					radio =  radio_gid[][i].value;
-				}
-			}
-		}
-		
-		alert("uri-" + checkuri + " html-" + enable_html_validation + " css-" + enable_css_validation + " source-" + show_source + " line-" + option_rpt_line + " gline-" + option_rpt_gdl + " radio-" + radio);
-		
-		var dataString = 'file=' + file + '&problem=' + problem;
-		$.ajax({
-		type: "POST",
-		url: "checker/start_export.php",
-		data: dataString,
-		success: function(){
-	        progress.innerHTML = 'processing ' + dataString;
-		},
-		
-		error: function(xhr, errorType, exception) {
-        	progress.innerHTML = 'Error';
-        }
-		});
+		sendFormValues(checkuri, "uri");
 	};
 		
 	/**
-	 * Validates if a html file is provided
+	 * Validates if a html file is provided, if was sends to form_to_session.php =================================================================================================
 	 */
 	AChecker.input.validateUpload = function () {
 		// check file type
@@ -167,10 +197,14 @@ AChecker.output = AChecker.output || {};
 			return false;
 		}
 		disableClickablesAndShowSpinner("spinner_by_file");
+		
+		// get provided to validate object 
+		var file = document.getElementById("checkfile").value;				
+		sendFormValues(file, "file");
 	};
 
 	/**
-	 * Validates if a html file is provided
+	 * Validates if a html file (paste) is provided, if was sends to form_to_session.php =========================================================================================
 	 */
 	AChecker.input.validatePaste = function () {
 		// check file type
@@ -180,10 +214,14 @@ AChecker.output = AChecker.output || {};
 			return false;
 		}
 		disableClickablesAndShowSpinner("spinner_by_paste");
+		
+		// get provided to validate object 
+		var paste = document.getElementById("checkpaste").value;				
+		sendFormValues(paste, "paste");
 	};
 	
 	/**
-	 * Validates file select menu, sends file & problem type to start_export.php==============================================================
+	 * Validates file select menu, sends file & problem type to start_export.php ==================================================================================
 	 */
 	AChecker.input.validateFile = function (data) {
 		// check selected items
