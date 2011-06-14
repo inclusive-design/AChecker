@@ -101,7 +101,9 @@ if (isset($aValidator))
 		
 		$allow_set_decision = 'true';
 	}
-
+	
+	$_SESSION['user_link_id'] = $user_link_id;
+	
 	if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) {
 		$a_rpt = new HTMLByGuidelineRpt($errors, $_gids[0], $user_link_id);
 	} else if ($_POST["rpt_format"] == REPORT_FORMAT_LINE) {
@@ -112,7 +114,7 @@ if (isset($aValidator))
 	if (isset($_REQUEST['show_source'])) $a_rpt->setShowSource('true', $source_array);
 	
 	$a_rpt->generateRpt();
-
+	
 	$num_of_errors = $a_rpt->getNumOfErrors();
 	$num_of_likely_problems = $a_rpt->getNumOfLikelyProblems();
 	$num_of_likely_problems_no_decision = $a_rpt->getNumOfLikelyWithFailDecisions();
@@ -152,6 +154,7 @@ if (isset($aValidator))
 		$savant->assign('referer_report', 1);
 		if (intval($user_link_id) > 0) $savant->assign('referer_user_link_id', $user_link_id);
 	}
+
 }
 
 

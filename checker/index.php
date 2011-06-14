@@ -26,6 +26,9 @@ $mtime = explode(" ", $mtime);
 $mtime = $mtime[1] + $mtime[0]; 
 $starttime = $mtime; 
 
+// input_form - array in session that contains latest user request (needed for file export)
+unset($_SESSION['input_form']); 
+
 // Used in themes/default/checker/checker_results.tmpl.php & include/classes/HTMLByGuidelineRpt.class.php
 global $congrats_msg_for_likely, $congrats_msg_for_potential;
 $congrats_msg_for_likely = '<img src="'.AC_BASE_HREF.'images/feedback.gif" alt="'._AC("feedback").'" />  '. _AC("congrats_no_likely");
@@ -104,12 +107,16 @@ if ($_GET['uri'] == 'referer')
 $error_happen = false;
 
 // CSS Validation
-if (isset($_POST["enable_css_validation"]))
+if (isset($_POST["enable_css_validation"])) {
 	include(AC_INCLUDE_PATH. "classes/CSSValidator.class.php");
+	$_SESSION['input_form']['enable_css_validation'] = true;
+}
 
 // validate html
-if (isset($_POST["enable_html_validation"]))
+if (isset($_POST["enable_html_validation"])) {
 	include(AC_INCLUDE_PATH. "classes/HTMLValidator.class.php");
+	$_SESSION['input_form']['enable_html_validation'] = true;
+}
 
 if (!is_array($_gids)) { // $_gids hasn't been set at validating referer URIs
 	if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) {
@@ -119,6 +126,7 @@ if (!is_array($_gids)) { // $_gids hasn't been set at validating referer URIs
 	} else {
 		$_gids = $_POST["gid"];
 	}
+	$_SESSION['input_form']['gids'] = $_gids;
 }
 
 if ($_POST["validate_uri"])
@@ -126,6 +134,7 @@ if ($_POST["validate_uri"])
 	$_POST['uri'] = htmlentities($_POST['uri']);
 	
 	$uri = Utility::getValidURI($addslashes($_POST["uri"]));
+	$_SESSION['input_form']['uri'] = $uri;
 	
 	// Check if the given URI is connectable
 	if ($uri === false)
@@ -159,6 +168,7 @@ if ($_POST["validate_uri"])
 if ($_POST["validate_file"])
 {
 	$validate_content = file_get_contents($_FILES['uploadfile']['tmp_name']);
+	$_SESSION['input_form']['file'] = $validate_content;
 
 	if (isset($_POST["enable_html_validation"]))
 		$htmlValidator = new HTMLValidator("fragment", $validate_content);
@@ -170,7 +180,8 @@ if ($_POST["validate_file"])
 if ($_POST["validate_paste"])
 {
 	$validate_content = $_POST["pastehtml"] = $stripslashes($_POST["pastehtml"]);
-
+	$_SESSION['input_form']['paste'] = $validate_content;
+	
 	if (isset($_POST["enable_html_validation"]))
 		$htmlValidator = new HTMLValidator("fragment", $validate_content);
 

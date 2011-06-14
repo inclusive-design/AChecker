@@ -177,10 +177,10 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		global $msg;
 
 		$this->errors_by_checks = $this->rearrange_errors_array($this->errors);
-		
+
 		// display guideline level checks
 		$guidelineLevel_checks = $this->checksDAO->getGuidelineLevelChecks($this->gid);
-		
+
 		if (is_array($guidelineLevel_checks))
 		{
 			list($guideline_level_known_problems, $guideline_level_likely_problems, $guideline_level_potential_problems) =
@@ -193,7 +193,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		if (is_array($named_groups))
 		{
 			foreach ($named_groups as $group)
-			{
+			{				
 				unset($group_level_known_problems);
 				unset($group_level_likely_problems);
 				unset($group_level_potential_problems);
@@ -203,6 +203,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 					
 				// get group level checks: the checks in subgroups without subgroup names
 				$groupLevel_checks = $this->checksDAO->getGroupLevelChecks($group['group_id']);
+				
 				if (is_array($groupLevel_checks))
 				{
 					list($group_level_known_problems, $group_level_likely_problems, $group_level_potential_problems) = 
@@ -216,9 +217,8 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 					foreach ($named_subgroups as $subgroup)
 					{
 						$subgroup_checks = $this->checksDAO->getChecksBySubgroupID($subgroup['subgroup_id']);
-						
 						if (is_array($subgroup_checks))
-						{
+						{						
 							// get html of all the problems in this subgroup
 							list($known_problems, $likely_problems, $potential_problems) = 
 								$this->generateChecksTable($subgroup_checks);
