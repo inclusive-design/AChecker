@@ -102,12 +102,14 @@ if (isset($aValidator))
 		$allow_set_decision = 'true';
 	}
 	
-	$_SESSION['user_link_id'] = $user_link_id;
+	$_SESSION['input_form']['user_link_id'] = $user_link_id;
 	
 	if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) {
 		$a_rpt = new HTMLByGuidelineRpt($errors, $_gids[0], $user_link_id);
+		$_SESSION['input_form']['mode'] = 'guideline';
 	} else if ($_POST["rpt_format"] == REPORT_FORMAT_LINE) {
 		$a_rpt = new HtmlRpt($errors, $user_link_id);
+		$_SESSION['input_form']['mode'] = 'line';
 	}
 	$a_rpt->setAllowSetDecisions($allow_set_decision);
 	$a_rpt->setFromReferer($from_referer);

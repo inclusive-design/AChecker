@@ -18,8 +18,8 @@ define('AC_INCLUDE_PATH', '../include/');
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH. 'classes/AccessibilityValidator.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
-include_once(AC_INCLUDE_PATH. 'classes/FileExportRpt.class.php');
-//include_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/FileExportRptGuideline.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/FileExportRptLine.class.php');
 
 // get user choise on file format
 if (isset($_POST['file']) && isset($_POST['problem'])) {
@@ -46,9 +46,14 @@ if (isset($_SESSION['input_form']['paste'])) {
 	$validate_content = $_SESSION['input_form']['paste'];
 }
 
+// guideline
+if (isset($_SESSION['input_form']['mode'])) {
+	$mode = $_SESSION['input_form']['mode'];
+}
+
 // user link id
-if (isset($_SESSION['user_link_id'])) {
-	$user_link_id = $_SESSION['user_link_id'];
+if (isset($_SESSION['input_form']['user_link_id'])) {
+	$user_link_id = $_SESSION['input_form']['user_link_id'];
 }
 
 $aValidator = new AccessibilityValidator($validate_content, $_gids, $uri);
@@ -71,10 +76,12 @@ $num_of_total_a_errors = $aValidator->getNumOfValidateError();
 
 $errors = $aValidator->getValidationErrorRpt();	
 
-$a_rpt = new FileExportRpt($errors, $_gids[0], $user_link_id);
-$a_rpt->setAllowSetDecisions('false');
+if ($mode == 'guideline') $a_rpt = new FileExportRptGuideline($errors, $_gids[0], $user_link_id);
+else if ($mode == 'line') $a_rpt = new FileExportRptLine($errors, $user_link_id);
+
+//$a_rpt->setAllowSetDecisions('false');
 $a_rpt->generateRpt();
-$a_rpt->getFile($file, $problem);
+//$a_rpt->getFile($file, $problem);
 /*
 $num_of_errors = $a_rpt->getNumOfErrors();
 $num_of_likely_problems = $a_rpt->getNumOfLikelyProblems();
