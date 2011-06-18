@@ -29,7 +29,10 @@ class FileExportRptLine extends AccessibilityRpt {
 	
 	var $errors_by_checks = array();              				// Re-arranged errors table with the array key check_id
 
-	var $group_known_problems = array();						// array of all info about known problems
+	var $group_known_problems = array();						// array of all info about known problems	
+	var $group_likely_problems = array();						// array of all info about likely problems
+	var $group_potential_problems = array();					// array of all info about potential problems
+	
 	var $group_likely_problems_no_decision = array();			// array of info about known likely 	no_decision
 	var $group_potential_problems_no_decision = array();		// array of info about known potential 	no_decision	
 	var $group_likely_problems_with_decision = array();			// array of info about known likely 	with_decision
@@ -56,6 +59,15 @@ class FileExportRptLine extends AccessibilityRpt {
 //		
 //		$this->num_of_likely_problems_fail = 0;
 //		$this->num_of_potential_problems_fail = 0;
+	}
+
+	/**
+	* public
+	* returns nr of errors to display - $nr_known_problems, $nr_likely_problems, $nr_potential_problems
+	*/
+	public function getErrorNr()
+	{
+		return array($this->nr_known_problems, $this->nr_likely_problems, $this->nr_potential_problems);
 	}
 	
 	/**
@@ -115,24 +127,26 @@ class FileExportRptLine extends AccessibilityRpt {
 //		}		
 		
 		debug_to_log('=================================================BY LINES===================================================');
-		debug_to_log($this->nr_known_problems);
-		debug_to_log($this->nr_likely_problems);
-		debug_to_log($this->nr_potential_problems);
+//		debug_to_log($this->nr_known_problems);
+//		debug_to_log($this->nr_likely_problems);
+//		debug_to_log($this->nr_potential_problems);
+//		
+////		debug_to_log(count($this->group_known_problems));
+//		debug_to_log($this->group_known_problems);
+//		debug_to_log('----------------------------------------------likely----------------');
+////		debug_to_log(count($this->group_likely_problems));
+//		debug_to_log($this->group_likely_problems);
+//		debug_to_log('----------------------------------------------potential----------------');
+////		debug_to_log(count($this->group_potential_problems));
+//		debug_to_log($this->group_potential_problems);
 		
-//		debug_to_log(count($this->group_known_problems));
-		debug_to_log($this->group_known_problems);
-		debug_to_log('----------------------------------------------likely----------------');
-//		debug_to_log(count($this->group_likely_problems_no_decision));
-		debug_to_log($this->group_likely_problems_no_decision);
-		debug_to_log('=============================with decision==================================');
-//		debug_to_log(count($this->group_likely_problems_with_decision));
-		debug_to_log($this->group_likely_problems_with_decision);
-		debug_to_log('----------------------------------------------potential----------------');
-//		debug_to_log(count($this->group_potential_problems_no_decision));
-		debug_to_log($this->group_potential_problems_no_decision);
-		debug_to_log('==============================no decision===================================');
-//		debug_to_log(count($this->group_potential_problems_with_decision));
-		debug_to_log($this->group_potential_problems_with_decision);
+		$this->group_likely_problems['no_decision'] = $this->group_likely_problems_no_decision;
+		$this->group_likely_problems['with_decision'] = $this->group_likely_problems_with_decision;
+		
+		$this->group_potential_problems['no_decision'] = $this->group_potential_problems_no_decision;
+		$this->group_potential_problems['with_decision'] = $this->group_potential_problems_with_decision;
+		
+		return array($this->group_known_problems, $this->group_likely_problems, $this->group_potential_problems);
 	}
 	
 	/** 

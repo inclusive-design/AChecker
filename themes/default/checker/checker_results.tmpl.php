@@ -67,10 +67,10 @@ if (is_array($this->seals))
 			<label for="problem_type" style="margin-left: 2em;"><?php echo _AC('problem_type'); ?>:</label>
 			<select name="problem_menu" id="problemselect">
 				<option value="" selected="selected"><?php echo _AC('select_problem'); ?></option>
-				<option value="pr_known" ><?php echo _AC('known'); ?></option>
-				<option value="pr_likely"><?php echo _AC('likely'); ?></option>
-				<option value="pr_potential"><?php echo _AC('potential'); ?></option>
-				<option value="pr_all"><?php echo _AC('all'); ?></option>
+				<option value="known" ><?php echo _AC('known'); ?></option>
+				<option value="likely"><?php echo _AC('likely'); ?></option>
+				<option value="potential"><?php echo _AC('potential'); ?></option>
+				<option value="all"><?php echo _AC('all'); ?></option>
 			</select></br>
 			
 			<div id="progress" style="display:none">

@@ -20,17 +20,14 @@ include_once(AC_INCLUDE_PATH. 'classes/AccessibilityValidator.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/FileExportRptGuideline.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/FileExportRptLine.class.php');
+include_once(AC_INCLUDE_PATH. 'fileExport/fpdf/acheckerFPDF.class.php');
+include_once(AC_INCLUDE_PATH. 'fileExport/tcpdf/acheckerTCPDF.class.php');
 
 // get user choise on file format
 if (isset($_POST['file']) && isset($_POST['problem'])) {
 	$file = $_POST['file'];
 	$problem = $_POST['problem'];
 } 
-
-// guidelines	
-if (isset($_SESSION['input_form']['gids'])) {
-	$_gids = $_SESSION['input_form']['gids'];
-}
 	
 // content to validate	
 if (isset($_SESSION['input_form']['uri'])) {
@@ -38,61 +35,51 @@ if (isset($_SESSION['input_form']['uri'])) {
 	$validate_content = @file_get_contents($uri);
 }
 
-if (isset($_SESSION['input_form']['file'])) {
-	$validate_content = $_SESSION['input_form']['file'];
-}
+if (isset($_SESSION['input_form']['file'])) 		$validate_content = $_SESSION['input_form']['file'];
 
-if (isset($_SESSION['input_form']['paste'])) {
-	$validate_content = $_SESSION['input_form']['paste'];
-}
+if (isset($_SESSION['input_form']['paste']))		$validate_content = $_SESSION['input_form']['paste'];
 
-// guideline
-if (isset($_SESSION['input_form']['mode'])) {
-	$mode = $_SESSION['input_form']['mode'];
-}
+// guidelines	
+if (isset($_SESSION['input_form']['gids'])) 		$_gids = $_SESSION['input_form']['gids'];
+
+// report mode
+if (isset($_SESSION['input_form']['mode'])) 		$mode = $_SESSION['input_form']['mode'];
 
 // user link id
-if (isset($_SESSION['input_form']['user_link_id'])) {
-	$user_link_id = $_SESSION['input_form']['user_link_id'];
-}
+if (isset($_SESSION['input_form']['user_link_id'])) $user_link_id = $_SESSION['input_form']['user_link_id'];
 
 $aValidator = new AccessibilityValidator($validate_content, $_gids, $uri);
 $aValidator->validate();
 
 $guidelinesDAO = new GuidelinesDAO();
 $guideline_rows = $guidelinesDAO->getGuidelineByIDs($_gids);
-
 unset($guidelines_text);	
 if (is_array($guideline_rows))
 {
 	foreach ($guideline_rows as $id => $row)
 	{
-		$guidelines_text .= '<a title="'.$row["title"]._AC('link_open_in_new').'" target="_new" href="'.AC_BASE_HREF.'guideline/view_guideline.php?id='.$row["guideline_id"].'">'.$row["title"]. '</a>, ';
+		$guidelines_text .= $row["title"]. ', ';
 	}
 }
 $guidelines_text = substr($guidelines_text, 0, -2); // remove ending space and ,
-
-$num_of_total_a_errors = $aValidator->getNumOfValidateError();
 
 $errors = $aValidator->getValidationErrorRpt();	
 
 if ($mode == 'guideline') $a_rpt = new FileExportRptGuideline($errors, $_gids[0], $user_link_id);
 else if ($mode == 'line') $a_rpt = new FileExportRptLine($errors, $user_link_id);
 
-//$a_rpt->setAllowSetDecisions('false');
-$a_rpt->generateRpt();
-//$a_rpt->getFile($file, $problem);
-/*
-$num_of_errors = $a_rpt->getNumOfErrors();
-$num_of_likely_problems = $a_rpt->getNumOfLikelyProblems();
-$num_of_potential_problems = $a_rpt->getNumOfPotentialProblems();
-	
-// no any problems or all problems have pass decisions, display seals when no errors
-if ($num_of_errors == 0 && 
-	$num_of_likely_problems == 0 && 
-	$num_of_potential_problems == 0) 
-{
-	$utility = new Utility();
-	$seals = $utility->getSeals($guideline_rows);
-}*/
+list($known, $likely, $potential) = $a_rpt->generateRpt();
+list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
+
+if ($file == 'pdf') {
+	$pdf = new acheckerFPDF($problem, $known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential, $guidelines_text, $mode, $user_link_id);
+	$pdf->getGuidelinePDF();			
+}
+
+// uncomment to use TCPDF instead of FPDF
+//if ($file == 'pdf') {
+//	$pdf = new acheckerTCPDF($problem);
+//	$pdf->getGuidelinePDF($known);			
+//}
+
 ?>

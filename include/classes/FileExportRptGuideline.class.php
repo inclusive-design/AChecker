@@ -64,6 +64,15 @@ class FileExportRptGuideline extends AccessibilityRpt {
 	
 	/**
 	* public
+	* returns nr of errors to display - $nr_known_problems, $nr_likely_problems, $nr_potential_problems
+	*/
+	public function getErrorNr()
+	{
+		return array($this->nr_known_problems, $this->nr_likely_problems, $this->nr_potential_problems);
+	}
+	
+	/**
+	* public
 	* main process to generate report and store result in 3 arrays
 	*/
 	public function generateRpt()
@@ -177,19 +186,21 @@ class FileExportRptGuideline extends AccessibilityRpt {
 //			$this->rpt_potential_problems[] = $group_potential_problems;
 //		}
 		
-		debug_to_log('=================================================BY GUIDELINES===================================================');
-		debug_to_log($this->nr_known_problems);
-		debug_to_log($this->nr_likely_problems);
-		debug_to_log($this->nr_potential_problems);
+//		debug_to_log('=================================================BY GUIDELINES===================================================');
+//		debug_to_log($this->nr_known_problems);
+//		debug_to_log($this->nr_likely_problems);
+//		debug_to_log($this->nr_potential_problems);
+//		
+////		debug_to_log(count($this->group_known_problems));
+//		debug_to_log($this->group_known_problems);
+//		debug_to_log('----------------------------------------------likely----------------');
+////		debug_to_log(count($this->group_likely_problems));
+//		debug_to_log($this->group_likely_problems);
+//		debug_to_log('----------------------------------------------potential----------------');
+////		debug_to_log(count($this->group_potential_problems));
+//		debug_to_log($this->group_potential_problems);
 		
-//		debug_to_log(count($this->group_known_problems));
-		debug_to_log($this->group_known_problems);
-		debug_to_log('----------------------------------------------likely----------------');
-//		debug_to_log(count($this->group_likely_problems));
-		debug_to_log($this->group_likely_problems);
-		debug_to_log('----------------------------------------------potential----------------');
-//		debug_to_log(count($this->group_potential_problems));
-		debug_to_log($this->group_potential_problems);
+		return array($this->group_known_problems, $this->group_likely_problems, $this->group_potential_problems);
 	}
 	
 	/**
@@ -304,14 +315,16 @@ class FileExportRptGuideline extends AccessibilityRpt {
 			if (strlen($error["html_code"]) > 100)
 			$html_code = substr($error["html_code"], 0, 100) . " ...";
 				
-			if ($error["image"] <> '') 
-			{
+			if ($error["image"] <> '') {
 				$height = DISPLAY_PREVIEW_IMAGE_HEIGHT;
 				
 				if ($error["image_alt"] == '_NOT_DEFINED') $alt = '';
 				else if ($error["image_alt"] == '_EMPTY') $alt = 'alt=""';
 				else $alt = 'alt="'.$error["image_alt"].'"';
-			}
+				
+				$error_img['img_src'] = $error["image"];
+				$error_img['height'] = $height;
+			}			
 		
 			$userDecisionsDAO = new UserDecisionsDAO();
 			$row = $userDecisionsDAO->getByUserLinkIDAndLineNumAndColNumAndCheckID($this->user_link_id, $error["line_number"], $error["col_number"], $error['check_id']);
@@ -326,6 +339,10 @@ class FileExportRptGuideline extends AccessibilityRpt {
 			}
 			
 			$passed = FALSE;
+			
+			if (!$row) {
+				$passed = 'none';
+			}
 			
 			if ($row && $row['decision'] == AC_DECISION_PASS) { // pass decision has been made, display "congrats" icon
 				$msg_type = "msg_info";
@@ -344,6 +361,7 @@ class FileExportRptGuideline extends AccessibilityRpt {
 		    $problem_cell['html_code'] = htmlentities($error["html_code"]);
 		    $problem_cell['css_code'] = $error['css_code'];
 		    $problem_cell['base_href'] = AC_BASE_HREF;
+		    $problem_cell['error_img'] = $error_img;
 		    $problem_cell['test_passed'] = $passed;
 			
 			$array[] = $problem_cell;
@@ -351,18 +369,7 @@ class FileExportRptGuideline extends AccessibilityRpt {
 		return $array;
 	}
 	
-	/**
-	* public
-	* main process to start creating file
-	*/
-//	public function	getFile($file, $problem) 
-//	{
-//		if ($file == 'pdf') {
-//			debug_to_log('before constr');
-//			$pdf = new acheckerTCPDF($problem, $this->errors_by_checks, $this->named_groups, $this->subgroups);
-//			$pdf->getPDF();			
-//		}
-//	}
+
 
 	
 }

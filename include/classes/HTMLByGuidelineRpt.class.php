@@ -261,7 +261,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		if ($guideline_level_potential_problems <> "" || $group_potential_problems <> "") {
 			$this->rpt_potential_problems = $guideline_level_potential_problems . $group_potential_problems.$this->initJSVars();
 		}
-//		debug_to_log($this->rpt_likely_problems);
+		
 		if ($this->show_source == 'true')
 		{
 			$this->generateSourceRpt();
