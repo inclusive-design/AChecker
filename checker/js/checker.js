@@ -143,6 +143,8 @@ AChecker.output = AChecker.output || {};
 	 * Validates file select menu, sends file & problem type to start_export.php
 	 */
 	AChecker.input.validateFile = function (data) {
+		$("#validate_file_button").val("Please wait");
+		
 		// check selected items
 		var file = document.getElementById("fileselect").value;
 		var problem = document.getElementById("problemselect").value;
@@ -164,12 +166,19 @@ AChecker.output = AChecker.output || {};
 		
 		// make dataString and send it
 		var dataString = 'file=' + file + '&problem=' + problem;
+		
 		$.ajax({
 		type: "POST",
 		url: "checker/start_export.php",
 		data: dataString,
-		success: function(){
+		success: function(returned_data){
 	        //progress.innerHTML = 'processing ' + dataString;
+//			alert(returned_data);
+			$("#validate_file_button").val("Download");
+			document.getElementById("spinner_export").style.display = 'none';
+//			document.getElementById("spinner_export").src = returned_data;
+//			window.location.href = returned_data;
+//			createIFrame('name', returned_data);
 		},
 		
 		error: function(xhr, errorType, exception) {
@@ -178,6 +187,43 @@ AChecker.output = AChecker.output || {};
         }
 		});
 	};
+	
+//	// браузер хранитс€ в объекте browser
+//	function createIFrame(fname, src, debug){
+//		var ifrstr = browser.isIE ? '<iframe name="'+fname+'" src="'+src+'">' : 'iframe';
+//		var cframe = document.createElement(ifrstr);
+//
+//		with(cframe){ 
+//			name = fname; // это не дл€ IE
+//			setAttribute("name", fname); // и это тоже, но вреда не будет
+//			id = fname; // а это везде ок
+//		}
+//		
+//		// можно добавл€ть сразу к document.body
+//		document.getElementById('iframe_container').appendChild(cframe);
+//
+//		if (!debug) {
+//			hideIframe(cframe);
+//		}			
+//		
+//		if(!browser.isIE){
+//			setIframeSrc(cframe, src);
+//		}
+//		
+//		return cframe;
+//	}
+//
+//	// пр€чем фрейм
+//	function hideIframe(iframeNode) {
+//		with(iframeNode.style) {
+//			if(!browser.isSafari){			
+//				position = "absolute";
+//			}
+//			left = top = "0px";
+//			height = width = "1px";
+//			visibility = "hidden";       
+//		}
+//	}
 
 	/**
 	 * Show the div with id == the given divId while hide all other divs in the array allDivIds

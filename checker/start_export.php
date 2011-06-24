@@ -29,6 +29,7 @@ if (isset($_POST['file']) && isset($_POST['problem'])) {
 	$problem = $_POST['problem'];
 } 
 	
+$uri = '';
 // content to validate	
 if (isset($_SESSION['input_form']['uri'])) {
 	$uri = $_SESSION['input_form']['uri'];
@@ -49,7 +50,15 @@ if (isset($_SESSION['input_form']['mode'])) 		$mode = $_SESSION['input_form']['m
 if (isset($_SESSION['input_form']['user_link_id'])) $user_link_id = $_SESSION['input_form']['user_link_id'];
 
 $aValidator = new AccessibilityValidator($validate_content, $_gids, $uri);
+
+// get page title
+$title = '';
+if (preg_match("/<title>(.+)<\/title>/siU", $validate_content, $matches)) {
+	$title = html_entity_decode($matches[1]);
+}
+
 $aValidator->validate();
+$errors = $aValidator->getValidationErrorRpt();
 
 $guidelinesDAO = new GuidelinesDAO();
 $guideline_rows = $guidelinesDAO->getGuidelineByIDs($_gids);
@@ -63,8 +72,6 @@ if (is_array($guideline_rows))
 }
 $guidelines_text = substr($guidelines_text, 0, -2); // remove ending space and ,
 
-$errors = $aValidator->getValidationErrorRpt();	
-
 if ($mode == 'guideline') $a_rpt = new FileExportRptGuideline($errors, $_gids[0], $user_link_id);
 else if ($mode == 'line') $a_rpt = new FileExportRptLine($errors, $user_link_id);
 
@@ -72,8 +79,8 @@ list($known, $likely, $potential) = $a_rpt->generateRpt();
 list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
 
 if ($file == 'pdf') {
-	$pdf = new acheckerFPDF($problem, $known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential, $guidelines_text, $mode, $user_link_id);
-	$pdf->getGuidelinePDF();			
+	$pdf = new acheckerFPDF($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential, $user_link_id);
+	$pdf->getGuidelinePDF($title, $uri, $problem, $mode, $guidelines_text);			
 }
 
 // uncomment to use TCPDF instead of FPDF

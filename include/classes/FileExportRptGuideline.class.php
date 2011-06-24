@@ -191,7 +191,7 @@ class FileExportRptGuideline extends AccessibilityRpt {
 //		debug_to_log($this->nr_likely_problems);
 //		debug_to_log($this->nr_potential_problems);
 //		
-////		debug_to_log(count($this->group_known_problems));
+//		debug_to_log(count($this->group_known_problems));
 //		debug_to_log($this->group_known_problems);
 //		debug_to_log('----------------------------------------------likely----------------');
 ////		debug_to_log(count($this->group_likely_problems));

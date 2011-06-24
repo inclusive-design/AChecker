@@ -20,7 +20,7 @@
 */
 //define('AC_INCLUDE_PATH', '../include/');
 if (!defined("AC_INCLUDE_PATH")) exit;
-include(AC_INCLUDE_PATH.'../../vitals.inc.php');
+//include(AC_INCLUDE_PATH.'../../vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'fileExport/tcpdf/config/lang/eng.php');
 include_once(AC_INCLUDE_PATH.'fileExport/tcpdf/tcpdf.php');
 

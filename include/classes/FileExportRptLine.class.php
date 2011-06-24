@@ -126,7 +126,7 @@ class FileExportRptLine extends AccessibilityRpt {
 //			$this->rpt_potential_problems .= $this->rpt_potential_decision_not_made.$this->rpt_potential_decision_made;
 //		}		
 		
-		debug_to_log('=================================================BY LINES===================================================');
+//		debug_to_log('=================================================BY LINES===================================================');
 //		debug_to_log($this->nr_known_problems);
 //		debug_to_log($this->nr_likely_problems);
 //		debug_to_log($this->nr_potential_problems);
@@ -135,7 +135,7 @@ class FileExportRptLine extends AccessibilityRpt {
 //		debug_to_log($this->group_known_problems);
 //		debug_to_log('----------------------------------------------likely----------------');
 ////		debug_to_log(count($this->group_likely_problems));
-//		debug_to_log($this->group_likely_problems);
+//		debug_to_log($this->group_potential_problems_no_decision);
 //		debug_to_log('----------------------------------------------potential----------------');
 ////		debug_to_log(count($this->group_potential_problems));
 //		debug_to_log($this->group_potential_problems);
