@@ -143,8 +143,6 @@ AChecker.output = AChecker.output || {};
 	 * Validates file select menu, sends file & problem type to start_export.php
 	 */
 	AChecker.input.validateFile = function (data) {
-		$("#validate_file_button").val("Please wait");
-		
 		// check selected items
 		var file = document.getElementById("fileselect").value;
 		var problem = document.getElementById("problemselect").value;
@@ -160,6 +158,8 @@ AChecker.output = AChecker.output || {};
 			alert('Please provide a problem!');
 			return false;
 		}
+		
+		$("#validate_file_button").val("Please wait");
 		
 		// show spinner		
 		disableClickablesAndShowSpinner(data);		     

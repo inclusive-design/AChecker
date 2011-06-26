@@ -220,13 +220,13 @@ function AC_date($format='%Y-%M-%d', $timestamp = '', $format_type=AC_DATE_MYSQL
 		apply_timezone($timestamp);
 	
 		if ($format == '%D') {
-			return _AT($day_name_con[$timestamp-1]);
+			return _AC($day_name_con[$timestamp-1]);
 		} else if ($format == '%l') {
-			return _AT($day_name_ext[$timestamp-1]);
+			return _AC($day_name_ext[$timestamp-1]);
 		} else if ($format == '%F') {
-			return _AT($month_name_ext[$timestamp-1]);
+			return _AC($month_name_ext[$timestamp-1]);
 		} else if ($format == '%M') {
-			return _AT($month_name_con[$timestamp-1]);
+			return _AC($month_name_con[$timestamp-1]);
 		}
 	}
 
@@ -275,16 +275,16 @@ function AC_date($format='%Y-%M-%d', $timestamp = '', $format_type=AC_DATE_MYSQL
 		$tokens[$i] = substr($tokens[$i],0,1);
 
 		if ($tokens[$i] == 'D') {
-			$output = str_replace('%D', _AT($day_name_con[date('w', $timestamp)]),$output);
+			$output = str_replace('%D', _AC($day_name_con[date('w', $timestamp)]),$output);
 		
 		} else if ($tokens[$i] == 'l') {
-			$output = str_replace('%l', _AT($day_name_ext[date('w', $timestamp)]),$output);
+			$output = str_replace('%l', _AC($day_name_ext[date('w', $timestamp)]),$output);
 		
 		} else if ($tokens[$i] == 'F') {
-			$output = str_replace('%F', _AT($month_name_ext[date('n', $timestamp)-1]),$output);		
+			$output = str_replace('%F', _AC($month_name_ext[date('n', $timestamp)-1]),$output);		
 		
 		} else if ($tokens[$i] == 'M') {
-			$output = str_replace('%M', _AT($month_name_con[date('n', $timestamp)-1]),$output);
+			$output = str_replace('%M', _AC($month_name_con[date('n', $timestamp)-1]),$output);
 
 		} else {
 

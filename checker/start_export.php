@@ -17,11 +17,12 @@
 define('AC_INCLUDE_PATH', '../include/');
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH. 'classes/AccessibilityValidator.class.php');
-include_once(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
+
 include_once(AC_INCLUDE_PATH. 'classes/FileExportRptGuideline.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/FileExportRptLine.class.php');
+
 include_once(AC_INCLUDE_PATH. 'fileExport/fpdf/acheckerFPDF.class.php');
-include_once(AC_INCLUDE_PATH. 'fileExport/tcpdf/acheckerTCPDF.class.php');
+include_once(AC_INCLUDE_PATH. 'fileExport/acheckerEARL.class.php');
 
 // get user choise on file format
 if (isset($_POST['file']) && isset($_POST['problem'])) {
@@ -29,16 +30,23 @@ if (isset($_POST['file']) && isset($_POST['problem'])) {
 	$problem = $_POST['problem'];
 } 
 	
-$uri = '';
 // content to validate	
+$uri = '';
 if (isset($_SESSION['input_form']['uri'])) {
 	$uri = $_SESSION['input_form']['uri'];
 	$validate_content = @file_get_contents($uri);
+	$input_content_type = $uri;
 }
 
-if (isset($_SESSION['input_form']['file'])) 		$validate_content = $_SESSION['input_form']['file'];
+if (isset($_SESSION['input_form']['file'])) {
+	$validate_content = $_SESSION['input_form']['file'];
+	$input_content_type = 'file';
+}
 
-if (isset($_SESSION['input_form']['paste']))		$validate_content = $_SESSION['input_form']['paste'];
+if (isset($_SESSION['input_form']['paste'])) {
+	$validate_content = $_SESSION['input_form']['paste'];
+	$input_content_type = 'paste';
+}
 
 // guidelines	
 if (isset($_SESSION['input_form']['gids'])) 		$_gids = $_SESSION['input_form']['gids'];
@@ -50,43 +58,39 @@ if (isset($_SESSION['input_form']['mode'])) 		$mode = $_SESSION['input_form']['m
 if (isset($_SESSION['input_form']['user_link_id'])) $user_link_id = $_SESSION['input_form']['user_link_id'];
 
 $aValidator = new AccessibilityValidator($validate_content, $_gids, $uri);
+$aValidator->validate();
+$errors = $aValidator->getValidationErrorRpt();
 
 // get page title
 $title = '';
 if (preg_match("/<title>(.+)<\/title>/siU", $validate_content, $matches)) {
-	$title = html_entity_decode($matches[1]);
+	$title = html_entity_decode($matches[1]); //mb_convert_encoding(html_entity_decode($matches[1]), "Windows-1251", "utf-8");
 }
 
-$aValidator->validate();
-$errors = $aValidator->getValidationErrorRpt();
-
-$guidelinesDAO = new GuidelinesDAO();
-$guideline_rows = $guidelinesDAO->getGuidelineByIDs($_gids);
-unset($guidelines_text);	
-if (is_array($guideline_rows))
-{
-	foreach ($guideline_rows as $id => $row)
-	{
-		$guidelines_text .= $row["title"]. ', ';
-	}
-}
-$guidelines_text = substr($guidelines_text, 0, -2); // remove ending space and ,
-
-if ($mode == 'guideline') $a_rpt = new FileExportRptGuideline($errors, $_gids[0], $user_link_id);
-else if ($mode == 'line') $a_rpt = new FileExportRptLine($errors, $user_link_id);
-
-list($known, $likely, $potential) = $a_rpt->generateRpt();
-list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
-
+// create file
 if ($file == 'pdf') {
-	$pdf = new acheckerFPDF($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential, $user_link_id);
-	$pdf->getGuidelinePDF($title, $uri, $problem, $mode, $guidelines_text);			
+	$title = mb_convert_encoding($title, "ISO-8859-1", "UTF-8");
+	
+	if ($mode == 'guideline') $a_rpt = new FileExportRptGuideline($errors, $_gids[0], $user_link_id);
+	else if ($mode == 'line') $a_rpt = new FileExportRptLine($errors, $user_link_id);
+	
+	list($known, $likely, $potential) = $a_rpt->generateRpt();
+	list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
+
+	$pdf = new acheckerFPDF($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential);
+	$pdf->getPDF($title, $uri, $problem, $mode, $_gids);	
+			
+} else if ($file == 'earl') {
+	$title = mb_convert_encoding($title, "Windows-1251", "utf-8");
+	
+	$a_rpt = new FileExportRptLine($errors, $user_link_id);
+	
+	list($known, $likely, $potential) = $a_rpt->generateRpt();
+	list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
+	
+	$earl = new acheckerEARL($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential);
+	$earl->getEARL($problem, $input_content_type, $title, $_gids);
 }
 
-// uncomment to use TCPDF instead of FPDF
-//if ($file == 'pdf') {
-//	$pdf = new acheckerTCPDF($problem);
-//	$pdf->getGuidelinePDF($known);			
-//}
 
 ?>
