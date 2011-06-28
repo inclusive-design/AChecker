@@ -358,7 +358,7 @@ class FileExportRptGuideline extends AccessibilityRpt {
 		    $problem_cell['col_text'] = _AC('column');
 		    $problem_cell['col_nr'] = $error["col_number"];
 		    $problem_cell['check_id'] = $check_id;
-		    $problem_cell['html_code'] = htmlentities($error["html_code"]);
+		    $problem_cell['html_code'] = htmlentities($error["html_code"], ENT_COMPAT, 'UTF-8');
 		    $problem_cell['css_code'] = $error['css_code'];
 		    $problem_cell['base_href'] = AC_BASE_HREF;
 		    $problem_cell['error_img'] = $error_img;

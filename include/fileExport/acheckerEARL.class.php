@@ -23,6 +23,17 @@ include_once(AC_INCLUDE_PATH. "classes/DAO/UsersDAO.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/GuidelinesDAO.class.php");
 include_once(AC_INCLUDE_PATH. "classes/DAO/LangCodesDAO.class.php");
 
+	// strings of data to write in file and output with _AC();
+//	achecker_file_title = 'AChecker - Web Accessibility Checker'
+//	achecker_file_description = 'AChecker is an open source Web accessibility evaluation tool. It can be used to review the accessibility of Web pages based on a variety international accessibility guidelines.'
+//	
+//	achecker_file_input_file = 'File Input'
+//	achecker_file_input_paste = 'Paste Input'
+//	
+//	achecker_file_passed = 'Passed'
+//	achecker_file_failed = 'Failed'
+//	achecker_file_no_decision = 'No Decision'
+
 class acheckerEARL {
 
 	// all private
@@ -40,14 +51,8 @@ class acheckerEARL {
 	var $problem_prefix = '';	// prefix of current problem (for error pointer)
 	var $curr_lang = '';		// current language
 	
-	// strings of data to write in file
-	var $achecker_title = 'AChecker - Web Accessibility Checker';
-	var $achecker_description = 'AChecker is an open source Web accessibility evaluation tool. It can be used to review the accessibility of Web pages based on a variety international accessibility guidelines.';
-	var $achecker_url = 'http://www.atutor.ca/achecker/';
-	
-	var $file_input_str = 'File Input';
-	var $paste_input_str = 'Paste Input';
-	
+	var $achecker_file_url = 'http://www.atutor.ca/achecker/';
+		
 	
 	/**
 	* public
@@ -89,19 +94,8 @@ class acheckerEARL {
 		
 		$path = AC_INCLUDE_PATH.'fileExport/rdf.rdf';
 		$handle = fopen($path, 'w');
-		fwrite($handle, $file_content);
-//		fwrite($handle, mb_convert_encoding($file_content, "Windows-1251", "utf-8"));
+		fwrite($handle, $file_content); 
 		fclose($handle);
-		
-//		debug_to_log(preg_match('%(?:
-//    [\xC2-\xDF][\x80-\xBF]        # non-overlong 2-byte
-//    |\xE0[\xA0-\xBF][\x80-\xBF]               # excluding overlongs
-//    |[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}      # straight 3-byte
-//    |\xED[\x80-\x9F][\x80-\xBF]               # excluding surrogates
-//    |\xF0[\x90-\xBF][\x80-\xBF]{2}    # planes 1-3
-//    |[\xF1-\xF3][\x80-\xBF]{3}                  # planes 4-15
-//    |\xF4[\x80-\x8F][\x80-\xBF]{2}    # plane 16
-//    )+%xs', $title));
 	}
 	
 	/**
@@ -126,10 +120,10 @@ class acheckerEARL {
 			$email = $user_data[1];
 			
 			$file_content .= '<foaf:Group rdf:ID="assertor01">
-			<dct:title>'.$username.' and '.$this->achecker_title.'</dct:title>
+			<dct:title>'.$username.' and '._AC('achecker_file_title').'</dct:title>
 			<dct:hasVersion>'.VERSION.'</dct:hasVersion>
 			<dct:description xml:lang="en">
-				'.$this->achecker_description.'
+				'._AC('achecker_file_description').'
 			</dct:description>
 			<earl:mainAssertor rdf:resource="'.$this->achecker_url.'"/>
 			<foaf:member>
@@ -143,10 +137,10 @@ class acheckerEARL {
 		';			
 		} else {
 			$file_content .= '<earl:Software rdf:about="'.$this->achecker_url.'">
-			<dct:title xml:lang="en">'.$this->achecker_title.'</dct:title>
+			<dct:title xml:lang="en">'._AC('achecker_file_title').'</dct:title>
 			<dct:hasVersion>'.VERSION.'</dct:hasVersion>
 			<dct:description xml:lang="en">
-				'.$this->achecker_description.'
+				'._AC('achecker_file_description').'
 			</dct:description>
 		</earl:Software>
 		
@@ -158,9 +152,9 @@ class acheckerEARL {
 		';
 		
 		if ($input_content_type == 'file') {
-			$file_content .= '<rdf:Description xml:lang="en">'.$this->file_input_str.'</rdf:Description>';
+			$file_content .= '<rdf:Description xml:lang="en">'._AC('achecker_file_input_file').'</rdf:Description>';
 		} else if ($input_content_type == 'paste') {
-			$file_content .= '<rdf:Description xml:lang="en">'.$this->paste_input_str.'</rdf:Description>';
+			$file_content .= '<rdf:Description xml:lang="en">'._AC('achecker_file_input_paste').'</rdf:Description>';
 		} else {
 			$file_content .= '<rdf:Description rdf:about="'.$input_content_type.'">';
 		}
@@ -236,7 +230,7 @@ class acheckerEARL {
 			// congrats message
 			$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_message">
 			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
-				Congratulations! No '.$problem_type.' problems.
+				'._AC("congrats_no_$problem_type").'
 			</ptr:expression>
 		</ptr:ExpressionPointer>
 		
@@ -265,9 +259,9 @@ class acheckerEARL {
 	        ';
 				
 				if ($input_content_type == 'file') {
-					$file_content .= '<ptr:reference rdf:resource="'.$this->file_input_str.'"/>';
+					$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_file').'"/>';
 				} else if ($input_content_type == 'paste') {
-					$file_content .= '<ptr:reference rdf:resource="'.$this->paste_input_str.'"/>';
+					$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_paste').'"/>';
 				} else {
 					$file_content .= '<ptr:reference rdf:resource="'.$input_content_type.'"/>';
 				}
@@ -298,7 +292,7 @@ class acheckerEARL {
 				// html
 				$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_html">
 			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
-				'.$error['html_code'].'
+				'.html_entity_decode($error['html_code'], ENT_COMPAT, 'UTF-8').'
 			</ptr:expression>
 		</ptr:ExpressionPointer>
 		
@@ -356,9 +350,9 @@ class acheckerEARL {
 		    ';
 					
 					if ($input_content_type == 'file') {
-						$file_content .= '<ptr:reference rdf:resource="'.$this->file_input_str.'"/>';
+						$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_file').'"/>';
 					} else if ($input_content_type == 'paste') {
-						$file_content .= '<ptr:reference rdf:resource="'.$this->paste_input_str.'"/>';
+						$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_paste').'"/>';
 					} else {
 						$file_content .= '<ptr:reference rdf:resource="'.$input_content_type.'"/>';
 					}
@@ -380,7 +374,7 @@ class acheckerEARL {
 					// html
 					$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_html">
 			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
-				'.$error['html_code'].'
+				'.html_entity_decode($error['html_code'], ENT_COMPAT, 'UTF-8').'
 			</ptr:expression>
 		</ptr:ExpressionPointer>
 			
@@ -410,9 +404,9 @@ class acheckerEARL {
 						$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_decision">
 			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
 				';
-						if ($error['decision'] == 'true') $file_content .= 'Passed';
-						else if ($error['decision'] == false) $file_content .= 'Failed';
-						else if ($error['decision'] == 'none') $file_content .= 'No decision made';
+						if ($error['decision'] == 'true') $file_content .= _AC('achecker_file_passed');
+						else if ($error['decision'] == false) $file_content .= _AC('achecker_file_failed');
+						else if ($error['decision'] == 'none') $file_content .= _AC('achecker_file_no_decision');
 						$file_content .= '
 			</ptr:expression>
 		</ptr:ExpressionPointer>

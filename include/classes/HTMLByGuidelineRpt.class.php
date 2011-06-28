@@ -462,7 +462,7 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		                         _AC('column'),
 		                         $error["col_number"],
 		                         $check_id, 
-		                         htmlentities($error["html_code"]),
+		                         htmlentities($error["html_code"], ENT_COMPAT, 'UTF-8'),
 		                         $error['css_code'], 
 		                         AC_BASE_HREF, 
 		                         $html_image),

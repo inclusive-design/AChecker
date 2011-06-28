@@ -404,7 +404,7 @@ class HTMLRpt extends AccessibilityRpt {
 		                         $line_number, 
 		                         _AC('column'),
 		                         $col_number, 
-		                         htmlentities($html_code),
+		                         htmlentities($html_code, ENT_COMPAT, 'UTF-8'),
 		                         $css_code, 
 		                         $error, 
 		                         AC_BASE_HREF, 

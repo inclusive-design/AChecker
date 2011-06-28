@@ -21,7 +21,7 @@ include_once(AC_INCLUDE_PATH. 'classes/AccessibilityValidator.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/FileExportRptGuideline.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/FileExportRptLine.class.php');
 
-include_once(AC_INCLUDE_PATH. 'fileExport/fpdf/acheckerFPDF.class.php');
+include_once(AC_INCLUDE_PATH. 'fileExport/tfpdf/acheckerTFPDF.class.php');
 include_once(AC_INCLUDE_PATH. 'fileExport/acheckerEARL.class.php');
 
 // get user choise on file format
@@ -64,12 +64,13 @@ $errors = $aValidator->getValidationErrorRpt();
 // get page title
 $title = '';
 if (preg_match("/<title>(.+)<\/title>/siU", $validate_content, $matches)) {
-	$title = html_entity_decode($matches[1]); //mb_convert_encoding(html_entity_decode($matches[1]), "Windows-1251", "utf-8");
+	$title = $matches[1]; //html_entity_decode($matches[1]); //mb_convert_encoding(html_entity_decode($matches[1]), "Windows-1251", "utf-8");
+//	debug_to_log(mb_detect_encoding($title, 'auto'));
 }
 
 // create file
 if ($file == 'pdf') {
-	$title = mb_convert_encoding($title, "ISO-8859-1", "UTF-8");
+//	$title = mb_convert_encoding($title, "ISO-8859-1", "Windows-1251"); // mb_detect_encoding($title, 'auto')
 	
 	if ($mode == 'guideline') $a_rpt = new FileExportRptGuideline($errors, $_gids[0], $user_link_id);
 	else if ($mode == 'line') $a_rpt = new FileExportRptLine($errors, $user_link_id);
@@ -77,12 +78,10 @@ if ($file == 'pdf') {
 	list($known, $likely, $potential) = $a_rpt->generateRpt();
 	list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
 
-	$pdf = new acheckerFPDF($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential);
+	$pdf = new acheckerTFPDF($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential);
 	$pdf->getPDF($title, $uri, $problem, $mode, $_gids);	
 			
-} else if ($file == 'earl') {
-	$title = mb_convert_encoding($title, "Windows-1251", "utf-8");
-	
+} else if ($file == 'earl') {	
 	$a_rpt = new FileExportRptLine($errors, $user_link_id);
 	
 	list($known, $likely, $potential) = $a_rpt->generateRpt();

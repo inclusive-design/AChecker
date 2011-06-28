@@ -254,7 +254,7 @@ class FileExportRptLine extends AccessibilityRpt {
 		$result['line_nr'] = $line_number;
 		$result['col_text'] = _AC('column');
 		$result['col_nr'] = $col_number;
-		$result['html_code'] = htmlentities($html_code);
+		$result['html_code'] = htmlentities($html_code, ENT_COMPAT, 'UTF-8');
 		$result['css_code'] = $css_code;
 		$result['error'] = $error;
 		$result['base_href'] = AC_BASE_HREF;
