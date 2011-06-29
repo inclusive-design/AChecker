@@ -318,7 +318,7 @@ class acheckerEARL {
 				
 				$this->error_id++;
 			
-			} // end foeraech $error
+			} // end foreach $error
 			
 		} 
 		
@@ -416,8 +416,8 @@ class acheckerEARL {
 			
 					$this->error_id++;					
 					
-				} // end foeraech $error
-			} // end foeraech $category
+				} // end foreach $error
+			} // end foreach $category
 		}
 		
 		return $file_content;

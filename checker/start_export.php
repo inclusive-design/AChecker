@@ -23,6 +23,7 @@ include_once(AC_INCLUDE_PATH. 'classes/FileExportRptLine.class.php');
 
 include_once(AC_INCLUDE_PATH. 'fileExport/tfpdf/acheckerTFPDF.class.php');
 include_once(AC_INCLUDE_PATH. 'fileExport/acheckerEARL.class.php');
+include_once(AC_INCLUDE_PATH. 'fileExport/acheckerCSV.class.php');
 
 // get user choise on file format
 if (isset($_POST['file']) && isset($_POST['problem'])) {
@@ -81,14 +82,18 @@ if ($file == 'pdf') {
 	$pdf = new acheckerTFPDF($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential);
 	$pdf->getPDF($title, $uri, $problem, $mode, $_gids);	
 			
-} else if ($file == 'earl') {	
+} else if ($file == 'earl' || $file == 'csv') {	
 	$a_rpt = new FileExportRptLine($errors, $user_link_id);
-	
 	list($known, $likely, $potential) = $a_rpt->generateRpt();
 	list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
 	
-	$earl = new acheckerEARL($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential);
-	$earl->getEARL($problem, $input_content_type, $title, $_gids);
+	if ($file == 'earl') {
+		$earl = new acheckerEARL($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential);
+		$earl->getEARL($problem, $input_content_type, $title, $_gids);
+	} else if ($file == 'csv') {	
+		$csv = new acheckerCSV($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential);
+		$csv->getCSV($problem, $input_content_type, $title, $_gids);
+	}
 }
 
 
