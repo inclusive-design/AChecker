@@ -16,14 +16,6 @@
  
 define('AC_INCLUDE_PATH', '../include/');
 include(AC_INCLUDE_PATH.'vitals.inc.php');
-include_once(AC_INCLUDE_PATH. 'classes/AccessibilityValidator.class.php');
-
-include_once(AC_INCLUDE_PATH. 'classes/FileExportRptGuideline.class.php');
-include_once(AC_INCLUDE_PATH. 'classes/FileExportRptLine.class.php');
-
-include_once(AC_INCLUDE_PATH. 'fileExport/tfpdf/acheckerTFPDF.class.php');
-include_once(AC_INCLUDE_PATH. 'fileExport/acheckerEARL.class.php');
-include_once(AC_INCLUDE_PATH. 'fileExport/acheckerCSV.class.php');
 
 // get user choise on file format
 if (isset($_POST['file']) && isset($_POST['problem'])) {
@@ -58,41 +50,100 @@ if (isset($_SESSION['input_form']['mode'])) 		$mode = $_SESSION['input_form']['m
 // user link id
 if (isset($_SESSION['input_form']['user_link_id'])) $user_link_id = $_SESSION['input_form']['user_link_id'];
 
-$aValidator = new AccessibilityValidator($validate_content, $_gids, $uri);
-$aValidator->validate();
-$errors = $aValidator->getValidationErrorRpt();
+
+$html = array();
+$error_nr_html = -1;
+
+// validate html
+if ($_SESSION['input_form']['enable_html_validation'] == true) {
+	include(AC_INCLUDE_PATH. "classes/HTMLValidator.class.php");
+
+	if ($input_content_type == 'file' || $input_content_type == 'paste') {
+		$htmlValidator = new HTMLValidator("fragment", $validate_content, true);
+	} else {
+		$htmlValidator = new HTMLValidator("uri", $input_content_type, true);
+	}
+
+	$html = $htmlValidator->getValidationRptArray();
+	$error_nr_html = $htmlValidator->getNumOfValidateError();
+}
+
+$css = array();
+$error_nr_css = -1;
+$css_error = '';
+
+// validate css
+if ($_SESSION['input_form']['enable_css_validation'] == true) {
+	include(AC_INCLUDE_PATH. "classes/CSSValidator.class.php");
+
+	if ($input_content_type == $uri) {
+		$cssValidator = new CSSValidator("uri", $input_content_type, true);
+	} else {
+		// css validator is only available at validating url, not at validating a uploaded file or pasted html
+		$css_error = _AC("css_validator_unavailable");
+	}
+	$css = $cssValidator->getValidationRptArray();
+	$error_nr_css = $cssValidator->getNumOfValidateError();
+}
+
+if ($problem != 'html' && $problem != 'css') {
+	include_once(AC_INCLUDE_PATH. 'classes/AccessibilityValidator.class.php');
+	include_once(AC_INCLUDE_PATH. 'classes/FileExportRptGuideline.class.php');
+	include_once(AC_INCLUDE_PATH. 'classes/FileExportRptLine.class.php');
+
+	$aValidator = new AccessibilityValidator($validate_content, $_gids, $uri);
+	$aValidator->validate();
+	$errors = $aValidator->getValidationErrorRpt();
+}
 
 // get page title
 $title = '';
-if (preg_match("/<title>(.+)<\/title>/siU", $validate_content, $matches)) {
-	$title = $matches[1]; //html_entity_decode($matches[1]); //mb_convert_encoding(html_entity_decode($matches[1]), "Windows-1251", "utf-8");
-//	debug_to_log(mb_detect_encoding($title, 'auto'));
-}
+if (preg_match("/<title>(.+)<\/title>/siU", $validate_content, $matches)) $title = $matches[1];
+
+
+$known = array();
+$likely = array();
+$potential = array();
+$error_nr_known = 0;
+$error_nr_likely = 0;
+$error_nr_potential = 0;
 
 // create file
-if ($file == 'pdf') {
-//	$title = mb_convert_encoding($title, "ISO-8859-1", "Windows-1251"); // mb_detect_encoding($title, 'auto')
+if ($file == 'pdf') {	
+	if ($problem != 'html' && $problem != 'css') {
+		if ($mode == 'guideline') $a_rpt = new FileExportRptGuideline($errors, $_gids[0], $user_link_id);
+		else if ($mode == 'line') $a_rpt = new FileExportRptLine($errors, $user_link_id);
 	
-	if ($mode == 'guideline') $a_rpt = new FileExportRptGuideline($errors, $_gids[0], $user_link_id);
-	else if ($mode == 'line') $a_rpt = new FileExportRptLine($errors, $user_link_id);
-	
-	list($known, $likely, $potential) = $a_rpt->generateRpt();
-	list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
+		list($known, $likely, $potential) = $a_rpt->generateRpt();
+		list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
+	}
+	include_once(AC_INCLUDE_PATH. 'fileExport/tfpdf/acheckerTFPDF.class.php');
 
-	$pdf = new acheckerTFPDF($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential);
+	$pdf = new acheckerTFPDF($known, $likely, $potential, $html, $css, 
+		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
 	$pdf->getPDF($title, $uri, $problem, $mode, $_gids);	
 			
 } else if ($file == 'earl' || $file == 'csv') {	
-	$a_rpt = new FileExportRptLine($errors, $user_link_id);
-	list($known, $likely, $potential) = $a_rpt->generateRpt();
-	list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
+	if ($problem != 'html' && $problem != 'css') {
+		$a_rpt = new FileExportRptLine($errors, $user_link_id);
+		list($known, $likely, $potential) = $a_rpt->generateRpt();
+		list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
+	}
 	
 	if ($file == 'earl') {
-		$earl = new acheckerEARL($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential);
+		include_once(AC_INCLUDE_PATH. 'fileExport/acheckerEARL.class.php');
+		
+		$earl = new acheckerEARL($known, $likely, $potential, $html, $css, 
+			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
 		$earl->getEARL($problem, $input_content_type, $title, $_gids);
+		
 	} else if ($file == 'csv') {	
-		$csv = new acheckerCSV($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential);
+		include_once(AC_INCLUDE_PATH. 'fileExport/acheckerCSV.class.php');
+		
+		$csv = new acheckerCSV($known, $likely, $potential, $html, $css, 
+			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
 		$csv->getCSV($problem, $input_content_type, $title, $_gids);
+		
 	}
 }
 

@@ -70,6 +70,8 @@ if (is_array($this->seals))
 				<option value="known" ><?php echo _AC('known'); ?></option>
 				<option value="likely"><?php echo _AC('likely'); ?></option>
 				<option value="potential"><?php echo _AC('potential'); ?></option>
+				<option value="html"><?php echo _AC('html_validation'); ?></option>
+				<option value="css"><?php echo _AC('css_validation'); ?></option>
 				<option value="all"><?php echo _AC('all'); ?></option>
 			</select></br>
 			

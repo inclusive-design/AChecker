@@ -35,6 +35,8 @@ include_once(AC_INCLUDE_PATH.'fileExport/tfpdf/tfpdf.php');
 //achecker_file_report_known = 'Report on known type of problems'
 //achecker_file_report_likely = 'Report on likely type of problems'
 //achecker_file_report_potential = 'Report on potential type of problems'
+//achecker_file_report_html = 'Report on HTML validation'
+//achecker_file_report_css = 'Report on CSS validation'
 //achecker_file_report_found = 'found'
 //
 //+ days of week and months
@@ -46,18 +48,26 @@ class acheckerTFPDF extends tFPDF {
 	var $known = array();
 	var $likely = array();
 	var $potential = array();
+	var $html = array();
+	var $css = array();
 	
 	// numbers of errors to display for each problem type
 	var $error_nr_known = 0;
 	var $error_nr_likely = 0;
 	var $error_nr_potential = 0;
+	var $error_nr_html = 0;
+	var $error_nr_css = 0;
 	
+	// css error message 
+	// css validator is only available at validating url, not at validating a uploaded file or pasted html
+	var $css_error = 0;
 	
 	/**
 	* public
 	* error arrays and numbers setter
 	*/
-	function acheckerTFPDF($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential)
+	function acheckerTFPDF($known, $likely, $potential, $html, $css, 
+		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error)
 	{
 		//Call parent constructor
 		$this->tFPDF('P','mm','A4');
@@ -65,10 +75,16 @@ class acheckerTFPDF extends tFPDF {
 		$this->known = $known;
 		$this->likely = $likely;
 		$this->potential = $potential;
+		$this->html = $html;
+		$this->css = $css;
 		
 		$this->error_nr_known = $error_nr_known;
 		$this->error_nr_likely = $error_nr_likely;
 		$this->error_nr_potential = $error_nr_potential;
+		$this->error_nr_html = $error_nr_html;
+		$this->error_nr_css = $error_nr_css;
+		
+		$this->css_error = $css_error;
 	}
 	
 	/**
@@ -191,8 +207,7 @@ class acheckerTFPDF extends tFPDF {
 			$this->SetX(17);
 			$this->SetFont('DejaVu', 'B', 12);
 			$this->Write(5, _AC('congrats_no_'.$problem_type));
-		} 
-		else { // else make report on errors
+		} else { // else make report on errors
 	
 			// group level output
 			foreach($array as $group_title => $group_content) {
@@ -251,7 +266,8 @@ class acheckerTFPDF extends tFPDF {
 									$error['html_code'] = "<img ".$img_parts[0].'"'.$error['error_img']['img_src'].'" ...';
 								}
 							}
-							$this->Write(5, html_entity_decode($error['html_code']));
+							$str = str_replace("\t", "    ", html_entity_decode($error['html_code']));
+							$this->Write(5, $str);
 							$this->Ln(8);
 							
 							// css code
@@ -323,9 +339,7 @@ class acheckerTFPDF extends tFPDF {
 			$this->SetX(14);
 			$this->SetFont('DejaVu', 'B', 12);
 			$this->Write(5, _AC('congrats_no_'.$problem_type));
-			return;
-		} 
-		else { // else make report on errors
+		} else { // else make report on errors
 
 			// known
 			if ($problem_type == 'known') {
@@ -355,7 +369,8 @@ class acheckerTFPDF extends tFPDF {
 							$error['html_code'] = "<img ".$img_parts[0].'"'.$error['image']['src'].'" ...';
 						}
 					}
-					$this->Write(5, html_entity_decode($error['html_code']));
+					$str = str_replace("\t", "    ", html_entity_decode($error['html_code']));
+					$this->Write(5, $str);
 					$this->Ln(8);
 					
 					// css code
@@ -405,7 +420,8 @@ class acheckerTFPDF extends tFPDF {
 								$error['html_code'] = "<img ".$img_parts[0].'"'.$error['image']['src'].'" ...';
 							}
 						}
-						$this->Write(5, html_entity_decode($error['html_code']));
+						$str = str_replace("\t", "    ", html_entity_decode($error['html_code']));
+						$this->Write(5, $str);
 						$this->Ln(8);
 
 						// css code
@@ -444,6 +460,153 @@ class acheckerTFPDF extends tFPDF {
 	}
 	
 	/**
+	* private
+	* prints report for HTML validation
+	*/
+	private function printHTML() 
+	{
+		// str with error type and nr of errors
+		$this->SetFont('DejaVu', 'B', 14);
+		$this->SetTextColor(0);
+		$this->Write(5, _AC('achecker_file_report_html').' ('.$this->error_nr_html.' '._AC('achecker_file_report_found').'):');		
+		$this->Ln(10);
+		$this->SetFont('DejaVu', 'B', 12);
+		$this->Write(5,strip_tags(_AC("html_validator_provided_by")));
+		$this->Ln(10);
+		
+		// show congratulations if no errors found
+		if ($this->error_nr_html == 0) {
+			$this->Ln(3);
+			$this->SetTextColor(0, 128, 0);
+			$path = AC_BASE_HREF."images/jpg/feedback.jpg";
+			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
+			$this->SetX(14);
+			$this->SetFont('DejaVu', 'B', 12);
+			$this->Write(5, _AC("congrats_html_validation"));
+		} else { // else make report on errors
+			foreach($this->html as $error) {
+				// error icon img, line, column, error text
+				$img_data = explode(".", $error['img_src']);		
+				$path = AC_BASE_HREF."images/jpg/".$img_data[0].".jpg";
+				$this->Image($path, $this->GetX()+7, $this->GetY(), 4, 4);
+				$this->SetX(21);
+				if ($error['line'] != '' && $error['col'] != '') {
+					$this->SetTextColor(0);
+					$this->SetFont('DejaVu', 'BI', 9);
+					$location = " "._AC('line')." ".$error['line'].", "._AC('column')." ".$error['col'].":  ";
+					$this->Write(5, $location);
+				}
+				$this->SetTextColor(26, 74, 114);
+				$this->SetFont('DejaVu', '', 10);
+				$this->Write(5, html_entity_decode(strip_tags($error['err'])));
+				$this->Ln(7);
+
+				// html code of error
+				if ($error['html_1'] != '' || $error['html_2'] != '' || $error['html_3'] != '') {
+					$this->SetFont('DejaVu', '', 9);
+					$this->SetX(17);
+					$this->SetTextColor(0);
+					$str = str_replace("\t", "    ", html_entity_decode(htmlspecialchars_decode($error['html_1'], ENT_QUOTES)));
+					$this->Write(5, $str);
+					$this->SetTextColor(255, 0 ,0);
+					$str = str_replace("\t", "    ", html_entity_decode(htmlspecialchars_decode($error['html_2'], ENT_QUOTES)));
+					$this->Write(5, $str);
+					$this->SetTextColor(0);
+					$str = str_replace("\t", "    ", html_entity_decode(htmlspecialchars_decode($error['html_3'], ENT_QUOTES)));
+					$this->Write(5, $str);
+					$this->Ln(10);
+				}
+				
+				// text
+				if ($error['text'] != '') {
+					$this->SetX(17);
+					$this->SetFont('DejaVu', '', 10);
+					$this->Write(5, html_entity_decode(strip_tags($error['text'])));
+					$this->Ln(10);
+				}
+			}
+		}
+		
+	}
+	
+	/**
+	* private
+	* prints report for CSS validation
+	*/
+	private function printCSS() 
+	{
+		// str with error type and nr of errors
+		$this->SetFont('DejaVu', 'B', 14);
+		$this->SetTextColor(0);
+		$this->Write(5, _AC('achecker_file_report_css').' ('.$this->error_nr_css.' '._AC('achecker_file_report_found').'):');		
+		$this->Ln(10);
+		$this->SetFont('DejaVu', 'B', 12);
+		$this->Write(5,strip_tags(_AC("css_validator_provided_by")));
+		$this->Ln(10);
+		
+		if ($this->css_error != '') {
+			// css validator is only available at validating url, not at validating a uploaded file or pasted html
+			$this->Ln(3);
+			$this->SetTextColor(0, 128, 0);
+			$path = AC_BASE_HREF."images/jpg/info.jpg";
+			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
+			$this->SetX(14);
+			$this->SetFont('DejaVu', 'B', 12);
+			$this->Write(5, $this->css_error);
+		} else {
+			if ($this->error_nr_css == 0) {
+				// show congratulations if no errors found
+				$this->Ln(3);
+				$this->SetTextColor(0, 128, 0);
+				$path = AC_BASE_HREF."images/jpg/feedback.jpg";
+				$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
+				$this->SetX(14);
+				$this->SetFont('DejaVu', 'B', 12);
+				$this->Write(5, _AC("congrats_css_validation"));
+			} else { // else make report on errors
+				foreach($this->css as $uri => $group) {
+					// uri
+					$this->Ln(3);
+					$this->SetX(17);
+					$this->SetTextColor(0);
+					$this->SetFont('DejaVu', 'B', 10);
+					$this->Write(5, "URI: ");
+					$this->SetTextColor(26, 74, 114);
+					$this->SetFont('DejaVu', 'B', 12);
+					$this->Write(5, $uri);
+					$this->Ln(10);
+					
+					foreach($group as $error) {
+						// line, code
+						$this->SetX(17);
+						$this->SetTextColor(0);
+						$this->SetFont('DejaVu', 'BI', 9);
+						$location = _AC('line')." ".$error['line'].":  ";
+						$this->Write(5, $location);
+						if ($error['code'] != '') {
+							$this->SetFont('DejaVu', '', 9);
+							$this->Write(5, $error['code']); //_AC('html_tag')." ".$error['code'];
+						}
+						$this->Ln(7);
+						
+						// parse
+						if ($error['parse'] != '') {
+							$this->SetX(17);
+//							$this->SetFont('DejaVu', 'B', 10);
+//							$this->Write(5, _AC('error').": ");
+							$this->SetFont('DejaVu', '', 10);
+							$str = str_replace("\t", "    ", strip_tags(htmlspecialchars_decode(html_entity_decode($error['parse']), ENT_QUOTES)));
+							$this->Write(5, $str);
+							$this->Ln(10);
+						}
+					} // end foreach error
+				} // end foreach group
+			}
+		}
+		
+	}
+	
+	/**
 	* public
 	* main process of creating file
 	*/
@@ -452,7 +615,7 @@ class acheckerTFPDF extends tFPDF {
 		$guidelinesDAO = new GuidelinesDAO();
 		$guideline_rows = $guidelinesDAO->getGuidelineByIDs($_gids);
 		
-		// get list of guidelines
+		// get list of guidelines separated by ','
 		if (is_array($guideline_rows)) {
 			foreach ($guideline_rows as $id => $row) {
 				$guidelines_text .= $row["title"]. ', ';
@@ -471,6 +634,18 @@ class acheckerTFPDF extends tFPDF {
 				$this->printGuideline('likely');
 				$this->AddPage();
 				$this->printGuideline('potential');
+				if ($this->error_nr_html != -1) {
+					$this->AddPage();
+					$this->printHTML();
+				}
+				if ($this->error_nr_css != -1) {
+					$this->AddPage();
+					$this->printCSS();
+				}
+			} else if ($problem == 'html') {
+				$this->printHTML();
+			} else if ($problem == 'css') {
+				$this->printCSS();
 			} else {
 				$this->printGuideline($problem);
 			}
@@ -483,7 +658,19 @@ class acheckerTFPDF extends tFPDF {
 				$this->printLine('likely');
 				$this->AddPage();
 				$this->printLine('potential');
-			} else {
+				if ($this->error_nr_html != -1) {
+					$this->AddPage();
+					$this->printHTML();
+				}
+				if ($this->error_nr_css != -1) {
+					$this->AddPage();
+					$this->printCSS();
+				}
+			} else if ($problem == 'html') {
+				$this->printHTML();
+			} else if ($problem == 'css') {
+				$this->printCSS();
+			} else {			
 				$this->printLine($problem);
 			}
 		}

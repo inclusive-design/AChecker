@@ -47,6 +47,7 @@ define(DELIM, ";");
 //	achecker_file_css = 'CSS code'
 //	achecker_file_img = 'Image source'
 //	achecker_file_decision = 'Decision'
+//	achecker_file_text = 'Error text'
 
 class acheckerCSV {
 
@@ -55,11 +56,19 @@ class acheckerCSV {
 	var $known = array();
 	var $likely = array();
 	var $potential = array();
+	var $html = array();
+	var $css = array();
 	
 	// numbers of errors to display for each problem type
 	var $error_nr_known = 0;
 	var $error_nr_likely = 0;
 	var $error_nr_potential = 0;
+	var $error_nr_html = 0;
+	var $error_nr_css = 0;
+	
+	// css error message 
+	// css validator is only available at validating url, not at validating a uploaded file or pasted html
+	var $css_error = 0;
 	
 	var $achecker_file_url = 'http://www.atutor.ca/achecker/';
 		
@@ -68,15 +77,22 @@ class acheckerCSV {
 	* public
 	* error arrays and numbers setter
 	*/
-	function acheckerCSV($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential)
+	function acheckerCSV($known, $likely, $potential, $html, $css, 
+		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error)
 	{				
 		$this->known = $known;
 		$this->likely = $likely;
-		$this->potential = $potential;	
+		$this->potential = $potential;
+		$this->html = $html;	
+		$this->css = $css;	
 		
 		$this->error_nr_known = $error_nr_known;
 		$this->error_nr_likely = $error_nr_likely;
 		$this->error_nr_potential = $error_nr_potential;
+		$this->error_nr_html = $error_nr_html;
+		$this->error_nr_css = $error_nr_css;
+		
+		$this->css_error = $css_error;
 	}
 	
 	/**
@@ -86,11 +102,17 @@ class acheckerCSV {
 	public function	getCSV($problem, $input_content_type, $title, $_gids) 
 	{	
 		$file_content = $this->getInfo($input_content_type, $title, $_gids);
-	
+
 		if ($problem == 'all') {
 			$file_content .= $this->getResultSection('known');
 			$file_content .= $this->getResultSection('likely');
 			$file_content .= $this->getResultSection('potential');
+			if ($this->error_nr_html != -1) $file_content .= $this->getHTML();
+			if ($this->error_nr_css != -1) $file_content .= $this->getCSS();
+		} else if ($problem == 'css') {
+			$file_content .= $this->getCSS();
+		} else if ($problem == 'html') {
+			$file_content .= $this->getHTML();
 		} else {
 			$file_content .= $this->getResultSection($problem);
 		}	
@@ -172,18 +194,14 @@ class acheckerCSV {
 	*/
 	private function getResultSection($problem_type) 
 	{		
-		$this->error_id = 1;
-		
 		if ($problem_type == 'known') {
 			$array = $this->known;
 			$nr = $this->error_nr_known;
 			$file_content .= EOL._AC("known_problems").': '.$nr.EOL;
-			$file_content .= _AC("achecker_file_repair").DELIM._AC("achecker_file_html").DELIM._AC("achecker_file_css").DELIM._AC("achecker_file_img").DELIM.EOL;
 		} else if ($problem_type == 'likely') {
 			$array = $this->likely;
 			$nr = $this->error_nr_likely;
 			$file_content .= EOL._AC("likely_problems").': '.$nr.EOL;
-			$file_content .= _AC("achecker_file_html").DELIM._AC("achecker_file_css").DELIM._AC("achecker_file_img");
 			if (isset($_SESSION['user_id'])) {
 				$file_content .= DELIM._AC("achecker_file_decision");
 			}
@@ -192,11 +210,9 @@ class acheckerCSV {
 			$array = $this->potential;
 			$nr = $this->error_nr_potential;
 			$file_content .= EOL._AC("potential_problems").': '.$nr.EOL;
-			$file_content .= _AC("achecker_file_html").DELIM._AC("achecker_file_css").DELIM._AC("achecker_file_img");
 			if (isset($_SESSION['user_id'])) {
 				$file_content .= DELIM._AC("achecker_file_decision");
 			}
-			$file_content .= EOL;
 		}
 		
 		// show congratulations if no errors found
@@ -205,6 +221,7 @@ class acheckerCSV {
 			$file_content .= _AC("congrats_no_$problem_type").EOL;
 		} else {		
 			if ($problem_type == 'known') {
+				$file_content .= _AC("achecker_file_repair").DELIM._AC("achecker_file_html").DELIM._AC("achecker_file_css").DELIM._AC("achecker_file_img").EOL;
 				foreach ($array as $error) {
 					// line and column + error text
 					$file_content .= $error['line_text'].' '.$error['line_nr'].', '.$error['col_text'].' '.$error['col_nr']
@@ -234,6 +251,7 @@ class acheckerCSV {
 			} 		
 			// likely and potential. needed to show 'passed', 'failed' or 'no decision'		
 			else { 
+				$file_content .= _AC("achecker_file_html").DELIM._AC("achecker_file_css").DELIM._AC("achecker_file_img").EOL;
 				foreach ($array as $category) { // with decision, no decision
 					foreach ($category as $error) {
 						// line and column + error text
@@ -273,7 +291,83 @@ class acheckerCSV {
 		}		
 		return $file_content;
 	}
+
+	/**
+	* private
+	* computes result of HTML validation
+	* returns it as string
+	*/
+	private function getHTML() 
+	{		
+		$file_content .= EOL._AC("html_validation_result").': '.$this->error_nr_html.DELIM.strip_tags(_AC("html_validator_provided_by")).EOL;		
 		
+		// show congratulations if no errors found
+		if ($this->error_nr_html == 0) {
+			// congrats message
+			$file_content .= _AC("congrats_html_validation").EOL;
+		} else {		
+			$file_content .= _AC("achecker_file_html").DELIM._AC("achecker_file_text").EOL;
+			foreach ($this->html as $error) {				
+				// line and column + error text
+				$file_content .= $this->prepareStr(_AC('line')." ".$error['line'].", "._AC('column')." ".$error['col'].":  ".html_entity_decode(strip_tags($error['err']))).EOL;
+		
+				// html
+				$file_content .= $this->prepareStr(html_entity_decode($error['html_1'].$error['html_2'].$error['html_3'], ENT_COMPAT, 'UTF-8')).DELIM;
+													
+				// text
+				if ($error['text']) {
+					$str = str_replace("\n", "", strip_tags(html_entity_decode($error['text'])));
+					$str = str_replace("\r", "", strip_tags(html_entity_decode($error['text'])));
+					$str = preg_replace("/ {2,}/", " ", $str);
+					$file_content .= $this->prepareStr($str).EOL;
+				} else $file_content .= "".EOL;
+					
+			} // end foreach $error		
+		}		
+		return $file_content;
+	}
+	
+/**
+	* private
+	* computes result of CSS validation
+	* returns it as string
+	*/
+	private function getCSS() 
+	{		
+		$file_content .= EOL._AC("css_validation_result").': '.$this->error_nr_css.DELIM.strip_tags(_AC("css_validator_provided_by")).EOL;		
+		
+		// show congratulations if no errors found
+		if ($this->error_nr_css == 0) {
+			// congrats message
+			$file_content .= _AC("congrats_css_validation").EOL;
+		} else {	
+			$file_content .= $this->prepareStr(_AC('line')).DELIM.$this->prepareStr(_AC('html_tag')).DELIM.$this->prepareStr(_AC('error')).EOL;
+			foreach($this->css as $uri => $group) {
+					// uri
+					$file_content .= "URI: ".$uri.EOL;
+					debug_to_log($uri);
+					foreach($group as $error) {
+						// line
+						$file_content .= $error['line'];	
+
+						// code
+						if ($error['code'] != '') $file_content .= DELIM.$this->prepareStr($error['code']);
+						else $file_content .= DELIM."";
+						
+						// parse
+						if ($error['parse'] != '') {
+							$str = str_replace("\n", "", strip_tags(html_entity_decode($error['parse'])));
+							$str = str_replace("\r", "", strip_tags(html_entity_decode($error['parse'])));
+							$str = preg_replace("/ {2,}/", " ", $str);
+							$file_content .= DELIM.$this->prepareStr($str).EOL;
+						}
+						else $file_content .= DELIM."".EOL;
+						
+					} // end foreach error
+				} // end foreach group	
+		}	
+		return $file_content;
+	}
 	
 }
 ?>

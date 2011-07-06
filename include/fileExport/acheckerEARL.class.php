@@ -41,32 +41,47 @@ class acheckerEARL {
 	var $known = array();
 	var $likely = array();
 	var $potential = array();
+	var $html = array();
+	var $css = array();
 	
 	// numbers of errors to display for each problem type
 	var $error_nr_known = 0;
 	var $error_nr_likely = 0;
 	var $error_nr_potential = 0;
+	var $error_nr_html = 0;
+	var $error_nr_css = 0;
 	
 	var $error_id = 1;			// error id (for error pointer)
 	var $problem_prefix = '';	// prefix of current problem (for error pointer)
 	var $curr_lang = '';		// current language
 	
 	var $achecker_file_url = 'http://www.atutor.ca/achecker/';
+	
+	// css error message 
+	// css validator is only available at validating url, not at validating a uploaded file or pasted html
+	var $css_error = 0;
 		
 	
 	/**
 	* public
 	* error arrays and numbers setter
 	*/
-	function acheckerEARL($known, $likely, $potential, $error_nr_known, $error_nr_likely, $error_nr_potential)
+	function acheckerEARL($known, $likely, $potential, $html, $css, 
+		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error)
 	{				
 		$this->known = $known;
 		$this->likely = $likely;
-		$this->potential = $potential;	
+		$this->potential = $potential;
+		$this->html = $html;	
+		$this->css = $css;	
 		
 		$this->error_nr_known = $error_nr_known;
 		$this->error_nr_likely = $error_nr_likely;
 		$this->error_nr_potential = $error_nr_potential;
+		$this->error_nr_html = $error_nr_html;
+		$this->error_nr_css = $error_nr_css;
+		
+		$this->css_error = $css_error;
 	}
 	
 	/**
@@ -85,6 +100,12 @@ class acheckerEARL {
 			$file_content .= $this->getResultSection('known', $input_content_type);
 			$file_content .= $this->getResultSection('likely', $input_content_type);
 			$file_content .= $this->getResultSection('potential', $input_content_type);
+			if ($this->error_nr_html != -1) $file_content .= $this->getHTML($input_content_type);
+			if ($this->error_nr_css != -1) $file_content .= $this->getCSS();
+		} else if ($problem == 'html') {
+			$file_content .= $this->getHTML($input_content_type);
+		} else if ($problem == 'css') {
+			$file_content .= $this->getCSS();
 		} else {
 			$file_content .= $this->getResultSection($problem, $input_content_type);
 		}
@@ -96,6 +117,179 @@ class acheckerEARL {
 		$handle = fopen($path, 'w');
 		fwrite($handle, $file_content); 
 		fclose($handle);
+	}
+	
+	/**
+	* private
+	* computes result of HTML validation
+	* returns them as string
+	*/
+	private function getHTML($input_content_type)
+	{
+		$this->error_id = 1;
+		$this->problem_prefix = 'html';
+		
+		$file_content .= '<!-- ========================== HTML validation ========================== -->
+		';
+		
+		// show congratulations if no errors found
+		if ($this->error_nr_html == 0) {
+			$file_content .= '<earl:TestResult rdf:ID="result_'.$this->problem_prefix.$this->error_id.'">
+	        <earl:pointer rdf:resource="#pointer_'.$this->problem_prefix.$this->error_id.'_message" />
+	        <earl:outcome rdf:resource="http://www.w3.org/ns/earl#passed" />
+	    </earl:TestResult>
+	    
+	    ';
+			// congrats message
+			$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_message">
+			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
+				'._AC("congrats_html_validation").'
+			</ptr:expression>
+		</ptr:ExpressionPointer>
+		
+		';
+		} else { // else show errors	
+			foreach ($this->html as $error) {
+				// error TestResult
+				$file_content .= '<earl:TestResult rdf:ID="result_'.$this->problem_prefix.$this->error_id.'">
+	        <earl:pointer rdf:resource="#pointer_'.$this->problem_prefix.$this->error_id.'_line" />
+			<earl:pointer rdf:resource="#pointer_'.$this->problem_prefix.$this->error_id.'_error" />
+			<earl:pointer rdf:resource="#pointer_'.$this->problem_prefix.$this->error_id.'_html" />
+			<earl:pointer rdf:resource="#pointer_'.$this->problem_prefix.$this->error_id.'_text" />
+	        <earl:outcome rdf:resource="http://www.w3.org/ns/earl#failed" />
+	    </earl:TestResult>
+	    
+	    ';
+				// error details
+				// line
+				$file_content .= '<ptr:LineCharPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_line">
+	        <ptr:lineNumber>'.$error['line'].'</ptr:lineNumber>
+	        <ptr:charNumber>'.$error['col'].'</ptr:charNumber>
+	        ';
+				
+				if ($input_content_type == 'file') {
+					$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_file').'"/>';
+				} else if ($input_content_type == 'paste') {
+					$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_paste').'"/>';
+				} else {
+					$file_content .= '<ptr:reference rdf:resource="'.$input_content_type.'"/>';
+				}
+				
+				$file_content .= '
+		</ptr:LineCharPointer>
+		
+		';
+				
+				// error text
+				$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_error">
+			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
+				'.html_entity_decode($error['err']).'
+			</ptr:expression>
+		</ptr:ExpressionPointer>
+		
+		';
+				
+				// html
+				$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_html">
+			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
+				'.html_entity_decode($error['html_1'].$error['html_2'].$error['html_3'], ENT_COMPAT, 'UTF-8').'
+			</ptr:expression>
+		</ptr:ExpressionPointer>
+		
+		';
+				
+				// text
+				$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_text">
+			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
+				'.html_entity_decode($error['text']).'
+			</ptr:expression>
+		</ptr:ExpressionPointer>
+		
+		';				
+				$this->error_id++;
+			
+			} // end foreach $error
+			
+		}
+		
+		return $file_content;
+	}
+	
+	/**
+	* private
+	* computes result of CSS validation
+	* returns them as string
+	*/
+	private function getCSS()
+	{
+		$this->error_id = 1;
+		$this->problem_prefix = 'css';
+		
+		$file_content .= '<!-- ========================== CSS validation ========================== -->
+		';
+		
+		// show congratulations if no errors found
+		if ($this->error_nr_css == 0) {
+			$file_content .= '<earl:TestResult rdf:ID="result_'.$this->problem_prefix.$this->error_id.'">
+	        <earl:pointer rdf:resource="#pointer_'.$this->problem_prefix.$this->error_id.'_message" />
+	        <earl:outcome rdf:resource="http://www.w3.org/ns/earl#passed" />
+	    </earl:TestResult>
+	    
+	    ';
+			// congrats message
+			$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_message">
+			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
+				'._AC("congrats_css_validation").'
+			</ptr:expression>
+		</ptr:ExpressionPointer>
+		
+		';
+		} else { // else show errors	
+			foreach ($this->css as $uri => $group) {
+				foreach($group as $error) {
+					// error TestResult
+					$file_content .= '<earl:TestResult rdf:ID="result_'.$this->problem_prefix.$this->error_id.'">
+	        <earl:pointer rdf:resource="#pointer_'.$this->problem_prefix.$this->error_id.'_line" />
+			<earl:pointer rdf:resource="#pointer_'.$this->problem_prefix.$this->error_id.'_element" />
+			<earl:pointer rdf:resource="#pointer_'.$this->problem_prefix.$this->error_id.'_error" />
+	        <earl:outcome rdf:resource="http://www.w3.org/ns/earl#failed" />
+	    </earl:TestResult>
+	    
+	    ';
+				
+				// error details
+				// line
+				$file_content .= '<ptr:LineCharPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_line">
+	        <ptr:lineNumber>'.$error['line'].'</ptr:lineNumber>
+	        <ptr:reference rdf:resource="'.$uri.'"/>
+		</ptr:LineCharPointer>
+		
+		';
+				
+				// element
+				$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_element">
+			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
+				'.html_entity_decode($error['code'], ENT_COMPAT, 'UTF-8').'
+			</ptr:expression>
+		</ptr:ExpressionPointer>
+		
+		';
+				
+				// error
+				$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_error">
+			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
+				'.html_entity_decode($error['parse'], ENT_COMPAT, 'UTF-8').'
+			</ptr:expression>
+		</ptr:ExpressionPointer>
+		
+		';
+							
+				$this->error_id++;
+			
+				} // end foreach $error
+			} // end foreach $group
+		}		
+		return $file_content;
 	}
 	
 	/**
@@ -433,11 +627,7 @@ class acheckerEARL {
 		if (isset($_SESSION['user_id'])) {
 			$userDAO = new UsersDAO();	
 			$user_data = $userDAO->getUserByID($_SESSION['user_id']);
-			
-			if (($user_data['first_name'] != '') && ($user_data['last_name'] != '')) {
-				$username = $user_data['first_name'].' '.$user_data['last_name'].' ('.$user_data['login'].')';
-			} else $username = '('.$user_data['login'].')';
-			
+			$username = trim($user_data['first_name'].' '.$user_data['last_name'].' ('.$user_data['login'].')');
 			return array($username, $user_data['email']);
 		}
 		else return false;			
