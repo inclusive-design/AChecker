@@ -117,10 +117,12 @@ class acheckerCSV {
 			$file_content .= $this->getResultSection($problem);
 		}	
 		
-		$path = AC_INCLUDE_PATH.'fileExport/csv.csv';
-		$handle = fopen($path, 'w');		
-		fwrite($handle, $file_content); 
-		fclose($handle);
+		return $file_content;
+		
+//		$path = AC_INCLUDE_PATH.'fileExport/csv.csv';
+//		$handle = fopen($path, 'w');		
+//		fwrite($handle, $file_content); 
+//		fclose($handle);
 	}
 	
 	/**

@@ -677,7 +677,7 @@ class acheckerTFPDF extends tFPDF {
 
 		// close and output PDF document
 		$path = AC_INCLUDE_PATH.'fileExport/tfpdf.pdf';
-		$this->Output($path, 'F');		// D
+		$this->Output($path, 'D');		// D F
 	}
 	
 	

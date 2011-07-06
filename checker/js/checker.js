@@ -167,23 +167,25 @@ AChecker.output = AChecker.output || {};
 		// make dataString and send it
 		var dataString = 'file=' + file + '&problem=' + problem;
 		
+//		document.location.href = 'checker/start_export.php?file='+file+'&problem='+problem;
+//		document.getElementById("spinner_export").style.display = 'none';
+//		$("#validate_file_button").val("Download");
+		
 		$.ajax({
 		type: "POST",
 		url: "checker/start_export.php",
 		data: dataString,
+		cache:false,
 		success: function(returned_data){
-	        //progress.innerHTML = 'processing ' + dataString;
-//			alert(returned_data);
+			console.log(returned_data);
 			$("#validate_file_button").val("Download");
 			document.getElementById("spinner_export").style.display = 'none';
-//			document.getElementById("spinner_export").src = returned_data;
-//			window.location.href = returned_data;
-//			createIFrame('name', returned_data);
+			alert(returned_data);
+			document.location = returned_data;
 		},
 		
 		error: function(xhr, errorType, exception) {
         	alert("oops");
-			//progress.innerHTML = 'Error';
         }
 		});
 	};
