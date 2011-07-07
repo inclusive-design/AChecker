@@ -168,8 +168,8 @@ AChecker.output = AChecker.output || {};
 		var dataString = 'file=' + file + '&problem=' + problem;
 		
 //		document.location.href = 'checker/start_export.php?file='+file+'&problem='+problem;
-//		document.getElementById("spinner_export").style.display = 'none';
-//		$("#validate_file_button").val("Download");
+		
+//		$("#secretIFrame").attr("src","checker/start_export.php?file='+file+'&problem='+problem");
 		
 		$.ajax({
 		type: "POST",
@@ -177,11 +177,14 @@ AChecker.output = AChecker.output || {};
 		data: dataString,
 		cache:false,
 		success: function(returned_data){
-			console.log(returned_data);
+//			console.log(returned_data);
 			$("#validate_file_button").val("Download");
 			document.getElementById("spinner_export").style.display = 'none';
 			alert(returned_data);
-			document.location = returned_data;
+//			document.location.href = returned_data;
+			
+			var ifrm = document.getElementById("downloadFrame");
+		    ifrm.src = "checker/download.php?path="+returned_data;
 		},
 		
 		error: function(xhr, errorType, exception) {

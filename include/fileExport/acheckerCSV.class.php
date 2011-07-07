@@ -101,7 +101,12 @@ class acheckerCSV {
 	*/
 	public function	getCSV($problem, $input_content_type, $title, $_gids) 
 	{	
-		$file_content = $this->getInfo($input_content_type, $title, $_gids);
+		// set filename
+		$date = AC_Date('%d-%m-%Y');
+		$time = AC_Date('%H-%i-%s');
+		$filename = 'achecker_report_'.$date.'_'.$time;
+		
+		$file_content = $this->getInfo($input_content_type, $title, $_gids, $date, $time);
 
 		if ($problem == 'all') {
 			$file_content .= $this->getResultSection('known');
@@ -116,13 +121,13 @@ class acheckerCSV {
 		} else {
 			$file_content .= $this->getResultSection($problem);
 		}	
+
+		$path = AC_TEMP_DIR.$filename.'.csv';  // AC_INCLUDE_PATH.'fileExport/csv.csv';
+		$handle = fopen($path, 'w');		
+		fwrite($handle, $file_content); 
+		fclose($handle);
 		
-		return $file_content;
-		
-//		$path = AC_INCLUDE_PATH.'fileExport/csv.csv';
-//		$handle = fopen($path, 'w');		
-//		fwrite($handle, $file_content); 
-//		fclose($handle);
+		return $path;		
 	}
 	
 	/**
@@ -130,14 +135,14 @@ class acheckerCSV {
 	* computes AChecker info, date, time [, url] [, title] and guidelines
 	* returns them as string
 	*/
-	private function getInfo($input_content_type, $title, $_gids)
+	private function getInfo($input_content_type, $title, $_gids, $date, $time)
 	{		
 		// achecker info
 		$file_content =  chr(239).chr(187).chr(191)._AC('achecker_file_title').DELIM.'version '.VERSION.DELIM
 			.$this->prepareStr(_AC('achecker_file_description')).EOL.$this->achecker_file_url.EOL.EOL;
 	
 		// date, time
-		$file_content .= AC_Date('%d.%m.%Y').' '.AC_Date('%H:%i:%s').EOL;
+		$file_content .= str_replace("-", ".", $date).' '.str_replace("-", ":", $time).EOL;
 		
 		// test info
 		if ($input_content_type != 'file' && $input_content_type != 'paste') {

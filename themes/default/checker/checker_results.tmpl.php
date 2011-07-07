@@ -86,6 +86,7 @@ if (is_array($this->seals))
 						<img class="spinner_img" id="spinner_export" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
 						&nbsp;
 					</div>
+					<iframe id="downloadFrame" src="" style="display:none;"></iframe>
 					<input class="validation_button" type="button" name="validate_export" id="validate_file_button" value="<?php echo 'Get File'; ?>" onclick="return AChecker.input.validateFile('spinner_export');" />
 			</div>
 		</div>

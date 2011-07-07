@@ -90,7 +90,12 @@ class acheckerEARL {
 	*/
 	public function	getEARL($problem, $input_content_type, $title, $_gids) 
 	{	
-		$file_content = $this->getAssertorTestSubjectTestCriterionSections($input_content_type, $title, $_gids);
+		// set filename
+		$date = AC_Date('%d-%m-%Y');
+		$time = AC_Date('%H-%i-%s');
+		$filename = 'achecker_report_'.$date.'_'.$time;
+		
+		$file_content = $this->getAssertorTestSubjectTestCriterionSections($input_content_type, $title, $_gids, $date);
 		
 		$file_content .= '<!-- Test Result -->
 		';
@@ -113,10 +118,12 @@ class acheckerEARL {
 		$file_content .= '
 </rdf:RDF>';
 		
-		$path = AC_INCLUDE_PATH.'fileExport/rdf.rdf';
-		$handle = fopen($path, 'w');
+		$path = AC_TEMP_DIR.$filename.'.rdf';  // AC_INCLUDE_PATH.'fileExport/csv.csv';
+		$handle = fopen($path, 'w');		
 		fwrite($handle, $file_content); 
 		fclose($handle);
+		
+		return $path;
 	}
 	
 	/**
@@ -297,7 +304,7 @@ class acheckerEARL {
 	* computes Assertor, Test Subject, Test Criterion Sections
 	* returns them as string
 	*/
-	private function getAssertorTestSubjectTestCriterionSections($input_content_type, $title, $_gids)
+	private function getAssertorTestSubjectTestCriterionSections($input_content_type, $title, $_gids, $date)
 	{		
 		// assertor	
 		$file_content = '<rdf:RDF
@@ -355,10 +362,9 @@ class acheckerEARL {
 	
 		$file_content .= '
 			<dct:title xml:lang="en">'.$title.'</dct:title>';
-		
-		$date_to_print = AC_Date('%d-%m-%Y');		
+				
 		$file_content .= '
-			<dct:date>'.$date_to_print.'</dct:date>
+			<dct:date>'.$date.'</dct:date>
 		</rdf:Description>
 		
 		';
