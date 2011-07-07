@@ -123,7 +123,7 @@ class acheckerTFPDF extends tFPDF {
 	* private
 	* print time, date, [resource title,] [resource url,] str with guidelines
 	*/
-	private function printInfo($title, $uri, $guidelines_text) 
+	private function printInfo($title, $uri, $guidelines_text, $time) 
 	{	
 		$this->AliasNbPages();		
 
@@ -137,7 +137,7 @@ class acheckerTFPDF extends tFPDF {
 		$this->AddPage();
 		
 		// time
-		$time_to_print = AC_Date('%H:%i:%s');
+		$time_to_print = str_replace("-", ":", $time);
 
 		// date
 		$today = getdate();
@@ -612,6 +612,11 @@ class acheckerTFPDF extends tFPDF {
 	*/
 	public function	getPDF($title, $uri, $problem, $mode, $_gids) 
 	{		
+		// set filename
+		$date = AC_Date('%d-%m-%Y');
+		$time = AC_Date('%H-%i-%s');
+		$filename = 'achecker_report_'.$date.'_'.$time;
+		
 		$guidelinesDAO = new GuidelinesDAO();
 		$guideline_rows = $guidelinesDAO->getGuidelineByIDs($_gids);
 		
@@ -624,7 +629,7 @@ class acheckerTFPDF extends tFPDF {
 		$guidelines_text = substr($guidelines_text, 0, -2); // remove ending space and ,
 	
 		// print time, date, [resource title,] [resource url,] str with guidelines
-		$this->printInfo($title, $uri, $guidelines_text);
+		$this->printInfo($title, $uri, $guidelines_text, $time);
 
 		// if report by guideline
 		if ($mode == 'guideline') {
@@ -675,9 +680,11 @@ class acheckerTFPDF extends tFPDF {
 			}
 		}
 
-		// close and output PDF document
-		$path = AC_INCLUDE_PATH.'fileExport/tfpdf.pdf';
-		$this->Output($path, 'D');		// D F
+		// close and output PDF document		
+		$path = AC_TEMP_DIR.$filename.'.pdf';  // AC_INCLUDE_PATH.'fileExport/csv.csv';
+		$this->Output($path, 'F');
+		
+		return $path;
 	}
 	
 	

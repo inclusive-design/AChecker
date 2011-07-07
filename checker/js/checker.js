@@ -178,9 +178,9 @@ AChecker.output = AChecker.output || {};
 		cache:false,
 		success: function(returned_data){
 //			console.log(returned_data);
-			$("#validate_file_button").val("Download");
+			$("#validate_file_button").val("Get File");
 			document.getElementById("spinner_export").style.display = 'none';
-			alert(returned_data);
+//			alert(returned_data);
 //			document.location.href = returned_data;
 			
 			var ifrm = document.getElementById("downloadFrame");

@@ -128,7 +128,9 @@ if ($file == 'pdf') {
 	
 	$pdf = new acheckerTFPDF($known, $likely, $potential, $html, $css, 
 		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
-	$pdf->getPDF($title, $uri, $problem, $mode, $_gids);	
+	$path = $pdf->getPDF($title, $uri, $problem, $mode, $_gids);
+	echo $path;
+	exit();	
 			
 } else if ($file == 'earl' || $file == 'csv') {	
 	if ($problem != 'html' && $problem != 'css') {
