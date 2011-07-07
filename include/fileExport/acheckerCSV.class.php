@@ -14,7 +14,7 @@
 /**
 * acheckerCSV
 * Class to generate error report in CSV file
-* for each of types: known, likely, potential, all 
+* for each of types: known, likely, potential, html, css and all selected 
 * @access	public
 * @author	Casian Olga
 */
@@ -76,6 +76,12 @@ class acheckerCSV {
 	/**
 	* public
 	* error arrays and numbers setter
+	* @param
+	* $known, $likely, $potential: arrays that contain errors of specific type
+	* $html, $css: arrays of validation errors
+	* $error_nr_known, $error_nr_likely, $error_nr_potential: nr of errors
+	* $error_nr_html, $error_nr_css: nr of errors
+	* $css_error: empty if css validation was required with URL input, otherwise string with error msg
 	*/
 	function acheckerCSV($known, $likely, $potential, $html, $css, 
 		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error)
@@ -98,13 +104,18 @@ class acheckerCSV {
 	/**
 	* public
 	* main process of creating file
+	* @param
+	* $title: validated content title (fount in <title> tag); if empty title will not be displayed
+	* $input_content_type: 'file', 'paste' or http://file_path
+	* $problem: problem type on which to create report (can be: known, likely, potential, html, css or all)
+	* $_gids: array of guidelines that were used as testing criteria
 	*/
 	public function	getCSV($problem, $input_content_type, $title, $_gids) 
 	{	
 		// set filename
 		$date = AC_Date('%d-%m-%Y');
 		$time = AC_Date('%H-%i-%s');
-		$filename = 'achecker_report_'.$date.'_'.$time;
+		$filename = 'achecker_'.$date.'_'.$time;
 		
 		$file_content = $this->getInfo($input_content_type, $title, $_gids, $date, $time);
 
@@ -122,7 +133,7 @@ class acheckerCSV {
 			$file_content .= $this->getResultSection($problem);
 		}	
 
-		$path = AC_TEMP_DIR.$filename.'.csv';  // AC_INCLUDE_PATH.'fileExport/csv.csv';
+		$path = AC_TEMP_DIR.$filename.'.csv';  
 		$handle = fopen($path, 'w');		
 		fwrite($handle, $file_content); 
 		fclose($handle);
@@ -132,8 +143,14 @@ class acheckerCSV {
 	
 	/**
 	* private
-	* computes AChecker info, date, time [, url] [, title] and guidelines
-	* returns them as string
+	* writes AChecker info, date, time [, url] [, title] and guidelines
+	* returns them as CSV string
+	* @param
+	* $input_content_type: 'file', 'paste' or http://file_path
+	* $title: validated content title (fount in <title> tag); if empty title will not be displayed
+	* $_gids: array of guidelines that were used as testing criteria
+	* $date: date when function to create file called (showed in file title and inside document)
+	* $time: time when function to create file called (showed in file title and inside document)
 	*/
 	private function getInfo($input_content_type, $title, $_gids, $date, $time)
 	{		
@@ -173,8 +190,11 @@ class acheckerCSV {
 
 	/**
 	* private
-	* prepares given string to be written as single csv cell
-	* (considers '"', ';', ',', '\n')
+	* prepares given string to be written as single CSV cell (considers '"', ';', ',', '\n')
+	* if $str has new lines it's better to replace them by '' or ' '
+	* @param
+	* $str: string that needs to be prepaired
+	* return prepaired $str, one CSV cell
 	*/
 	private function prepareStr($str) 
 	{
@@ -196,8 +216,10 @@ class acheckerCSV {
 	
 	/**
 	* private
-	* computes Result Section for 1 problem type
-	* returns it as string
+	* writes result section for 1 problem type
+	* @param
+	* $problem_type: known, potential or likely; corresponding array in class should be set before calling
+	* return result section as CSV string
 	*/
 	private function getResultSection($problem_type) 
 	{		
@@ -301,8 +323,8 @@ class acheckerCSV {
 
 	/**
 	* private
-	* computes result of HTML validation
-	* returns it as string
+	* writes report for HTML validation; corresponding array in class should be set before calling
+	* return HTML validation result as CSV string
 	*/
 	private function getHTML() 
 	{		
@@ -334,10 +356,10 @@ class acheckerCSV {
 		return $file_content;
 	}
 	
-/**
+	/**
 	* private
-	* computes result of CSS validation
-	* returns it as string
+	* writes report for CSS validation; corresponding array in class should be set before calling
+	* return CSS validation result as CSV string
 	*/
 	private function getCSS() 
 	{		

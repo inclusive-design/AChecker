@@ -50,10 +50,9 @@ if (is_array($this->seals))
 ?>
 </div>
 
-<!-- ============================================================== -->
 <form name="file_form" enctype="multipart/form-data" method="post" >
 
-	<div class="left-col" style="float:left;clear:left;margin: 1em;padding: 1em; max-width:669px"><br />
+	<div class="left-col" style="float:left;clear:left;margin:0em 1em 3em;padding:0em 1em; max-width:672px;"><br />
 	<fieldset class="group_form" style="min-height: 122px; margin-bottom:7px;"><legend class="group_form"><?php echo _AC("file_export"); ?></legend>
 		<div style="text-align: center; padding: 0.5em;">
 			<label for="file_type"><?php echo _AC('file_type'); ?>:</label>
@@ -93,7 +92,6 @@ if (is_array($this->seals))
 	</fieldset>
 	</div>
 </form>
-<!-- ============================================================== -->
 
 <div id="output_div" >
 

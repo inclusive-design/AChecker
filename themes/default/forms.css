@@ -116,9 +116,9 @@ div.validator-output-form {
 	width: 95%; 
 	margin-left:1em; 
 	margin-right:auto;
-	padding: 10px 10px 20px 10px;
+	padding: 0px 10px 0px 10px; /*padding: 10px 10px 20px 10px;*/
 	/* border: thin #CCCCCC solid; */
-	margin-bottom: 30px;
+	/*margin-bottom: 30px;*/
 	line-height:100%;
 	/*background-color: #F8F8F8; */
 	float: left; 

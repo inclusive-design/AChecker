@@ -11,7 +11,7 @@
 /************************************************************************/
 // $Id:
 
-// Called by ajax request ==============================================================
+// Called by ajax request; main file to generate files
 // @ see checker/js/checker.js
  
 define('AC_INCLUDE_PATH', '../include/');
@@ -108,7 +108,7 @@ $error_nr_known = 0;
 $error_nr_likely = 0;
 $error_nr_potential = 0;
 
-// create file
+// create file depending on user choice
 if ($file == 'pdf') {	
 	if ($problem != 'html' && $problem != 'css') {
 		if ($mode == 'guideline') $a_rpt = new FileExportRptGuideline($errors, $_gids[0], $user_link_id);
@@ -118,19 +118,10 @@ if ($file == 'pdf') {
 		list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
 	}
 	include_once(AC_INCLUDE_PATH. 'fileExport/tfpdf/acheckerTFPDF.class.php');
-
-			header('Content-Type: application/force-download');
-		header('Content-transfer-encoding: binary'); 
-		header('Content-Disposition: attachment; filename='.$filename.'.csv');
-		
-		header('x-Sendfile: ', TRUE);
-		header('Content-Type: '.pdf);
 	
 	$pdf = new acheckerTFPDF($known, $likely, $potential, $html, $css, 
 		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
 	$path = $pdf->getPDF($title, $uri, $problem, $mode, $_gids);
-	echo $path;
-	exit();	
 			
 } else if ($file == 'earl' || $file == 'csv') {	
 	if ($problem != 'html' && $problem != 'css') {
@@ -145,49 +136,17 @@ if ($file == 'pdf') {
 		$earl = new acheckerEARL($known, $likely, $potential, $html, $css, 
 			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
 		$path = $earl->getEARL($problem, $input_content_type, $title, $_gids);
-		echo $path;
-		exit();
 		
-	} else if ($file == 'csv') {
-		// headers	
-//		@header("Last-Modified: " . @gmdate("D, d M Y H:i:s",$_GET['timestamp']) . " GMT");
-//		@header("Content-type: text/x-csv");
-//		header("Cache-Control: no-cache, must-revalidate");
-//	    header("Content-Disposition: attachment; filename=".$filename.".csv");
-
-//!		header('Content-Type: application/force-download');
-//		header('Content-transfer-encoding: binary'); 
-//		header('Content-Disposition: attachment; filename='.$filename.'.csv');
-//		header('x-Sendfile: ', TRUE);
-//		header('Content-Type: '.csv);
-		
-//		header("Pragma: public");
-//		header("Expires: 0");
-//		header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
-//		header("Content-Type: application/force-download");
-//		header("Content-Type: application/octet-stream");
-//		header("Content-Type: application/download");
-//		header("Content-Disposition: attachment;filename=data.xls ");
-//		header("Content-Transfer-Encoding: binary ");
-	    
-//	    header('Content-Description: File Transfer');
-//		header('Content-Type: application/octet-stream');
-//		header('Content-Disposition: attachment; filename='.basename($file));
-//		header('Content-Transfer-Encoding: binary');
-//		header('Expires: 0');
-//		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-//		header('Pragma: public');
-//		header('Content-Length: ' . filesize($file));
-		
-	    // file generation
+	} else if ($file == 'csv') {	
 		include_once(AC_INCLUDE_PATH. 'fileExport/acheckerCSV.class.php');		
+		
 		$csv = new acheckerCSV($known, $likely, $potential, $html, $css, 
 			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
 		$path = $csv->getCSV($problem, $input_content_type, $title, $_gids);
-		echo $path;
-		exit();
+		
 	}
 }
-
+echo $path;
+exit();	
 
 ?>

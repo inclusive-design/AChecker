@@ -33,10 +33,10 @@ class FileExportRptLine extends AccessibilityRpt {
 	var $group_likely_problems = array();						// array of all info about likely problems
 	var $group_potential_problems = array();					// array of all info about potential problems
 	
-	var $group_likely_problems_no_decision = array();			// array of info about known likely 	no_decision
-	var $group_potential_problems_no_decision = array();		// array of info about known potential 	no_decision	
-	var $group_likely_problems_with_decision = array();			// array of info about known likely 	with_decision
-	var $group_potential_problems_with_decision = array();		// array of info about known potential 	with_decision	
+	var $group_likely_problems_no_decision = array();			// array of info about likely problems	no_decision
+	var $group_potential_problems_no_decision = array();		// array of info about potential problems	no_decision	
+	var $group_likely_problems_with_decision = array();			// array of info about likely problems	with_decision
+	var $group_potential_problems_with_decision = array();		// array of info about potential problems	with_decision	
 	
 	var $nr_known_problems = 0;
 	var $nr_likely_problems = 0;
@@ -45,25 +45,19 @@ class FileExportRptLine extends AccessibilityRpt {
 	/**
 	* public
 	* $errors: an array, output of AccessibilityValidator -> getValidationErrorRpt
-	* $type: html
+	* $type: array
 	*/
 	function FileExportRptLine($errors, $user_link_id = '')
 	{
 		// run parent constructor
 		parent::AccessibilityRpt($errors, $user_link_id);
 		
-		$this->gid = $gid;
-		
-//		$this->num_of_no_decisions = 0;
-//		$this->num_of_made_decisions = 0;
-//		
-//		$this->num_of_likely_problems_fail = 0;
-//		$this->num_of_potential_problems_fail = 0;
+//		$this->gid = $gid;
 	}
 
 	/**
 	* public
-	* returns nr of errors to display - $nr_known_problems, $nr_likely_problems, $nr_potential_problems
+	* returns nr of errors - $nr_known_problems, $nr_likely_problems, $nr_potential_problems
 	*/
 	public function getErrorNr()
 	{
@@ -84,61 +78,43 @@ class FileExportRptLine extends AccessibilityRpt {
 			$row = $checksDAO->getCheckByID($error["check_id"]);
 			if ($row["confidence"] == KNOWN )
 			{ // no decision to make on known problems
-//				$this->num_of_errors++;
 				$this->nr_known_problems++;
 				
-				$this->group_known_problems[] = $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $error["image"], $error["image_alt"], $error["css_code"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_ERROR);
+				$this->group_known_problems[] = $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], 
+					$error["html_code"], $error["image"], $error["image_alt"], $error["css_code"], _AC($row["err"]), _AC($row["how_to_repair"]), 
+					'', IS_ERROR);
 			}
 			else if ($row["confidence"] == LIKELY )
 			{
-//				$this->num_of_likely_problems++;
-				if ($this->user_link_id == '') //($this->allow_set_decision == 'false' && !($this->from_referer == 'true' && $this->user_link_id > 0))
+				if ($this->user_link_id == '') 
 				{
-					$this->group_likely_problems_no_decision[] = $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $error["image"], $error["image_alt"], $error["css_code"],_AC($row["err"]), _AC($row["how_to_repair"]), '', IS_WARNING);
-//					$this->num_of_likely_problems_fail++;
+					$this->group_likely_problems_no_decision[] = $this->generate_problem_section($error["check_id"], $error["line_number"], 
+						$error["col_number"], $error["html_code"], $error["image"], $error["image_alt"], $error["css_code"],_AC($row["err"]), 
+						_AC($row["how_to_repair"]), '', IS_WARNING);
 					$this->nr_likely_problems++;
 				}
 				else
 				{
-					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"],$error['image'], $error["image_alt"], IS_WARNING);
+					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"],$error['image'], 
+						$error["image_alt"], IS_WARNING);
 				}
 			}
 			else if ($row["confidence"] == POTENTIAL )
 			{
-//				$this->num_of_potential_problems++;
-				if ($this->user_link_id == '') //($this->allow_set_decision == 'false' && !($this->from_referer == 'true' && $this->user_link_id > 0))
+				if ($this->user_link_id == '') 
 				{
-					$this->group_potential_problems_no_decision[] = $this->generate_problem_section($error["check_id"], $error["line_number"], $error["col_number"], $error["html_code"], $error["image"], $error["image_alt"],$error["css_code"], _AC($row["err"]), _AC($row["how_to_repair"]), '', IS_INFO);
-//					$this->num_of_potential_problems_fail++;
+					$this->group_potential_problems_no_decision[] = $this->generate_problem_section($error["check_id"], $error["line_number"], 
+						$error["col_number"], $error["html_code"], $error["image"], $error["image_alt"],$error["css_code"], _AC($row["err"]), 
+						_AC($row["how_to_repair"]), '', IS_INFO);
 					$this->nr_potential_problems++;
 				}
 				else
 				{
-					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"],$error['image'], $error["image_alt"], IS_INFO);
+					$this->generate_cell_with_decision($row, $error["line_number"], $error["col_number"], $error["html_code"],$error['image'], 
+						$error["image_alt"], IS_INFO);
 				}
 			}
 		}
-		
-//		if ($this->allow_set_decision == 'true' || 
-//		    ($this->allow_set_decision == 'false' && $this->from_referer == 'true' && $this->user_link_id > 0))
-//		{
-//			$this->rpt_likely_problems .= $this->rpt_likely_decision_not_made.$this->rpt_likely_decision_made;
-//			$this->rpt_potential_problems .= $this->rpt_potential_decision_not_made.$this->rpt_potential_decision_made;
-//		}		
-		
-//		debug_to_log('=================================================BY LINES===================================================');
-//		debug_to_log($this->nr_known_problems);
-//		debug_to_log($this->nr_likely_problems);
-//		debug_to_log($this->nr_potential_problems);
-//		
-////		debug_to_log(count($this->group_known_problems));
-//		debug_to_log($this->group_known_problems);
-//		debug_to_log('----------------------------------------------likely----------------');
-////		debug_to_log(count($this->group_likely_problems));
-//		debug_to_log($this->group_potential_problems_no_decision);
-//		debug_to_log('----------------------------------------------potential----------------');
-////		debug_to_log(count($this->group_potential_problems));
-//		debug_to_log($this->group_potential_problems);
 		
 		$this->group_likely_problems['no_decision'] = $this->group_likely_problems_no_decision;
 		$this->group_likely_problems['with_decision'] = $this->group_likely_problems_with_decision;
@@ -151,9 +127,7 @@ class FileExportRptLine extends AccessibilityRpt {
 	
 	/** 
 	* private
-	* generate html output with decision. In html output, the errors with no decision made are display at the top,
-	* followed by errors that decisions have been made. This method also calculates number of errors based on made decisions.
-	* If a decision is made as pass, the error is ignored without adding into number of errors.
+	* generate array with decision
 	* parameters:
 	* $check_row: table row of the check
 	* $line_number: line number that the error happens
@@ -176,7 +150,8 @@ class FileExportRptLine extends AccessibilityRpt {
 			$decision_section = 'none';
 			
 			// generate problem section
-			$problem_section = $this->generate_problem_section($check_row['check_id'], $line_number, $col_number, $html_code, $image, $image_alt, $css_code, _AC($check_row['err']), _AC($check_row['how_to_repair']), $decision_section, $error_type);
+			$problem_section = $this->generate_problem_section($check_row['check_id'], $line_number, $col_number, $html_code, $image, $image_alt, 
+				$css_code, _AC($check_row['err']), _AC($check_row['how_to_repair']), $decision_section, $error_type);
 			
 			if ($error_type == IS_WARNING) $this->group_likely_problems_no_decision[] = $problem_section;
 			if ($error_type == IS_INFO) $this->group_potential_problems_no_decision[] = $problem_section;
@@ -186,7 +161,8 @@ class FileExportRptLine extends AccessibilityRpt {
 			$decision_section = TRUE;
 			
 			// generate problem section
-			$problem_section = $this->generate_problem_section($check_row['check_id'], $line_number, $col_number, $html_code, $image, $image_alt, $css_code, _AC($check_row['err']), _AC($check_row['how_to_repair']), $decision_section, $error_type);
+			$problem_section = $this->generate_problem_section($check_row['check_id'], $line_number, $col_number, $html_code, $image, $image_alt, 
+				$css_code, _AC($check_row['err']), _AC($check_row['how_to_repair']), $decision_section, $error_type);
 			
 			if ($error_type == IS_WARNING) $this->group_likely_problems_with_decision[] = $problem_section;
 			if ($error_type == IS_INFO) $this->group_potential_problems_with_decision[] = $problem_section;
@@ -196,24 +172,25 @@ class FileExportRptLine extends AccessibilityRpt {
 			$decision_section = FALSE;
 			
 			// generate problem section
-			$problem_section = $this->generate_problem_section($check_row['check_id'], $line_number, $col_number, $html_code, $image, $image_alt, $css_code, _AC($check_row['err']), _AC($check_row['how_to_repair']), $decision_section, $error_type);
+			$problem_section = $this->generate_problem_section($check_row['check_id'], $line_number, $col_number, $html_code, $image, $image_alt, 
+				$css_code, _AC($check_row['err']), _AC($check_row['how_to_repair']), $decision_section, $error_type);
 			
 			if ($error_type == IS_WARNING) $this->group_likely_problems_with_decision[] = $problem_section;
 			if ($error_type == IS_INFO) $this->group_potential_problems_with_decision[] = $problem_section;
 		}
-//			$this->num_of_made_decisions++;
 	}
 	
 	/** 
 	* private
-	* return problem section
+	* return problem array
 	* parameters:
 	* $line_number: line number that the error happens
 	* $col_number: column number that the error happens
 	* $html_tag: html tag that the error happens
 	* $description: error description
 	*/
-	private function generate_problem_section($check_id, $line_number, $col_number, $html_code, $image, $image_alt, $css_code, $error, $repair, $decision, $error_type)
+	private function generate_problem_section($check_id, $line_number, $col_number, $html_code, $image, $image_alt, $css_code, $error, $repair, 
+		$decision, $error_type)
 	{
 		if ($error_type == IS_ERROR) 		$img_src = "error.png";
 		else if ($error_type == IS_WARNING)	$img_src = "warning.png";
@@ -230,13 +207,7 @@ class FileExportRptLine extends AccessibilityRpt {
 		}
 		
 		if ($image <> '') 
-		{
-			// COMMENTTED OUT the way to determine the image display size by measuring the actual image size
-			// since the fetch of the remote images slows down the process a lot. 
-//			$dimensions = getimagesize($image);
-//			if ($dimensions[1] > DISPLAY_PREVIEW_IMAGE_HEIGHT) $height = DISPLAY_PREVIEW_IMAGE_HEIGHT;
-//			else $height = $dimensions[1];
-			
+		{			
 			$height = DISPLAY_PREVIEW_IMAGE_HEIGHT;
 			
 			if ($image_alt == '_NOT_DEFINED') $alt = '';
@@ -248,7 +219,6 @@ class FileExportRptLine extends AccessibilityRpt {
 			$array_image['alt'] = $alt;
 		}
 		
-//		$result['msg_type'] = $msg_type;
 		$result['img_src'] = $img_src;
 		$result['line_text'] = _AC('line');
 		$result['line_nr'] = $line_number;
@@ -258,7 +228,6 @@ class FileExportRptLine extends AccessibilityRpt {
 		$result['css_code'] = $css_code;
 		$result['error'] = $error;
 		$result['base_href'] = AC_BASE_HREF;
-//		$result['title'] = _AC("suggest_improvements");
 		$result['image'] = $array_image;
 		$result['repair'] = $array_repair;
 		$result['decision'] = $decision;

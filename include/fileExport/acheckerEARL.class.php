@@ -14,7 +14,7 @@
 /**
 * acheckerEARL
 * Class to generate error report in XML based EARL format (.rdf file)
-* for each of types: known, likely, potential, all 
+* for each of types: known, likely, potential, html, css and  all selected 
 * @access	public
 * @author	Casian Olga
 */
@@ -65,6 +65,12 @@ class acheckerEARL {
 	/**
 	* public
 	* error arrays and numbers setter
+	* @param
+	* $known, $likely, $potential: arrays that contain errors of specific type
+	* $html, $css: arrays of validation errors
+	* $error_nr_known, $error_nr_likely, $error_nr_potential: nr of errors
+	* $error_nr_html, $error_nr_css: nr of errors
+	* $css_error: empty if css validation was required with URL input, otherwise string with error msg
 	*/
 	function acheckerEARL($known, $likely, $potential, $html, $css, 
 		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error)
@@ -87,13 +93,18 @@ class acheckerEARL {
 	/**
 	* public
 	* main process of creating file
+	* @param
+	* $title: validated content title (fount in <title> tag); if empty title will not be displayed
+	* $problem: problem type on which to create report (can be: known, likely, potential, html, css or all)
+	* $input_content_type: 'file', 'paste' or http://file_path
+	* $_gids: array of guidelines that were used as testing criteria
 	*/
 	public function	getEARL($problem, $input_content_type, $title, $_gids) 
 	{	
 		// set filename
 		$date = AC_Date('%d-%m-%Y');
 		$time = AC_Date('%H-%i-%s');
-		$filename = 'achecker_report_'.$date.'_'.$time;
+		$filename = 'achecker_'.$date.'_'.$time;
 		
 		$file_content = $this->getAssertorTestSubjectTestCriterionSections($input_content_type, $title, $_gids, $date);
 		
@@ -128,7 +139,7 @@ class acheckerEARL {
 	
 	/**
 	* private
-	* computes result of HTML validation
+	* prints report for HTML validation; corresponding array in class should be set before calling
 	* returns them as string
 	*/
 	private function getHTML($input_content_type)
@@ -224,7 +235,7 @@ class acheckerEARL {
 	
 	/**
 	* private
-	* computes result of CSS validation
+	* prints report for CSS validation; corresponding array in class should be set before calling
 	* returns them as string
 	*/
 	private function getCSS()
@@ -301,8 +312,13 @@ class acheckerEARL {
 	
 	/**
 	* private
-	* computes Assertor, Test Subject, Test Criterion Sections
-	* returns them as string
+	* prints Assertor, Test Subject, Test Criterion Sections
+	* @param
+	* $input_content_type: 'file', 'paste' or http://file_path
+	* $title: validated content title (fount in <title> tag); if empty title will not be displayed
+	* $_gids: array of guidelines that were used as testing criteria
+	* $date: date when function to create file called (showed in file title and inside document)
+	* returns these sections as string
 	*/
 	private function getAssertorTestSubjectTestCriterionSections($input_content_type, $title, $_gids, $date)
 	{		
@@ -392,8 +408,11 @@ class acheckerEARL {
 	
 	/**
 	* private
-	* computes Result Section
-	* returns it as string
+	* prints Result Section
+	* @param
+	* $problem_type: known, potential or likely; corresponding array in class should be set before calling
+	* $input_content_type: 'file', 'paste' or http://file_path
+	* returns result section as string
 	*/
 	private function getResultSection($problem_type, $input_content_type) 
 	{		

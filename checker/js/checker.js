@@ -140,7 +140,8 @@ AChecker.output = AChecker.output || {};
 	};
 	
 	/**
-	 * Validates file select menu, sends file & problem type to start_export.php
+	 * Validates file select menu, sends file & problem type to start_export.php,
+	 * receives file's path and starts downloading
 	 */
 	AChecker.input.validateFile = function (data) {
 		// check selected items
@@ -167,68 +168,28 @@ AChecker.output = AChecker.output || {};
 		// make dataString and send it
 		var dataString = 'file=' + file + '&problem=' + problem;
 		
-//		document.location.href = 'checker/start_export.php?file='+file+'&problem='+problem;
-		
-//		$("#secretIFrame").attr("src","checker/start_export.php?file='+file+'&problem='+problem");
-		
 		$.ajax({
 		type: "POST",
 		url: "checker/start_export.php",
 		data: dataString,
 		cache:false,
 		success: function(returned_data){
-//			console.log(returned_data);
+			// change button label
 			$("#validate_file_button").val("Get File");
-			document.getElementById("spinner_export").style.display = 'none';
-//			alert(returned_data);
-//			document.location.href = returned_data;
 			
+			// hide spinner
+			document.getElementById("spinner_export").style.display = 'none';
+			
+			// change src and start downloading
 			var ifrm = document.getElementById("downloadFrame");
 		    ifrm.src = "checker/download.php?path="+returned_data;
 		},
 		
 		error: function(xhr, errorType, exception) {
-        	alert("oops");
+        	alert("An error occured.");
         }
 		});
 	};
-	
-//	// браузер хранитс€ в объекте browser
-//	function createIFrame(fname, src, debug){
-//		var ifrstr = browser.isIE ? '<iframe name="'+fname+'" src="'+src+'">' : 'iframe';
-//		var cframe = document.createElement(ifrstr);
-//
-//		with(cframe){ 
-//			name = fname; // это не дл€ IE
-//			setAttribute("name", fname); // и это тоже, но вреда не будет
-//			id = fname; // а это везде ок
-//		}
-//		
-//		// можно добавл€ть сразу к document.body
-//		document.getElementById('iframe_container').appendChild(cframe);
-//
-//		if (!debug) {
-//			hideIframe(cframe);
-//		}			
-//		
-//		if(!browser.isIE){
-//			setIframeSrc(cframe, src);
-//		}
-//		
-//		return cframe;
-//	}
-//
-//	// пр€чем фрейм
-//	function hideIframe(iframeNode) {
-//		with(iframeNode.style) {
-//			if(!browser.isSafari){			
-//				position = "absolute";
-//			}
-//			left = top = "0px";
-//			height = width = "1px";
-//			visibility = "hidden";       
-//		}
-//	}
 
 	/**
 	 * Show the div with id == the given divId while hide all other divs in the array allDivIds

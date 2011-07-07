@@ -14,7 +14,7 @@
 /**
 * acheckerTFPDF
 * Class to generate error report in PDF file (both by lines and by guidelines)
-* for each of types: known, likely, potential, all 
+* for each of types: known, likely, potential, html, css and all selected 
 * @access	public
 * @author	Casian Olga
 */
@@ -65,6 +65,12 @@ class acheckerTFPDF extends tFPDF {
 	/**
 	* public
 	* error arrays and numbers setter
+	* @param
+	* $known, $likely, $potential: arrays that contain errors of specific type
+	* $html, $css: arrays of validation errors
+	* $error_nr_known, $error_nr_likely, $error_nr_potential: nr of errors
+	* $error_nr_html, $error_nr_css: nr of errors
+	* $css_error: empty if css validation was required with URL input, otherwise string with error msg
 	*/
 	function acheckerTFPDF($known, $likely, $potential, $html, $css, 
 		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error)
@@ -121,7 +127,12 @@ class acheckerTFPDF extends tFPDF {
 
 	/**
 	* private
-	* print time, date, [resource title,] [resource url,] str with guidelines
+	* prints time, date, [resource title,] [resource url,] str with guidelines
+	* @param
+	* $title: validated content title (fount in <title> tag); if empty title will not be displayed
+	* $uri: validated content URL (only in case of url input); if empty URL will not be displayed
+	* $guidelines_text: string of all guidelines separated by ", "
+	* $time: time when function to create file called (showed in file title and inside document)
 	*/
 	private function printInfo($title, $uri, $guidelines_text, $time) 
 	{	
@@ -175,6 +186,8 @@ class acheckerTFPDF extends tFPDF {
 	/**
 	* private
 	* prints report for 1 problem type by guidelines
+	* @param
+	* $problem_type: known, potential or likely; corresponding array in class should be set before calling
 	*/
 	private function printGuideline($problem_type) 
 	{	
@@ -308,6 +321,8 @@ class acheckerTFPDF extends tFPDF {
 	/**
 	* private
 	* prints report for 1 problem type by lines
+	* @param
+	* $problem_type: known, potential or likely; corresponding array in class should be set before calling
 	*/
 	private function printLine($problem_type) 
 	{
@@ -461,7 +476,7 @@ class acheckerTFPDF extends tFPDF {
 	
 	/**
 	* private
-	* prints report for HTML validation
+	* prints report for HTML validation; corresponding array in class should be set before calling
 	*/
 	private function printHTML() 
 	{
@@ -531,7 +546,7 @@ class acheckerTFPDF extends tFPDF {
 	
 	/**
 	* private
-	* prints report for CSS validation
+	* prints report for CSS validation; corresponding array in class should be set before calling
 	*/
 	private function printCSS() 
 	{
@@ -609,13 +624,19 @@ class acheckerTFPDF extends tFPDF {
 	/**
 	* public
 	* main process of creating file
+	* @param
+	* $title: validated content title (fount in <title> tag); if empty title will not be displayed
+	* $uri: validated content URL (only in case of url input); if empty URL will not be displayed
+	* $problem: problem type on which to create report (can be: known, likely, potential, html, css or all)
+	* $mode: 'guideline' or 'line'; pdf document may have different layout (for known, likely, potential) depending on this var
+	* $_gids: array of guidelines that were used as testing criteria
 	*/
 	public function	getPDF($title, $uri, $problem, $mode, $_gids) 
 	{		
 		// set filename
 		$date = AC_Date('%d-%m-%Y');
 		$time = AC_Date('%H-%i-%s');
-		$filename = 'achecker_report_'.$date.'_'.$time;
+		$filename = 'achecker_'.$date.'_'.$time.$rand_str;		
 		
 		$guidelinesDAO = new GuidelinesDAO();
 		$guideline_rows = $guidelinesDAO->getGuidelineByIDs($_gids);
@@ -680,8 +701,8 @@ class acheckerTFPDF extends tFPDF {
 			}
 		}
 
-		// close and output PDF document		
-		$path = AC_TEMP_DIR.$filename.'.pdf';  // AC_INCLUDE_PATH.'fileExport/csv.csv';
+		// close and save PDF document		
+		$path = AC_TEMP_DIR.$filename.'.pdf';  
 		$this->Output($path, 'F');
 		
 		return $path;

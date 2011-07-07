@@ -42,7 +42,7 @@ class FileExportRptGuideline extends AccessibilityRpt {
 	/**
 	* public
 	* $errors: an array, output of AccessibilityValidator -> getValidationErrorRpt
-	* $type: html
+	* $type: array
 	*/
 	function FileExportRptGuideline($errors, $gid, $user_link_id = '')
 	{
@@ -50,12 +50,6 @@ class FileExportRptGuideline extends AccessibilityRpt {
 		parent::AccessibilityRpt($errors, $user_link_id);
 		
 		$this->gid = $gid;
-		
-//		$this->num_of_no_decisions = 0;
-//		$this->num_of_made_decisions = 0;
-//		
-//		$this->num_of_likely_problems_fail = 0;
-//		$this->num_of_potential_problems_fail = 0;
 
 		$this->checksDAO = new ChecksDAO();
 		$this->guidelineGroupsDAO = new GuidelineGroupsDAO();
@@ -64,7 +58,7 @@ class FileExportRptGuideline extends AccessibilityRpt {
 	
 	/**
 	* public
-	* returns nr of errors to display - $nr_known_problems, $nr_likely_problems, $nr_potential_problems
+	* @return nr of errors - $nr_known_problems, $nr_likely_problems, $nr_potential_problems
 	*/
 	public function getErrorNr()
 	{
@@ -79,15 +73,6 @@ class FileExportRptGuideline extends AccessibilityRpt {
 	{
 		$this->errors_by_checks = $this->rearrange_errors_array($this->errors);
 		
-		// display guideline level checks
-//		$guidelineLevel_checks = $this->checksDAO->getGuidelineLevelChecks($this->gid);
-//
-//		if (is_array($guidelineLevel_checks))
-//		{
-//			list($guideline_level_known_problems, $guideline_level_likely_problems, $guideline_level_potential_problems) =
-//				$this->generateChecksTable($guidelineLevel_checks);
-//		}
-		
 		// display all named guidelines and their checks 
 		$named_groups = $this->guidelineGroupsDAO->getNamedGroupsByGuidelineID($this->gid);	
 		
@@ -95,21 +80,9 @@ class FileExportRptGuideline extends AccessibilityRpt {
 		{
 			foreach ($named_groups as $group)
 			{
-//				unset($group_level_known_problems);
-//				unset($group_level_likely_problems);
-//				unset($group_level_potential_problems);
 				unset($subgroup_known_problems);
 				unset($subgroup_likely_problems);
 				unset($subgroup_potential_problems);
-					
-//				// get group level checks: the checks in subgroups without subgroup names
-//				$groupLevel_checks = $this->checksDAO->getGroupLevelChecks($group['group_id']);				//null ?????
-//		
-//				if (is_array($groupLevel_checks))
-//				{
-//					list($group_level_known_problems, $group_level_likely_problems, $group_level_potential_problems) = 
-//						$this->generateChecksTable($groupLevel_checks);
-//				}
 				
 				// display named subgroups and their checks
 				$named_subgroups = $this->guidelineSubgroupsDAO->getNamedSubgroupByGroupID($group['group_id']);
@@ -144,69 +117,25 @@ class FileExportRptGuideline extends AccessibilityRpt {
 				
 				if ($subgroup_known_problems <> '') {
 					$this->group_known_problems[$group_title] = $subgroup_known_problems;
-				} 				
-//				if ($group_level_known_problems <> '') {
-//					$group_known_problems[$group_title] = $group_level_known_problems;
-//				}
+				} 	
 				
 				if ($subgroup_likely_problems <> '') {
 					$this->group_likely_problems[$group_title] = $subgroup_likely_problems;
-				} 				
-//				if ($group_level_likely_problems <> '') {
-//					$group_likely_problems[$group_title] = $group_level_likely_problems;
-//				}
+				} 
 				
 				if ($subgroup_potential_problems <> '') {
 					$this->group_potential_problems[$group_title] = $subgroup_potential_problems;
 				}
-//				if ($group_level_potential_problems <> '') {
-//					$group_potential_problems[$group_title] = $group_level_potential_problems;
-//				}
 			} // end of foreach $named_groups 	
 		} // end of if $named_groups
-		
-//		if ($guideline_level_known_problems <> "") {
-//			$this->rpt_errors[] = $guideline_level_known_problems;
-//		}
-//		if ($group_known_problems <> "") {
-//			$this->rpt_errors[] = $group_known_problems;
-//		} 
-//		
-//		if ($guideline_level_likely_problems <> "") {
-//			$this->rpt_likely_problems[] = $guideline_level_likely_problems;
-//		} 
-//		if ($group_likely_problems <> "") {
-//			$this->rpt_likely_problems[] = $group_likely_problems;
-//		}
-//		
-//		if ($guideline_level_potential_problems <> "") {
-//			$this->rpt_potential_problems[] = $guideline_level_potential_problems;
-//		}
-//		if ($group_potential_problems <> "") {
-//			$this->rpt_potential_problems[] = $group_potential_problems;
-//		}
-		
-//		debug_to_log('=================================================BY GUIDELINES===================================================');
-//		debug_to_log($this->nr_known_problems);
-//		debug_to_log($this->nr_likely_problems);
-//		debug_to_log($this->nr_potential_problems);
-//		
-//		debug_to_log(count($this->group_known_problems));
-//		debug_to_log($this->group_known_problems);
-//		debug_to_log('----------------------------------------------likely----------------');
-////		debug_to_log(count($this->group_likely_problems));
-//		debug_to_log($this->group_likely_problems);
-//		debug_to_log('----------------------------------------------potential----------------');
-////		debug_to_log(count($this->group_potential_problems));
-//		debug_to_log($this->group_potential_problems);
-		
+
 		return array($this->group_known_problems, $this->group_likely_problems, $this->group_potential_problems);
 	}
 	
 	/**
 	 * Re-arrang check error array with check_id as the primary key
-	 * @param: $errors - the error array
-	 * @return: Re-arranged error array
+	 * @param $errors - the error array
+	 * @return Re-arranged error array
 	 */
 	private function rearrange_errors_array($errors) {
 		// return an empty array if the parameter is not an expected array
@@ -221,11 +150,11 @@ class FileExportRptGuideline extends AccessibilityRpt {
 
 	/**
 	 * private
-	 * Return html of the checks error table
+	 * Return array of the checks error
 	 * @param $checks_array
 	 * @return an array of htmls of (known_problem, likely_problems, potential_problems)
 	 */
-	private function generateChecksTable($checks_array) // ($subgroup['subgroup_id'])
+	private function generateChecksTable($checks_array)
 	{  
 		if (!is_array($checks_array)) return NULL;
 		
@@ -238,7 +167,7 @@ class FileExportRptGuideline extends AccessibilityRpt {
 			// continue with the next check if there is no errors for this check
 			if (!is_array($this->errors_by_checks[$check_id])) continue;
 			
-			$row = $this->checksDAO->getCheckByID($check_id);       // row contains check info (by id)
+			$row = $this->checksDAO->getCheckByID($check_id);
 			
 			$repair = _AC($row['how_to_repair']);
 			if ($repair <> '') 
@@ -247,26 +176,13 @@ class FileExportRptGuideline extends AccessibilityRpt {
 				$howto_repair['detail'] = $repair;
 			}
 			
-//	uncomment if Question/PASS/FAIL	needed
-//			if (($row["confidence"] == LIKELY || $row["confidence"] == POTENTIAL)) 
-//			{				
-//				$question['question_label'] = _AC("question");				
-//				$question['question'] = _AC($row['question']);
-//				$question['pass_label'] = _AC("pass");				
-//				$question['pass_answer'] = _AC($row['decision_pass']);
-//				$question['fail_label'] = _AC("fail");				
-//				$question['fail_answer'] = _AC($row['decision_fail']);
-
-//				$one_problem['question'] = $question;
-//			}
-			
 			$error_set = $this->get_table_rows_for_one_check($this->errors_by_checks[$check_id], $check_id, $row["confidence"]);
 			
 			$one_problem['check_label'] = _AC("check");			
 			$one_problem['check_id'] = $check_id;			
 			$one_problem['error'] = _AC($row["err"]);
 			$one_problem['repair'] = $howto_repair;						
-			$one_problem['subgroup_id'] = $check["subgroupID"];                 // as key one_problem => subgroup
+			$one_problem['subgroup_id'] = $check["subgroupID"];
 			$one_problem['errors'] = $error_set;
 			                            
 			if ($row["confidence"] == KNOWN) { 
@@ -282,7 +198,7 @@ class FileExportRptGuideline extends AccessibilityRpt {
 	
 	/** 
 	* private
-	* generate html table rows for all errors on one check 
+	* generate array for all errors on one check 
 	* @param
 	* $errors_for_this_check: all errors
 	* $check_id
@@ -297,16 +213,13 @@ class FileExportRptGuideline extends AccessibilityRpt {
 		
 		foreach ($errors_for_this_check as $error) {			
 			if ($confidence == KNOWN) {
-				$this->nr_known_problems++;
-//				$this->num_of_errors++;				
+				$this->nr_known_problems++;		
 				$img_type = _AC('error');
 				$img_src = "error.png";
-			} else if ($confidence == LIKELY) {
-//				$this->num_of_likely_problems++;				
+			} else if ($confidence == LIKELY) {				
 				$img_type = _AC('warning');
 				$img_src = "warning.png";
-			} else if ($confidence == POTENTIAL) {
-//				$this->num_of_potential_problems++;				
+			} else if ($confidence == POTENTIAL) {			
 				$img_type = _AC('manual_check');
 				$img_src = "info.png";
 			}
