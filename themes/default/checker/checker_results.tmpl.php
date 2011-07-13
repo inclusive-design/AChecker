@@ -61,6 +61,7 @@ if (is_array($this->seals))
 				<option value="pdf" >PDF</option>
 				<option value="earl">EARL</option>
 				<option value="csv">CSV</option>
+				<option value="html">HTML</option>
 			</select>
 			
 			<label for="problem_type" style="margin-left: 2em;"><?php echo _AC('problem_type'); ?>:</label>

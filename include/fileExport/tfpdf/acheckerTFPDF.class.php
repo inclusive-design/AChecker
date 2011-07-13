@@ -62,6 +62,7 @@ class acheckerTFPDF extends tFPDF {
 	// css validator is only available at validating url, not at validating a uploaded file or pasted html
 	var $css_error = 0;
 	
+	
 	/**
 	* public
 	* error arrays and numbers setter

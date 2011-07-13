@@ -134,7 +134,9 @@ class acheckerCSV {
 		}	
 
 		$path = AC_TEMP_DIR.$filename.'.csv';  
-		$handle = fopen($path, 'w');		
+		$handle = fopen($path, 'w');	
+		fwrite($handle, pack("CCC",0xef,0xbb,0xbf));	
+//		fwrite($handle, chr(239).chr(187).chr(191));
 		fwrite($handle, $file_content); 
 		fclose($handle);
 		
@@ -155,7 +157,7 @@ class acheckerCSV {
 	private function getInfo($input_content_type, $title, $_gids, $date, $time)
 	{		
 		// achecker info
-		$file_content =  chr(239).chr(187).chr(191)._AC('achecker_file_title').DELIM.'version '.VERSION.DELIM
+		$file_content =  _AC('achecker_file_title').DELIM.'version '.VERSION.DELIM
 			.$this->prepareStr(_AC('achecker_file_description')).EOL.$this->achecker_file_url.EOL.EOL;
 	
 		// date, time

@@ -18,11 +18,14 @@
 	$pattern_csv = '/achecker_(.*?)\.csv/';
 	$pattern_rdf = '/achecker_(.*?)\.rdf/';
 	$pattern_pdf = '/achecker_(.*?)\.pdf/';
+	$pattern_html = '/achecker_(.*?)\.html/';
 	if (preg_match($pattern_csv, $path, $match)) {
 		$filename = $match[0];
 	} else if (preg_match($pattern_rdf, $path, $match)) {
 		$filename = $match[0];
 	} else if (preg_match($pattern_pdf, $path, $match)) {
+		$filename = $match[0];
+	} else if (preg_match($pattern_html, $path, $match)) {
 		$filename = $match[0];
 	}
 	

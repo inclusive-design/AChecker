@@ -51,7 +51,7 @@ if (isset($_SESSION['input_form']['mode'])) 		$mode = $_SESSION['input_form']['m
 if (isset($_SESSION['input_form']['user_link_id'])) $user_link_id = $_SESSION['input_form']['user_link_id'];
 
 
-$html = array();
+$html = '';
 $error_nr_html = -1;
 
 // validate html
@@ -59,16 +59,27 @@ if ($_SESSION['input_form']['enable_html_validation'] == true) {
 	include(AC_INCLUDE_PATH. "classes/HTMLValidator.class.php");
 
 	if ($input_content_type == 'file' || $input_content_type == 'paste') {
-		$htmlValidator = new HTMLValidator("fragment", $validate_content, true);
+		if ($file == 'html') {
+			$htmlValidator = new HTMLValidator("fragment", $validate_content);
+			$html = $htmlValidator->getValidationRpt();
+		} else {
+			$htmlValidator = new HTMLValidator("fragment", $validate_content, true);
+			$html = $htmlValidator->getValidationRptArray();
+		}
+		
 	} else {
-		$htmlValidator = new HTMLValidator("uri", $input_content_type, true);
+		if ($file == 'html') {
+			$htmlValidator = new HTMLValidator("uri", $input_content_type);
+			$html = $htmlValidator->getValidationRpt();
+		} else {
+			$htmlValidator = new HTMLValidator("fragment", $validate_content, true);
+			$html = $htmlValidator->getValidationRptArray();
+		}
 	}
-
-	$html = $htmlValidator->getValidationRptArray();
 	$error_nr_html = $htmlValidator->getNumOfValidateError();
 }
 
-$css = array();
+$css = '';
 $error_nr_css = -1;
 $css_error = '';
 
@@ -78,12 +89,13 @@ if ($_SESSION['input_form']['enable_css_validation'] == true) {
 
 	if ($input_content_type == $uri) {
 		$cssValidator = new CSSValidator("uri", $input_content_type, true);
+		if ($file == 'html') $css = $cssValidator->getValidationRpt();
+		else $css = $cssValidator->getValidationRptArray();
+		$error_nr_css = $cssValidator->getNumOfValidateError();
 	} else {
 		// css validator is only available at validating url, not at validating a uploaded file or pasted html
 		$css_error = _AC("css_validator_unavailable");
 	}
-	$css = $cssValidator->getValidationRptArray();
-	$error_nr_css = $cssValidator->getNumOfValidateError();
 }
 
 if ($problem != 'html' && $problem != 'css') {
@@ -123,7 +135,7 @@ if ($file == 'pdf') {
 		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
 	$path = $pdf->getPDF($title, $uri, $problem, $mode, $_gids);
 			
-} else if ($file == 'earl' || $file == 'csv') {	
+} else {	
 	if ($problem != 'html' && $problem != 'css') {
 		$a_rpt = new FileExportRptLine($errors, $user_link_id);
 		list($known, $likely, $potential) = $a_rpt->generateRpt();
@@ -144,8 +156,15 @@ if ($file == 'pdf') {
 			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
 		$path = $csv->getCSV($problem, $input_content_type, $title, $_gids);
 		
+	} else if ($file == 'html') {	
+		include_once(AC_INCLUDE_PATH. 'fileExport/acheckerHTML.class.php');		
+		$html_file = new acheckerHTML($known, $likely, $potential, $html, $css, 
+			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
+		$path = $html_file->getHTMLfile($problem, $_gids, $errors, $user_link_id);
+
 	}
-}
+} 
+
 echo $path;
 exit();	
 
