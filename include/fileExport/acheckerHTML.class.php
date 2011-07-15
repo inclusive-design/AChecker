@@ -50,7 +50,7 @@ class acheckerHTML {
 	var $numOfNoDecision;          	// number of problems with choice "no decision"             
 	
 	var $html_main =
-'<?xml version="1.0" encoding="ISO-8859-1"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE style PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <style type="text/css">
 ul {font-family: Arial; margin-bottom: 0px; margin-top: 0px; margin-right: 0px;}
