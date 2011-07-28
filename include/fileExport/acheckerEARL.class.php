@@ -57,9 +57,10 @@ class acheckerEARL {
 	
 	var $achecker_file_url = 'http://www.atutor.ca/achecker/';
 	
-	// css error message 
+	// css and html error messages 
 	// css validator is only available at validating url, not at validating a uploaded file or pasted html
-	var $css_error = 0;
+	var $css_error = '';
+	var $html_error = '';
 		
 	
 	/**
@@ -73,7 +74,7 @@ class acheckerEARL {
 	* $css_error: empty if css validation was required with URL input, otherwise string with error msg
 	*/
 	function acheckerEARL($known, $likely, $potential, $html, $css, 
-		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error)
+		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error)
 	{				
 		$this->known = $known;
 		$this->likely = $likely;
@@ -88,6 +89,7 @@ class acheckerEARL {
 		$this->error_nr_css = $error_nr_css;
 		
 		$this->css_error = $css_error;
+		$this->html_error = $html_error;
 	}
 	
 	/**
@@ -168,7 +170,7 @@ class acheckerEARL {
 			';
 		} else {		
 			// show congratulations if no errors found
-			if ($this->error_nr_html == 0) {
+			if ($this->error_nr_html == 0 && $this->html_error == '') {
 				$file_content .= '<earl:TestResult rdf:ID="result_'.$this->problem_prefix.$this->error_id.'">
 		        <earl:pointer rdf:resource="#pointer_'.$this->problem_prefix.$this->error_id.'_message" />
 		        <earl:outcome rdf:resource="http://www.w3.org/ns/earl#passed" />
@@ -179,6 +181,21 @@ class acheckerEARL {
 				$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_message">
 				<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
 					'._AC("congrats_html_validation").'
+				</ptr:expression>
+			</ptr:ExpressionPointer>
+			
+			';
+			} else if($this->error_nr_html == 0 && $this->html_error != '') {
+				// html validation errors
+				$file_content .= '<earl:TestResult rdf:ID="result_'.$this->problem_prefix.$this->error_id.'">
+		        <earl:pointer rdf:resource="#pointer_'.$this->problem_prefix.$this->error_id.'_message" />
+		        <earl:outcome rdf:resource="http://www.w3.org/ns/earl#failed" />
+		    </earl:TestResult>
+		    
+		    ';
+				$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_message">
+				<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
+					'.$this->html_error.'
 				</ptr:expression>
 			</ptr:ExpressionPointer>
 			
@@ -264,7 +281,6 @@ class acheckerEARL {
 		$file_content .= '<!-- ========================== CSS validation ========================== -->
 		';
 		
-		// str with error type and nr of errors
 		if ($this->css_error == '' && $this->error_nr_css == -1) {
 			// css validator is disabled
 			$file_content .= '<earl:TestResult rdf:ID="result_'.$this->problem_prefix.$this->error_id.'">

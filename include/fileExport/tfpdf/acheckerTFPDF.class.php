@@ -58,9 +58,10 @@ class acheckerTFPDF extends tFPDF {
 	var $error_nr_html = 0;
 	var $error_nr_css = 0;
 	
-	// css error message 
+	// css and html error messages 
 	// css validator is only available at validating url, not at validating a uploaded file or pasted html
-	var $css_error = 0;
+	var $css_error = '';
+	var $html_error = '';
 	
 	
 	/**
@@ -74,7 +75,7 @@ class acheckerTFPDF extends tFPDF {
 	* $css_error: empty if css validation was required with URL input, otherwise string with error msg
 	*/
 	function acheckerTFPDF($known, $likely, $potential, $html, $css, 
-		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error)
+		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error)
 	{
 		//Call parent constructor
 		$this->tFPDF('P','mm','A4');
@@ -92,6 +93,7 @@ class acheckerTFPDF extends tFPDF {
 		$this->error_nr_css = $error_nr_css;
 		
 		$this->css_error = $css_error;
+		$this->html_error = $html_error;
 	}
 	
 	/**
@@ -500,7 +502,8 @@ class acheckerTFPDF extends tFPDF {
 			$this->Ln(10);		
 		
 			// show congratulations if no errors found
-			if ($this->error_nr_html == 0) {
+			if ($this->error_nr_html == 0 && $this->html_error == '') {
+				// no html validation errors, passed
 				$this->Ln(3);
 				$this->SetTextColor(0, 128, 0);
 				$path = AC_BASE_HREF."images/jpg/feedback.jpg";
@@ -508,6 +511,12 @@ class acheckerTFPDF extends tFPDF {
 				$this->SetX(14);
 				$this->SetFont('DejaVu', 'B', 12);
 				$this->Write(5, _AC("congrats_html_validation"));
+			} else if($this->error_nr_html == 0 && $this->html_error != '') {
+				// html validation errors
+				$this->Ln(3);
+				$this->SetTextColor(0);
+				$this->SetFont('DejaVu', '', 10);
+				$this->Write(5, $this->html_error);
 			} else { // else make report on errors
 				foreach($this->html as $error) {
 					// error icon img, line, column, error text

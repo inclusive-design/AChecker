@@ -211,49 +211,62 @@ class CSSValidator {
 	*/
 	function stripOutResultArray()
 	{	
-		$pattern_group = '/\<li class="msg_err"\>(.*?)\<\/li\>/s';
-		preg_match_all($pattern_group, $this->result, $matches_group);
-		foreach($matches_group[1] as $group) {
-			unset($group_errors);
+		$pattern1 = '/('.preg_quote("<div id='congrats'>", '/').'.*)/s'; // nessun errore -- no errors
+		$pattern2 = '/('.preg_quote("<div class='error-section-all'>", '/').'.*)/s'; // when has errors
+		$pattern3 = '/('.preg_quote('<p class="backtop"><a href="#banner">&uarr; ', '/').'.*)/s'; // when has errors
+		$pattern4 = '/('.preg_quote('<div id="warnings">', '/').'.*)/s'; // when has errors
 			
-			$pattern_uri = '/\<span class="msg"\>\<strong\>URI : \<a href="(.*?)"\>(.*?)\<\/a>\<\/strong\>\<\/span\>/s';
-			preg_match($pattern_uri, $group, $matches_uri);
-			$uri = $matches_uri[1];
+		if (preg_match($pattern1, $this->full_return, $match) || preg_match($pattern2, $this->full_return, $match)|| 
+			preg_match($pattern3, $this->full_return, $match) || preg_match($pattern4, $this->full_return, $match)) {		
 			
-			$pattern_item = '/\<tr class=(.*?)error(.*?)\>(.*?)\<\/tr\>/s';
-			preg_match_all($pattern_item, $group, $matches_item);
-		
-			foreach($matches_item[3] as $error) {
-				unset($error_detail);
+			$pattern_group = '/\<li class="msg_err"\>(.*?)\<\/li\>/s';
+			preg_match_all($pattern_group, $this->result, $matches_group);
+			foreach($matches_group[1] as $group) {
+				unset($group_errors);
 				
-				// line
-				$pattern_line = '/\<td class=(.*?)linenumber(.*?) title=(.*?)Line [0-9]+(.*?)>(.*?)\<\/td\>/';
-				preg_match($pattern_line, $error, $matches_line);
-				$line = $matches_line[5];
+				$pattern_uri = '/\<span class="msg"\>\<strong\>URI : \<a href="(.*?)"\>(.*?)\<\/a>\<\/strong\>\<\/span\>/s';
+				preg_match($pattern_uri, $group, $matches_uri);
+				$uri = $matches_uri[1];
 				
-				// code
-				$pattern_code = '/\<td class=(.*?)codeContext(.*?)>(.*?)\<\/td\>/s';
-				if (preg_match($pattern_code, $error, $matches_code)) {
-					$code = trim($matches_code[3]);
-				} else {
-					$code = '';
-				}
-				
-				// parse
-				$pattern_parse1 = '/\<td class=(.*?)parse-error(.*?)>(.*?)\<\/td\>/s';
-				$pattern_parse2 = '/\<td class=(.*?)invalidparam(.*?)>(.*?)\<\/td\>/s';
-				if (preg_match($pattern_parse1, $error, $matches_parse)) {
-					$parse = preg_replace("/ {2,}/", " ",str_replace("\n", "", trim($matches_parse[3])));
-				} else if (preg_match($pattern_parse2, $error, $matches_parse)) {
-					$parse = preg_replace("/ {2,}/", " ",str_replace("\n", "", trim($matches_parse[3])));
-				} else {
-					$parse = '';
-				}			
+				$pattern_item = '/\<tr class=(.*?)error(.*?)\>(.*?)\<\/tr\>/s';
+				preg_match_all($pattern_item, $group, $matches_item);
+			
+				foreach($matches_item[3] as $error) {
+					unset($error_detail);
 					
-				$error_detail =  array('line' => $line, 'code' => $code, 'parse' => $parse);
-				$group_errors[] = $error_detail;
+					// line
+					$pattern_line = '/\<td class=(.*?)linenumber(.*?) title=(.*?)Line [0-9]+(.*?)>(.*?)\<\/td\>/';
+					preg_match($pattern_line, $error, $matches_line);
+					$line = $matches_line[5];
+					
+					// code
+					$pattern_code = '/\<td class=(.*?)codeContext(.*?)>(.*?)\<\/td\>/s';
+					if (preg_match($pattern_code, $error, $matches_code)) {
+						$code = trim($matches_code[3]);
+					} else {
+						$code = '';
+					}
+					
+					// parse
+					$pattern_parse1 = '/\<td class=(.*?)parse-error(.*?)>(.*?)\<\/td\>/s';
+					$pattern_parse2 = '/\<td class=(.*?)invalidparam(.*?)>(.*?)\<\/td\>/s';
+					if (preg_match($pattern_parse1, $error, $matches_parse)) {
+						$parse = preg_replace("/ {2,}/", " ",str_replace("\n", "", trim($matches_parse[3])));
+					} else if (preg_match($pattern_parse2, $error, $matches_parse)) {
+						$parse = preg_replace("/ {2,}/", " ",str_replace("\n", "", trim($matches_parse[3])));
+					} else {
+						$parse = '';
+					}			
+						
+					$error_detail =  array('line' => $line, 'code' => $code, 'parse' => $parse);
+					$group_errors[] = $error_detail;
+				}
+				$this->result_array[$uri] = $group_errors; 
 			}
-			$this->result_array[$uri] = $group_errors; 
+		} else {
+			$this->contain_errors = true;
+			$this->msg = _AC('AC_ERROR_CSS_VALIDATOR_ERROR');
+			return false;
 		}	
 	}
 	

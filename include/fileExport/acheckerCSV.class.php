@@ -66,9 +66,10 @@ class acheckerCSV {
 	var $error_nr_html = 0;
 	var $error_nr_css = 0;
 	
-	// css error message 
+	// css and html error messages 
 	// css validator is only available at validating url, not at validating a uploaded file or pasted html
-	var $css_error = 0;
+	var $css_error = '';
+	var $html_error = '';
 	
 	var $achecker_file_url = 'http://www.atutor.ca/achecker/';
 		
@@ -84,7 +85,7 @@ class acheckerCSV {
 	* $css_error: empty if css validation was required with URL input, otherwise string with error msg
 	*/
 	function acheckerCSV($known, $likely, $potential, $html, $css, 
-		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error)
+		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error)
 	{				
 		$this->known = $known;
 		$this->likely = $likely;
@@ -99,6 +100,7 @@ class acheckerCSV {
 		$this->error_nr_css = $error_nr_css;
 		
 		$this->css_error = $css_error;
+		$this->html_error = $html_error;
 	}
 	
 	/**
@@ -232,7 +234,7 @@ class acheckerCSV {
 		} else if ($problem_type == 'likely') {
 			$array = $this->likely;
 			$nr = $this->error_nr_likely;
-			$file_content .= EOL._AC("likely_problems").': '.$nr.EOL;
+			$file_content .= EOL._AC("likely_problems").': '.$nr;
 			if (isset($_SESSION['user_id'])) {
 				$file_content .= DELIM._AC("achecker_file_decision");
 			}
@@ -329,14 +331,20 @@ class acheckerCSV {
 	* return HTML validation result as CSV string
 	*/
 	private function getHTML() 
-	{		
-		$file_content .= EOL._AC("html_validation_result").': '.$this->error_nr_html.DELIM.strip_tags(_AC("html_validator_provided_by")).EOL;		
-		
-		// show congratulations if no errors found
-		if ($this->error_nr_html == 0) {
-			// congrats message
+	{	
+		$file_content .= EOL._AC("html_validation_result").': '.$this->error_nr_html.DELIM.strip_tags(_AC("html_validator_provided_by")).EOL;
+
+		// str with error type and nr of errors
+		if ($this->error_nr_html == -1) {			
+			$file_content .= _AC("html_validator_disabled").EOL;
+		} else if ($this->error_nr_html == 0 && $this->html_error == '') {
+			// show congratulations if no errors found
+			// no html validation errors, passed
 			$file_content .= _AC("congrats_html_validation").EOL;
-		} else {		
+		} else if($this->error_nr_html == 0 && $this->html_error != '') {
+			// html validation errors
+			$file_content .= $this->html_error.EOL;
+		} else { // else make report on errors		
 			$file_content .= _AC("achecker_file_html").DELIM._AC("achecker_file_text").EOL;
 			foreach ($this->html as $error) {				
 				// line and column + error text
@@ -367,10 +375,17 @@ class acheckerCSV {
 	{		
 		$file_content .= EOL._AC("css_validation_result").': '.$this->error_nr_css.DELIM.strip_tags(_AC("css_validator_provided_by")).EOL;		
 		
-		// show congratulations if no errors found
-		if ($this->error_nr_css == 0) {
-			// congrats message
-			$file_content .= _AC("congrats_css_validation").EOL;
+		if ($this->css_error == '' && $this->error_nr_css == -1) {
+			// css validator is disabled
+			$file_content .= _AC("css_validator_disabled").EOL;
+		}
+		
+		if ($this->css_error != '') {
+			// css validator is only available at validating url, not at validating a uploaded file or pasted html
+			$file_content .= $this->css_error.EOL;
+		} else if ($this->error_nr_css == 0) {
+				// show congratulations if no errors found
+				$file_content .= _AC("congrats_css_validation").EOL;
 		} else {	
 			$file_content .= $this->prepareStr(_AC('line')).DELIM.$this->prepareStr(_AC('html_tag')).DELIM.$this->prepareStr(_AC('error')).EOL;
 			foreach($this->css as $uri => $group) {

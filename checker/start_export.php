@@ -53,6 +53,7 @@ if (isset($_SESSION['input_form']['user_link_id'])) $user_link_id = $_SESSION['i
 
 $html = '';
 $error_nr_html = -1;
+$html_error = '';
 
 // validate html
 if ($_SESSION['input_form']['enable_html_validation'] == true) {
@@ -76,6 +77,11 @@ if ($_SESSION['input_form']['enable_html_validation'] == true) {
 			$html = $htmlValidator->getValidationRptArray();
 		}
 	}
+	
+	if ($htmlValidator->containErrors()) {
+		$html_error = $htmlValidator->getErrorMsg();
+	}
+		
 	$error_nr_html = $htmlValidator->getNumOfValidateError();
 }
 
@@ -92,6 +98,9 @@ if ($_SESSION['input_form']['enable_css_validation'] == true) {
 		if ($file == 'html') $css = $cssValidator->getValidationRpt();
 		else $css = $cssValidator->getValidationRptArray();
 		$error_nr_css = $cssValidator->getNumOfValidateError();
+		
+		if ($cssValidator->containErrors())
+			$css_error = $cssValidator->getErrorMsg();
 	} else {
 		// css validator is only available at validating url, not at validating a uploaded file or pasted html
 		$css_error = _AC("css_validator_unavailable");
@@ -132,7 +141,7 @@ if ($file == 'pdf') {
 	include_once(AC_INCLUDE_PATH. 'fileExport/tfpdf/acheckerTFPDF.class.php');
 	
 	$pdf = new acheckerTFPDF($known, $likely, $potential, $html, $css, 
-		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
+		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 	$path = $pdf->getPDF($title, $uri, $problem, $mode, $_gids);
 			
 } else {	
@@ -146,20 +155,20 @@ if ($file == 'pdf') {
 		include_once(AC_INCLUDE_PATH. 'fileExport/acheckerEARL.class.php');
 		
 		$earl = new acheckerEARL($known, $likely, $potential, $html, $css, 
-			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
+			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 		$path = $earl->getEARL($problem, $input_content_type, $title, $_gids);
 		
 	} else if ($file == 'csv') {	
 		include_once(AC_INCLUDE_PATH. 'fileExport/acheckerCSV.class.php');		
 		
 		$csv = new acheckerCSV($known, $likely, $potential, $html, $css, 
-			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
+			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 		$path = $csv->getCSV($problem, $input_content_type, $title, $_gids);
 		
 	} else if ($file == 'html') {	
 		include_once(AC_INCLUDE_PATH. 'fileExport/acheckerHTML.class.php');		
 		$html_file = new acheckerHTML($known, $likely, $potential, $html, $css, 
-			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error);
+			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 		$path = $html_file->getHTMLfile($problem, $_gids, $errors, $user_link_id);
 
 	}

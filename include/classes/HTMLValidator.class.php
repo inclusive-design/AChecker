@@ -65,7 +65,6 @@ class HTMLValidator {
 		else
 		{						
 			$this->full_return = $result;
-					
 			if ($return_array == true) {				
 				$this->stripOutResultArray();
 			} else {
@@ -169,73 +168,81 @@ class HTMLValidator {
 	* return errors/warnings in array form by striping it out from validation output returned from 3rd party
 	*/
 	function stripOutResultArray()
-	{		
-		$pattern_item = '/(('.preg_quote('<li class="msg_err">', '/').'|'.preg_quote('<li class="msg_warn">', '/').'|'.preg_quote('<li class="msg_info">', '/').')(.*?)'. preg_quote('</li>', '/').'(?>(\r?\n){2}))/s';
-		preg_match_all($pattern_item, $this->full_return, $matches);
-		foreach($matches[3] as $error) {		
-			// img_src
-			$pattern_img_src = '/('.preg_quote('<img src="images/info_icons/', '/').'(.*)" alt)/';
-			if (preg_match($pattern_img_src, $error, $matches_img_src)) {
-				$img_src =  $matches_img_src[2];
-			} else {
-				$img_src = '';
-			}
-		
-			// line and column
-			$pattern_line_col = '/('.preg_quote('<em>', '/').'(.*?)'. preg_quote('</em>', '/').')/s';	
-			if (preg_match($pattern_line_col, $error, $matches_line_col)) {
-				$pattern_line = '/(Line (.*?),)/';			
-				preg_match($pattern_line, $matches_line_col[2], $matches_line);
-				$line = $matches_line[2];
+	{	
+		$pattern1 = '/'. preg_quote('<div id="result">', '/') . '.*'. preg_quote('</div><!-- end of "result" -->', '/').'/s';   // when no errors
+		$pattern2 = '/('.preg_quote('<ol id="error_loop">', '/').'.*'. preg_quote('</ol>', '/').')/s'; // when has errors
+		if (preg_match($pattern1, $this->full_return, $match) || preg_match($pattern2, $this->full_return, $match))	{	
+			$pattern_item = '/(('.preg_quote('<li class="msg_err">', '/').'|'.preg_quote('<li class="msg_warn">', '/').'|'.preg_quote('<li class="msg_info">', '/').')(.*?)'. preg_quote('</li>', '/').'(?>(\r?\n){2}))/s';
+			preg_match_all($pattern_item, $this->full_return, $matches);
+			foreach($matches[3] as $error) {		
+				// img_src
+				$pattern_img_src = '/('.preg_quote('<img src="images/info_icons/', '/').'(.*)" alt)/';
+				if (preg_match($pattern_img_src, $error, $matches_img_src)) {
+					$img_src =  $matches_img_src[2];
+				} else {
+					$img_src = '';
+				}
+			
+				// line and column
+				$pattern_line_col = '/('.preg_quote('<em>', '/').'(.*?)'. preg_quote('</em>', '/').')/s';	
+				if (preg_match($pattern_line_col, $error, $matches_line_col)) {
+					$pattern_line = '/(Line (.*?),)/';			
+					preg_match($pattern_line, $matches_line_col[2], $matches_line);
+					$line = $matches_line[2];
+					
+					$pattern_col = '/(Column (.*?)$)/';
+					preg_match($pattern_col, $matches_line_col[2], $matches_col);
+					$col = $matches_col[2];
+					
+				} else {
+					$col = '';
+					$line = '';
+				}
 				
-				$pattern_col = '/(Column (.*?)$)/';
-				preg_match($pattern_col, $matches_line_col[2], $matches_col);
-				$col = $matches_col[2];
+				// error
+				$pattern_error = '/('.preg_quote('<span class="msg">', '/').'(.*)'. preg_quote('</span>', '/').')/';	
+				if (preg_match($pattern_error, $error, $matches_error)) {
+					$err =  $matches_error[2];
+				} else {
+					$err = '';
+				}
 				
-			} else {
-				$col = '';
-				$line = '';
-			}
-			
-			// error
-			$pattern_error = '/('.preg_quote('<span class="msg">', '/').'(.*)'. preg_quote('</span>', '/').')/';	
-			if (preg_match($pattern_error, $error, $matches_error)) {
-				$err =  $matches_error[2];
-			} else {
-				$err = '';
-			}
-			
-			// html 
-			$pattern_html_1 = '/('.preg_quote('<code class="input">', '/').'(.*)'. preg_quote('<strong', '/').')/';	
-			if (preg_match($pattern_html_1, $error, $matches_html_1)) {
-				$html_1 = $matches_html_1[2];
-			} else {
-				$html_1 = '';
-			}
-			
-			$pattern_html_2 = '/('.preg_quote('<strong title="Position where error was detected.">', '/').'(.*)'. preg_quote('</strong>', '/').')/';	
-			if (preg_match($pattern_html_2, $error, $matches_html_2)) {
-				$html_2 = $matches_html_2[2];
-			} else {
-				$html_2 = '';
-			}
-			
-			$pattern_html_3 = '/('.preg_quote('</strong>', '/').'(.*)'. preg_quote('</code>', '/').')/';	
-			if (preg_match($pattern_html_3, $error, $matches_html_3)) {
-				$html_3 = $matches_html_3[2];
-			} else {
-				$html_3 = '';
-			}
-			
-			// text
-			$pattern_text = '/(\<div class="[A-Za-z0-9- ]+">(.*)'. preg_quote('</div>', '/').')/s';	
-			if (preg_match($pattern_text, $error, $matches_text)) {
-				$text = trim($matches_text[2]);
-			} else {
-				$text = '';
-			}
-			$this->result_array[] = array('img_src' => $img_src, 'col' => $col, 'line' => $line, 'err' => $err, 
-				'html_1' => $html_1, 'html_2' => $html_2, 'html_3' => $html_3, 'text' => $text); 
+				// html 
+				$pattern_html_1 = '/('.preg_quote('<code class="input">', '/').'(.*)'. preg_quote('<strong', '/').')/';	
+				if (preg_match($pattern_html_1, $error, $matches_html_1)) {
+					$html_1 = $matches_html_1[2];
+				} else {
+					$html_1 = '';
+				}
+				
+				$pattern_html_2 = '/('.preg_quote('<strong title="Position where error was detected.">', '/').'(.*)'. preg_quote('</strong>', '/').')/';	
+				if (preg_match($pattern_html_2, $error, $matches_html_2)) {
+					$html_2 = $matches_html_2[2];
+				} else {
+					$html_2 = '';
+				}
+				
+				$pattern_html_3 = '/('.preg_quote('</strong>', '/').'(.*)'. preg_quote('</code>', '/').')/';	
+				if (preg_match($pattern_html_3, $error, $matches_html_3)) {
+					$html_3 = $matches_html_3[2];
+				} else {
+					$html_3 = '';
+				}
+				
+				// text
+				$pattern_text = '/(\<div class="[A-Za-z0-9- ]+">(.*)'. preg_quote('</div>', '/').')/s';	
+				if (preg_match($pattern_text, $error, $matches_text)) {
+					$text = trim($matches_text[2]);
+				} else {
+					$text = '';
+				}
+				$this->result_array[] = array('img_src' => $img_src, 'col' => $col, 'line' => $line, 'err' => $err, 
+					'html_1' => $html_1, 'html_2' => $html_2, 'html_3' => $html_3, 'text' => $text); 
+			} 
+		} else {
+			$this->contain_errors = true;
+			$this->msg = "Cannot find result report from the return of the validator";
+			return false;
 		}
 		
 	}

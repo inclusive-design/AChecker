@@ -42,9 +42,10 @@ class acheckerHTML {
 	var $error_nr_html = 0;
 	var $error_nr_css = 0;
 	
-	// css error message 
+	// css and html error messages 
 	// css validator is only available at validating url, not at validating a uploaded file or pasted html
 	var $css_error = '';
+	var $html_error = '';
 	
 	var $htmlRpt;					// instance of HTMLRpt. Generate error detail      
 	var $numOfNoDecision;          	// number of problems with choice "no decision"             
@@ -63,6 +64,8 @@ li.msg_err, li.msg_info { font-family: Arial; margin-bottom: 20px;list-style: no
 span.msg{font-family: Arial; line-height: 150%;}
 code.input { margin-bottom: 2ex; background-color: #F8F8F8; line-height: 130%;}
 span.err_type{ padding: .1em .5em; font-size: smaller;}
+span.info_msg { line-height: 100%; color: blue; padding: 1em 1em; font-size: large; font-weight: bold;}
+span.congrats_msg { line-height: 120%; color: green; padding: 1em 1em; font-size: large; font-weight: bold; white-space: nowrap;}
 </style>
 </head>
 <body>
@@ -110,7 +113,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 	* $css_error: empty if css validation was required with URL input, otherwise string with error msg
 	*/
 	function acheckerHTML($known, $likely, $potential, $html, $css, 
-		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error)
+		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error)
 	{				
 		$this->known = $known;
 		$this->likely = $likely;
@@ -125,6 +128,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 		$this->error_nr_css = $error_nr_css;
 		
 		$this->css_error = $css_error;
+		$this->html_error = $html_error;
 	}
 	
 	/**
@@ -157,8 +161,8 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 			$detail .= $this->getResultSection('known');
 			$detail .= '<br/>'.$this->getResultSection('likely');
 			$detail .= '<br/>'.$this->getResultSection('potential');
-			$validation .= '<br/>'.$this->getHTML();
-			$validation .= '<br/>'.$this->getCSS();
+			if ($this->error_nr_html != -1) $validation .= '<br/>'.$this->getHTML();
+			if ($this->error_nr_css != -1) $validation .= '<br/>'.$this->getCSS();
 		} else if ($problem == 'html') {
 			$validation .= $this->getHTML();
 		} else if ($problem == 'css') {
@@ -325,20 +329,32 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 	* return HTML validation result as HTML string
 	*/
 	private function getHTML() 
-	{		
-		$provided_by = '<ol><li class="msg_err">'. _AC("html_validator_provided_by") .'</li></ol>'. "\n";
+	{					
+		$provided_by = '';
 		
-		if ($this->error_nr_html == -1) { // html validation disabled
+		// str with error type and nr of errors
+		if ($this->error_nr_html == -1) {	
 			$content = '<ol><li class="msg_err">
 				<span class="info_msg">
 					<img src="'.AC_BASE_HREF.'images/info.png" width="15" height="15" alt="'._AC("info").'"/>  '._AC("html_validator_disabled").'
 				</span>
 				</ol></li>';
-		} else { // ok -> show css validation result
-			if ($this->error_nr_html == 0) { // no errors
+		} else {				
+			$provided_by = '<ol><li class="msg_err">'. _AC("html_validator_provided_by") .'</li></ol>'. "\n";
+		
+			// show congratulations if no errors found
+			if ($this->error_nr_html == 0 && $this->html_error == '') {
+				// no html validation errors, passed
 				$content = "<ul><li class='msg_info'>
 				<span class='congrats_msg'>
 					<img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_html_validation") ."
+				</span>
+				</ul></li>";
+			} else if($this->error_nr_html == 0 && $this->html_error != '') {
+				// html validation errors
+				$content = "<ul><li class='msg_info'>
+				<span>
+					". $this->html_error ."
 				</span>
 				</ul></li>";
 			} else { // errors exist
@@ -358,18 +374,24 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 	*/
 	private function getCSS() 
 	{
-		$provided_by = '<ol><li class="msg_err">'. _AC("css_validator_provided_by") .'</li></ol>'. "\n";
+		$provided_by = '';
 		
+		// str with error type and nr of errors
+		if ($this->css_error == '' && $this->error_nr_css != -1) {
+			$provided_by = '<ol><li class="msg_err">'. _AC("css_validator_provided_by") .'</li></ol>'. "\n";
+		} else if ($this->css_error == '' && $this->error_nr_css == -1) {
+			// css validator is disabled		
+			$content = '<ol><li class="msg_err">
+				<span class="info_msg">
+					<img src="'.AC_BASE_HREF.'images/info.png" width="15" height="15" alt="'._AC("info").'"/>  '._AC("css_validator_disabled").'
+				</span>
+				</ol></li>';
+		}
+				
 		if ($this->css_error != '') { // non url input
 			$content = '<ol><li class="msg_err">
 				<span class="info_msg">
 					<img src="'.AC_BASE_HREF.'images/info.png" width="15" height="15" alt="'._AC("info").'"/>  '.$this->css_error.'
-				</span>
-				</ol></li>';
-		} else if ($this->css_error == '' && $this->error_nr_css == -1) { // css validation disabled
-			$content = '<ol><li class="msg_err">
-				<span class="info_msg">
-					<img src="'.AC_BASE_HREF.'images/info.png" width="15" height="15" alt="'._AC("info").'"/>  '._AC("css_validator_disabled").'
 				</span>
 				</ol></li>';
 		} else { // ok -> show css validation result
