@@ -376,7 +376,6 @@ class acheckerCSV {
 			foreach($this->css as $uri => $group) {
 					// uri
 					$file_content .= "URI: ".$uri.EOL;
-					debug_to_log($uri);
 					foreach($group as $error) {
 						// line
 						$file_content .= $error['line'];	

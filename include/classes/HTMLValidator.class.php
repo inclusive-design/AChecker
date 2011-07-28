@@ -49,8 +49,7 @@ class HTMLValidator {
 		$this->validate_content = $content;
 		
 		if ($this->validate_type == "fragment")
-			$result = $this->validate_fragment($this->validate_content);
-			
+			$result = $this->validate_fragment($this->validate_content);			
 		if ($this->validate_type == "uri")
 		{
 			if (Utility::getValidURI($this->validate_content) === false)
@@ -64,9 +63,10 @@ class HTMLValidator {
 
 		if (!result) return false;
 		else
-		{			
-			$this->full_return = $result;			
-			if ($return_array == true) {
+		{						
+			$this->full_return = $result;
+					
+			if ($return_array == true) {				
 				$this->stripOutResultArray();
 			} else {
 				$this->result = $this->stripOutResult($result);
@@ -170,7 +170,7 @@ class HTMLValidator {
 	*/
 	function stripOutResultArray()
 	{		
-		$pattern_item = '/(('.preg_quote('<li class="msg_err">', '/').'|'.preg_quote('<li class="msg_warn">', '/').')(.*?)'. preg_quote('</li>', '/').'(?>(\r?\n){2}))/s';
+		$pattern_item = '/(('.preg_quote('<li class="msg_err">', '/').'|'.preg_quote('<li class="msg_warn">', '/').'|'.preg_quote('<li class="msg_info">', '/').')(.*?)'. preg_quote('</li>', '/').'(?>(\r?\n){2}))/s';
 		preg_match_all($pattern_item, $this->full_return, $matches);
 		foreach($matches[3] as $error) {		
 			// img_src
@@ -234,7 +234,6 @@ class HTMLValidator {
 			} else {
 				$text = '';
 			}
-			
 			$this->result_array[] = array('img_src' => $img_src, 'col' => $col, 'line' => $line, 'err' => $err, 
 				'html_1' => $html_1, 'html_2' => $html_2, 'html_3' => $html_3, 'text' => $text); 
 		}

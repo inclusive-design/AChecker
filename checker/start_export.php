@@ -72,7 +72,7 @@ if ($_SESSION['input_form']['enable_html_validation'] == true) {
 			$htmlValidator = new HTMLValidator("uri", $input_content_type);
 			$html = $htmlValidator->getValidationRpt();
 		} else {
-			$htmlValidator = new HTMLValidator("fragment", $validate_content, true);
+			$htmlValidator = new HTMLValidator("uri", $uri, true);
 			$html = $htmlValidator->getValidationRptArray();
 		}
 	}

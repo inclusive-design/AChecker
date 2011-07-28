@@ -482,66 +482,76 @@ class acheckerTFPDF extends tFPDF {
 	private function printHTML() 
 	{
 		// str with error type and nr of errors
-		$this->SetFont('DejaVu', 'B', 14);
-		$this->SetTextColor(0);
-		$this->Write(5, _AC('achecker_file_report_html').' ('.$this->error_nr_html.' '._AC('achecker_file_report_found').'):');		
-		$this->Ln(10);
-		$this->SetFont('DejaVu', 'B', 12);
-		$this->Write(5,strip_tags(_AC("html_validator_provided_by")));
-		$this->Ln(10);
-		
-		// show congratulations if no errors found
-		if ($this->error_nr_html == 0) {
-			$this->Ln(3);
-			$this->SetTextColor(0, 128, 0);
-			$path = AC_BASE_HREF."images/jpg/feedback.jpg";
+		if ($this->error_nr_html == -1) {
+			$this->SetTextColor(0, 0, 255);
+			$path = AC_BASE_HREF."images/jpg/info.jpg";
 			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 			$this->SetX(14);
+			$this->SetFont('DejaVu', 'B', 12);			
+			$this->Write(5,_AC("html_validator_disabled"));
+			$this->SetTextColor(0);
+		} else {				
+			$this->SetFont('DejaVu', 'B', 14);
+			$this->SetTextColor(0);
+			$this->Write(5, _AC('achecker_file_report_html').' ('.$this->error_nr_html.' '._AC('achecker_file_report_found').'):');		
+			$this->Ln(10);
 			$this->SetFont('DejaVu', 'B', 12);
-			$this->Write(5, _AC("congrats_html_validation"));
-		} else { // else make report on errors
-			foreach($this->html as $error) {
-				// error icon img, line, column, error text
-				$img_data = explode(".", $error['img_src']);		
-				$path = AC_BASE_HREF."images/jpg/".$img_data[0].".jpg";
-				$this->Image($path, $this->GetX()+7, $this->GetY(), 4, 4);
-				$this->SetX(21);
-				if ($error['line'] != '' && $error['col'] != '') {
-					$this->SetTextColor(0);
-					$this->SetFont('DejaVu', 'BI', 9);
-					$location = " "._AC('line')." ".$error['line'].", "._AC('column')." ".$error['col'].":  ";
-					$this->Write(5, $location);
-				}
-				$this->SetTextColor(26, 74, 114);
-				$this->SetFont('DejaVu', '', 10);
-				$this->Write(5, html_entity_decode(strip_tags($error['err'])));
-				$this->Ln(7);
-
-				// html code of error
-				if ($error['html_1'] != '' || $error['html_2'] != '' || $error['html_3'] != '') {
-					$this->SetFont('DejaVu', '', 9);
-					$this->SetX(17);
-					$this->SetTextColor(0);
-					$str = str_replace("\t", "    ", html_entity_decode(htmlspecialchars_decode($error['html_1'], ENT_QUOTES)));
-					$this->Write(5, $str);
-					$this->SetTextColor(255, 0 ,0);
-					$str = str_replace("\t", "    ", html_entity_decode(htmlspecialchars_decode($error['html_2'], ENT_QUOTES)));
-					$this->Write(5, $str);
-					$this->SetTextColor(0);
-					$str = str_replace("\t", "    ", html_entity_decode(htmlspecialchars_decode($error['html_3'], ENT_QUOTES)));
-					$this->Write(5, $str);
-					$this->Ln(10);
-				}
-				
-				// text
-				if ($error['text'] != '') {
-					$this->SetX(17);
+			$this->Write(5,strip_tags(_AC("html_validator_provided_by")));
+			$this->Ln(10);		
+		
+			// show congratulations if no errors found
+			if ($this->error_nr_html == 0) {
+				$this->Ln(3);
+				$this->SetTextColor(0, 128, 0);
+				$path = AC_BASE_HREF."images/jpg/feedback.jpg";
+				$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
+				$this->SetX(14);
+				$this->SetFont('DejaVu', 'B', 12);
+				$this->Write(5, _AC("congrats_html_validation"));
+			} else { // else make report on errors
+				foreach($this->html as $error) {
+					// error icon img, line, column, error text
+					$img_data = explode(".", $error['img_src']);		
+					$path = AC_BASE_HREF."images/jpg/".$img_data[0].".jpg";
+					$this->Image($path, $this->GetX()+7, $this->GetY(), 4, 4);
+					$this->SetX(21);
+					if ($error['line'] != '' && $error['col'] != '') {
+						$this->SetTextColor(0);
+						$this->SetFont('DejaVu', 'BI', 9);
+						$location = " "._AC('line')." ".$error['line'].", "._AC('column')." ".$error['col'].":  ";
+						$this->Write(5, $location);
+					}
+					$this->SetTextColor(26, 74, 114);
 					$this->SetFont('DejaVu', '', 10);
-					$this->Write(5, html_entity_decode(strip_tags($error['text'])));
-					$this->Ln(10);
+					$this->Write(5, html_entity_decode(strip_tags($error['err'])));
+					$this->Ln(7);
+	
+					// html code of error
+					if ($error['html_1'] != '' || $error['html_2'] != '' || $error['html_3'] != '') {
+						$this->SetFont('DejaVu', '', 9);
+						$this->SetX(17);
+						$this->SetTextColor(0);
+						$str = str_replace("\t", "    ", html_entity_decode(htmlspecialchars_decode($error['html_1'], ENT_QUOTES)));
+						$this->Write(5, $str);
+						$this->SetTextColor(255, 0 ,0);
+						$str = str_replace("\t", "    ", html_entity_decode(htmlspecialchars_decode($error['html_2'], ENT_QUOTES)));
+						$this->Write(5, $str);
+						$this->SetTextColor(0);
+						$str = str_replace("\t", "    ", html_entity_decode(htmlspecialchars_decode($error['html_3'], ENT_QUOTES)));
+						$this->Write(5, $str);
+						$this->Ln(10);
+					}
+					
+					// text
+					if ($error['text'] != '') {
+						$this->SetX(17);
+						$this->SetFont('DejaVu', '', 10);
+						$this->Write(5, html_entity_decode(strip_tags($error['text'])));
+						$this->Ln(10);
+					}
 				}
 			}
-		}
+		} // end of else 
 		
 	}
 	
@@ -550,20 +560,31 @@ class acheckerTFPDF extends tFPDF {
 	* prints report for CSS validation; corresponding array in class should be set before calling
 	*/
 	private function printCSS() 
-	{
+	{		
 		// str with error type and nr of errors
-		$this->SetFont('DejaVu', 'B', 14);
-		$this->SetTextColor(0);
-		$this->Write(5, _AC('achecker_file_report_css').' ('.$this->error_nr_css.' '._AC('achecker_file_report_found').'):');		
-		$this->Ln(10);
-		$this->SetFont('DejaVu', 'B', 12);
-		$this->Write(5,strip_tags(_AC("css_validator_provided_by")));
-		$this->Ln(10);
+		if ($this->css_error == '' && $this->error_nr_css != -1) {
+			$this->SetFont('DejaVu', 'B', 14);
+			$this->SetTextColor(0);
+			$this->Write(5, _AC('achecker_file_report_css').' ('.$this->error_nr_css.' '._AC('achecker_file_report_found').'):');		
+			$this->Ln(10);
+			$this->SetFont('DejaVu', 'B', 12);
+			$this->Write(5,strip_tags(_AC("css_validator_provided_by")));
+			$this->Ln(10);
+		} else if ($this->css_error == '' && $this->error_nr_css == -1) {
+			// css validator is disabled
+			$this->SetTextColor(0, 0, 255);
+			$path = AC_BASE_HREF."images/jpg/info.jpg";
+			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
+			$this->SetX(14);
+			$this->SetFont('DejaVu', 'B', 12);			
+			$this->Write(5,_AC("css_validator_disabled"));
+			$this->SetTextColor(0);
+		}
 		
 		if ($this->css_error != '') {
 			// css validator is only available at validating url, not at validating a uploaded file or pasted html
 			$this->Ln(3);
-			$this->SetTextColor(0, 128, 0);
+			$this->SetTextColor(0, 0, 255);
 			$path = AC_BASE_HREF."images/jpg/info.jpg";
 			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 			$this->SetX(14);

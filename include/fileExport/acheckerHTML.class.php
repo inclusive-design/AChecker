@@ -49,9 +49,14 @@ class acheckerHTML {
 	var $htmlRpt;					// instance of HTMLRpt. Generate error detail      
 	var $numOfNoDecision;          	// number of problems with choice "no decision"             
 	
-	var $html_main =
-'<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE style PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	var $html_main =	
+'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Web Accessibility Checker report</title>
+<meta name="author" content="AChecker - Web Accessibility Checker http://www.atutor.ca/achecker/" /> 
+	
 <style type="text/css">
 ul {font-family: Arial; margin-bottom: 0px; margin-top: 0px; margin-right: 0px;}
 li.msg_err, li.msg_info { font-family: Arial; margin-bottom: 20px;list-style: none;}
@@ -59,6 +64,8 @@ span.msg{font-family: Arial; line-height: 150%;}
 code.input { margin-bottom: 2ex; background-color: #F8F8F8; line-height: 130%;}
 span.err_type{ padding: .1em .5em; font-size: smaller;}
 </style>
+</head>
+<body>
 <p>
 <strong>Result: </strong>
 {SUMMARY}
@@ -68,7 +75,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 {DETAIL}
 {BUTTON_MAKE_DECISION}
 {VALIDATION}
-';
+</body></html>';
 
 	var $html_summary = 
 '<span style="background-color: {COLOR}; border: solid green; padding-right: 1em; padding-left: 1em">{SUMMARY}</span>&nbsp;&nbsp;
