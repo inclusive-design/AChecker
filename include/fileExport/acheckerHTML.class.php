@@ -76,7 +76,6 @@ span.congrats_msg { line-height: 120%; color: green; padding: 1em 1em; font-size
 {GUIDELINE}
 </p>
 {DETAIL}
-{BUTTON_MAKE_DECISION}
 {VALIDATION}
 </body></html>';
 
@@ -95,11 +94,6 @@ span.congrats_msg { line-height: 120%; color: green; padding: 1em 1em; font-size
 <div id="{DIV_ID}" style="margin-top:1em">
 	{DETAIL}
 </div>';
-	
-	var $html_button_make_decision = 
-'<p align="center">
-<input value="Make Decisions" type="submit" name="make_decision" />
-</p>';
 		
 	
 	/**
@@ -170,25 +164,14 @@ span.congrats_msg { line-height: 120%; color: green; padding: 1em 1em; font-size
 		} else {
 			$detail .= $this->getResultSection($problem);
 		}	
-		
-		// set display of "make decision" button
-		if ($this->numOfNoDecision > 0 && 
-			($problem == 'all' || 
-			 ($problem == 'potential' && $this->error_nr_potential != 0) || 
-			 ($problem == 'likely' && $this->error_nr_likely != 0)
-		    )
-		   ) 
-			$button_make_decision = $this->html_button_make_decision;
 
 		$file_content = str_replace(array( '{SUMMARY}', 
 		                                   '{GUIDELINE}',
 		                                   '{DETAIL}', 
-		                                   '{BUTTON_MAKE_DECISION}',
 										   '{VALIDATION}'),
 			                        array( $this->getSummaryStr($problem),
 			                               $this->getGuidelineStr($_gids, $problem),
 			                               $detail,
-			                               $button_make_decision,
 			                               $validation),
 			                        $this->html_main);                        
 			                        
@@ -301,8 +284,10 @@ span.congrats_msg { line-height: 120%; color: green; padding: 1em 1em; font-size
 			              		array(_AC('likely_problems'), 'likely_problems', $content),
 			           		  	$this->html_detail);
 			} else { 
+				$pat = '/\<input value="Reverse Decision" type="submit" name="reverse\[(.*)\]" \/\>/';
+				$likely = preg_replace($pat, "", $this->htmlRpt->getLikelyProblemRpt());
 				return str_replace(array('{DETAIL_TITLE}', '{DIV_ID}', '{DETAIL}'),
-			            		array(_AC('likely_problems'), 'likely_problems', $this->htmlRpt->getLikelyProblemRpt()),
+			            		array(_AC('likely_problems'), 'likely_problems', $likely),
 			               		$this->html_detail);
 			}
 				
@@ -315,8 +300,10 @@ span.congrats_msg { line-height: 120%; color: green; padding: 1em 1em; font-size
 			              		array(_AC('potential_problems'), 'potential_problems', $content),
 			           		  	$this->html_detail);
 			} else { 
+				$pat = '/\<input value="Reverse Decision" type="submit" name="reverse\[(.*)\]" \/\>/';
+				$potential = preg_replace($pat, "", $this->htmlRpt->getPotentialProblemRpt());
 				return str_replace(array('{DETAIL_TITLE}', '{DIV_ID}', '{DETAIL}'),
-			           			array(_AC('potential_problems'), 'potential_problems', $this->htmlRpt->getPotentialProblemRpt()),
+			           			array(_AC('potential_problems'), 'potential_problems', $potential),
 			               		$this->html_detail);
 			}
 
