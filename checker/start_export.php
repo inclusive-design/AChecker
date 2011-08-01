@@ -17,6 +17,25 @@
 define('AC_INCLUDE_PATH', '../include/');
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 
+// first of all delete too old files from temp folder
+define(MINUTE, time() - 60); // minute ago
+define(HOUR, time() - 60*60); // hour ago
+define(DAY, time() - 60*60*24); // day ago
+define(WEEK, time() - 60*60*24*7); // week ago
+
+if ($handle = opendir(AC_TEMP_DIR)) {
+    while (false !== ($file = readdir($handle))) { 
+        $file_delete_pattern = '/achecker_(.*)/';
+        if(preg_match($file_delete_pattern, $file, $match)) {
+			// chose 1 from MINUTE|HOUR|DAY|WEEK
+        	if (MINUTE > filectime(AC_TEMP_DIR.$file)) {
+        		unlink(AC_TEMP_DIR.$file);
+        	}
+        }
+    }    
+    closedir($handle); 
+}
+
 // get user choise on file format
 if (isset($_POST['file']) && isset($_POST['problem'])) {
 	$file = $_POST['file'];
