@@ -9,12 +9,11 @@
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: 
+// $Id:
 
 /**
 * FileExportRptLine
-* Class to generate error report in form of 5 arrays: known, likely (with and without decision), 
-* potential (with and without decision);
+* Class to generate error report in form of 5 arrays: known, likely (with and without decision), potential (with and without decision)
 * is based on HTMLRpt
 * @access	public
 * @author	Casian Olga
@@ -51,8 +50,6 @@ class FileExportRptLine extends AccessibilityRpt {
 	{
 		// run parent constructor
 		parent::AccessibilityRpt($errors, $user_link_id);
-		
-//		$this->gid = $gid;
 	}
 
 	/**

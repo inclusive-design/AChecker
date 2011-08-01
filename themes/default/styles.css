@@ -92,6 +92,7 @@ li.msg_err, li.msg_info {
     margin-left: 10px;
     font-size: 110%;
     list-style: none;
+	min-width: 500px;
 }
 
 /* span attributes */

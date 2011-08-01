@@ -9,11 +9,11 @@
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: 
+// $Id:
 
 /**
 * FileExportRptGuideline
-* Class to generate error report in form of 3 arrays: known, likely, potential;
+* Class to generate error report in form of 3 arrays: known, likely, potential
 * is based on HTMLByGuidelineRpt
 * @access	public
 * @author	Casian Olga
@@ -25,7 +25,6 @@ include_once(AC_INCLUDE_PATH.'classes/AccessibilityRpt.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
-//include_once(AC_INCLUDE_PATH.'fileExport/tcpdf/acheckerTCPDF.php');
 
 class FileExportRptGuideline extends AccessibilityRpt {
 	

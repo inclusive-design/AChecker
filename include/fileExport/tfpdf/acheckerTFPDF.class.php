@@ -9,7 +9,7 @@
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: 
+// $Id:
 
 /**
 * acheckerTFPDF
@@ -631,15 +631,13 @@ class acheckerTFPDF extends tFPDF {
 						$this->Write(5, $location);
 						if ($error['code'] != '') {
 							$this->SetFont('DejaVu', '', 9);
-							$this->Write(5, $error['code']); //_AC('html_tag')." ".$error['code'];
+							$this->Write(5, $error['code']); 
 						}
 						$this->Ln(7);
 						
 						// parse
 						if ($error['parse'] != '') {
 							$this->SetX(17);
-//							$this->SetFont('DejaVu', 'B', 10);
-//							$this->Write(5, _AC('error').": ");
 							$this->SetFont('DejaVu', '', 10);
 							$str = str_replace("\t", "    ", strip_tags(htmlspecialchars_decode(html_entity_decode($error['parse']), ENT_QUOTES)));
 							$this->Write(5, $str);
@@ -665,7 +663,7 @@ class acheckerTFPDF extends tFPDF {
 	public function	getPDF($title, $uri, $problem, $mode, $_gids) 
 	{		
 		// set filename
-		$date = AC_Date('%d-%m-%Y');
+		$date = AC_Date('%Y-%m-%d');
 		$time = AC_Date('%H-%i-%s');
 		$filename = 'achecker_'.$date.'_'.$time.$rand_str;		
 		

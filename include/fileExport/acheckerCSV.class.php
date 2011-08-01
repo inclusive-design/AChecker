@@ -9,7 +9,7 @@
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: 
+// $Id:
 
 /**
 * acheckerCSV
@@ -115,7 +115,7 @@ class acheckerCSV {
 	public function	getCSV($problem, $input_content_type, $title, $_gids) 
 	{	
 		// set filename
-		$date = AC_Date('%d-%m-%Y');
+		$date = AC_Date('%Y-%m-%d');
 		$time = AC_Date('%H-%i-%s');
 		$filename = 'achecker_'.$date.'_'.$time;
 		

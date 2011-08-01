@@ -9,7 +9,7 @@
 /* modify it under the terms of the GNU General Public License          */
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
-// $Id: 
+// $Id:
 
 /**
 * acheckerHTML
@@ -135,7 +135,7 @@ span.congrats_msg { line-height: 120%; color: green; padding: 1em 1em; font-size
 	public function	getHTMLfile($problem, $_gids, $errors, $user_link_id) 
 	{
 		// set filename
-		$date = AC_Date('%d-%m-%Y');
+		$date = AC_Date('%Y-%m-%d');
 		$time = AC_Date('%H-%i-%s');
 		$filename = 'achecker_'.$date.'_'.$time;
 
