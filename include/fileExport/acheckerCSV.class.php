@@ -234,18 +234,11 @@ class acheckerCSV {
 		} else if ($problem_type == 'likely') {
 			$array = $this->likely;
 			$nr = $this->error_nr_likely;
-			$file_content .= EOL._AC("likely_problems").': '.$nr;
-			if (isset($_SESSION['user_id'])) {
-				$file_content .= DELIM._AC("achecker_file_decision");
-			}
-			$file_content .= EOL;
+			$file_content .= EOL._AC("likely_problems").': '.$nr.EOL;
 		} else if ($problem_type == 'potential') {
 			$array = $this->potential;
 			$nr = $this->error_nr_potential;
 			$file_content .= EOL._AC("potential_problems").': '.$nr.EOL;
-			if (isset($_SESSION['user_id'])) {
-				$file_content .= DELIM._AC("achecker_file_decision");
-			}
 		}
 		
 		// show congratulations if no errors found
@@ -284,7 +277,11 @@ class acheckerCSV {
 			} 		
 			// likely and potential. needed to show 'passed', 'failed' or 'no decision'		
 			else { 
-				$file_content .= _AC("achecker_file_html").DELIM._AC("achecker_file_css").DELIM._AC("achecker_file_img").EOL;
+				$file_content .= _AC("achecker_file_html").DELIM._AC("achecker_file_css").DELIM._AC("achecker_file_img");
+				if (isset($_SESSION['user_id'])) {
+					$file_content .= DELIM._AC("achecker_file_decision");
+				}
+				$file_content .= EOL;
 				foreach ($array as $category) { // with decision, no decision
 					foreach ($category as $error) {
 						// line and column + error text
