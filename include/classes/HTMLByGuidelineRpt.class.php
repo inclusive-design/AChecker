@@ -176,6 +176,10 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 	{
 		global $msg;
 
+		$group_known_problems = "";
+		$group_likely_problems = "";
+		$group_potential_problems = "";
+		
 		$this->errors_by_checks = $this->rearrange_errors_array($this->errors);
 
 		// display guideline level checks
@@ -194,13 +198,14 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		{
 			foreach ($named_groups as $group)
 			{				
-				unset($group_level_known_problems);
-				unset($group_level_likely_problems);
-				unset($group_level_potential_problems);
-				unset($subgroup_known_problems);
-				unset($subgroup_likely_problems);
-				unset($subgroup_potential_problems);
-					
+				$group_level_known_problems = "";
+				$group_level_likely_problems = "";
+				$group_level_potential_problems = "";
+				
+				$subgroup_known_problems = "";
+				$subgroup_likely_problems = "";
+				$subgroup_potential_problems = "";
+		
 				// get group level checks: the checks in subgroups without subgroup names
 				$groupLevel_checks = $this->checksDAO->getGroupLevelChecks($group['group_id']);
 				
@@ -294,15 +299,22 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 	{
 		if (!is_array($checks_array)) return NULL;
 		
+		$known_problems = "";
+		$likely_problems = "";
+		$potential_problems = "";
+		
 		foreach ($checks_array as $check) {
-			unset($html_repair);
-			unset($html_question);
-			unset($html_make_decision_button);
-			
+			$html_repair = "";
+			$html_question = "";
+			$html_make_decision_button = "";
+						
 			$check_id = $check["check_id"];
 			
 			// continue with the next check if there is no errors for this check
-			if (!is_array($this->errors_by_checks[$check_id])) continue;
+			if (!array_key_exists($check_id, $this->errors_by_checks) ||
+			    array_key_exists($check_id, $this->errors_by_checks) && !is_array($this->errors_by_checks[$check_id])) {
+			    	continue;
+			}
 			
 			$row = $this->checksDAO->getCheckByID($check_id);
 			
@@ -375,6 +387,9 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 			return '';
 		}
 		
+		$th_row = "";
+		$tr_rows = "";
+		
 		// generate decision section
 		if ($this->allow_set_decision == 'true' && $confidence <> KNOWN) {
 			$th_row = str_replace(array("{PASS_TEXT}", "{SELECT_ALL_TEXT}", "{CHECK_ID}", "{SELECT_ALL_TEXT}"), 
@@ -383,6 +398,11 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		}
 		
 		foreach ($errors_for_this_check as $error) {
+			$html_image = "";
+			$msg_type = "";
+			$img_type = "";
+			$img_src = "";
+			
 			if ($confidence == KNOWN) {
 				$this->num_of_errors++;
 				

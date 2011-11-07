@@ -134,7 +134,7 @@ function _AC() {
 	if (empty($outString)) {
 
 		$rows = $languageTextDAO->getByTermAndLang($format, $_SESSION['lang']);
-		if (is_array($rows))
+		if (is_array($rows) && isset($rows[0]))
 		{
 			$row = $rows[0];
 			$_template[$row['term']] = $stripslashes($row['text']);

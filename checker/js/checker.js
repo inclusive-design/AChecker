@@ -186,7 +186,7 @@ AChecker.output = AChecker.output || {};
 		},
 		
 		error: function(xhr, errorType, exception) {
-        	alert("An error occured.");
+			alert("An error occured: \n" + exception);
         }
 		});
 	};
@@ -373,7 +373,6 @@ AChecker.output = AChecker.output || {};
     			ajaxPostStr += $(this).attr('name') + "=" + "N" + "&";
     		}
     	});
-    	alert(ajaxPostStr);  				//================================
     	
     	ajaxPostStr += "uri" + "=" + $.URLEncode($('input[name="uri"]').attr('value')) + "&" + 
     	               "output" + "=" + $('input[name="output"]').attr('value') + "&" +

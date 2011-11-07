@@ -204,6 +204,10 @@ if (isset($validate_content) && !Utility::hasEnoughMemory(strlen($validate_conte
 	$has_enough_memory = false;
 }
 
+// A boolean flag that decides the show/hide of the AChecker introduction section.
+// This section is displayed when the AChecker index page is visited and no validation has been performed yet. 
+$show_achecker_whatis = false;
+
 // validation and display result
 if ($_POST["validate_uri"] || $_POST["validate_file"] || $_POST["validate_content"] || $_POST["validate_paste"])
 {
@@ -223,6 +227,8 @@ else
 {
 	$show_achecker_whatis = true;
 }
+
+$has_errors = false;  // A flag detecting if there's any error occurred
 
 if ($msg->containsErrors()) {
 	$has_errors = true;

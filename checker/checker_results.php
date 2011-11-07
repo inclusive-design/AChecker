@@ -45,7 +45,7 @@ if (isset($aValidator))
 	$guidelinesDAO = new GuidelinesDAO();
 	$guideline_rows = $guidelinesDAO->getGuidelineByIDs($_gids);
 	
-	unset($guidelines_text);
+	$guidelines_text = "";
 	if (is_array($guideline_rows))
 	{
 		foreach ($guideline_rows as $id => $row)
@@ -66,8 +66,8 @@ if (isset($aValidator))
 	$from_referer = 'false';
 	
 	// initial request to validate referer URL
-	if ($_GET['uri'] == 'referer')
-	{
+	if (isset($_GET['uri']) && $_GET['uri'] == 'referer')
+		{
 		$from_referer = 'true';
 		
 		// if id (id is user_link_id) is given
@@ -124,6 +124,7 @@ if (isset($aValidator))
 	$num_of_potential_problems_no_decision = $a_rpt->getNumOfPotentialWithFailDecisions();
 	
 	// no any problems or all problems have pass decisions, display seals when no errors
+	$seals = null;
 	if ($num_of_errors == 0 && 
 	    ($num_of_likely_problems == 0 && $num_of_potential_problems == 0 ||
 	     $num_of_likely_problems_no_decision == 0 && $num_of_potential_problems_no_decision == 0))

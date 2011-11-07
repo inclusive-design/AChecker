@@ -26,11 +26,17 @@ include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelinesDAO.class.php');
 class HTMLRpt extends AccessibilityRpt {
 
 	// all private
-	var $num_of_no_decisions;            // Number of likely/potential errors that decisions have not been made
-	var $num_of_made_decisions;            // Number of likely/potential errors that decisions have been made
+	var $num_of_no_decisions;                // Number of likely/potential errors that decisions have not been made
+	var $num_of_made_decisions;              // Number of likely/potential errors that decisions have been made
 	
 	var $num_of_likely_problems_fail;        // Number of likely errors that decisions have not been made
 	var $num_of_potential_problems_fail;     // Number of potential errors that decisions have not been made
+	
+	var $rpt_likely_decision_made;           // The output report of the likely problems which are the ones that decisions have been made on 
+	var $rpt_potential_decision_made;        // The output report of the likely problems which are the ones that decisions have been made on
+	
+	var $rpt_likely_decision_not_made;       // The output report of the likely problems which are the ones that no decisions have been made on
+	var $rpt_potential_decision_not_made;    // The output report of the likely problems which are the ones that no decisions have been made on
 	
 	var $html_problem_achecker =
 '      <li class="{MSG_TYPE}">
@@ -230,6 +236,8 @@ class HTMLRpt extends AccessibilityRpt {
 	*/
 	private function generate_cell_with_decision($check_row, $line_number, $col_number, $html_code, $image, $image_alt, $error_type)
 	{
+		$css_code = "";
+		
 		// generate decision section
 		$userDecisionsDAO = new UserDecisionsDAO();
 		$row = $userDecisionsDAO->getByUserLinkIDAndLineNumAndColNumAndCheckID($this->user_link_id, $line_number, $col_number, $check_row['check_id']);
@@ -329,6 +337,9 @@ class HTMLRpt extends AccessibilityRpt {
 	*/
 	private function generate_problem_section($check_id, $line_number, $col_number, $html_code, $image, $image_alt, $css_code, $error, $repair, $decision, $error_type)
 	{
+		$html_image = "";
+		$html_repair = "";
+		
 		if ($this->show_source == 'true')
 		{
 			$line_number = '<a href="checker/index.php#line-'.$line_number.'">'.$line_number.'</a>';

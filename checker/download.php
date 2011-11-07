@@ -34,5 +34,5 @@
 	header('Content-Disposition: attachment; filename='.$filename);
 	header('x-Sendfile: ', TRUE);
 	
-	readfile($path);
+	readfile(trim($path));
 ?>
