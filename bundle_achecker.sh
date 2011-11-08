@@ -9,8 +9,10 @@
 set now = `date +"%Y_%m_%d"`
 set achecker_dir = "AChecker_$now"
 set bundle = "AChecker"
-set svndir = "http://svn.atutor.ca/repos/achecker/trunk/"
-set svnexec = "svn"
+#set svndir = "http://svn.atutor.ca/repos/achecker/trunk/"
+#set svnexec = "svn"
+set gitdir = "git://github.com/atutor/AChecker.git"
+set gitexec = "git"
 
 echo "\033[1mAChecker Bundle Script [for CVS 1.3.1+] \033[0m"
 echo "--------------------"
@@ -49,7 +51,9 @@ endif
 
 echo "Exporting from SVN/ to $achecker_dir"
 mkdir $achecker_dir
-$svnexec --force export $svndir $achecker_dir/AChecker
+#$svnexec --force export $svndir $achecker_dir/AChecker
+$gitexec clone $gitdir
+mv 'AChecker' $achecker_dir/AChecker
 #sleep 1
 
 echo "Dumping language_text"
@@ -73,9 +77,12 @@ sed "s/define('AC_DEVEL', 1);/define('AC_DEVEL', 0);/" $achecker_dir/AChecker/in
 rm $achecker_dir/AChecker/include/vitals.inc.php
 mv $achecker_dir/vitals.inc.php $achecker_dir/AChecker/include/vitals.inc.php
 #sleep 1
+rm -Rf $achecker_dir/AChecker/.git
 
+set date = `date`
 echo -n "<?php "'$svn_data = '"'" >> $achecker_dir/AChecker/svn.php
-$svnexec log  -q -r HEAD http://svn.atutor.ca/repos/achecker/trunk/  >> $achecker_dir/AChecker/svn.php
+echo $date >> $achecker_dir/AChecker/svn.php
+#$svnexec log  -q -r HEAD http://svn.atutor.ca/repos/achecker/trunk/  >> $achecker_dir/AChecker/svn.php
 echo -n "';?>" >> $achecker_dir/AChecker/svn.php
 
 echo "Targz'ing $bundle${extension}.tar.gz $achecker_dir/AChecker/"
