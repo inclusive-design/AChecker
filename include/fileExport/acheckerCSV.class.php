@@ -159,21 +159,21 @@ class acheckerCSV {
 	private function getInfo($input_content_type, $title, $_gids, $date, $time)
 	{		
 		// achecker info
-		$file_content =  _AC('achecker_file_title').DELIM.'version '.VERSION.DELIM
-			.$this->prepareStr(_AC('achecker_file_description')).EOL.$this->achecker_file_url.EOL.EOL;
+		$file_content =  _AC('file_title').DELIM.'version '.VERSION.DELIM
+			.$this->prepareStr(_AC('file_description')).EOL.$this->achecker_file_url.EOL.EOL;
 	
 		// date, time
 		$file_content .= str_replace("-", ".", $date).' '.str_replace("-", ":", $time).EOL;
 		
 		// test info
 		if ($input_content_type != 'file' && $input_content_type != 'paste') {
-			$file_content .= _AC('achecker_file_source_url').DELIM.$input_content_type.EOL;
+			$file_content .= _AC('file_source_url').DELIM.$input_content_type.EOL;
 		} else {
 			$file_content .= EOL;
 		}
 		
 		if ($title != '') {
-			$file_content .= _AC('achecker_file_source_title').DELIM.$title.EOL;
+			$file_content .= _AC('file_source_title').DELIM.$title.EOL;
 		} else {
 			$file_content .= EOL;
 		}		
@@ -247,7 +247,7 @@ class acheckerCSV {
 			$file_content .= _AC("congrats_no_$problem_type").EOL;
 		} else {		
 			if ($problem_type == 'known') {
-				$file_content .= _AC("achecker_file_repair").DELIM._AC("achecker_file_html").DELIM._AC("achecker_file_css").DELIM._AC("achecker_file_img").EOL;
+				$file_content .= _AC("file_repair").DELIM._AC("file_html").DELIM._AC("file_css").DELIM._AC("file_img").EOL;
 				foreach ($array as $error) {
 					// line and column + error text
 					$file_content .= $error['line_text'].' '.$error['line_nr'].', '.$error['col_text'].' '.$error['col_nr']
@@ -277,9 +277,9 @@ class acheckerCSV {
 			} 		
 			// likely and potential. needed to show 'passed', 'failed' or 'no decision'		
 			else { 
-				$file_content .= _AC("achecker_file_html").DELIM._AC("achecker_file_css").DELIM._AC("achecker_file_img");
+				$file_content .= _AC("file_html").DELIM._AC("file_css").DELIM._AC("file_img");
 				if (isset($_SESSION['user_id'])) {
-					$file_content .= DELIM._AC("achecker_file_decision");
+					$file_content .= DELIM._AC("file_decision");
 				}
 				$file_content .= EOL;
 				foreach ($array as $category) { // with decision, no decision
@@ -307,9 +307,9 @@ class acheckerCSV {
 						// if user is logged in display 'passed', 'failed' or 'no decision'
 						if (isset($_SESSION['user_id'])) {	
 							// decision
-							if ($error['decision'] == 'true') $file_content .= _AC('achecker_file_passed');
-							else if ($error['decision'] == false) $file_content .= _AC('achecker_file_failed');
-							else if ($error['decision'] == 'none') $file_content .= _AC('achecker_file_no_decision');	
+							if ($error['decision'] == 'true') $file_content .= _AC('file_passed');
+							else if ($error['decision'] == false) $file_content .= _AC('file_failed');
+							else if ($error['decision'] == 'none') $file_content .= _AC('file_no_decision');	
 						} // end if user is logged in
 				
 						$file_content .= EOL;				
@@ -342,7 +342,7 @@ class acheckerCSV {
 			// html validation errors
 			$file_content .= $this->html_error.EOL;
 		} else { // else make report on errors		
-			$file_content .= _AC("achecker_file_html").DELIM._AC("achecker_file_text").EOL;
+			$file_content .= _AC("file_html").DELIM._AC("file_text").EOL;
 			foreach ($this->html as $error) {				
 				// line and column + error text
 				$file_content .= $this->prepareStr(_AC('line')." ".$error['line'].", "._AC('column')." ".$error['col'].":  ".html_entity_decode(strip_tags($error['err']))).EOL;

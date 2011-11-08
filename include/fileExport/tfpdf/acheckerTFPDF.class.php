@@ -165,14 +165,14 @@ class acheckerTFPDF extends tFPDF {
 		// url
 		if ($uri != '') {
 			$this->SetFont('DejaVu', '', 12);
-			$this->Write(5, _AC('achecker_file_source_url').': '.$uri);
+			$this->Write(5, _AC('file_source_url').': '.$uri);
 			$this->Ln(5);
 		}
 		
 		// title
 		if ($title != '') {
 			$this->SetFont('DejaVu', '', 12);			
-			$this->Write(5, _AC('achecker_file_source_title').': '.$title);
+			$this->Write(5, _AC('file_source_title').': '.$title);
 			$this->Ln(8);
 		}
 
@@ -210,7 +210,7 @@ class acheckerTFPDF extends tFPDF {
 		// str with error type and nr of errors
 		$this->SetFont('DejaVu', 'B', 14);
 		$this->SetTextColor(0);
-		$this->Write(5, _AC('achecker_file_report_'.$problem_type).' ('.$nr.' '._AC('achecker_file_report_found').'):');		
+		$this->Write(5, _AC('file_report_'.$problem_type).' ('.$nr.' '._AC('file_report_found').'):');		
 		$this->Ln(10);
 		
 		// show congratulations if no errors found
@@ -303,13 +303,13 @@ class acheckerTFPDF extends tFPDF {
 								$this->SetX(170);
 								if ($error['test_passed'] == 'true') {
 									$this->SetTextColor(134, 218, 130);
-									$this->Write(5, strtoupper(_AC('achecker_file_passed')));
+									$this->Write(5, strtoupper(_AC('file_passed')));
 								} else if ($error['test_passed'] == false) {
 									$this->SetTextColor(246, 114, 114);
-									$this->Write(5, strtoupper(_AC('achecker_file_failed')));
+									$this->Write(5, strtoupper(_AC('file_failed')));
 								} else if ($error['test_passed'] == 'none') {
 									$this->SetTextColor(106, 175, 233);
-									$this->Write(5, strtoupper(_AC('achecker_file_no_decision')));
+									$this->Write(5, strtoupper(_AC('file_no_decision')));
 								}
 								$this->Ln(10);								
 							} // end if user is logged in
@@ -345,7 +345,7 @@ class acheckerTFPDF extends tFPDF {
 		// str with error type and nr of errors
 		$this->SetFont('DejaVu', 'B', 14);
 		$this->SetTextColor(0);
-		$this->Write(5, _AC('achecker_file_report_'.$problem_type).' ('.$nr.' '._AC('achecker_file_report_found').'):');		
+		$this->Write(5, _AC('file_report_'.$problem_type).' ('.$nr.' '._AC('file_report_found').'):');		
 		$this->Ln(10);
 		
 		// show congratulations if no errors found
@@ -459,13 +459,13 @@ class acheckerTFPDF extends tFPDF {
 							$this->SetX(170);
 							if ($error['test_passed'] == 'true') {
 								$this->SetTextColor(134, 218, 130);
-								$this->Write(5, strtoupper(_AC('achecker_file_passed')));
+								$this->Write(5, strtoupper(_AC('file_passed')));
 							} else if ($error['test_passed'] == false) {
 								$this->SetTextColor(246, 114, 114);
-								$this->Write(5, strtoupper(_AC('achecker_file_failed')));
+								$this->Write(5, strtoupper(_AC('file_failed')));
 							} else if ($error['test_passed'] == 'none') {
 								$this->SetTextColor(106, 175, 233);
-								$this->Write(5, strtoupper(_AC('achecker_file_no_decision')));
+								$this->Write(5, strtoupper(_AC('file_no_decision')));
 							}
 							$this->Ln(10);						
 						} // end if user is logged in
@@ -495,7 +495,7 @@ class acheckerTFPDF extends tFPDF {
 		} else {				
 			$this->SetFont('DejaVu', 'B', 14);
 			$this->SetTextColor(0);
-			$this->Write(5, _AC('achecker_file_report_html').' ('.$this->error_nr_html.' '._AC('achecker_file_report_found').'):');		
+			$this->Write(5, _AC('file_report_html').' ('.$this->error_nr_html.' '._AC('file_report_found').'):');		
 			$this->Ln(10);
 			$this->SetFont('DejaVu', 'B', 12);
 			$this->Write(5,strip_tags(_AC("html_validator_provided_by")));
@@ -574,7 +574,7 @@ class acheckerTFPDF extends tFPDF {
 		if ($this->css_error == '' && $this->error_nr_css != -1) {
 			$this->SetFont('DejaVu', 'B', 14);
 			$this->SetTextColor(0);
-			$this->Write(5, _AC('achecker_file_report_css').' ('.$this->error_nr_css.' '._AC('achecker_file_report_found').'):');		
+			$this->Write(5, _AC('file_report_css').' ('.$this->error_nr_css.' '._AC('file_report_found').'):');		
 			$this->Ln(10);
 			$this->SetFont('DejaVu', 'B', 12);
 			$this->Write(5,strip_tags(_AC("css_validator_provided_by")));

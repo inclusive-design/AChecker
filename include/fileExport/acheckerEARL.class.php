@@ -220,9 +220,9 @@ class acheckerEARL {
 		        ';
 					
 					if ($input_content_type == 'file') {
-						$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_file').'"/>';
+						$file_content .= '<ptr:reference rdf:resource="'._AC('file_input_file').'"/>';
 					} else if ($input_content_type == 'paste') {
-						$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_paste').'"/>';
+						$file_content .= '<ptr:reference rdf:resource="'._AC('file_input_paste').'"/>';
 					} else {
 						$file_content .= '<ptr:reference rdf:resource="'.$input_content_type.'"/>';
 					}
@@ -408,10 +408,10 @@ class acheckerEARL {
 			$email = $user_data[1];
 			
 			$file_content .= '<foaf:Group rdf:ID="assertor01">
-			<dct:title>'.$username.' and '._AC('achecker_file_title').'</dct:title>
+			<dct:title>'.$username.' and '._AC('file_title').'</dct:title>
 			<dct:hasVersion>'.VERSION.'</dct:hasVersion>
 			<dct:description xml:lang="en">
-				'._AC('achecker_file_description').'
+				'._AC('file_description').'
 			</dct:description>
 			<earl:mainAssertor rdf:resource="'.$this->achecker_url.'"/>
 			<foaf:member>
@@ -425,10 +425,10 @@ class acheckerEARL {
 		';			
 		} else {
 			$file_content .= '<earl:Software rdf:about="'.$this->achecker_url.'">
-			<dct:title xml:lang="en">'._AC('achecker_file_title').'</dct:title>
+			<dct:title xml:lang="en">'._AC('file_title').'</dct:title>
 			<dct:hasVersion>'.VERSION.'</dct:hasVersion>
 			<dct:description xml:lang="en">
-				'._AC('achecker_file_description').'
+				'._AC('file_description').'
 			</dct:description>
 		</earl:Software>
 		
@@ -440,9 +440,9 @@ class acheckerEARL {
 		';
 		
 		if ($input_content_type == 'file') {
-			$file_content .= '<rdf:Description xml:lang="en">'._AC('achecker_file_input_file').'</rdf:Description>';
+			$file_content .= '<rdf:Description xml:lang="en">'._AC('file_input_file').'</rdf:Description>';
 		} else if ($input_content_type == 'paste') {
-			$file_content .= '<rdf:Description xml:lang="en">'._AC('achecker_file_input_paste').'</rdf:Description>';
+			$file_content .= '<rdf:Description xml:lang="en">'._AC('file_input_paste').'</rdf:Description>';
 		} else {
 			$file_content .= '<rdf:Description rdf:about="'.$input_content_type.'">';
 		}
@@ -549,9 +549,9 @@ class acheckerEARL {
 	        ';
 				
 				if ($input_content_type == 'file') {
-					$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_file').'"/>';
+					$file_content .= '<ptr:reference rdf:resource="'._AC('file_input_file').'"/>';
 				} else if ($input_content_type == 'paste') {
-					$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_paste').'"/>';
+					$file_content .= '<ptr:reference rdf:resource="'._AC('file_input_paste').'"/>';
 				} else {
 					$file_content .= '<ptr:reference rdf:resource="'.$input_content_type.'"/>';
 				}
@@ -640,9 +640,9 @@ class acheckerEARL {
 		    ';
 					
 					if ($input_content_type == 'file') {
-						$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_file').'"/>';
+						$file_content .= '<ptr:reference rdf:resource="'._AC('file_input_file').'"/>';
 					} else if ($input_content_type == 'paste') {
-						$file_content .= '<ptr:reference rdf:resource="'._AC('achecker_file_input_paste').'"/>';
+						$file_content .= '<ptr:reference rdf:resource="'._AC('file_input_paste').'"/>';
 					} else {
 						$file_content .= '<ptr:reference rdf:resource="'.$input_content_type.'"/>';
 					}
@@ -694,9 +694,9 @@ class acheckerEARL {
 						$file_content .= '<ptr:ExpressionPointer rdf:ID="pointer_'.$this->problem_prefix.$this->error_id.'_decision">
 			<ptr:expression rdf:parseType="Literal" xml:lang="'.$this->curr_lang.'">
 				';
-						if ($error['decision'] == 'true') $file_content .= _AC('achecker_file_passed');
-						else if ($error['decision'] == false) $file_content .= _AC('achecker_file_failed');
-						else if ($error['decision'] == 'none') $file_content .= _AC('achecker_file_no_decision');
+						if ($error['decision'] == 'true') $file_content .= _AC('file_passed');
+						else if ($error['decision'] == false) $file_content .= _AC('file_failed');
+						else if ($error['decision'] == 'none') $file_content .= _AC('file_no_decision');
 						$file_content .= '
 			</ptr:expression>
 		</ptr:ExpressionPointer>
