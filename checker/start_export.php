@@ -23,13 +23,13 @@ define(HOUR, time() - 60*60); // hour ago
 define(DAY, time() - 60*60*24); // day ago
 define(WEEK, time() - 60*60*24*7); // week ago
 
-if ($handle = opendir(AC_TEMP_DIR)) {
+if ($handle = opendir(AC_EXPORT_RPT_DIR)) {
     while (false !== ($file = readdir($handle))) { 
         $file_delete_pattern = '/achecker_(.*)/';
         if(preg_match($file_delete_pattern, $file, $match)) {
 			// chose 1 from MINUTE|HOUR|DAY|WEEK
-        	if (MINUTE > filectime(AC_TEMP_DIR.$file)) {
-        		unlink(AC_TEMP_DIR.$file);
+        	if (MINUTE > filectime(AC_EXPORT_RPT_DIR.$file)) {
+        		unlink(AC_EXPORT_RPT_DIR.$file);
         	}
         }
     }    
@@ -157,7 +157,7 @@ if ($file == 'pdf') {
 		list($known, $likely, $potential) = $a_rpt->generateRpt();
 		list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
 	}
-	include_once(AC_INCLUDE_PATH. 'fileExport/tfpdf/acheckerTFPDF.class.php');
+	include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportTFPDF.class.php');
 	
 	$pdf = new acheckerTFPDF($known, $likely, $potential, $html, $css, 
 		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
@@ -171,21 +171,21 @@ if ($file == 'pdf') {
 	}
 	
 	if ($file == 'earl') {
-		include_once(AC_INCLUDE_PATH. 'fileExport/acheckerEARL.class.php');
+		include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportEARL.class.php');
 		
 		$earl = new acheckerEARL($known, $likely, $potential, $html, $css, 
 			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 		$path = $earl->getEARL($problem, $input_content_type, $title, $_gids);
 		
 	} else if ($file == 'csv') {	
-		include_once(AC_INCLUDE_PATH. 'fileExport/acheckerCSV.class.php');		
+		include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportCSV.class.php');		
 		
 		$csv = new acheckerCSV($known, $likely, $potential, $html, $css, 
 			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 		$path = $csv->getCSV($problem, $input_content_type, $title, $_gids);
 		
 	} else if ($file == 'html') {	
-		include_once(AC_INCLUDE_PATH. 'fileExport/acheckerHTML.class.php');		
+		include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportHTML.class.php');		
 		$html_file = new acheckerHTML($known, $likely, $potential, $html, $css, 
 			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 		$path = $html_file->getHTMLfile($problem, $_gids, $errors, $user_link_id);

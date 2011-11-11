@@ -16,7 +16,7 @@ global $addslashes, $congrats_msg_for_likely, $congrats_msg_for_potential;;
 include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
 ?>
-<div id="seals_div" class="validator-output-form">
+<div id="AC_seals_div" class="validator-output-form">
 
 <?php 
 // display seals
@@ -270,7 +270,7 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 {
 	if ($this->a_rpt->getNumOfNoDecisions() > 0)
 	{
-		echo '<div align="center"><input type="submit" name="make_decision" id="make_decision" value="'._AC('make_decision').'" style="align:center" /></div>';
+		echo '<div align="center"><input type="submit" name="make_decision" id="AC_btn_make_decision_lineNumRpt" value="'._AC('make_decision').'" style="align:center" /></div>';
 	}
 	echo '</form>';
 }

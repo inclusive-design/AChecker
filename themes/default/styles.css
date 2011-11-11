@@ -480,7 +480,7 @@ table.data.static tbody tr:hover {
 }
 
 /* report styles */
-#by_uri, #by_upload, #by_paste,
+.input_tab,
 #errors, #likely_problems, #potential_problems, #html_validation_result, #css_validation_result{
     width:95%;
     border:thin #cccccc solid;

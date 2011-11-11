@@ -216,9 +216,6 @@ function AC_date($format='%Y-%M-%d', $timestamp = '', $format_type=AC_DATE_MYSQL
 	}
 
 	if ($format_type == AC_DATE_INDEX_VALUE) {
-		// apply timezone offset
-		apply_timezone($timestamp);
-	
 		if ($format == '%D') {
 			return _AC($day_name_con[$timestamp-1]);
 		} else if ($format == '%l') {
@@ -254,9 +251,6 @@ function AC_date($format='%Y-%M-%d', $timestamp = '', $format_type=AC_DATE_MYSQL
 	    $second		= substr($timestamp,12,2);
 	    $timestamp	= mktime($hour, $minute, $second, $month, $day, $year);  
 	}
-
-	// apply timezone offset
-	apply_timezone($timestamp);
 
 	/* pull out all the %X items from $format */
 	$first_token = strpos($format, '%');
@@ -920,29 +914,5 @@ function print_paginator($current_page, $num_rows, $request_args, $rows_per_page
 		echo '</ul>';
 		echo '</div>';
 	}
-}
-
-/**
-* apply_timezone
-* converts a unix timestamp into another UNIX timestamp with timezone offset added up.
-* Adds the user's timezone offset, then converts back to a MYSQL timestamp
-* Available both as a system config option, and a user preference, if both are set
-* they are added together
-* @param   date	 MYSQL timestamp.
-* @return  date  MYSQL timestamp plus user's and/or system's timezone offset.
-* @author  Greg Gay  .
-*/
-function apply_timezone($timestamp){
-	global $_config;
-
-	if($_config['time_zone']){
-		$timestamp = ($timestamp + ($_config['time_zone']*3600));
-	}
-
-	if(isset($_SESSION['prefs']['PREF_TIMEZONE'])){
-		$timestamp = ($timestamp + ($_SESSION['prefs']['PREF_TIMEZONE']*3600));
-	}
-
-	return $timestamp;
 }
 ?>
