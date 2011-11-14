@@ -795,7 +795,6 @@ div.topnavlistcontainer {
     margin-left:auto; 
     margin-right:auto;
     margin-bottom:1em;
-    margin-top:.5em;
     line-height:100%;
     background-position:  top right;
     background-repeat: no-repeat;
@@ -850,6 +849,7 @@ legend.group_form{
     font-weight: 600;
     color: black;
     padding:.2em;
+    border-radius:.3em;
 }
 
 /* highlight active links for WCAG 2.0 conformance */
