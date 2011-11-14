@@ -14,11 +14,11 @@
 global $onload, $_custom_head;
 
 if (isset($_POST["validate_file"])){
-	$init_tab = "by_upload";
+	$init_tab = "AC_by_upload";
 } else if (isset($_POST["validate_paste"])){
-	$init_tab = "by_paste";
+	$init_tab = "AC_by_paste";
 } else {
-	$init_tab = "by_uri";
+	$init_tab = "AC_by_uri";
 }
 
 if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) {
@@ -100,13 +100,13 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 
 		<div class="topnavlistcontainer"><br />
 			<ul class="navigation">
-				<li class="navigation"><a href="#" accesskey="a" title="<?php echo _AC("check_by_uri"); ?> Alt+1" id="menu_by_uri" onclick="return AChecker.input.onClickTab('by_uri');" <?php if (!isset($_POST["validate_paste"]) && !isset($_POST["validate_file"])) echo 'class="active"'; ?>><span class="nav"><?php echo _AC("check_by_uri"); ?></span></a></li>
-				<li class="navigation"><a href="#" accesskey="b" title="<?php echo _AC("check_by_upload"); ?> Alt+2" id="menu_by_upload" onclick="return AChecker.input.onClickTab('by_upload');" <?php if (isset($_POST["validate_file"])) echo 'class="active"'; ?>><span class="nav"><?php echo _AC("check_by_upload"); ?></span></a></li>
-				<li class="navigation"><a href="#" accesskey="c" title="<?php echo _AC("check_by_paste"); ?> Alt+3" id="menu_by_paste" onclick="return AChecker.input.onClickTab('by_paste');" <?php if (isset($_POST["validate_paste"])) echo 'class="active"'; ?>><span class="nav"><?php echo _AC("check_by_paste"); ?></span></a></li>
+				<li class="navigation"><a href="javascript:void(0)" accesskey="a" title="<?php echo _AC("check_by_uri"); ?> Alt+1" id="AC_menu_by_uri" onclick="return AChecker.input.onClickTab('AC_by_uri');" <?php if (!isset($_POST["validate_paste"]) && !isset($_POST["validate_file"])) echo 'class="active"'; ?>><span class="nav"><?php echo _AC("check_by_uri"); ?></span></a></li>
+				<li class="navigation"><a href="javascript:void(0)" accesskey="b" title="<?php echo _AC("check_by_upload"); ?> Alt+2" id="AC_menu_by_upload" onclick="return AChecker.input.onClickTab('AC_by_upload');" <?php if (isset($_POST["validate_file"])) echo 'class="active"'; ?>><span class="nav"><?php echo _AC("check_by_upload"); ?></span></a></li>
+				<li class="navigation"><a href="javascript:void(0)" accesskey="c" title="<?php echo _AC("check_by_paste"); ?> Alt+3" id="AC_menu_by_paste" onclick="return AChecker.input.onClickTab('AC_by_paste');" <?php if (isset($_POST["validate_paste"])) echo 'class="active"'; ?>><span class="nav"><?php echo _AC("check_by_paste"); ?></span></a></li>
 			</ul>
 		</div>
 		
-		<div id="by_uri" style="<?php if (!isset($_POST["validate_file"]) && !isset($_POST["validate_paste"])) echo "display:block"; else echo "display:none"; ?>">
+		<div id="AC_by_uri" class="input_tab" style="<?php if (!isset($_POST["validate_file"]) && !isset($_POST["validate_paste"])) echo "display:block"; else echo "display:none"; ?>">
 			<div style="text-align:center;">
 				<label for="checkuri"><?php echo _AC('URL'); ?>:</label>
 				<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $this->default_uri_value; ?>" size="50"   />
@@ -120,7 +120,7 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 			</div>
 		</div>
 		
-		<div id="by_upload" style="<?php if (isset($_POST["validate_file"])) echo "display:block"; else echo "display:none"; ?>">
+		<div id="AC_by_upload" class="input_tab" style="<?php if (isset($_POST["validate_file"])) echo "display:block"; else echo "display:none"; ?>">
 			<div style="text-align:center;">
 				<label for="checkfile"><?php echo _AC('file'); ?>:</label>
 				<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
@@ -136,7 +136,7 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 			</div>
 		</div>
 		
-		<div id="by_paste" style="<?php if (isset($_POST["validate_paste"])) echo "display:block"; else echo "display:none"; ?>">
+		<div id="AC_by_paste" class="input_tab" style="<?php if (isset($_POST["validate_paste"])) echo "display:block"; else echo "display:none"; ?>">
 			<label for="checkpaste"><?php echo _AC('enter'); ?>:</label>
 			<div style="text-align:center;">
 				<textarea rows="20" cols="75" name="pastehtml" id="checkpaste"><?php if (isset($_POST['pastehtml'])) echo htmlspecialchars($_POST['pastehtml']); ?></textarea>
@@ -197,7 +197,13 @@ if (is_array($this->rows))
 		}
 ?>
 				<td>
-					<input type="checkbox" name="gid[]" id='gid_<?php echo $row["guideline_id"]; ?>' value='<?php echo $row["guideline_id"]; ?>' <?php foreach($_POST["gid"] as $gid) {if ($gid == $row["guideline_id"]) echo 'checked="checked"';} ?> />
+					<input type="checkbox" name="gid[]" id='gid_<?php echo $row["guideline_id"]; ?>' value='<?php echo $row["guideline_id"]; ?>' <?php 
+					if (isset($_POST["gid"]) && is_array($_POST["gid"])) {	
+						foreach($_POST["gid"] as $gid) {
+							if ($gid == $row["guideline_id"]) echo 'checked="checked"';
+						}
+					} 
+					?> />
 					<label for='gid_<?php echo $row["guideline_id"]; ?>'><?php echo htmlspecialchars($row["title"]); ?></label>
 				</td>
 <?php

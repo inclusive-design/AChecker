@@ -13,6 +13,16 @@
 var AChecker = AChecker || {};
 
 (function() {
+
+	/*************** Global Javascript variables ***************/
+	// The mapping between the tab IDs and their corresponding menu IDs on the validator input form
+	AChecker.inputDivMapping = {
+		"AC_by_uri": "AC_menu_by_uri", 
+		"AC_by_upload": "AC_menu_by_upload", 
+		"AC_by_paste": "AC_menu_by_paste"
+	}
+	/*************** End of Global Javascript variables ***************/
+
 	/**
 	 * global string function of trim()
 	 */
@@ -72,7 +82,7 @@ var AChecker = AChecker || {};
 		// hide button "make decision" when "known problems" tab is selected
 		e = document.getElementById(objId);
 		if (e != null) {
-				e.style.display = 'block';
+			e.style.display = 'block';
 		}
 	};
 
@@ -91,10 +101,10 @@ var AChecker = AChecker || {};
 		for (i in allDivIds) {
 			if (allDivIds[i] == divId) {
 				AChecker.showByID(allDivIds[i]);
-				eval('document.getElementById("menu_'+ allDivIds[i] +'").className = "active"');
+				$("#"+ AChecker.inputDivMapping[allDivIds[i]]).addClass("active");
 			} else {
 				AChecker.hideByID(allDivIds[i]);
-				eval('document.getElementById("menu_'+ allDivIds[i] +'").className = ""');
+				$("#"+ AChecker.inputDivMapping[allDivIds[i]]).removeClass("active");
 			}
 		}
 	};

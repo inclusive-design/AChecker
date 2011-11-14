@@ -66,6 +66,8 @@ class DAO {
 		$result = mysql_query($sql, $this->db) or die($sql . "<br />". mysql_error());
 
 		if ($result !== true && $result !== false) { // result set for "select" statement
+			$rows = array();
+			
 			while ($row = mysql_fetch_assoc($result)){
 				$rows[] = $row;
 			}

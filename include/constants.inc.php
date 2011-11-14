@@ -143,6 +143,16 @@ define('SEAL_ICON_FOLDER', 'images/');
 /* the default height of the image preview */
 define("DISPLAY_PREVIEW_IMAGE_HEIGHT", 50);
 
+// valid date format_types:
+// @see ./include/lib/output.inc.php, function AC_date()
+define('AC_DATE_MYSQL_DATETIME',     1); /* YYYY-MM-DD HH:MM:SS	*/
+define('AC_DATE_MYSQL_TIMESTAMP_14', 2); /* YYYYMMDDHHMMSS		*/
+define('AC_DATE_UNIX_TIMESTAMP',     3); /* seconds since epoch	*/
+define('AC_DATE_INDEX_VALUE',        4); /* index to the date arrays */
+
+// the temporary directory for exporting validation reports
+define('AC_EXPORT_RPT_DIR', AC_TEMP_DIR. 'exportRpt/');
+
 // separator used in composing URL
 if (strpos(@ini_get('arg_separator.input'), ';') !== false) {
 	define('SEP', ';');

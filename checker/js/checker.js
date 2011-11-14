@@ -16,15 +16,24 @@ AChecker.input = AChecker.input || {};
 AChecker.output = AChecker.output || {};
 
 (function() {
-	// global vars on the input form of the validation index page
-	AChecker.input.inputDivIds = new Array("by_uri", "by_upload", "by_paste");
-	AChecker.input.inputButtonIds = new Array("validate_uri", "validate_file", "validate_paste");
+	// Extract the array of input tab IDs and menu IDs for the future easy access
+	// @ see jscripts/AChecker.js for the definition of AChecker.inputDivMapping
+	var inputDivIds = new Array();  // the array of the input tab IDs
+	var inputMenuIds = new Array(); // the array of the input menu IDs
+	
+	for (var key in AChecker.inputDivMapping) {
+		inputDivIds.push(key);
+		inputMenuIds.push(AChecker.inputDivMapping[key]);
+	}
 
 	// global vars on the output form of the validation index page
 	AChecker.output.outputDivIds = new Array("AC_errors", "AC_likely_problems", "AC_potential_problems", "AC_html_validation_result","AC_css_validation_result");
-	AChecker.output.makeDecisionButtonId = "make_decision";
-	AChecker.output.sealDivID = "seals_div";
+	AChecker.output.makeDecisionButtonId = "AC_btn_make_decision_lineNumRpt";
+	AChecker.output.sealDivID = "AC_seals_div";
 
+	// Private variables that are only available in this script
+	var disableClass = "AC_disabled";
+	
 	/**
 	 * Display the clicked tab and show/hide "made decision" button according to the displayed tab.
 	 * @param tab: "validate_uri", "validate_file", "validate_paste"
@@ -33,7 +42,8 @@ AChecker.output = AChecker.output || {};
 	AChecker.input.initialize = function (tab, rptFormat) {
 		// initialize input form
 		AChecker.hideByID("spinner");
-		AChecker.showDivOutof(tab, AChecker.input.inputDivIds);
+		
+		AChecker.showDivOutof(tab, inputDivIds);
 		
 		// initialize output form
 		var div_errors_id = "AC_errors";
@@ -78,20 +88,30 @@ AChecker.output = AChecker.output || {};
 	 *        allDivIds: The array of div Ids that are in the same group of divId. divId must be in this array. 
 	 */
 	AChecker.input.onClickTab = function (divId) {
-		AChecker.showDivOutof(divId, AChecker.input.inputDivIds);
+		// check if the div is disabled
+		if (!$('#' + AChecker.inputDivMapping[divId]).hasClass(disableClass)) {
+			AChecker.showDivOutof(divId, inputDivIds);
+		}
 		return false;
 	};
 
 	var disableClickablesAndShowSpinner = function (spinnerID) {
-		var menuIds = new Array("menu_by_uri", "menu_by_upload", "menu_by_paste");
-		// disable the tabs on the input form
-		for (var i in menuIds) {
-			e = document.getElementById(menuIds[i]);
-			e.onclick = function () {return false;};
+		// disable the tabs on the input form by adding css class "AC_disabled"
+		// which is detected and processed in AChecker.input.onClickTab()
+		for (var i in inputMenuIds) {
+			$('#' + inputMenuIds[i]).addClass(disableClass);
 		}
 		
 		AChecker.showByID(spinnerID);
 		document.getElementById(spinnerID).focus();
+	};
+	
+	var enableClickablesAndHideSpinner = function (spinnerID) {
+		for (var i in inputMenuIds) {
+			$('#' + inputMenuIds[i]).removeClass(disableClass);
+		}
+		
+		AChecker.hideByID(spinnerID);
 	};
 	
 	/**
@@ -100,7 +120,7 @@ AChecker.output = AChecker.output || {};
 	AChecker.input.validateURI = function () {
 		// check uri
 		var uri = document.getElementById("checkuri").value;
-		if (!uri || uri=="<?php echo $default_uri_value; ?>" ) {
+		if (!uri) {
 			alert('Please provide a uri!');
 			return false;
 		}
@@ -127,7 +147,7 @@ AChecker.output = AChecker.output || {};
 	};
 
 	/**
-	 * Validates if a html file is provided
+	 * Validates if a html file (paste) is provided
 	 */
 	AChecker.input.validatePaste = function () {
 		// check file type
@@ -137,6 +157,49 @@ AChecker.output = AChecker.output || {};
 			return false;
 		}
 		disableClickablesAndShowSpinner("spinner_by_paste");
+	};
+	
+	/**
+	 * Validates file select menu, sends file & problem type to start_export.php,
+	 * receives file's path and starts downloading
+	 */
+	AChecker.input.validateFile = function (exportSpinnerID) {
+		// check selected items
+		var file = document.getElementById("fileselect").value;
+		var problem = document.getElementById("problemselect").value;
+		
+		$("#validate_file_button").val("Please wait ...");
+		
+		// show spinner		
+		disableClickablesAndShowSpinner(exportSpinnerID);		     
+		
+		// make dataString and send it
+		var dataString = 'file=' + file + '&problem=' + problem;
+		
+		$.ajax({
+			type: "POST",
+			url: "checker/start_export.php",
+			data: dataString,
+			cache:false,
+			success: function(returned_data){
+				// change button label
+				$("#validate_file_button").val("Get File");
+			
+				// enable the clickable tabs/buttons and hide the spinner
+				enableClickablesAndHideSpinner(exportSpinnerID);
+			
+				// change src and start downloading
+				var ifrm = document.getElementById("downloadFrame");
+				ifrm.src = "checker/download.php?path="+returned_data;
+			},
+		
+			error: function(xhr, errorType, exception) {
+				alert("An error occured: \n" + exception);
+
+				// enable the clickable tabs/buttons and hide the spinner
+				enableClickablesAndHideSpinner(exportSpinnerID);
+			}
+		});
 	};
 
 	/**

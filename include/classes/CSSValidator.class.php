@@ -35,6 +35,7 @@ class CSSValidator {
 	
 	var $full_return;             // full return from the 3rd party validator
 	var $result;                  // result section stripped from $full_returns.spagnoli@unibo.it
+	var $result_array;            // result section stripped from $this->result in form of array
 	var $num_of_errors = 0;       // number of errors
 	
 	var $contain_errors = false;  // true or false. if error happens in process
@@ -47,7 +48,7 @@ class CSSValidator {
 	* private
   * main process
 	*/
-	function CSSValidator($type, $content)
+	function CSSValidator($type, $content, $return_array = false)
 	{
 		$this->validate_type = $type;
 		$this->validate_content = $content;
@@ -65,12 +66,14 @@ class CSSValidator {
 			return false;  // css validator is only available for url checking, not for file upload and paste 
 		}
 
-		if (!result) return false;
+		if (!$result) return false;
 		else
 		{
 			$this->full_return = $result;
-			
 			$this->result = $this->stripOutResult($result);
+			if ($return_array == true) {
+				$this->stripOutResultArray();
+			}
 			$this->num_of_errors = $this->stripOutNumOfErrors($result);
 			return true;
 		}
@@ -204,6 +207,71 @@ class CSSValidator {
 	
 	/**
 	* private
+	* return errors/warnings in form of array by striping it out from $this->result
+	*/
+	function stripOutResultArray()
+	{	
+		$pattern1 = '/('.preg_quote("<div id='congrats'>", '/').'.*)/s'; // nessun errore -- no errors
+		$pattern2 = '/('.preg_quote("<div class='error-section-all'>", '/').'.*)/s'; // when has errors
+		$pattern3 = '/('.preg_quote('<p class="backtop"><a href="#banner">&uarr; ', '/').'.*)/s'; // when has errors
+		$pattern4 = '/('.preg_quote('<div id="warnings">', '/').'.*)/s'; // when has errors
+			
+		if (preg_match($pattern1, $this->full_return, $match) || preg_match($pattern2, $this->full_return, $match)|| 
+			preg_match($pattern3, $this->full_return, $match) || preg_match($pattern4, $this->full_return, $match)) {		
+			
+			$pattern_group = '/\<li class="msg_err"\>(.*?)\<\/li\>/s';
+			preg_match_all($pattern_group, $this->result, $matches_group);
+			foreach($matches_group[1] as $group) {
+				unset($group_errors);
+				
+				$pattern_uri = '/\<span class="msg"\>\<strong\>URI : \<a href="(.*?)"\>(.*?)\<\/a>\<\/strong\>\<\/span\>/s';
+				preg_match($pattern_uri, $group, $matches_uri);
+				$uri = $matches_uri[1];
+				
+				$pattern_item = '/\<tr class=(.*?)error(.*?)\>(.*?)\<\/tr\>/s';
+				preg_match_all($pattern_item, $group, $matches_item);
+			
+				foreach($matches_item[3] as $error) {
+					unset($error_detail);
+					
+					// line
+					$pattern_line = '/\<td class=(.*?)linenumber(.*?) title=(.*?)Line [0-9]+(.*?)>(.*?)\<\/td\>/';
+					preg_match($pattern_line, $error, $matches_line);
+					$line = $matches_line[5];
+					
+					// code
+					$pattern_code = '/\<td class=(.*?)codeContext(.*?)>(.*?)\<\/td\>/s';
+					if (preg_match($pattern_code, $error, $matches_code)) {
+						$code = trim($matches_code[3]);
+					} else {
+						$code = '';
+					}
+					
+					// parse
+					$pattern_parse1 = '/\<td class=(.*?)parse-error(.*?)>(.*?)\<\/td\>/s';
+					$pattern_parse2 = '/\<td class=(.*?)invalidparam(.*?)>(.*?)\<\/td\>/s';
+					if (preg_match($pattern_parse1, $error, $matches_parse)) {
+						$parse = preg_replace("/ {2,}/", " ",str_replace("\n", "", trim($matches_parse[3])));
+					} else if (preg_match($pattern_parse2, $error, $matches_parse)) {
+						$parse = preg_replace("/ {2,}/", " ",str_replace("\n", "", trim($matches_parse[3])));
+					} else {
+						$parse = '';
+					}			
+						
+					$error_detail =  array('line' => $line, 'code' => $code, 'parse' => $parse);
+					$group_errors[] = $error_detail;
+				}
+				$this->result_array[$uri] = $group_errors; 
+			}
+		} else {
+			$this->contain_errors = true;
+			$this->msg = _AC('AC_ERROR_CSS_VALIDATOR_ERROR');
+			return false;
+		}	
+	}
+	
+	/**
+	* private
 	* return number of errors by striping it out from validation output returned from 3rd party
 	*/
 	function stripOutNumOfErrors($full_result)
@@ -225,6 +293,15 @@ class CSSValidator {
 	function getValidationRpt()
 	{
 		return $this->result;
+	}
+	
+	/**
+	* public 
+	* return validation report in form of array
+	*/
+	function getValidationRptArray()
+	{
+		return $this->result_array;
 	}
 
 	// public 

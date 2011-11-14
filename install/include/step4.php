@@ -44,6 +44,14 @@ if (isset($_POST['submit'])) {
 			$errors[] = '<strong>'.$_POST['content_dir'].'/updater</strong> directory is not writable.';
 		}
 
+		if (!is_dir($_POST['content_dir'].'/exportRpt')) {
+			if (!@mkdir($_POST['content_dir'].'/exportRpt')) {
+				$errors[] = '<strong>'.$_POST['content_dir'].'/exportRpt</strong> directory does not exist and cannot be created.';  
+			}
+		} else if (!is_writable($_POST['content_dir'].'/exportRpt')){
+			$errors[] = '<strong>'.$_POST['content_dir'].'/exportRpt</strong> directory is not writable.';
+		}
+
 		// save blank index.html pages to those directories
 		@copy('../images/index.html', $_POST['content_dir'] . '/import/index.html');
 		@copy('../images/index.html', $_POST['content_dir'] . '/index.html');

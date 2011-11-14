@@ -215,6 +215,7 @@ class Menu {
 	*/
 	private function setBackToPage() 
 	{
+		$back_to_page = "";
 		unset($this->path[0]);
 		if (isset($this->path[2]['url'], $this->sub_menus[0]['url']) && $this->path[2]['url'] == $this->sub_menus[0]['url']) {
 			$back_to_page = $this->path[3];
