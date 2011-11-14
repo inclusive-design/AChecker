@@ -56,6 +56,7 @@ h2 {
 }
 h3 {
     font-size: 100%;
+    width:55%
 }
 h4 {
     font-size: 90%;
@@ -195,7 +196,7 @@ div.paging li a:hover, div.paging li a.current {
 /* NEW STUFF */
 table.tabbed-table {
     width: 100%;
-    border:thin black solid;
+    border:1px black solid;
 }
 table.tabbed-table th#left-empty-tab {
     background-color: transparent;
@@ -483,44 +484,45 @@ table.data.static tbody tr:hover {
 .input_tab,
 #errors, #likely_problems, #potential_problems, #html_validation_result, #css_validation_result{
     width:95%;
-    border:thin #cccccc solid;
+    border:1px #cccccc solid;
     padding:1em;
+    border-radius:.2em;
 }
 #html_validation_result, #css_validation_result{
     white-space:nowrap;
 }
 #errors_10{
-    border:thin #cccccc solid;
+    border:1px #cccccc solid;
     padding:1em;
     margin:0.5em;
     width:95%;
 }
 #errors_11{
-    border:thin #cccccc solid;
+    border:1px #cccccc solid;
     padding:1em;
     margin:0.5em;
     width:95%;
 }
 #errors_12{
-    border:thin #cccccc solid;
+    border:1px  #cccccc solid;
     padding:1em;
     margin:0.5em;
     width:95%;
 }
 #errors_13{
-    border:thin #cccccc solid;
+    border:1px  #cccccc solid;
     padding:1em;
     margin:0.5em;
     width:95%;
 }
 #markup_validator{
-    border:thin #cccccc solid;
+    border:1px  #cccccc solid;
     padding:1em;
     margin:0.5em;
     width:95%;
 }
 #css_validator {
-    border:thin #cccccc solid;
+    border:1px  #cccccc solid;
     padding:1em;
     margin:0.5em;
     width:95%;
@@ -687,6 +689,50 @@ div.box .odd {
 fieldset {
     margin-bottom: 10pt;
 }
+
+fieldset#report_file{
+	border:1px  solid #F8F8F8;
+	border-radius:.3em;
+	position:relative;
+	top:-3em;
+	position
+	width:42%;
+	*width:350px;
+	*height:2em;
+	padding:.1em;
+	font-size:.8em;
+	float:right;
+	clear:both;
+	margin-bottom:-5em;
+
+}
+legend.report_file{
+	background-color:#ffffff;
+	border:1px  solid #cccccc;
+	border-radius:.2em;
+	font-weight:bold;
+	font-size:.9em;
+	display:none;
+
+}
+
+fieldset#report_file input[type=button], select, label {
+	float:left;
+    font-size:smaller;
+    margin-left:.5em;
+    border-radius:.2em;
+}
+fieldset#report_file input[type=button]{
+	*float:right;
+}
+#spinner_export{
+	margin-top:-1.5em;
+	float:right;
+}
+fieldset#report_file div.spinner_div{
+	margin-right:3em;
+}
+
 #shortcuts legend {
 }
 #shortcuts ul {
@@ -749,6 +795,7 @@ div.topnavlistcontainer {
     margin-left:auto; 
     margin-right:auto;
     margin-bottom:1em;
+    margin-top:.5em;
     line-height:100%;
     background-position:  top right;
     background-repeat: no-repeat;
@@ -790,14 +837,15 @@ ul.topnavlist li a.selected {
 /*  form fields grouping for WCAG 2.0 conformance*/
 fieldset.group_form{
     margin:.5em;
-    border:thin #6D7B8D solid;
+    border:1px #6D7B8D solid;
     min-height: 170px;
     padding:.5em;
-    background-color:#F8F8F8;;
+    background-color:#F8F8F8;
+    border-radius:.3em;
 
 }
 legend.group_form{
-    border:thin #6D7B8D solid;
+    border:1px #6D7B8D solid;
     background-color: #ffa20c;
     font-weight: 600;
     color: black;
@@ -952,6 +1000,8 @@ pre.badgeSnippet {
     display: inline;
     float: left;
     margin: 0;
+    white-space: nowrap;
+    
 }
 #logo {
     float:right;

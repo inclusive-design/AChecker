@@ -100,7 +100,7 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 	<!-- 
 	<div class="left-col" style="float:left;clear:left;margin:0em 1em 3em;padding:0em 1em; max-width:672px;"><br />
 	 -->
-	<fieldset><legend class="group_form"><?php echo _AC("file_export"); ?></legend>
+	<fieldset id="report_file"><legend class="report_file"><?php echo _AC("file_export"); ?></legend>
 		<div style="padding: 0.5em;">
 			<label for="file_type"><?php echo _AC('file_type'); ?>:</label>
 			<select name="file_menu" id="fileselect">
@@ -110,7 +110,7 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 				<option value="html">HTML</option>
 			</select>&nbsp;&nbsp;&nbsp;&nbsp;
 			
-			<label for="problem_type"><?php echo _AC('problem_type'); ?>:</label>
+			&nbsp;&nbsp;<label for="problem_type"><?php echo _AC('problem_type'); ?>:</label>
 			<select name="problem_menu" id="problemselect">
 				<option value="all" selected="selected"><?php echo _AC('all'); ?></option>
 				<option value="known" ><?php echo _AC('known'); ?></option>
@@ -120,12 +120,13 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 				<option value="css"><?php echo _AC('css_validation_result'); ?></option>
 			</select>&nbsp;&nbsp;&nbsp;&nbsp;
 			
+
+			<iframe id="downloadFrame" src="" style="display:none;"></iframe>
+			<input class="report_file_button" type="button" name="validate_export" id="validate_file_button" value="<?php echo _AC("get_file"); ?>" onclick="return AChecker.input.validateFile('spinner_export');" />
 			<div class="spinner_div">
 				<img class="spinner_img" id="spinner_export" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
 				&nbsp;
 			</div>
-			<iframe id="downloadFrame" src="" style="display:none;"></iframe>
-			<input class="validation_button" type="button" name="validate_export" id="validate_file_button" value="<?php echo _AC("get_file"); ?>" onclick="return AChecker.input.validateFile('spinner_export');" />
 		</div>
 	</fieldset>
 	<!-- 

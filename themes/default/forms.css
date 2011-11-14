@@ -110,6 +110,7 @@ div.input-form div.buttons {
 div.input-form div.buttons input {
 	font-weight: normal;
 
+
 }
 
 div.validator-output-form {
@@ -143,8 +144,10 @@ input[type=button] {
     color:#666;
     font-weight:bold;
     padding: 1px 2px;
+    border-radius:.3em;
 /*    background:url(images/formbg.gif) repeat-x left top;*/
 }
+
 input[type=submit] {
     cursor:pointer;
     border:outset 1px #ccc;
@@ -152,6 +155,7 @@ input[type=submit] {
     color:#666;
     font-weight:bold;
     padding: 1px 2px;
+    border-radius:.3em;
 /*    background:url(images/formbg.gif) repeat-x left top;*/
 }
 
