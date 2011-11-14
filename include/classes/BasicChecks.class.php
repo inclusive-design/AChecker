@@ -24,6 +24,8 @@
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 include_once(AC_INCLUDE_PATH. 'classes/DAO/LangCodesDAO.class.php');
 
+define("DEFAULT_FONT_SIZE",12);
+define("DEFAULT_FONT_FORMAT","pt");
 
 class BasicChecks {
 	/**
@@ -790,6 +792,8 @@ class BasicChecks {
 	*/
 	public static function get_p_css($e, $p) {
 		
+		$inline = "";
+		
 		//controllo sullo stile inline
 		if (isset ( $e->attr ["style"] )) {
 			$inline = BasicChecks::GetElementStyleInline ( $e->attr ["style"], $p );
@@ -851,7 +855,6 @@ class BasicChecks {
 		//se arrivo qui lo stile inline non ha !important dato che lo controllo all'inizio
 		//lo stile inline ha sempre priorita' massima, a meno che una regola in uno stile interno/esterno non contenga  !important
 		
-
 		if ($inline != null && $inline != "") {
 			if (stripos ( $best ["valore"], "!important" ) === false) //non c'e' !important nel foglio di stile
 				
@@ -2197,6 +2200,7 @@ class BasicChecks {
 		else
 			return true;
 	}
+	
 	// check if the item is contained in an element with absolute position outside the page
 	//controllo se l'elemento è contenuto in un elemento con posizione assoluta esterna alla pagina
 	public static function isPositionOutOfPage($e) {
@@ -2221,6 +2225,7 @@ class BasicChecks {
 		
 		return false;
 	}
+	
 	// check that the element is visible
 	// controllo che l'elemento sia visibile
 	public static function isElementVisible($e) {
@@ -2802,8 +2807,6 @@ class BasicChecks {
 		//MB:per stampare le regole dei check sui CSS														
 		//regole css relative all'errore
 		//CSS: default font size e default font format
-		define("DEFAULT_FONT_SIZE",12);
-		define("DEFAULT_FONT_FORMAT","pt");
 		global $tag_size;
 		global $csslist;
 		global $array_css;

@@ -72,6 +72,8 @@ if (isset($validate_content))
 	$savant->assign('show_jump_to_report', 1);
 }
 
+$custom_head = "";
+
 if (isset($_custom_css)) {
 	$custom_head = '<link rel="stylesheet" href="'.$_custom_css.'" type="text/css" />';
 }

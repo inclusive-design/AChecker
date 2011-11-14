@@ -45,7 +45,7 @@ if (isset($aValidator))
 	$guidelinesDAO = new GuidelinesDAO();
 	$guideline_rows = $guidelinesDAO->getGuidelineByIDs($_gids);
 	
-	unset($guidelines_text);
+	$guidelines_text = "";
 	if (is_array($guideline_rows))
 	{
 		foreach ($guideline_rows as $id => $row)
@@ -66,8 +66,8 @@ if (isset($aValidator))
 	$from_referer = 'false';
 	
 	// initial request to validate referer URL
-	if ($_GET['uri'] == 'referer')
-	{
+	if (isset($_GET['uri']) && $_GET['uri'] == 'referer')
+		{
 		$from_referer = 'true';
 		
 		// if id (id is user_link_id) is given
@@ -101,18 +101,22 @@ if (isset($aValidator))
 		
 		$allow_set_decision = 'true';
 	}
-
+	
+	$_SESSION['input_form']['user_link_id'] = $user_link_id;
+	
 	if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) {
 		$a_rpt = new HTMLByGuidelineRpt($errors, $_gids[0], $user_link_id);
+		$_SESSION['input_form']['mode'] = 'guideline';
 	} else if ($_POST["rpt_format"] == REPORT_FORMAT_LINE) {
 		$a_rpt = new HtmlRpt($errors, $user_link_id);
+		$_SESSION['input_form']['mode'] = 'line';
 	}
 	$a_rpt->setAllowSetDecisions($allow_set_decision);
 	$a_rpt->setFromReferer($from_referer);
 	if (isset($_REQUEST['show_source'])) $a_rpt->setShowSource('true', $source_array);
 	
 	$a_rpt->generateRpt();
-
+	
 	$num_of_errors = $a_rpt->getNumOfErrors();
 	$num_of_likely_problems = $a_rpt->getNumOfLikelyProblems();
 	$num_of_likely_problems_no_decision = $a_rpt->getNumOfLikelyWithFailDecisions();
@@ -120,6 +124,7 @@ if (isset($aValidator))
 	$num_of_potential_problems_no_decision = $a_rpt->getNumOfPotentialWithFailDecisions();
 	
 	// no any problems or all problems have pass decisions, display seals when no errors
+	$seals = null;
 	if ($num_of_errors == 0 && 
 	    ($num_of_likely_problems == 0 && $num_of_potential_problems == 0 ||
 	     $num_of_likely_problems_no_decision == 0 && $num_of_potential_problems_no_decision == 0))
@@ -152,6 +157,7 @@ if (isset($aValidator))
 		$savant->assign('referer_report', 1);
 		if (intval($user_link_id) > 0) $savant->assign('referer_user_link_id', $user_link_id);
 	}
+
 }
 
 

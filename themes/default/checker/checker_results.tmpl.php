@@ -16,7 +16,7 @@ global $addslashes, $congrats_msg_for_likely, $congrats_msg_for_potential;;
 include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
 ?>
-<div id="seals_div" class="validator-output-form">
+<div id="AC_seals_div" class="validator-output-form">
 
 <?php 
 // display seals
@@ -88,10 +88,52 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 	}
 }
 ?>
+
 	<div class="center-input-form">
 	<a name="report" title="<?php echo _AC("report_start"); ?>"></a>
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("accessibility_review"); ?></legend>
 	<h3><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$this->guidelines_text. ')'; ?></h3>
+
+<div class="center">
+<form name="file_form" enctype="multipart/form-data" method="post" >
+
+	<!-- 
+	<div class="left-col" style="float:left;clear:left;margin:0em 1em 3em;padding:0em 1em; max-width:672px;"><br />
+	 -->
+	<fieldset id="report_file"><legend class="report_file"><?php echo _AC("file_export"); ?></legend>
+		<div style="padding: 0.5em;">
+			<label for="file_type"><?php echo _AC('file_type'); ?>:</label>
+			<select name="file_menu" id="fileselect">
+				<option value="pdf" selected="selected">PDF</option>
+				<option value="earl">EARL</option>
+				<option value="csv">CSV</option>
+				<option value="html">HTML</option>
+			</select>&nbsp;&nbsp;&nbsp;&nbsp;
+			
+			&nbsp;&nbsp;<label for="problem_type"><?php echo _AC('problem_type'); ?>:</label>
+			<select name="problem_menu" id="problemselect">
+				<option value="all" selected="selected"><?php echo _AC('all'); ?></option>
+				<option value="known" ><?php echo _AC('known'); ?></option>
+				<option value="likely"><?php echo _AC('likely'); ?></option>
+				<option value="potential"><?php echo _AC('potential'); ?></option>
+				<option value="html"><?php echo _AC('html_validation_result'); ?></option>
+				<option value="css"><?php echo _AC('css_validation_result'); ?></option>
+			</select>&nbsp;&nbsp;&nbsp;&nbsp;
+			
+
+			<iframe id="downloadFrame" src="" style="display:none;"></iframe>
+			<input class="report_file_button" type="button" name="validate_export" id="validate_file_button" value="<?php echo _AC("get_file"); ?>" onclick="return AChecker.input.validateFile('spinner_export');" />
+			<div class="spinner_div">
+				<img class="spinner_img" id="spinner_export" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
+				&nbsp;
+			</div>
+		</div>
+	</fieldset>
+	<!-- 
+	</div>
+	 -->
+</form>
+</div>
 
 	<div class="topnavlistcontainer"><br />
 		<ul class="navigation">
@@ -229,7 +271,7 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 {
 	if ($this->a_rpt->getNumOfNoDecisions() > 0)
 	{
-		echo '<div align="center"><input type="submit" name="make_decision" id="make_decision" value="'._AC('make_decision').'" style="align:center" /></div>';
+		echo '<div align="center"><input type="submit" name="make_decision" id="AC_btn_make_decision_lineNumRpt" value="'._AC('make_decision').'" style="align:center" /></div>';
 	}
 	echo '</form>';
 }
