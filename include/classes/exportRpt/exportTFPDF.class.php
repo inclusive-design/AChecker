@@ -24,23 +24,6 @@ include_once(AC_INCLUDE_PATH. 'lib/output.inc.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'lib/tfpdf/tfpdf.php');
 
-	// strings of data to write in file and output with _AC();
-//achecker_file_passed = 'Passed'
-//achecker_file_failed = 'Failed'
-//achecker_file_no_decision = 'No Decision'
-//
-//achecker_file_source_url = 'Source URL'
-//achecker_file_sourse_title = 'Source title'
-//
-//achecker_file_report_known = 'Report on known type of problems'
-//achecker_file_report_likely = 'Report on likely type of problems'
-//achecker_file_report_potential = 'Report on potential type of problems'
-//achecker_file_report_html = 'Report on HTML validation'
-//achecker_file_report_css = 'Report on CSS validation'
-//achecker_file_report_found = 'found'
-//
-//+ days of week and months
-
 class acheckerTFPDF extends tFPDF {
 
 	// all private
