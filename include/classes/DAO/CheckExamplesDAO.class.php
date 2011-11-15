@@ -36,8 +36,10 @@ class CheckExamplesDAO extends DAO {
 	{
 		global $addslashes;
 
-		$description = trim($description);
-		$content = trim($content);
+		$checkID = intval($checkID);
+		$type = $addslashes($type);
+		$description = $addslashes(trim($description));
+		$content = $addslashes(trim($content));
 		
 		// don't insert if no desc and content
 		if ($description == '' && $content == '') return true;
@@ -47,8 +49,8 @@ class CheckExamplesDAO extends DAO {
 		$sql = "INSERT INTO ".TABLE_PREFIX."check_examples
 				(`check_id`, `type`, `description`, `content`) 
 				VALUES
-				(".intval($checkID).",".$addslashes($type).",'".$addslashes($description)."', ".
-		         "'".$addslashes($content)."')";
+				(".$checkID.",".$type.",'".$description."', ".
+		         "'".$content."')";
 
 		if (!$this->execute($sql))
 		{

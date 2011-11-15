@@ -17,7 +17,7 @@ $onload = "initial();";
 include(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 
-<form name="input_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?><?php if (isset($_GET["id"])) echo '?id='.$_GET["id"]; ?>" >
+<form name="input_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?><?php if (isset($_GET["id"])) echo '?id='.intval($_GET["id"]); ?>" >
 <?php if (isset($this->user_group_row["user_group_id"])) {?>
 <input type="hidden" name="user_group_id" value="<?php echo $this->user_group_row["user_group_id"]; ?>" />
 <?php }?>

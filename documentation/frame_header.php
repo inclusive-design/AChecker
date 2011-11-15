@@ -71,7 +71,7 @@ function toggleToc(override) {
 </script>
 </head>
 <body><form method="get" action="search.php" target="toc" onsubmit='toggleToc(true);false;'>
-<input type="hidden" name="p" value="<?php echo $_GET['p']; ?>">
+<input type="hidden" name="p" value="<?php echo $this_page; ?>">
 
 <script type="text/javascript">
 // <!--
