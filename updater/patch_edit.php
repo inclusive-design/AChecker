@@ -23,7 +23,7 @@ if (!isset($_REQUEST["myown_patch_id"]))
 	exit;
 }
 
-$myown_patch_id = $_REQUEST["myown_patch_id"];
+$myown_patch_id = intval($_REQUEST["myown_patch_id"]);
 
 $myownPatchesDAO = new MyownPatchesDAO();
 $myownPatchesDependentDAO = new MyownPatchesDependentDAO();

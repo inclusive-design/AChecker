@@ -17,7 +17,7 @@ $onload = "initial();";
 include(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 
-<form name="input_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?><?php if (isset($_GET["id"])) echo '?id='.$_GET["id"]; ?>" >
+<form name="input_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?><?php if (isset($_GET["id"])) echo '?id='.intval($_GET["id"]); ?>" >
 <?php if (isset($this->row["language_code"])) {?>
 <input type="hidden" name="language_code" value="<?php echo $this->row["language_code"]; ?>" />
 <input type="hidden" name="charset" value="<?php echo $this->row["charset"]; ?>" />
