@@ -200,7 +200,7 @@ if (is_array($this->rows))
 					<input type="checkbox" name="gid[]" id='gid_<?php echo $row["guideline_id"]; ?>' value='<?php echo $row["guideline_id"]; ?>' <?php 
 					if (isset($_POST["gid"]) && is_array($_POST["gid"])) {	
 						foreach($_POST["gid"] as $gid) {
-							if ($gid == $row["guideline_id"]) echo 'checked="checked"';
+							if (intval($gid) == $row["guideline_id"]) echo 'checked="checked"';
 						}
 					} 
 					?> />
