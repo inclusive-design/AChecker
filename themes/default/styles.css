@@ -695,7 +695,7 @@ fieldset#report_file{
 	border-radius:.3em;
 	position:relative;
 	top:-3em;
-	width:43%;
+	width:46%;
 	*width:350px;
 	*height:2em;
 	padding:.1em;
@@ -715,7 +715,7 @@ legend.report_file{
 
 }
 
-fieldset#report_file input[type=button], select, label {
+fieldset#report_file input[type=button], #report_file  select, #report_file label {
 	float:left;
     font-size:smaller;
     margin-left:.5em;
