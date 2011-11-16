@@ -422,9 +422,9 @@ class simple_html_dom {
     // use isset instead of in_array, performance boost about 30%...
     protected $token_blank = array(' '=>1, "\t"=>1, "\r"=>1, "\n"=>1);
     protected $token_equal = array(' '=>1, '='=>1, '/'=>1, '>'=>1, '<'=>1);
-	  /* customized by UOT, ATRC, cindy Li */
+    /* customized by UOT, ATRC, cindy Li */
     protected $doctype_token_equal = array('>'=>1);
-	  /* end of customized by UOT, ATRC, cindy Li */
+    /* end of customized by UOT, ATRC, cindy Li */
     protected $token_slash = array(' '=>1, '/'=>1, '>'=>1, "\r"=>1, "\n"=>1, "\t"=>1);
     protected $token_attr  = array(' '=>1, '>'=>1);
     protected $self_closing_tags = array('img'=>1, 'br'=>1, 'input'=>1, 'meta'=>1, 'link'=>1, 'hr'=>1, 'base'=>1, 'embed'=>1, 'spacer'=>1);
@@ -528,7 +528,6 @@ class simple_html_dom {
         // set the length of content
         $this->size = strlen($str);
         if ($this->size>0) $this->char = $this->html[0];
-//        $this->new_line = $this->find_new_line();
     }
 
     // clean up memory due to php5 circular references memory leak...
@@ -544,21 +543,6 @@ class simple_html_dom {
         unset($this->noise);
     }
     
-    // find new line character used in html
-//    function find_new_line()
-//    {
-//        foreach ($this->new_line_array as $new_line)
-//        {
-//            if (preg_match('/'.preg_quote($new_line).'/', $this->html) > 0)  
-//            {
-//            	$used_new_line = $new_line;
-//              break;
-//            }
-//        }
-//        
-//        return $used_new_line;
-//    }
-
     // parse html content
     function parse() {
         $s = $this->copy_until_char('<');
@@ -626,7 +610,6 @@ class simple_html_dom {
 
         $node->tag = $this->copy_until($this->token_slash);
         /* customized by UOT, ATRC, cindy Li */
-//        $this->debug(memory_get_usage());
         $portion = substr($this->html, 0, $this->pos);
         $node->linenumber = $this->count_line_number($portion);
         $node->colnumber = $this->count_col_number($portion);
@@ -751,27 +734,12 @@ class simple_html_dom {
     // return the number of all new line characters in given $text
     protected function count_line_number($text)
     {
-//        $num_of_line_number = 0;
-//        
-//        foreach ($this->new_line_array as $new_line)
-//        {
-//        	$text = preg_replace('/'.preg_quote($new_line).'/s', '', $text, -1, $count);
-//            $num_of_line_number += $count;
-//        }
-//        
-//        $num = $num_of_line_number + 1;
-          return substr_count($text, $this->new_line)+1;
+        return substr_count($text, $this->new_line)+1;
     }
 
     // return the position of the last characters in its line
     protected function count_col_number($text)
     {
-//    	$pattern = $this->generate_new_line_pattern();
-//
-//        preg_match('/.*'.$pattern.'(.*)$/s', $text, $matches);
-//
-//        return strrpos($matches[1], '<') + 1;
-        
         $last_new_line_pos = strrpos($text, $this->new_line);
         if ($last_new_line_pos !== false)
         	$last_line = substr($text, $last_new_line_pos);
@@ -785,17 +753,6 @@ class simple_html_dom {
         	return $col_num;
     }
     
-//    protected function generate_new_line_pattern()
-//    {
-//      $pattern = "[";
-//      
-//      foreach ($this->new_line_array as $one_new_line)
-//        $pattern .= preg_quote($one_new_line)."|";
-//      
-//      $pattern .= "]";
-//      
-//      return $pattern;
-//    }
     /* end of customized by UOT, ATRC, cindy Li */
     
     // parse attributes
