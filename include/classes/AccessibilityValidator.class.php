@@ -47,13 +47,16 @@ class AccessibilityValidator {
 	var $check_for_all_elements_array = array(); // array of the to-be-checked check_ids 
 	var $check_for_tag_array = array();          // array of the to-be-checked check_ids 
 	var $prerequisite_check_array = array();     // array of prerequisite check_ids of the to-be-checked check_ids 
-//	var $next_check_array = array();             // array of the next check_ids of the to-be-checked check_ids
 	var $check_func_array = array();         // array of all the check functions 
 		
 	var $content_dom;                    // dom of $validate_content
 
 	var $line_offset;                    // 1. ignore the problems on the lines before the line of $line_offset
-	                                     // 2. report line_number = real_line_number - $line_offset 
+	                                     // 2. report line_number = real_line_number - $line_offset
+	                                     
+	var $col_offset;                     // The number of characters that are added internally at the first line to deal with the 
+	                                     // partial html. Fully private, cannot be set or get from outside
+	
 	/**
 	 * public
 	 * $content: string, html content to check
@@ -64,6 +67,7 @@ class AccessibilityValidator {
 		$this->validate_content = $content;
 		$this->guidelines = $guidelines;
 		$this->line_offset = 0;
+		$this->col_offset = 0;
 		$this->uri = $uri;
 	}
 	
@@ -140,8 +144,13 @@ class AccessibilityValidator {
 		
 		if (count($dom->find('html')) == 0)
 		{
-			$dom = str_get_dom('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w
-3.org/1999/xhtml" lang="en" xml:lang="en">'.$content.'</html>');
+			$complete_html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'.
+			                 '<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">'.
+			                 $content.
+			                 '</html>';
+			$this->col_offset = 175;  // The number of extra characters that are added onto the first line.
+			
+			$dom = str_get_dom($complete_html);
 		}
 		return $dom;
 	}
@@ -295,8 +304,16 @@ class AccessibilityValidator {
 		global $msg, $base_href, $tag_size;
 		// don't check the lines before $line_offset
 		if ($e->linenumber <= $this->line_offset) return;
+
+		if ($e->linenumber == 1 && $this->col_offset > 0) {
+		    $col_number = $e->colnumber - $this->col_offset;
+		} else {
+		    $col_number = $e->colnumber;
+		}
 		
-		$result = $this->get_check_result($e->linenumber-$this->line_offset, $e->colnumber, $check_id);
+		$line_number = $e->linenumber-$this->line_offset;
+		
+		$result = $this->get_check_result($line_number, $col_number, $check_id);
 
 		// has not been checked
 		if (!$result)
@@ -359,7 +376,7 @@ class AccessibilityValidator {
 				    else $image_alt = $e->attr['alt'];
 				}
 				
-				$this->save_result($e->linenumber-$this->line_offset, $e->colnumber, $html_code, $check_id, $result, $image, $image_alt, $css_code);
+				$this->save_result($line_number, $col_number, $html_code, $check_id, $result, $image, $image_alt, $css_code);
 			}
 		}
 		

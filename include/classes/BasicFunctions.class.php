@@ -139,6 +139,7 @@ class BasicFunctions {
 		global $global_e, $base_href, $uri, $global_array_image_sizes;
 		
 		$file = BasicChecks::getFile($global_e->attr[$attr], $base_href, $uri);
+		$file_size_checked = false;
 		
 		// Check if the image has already been fetched.
 		// Since the remote fetching is the bottle neck that slows down the validation,
@@ -146,14 +147,17 @@ class BasicFunctions {
 		if (is_array($global_array_image_sizes)) {
 			foreach ($global_array_image_sizes as $image=>$info) {
 				if ($image == $file) {
-					if (!$info["is_exist"]) {
+					$file_size_checked = true;
+				    if (!$info["is_exist"]) {
 						return false;
 					} else {
-						return array($info["width"], $info["height"]);
+					    return array($info["width"], $info["height"]);
 					}
 				}
 			}
-		} else {
+		} 
+
+		if (!$file_size_checked) {
 			$dimensions = @getimagesize($file);
 			
 			if (is_array($dimensions)) {
