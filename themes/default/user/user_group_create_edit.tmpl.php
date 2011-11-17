@@ -96,7 +96,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	<div class="row">
 		<h2>
 			<img src="images/arrow-closed.png" alt="<?php echo _AC("expand_add_privileges"); ?>" title="<?php echo _AC("expand_add_privileges"); ?>" id="toggle_image" border="0" />
-			<a href="javascript:AChecker.toggleToc('div_add_privs')"><?php echo _AC("add_privileges"); ?></a>
+			<a href="javascript:AChecker.toggleDiv('div_add_privs', 'toggle_image');"><?php echo _AC("add_privileges"); ?></a>
 		</h2>
 	</div>
 	
