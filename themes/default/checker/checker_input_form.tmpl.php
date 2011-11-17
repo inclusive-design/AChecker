@@ -112,7 +112,7 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 				<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $this->default_uri_value; ?>" size="50"   />
 				<div class="validation_submit_div">
 					<div class="spinner_div">
-						<img class="spinner_img" id="spinner_by_uri" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
+						<img class="spinner_img" id="AC_spinner_by_uri" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
 						&nbsp;
 					</div>
 					<input class="validation_button" type="submit" name="validate_uri" id="validate_uri" size="100" value="<?php echo _AC("check_it"); ?>" onclick="return AChecker.input.validateURI();" />
@@ -128,7 +128,7 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 			
 				<div class="validation_submit_div">
 					<div class="spinner_div">
-						<img class="spinner_img" id="spinner_by_file" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
+						<img class="spinner_img" id="AC_spinner_by_upload" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
 						&nbsp;
 					</div>
 					<input class="validation_button" type="submit" name="validate_file" id="validate_file" value="<?php echo _AC("check_it"); ?>" onclick="return AChecker.input.validateUpload();"  />
@@ -143,7 +143,7 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 		
 				<div class="validation_submit_div">
 					<div class="spinner_div">
-						<img class="spinner_img" id="spinner_by_paste" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
+						<img class="spinner_img" id="AC_spinner_by_paste" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
 						&nbsp;
 					</div>
 					<input class="validation_button" type="submit" name="validate_paste" id="validate_paste" value="<?php echo _AC("check_it"); ?>" onclick="return AChecker.input.validatePaste();" />
@@ -154,7 +154,7 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 		<div>
 			<h2 align="left">
 				<img src="images/arrow-closed.png" alt="<?php echo _AC("expand_guidelines"); ?>" title="<?php echo _AC("expand_guidelines"); ?>" id="toggle_image" border="0" />
-				<a href="javascript:AChecker.toggleToc('div_options')"><?php echo _AC("options"); ?></a>
+				<a href="javascript:AChecker.toggleDiv('div_options', 'toggle_image');"><?php echo _AC("options"); ?></a>
 			</h2>
 		</div>
 
