@@ -42,8 +42,6 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 	var $guidelineGroupsDAO;
 	var $guidelineSubgroupsDAO;
 	
-	var $jsVarsInited;                    // Ensure the initialization of javascript variables for checker.js is only output once
-	
 	var $html_group =
 '<h3>{GROUP_NAME}</h3><br/>
 ';
@@ -164,8 +162,6 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		$this->checksDAO = new ChecksDAO();
 		$this->guidelineGroupsDAO = new GuidelineGroupsDAO();
 		$this->guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
-		
-		$this->jsVarsInited = false;
 	}
 	
 	/**
@@ -261,10 +257,10 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 			$this->rpt_errors = $guideline_level_known_problems . $group_known_problems;
 		} 
 		if ($guideline_level_likely_problems <> "" || $group_likely_problems <> "") {
-			$this->rpt_likely_problems = $guideline_level_likely_problems . $group_likely_problems.$this->initJSVars();
+			$this->rpt_likely_problems = $guideline_level_likely_problems . $group_likely_problems;
 		} 
 		if ($guideline_level_potential_problems <> "" || $group_potential_problems <> "") {
-			$this->rpt_potential_problems = $guideline_level_potential_problems . $group_potential_problems.$this->initJSVars();
+			$this->rpt_potential_problems = $guideline_level_potential_problems . $group_potential_problems;
 		}
 		
 		if ($this->show_source == 'true')
@@ -522,30 +518,6 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 		}
 		
 		return $th_row . $tr_rows;
-	}
-	
-	/**
-	 * Return a string of javascript that initializes the variables required by checker.js
-	 * @ param: none
-	 * @ see: checker/js/checker.js
-	 */
-	private function initJSVars() {
-		global $congrats_msg_for_likely, $congrats_msg_for_potential;
-		
-		// DO NOT output this javascript more than once on the same page
-		if ($this->jsVarsInited) return;
-		
-		$output = '<script type="text/javascript">'."\n";
-		$output .= "passDecisionText = '"._AC('passed_decision')."';\n";
-		$output .= "warningText = '"._AC('warning')."';\n";
-		$output .= "manualCheckText = '"._AC('manual_check')."';\n";
-		$output .= "getSealText = '"._AC('get_seal')."';\n";
-		$output .= "congratsMsgForLikely = '".$congrats_msg_for_likely."';\n";
-		$output .= "congratsMsgForPotential = '".$congrats_msg_for_potential."';\n";
-		$output .= '</script>'."\n";
-		
-		$this->jsVarsInited = true;
-		return $output;
 	}
 	
 	// generate $this->rpt_source

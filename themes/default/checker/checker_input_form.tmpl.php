@@ -28,7 +28,17 @@ if ($_POST["rpt_format"] == REPORT_FORMAT_GUIDELINE) {
 }
 
 $onload="AChecker.input.initialize('".$init_tab."', '".$rpt_format."');";
-$_custom_head .= '<script src="'.AC_BASE_HREF.'checker/js/checker.js" type="text/javascript"></script>';
+$_custom_head .= '	<script language="javascript" type="text/javascript">'."\n".
+                 '	//<!--'."\n";
+
+ob_start();
+require_once(AC_INCLUDE_PATH.'../checker/js/checker_js.php');
+$_custom_head .= ob_get_contents();
+ob_end_clean();
+
+$_custom_head .= '	//-->'."\n".
+                 '	</script>'."\n".
+                 '	<script src="'.AC_BASE_HREF.'checker/js/checker.js" type="text/javascript"></script>'."\n";
 
 include(AC_INCLUDE_PATH.'header.inc.php');
 

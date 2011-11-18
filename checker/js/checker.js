@@ -12,7 +12,6 @@
 
 // Declare dependencies
 /*global window, alert, jQuery*/
-/*global passDecisionText, warningText, manualCheckText, getSealText, congratsMsgForLikely, congratsMsgForPotential*/
 
 var AChecker = AChecker || {};
 AChecker.utility = AChecker.utility || {};
@@ -146,7 +145,7 @@ AChecker.output = AChecker.output || {};
         // check uri
         var uri = document.getElementById("checkuri").value;
         if (!uri) {
-            alert('Please provide a uri!');
+            alert(AChecker.lang.provide_uri);
             return false;
         }
         disableClickablesAndShowSpinner(inputDivMapping.AC_by_uri.spinnerID);
@@ -159,13 +158,13 @@ AChecker.output = AChecker.output || {};
         // check file type
         var upload_file = document.getElementById("checkfile").value;
         if (!upload_file || upload_file.trim() === '') {
-            alert('Please provide a html file!');
+            alert(AChecker.lang.provide_html_file);
             return false;
         }
         
         var file_extension = upload_file.slice(upload_file.lastIndexOf(".")).toLowerCase();
         if (file_extension !== '.html' && file_extension !== '.htm') {
-            alert('Please upload html (or htm) file only!');
+            alert(AChecker.lang.provide_upload_file);
             return false;
         }
         disableClickablesAndShowSpinner(inputDivMapping.AC_by_upload.spinnerID);
@@ -178,7 +177,7 @@ AChecker.output = AChecker.output || {};
         // check file type
         var paste_html = document.getElementById("checkpaste").value;
         if (!paste_html || paste_html.trim() === '') {
-            alert('Please provide a html input!');
+            alert(AChecker.lang.provide_html_input);
             return false;
         }
         disableClickablesAndShowSpinner(inputDivMapping.AC_by_paste.spinnerID);
@@ -193,7 +192,7 @@ AChecker.output = AChecker.output || {};
         var file = document.getElementById("fileselect").value;
         var problem = document.getElementById("problemselect").value;
         
-        $("#validate_file_button").val("Please wait ...");
+        $("#validate_file_button").val(AChecker.lang.wait);
         
         // show spinner        
         disableClickablesAndShowSpinner(exportSpinnerID);             
@@ -208,7 +207,7 @@ AChecker.output = AChecker.output || {};
             cache: false,
             success: function (returned_data) {
                 // change button label
-                $("#validate_file_button").val("Get File");
+                $("#validate_file_button").val(AChecker.lang.get_file);
             
                 // enable the clickable tabs/buttons and hide the spinner
                 enableClickablesAndHideSpinner(exportSpinnerID);
@@ -219,7 +218,7 @@ AChecker.output = AChecker.output || {};
             },
         
             error: function (xhr, errorType, exception) {
-                alert("An error occured: \n" + exception);
+                alert(AChecker.lang.error_occur + exception);
 
                 // enable the clickable tabs/buttons and hide the spinner
                 enableClickablesAndHideSpinner(exportSpinnerID);
@@ -309,8 +308,8 @@ AChecker.output = AChecker.output || {};
             var msgIcon = $(msgIconIDValue);
             if (this.checked) {
                 msgIcon.attr('src', 'images/feedback.gif');
-                msgIcon.attr('title', passDecisionText);
-                msgIcon.attr('alt', passDecisionText);
+                msgIcon.attr('title', AChecker.lang.pass_decision);
+                msgIcon.attr('alt', AChecker.lang.pass_decision);
             } else {
                 // find out the problem is a likely or a potential
                 var inLikelyDiv = msgIcon.parents('div[id="AC_likely_problems"]');
@@ -318,13 +317,13 @@ AChecker.output = AChecker.output || {};
 
                 if (inLikelyDiv.length) { // likely problem
                     msgIcon.attr('src', 'images/warning.png');
-                    msgIcon.attr('title', warningText);
-                    msgIcon.attr('alt', warningText);
+                    msgIcon.attr('title', AChecker.lang.warning);
+                    msgIcon.attr('alt', AChecker.lang.warning);
                 } 
                 if (inPotentialDiv.length) { // potential problem
                     msgIcon.attr('src', 'images/info.png');
-                    msgIcon.attr('title', manualCheckText);
-                    msgIcon.attr('alt', manualCheckText);
+                    msgIcon.attr('title', AChecker.lang.manual_check);
+                    msgIcon.attr('alt', AChecker.lang.manual_check);
                 } 
             }
         });
@@ -376,7 +375,7 @@ AChecker.output = AChecker.output || {};
 
                 // inform the user that the seal has been issued and displayed at the top seal container
                 var serverMsgSpan = $(btn_make_decision).parents('tr:eq(0)').find('span[id^="server_response"]');
-                serverMsgSpan.html(serverMsgSpan.text() + getSealText);
+                serverMsgSpan.html(serverMsgSpan.text() + AChecker.lang.get_seal);
             }
         });
     };
@@ -422,7 +421,7 @@ AChecker.output = AChecker.output || {};
                 
                 // No more likely problems, display congrats message on "likely problems" tab
                 if (arrayNumOfProblems[0] === 0) {
-                    $("#AC_congrats_msg_for_likely").html(congratsMsgForLikely);
+                    $("#AC_congrats_msg_for_likely").html(AChecker.lang.congrats_likely);
                     $("#AC_congrats_msg_for_likely").addClass("congrats_msg");
                 } else {
                     $("#AC_congrats_msg_for_likely").html("");
@@ -431,7 +430,7 @@ AChecker.output = AChecker.output || {};
                 
                 // No more potential problems, display congrats message on "potential problems" tab
                 if (arrayNumOfProblems[1] === 0) {
-                    $("#AC_congrats_msg_for_potential").html(congratsMsgForPotential);
+                    $("#AC_congrats_msg_for_potential").html(AChecker.lang.congrats_potential);
                     $("#AC_congrats_msg_for_potential").addClass("congrats_msg");
                 } else {
                     $("#AC_congrats_msg_for_potential").html("");
