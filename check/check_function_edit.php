@@ -16,7 +16,7 @@ include_once(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/CheckFuncUtility.class.php');
 
-//global $msg;
+global $msg, $stripslashes;
 
 if (isset($_GET['id'])) $check_id = intval($_GET['id']);
 
@@ -39,13 +39,16 @@ if (isset($_POST['cancel']))
 else if (isset($_POST['save']) || isset($_POST['save_and_close'])) 
 {
 	// check syntax
-	$func = trim($_POST['func']);
+	$func = $stripslashes(trim($_POST['func']));
+	
 	if (!CheckFuncUtility::validateSyntax($func))
 	{
 		$msg->addError('SYNTAX_ERROR');
 	}
 	
-	// this function adds errors into $msg
+	// Prevent the php built-in functions and php super global variables
+	// being called in the check function. Only allows the AChecker-defined
+	// check functions being called for the security concern.
 	CheckFuncUtility::validateSecurity($func);
 	
 	if (!$msg->containsErrors())
@@ -72,7 +75,7 @@ else if (isset($_POST['save']) || isset($_POST['save_and_close']))
 // initialize page 
 $checksDAO = new ChecksDAO();
 
-if (isset($check_id)) // edit existing user
+if (isset($check_id)) // edit existing check function
 {
 	$check_row = $checksDAO->getCheckByID($check_id);
 	
