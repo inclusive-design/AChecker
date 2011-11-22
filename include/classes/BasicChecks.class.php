@@ -236,6 +236,11 @@ class BasicChecks {
 	*/
 	public static function isValidLangCode($code)
 	{
+		// The allowed characters in a valid language code are letters, numbers or dash(-).
+		if (!preg_match("/^[a-zA-Z0-9-]+$/", $code)) {
+			return false;
+		}
+		
 		$code = BasicChecks::cutOutLangCode($code);
 		$langCodesDAO = new LangCodesDAO();
 
