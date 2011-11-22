@@ -477,7 +477,7 @@ class UsersDAO extends DAO {
 	 */
 	public function setEmail($userID, $email)
 	{
-		global $addslahes;
+		global $addslashes;
 		
 		$userID = intval($userID);
 		$email = $addslashes($email);
