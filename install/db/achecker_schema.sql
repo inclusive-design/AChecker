@@ -2522,7 +2522,7 @@ INSERT INTO `subgroup_checks` (`subgroup_id`, `check_id`) VALUES
 (75, 60),
 (75, 61),
 (75, 62),
-(75, 63),
+(75, 213),
 (75, 91),
 (75, 118),
 (75, 119),
