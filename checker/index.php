@@ -245,7 +245,7 @@ else
 if ($show_achecker_whatis)
 {
 	echo '<div id="output_div" class="validator-output-form">';
-	echo _AC('achecker_whatis');
+	echo "<p>"._AC('achecker_whatis')."</p>";
 	echo '</div>';
 }
 
