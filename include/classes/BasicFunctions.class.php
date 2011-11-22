@@ -1060,7 +1060,7 @@ class BasicFunctions {
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 
 	/*
