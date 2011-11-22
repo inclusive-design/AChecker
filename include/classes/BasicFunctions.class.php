@@ -148,10 +148,10 @@ class BasicFunctions {
 			foreach ($global_array_image_sizes as $image=>$info) {
 				if ($image == $file) {
 					$file_size_checked = true;
-				    if (!$info["is_exist"]) {
+					if (!$info["is_exist"]) {
 						return false;
 					} else {
-					    return array($info["width"], $info["height"]);
+						return array($info["width"], $info["height"]);
 					}
 				}
 			}
@@ -470,7 +470,7 @@ class BasicFunctions {
 		
 		foreach ($global_content_dom->find("label") as $global_e_label)
 		  if (strtolower(trim($global_e_label->attr["for"])) == strtolower(trim($global_e->attr["id"])))
-		    return true;
+			return true;
 	  
 	  return false;
 	}
@@ -946,12 +946,13 @@ class BasicFunctions {
 
 		for ($i=0; $i < count($radio_buttons); $i++)
 		{
-		  for ($j=0; $j < count($radio_buttons); $j++)
-		  {
-		    if ($i <> $j && strtolower(trim($radio_buttons[$i]->attr["name"])) == strtolower(trim($radio_buttons[$j]->attr["name"]))
-		        && !BasicChecks::hasParent($radio_buttons[$i], "fieldset") && !BasicChecks::hasParent($radio_buttons[$i], "legend"))
-		      return false;
-		  }
+			for ($j=0; $j < count($radio_buttons); $j++)
+			{
+				if ($i <> $j && strtolower(trim($radio_buttons[$i]->attr["name"])) == strtolower(trim($radio_buttons[$j]->attr["name"]))
+				    && !BasicChecks::hasParent($radio_buttons[$i], "fieldset") && !BasicChecks::hasParent($radio_buttons[$i], "legend")) {
+					return false;
+				}
+			}
 		}
 		
 		return true;
