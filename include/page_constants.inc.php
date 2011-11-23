@@ -142,6 +142,10 @@ if (in_array(AC_PRIV_GUIDELINE_MANAGEMENT, $privs))
 	
 	$_pages['guideline/delete_guideline.php']['title_var'] = 'delete_guideline';
 	$_pages['guideline/delete_guideline.php']['parent']    = 'guideline/index.php';
+
+	$_pages['check/index.php']['title_var'] = 'checks';
+	$_pages['check/index.php']['parent']    = AC_NAV_TOP;
+	$_pages['check/index.php']['guide']    = 'AC_HELP_CHECK';
 }
 
 // 3. check pages
@@ -152,7 +156,7 @@ if (in_array(AC_PRIV_CHECK_MANAGEMENT, $privs))
 	$_pages['check/index.php']['children']  = array_merge(array('check/check_create_edit.php'), 
 	                                                        isset($_pages['check/index.php']['children']) ? $_pages['check/index.php']['children'] : array());
 	$_pages['check/index.php']['guide']    = 'AC_HELP_CHECK';
-	                                                        
+	
 	$_pages['check/html_tag_list.php']['title_var'] = 'html_tag_list';
 	$_pages['check/html_tag_list.php']['parent']    = 'check/index.php';
 	$_pages['check/html_tag_list.php']['guide']    = 'AC_HELP_HTML_TAG_LIST';
