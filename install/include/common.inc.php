@@ -81,6 +81,8 @@ function queryFromFile($sql_file_path)
 	
 		if ($prefixed_query != false ) 
 		{
+			$prefixed_query[1] = strtoupper($prefixed_query[1]);
+			
 			$table = $_POST['tb_prefix'].$prefixed_query[4];
 
 			if($prefixed_query[1] == 'CREATE TABLE')

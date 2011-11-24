@@ -14,4 +14,4 @@ UPDATE `checks` SET `func` = 'list($width, $height) = BasicFunctions::getImageWi
 # More details at http://atutor.ca/atutor/mantis/view.php?id=4816
 # since 1.3
 
-Update `subgroup_checks` SET `check_id` = 213 WHERE `subgroup_id` = 75 AND `check_id` = 63;
+UPDATE `subgroup_checks` SET `check_id` = 213 WHERE `subgroup_id` = 75 AND `check_id` = 63;
