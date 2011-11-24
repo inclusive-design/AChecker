@@ -259,7 +259,7 @@ class LanguageManager {
 	// public
 	// import language pack from specified file
 	// return imported AChecker version if it does not match with the current version
-	function import($filename) {
+	function import($filename, $ignore_version = false) {
 		require_once(AC_INCLUDE_PATH . 'lib/pclzip.lib.php');
 
 		$import_path = AC_TEMP_DIR . 'import/';
@@ -270,7 +270,7 @@ class LanguageManager {
 		}
 		
 		// import
-		$rtn = $this->import_from_path($import_path);
+		$rtn = $this->import_from_path($import_path, $ignore_version);
 		
 		// the achecker version from the imported language pack does not match with the current version
 		// the array of ("imported version", "import path") is returned
@@ -278,6 +278,8 @@ class LanguageManager {
 		
 		// remove uploaded zip file
 		@unlink($filename);
+		
+		return true;
 	}
 
 	// public
