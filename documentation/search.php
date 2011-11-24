@@ -16,9 +16,14 @@ include(AC_INCLUDE_PATH.'vitals.inc.php');
 include_once(AC_INCLUDE_PATH.'handbook_pages.inc.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 
+if ($missing_lang) {
+	$html_lang = DEFAULT_LANGUAGE_CODE;
+} else { 
+	$html_lang = $req_lang;
+}
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html lang="<?php if ($missing_lang) { echo DEFAULT_LANGUAGE_CODE; } else { echo $req_lang; } ?>">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $html_lang; ?>" lang="<?php echo $html_lang; ?>)">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?php echo _AC('achecker_documentation'); ?></title>
