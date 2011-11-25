@@ -2865,6 +2865,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PASSWORD_LENGTH','P
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_PASSWORD_MISMATCH','Passwords did not match.','2009-01-09 13:41:06','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_REFERER_URI_NOT_MATCH','Referrer URL does NOT match.','2009-04-21 14:11:42','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_REMOVE_WRITE_PERMISSION','Please remove write permission from the listed files.','2009-06-22 14:49:02','error msg');
+INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SECRET_ERROR','Letters or numbers entered from the CAPTCHA image are incorrect. Try again.','2011-11-25 11:09:09','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SELECT_ONE_ITEM','Only <em>one</em> item must be selected.','2009-02-04 15:31:02','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SENDING_ERROR','There was an error sending the email message.','2009-01-16 13:14:08','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_ERROR_SEQUENCEID_NOT_GIVEN','No sequence ID is given.','2009-03-09 14:21:28','');
@@ -2947,6 +2948,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','add_privileges','Add Pri
 INSERT INTO `language_text` VALUES ('eng', '_template','add_subgroup','Add Subgroup','2009-04-08 10:09:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','all','All','2008-11-27 09:49:41','');
 INSERT INTO `language_text` VALUES ('eng', '_template','alter','Alter','2009-06-22 14:49:02','');
+INSERT INTO `language_text` VALUES ('eng', '_template','audible_captcha','Audible Version of CAPTCHA','2011-11-25 11:10:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','author','Author','2009-02-06 11:42:21','');
 INSERT INTO `language_text` VALUES ('eng', '_template','author_not_exist','[ Author no longer exists ]','2009-02-06 11:50:50','');
 INSERT INTO `language_text` VALUES ('eng', '_template','available_to','Available To','2009-06-22 14:49:01','');
@@ -3155,6 +3157,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','html_tag_text','Use lowe
 INSERT INTO `language_text` VALUES ('eng', '_template','html_validation_result','HTML Validation','2009-05-28 08:52:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','html_validator_disabled','HTML Validator is turned off. Enable it in \"Options\".','2011-02-01 10:22:12','');
 INSERT INTO `language_text` VALUES ('eng', '_template','html_validator_provided_by','<strong>Note: Results are provided by http://validator.w3.org/</strong>','2008-11-24 14:12:25','');
+INSERT INTO `language_text` VALUES ('eng', '_template','image_validation_text','In the above image there are numbers and/or letters displayed. Please type them into the following field. This helps ensure a live person is registering on this system.','2011-11-25 11:12:59','');
 INSERT INTO `language_text` VALUES ('eng', '_template','import','Import','2009-02-18 15:56:02','');
 INSERT INTO `language_text` VALUES ('eng', '_template','import_a_new_lang','Import a New Language','2009-02-24 13:58:06','');
 INSERT INTO `language_text` VALUES ('eng', '_template','info','Information','2009-03-06 11:29:10','');
@@ -3254,6 +3257,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','published_date','Publish
 INSERT INTO `language_text` VALUES ('eng', '_template','question','Question','2008-11-24 14:25:44','');
 INSERT INTO `language_text` VALUES ('eng', '_template','rationale','Rationale','2008-11-24 14:25:44','');
 INSERT INTO `language_text` VALUES ('eng', '_template','real_size_example_text','Real size example','2010-09-22 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_template','refresh_image','Refresh Image','2011-11-25 11:11:38','');
 INSERT INTO `language_text` VALUES ('eng', '_template','register','Register','2009-01-08 09:30:56','');
 INSERT INTO `language_text` VALUES ('eng', '_template','registration','Registration','2009-01-08 15:51:23','');
 INSERT INTO `language_text` VALUES ('eng', '_template','relative_directory','Directory is relative directory to AChecker root, for example: docs/images/ or tools/tests/. Leave empty if it is AChecker root directory.','2009-06-22 14:49:02','Updater');
