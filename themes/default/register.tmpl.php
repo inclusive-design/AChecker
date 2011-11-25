@@ -156,7 +156,7 @@ function encrypt_password()
 		</tr>
 		<?php }?>
 
-		<?php if (!$this->show_captcha): ?>
+		<?php if ($this->show_captcha) { ?>
 		<tr>
 			<td align="left">
 				<div class="required" title="<?php echo _AC('required_field'); ?>">*</div>
@@ -175,7 +175,7 @@ function encrypt_password()
 				<small>&middot; <?php echo _AC('image_validation_text'); ?></small>
 			</td>
 		</tr>
-		<?php endif; ?>
+		<?php } ?>
 
 		<tr>
 			<td colspan="2">

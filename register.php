@@ -104,6 +104,7 @@ $savant->assign('submit_button_text', _AC('register'));
 $savant->assign('show_user_group', false);
 $savant->assign('show_status', false);
 $savant->assign('show_password', true);
+$savant->assign('show_captcha', true);
 
 $savant->display('register.tmpl.php');
 

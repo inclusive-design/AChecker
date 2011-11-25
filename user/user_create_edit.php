@@ -123,6 +123,7 @@ $savant->assign('show_status', true);
 $savant->assign('all_user_groups', $userGroupsDAO->getAll());
 $savant->assign('title', _AC('create_edit_user'));
 $savant->assign('submit_button_text', _AC('save'));
+$savant->assign('show_captcha', false);
 
 $savant->display('register.tmpl.php');
 
