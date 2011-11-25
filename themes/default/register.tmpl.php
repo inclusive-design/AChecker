@@ -24,6 +24,8 @@
  *                 Set to false when admin edits existing user.
  * show_status: true/false. Indicates whether show section "status"
  *              Set to true when admin creates/edits user; set to false at new registration.
+ * show_captcha: true/false. Indicates whether show section "captcha"
+ *              Set to false when admin creates/edits user; set to true at new registration.
  * user_row: only need when edit existing user.
  * all_user_groups: display selections in dropdown list box "User Group"
  * title: page title
@@ -153,6 +155,27 @@ function encrypt_password()
 			<td align="left"><?php echo $this->user_row['web_service_id']; ?></td>
 		</tr>
 		<?php }?>
+
+		<?php if (!$this->show_captcha): ?>
+		<tr>
+			<td align="left">
+				<div class="required" title="<?php echo _AC('required_field'); ?>">*</div>
+				<label for="secret"><img src="<?php echo AC_INCLUDE_PATH; ?>securimage/securimage_show.php?sid=<?php echo md5(uniqid(time())); ?>" id="simage" align="left" /></label>
+				<a href="<?php echo AC_INCLUDE_PATH; ?>securimage/securimage_play.php" title="<?php echo _AC('audible_captcha'); ?>"><img src="<?php echo AC_INCLUDE_PATH; ?>securimage/images/audio_icon.gif" alt="<?php echo _AC('audible_captcha'); ?>" onclick="this.blur()" align="top" border="0"></a><br>
+				<a href="#" title="<?php echo _AC('refresh_image'); ?>" onclick="document.getElementById('simage').src = '<?php echo AC_INCLUDE_PATH; ?>securimage/securimage_show.php?sid=' + Math.random(); return false"><img src="<?php echo AC_INCLUDE_PATH; ?>securimage/images/refresh.gif" alt="<?php echo _AC('refresh_image'); ?>" onclick="this.blur()" align="bottom" border="0"></a>
+			</td>
+			<td align="left">
+				<input id="secret" name="secret" type="text" size="10" maxlength="6" value="" />
+				<input type="hidden" name="captcha_in_use" value="1" />
+			</td>
+		</tr>
+
+		<tr>
+			<td align="left" colspan="2">
+				<small>&middot; <?php echo _AC('image_validation_text'); ?></small>
+			</td>
+		</tr>
+		<?php endif; ?>
 
 		<tr>
 			<td colspan="2">

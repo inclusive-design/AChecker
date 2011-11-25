@@ -13,11 +13,14 @@
 
 define('AC_INCLUDE_PATH', 'include/');
 require (AC_INCLUDE_PATH.'vitals.inc.php');
+require (AC_INCLUDE_PATH."securimage/securimage.php");
 
 if (isset($_POST['cancel'])) {
 	header('Location: index.php');
 	exit;
 } else if (isset($_POST['submit'])) {
+	$has_error = false;
+	
 	if ($_SERVER['HTTP_REFERER'] <> AC_BASE_HREF.'register.php') exit;
 	
 	require_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
@@ -35,9 +38,19 @@ if (isset($_POST['cancel'])) {
 			else
 				$msg->addError($pwd_error);
 		}
+		$has_error = true;
+	} 
+	//CAPTCHA
+	if (isset($_POST['captcha_in_use']) && $_POST['captcha_in_use']){
+		$img = new Securimage();
+		$valid = $img->check($_POST['secret']);
+		if (!$valid) {
+			$has_error = true;
+			$msg->addError('SECRET_ERROR');
+		}
 	}
-	else
-	{
+	
+	if (!$has_error) {
 		$user_id = $usersDAO->Create(AC_USER_GROUP_USER,
                   $_POST['login'],
 		              $_POST['form_password_hidden'],
@@ -65,9 +78,7 @@ if (isset($_POST['cancel'])) {
 				$mail->Body    = _AC('email_confirmation_message', SITE_NAME, $confirmation_link)."\n\n";
 	
 				$mail->Send();
-			} 
-			else 
-			{
+			} else {
 				// auto login
 				$usersDAO->setLastLogin($user_id);
 				$_SESSION['user_id'] = $user_id;
