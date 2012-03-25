@@ -64,10 +64,27 @@ if (isset($_POST['submit']))
 	} 
 	else 
 	{
+		/*
 		if(!preg_match("/^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$/i", $_POST['email'])) 
 		{
 			$msg->addError('EMAIL_INVALID');
+		}*/
+		/*  filter_var used for php>5.2.0 which allows + symbol in email*/
+		if(PHP_MAJOR_VERSION>=5 && PHP_MINOR_VERSION>=2)
+		{
+			if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+			{
+				$msg->addError('EMAIL_INVALID');			
+			}				
 		}
+		else
+		{
+			if(!preg_match("/^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$/i", $_POST['email']))
+			{
+				$msg->addError('EMAIL_INVALID');
+			}		
+		}
+		
 		
 		$usersDAO = new UsersDAO();
 		$row = $usersDAO->getUserByEmail($_POST['email']);
