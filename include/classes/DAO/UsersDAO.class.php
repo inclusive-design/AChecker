@@ -545,7 +545,7 @@ class UsersDAO extends DAO {
 			$msg->addError('EMAIL_INVALID');
 		}
 		*/
-		/*  filter_var used for php>5.2.0 which allows + symbol in email */
+		/* Issue 4947  filter_var used for php>5.2.0 which allows + symbol in email */
 		if(PHP_MAJOR_VERSION>=5 && PHP_MINOR_VERSION>=2)
 		{
 			if(!filter_var($email, FILTER_VALIDATE_EMAIL))
