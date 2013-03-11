@@ -36,7 +36,7 @@ class RESTWebServiceOutput {
 	
 	// REST templates
 	var $rest_main =
-'<?xml version="1.0" encoding="ISO-8859-1"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE resultset[
 <!ELEMENT resultset (summary,results)>
 <!ELEMENT summary (status,sessionID,NumOfErrors,NumOfLikelyProblems,NumOfPotentialProblems,guidelines)>
@@ -65,6 +65,7 @@ class RESTWebServiceOutput {
 <!ENTITY amp "&#38;#38;">
 <!ENTITY apos "&#39;">
 <!ENTITY quot "&#34;">
+<!ENTITY nbsp " " >
 ]>
 <resultset>
   <summary>
@@ -225,7 +226,7 @@ class RESTWebServiceOutput {
 			                            $error['check_id'], 
 			                            htmlentities(_AC("suggest_improvements")),
 			                            htmlentities(_AC($row_check['err'])),
-			                            htmlentities($error["html_code"]),
+			                            htmlentities(utf8_decode($error["html_code"])),
 			                            $repair,
 			                            $decision),
 			                      $this->rest_result);
@@ -340,7 +341,7 @@ class RESTWebServiceOutput {
 	public static function generateSuccessRpt()
 	{
 		$rest_success = 
-'<?xml version="1.0" encoding="ISO-8859-1"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <summary>
   <status>success</status>
 </summary>
