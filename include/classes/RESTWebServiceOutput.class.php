@@ -65,7 +65,7 @@ class RESTWebServiceOutput {
 <!ENTITY amp "&#38;#38;">
 <!ENTITY apos "&#39;">
 <!ENTITY quot "&#34;">
-<!ENTITY nbsp " " >
+<!ENTITY nbsp "&#160" >
 ]>
 <resultset>
   <summary>
