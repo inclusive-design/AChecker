@@ -51,7 +51,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
         </li>
       </ul>
     </div>
-    
+
     <p id="skip"></p>
 
 <div id="validation">
@@ -72,12 +72,18 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <tr>
   <th>uri</th>
   <td>The encoded URL of the document to validate.</td>
-  <td>None, must be given.</td>
+  <td>None, either uri or html must be given.</td>
+</tr>
+
+<tr>
+  <th>html</th>
+  <td>A chunk of HTML to validate.</td>
+  <td>None.</td>
 </tr>
 
 <tr>
   <th>id</th>
-  <td>The "Web Service ID" generated once successfully registering into AChecker. 
+  <td>The "Web Service ID" generated once successfully registering into AChecker.
   This ID is a 40 characters long string. It can always be retrieved from user's "Profile" page.</td>
   <td>None, must be given.</td>
 </tr>
@@ -99,8 +105,8 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <tr>
   <th>output</th>
-  <td>Triggers the various outputs formats of the validator. If unset, the usual 
-  <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#html_sample_response_validation">HTML format</a> 
+  <td>Triggers the various outputs formats of the validator. If unset, the usual
+  <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#html_sample_response_validation">HTML format</a>
   will be sent. If set to rest, <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#rest_sample_response_validation">
   the REST interface</a> will be triggered.</td>
   <td>html. Or either one of these values: html or rest</td>
@@ -117,7 +123,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <span style="font-weight: bold">Sample validation request</span>
 <p><?php echo AC_BASE_HREF; ?>checkacc.php?uri=http%3A%2F%2Fatutor.ca&
 id=888ca9e3f856baa0120755ecd8ffae6be3142029&output=html&guide=STANCA,WCAG2-AA&offset=10</p>
-<p>Goal: Validate URI <code>http://atutor.ca</code> against guidelines "Stanca Act" and "Wcag 2.0 L2". 
+<p>Goal: Validate URI <code>http://atutor.ca</code> against guidelines "Stanca Act" and "Wcag 2.0 L2".
 Ignore the first 10 lines of html content from http://atutor.ca. Returns validation report
 in html format.</p>
 
@@ -125,7 +131,7 @@ in html format.</p>
 <span style="font-weight:bold">Success Response</span>
 <p>A REST success response for the validation of a document (invalid) will look like this:</p>
 
-<pre style="background-color:#F7F3ED;"> 
+<pre style="background-color:#F7F3ED;">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;resultset&gt;
   &lt;summary&gt;
@@ -153,7 +159,7 @@ in html format.</p>
     &lt;decisionFail&gt;encoded string&lt;/decisionFail&gt;
     &lt;decisionMade&gt;string&lt;/decisionMade&gt;
     &lt;decisionMadeDate&gt;string&lt;/decisionMadeDate&gt;
-    &lt;/result&gt; 
+    &lt;/result&gt;
     ...
   &lt;/results&gt;
 &lt;/resultset&gt;
@@ -162,7 +168,7 @@ in html format.</p>
 <br />
 <span style="font-weight:bold">Error Response</span>
 
-<pre style="background-color:#F7F3ED;"> 
+<pre style="background-color:#F7F3ED;">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;errors&gt;
   &lt;totalCount&gt;number&lt;/totalCount&gt;
@@ -188,7 +194,7 @@ in html format.</p>
 
 <tr>
   <th>summary</th>
-  <td>The summary element of the validation response. Encloses validation summary information, 
+  <td>The summary element of the validation response. Encloses validation summary information,
       the numbers of different types of problems and the title of guidelines validating against.</td>
 </tr>
 
@@ -202,7 +208,7 @@ in html format.</p>
 
 <tr>
   <th>sessionID</th>
-  <td>The same ID must be sent back in make/reverse decisions request in response to the validation request. 
+  <td>The same ID must be sent back in make/reverse decisions request in response to the validation request.
       This is to ensure the make/reverse decision request comes from the authenticated source.</td>
 </tr>
 
@@ -321,7 +327,7 @@ in html format.</p>
 
 <h2 id="html_sample_response_validation">Sample HTML validation response</h2><br/>
 <span style="font-weight:bold">Success Response</span>
-<pre style="background-color:#F7F3ED;"> 
+<pre style="background-color:#F7F3ED;">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE style PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
 &lt;style type="text/css"&gt;
@@ -364,19 +370,19 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 
 <span style="font-weight: bold">Sample result detail of the check that decision has been made</span>
 
-<pre style="background-color:#F7F3ED;"> 
+<pre style="background-color:#F7F3ED;">
 &lt;li class="msg_info"&gt;
   &lt;span class="err_type"&gt;&lt;img src="http://localhost/achecker/images/info.png" alt="Info" title="Info" width="15" height="15" /&gt;&lt;/span&gt;
   &lt;em&gt;Line 247, Column 9&lt;/em&gt;:
   &lt;span class="msg"&gt;
   &lt;a href="http://localhost/achecker/checker/suggestion.php?id=197"
-              onclick="popup('http://localhost/achecker/checker/suggestion.php?id=197'); return false;" 
+              onclick="popup('http://localhost/achecker/checker/suggestion.php?id=197'); return false;"
               title="Suggest improvements on this error message" target="_new"&gt;Anchor text may not identify the link destination.&lt;/a&gt;
   &lt;/span&gt;
   &lt;pre&gt;&lt;code class="input"&gt;&lt;a href=&quot;/contact.php&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
   &lt;p class="helpwanted"&gt;
   &lt;/p&gt;
-         
+
   &lt;table&gt;
     &lt;tr&gt;
       &lt;td&gt;
@@ -401,19 +407,19 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 </pre>
 
 <span style="font-weight: bold">Sample result detail of the check that decision has NOT been made</span>
-<pre style="background-color:#F7F3ED;"> 
+<pre style="background-color:#F7F3ED;">
 &lt;li class="msg_info"&gt;
   &lt;span class="err_type"&gt;&lt;img src="http://localhost/achecker/images/info.png" alt="Info" title="Info" width="15" height="15" /&gt;&lt;/span&gt;
   &lt;em&gt;Line 246, Column 9&lt;/em&gt;:
   &lt;span class="msg"&gt;
   &lt;a href="http://localhost/achecker/checker/suggestion.php?id=197"
-        onclick="popup('http://localhost/achecker/checker/suggestion.php?id=197'); return false;" 
+        onclick="popup('http://localhost/achecker/checker/suggestion.php?id=197'); return false;"
         title="Suggest improvements on this error message" target="_new"&gt;Anchor text may not identify the link destination.&lt;/a&gt;
   &lt;/span&gt;
   &lt;pre&gt;&lt;code class="input"&gt;&lt;a href=&quot;/archive.php&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
   &lt;p class="helpwanted"&gt;
   &lt;/p&gt;
-         
+
   &lt;table class="form-data"&gt;
     &lt;tr&gt;
       &lt;th align="left"&gt;Decision:&lt;/th&gt;
@@ -434,7 +440,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 
 <br/>
 <span style="font-weight:bold">Error Response</span><br/>
-<pre style="background-color:#F7F3ED;"> 
+<pre style="background-color:#F7F3ED;">
 &lt;div id="error"&gt;
   &lt;h4&gt;The following errors occurred:&lt;/h4&gt;
     &lt;ul&gt;
@@ -501,7 +507,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 
 <tr>
   <th>id</th>
-  <td>The "Web Service ID" generated once successfully registering into AChecker. 
+  <td>The "Web Service ID" generated once successfully registering into AChecker.
   This ID is a 40 characters long string. It can always be retrieved from user's "Profile" page.</td>
   <td>None, must be given.</td>
 </tr>
@@ -515,8 +521,8 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 
 <tr>
   <th>output</th>
-  <td>Triggers the various outputs formats of the validator. If unset, the usual 
-  <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#html_sample_response_validation"">HTML format</a> 
+  <td>Triggers the various outputs formats of the validator. If unset, the usual
+  <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#html_sample_response_validation"">HTML format</a>
   will be sent. If set to rest, <a href="<?php echo AC_BASE_HREF.'documentation/web_service_api.php'; ?>#rest_sample_response_validation">
   the REST interface</a> will be triggered.</td>
   <td>html. Or either one of these values: html or rest</td>
@@ -524,16 +530,16 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 
 <tr>
   <th>[sequenceID]</th>
-  <td>The sequence ID in the validation response that identifies each likely or potential problems. In REST format, 
-  it's the value of element &lt;sequenceID&gt;. In HTML format, it's the key value of radio button array 
+  <td>The sequence ID in the validation response that identifies each likely or potential problems. In REST format,
+  it's the value of element &lt;sequenceID&gt;. In HTML format, it's the key value of radio button array
   d[5_2_54], d[6_5_5] ... 5_2_54, 6_5_5 is the [sequenceID]. (This value is red-highlighted in above html sample response.)</td>
-  <td>None. This parameter can appear as many times as user desires. The value of [sequenceID] can be one of 
+  <td>None. This parameter can appear as many times as user desires. The value of [sequenceID] can be one of
   these: <br/>P : pass <br/>F : fail<br/>N : no decision</td>
 </tr>
 
 <tr>
   <th>reverse</th>
-  <td>When this parameter is presented and set to "true", the decisions on sequenceIDs sent in the request are all set to 
+  <td>When this parameter is presented and set to "true", the decisions on sequenceIDs sent in the request are all set to
   "No Decision" (N) no matter what values are given for the sequenceIDs in the request.</td>
   <td>None. When present, must be value "true"</td>
 </tr>
@@ -555,7 +561,7 @@ has not been made". Return response in REST format.</p>
 <span style="font-weight:bold">Success Response</span>
 <p>A REST success response for the make/reverse decision request will look like this:</p>
 
-<pre style="background-color:#F7F3ED;"> 
+<pre style="background-color:#F7F3ED;">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;summary&gt;
   &lt;status&gt;success&lt;/status&gt;
@@ -565,7 +571,7 @@ has not been made". Return response in REST format.</p>
 <br />
 <span style="font-weight:bold">Error Response</span>
 
-<pre style="background-color:#F7F3ED;"> 
+<pre style="background-color:#F7F3ED;">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;errors&gt;
   &lt;totalCount&gt;number&lt;/totalCount&gt;
@@ -619,7 +625,7 @@ has not been made". Return response in REST format.</p>
 <h2 id="html_sample_response_decision">Sample HTML validation response</h2><br/>
 <span style="font-weight:bold">Success Response</span>
 
-<pre style="background-color:#F7F3ED;"> 
+<pre style="background-color:#F7F3ED;">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;div id="success"&gt;Success&lt;/div&gt;
 </pre>
