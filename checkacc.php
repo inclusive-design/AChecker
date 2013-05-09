@@ -16,7 +16,7 @@
  * Expected parameters:
  * id: to identify the user. must be given
  * uri: The URL of the document to validate. must be given
- * guide: The guidelines to validate against. 
+ * guide: The guidelines to validate against.
  *        can be multiple guides, separated by comma (,)
  * output: html or rest
  * offset: The line offset on the html output from uri where the validation starts.
@@ -35,22 +35,23 @@ include_once(AC_INCLUDE_PATH. 'classes/HTMLWebServiceOutput.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/RESTWebServiceOutput.class.php');
 
 $uri = trim(urldecode($_REQUEST['uri']));
+$validate_content = trim(urldecode($_REQUEST['html']));
 $web_service_id = trim($_REQUEST['id']);
 $guide = trim(strtolower($_REQUEST['guide']));
 $output = trim(strtolower($_REQUEST['output']));
 $offset = intval($_REQUEST['offset']);
 
 // initialize defaults for the ones not set or not set right but with default values
-if ($output <> 'html' && $output <> 'rest') 
+if ($output <> 'html' && $output <> 'rest')
 	$output = DEFAULT_WEB_SERVICE_OUTPUT;
 // end of initialization
 
 // validate parameters
-if ($uri == '')
+if ($uri == '' && $validate_content == '')
 {
 	$errors[] = 'AC_ERROR_EMPTY_URI';
 }
-else
+else if (empty($validate_content))
 {
 	if (Utility::getValidURI($uri) === false) $errors[] = 'AC_ERROR_INVALID_URI';
 }
@@ -65,7 +66,7 @@ else
 	$user_row = $usersDAO->getUserByWebServiceID($web_service_id);
 
 	if (!$user_row) $errors[] = 'AC_ERROR_INVALID_WEB_SERVICE_ID';
-	
+
 	$user_id = $user_row['user_id'];
 }
 
@@ -78,7 +79,7 @@ if (is_array($errors))
 	} else {
 		echo HTMLRpt::generateErrorRpt($errors);
 	}
-	
+
 	exit;
 }
 
@@ -106,7 +107,9 @@ $user_link_id = $userLinksDAO->getUserLinkID($user_id, $uri, $gids);
 $userLinksDAO->setLastSessionID($user_link_id, Utility::getSessionID());
 
 // validating uri content
-$validate_content = @file_get_contents($uri);
+if (empty($validate_content)) {
+	$validate_content = @file_get_contents($uri);
+}
 
 if (isset($validate_content))
 {
@@ -115,10 +118,10 @@ if (isset($validate_content))
 	$aValidator->validate();
 	$errors = $aValidator->getValidationErrorRpt();
 
-	// save errors into user_decisions 
+	// save errors into user_decisions
 //	$userDecisionsDAO = new UserDecisionsDAO();
 //	$userDecisionsDAO->saveErrors($user_link_id, $errors);
-	
+
 	if ($output == 'html')
 	{ // generate html output
 		$htmlWebServiceOutput = new HTMLWebServiceOutput($aValidator, $user_link_id, $gids);
