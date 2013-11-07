@@ -22,7 +22,7 @@
 class DAO {
 
 	// private
-	static private $db;     // global database connection
+    private $db;     // global database connection
 	
 	function DAO()
 	{

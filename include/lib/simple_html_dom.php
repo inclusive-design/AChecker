@@ -268,7 +268,8 @@ class simple_html_dom_node {
         $pattern = "/([A-Za-z0-9_\\-:]*)(?:\#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)[\"']?([^\"']*)[\"']?)?])?/";
 
         // handle multiple selectors
-        $selector_list = split(',', $selector_string);
+        //$selector_list = split(',', $selector_string);
+        $selector_list = preg_split('/,/', $selector_string);
         $selectors = array();
 
         foreach($selector_list as $selector) {
