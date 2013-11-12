@@ -322,7 +322,7 @@ in html format.</p>
 <h2 id="html_sample_response_validation">Sample HTML validation response</h2><br/>
 <span style="font-weight:bold">Success Response</span>
 <pre style="background-color:#F7F3ED;"> 
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
 &lt;!DOCTYPE style PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
 &lt;style type="text/css"&gt;
 ul {font-family: Arial; margin-bottom: 0px; margin-top: 0px; margin-right: 0px;}

@@ -457,10 +457,10 @@ class UsersDAO extends DAO {
 	 */
 	public function setPassword($userID, $password)
 	{
-	    global $addslashes;
+	    global $addslahes;
 	    
 	    $userID = intval($userID);
-	    $password = $addslashes($password);
+	    $password = $addslahes($password);
 	    
 		$sql = "Update ".TABLE_PREFIX."users SET password='".$password."' WHERE user_id='".$userID."'";
 		return $this->execute($sql);
