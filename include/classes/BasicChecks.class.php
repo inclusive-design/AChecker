@@ -24,7 +24,7 @@ include_once(AC_INCLUDE_PATH. 'classes/DAO/LangCodesDAO.class.php');
 define("DEFAULT_FONT_SIZE",12);
 define("DEFAULT_FONT_FORMAT","pt");
 //MB added for check 245
-include_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
+//include_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 class BasicChecks {
 	/**
 	* cut out language code from given $lang
@@ -116,7 +116,7 @@ class BasicChecks {
 				$is_data_table = true;
                         //MB 
                         //do not check child table
-			elseif($child->tag != "table") 
+			else if($child->tag != "table") 
 				BasicChecks::isDataTable($child);
 		}
 	}
@@ -1055,7 +1055,7 @@ class BasicChecks {
 			   l'estrazione degli elementi: ad ogni lettura prendo da '}' a '}' */
 		$css_content = '}' . $css_content;
 		$i = 0;
-		//while ( ` ( '}([^}]*)}', $css_content, $elemento ) ) {
+		//while ( eregi ( '}([^}]*)}', $css_content, $elemento ) ) {
 		while ( preg_match( '/}([^}]*)}/i', $css_content, $elemento ) ) {
 			$elemento [1] = $elemento [1] . '}';
 			$css_content = substr ( $css_content, strlen ( $elemento [1] ) );
