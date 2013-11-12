@@ -10,6 +10,7 @@
 /* as published by the Free Software Foundation.                        */
 /************************************************************************/
 // $Id$
+
 /**
 * Basic Checks.class.php
 * Class for accessibility validate
@@ -19,12 +20,13 @@
 * @author	Cindy Qi Li
 * @package checker
 */
+
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 include_once(AC_INCLUDE_PATH. 'classes/DAO/LangCodesDAO.class.php');
+
 define("DEFAULT_FONT_SIZE",12);
 define("DEFAULT_FONT_FORMAT","pt");
-//MB added for check 245
-include_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
+
 class BasicChecks {
 	/**
 	* cut out language code from given $lang
@@ -35,6 +37,7 @@ class BasicChecks {
 		$words = explode("-", $lang);
 		return trim($words[0]);
 	}
+
 	/**
 	* return array of all the 2-letter & 3-letter language codes with direction 'rtl'
 	*/
@@ -89,6 +92,7 @@ class BasicChecks {
 	public static function isTextInSearchString($text, $check_id, $e)
 	{
 		$text = strtolower(trim($text));
+
 		$checksDAO = new ChecksDAO();
 		$row = $checksDAO->getCheckByID($check_id);
 		
@@ -100,6 +104,7 @@ class BasicChecks {
 			return BasicChecks::inSearchString($text, $search_strings);
 		}
 	}
+
 	/**
 	* Makes a guess about the table type.
 	* Returns true if this should be a data table, false if layout table.
@@ -107,16 +112,15 @@ class BasicChecks {
 	public static function isDataTable($e)
 	{
 		global $is_data_table;
+		
 		// "table" element containing <th> is considered a data table
 		if ($is_data_table) return;
-                
+
 		foreach ($e->children() as $child)
 		{
 			if ($child->tag == "th") 
 				$is_data_table = true;
-                        //MB 
-                        //do not check child table
-			elseif($child->tag != "table") 
+			else 
 				BasicChecks::isDataTable($child);
 		}
 	}
@@ -146,6 +150,7 @@ class BasicChecks {
 		foreach($e->children() as $child)
 			if ($child->tag == $tag) $num++;
 			else $num += BasicChecks::getNumOfTagRecursiveInChildren($child, $tag);
+
 		return $num;
 	}
 	
@@ -153,7 +158,7 @@ class BasicChecks {
 	* Check recursively if there are duplicate $attr defined in children of $e
 	* set global var hasDuplicateAttribute to true if there is, otherwise, set it to false
 	*/
-	public static function hasDuplicateAttribute($e, $attr, $id_array)
+	public static function hasDuplicateAttribute($e, $attr, &$id_array)
 	{
 		global $has_duplicate_attribute;
 		
@@ -171,6 +176,7 @@ class BasicChecks {
 			}
 		}
 	}
+
 	/**
 	* Get number of header rows and number of rows that have header column
 	* return array of (num_of_header_rows, num_of_rows_with_header_col)
@@ -190,6 +196,7 @@ class BasicChecks {
 		
 		return array($num_of_header_rows, $num_of_rows_with_header_col);
 	}
+
 	/**
 	 * called by BasicFunctions::hasFieldsetOnMultiCheckbox()
 	 * Check if form has "fieldset" and "legend" to group multiple checkbox buttons.
@@ -222,6 +229,7 @@ class BasicChecks {
 		
 		return true;
 	}
+
 	/**
 	* check if value in the given attribute is a valid language code
 	* return true if valid, otherwise, return false
@@ -235,6 +243,7 @@ class BasicChecks {
 		
 		$code = BasicChecks::cutOutLangCode($code);
 		$langCodesDAO = new LangCodesDAO();
+
 		if (strlen($code) == 2) 
 		{
 			$rows = $langCodesDAO->GetLangCodeBy2LetterCode($code);
@@ -247,8 +256,10 @@ class BasicChecks {
 		{
 			return false;
 		}
+
 		return (is_array($rows));
 	}
+
 	/**
 	* Return file location based on base href or uri
 	* return file itself if both base href and uri are empty.
@@ -306,6 +317,7 @@ class BasicChecks {
 		
 		return $file;
 	}
+
 	/**
 	Check if the luminosity contrast ratio between $color1 and $color2 is at least 5:1
 	Input: color values to compare: $color1 & $color2. Color value can be one of: rgb(x,x,x), #xxxxxx, colorname
@@ -314,6 +326,7 @@ class BasicChecks {
 	public static function has_good_contrast_waiert($color1, $color2)
 	{
 		include_once (AC_INCLUDE_PATH . "classes/ColorValue.class.php");
+
 		$color1 = new ColorValue($color1);
 		$color2 = new ColorValue($color2);
 		
@@ -327,12 +340,15 @@ class BasicChecks {
 		$colorR2 = $color2->getRed();
 		$colorG2 = $color2->getGreen();
 		$colorB2 = $color2->getBlue();
+
 		$brightness1 = (($colorR1 * 299) + 
 							($colorG1 * 587) + 
 							($colorB1 * 114)) / 1000;
+
 		$brightness2 = (($colorR2 * 299) + 
 							($colorG2 * 587) + 
 							($colorB2 * 114)) / 1000;
+
 		$difference = 0;
 		if ($brightness1 > $brightness2)
 		{
@@ -342,10 +358,12 @@ class BasicChecks {
 		{
 			$difference = $brightness2 - $brightness1;
 		}
+
 		if ($difference < 125)
 		{
 			return false;
 		}
+
 		// calculate the color difference
 		$difference = 0;
 		// red
@@ -357,6 +375,7 @@ class BasicChecks {
 		{
 			$difference = $colorR2 - $colorR1;
 		}
+
 		// green
 		if ($colorG1 > $colorG2)
 		{
@@ -366,6 +385,7 @@ class BasicChecks {
 		{
 			$difference += $colorG2 - $colorG1;
 		}
+
 		// blue
 		if ($colorB1 > $colorB2)
 		{
@@ -375,6 +395,7 @@ class BasicChecks {
 		{
 			$difference += $colorB2 - $colorB1;
 		}
+
 		return ($difference > 499);
 	}	
 	
@@ -410,7 +431,9 @@ class BasicChecks {
 	public static function valid_lang_code($code)
 	{
 		global $db;
+
 		$code = BasicChecks::cut_out_lang_code($code);
+
 		$sql = "SELECT COUNT(*) cnt FROM ". TABLE_PREFIX ."lang_codes WHERE ";
 		
 		if (strlen($code) == 2) $sql .= "code_2letters = '".$code ."'";
@@ -419,6 +442,7 @@ class BasicChecks {
 		
 		$result	= mysql_query($sql, $db) or die(mysql_error());
 		$row = mysql_fetch_assoc($result);
+
 		return ($row["cnt"] > 0);
 	}
 	
@@ -432,6 +456,7 @@ class BasicChecks {
 	{
 		// get html language
 		$e_htmls = $content_dom->find("html");
+
 		foreach ($e_htmls as $e_html)
 		{
 			if (isset($e_html->attr["xml:lang"])) 
@@ -458,6 +483,7 @@ class BasicChecks {
 	public static function get_luminosity_contrast_ratio($color1, $color2)
 	{
 		include_once (AC_INCLUDE_PATH . "classes/ColorValue.class.php");
+
 		$color1 = new ColorValue($color1);
 		$color2 = new ColorValue($color2);
 		
@@ -467,6 +493,7 @@ class BasicChecks {
 		$linearR1 = $color1->getRed()/255;
 		$linearG1 = $color1->getRed()/255;
 		$linearB1 = $color1->getRed()/255;
+
 		$lum1 = (pow ($linearR1, 2.2) * 0.2126) +
 			(pow ($linearG1, 2.2) * 0.7152) +
 			(pow ($linearB1, 2.2) * 0.0722) + .05;
@@ -474,20 +501,26 @@ class BasicChecks {
 		$linearR2 = $color2->getRed()/255;
 		$linearG2 = $color2->getRed()/255;
 		$linearB2 = $color2->getRed()/255;
+
 		$lum2 = (pow ($linearR2, 2.2) * 0.2126) +
 			(pow ($linearG2, 2.2) * 0.7152) +
 			(pow ($linearB2, 2.2) * 0.0722) + .05;
 			
 		$ratio = max ($lum1, $lum2) / min($lum1, $lum2);
+
 		// round the ratio to 2 decimal places
 		$factor = pow(10,2);
+
 		// Shift the decimal the correct number of places
 		// to the right.
 		$val = $ratio * $factor;
+
 		// Round to the nearest integer.
 		$tmp = round($val);
+
 		// Shift the decimal the correct number of places back to the left.
 		$ratio2 = $tmp / $factor;
+
 		return $ratio2;
 	}
 	
@@ -495,7 +528,7 @@ class BasicChecks {
 	* Check recursively if there are duplicate $attr defined in children of $e
 	* set global var $has_duplicate_attribute to true if there is, otherwise, set it to false
 	*/
-	public static function has_duplicate_attribute($e, $attr, $id_array)
+	public static function has_duplicate_attribute($e, $attr, &$id_array)
 	{
 		global $has_duplicate_attribute;
 		
@@ -560,6 +593,7 @@ class BasicChecks {
 			if (strtolower(trim($e_input->attr["type"])) == "radio")
 				array_push($radio_buttons, $e_input);
 		}
+
 		for ($i=0; $i < count($radio_buttons); $i++)
 		{
 		  for ($j=0; $j < count($radio_buttons); $j++)
@@ -583,6 +617,7 @@ class BasicChecks {
 		
 		// "table" element containing <th> is considered a data table
 		if ($is_data_table) return;
+
 		foreach ($e->children() as $child)
 		{
 			if ($child->tag == "th") 
@@ -601,6 +636,7 @@ class BasicChecks {
 	{
 		// 1. The element $e has a "title" attribute
 		if (trim($e->attr["title"]) <> "") return true;
+
 		// 2. The element $e is contained by a "label" element
 		if ($e->parent()->tag == "label")
 		{
@@ -647,25 +683,27 @@ class BasicChecks {
 					$next_header = $e;
 			}
 		}
+
 		if (isset($next_header) && !in_array($next_header->tag, $not_in_array))
 			return false;
 		else
 			return true;
 	}
 	
-	public static function find_all_headers($elements, $header_array)
+	public static function find_all_headers($elements, &$header_array)
 	{
 		foreach ($elements as $e)
 		{
 			if (substr($e->tag, 0, 1) == "h" and intval(substr($e->tag, 1)) <> 0)
 				array_push($header_array, $e);
 			
-			BasicChecks::find_all_headers($e->children(), $header_array);
+			BasicChecks::find_all_headers($e->children(), &$header_array);
 		}
 		
 		return $header_array;
 	}
 	
+
 	
 	/**
 	* Check recursively to find the number of children in $e with tag $child_tag
@@ -678,9 +716,12 @@ class BasicChecks {
 		foreach($e->children() as $child)
 			if ($child->tag == $tag) $num++;
 			else $num += BasicChecks::count_children_by_tag($child, $tag);
+
 		return $num;
 	}
 	
+
+
 	/**
 	* Get number of header rows and number of rows that have header column
 	* return array of (num_of_header_rows, num_of_rows_with_header_col)
@@ -701,6 +742,7 @@ class BasicChecks {
 		return array($num_of_header_rows, $num_of_rows_with_header_col);
 	}
 		
+
 	//CSS basic checks
 	public static function getSiteUri($uri){
 			
@@ -725,6 +767,7 @@ class BasicChecks {
 	//rimuove tutti gli elementi figlil figli di $e e restituisce il contenuto sotto forma di "plaintext"
 	public static function remove_children($e)
 	{
+
 		$contenuto_obj=$e->plaintext;
 		$figli=$e->children();
 		
@@ -743,7 +786,6 @@ class BasicChecks {
 	}	
 	
 	
-	
 	/*
 	* Search and returns the value of a property 'CSS (the value between "" and ";")
 	* Searches in style and inline style sheet (id, class, property name)
@@ -753,12 +795,14 @@ class BasicChecks {
 	* Esegue la ricerca nello stile inline e nel foglio di stile (id, class, nome proprietà)
 	* Prende come parametri l'elemento e il nome della proprieta'
 	*/
-	public static function get_p_css($e, $p, $pseudoClass = null) {
+	public static function get_p_css($e, $p) {
+		
+		$inline = "";
 		
 		//controllo sullo stile inline
 		if (isset ( $e->attr ["style"] )) {
 			$inline = BasicChecks::GetElementStyleInline ( $e->attr ["style"], $p );
-                        //verifico "!important"
+			//verifico "!important"
 			$posizione = stripos ( $inline, "!important" );
 			if ($posizione !== false) {
 				//tolgo "!important" e ritorno il valore della proprietà
@@ -769,37 +813,28 @@ class BasicChecks {
 				return $inline;
 			}
 		}
+		
 		//Internal control over the style and the external styles
 		//$best: will store 'the value of the priority rule that has'more' contained in the high-style indoor / outdoor
 		//about the item and its $ e '$ p
+
 		//controllo sullo stile interno e sugli stili esterni
 		//$best: memorizzera' il valore della regola che ha priorita' piu' alta contenuta nello stile interno/esterno
 		//relativamente all'elemento $e e alla proprita' $p
 		$best = null;
 		
 		//id
-		if (isset ( $e->id )) {
-			$id = BasicChecks::GetElementStyleId ( $e, $e->id, $p, $pseudoClass );
+		if (isset ( $e->attr ["id"] )) {
+			$id = BasicChecks::GetElementStyleId ( $e, $e->attr ["id"], $p );
 			$best = BasicChecks::getPriorityInfo ( $best, $id );
 		}
-	
-		//class
-		if (isset ( $e->class )) {
-                    
-                        $classes = trim($e->class);
-                        //removing doble spaces
-                        while (stripos($classes, '  '))
-                            $classes = str_replace('  ', ' ', $classes);
-                        $classes = explode(' ',$classes);
-                        for($cClass = 0; $res == false,$cClass < sizeof($classes); $cClass++)
-                        {
-                            $class = BasicChecks::GetElementStyleClass ( $e, $classes[$cClass], $p, $pseudoClass );
-                            $best = BasicChecks::getPriorityInfo ( $best, $class );
-                        }
+		//classe
+		if (isset ( $e->attr ["class"] )) {
+			$class = BasicChecks::GetElementStyleClass ( $e, $e->attr ["class"], $p );
+			$best = BasicChecks::getPriorityInfo ( $best, $class );
 		}
-		
 		//tag
-		$tag = BasicChecks::GetElementStyle ( $e, $e->tag, $p, $pseudoClass );
+		$tag = BasicChecks::GetElementStyle ( $e, $e->tag, $p );
 		
 		$best = BasicChecks::getPriorityInfo ( $best, $tag );
 		
@@ -813,6 +848,7 @@ class BasicChecks {
 		//nello stile interno o esterno non e' dichiarata la proprieta' $p per l'elemento $e
 		//se quella dichiarata in * è important, ma quella dello stile i o e non lo e'
 		
+
 		$best_all = BasicChecks::GetElementStyle ( $e, '*', $p );
 		
 		if ($best == null || (stripos ( $best ["valore"], "!important" ) === false && stripos ( $best_all ["valore"], "!important" ) !== false))
@@ -827,6 +863,7 @@ class BasicChecks {
 		if ($inline != null && $inline != "") {
 			if (stripos ( $best ["valore"], "!important" ) === false) //non c'e' !important nel foglio di stile
 				
+
 				return $inline;
 		}
 		// inline style if there is not $ p 'returns the value of $ best
@@ -837,6 +874,8 @@ class BasicChecks {
 		
 		//css array containing the CSS rules are printed in output
 		//array css contiene le regole dei css che verranno stampate in output
+		
+
 		global $array_css;
 		
 		if (isset ( $best ["css_rule"] )) {
@@ -862,101 +901,142 @@ class BasicChecks {
 			if ($same == false) array_push ( $array_css, $best ["css_rule"] );
 		}
 		
+		return $best ["valore"];
+	
+	}
+	
+	public static function get_p_css_a($e, $p, $link_sel) {
 		
+		// $ best: will store 'the value of the priority rule that has'more' contained in the high-style, indoor / outdoor
+		// relative to the element $ e '$ p
+		//
+		//$best: memorizzera' il valore della regola che ha priorita' piu' alta contenuta nello stile interno/esterno,
+		//relativamente all'elemento $e e alla proprita' $p
+		$best = null;
+		
+		//id
+		if (isset ( $e->attr ["id"] )) {
+			$id = BasicChecks::GetElementStyleId ( $e, $e->attr ["id"] . ":" . $link_sel, $p );
+			$best = BasicChecks::getPriorityInfo ( $best, $id );
+		}
+		//classe
+		if (isset ( $e->attr ["class"] )) {
+			$class = BasicChecks::GetElementStyleClass ( $e, $e->attr ["class"] . ":" . $link_sel, $p );
+			$best = BasicChecks::getPriorityInfo ( $best, $class );
+		}
+		//tag
+		$tag = BasicChecks::GetElementStyle ( $e, $e->tag . ":" . $link_sel, $p );
+		$best = BasicChecks::getPriorityInfo ( $best, $tag );
+		
+		// if $ p style inline there is no 'I return the best value of $
+		//se nello stile inline $p non c'e' restituisco il valore di $best
+		//echo("<p>regola</p>");
+		//print_r($best["css_rule"]);
+		
+
+		global $array_css;
+		
+		if (isset ( $best ["css_rule"] )) {
+			$same = false;
+			if (sizeof ( $array_css ) > 0) {
+				$size_of_best = sizeof ( $best ["css_rule"] ["prev"] );
+				foreach ( $array_css as $rule ) {
+					$size_of_prev_rules = sizeof ( $rule ["prev"] );
+					if ($size_of_prev_rules == $size_of_best) {
+						for($i = 0; $i < $size_of_prev_rules; $i++) {
+							if ($rule ["prev"] [$i] == $best ["css_rule"] ["prev"] [$i])
+								$same = true;
+							else {
+								$same = false;
+								break;
+							}
+						}
+						if ($same == true) break;
+					}
+				}
+			}
+			
+			if ($same == false) array_push ( $array_css, $best ["css_rule"] );
+		}
 		
 		return $best ["valore"];
 	
 	}
 	
-        
-	
-	
 	/*
-	 It takes in input two data structures representing two css rules
+	It takes in input two data structures representing two css rules
 	(every frame contains the value of property 'and the number of id, class, and tag content in the selector)
 	Returns the rule that has highest priority according to the type of selectors
 	If the two rules have the same priority, it returns the position with more
-	
+
 	Prende in input due strutture dati rappresentanti due regole css
 	(ogni struttura contiene il valore della proprieta' e il numero di id, class e tag contenuti nel selettore)
 	Restituisce la regola che ha priorità più alta in base alla tipologia dei selettori
 	Se le due regole hanno identica priorita, restituisce quella con posizione maggiore
 	*/
 	public static function getPriorityInfo($info1, $info2) {
-	
-	
-	
-	
+		
 		if ($info1 == null || $info1 == "")
 			return $info2;
 		if ($info2 == null || $info2 == "")
 			return $info1;
-	
-	
+		
 		if (stripos ( $info1 ["valore"], "!important" ) !== false && stripos ( $info2 ["valore"], "!important" ) === false) {
 			$best = $info1;
 		} elseif (stripos ( $info1 ["valore"], "!important" ) === false && stripos ( $info2 ["valore"], "!important" ) !== false) {
 			$best = $info2;
 		} else //have both! important or do not have any of the two, so I check the id
-			//hanno entrambe !important o non lo hanno nessuna della due, quindi verifico il numeo di id
+				//hanno entrambe !important o non lo hanno nessuna della due, quindi verifico il numeo di id
 		{
-				
+			
 			if ($info1 ["num_id"] > $info2 ["num_id"]) {
 				$best = $info1;
 			} elseif ($info1 ["num_id"] < $info2 ["num_id"]) {
 				$best = $info2;
 			} else { // same id number, control the number of class
-				//stesso numero di id, controllo il numero di class
-	
-	
+					//stesso numero di id, controllo il numero di class
+				
+
 				if ($info1 ["num_class"] > $info2 ["num_class"]) {
 					$best = $info1;
 				} elseif ($info1 ["num_class"] < $info2 ["num_class"]) {
 					$best = $info2;
-				} else { // same ids and classes number, check number of pseudoclasses
-					//stesso numero di id e class, controllo in numero di pseudoclasse
-						
-	
-					if($info1 ["num_pseudoclass"] + $info1 ["num_attr_name"] + $info1 ["num_attr_value"] > $info2 ["num_pseudoclass"] + $info2 ["num_attr_name"] + $info2 ["num_attr_value"]){
+				} else { // same id and class number, check number of tags
+						//stesso numero di id e class, controllo in numero di tag
+					
+
+					if ($info1 ["num_tag"] > $info2 ["num_tag"]) { 
+								// same or greater number of id, class and tags: is the priority of the new rule
+								//stesso o maggiore numero di id, class e tag: la priorità è della nuova regola
 						$best = $info1;
-					}elseif($info1 ["num_pseudoclass"] + $info1 ["num_attr_name"] + $info1 ["num_attr_value"] > $info2 ["num_pseudoclass"] + $info2 ["num_attr_name"] + $info2 ["num_attr_value"]){
+					} elseif ($info1 ["num_tag"] < $info2 ["num_tag"]) {
 						$best = $info2;
-					}else{
-	
-						if ($info1 ["num_tag"] > $info2 ["num_tag"]) {
-	
+					} else {
+
+						// the two rules are completely equivalent, and returns
+						// with a smaller css id (the inner leaf idcss == 0).
+						//le due regole sono perfettamente equivalenti, quindi restituisco
+						// con id css piu' piccolo (idcss == 0 � il foglio interno).
+						if ($info1 ["css_rule"] ["idcss"] > $info2 ["css_rule"] ["idcss"])
 							$best = $info1;
-						} elseif ($info1 ["num_tag"] < $info2 ["num_tag"]) {
+						elseif ($info1 ["css_rule"] ["idcss"] < $info2 ["css_rule"] ["idcss"])
 							$best = $info2;
-						} else {
-							// same  number of id, class, pseudoclasses and tags: is the priority of the new rule
-							//stesso  numero di id, class e tag: la priorità è della nuova regola
-	
-							// the two rules are completely equivalent, and returns
-							// the one with a smaller css id (the inner leaf idcss == 0).
-							//le due regole sono perfettamente equivalenti, quindi restituisco quella
-							// con id css piu' piccolo (idcss == 0 � il foglio interno).
-							if ($info1 ["css_rule"] ["idcss"] > $info2 ["css_rule"] ["idcss"])
-								$best = $info1;
-							elseif ($info1 ["css_rule"] ["idcss"] < $info2 ["css_rule"] ["idcss"])
-							$best = $info2;
-							else { // the two rules are equivalent in the same css (internal or external)
+						else { // the two rules are equivalent in the same css (internal or external)
 								//le due regole equivalenti sono nello stesso css (interno o esterno)
-	
-	
-								if ($info1 ["css_rule"] ["posizione"] > $info2 ["css_rule"] ["posizione"])
-									$best = $info1;
-								else
-									$best = $info2;
-							}
-	
+							
+
+							if ($info1 ["css_rule"] ["posizione"] > $info2 ["css_rule"] ["posizione"])
+								$best = $info1;
+							else
+								$best = $info2;
 						}
+
 					}
-	
+				
 				}
 			}
 		}
-	
+		
 		return $best;
 	
 	}
@@ -967,7 +1047,7 @@ class BasicChecks {
 	*/
 	public static function check_blink($e, $content_dom) {
 		
-		$inlinea = BasicChecks::get_p_css ( $e, "text-decoration" );
+		$inlinea = BasicChecks::get_p_css ( $e, "text-decoration", $b );
 		//echo("<p>blink--->".$inlinea."</p>");	
 		if (strpos ( $inlinea, "blink" ) !== false)
 			return false;
@@ -984,101 +1064,32 @@ class BasicChecks {
 		global $selettori;
 		global $attributi;
 		global $attributo_selettore;
-                //try to remove css errors
-                $css_content = str_replace("*//", "*/", $css_content);
-                $css_content = str_replace("//*", "/*", $css_content);
-                $out=array();                
-				//removing comments
-				//$css_content = preg_replace ( '/\/\*(.|\s)*?\*\//', '', $css_content );
-//                 while(preg_match('/\/\*(.|\s)*?\*\//', $css_content))
-//                 {
-//                 	$out = preg_split('/\/\*(.|\s)*?\*\//', $css_content, 2);
-//                 	$css_content = $out[0].$out[1];                
-//                 }
-                
-                while(stripos( $css_content, '/*') !==false )
-                {
-                
-                	$out = explode('/*', $css_content, 2); //  out[1]: part after /*
-                	$out2 = explode('*/', $out[1], 2); // out2[1] part after }}
-                	$css_content = $out[0].$out2[1];
-                
-                }
-               
-                //removing @media ... from css                
-                
-                //echo($css_content);
-                
-                //keep only content of @media screen and @media all
-//                $css_content = preg_replace('/@media(\s)*all(\s)*{/', '', $css_content);
-//                $css_content = preg_replace('/@media(\s)*screen(\s)*{/', '', $css_content);
-                while(preg_match('/@media(\s)*all(\s)*{/', $css_content))
-                {
-                    
-                    $out = preg_split('/@media(\s)*all(\s)*{/', $css_content, 2); //  out[1]: part after @media
-                    $out2 = preg_split('/}(\s)*}/', $out[1], 2); // out2[1] part after }}
-                    $css_content = $out[0].$out2[0].'}'.$out2[1];
-                    
-                }   
-                
-            
-                while(preg_match('/@media(\s)*screen(\s)*{/', $css_content))
-                {
-                    
-                    $out = preg_split('/@media(\s)*screen(\s)*{/', $css_content, 2); //  out[1]: part after @media
-                    $out2 = preg_split('/}(\s)*}/', $out[1], 2); // out2[1] part after }}
-                    $css_content = $out[0].$out2[0].'}'.$out2[1];
-                    
-                }                
-                
-                //removing empty @media (ie: @media all{ })
-                //$css_content = preg_replace('/@media(\s)*(.)*(\s)*{(\s)*}/', '', $css_content);
-                
-                //preg_replace cause a segmentation fault when strings are too long maybe
-                //seems preg_replace can't handle content between '{' and '}' when it's too long
-                //$css_content = preg_replace('/@media(\s)*(.)*{*(.|\s)*?}(\s)*}/', '', $css_content);
-                //removing remaining @media in a different way
-                while( stripos($css_content,'@media') !== false)
-                {
-                    
-                    $out = preg_split('/@media/', $css_content, 2); //  out[1]: part after @media
-                    
-                    $out2 = preg_split('/}(\s)*}/', $out[1], 2); // out2[1] part after }}
-                    $css_content = $out[0].$out2[1];
-                    
-                }
-  
-                              
+		
+		//MB elimino i commenti
+		$css_content = preg_replace ( '/\/\*(.|\s)*?\*\//', '', $css_content );
+		
 		/* Inserted at the beginning of the CSS code brace '}' to facilitate
 				the extraction of elements: each reading taken from '}' to '}'
+
 		Inserisco all'inizio del codice del CSS la parentesi graffa '}' per facilitare
 			   l'estrazione degli elementi: ad ogni lettura prendo da '}' a '}' */
 		$css_content = '}' . $css_content;
 		$i = 0;
-		//while ( ` ( '}([^}]*)}', $css_content, $elemento ) ) {
-		while ( preg_match( '/}([^}]*)}/i', $css_content, $elemento ) ) {
+		
+		while ( eregi ( '}([^}]*)}', $css_content, $elemento ) ) {
 			$elemento [1] = $elemento [1] . '}';
 			$css_content = substr ( $css_content, strlen ( $elemento [1] ) );
 			$elemento [$i] = trim ( $elemento [1] );
 			$selettore = substr ( $elemento [1], 0, strpos ( $elemento [1], '{' ) );
-                        
-                        
 			$selettori [$b] [$i] = trim ( $selettore ) . "{";
-			// Inside  list $selettori have selectors;
-			// Dentro $selettori ho la lista dei selettori;
-			//if (eregi ( '\{(.*)\}', $elemento [1], $attributo )) {
-			if (preg_match ( '/\{(.*)\}/', $elemento [1], $attributo )) {
+			// Inside  list $selectori have selectors;
+			// Dentro $selettori ho la lisat dei selettori;
+			if (eregi ( '\{(.*)\}', $elemento [1], $attributo )) {
 				$attributo [1] = trim ( $attributo [1] );
 				$attributi [$b] [$i] = $attributo [1];
-                                
 			}
 			$cont = 0;
-                        	
-                        //add a ";" at the end of a list of css rules
-                        if(substr($attributi [$b] [$i], strlen($attributi [$b] [$i])-1) != ';')
-                                $attributi [$b] [$i] .= ';';
-			//while ( eregi ( '^([^;]*);', $attributi [$b] [$i], $singolo ) ) {
-			while ( preg_match ( '/^([^;]*);/i', $attributi [$b] [$i], $singolo ) ) {
+			while ( eregi ( '^([^;]*);', $attributi [$b] [$i], $singolo ) ) {
 				$attributi [$b] [$i] = substr ( $attributi [$b] [$i], strlen ( $singolo [1] ) + 1 );
 				$attributo_selettore [$b] [$i] [$cont] = trim ( $singolo [1] );
 				// controls to eliminate the white spaces by the selectors
@@ -1095,17 +1106,14 @@ class BasicChecks {
 			}
 			$i ++;
 		}
-                
+	
 	}
-	// return the property value of $val in inline style $stile
-	//restituisce il valore della proprieta $val in uno stile inline $stile
 	// return the property value of $val in inline style $stile
 	//restituisce il valore della proprieta $val in uno stile inline $stile
 	public static function GetElementStyleInline($stile, $val) {
 		// create an array containing all the rules are separated by ";"
 		//creo un array contenente tutte le regole separate da ";"
-		//$array_pr = split ( ";", $stile );
-		$array_pr = preg_split ( "/;/", $stile );
+		$array_pr = split ( ";", $stile );
 		$arr_val = array ();
 		$valore_proprieta = "";
 		
@@ -1113,8 +1121,7 @@ class BasicChecks {
 		foreach ( $array_pr as $regola ) {
 			// break every rule, separated by ':' in: property => value
 			//spezzo ogni regola, separata dai ":" in: proprieta=>valore
-			//$appoggio = split ( ":", trim ( $regola ) );
-			$appoggio = preg_split ( "/:/", trim($regola) );
+			$appoggio = split ( ":", trim ( $regola ) );
 			if (isset ( $array_val [trim ( $appoggio [0] )] ) && stripos ( $array_val [$appoggio [0]] ["val"], "!important" ) !== false) {
 				if (stripos ( $appoggio [1], "!important" ) !== false) {
 					$array_val [$appoggio [0]] ["val"] = trim ( $appoggio [1] );
@@ -1170,37 +1177,17 @@ class BasicChecks {
 					$valore_proprieta = BasicChecks::getRight ( BasicChecks::get_priority_prop ( $array_val [$val], $array_val ["padding"] ) );
 				break;
 			
-//			case "background-color" :
-//				// Check if there is a background image, if the property exists set to -1
-//				//verifico se c'è un'immagine di sfondo, nel caso setto la proprietà a -1
-//				if (isset ( $array_regole ["regole"] ["background-image"] ))
-//					$valore_proprieta_new = "undetermined";
-//				elseif (isset ( $array_regole ["regole"] ["background"] ) && stripos ( $array_regole ["regole"] ["background"] ["val"], "url" ) !== false)
-//					$valore_proprieta_new = "undetermined";
-//				
-//				elseif (isset ( $array_val [$val] ) || isset ( $array_val ["background"] ))
-//					$valore_proprieta = BasicChecks::getBgColor ( BasicChecks::get_priority_prop ( $array_val [$val], $array_val ["background"] ) );
-//				break;
-                                
-			case "background-image" :
-				// Check if there is a background image, if the property exists set to -1
-				//verifico se c'è un'immagine di sfondo, nel caso setto la proprietà a -1
-				if (isset ( $array_val ["regole"] ["background-image"] ))
-					$valore_proprieta_new = "undetermined";
-				elseif (isset ( $array_val ["regole"] ["background"] ) && stripos ( $array_val ["regole"] ["background"] ["val"], "url" ) !== false)
-					$valore_proprieta_new = "undetermined";
-				
-				break;
-                                
 			case "background-color" :
 				// Check if there is a background image, if the property exists set to -1
 				//verifico se c'è un'immagine di sfondo, nel caso setto la proprietà a -1
-				if (isset ( $array_val ["regole"] ["background"] ) && stripos ( $array_val ["regole"] ["background"] ["val"], "url" ) !== false)
-					$valore_proprieta_new = "undetermined";
+				if (isset ( $array_regole ["regole"] ["background-image"] ))
+					$valore_proprieta_new = "-1";
+				elseif (isset ( $array_regole ["regole"] ["background"] ) && stripos ( $array_regole ["regole"] ["background"] ["val"], "url" ) !== false)
+					$valore_proprieta_new = "-1";
 				
 				elseif (isset ( $array_val [$val] ) || isset ( $array_val ["background"] ))
 					$valore_proprieta = BasicChecks::getBgColor ( BasicChecks::get_priority_prop ( $array_val [$val], $array_val ["background"] ) );
-				break;                                
+				break;
 			
 			default :
 				if (isset ( $array_val [$val] ))
@@ -1220,8 +1207,8 @@ class BasicChecks {
 		
 		$nomi_colori = array ('black', 'silver', 'gray', 'white', 'maroon', 'red', 'purple', 'fuchsia', 'green', 'lime', 'olive', 'yellow', 'navy', 'blue', 'teal', 'aqua', 'gold', 'navy' );
 		
-		//$array_valori = split ( " ", $stringa_valori );
-		$array_valori = preg_split ( "/  /", $stringa_valori );		
+		$array_valori = split ( " ", $stringa_valori );
+		
 		foreach ( $array_valori as $val ) {
 			if (stripos ( $val, "#" ) !== false || stripos ( $val, "rgb(" ) !== false) {
 				return $val;
@@ -1245,14 +1232,14 @@ class BasicChecks {
 			$stringa_valori = str_ireplace ( "!important", "", $stringa_valori );
 			$stringa_valori = trim ( $stringa_valori );
 		}
-		//$array_valori = split ( " ", $stringa_valori );
-		$array_valori = preg_split ( "/ /", $stringa_valori );
+		$array_valori = split ( " ", $stringa_valori );
 		$size = sizeof ( $array_valori );
 		if ($size <= 0)
 			return "";
 		else
 			$val_ret = $array_valori [$size - 1]; //last value, then left -ultimo valore, quindi left
 		
+
 		if ($has_important === false)
 			return $val_ret;
 		else
@@ -1269,9 +1256,8 @@ class BasicChecks {
 			$stringa_valori = str_ireplace ( "!important", "", $stringa_valori );
 			$stringa_valori = trim ( $stringa_valori );
 		}
-	
-		//$array_valori = split ( " ", $stringa_valori );		
-		$array_valori = preg_split ( "/ /", $stringa_valori );
+		
+		$array_valori = split ( " ", $stringa_valori );
 		$size = sizeof ( $array_valori );
 		if ($size <= 0)
 			return "";
@@ -1300,13 +1286,13 @@ class BasicChecks {
 			$stringa_valori = trim ( $stringa_valori );
 		}
 		
-		//$array_valori = split ( " ", $stringa_valori );
-		$array_valori = preg_split ( "/ /", $stringa_valori );
+		$array_valori = split ( " ", $stringa_valori );
 		if (sizeof ( $array_valori ) <= 0)
 			return "";
 		else
 			$val_ret = $array_valori [0]; //first value, then top - primo valore, quindi top
 		
+
 		if ($has_important === false)
 			return $val_ret;
 		else
@@ -1324,8 +1310,7 @@ class BasicChecks {
 			$stringa_valori = trim ( $stringa_valori );
 		}
 		
-		//$array_valori = split ( " ", $stringa_valori );
-		$array_valori = preg_split ( "/ /", $stringa_valori );
+		$array_valori = split ( " ", $stringa_valori );
 		$size = sizeof ( $array_valori );
 		if ($size <= 0)
 			return "";
@@ -1347,9 +1332,8 @@ class BasicChecks {
 	//funzione per parametrizzare la ricerca nei fogli di stile di id, class o elementi generici (tag).
 	//$marker contiene "#", "." o "" rispettivamente per id, classi o elementi generici.
 	//vecchia: public static function getElementStyleGeneric($e,$marker,$tag,$val,$idcss){
-	public static function getElementStyleGeneric($e, $marker, $tag, $val, $pseudoClass = null) {
-            
-                
+	public static function getElementStyleGeneric($e, $marker, $tag, $val) {
+		
 		global $selettori_appoggio;
 		$info_proprieta = null;
 		$elemento = $marker . $tag;
@@ -1358,7 +1342,10 @@ class BasicChecks {
 		if (isset ( $selettori_appoggio [$marker . $tag] )) {
 			//$array_subset_selettori= $selettori_appoggio[$idcss][$marker.$tag];
 			$array_subset_selettori = $selettori_appoggio [$marker . $tag];
-			$info_proprieta = BasicChecks::get_proprieta ( $array_subset_selettori, $val, $e, $marker . $tag, $pseudoClass );
+			$info_proprieta = BasicChecks::get_proprieta ( $array_subset_selettori, $val, $e, $marker . $tag );
+			//print_r($array_subset_selettori);
+		
+
 		}
 		
 		return $info_proprieta;
@@ -1387,814 +1374,491 @@ class BasicChecks {
 		
 		return $valore_proprieta_new;
 	}
+	
 	/*
-	 $ array_subset_selettori contains all the rules (simple and compound) that ultimately
-	position of the selectors of the rule (eg for elem p: p {} div> p {}. class {p}), the element
-	$ elemento_radice (ie, a tag, id or class)
-	$ val = property to search
-	e_original = $item itself, necessary to verify the association of rules made,
-	checking the children ($ e-> parent () for "or "> ", $ e-> prev_sibling () for" + ")
-	
-	$array_subset_selettori contiene tutte le regole (semplici e composte) che hanno in ultima
-	posizione dei selettori della regola (es per elem p: p{}, div>p{}, .class p{}) l'elemento
-	$elemento_radice (cioè un tag, un id o un class)
-	$val= prorieta' da ricercare
-	$e_original = l'elemento vero e proprio, necessario per verificare l'associazione delle regole composte,
-	verificando le discendenze ($e->parent() per " " o ">", $e->prev_sibling() per "+")
+		$ array_subset_selettori contains all the rules (simple and compound) that ultimately
+		position of the selectors of the rule (eg for elem p: p {} div> p {}. class {p}), the element
+		$ elemento_radice (ie, a tag, id or class)
+		$ val = property to search
+		e_original = $item itself, necessary to verify the association of rules made,
+		checking the children ($ e-> parent () for "or "> ", $ e-> prev_sibling () for" + ")
+
+		$array_subset_selettori contiene tutte le regole (semplici e composte) che hanno in ultima
+		posizione dei selettori della regola (es per elem p: p{}, div>p{}, .class p{}) l'elemento
+		$elemento_radice (cioè un tag, un id o un class)
+		$val= prorieta' da ricercare
+		$e_original = l'elemento vero e proprio, necessario per verificare l'associazione delle regole composte,
+					  verificando le discendenze ($e->parent() per " " o ">", $e->prev_sibling() per "+") 
 	*/
-	public static function get_proprieta($array_subset_selettori, $val, $e_original, $elem_radice, $pseudoClass = null) {
-	
-	
+	public static function get_proprieta($array_subset_selettori, $val, $e_original, $elem_radice) {
+		
 		global $selettori_appoggio;
 		$valore_proprieta = null;
 		$num_id = 0;
 		$num_class = 0;
 		$num_tag = 0;
-		$num_regola = 0;
-	
-	
+		$num_regola = 0; 
 		// use the foreach to track the location of the rule priority associated with $elem_radice
 		//lo uso nel foreach per tenere traccia della posizione della regola di priorita' maggiore associata a $elem_radice
-	
-	
+		
+
 		$spazio = "{_}"; // used for cases in which a space between the two is significant. eg: "div.class" and "div .class"
-		$mio_cont_test = 0;				//serve per i casi in cui uno spazio tra due elementi è significativo. es: "div.class" e "div .class"
+						//serve per i casi in cui uno spazio tra due elementi è significativo. es: "div.class" e "div .class"
 		foreach ( $array_subset_selettori as $array_regole ) {
-	
-	
 			// Check if [$regalo]['regole'] contained the property' $val and store it in $valore_proprieta_new
 			// use a case for special properties like margin and padding
 			// for these properties' function BasicChecks: get_priority_prop consider what property has priority more
 			// eg between margin and margin-top (that is, if one then overwrite the other)
-	
+
 			//verifico se in [$regola]["regole"] e' contenuta la proprieta' $val e la memorizzo in $valore_proprieta_new
 			//uso un case per le proprietà particolari come margin e padding
 			//per queste proprieta' la funzione BasicChecks::get_priority_prop valuta quale proprieta' ha la priorita' maggiore
 			//ad es tra margin-top e margin (cioe' se una delle due "sovrascrive" l'altra)
-				
-	
+			
+
 			$num_id_new = 0;
 			$num_class_new = 0;
 			$num_tag_new = 0;
-			$num_pseudoclass_new = 0;
-			$num_attr_name_new = 0;
-			$num_attr_value_new = 0;
 			$valore_proprieta_new = null;
-	
-	
 			// NOTE: This switch may be included in a function also reused getElementStyleInline
 			//NOTA: questo switch potrebbe essere incluso in una funzione riutilizzata anche da getElementStyleInline
 			switch ($val) {
-	
+				
 				case "margin-top" :
 					if (isset ( $array_regole ["regole"] [$val] ) || isset ( $array_regole ["regole"] ["margin"] ))
 						$valore_proprieta_new = BasicChecks::getTop ( BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["margin"] ) );
 					break;
-	
+				
 				case "margin-bottom" :
 					if (isset ( $array_regole ["regole"] [$val] ) || isset ( $array_regole ["regole"] ["margin"] ))
 						$valore_proprieta_new = BasicChecks::getBottom ( BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["margin"] ) );
 					break;
-	
+				
 				case "margin-left" :
 					if (isset ( $array_regole ["regole"] [$val] ) || isset ( $array_regole ["regole"] ["margin"] ))
 						$valore_proprieta_new = BasicChecks::getLeft ( BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["margin"] ) );
 					break;
-	
+				
 				case "margin-right" :
 					if (isset ( $array_regole ["regole"] [$val] ) || isset ( $array_regole ["regole"] ["margin"] ))
 						$valore_proprieta_new = BasicChecks::getRight ( BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["margin"] ) );
 					break;
-	
+				
 				case "padding-top" :
 					if (isset ( $array_regole ["regole"] [$val] ) || isset ( $array_regole ["regole"] ["padding"] ))
 						$valore_proprieta_new = BasicChecks::getTop ( BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["padding"] ) );
 					break;
-	
+				
 				case "padding-bottom" :
 					if (isset ( $array_regole ["regole"] [$val] ) || isset ( $array_regole ["regole"] ["padding"] ))
 						$valore_proprieta_new = BasicChecks::getBottom ( BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["padding"] ) );
 					break;
-	
+				
 				case "padding-left" :
 					if (isset ( $array_regole ["regole"] [$val] ) || isset ( $array_regole ["regole"] ["padding"] ))
 						$valore_proprieta_new = BasicChecks::getLeft ( BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["padding"] ) );
 					break;
-	
+				
 				case "padding-right" :
 					if (isset ( $array_regole ["regole"] [$val] ) || isset ( $array_regole ["regole"] ["padding"] ))
 						$valore_proprieta_new = BasicChecks::getRight ( BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["padding"] ) );
 					break;
-	
-				case "font-size" :
-					if (isset ( $array_regole ["regole"] ["font"]) && stripos(trim($array_regole ["regole"] ["font"]['val']),' ')!==false  && isset ( $array_regole ["regole"] [$val]))
-						$valore_proprieta_new = BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["font"] );
-					elseif (isset ( $array_regole ["regole"] [$val] ))
-					$valore_proprieta_new = $array_regole ["regole"] [$val]['val'];
-					elseif (isset ( $array_regole ["regole"] ["font"] ) && stripos(trim($array_regole ["regole"] ["font"]['val']),' ')!==false)
-					$valore_proprieta_new = $array_regole ["regole"] ['font']['val'];
-	
-					$valore_proprieta_new = trim($valore_proprieta_new);
-	
-					if(stripos($valore_proprieta_new,  ' ') !== false)
-					{
-						//handling "font"
-						//get font-size from font
-						//remove double spaces, ", " and " ,"
-	
-						$font = $valore_proprieta_new;
-						$valore_proprieta_new = null;
-						//remove font-family values with spaces
-						$font = preg_replace('/"(.|\s)*"/', '__', $font);
-						while (stripos($font,'  ') !== false)
-							$font = str_replace ('  ', ' ', $font);
-						$font = str_replace (', ', ',', $font);
-						$font = str_replace (' ,', ',', $font);
-						$font = explode(' ', $font);
-						if(sizeof($font) >= 2)
-						{
-							$valore_proprieta_new = $font[sizeof($font)-2];
-							$valore_proprieta_new = explode('/', $valore_proprieta_new);
-							$valore_proprieta_new = $valore_proprieta_new[0];
-						}
-	
-					}
-					break;
-	
-				case "font-weight" :
-					if (isset ( $array_regole ["regole"] ["font"]) && stripos(trim($array_regole ["regole"] ["font"]['val']),' ')!==false  && isset ( $array_regole ["regole"] [$val]))
-						$valore_proprieta_new = BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["font"] );
-					elseif (isset ( $array_regole ["regole"] [$val] ))
-					$valore_proprieta_new = $array_regole ["regole"] [$val]['val'];
-					elseif (isset ( $array_regole ["regole"] ["font"] ) && stripos(trim($array_regole ["regole"] ["font"]['val']),' ')!==false)
-					$valore_proprieta_new = $array_regole ["regole"] ['font']['val'];
-	
-					$valore_proprieta_new = trim($valore_proprieta_new);
-	
-					if(stripos($valore_proprieta_new,  ' ') !== false)
-					{
-						//handling "font"
-						//get font-weight from font
-						//remove double spaces, ", " and " ,"
-	
-						$font = $valore_proprieta_new;
-						$valore_proprieta_new = null;
-						//remove font-family values with spaces
-						$font = preg_replace('/"(.|\s)*"/', '__', $font);
-						while (stripos($font,'  ') !== false)
-							$font = str_replace ('  ', ' ', $font);
-						$font = str_replace (', ', ',', $font);
-						$font = str_replace (' ,', ',', $font);
-						$font = explode(' ', $font);
-						if(sizeof($font) > 2)
-						{
-							for($j=0; $j< (sizeof($font) - 2); $j++ )
-								if ($font[$j] == 'bold' || $font[$j] == 'bolder' || is_int($font[$j]) )
-								{
-									$valore_proprieta_new = $font[$j];
-									$j = sizeof($font);
-								}
-						}
-	
-	
-					}
-					break;
-	
-					//				case "background-color" :
-					//
-					//					//verifico se c'e' un'immagine di sfondo, nel caso setto la proprietà a -1
-					//					if (isset ( $array_regole ["regole"] ["background-image"] ))
-							//						$valore_proprieta_new = "-1";
-							//					elseif (isset ( $array_regole ["regole"] ["background"] ) && stripos ( $array_regole ["regole"] ["background"] ["val"], "url" ) !== false)
-							//						$valore_proprieta_new = "-1";
-							//					elseif (isset ( $array_regole ["regole"] [$val] ) || isset ( $array_regole ["regole"] ["background"] ))
-							//						$valore_proprieta_new = BasicChecks::getBgColor ( BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["background"] ) );
-					//					break;
-	
-	
-					case "background-image" :
-						
+				
+				case "background-color" :
+					
 					//verifico se c'e' un'immagine di sfondo, nel caso setto la proprietà a -1
-									if (isset ( $array_regole ["regole"] ["background-image"] ))
-						$valore_proprieta_new = "undetermined";
-						elseif (isset ( $array_regole ["regole"] ["background"] ) && stripos ( $array_regole ["regole"] ["background"] ["val"], "url" ) !== false)
-								$valore_proprieta_new = "undetermined";
-								break;
-	
-								case "background-color" :
-									
-								//verifico se c'e' un'immagine di sfondo, nel caso setto la proprietà a -1
-	
-								if (isset ( $array_regole ["regole"] ["background"] ) && stripos ( $array_regole ["regole"] ["background"] ["val"], "url" ) !== false)
-								$valore_proprieta_new = "undetermined";
-								elseif (isset ( $array_regole ["regole"] [$val] ) || isset ( $array_regole ["regole"] ["background"] ))
-								$valore_proprieta_new = BasicChecks::getBgColor ( BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["background"] ) );
-								break;
-	
-								default :
-								if (isset ( $array_regole ["regole"] [$val] ))
-								$valore_proprieta_new = $array_regole ["regole"] [$val] ["val"];
-								break;
-									
+					if (isset ( $array_regole ["regole"] ["background-image"] ))
+						$valore_proprieta_new = "-1";
+					elseif (isset ( $array_regole ["regole"] ["background"] ) && stripos ( $array_regole ["regole"] ["background"] ["val"], "url" ) !== false)
+						$valore_proprieta_new = "-1";
+					elseif (isset ( $array_regole ["regole"] [$val] ) || isset ( $array_regole ["regole"] ["background"] ))
+						$valore_proprieta_new = BasicChecks::getBgColor ( BasicChecks::get_priority_prop ( $array_regole ["regole"] [$val], $array_regole ["regole"] ["background"] ) );
+					break;
+				
+				default :
+					if (isset ( $array_regole ["regole"] [$val] ))
+						$valore_proprieta_new = $array_regole ["regole"] [$val] ["val"];
+					break;
+			
 			}
-				
-				
-	
+			
+			$ris = null;
 			// if the value of a property  was found, confirm it can be applied to the element considered
-			// se il valore di una proprieta è stato trovato verifico se puo' essere applicata all'elemento considerato
+			// se il valore di una proprieta è stato trovato verifico se puo' essere applicata all'elemento considerato	
 			if ($valore_proprieta_new != null) {
-	
-			if (stripos ( $elem_radice, "#" ) !== false)
-				$num_id_new = 1;
-			elseif (stripos ( $elem_radice, "." ) !== false)
-				$num_class_new = 1;
+				
+				if (stripos ( $elem_radice, "#" ) !== false)
+					$num_id_new = 1;
+				elseif (stripos ( $elem_radice, "." ) !== false)
+					$num_class_new = 1;
 				else
 					$num_tag_new = 1;
-	
-					$size_of_regole = sizeof ( $array_regole ["prev"] );
-					$i =1;
-					if ($size_of_regole == 1) // the current rule is '"simple", there are no predecessors
-					//la regola corrente e' "semplice", non ci sono predecessori
-					{
-					$res = true;
-	
-			} else  // the rule is '"compound" (ie: div > p a)
-			//la regola e' "composta" (es: div > p a)
-			{
 				
+				$size_of_regole = sizeof ( $array_regole ["prev"] );
+				if ($size_of_regole == 1) // the current rule is '"simple", there are no predecessors
+															//la regola corrente e' "semplice", non ci sono predecessori
+				{
+					$ris = true;
+				
+				} else  // the rule is '"compound" (ie: div > p a)
+						//la regola e' "composta" (es: div > p a)
+				{
+					
 					// verification takes into account that a compound rule takes precedence over a simple rule, even if it follows!
 					// eg: "div > p {}" & "{p}" => to <div><p></p></ div> wins over "div > p {}"
-			// check whether the item falls under the "compound"
-				// if so, I check if [$ rule] ['rules'] contained the $ val
-	
-			//la verifica tiene conto che una regola composta ha priorità su una "semplice", anche se la semplice è successiva!
-			//es: "div > p{}" & "p{}" => per <div><p></p></div> vince "div > p{}"
-			//controllo se l'elemento rientra nella regola "composta"
-			//se si, verifico se in [$regola]["regole"] � contenuta la propriet� $val
-	
-	
-			$i = 1; //start from the first parent of the current element
-			//inizio dal primo padre dell'elemento corrente
-			$e = $e_original;
-	
-			$res = true;
-	
-			while ($e!=null && $e->tag!='root' && $e->tag != 'doctype' && $i < $size_of_regole && ($res !== false || ($res === false && isset($forks) && sizeof($forks) >0) )) {
-	
-			 
-			// check if $res == false and I have others parent elements which could satisfy the current css rule
-			//example: rule html *[an_attr] p {...} (which modified is: htm {_} [an_attr * {_} p)
-			//in html code i have: <html> -> <body an_attr='...'> -> <div> <p>
-			// 1) p is the current element and is the last element of the rule: OK
-				// 2) div is a parent and matches *: OK
-					// 3) div doesn't have an_attr: KO
-						// 4) come back to * and check next parent, wich is body, which has an_attr: OK
-						// 5) next parent is html and match the first element of the rule (html): OK
-	
-	
-						if($res == false && isset($forks) && sizeof($forks)>0)
-						{
-						$fork = array_pop($forks);
-								$e = $fork['e'];
-						$i = $fork['i'];
-						$pseudoClass = $fork['pseudoclass'];
-								$num_class_new = $fork['num_class_new'];
-						$num_id_new = $fork['num_id_new'];
-						$num_pseudoclass_new = $fork['num_pseudoclass_new'];
-								$num_attr_name_new = $fork['num_attr_name_new'];
-								$num_attr_value_new = $fork['num_attr_value_new'];
-			}
+					// check whether the item falls under the "compound"
+					// if so, I check if [$ rule] ['rules'] contained the $ val
+
+					//la verifica tiene conto che una regola composta ha priorità su una "semplice", anche se la semplice è successiva!
+					//es: "div > p{}" & "p{}" => per <div><p></p></div> vince "div > p{}"
+					//controllo se l'elemento rientra nella regola "composta"
+					//se si, verifico se in [$regola]["regole"] � contenuta la propriet� $val
+
+
+					$i = 1; //start from the first parent of the current element
+							//inizio dal primo padre dell'elemento corrente
+					$e = $e_original;
+					
+					while ( $i < $size_of_regole && $ris !== false ) {
 						// NOTE: This series of if / elseif and switch could be next
-								// be merged into a single set of if / else
-							// $ element can 'contain'> ',' + ', id, class, a tag
-								//NOTA: questa serie di if/elseif e lo switch successivo potrebbero
+						// be merged into a single set of if / else
+						// $ element can 'contain'> ',' + ', id, class, a tag
+						//NOTA: questa serie di if/elseif e lo switch successivo potrebbero
 						//essere unificati in un unica serie di if/else
-							//$elemento puo' contenere '>', '+', un id, una classe un tag
-								if ($array_regole ["prev"] [$i] == ">") {
-								$tipo = ">";
-			} elseif ($array_regole ["prev"] [$i] == "+") {
-								$tipo = "+";
-	
-			} elseif ($array_regole ["prev"] [$i] == $spazio) {
+						//$elemento puo' contenere '>', '+', un id, una classe un tag
+						if ($array_regole ["prev"] [$i] == ">") {
+							$tipo = ">";
+						} elseif ($array_regole ["prev"] [$i] == "+") {
+							$tipo = "+";
+						
+						} elseif ($array_regole ["prev"] [$i] == $spazio) {
 							$tipo = "spazio";
 						} elseif (stripos ( $array_regole ["prev"] [$i], "." ) !== false) //classe
 						{
-						$tipo = ".";
-	
+							$tipo = "class";
+						
 						} elseif (stripos ( $array_regole ["prev"] [$i], "#" ) !== false) //id
 						{
-						$tipo = "#";
-						} elseif (stripos ( $array_regole ["prev"] [$i], '[' ) !== false) //attr
-						{
-						$tipo = "[";
-						} elseif (stripos ( $array_regole ["prev"] [$i], ":" ) !== false) //pseudo class
-						{
-						$tipo = ":";
-						} elseif (trim($array_regole ["prev"] [$i]) == "*") //any element
-						{
-						$tipo = "star";
-	
+							$tipo = "id";
 						} else //tag
 						{
-						$tipo = "tag";
-	
+							$tipo = "tag";
+						
 						}
-	
-	
-	
-	
+						
 						switch ($tipo) {
-	
-	
-						case ":" :
-	
-	
-						//                                                              if(':'.$pseudoClass == trim($array_regole ["prev"] [$i]) )
-						//                                                              {
-						//
-						//                                                                  $res = true;
-						//                                                              }
-						//                                                              else
-							//                                                              {
-						//                                                                  $res = false;
-							//
-							//                                                              }
-							$pseudoClassesArray = explode(':',substr($array_regole ["prev"] [$i], 1));
-								$countTrue = 0;
-								$res = false;
-								for ($pCCount=0; $pCCount < sizeof( $pseudoClassesArray); $pCCount ++)
-								{
-								$pC = $pseudoClassesArray[$pCCount];
-	
-								if($pC == 'first-child')
-							{
-	
-								if($e->prev_sibling() == null)
-								{
-								$num_pseudoclass_new++;
-								$countTrue++;
-			}
+							case ">" :
+								//casi div > p, #id > p, .class > p
+								if (stripos ( $array_regole ["prev"] [$i + 1], "#" ) !== false) {
+									$e = $e->parent ();
+									// id: the control that has the id of the predecessor rule
+									// id: controllo che il predecessore abbia l'id della regola
+									
+
+									if ($e != null && $e->id == str_replace ( '#', '', $array_regole ["prev"] [$i + 1] )) {
+										$ris = true;
+										$num_id_new ++;
+									} else
+										$ris = false;
+								} elseif (stripos ( $array_regole ["prev"] [$i + 1], "." ) !== false) {
+									$e = $e->parent ();
+									// class: the control of a predecessor has the class rule
+									//class: controllo che il predecessore abbia la class della regola
+									if ($e != null && $e->class == str_replace ( '.', '', $array_regole ["prev"] [$i + 1] )) {
+										$ris = true;
+										$num_class_new ++;
+									} else
+										$ris = false;
+								} else {
+									$e = $e->parent ();
+									// tag: check that the predecessor is the tag of the rule
+									//tag: controllo che il predecessore sia il tag della regola
+									if ($e != null && $e->tag == $array_regole ["prev"] [$i + 1]) {
+										$ris = true;
+										$num_tag_new ++;
+									} else
+										$ris = false;
 								}
-									elseif ($pC == 'link'){
-									if($e->tag == 'a')
-									{
-									$num_pseudoclass_new ++;
-										$countTrue++;
-	
+								$i ++;
+								break;
+							
+							case "+" :
+								if (stripos ( $array_regole ["prev"] [$i + 1], "#" ) !== false) {
+									$e->prev_sibling ();
+									// id: the control that has the id of the predecessor rule
+									//id: controllo che il predecessore abbia l'id della regola
+									if ($e != null && $e->id == str_replace ( '#', '', $array_regole ["prev"] [$i + 1] )) {
+										$ris = true;
+										$num_id_new ++;
+									} else
+										$ris = false;
+								} elseif (stripos ( $array_regole ["prev"] [$i + 1], "." ) !== false) {
+									$e->prev_sibling ();
+									// class: the control that his predecessor has the class rule
+									//class: controllo che il predecessore abbia la class della regola
+									if ($e != null && $e->class == str_replace ( '.', '', $array_regole ["prev"] [$i + 1] )) {
+										$ris = true;
+										$num_class_new ++;
+									} else
+										$ris = false;
+								} else {
+									$e->prev_sibling ();
+									// tag: check that the predecessor is the tag of the rule
+									//tag: controllo che il predecessore sia il tag della regola
+									if ($e != null && $e->tag == $array_regole ["prev"] [$i + 1]) {
+										$ris = true;
+										$num_tag_new ++;
+									} else
+										$ris = false;
+								}
+								$i ++;
+								break;
+							
+							case "spazio" :
+								//casi: div #id, #id #id, .class #id, div .class, #id .class, .class .class
+								if (stripos ( $array_regole ["prev"] [$i + 1], "#" ) !== false) {
+									
+									$e = $e->parent ();
+									while ( $e != null && $e->id != str_replace ( '#', '', $array_regole ["prev"] [$i + 1] ) )
+										$e = $e->parent ();
+									// id: the control that has the id of the predecessor rule
+									//id: controllo che il predecessore abbia l'id della regola
+									if ($e != null && $e->id == str_replace ( '#', '', $array_regole ["prev"] [$i + 1] )) {
+										$ris = true;
+										$num_id_new ++;
+									} else
+										$ris = false;
+								} elseif (stripos ( $array_regole ["prev"] [$i + 1], "." ) !== false) {
+									$e = $e->parent ();
+									while ( $e != null && $e->class != str_replace ( '.', '', $array_regole ["prev"] [$i + 1] ) )
+										$e = $e->parent ();
+									// class: the control that his predecessor has the class rule	
+									// class: controllo che il predecessore abbia la class della regola
+									if ($e != null && $e->class == str_replace ( '.', '', $array_regole ["prev"] [$i + 1] )) {
+										$ris = true;
+										$num_class_new ++;
+									} else
+										$ris = false;
+								} else {
+									$e = $e->parent ();
+									while ( $e != null && $e->tag != $array_regole ["prev"] [$i + 1] )
+										$e = $e->parent ();
+									// tag: check that the predecessor is the tag of the rule	
+									//tag: controllo che il predecessore sia il tag della regola
+									if ($e != null && $e->tag == $array_regole ["prev"] [$i + 1]) {
+										$ris = true;
+										$num_tag_new ++;
+									} else
+										$ris = false;
+								}
+								$i ++;
+								break;
+							
+							case "tag" :
+								//casi: p.classe, p#id, div p
+								if (stripos ( $array_regole ["prev"] [$i - 1], "." ) !== false) // p.class
+								{
+									if ($e->tag == $array_regole ["prev"] [$i]) {
+										$ris = true;
+										$num_tag_new ++;
+									} else
+										$ris = false;
+								
+								} elseif (stripos ( $array_regole ["prev"] [$i - 1], "#" ) !== false) //p#id
+								{
+									if ($e->tag == $array_regole ["prev"] [$i]) {
+										$ris = true;
+										$num_tag_new ++;
+									} else
+										$ris = false;
+								} else // div p
+								{
+									//$e=$e->parent();
+									while ( $e != null && $e->tag != $array_regole ["prev"] [$i] ) {
+										
+										$e = $e->parent ();
 									}
-									}
-									elseif(stripos($pC,'lang') ===0)
-										{
-										$lang = str_replace('lang(', '', $pC);
-										$lang = str_replace(')', '', $lang);
-										//check if the element or a perent has the attribute lang
-										$tempE = $e;
-										$langFound =false;
-	
-											while($tempE != null && $langFound == false )
-												{
-													if(isset ($tempE->attr['lang']) && $tempE->attr['lang'] == $lang)
-														$langFound = true;
-														$tempE = $tempE->parent();
-										}
-										if($langFound == true)
-										{
-										$num_pseudoclass_new++;
-										$countTrue++;
-	
-										}
-										else
-											$res =false;
-	
-										}
-										else
-										{
-	
-	
-										if($pseudoClass == $pC)
-										{
-	
-										$num_pseudoclass_new++;
-										$countTrue++;
-										 
-										}
-										}
-										}
-	
-	
-										if($countTrue == sizeof( $pseudoClassesArray))// all pseudoclassess match
-										{
-	
-										$res = true;
-										}
-										else
-											$res = false;
-										break;
-	
-										 
-										case "[" :
-	
-										//casi: a[href], a[title][href="www.w3c.it"]
-	
-	
-										$attrArray = explode('[',substr($array_regole ["prev"] [$i], 1));
-	
-										$res = false;
-										for($aa=0;  $aa < sizeof($attrArray); $aa++)
-										{
-	
-										$attr = $attrArray[$aa];
-										$attr = str_replace('"', '', $attr);
-										$attr = str_replace("'", '', $attr);
-										$attrOp = null;
-										if(stripos($attr, '=')!== false) //[attrName=attrValue]
-										{
-										$attr = explode('=',$attr);
-										$attrName = $attr[0];
-										$attrValue = $attr[1];
-											$attrOp = '=';
-										}
-											elseif(stripos($attr, '~=')!== false) //[attrName~=attrValue]
-											{
-											$attr = explode('~=',$attr);
-											$attrName = $attr[0];
-											$attrValue = $attr[1];
-											$attrOp = '~=';
-										}
-										elseif(stripos($attr, '|=')!== false) //[attrName|=attrValue]
-												{
-													$attr = explode('|=',$attr);
-													$attrName = $attr[0];
-													$attrValue = $attr[1];
-													$attrOp = '|=';
-													}
-														else //[attrName]
+									// tag: check that the predecessor is the tag of the rule
+									//tag: controllo che il predecessore sia il tag della regola
+									if ($e != null /*&& $e->tag == $array_regole["prev"][$i]*/)
+																{
+										$ris = true;
+										$num_tag_new ++;
+									} else
+										$ris = false;
+								
+								}
+								
+								break;
+							
+							case "id" :
+								//casi: #id p, #id .class, #id #id
+								//$e=$e->parent();
+								while ( $e != null && $e->id != str_replace ( '#', '', $array_regole ["prev"] [$i] ) ) {
+									
+									$e = $e->parent ();
+								}
+								// tag: check that the predecessor is the tag of the rule
+								//tag: controllo che il predecessore sia il tag della regola
+								if ($e != null /*&& $e->tag == $array_regole["prev"][$i]*/)
 															{
-																$attrName = $attr;
-													}
-	
-													if(isset($e->attr[$attrName]))
-													{
-	
-													$res = true;
-													$num_attr_name_new ++;
-													if(isset($attrOp))
-													{
-													if($attrOp == '=')
-													{
-													if($e->attr[$attrName] == $attrValue)
-														{
-															$res = true;
-																$num_attr_value_new ++;
-													}
-													else
-													{
-													$res = false;
-													}
-													}
-														elseif($attrOp == '~=')
-														{
-														$attrValues = explode(' ',$e->attr[$attrName]);
-	
-														//setting ris to false to do for cicle
-														$res = false;
-														for($v = 0; $res === false, $v < sizeof($attrValues); $v++)
-														{
-														if($attrValues[$v] == $attrValue)
-														{
-														$res = true;
-														$num_attr_value_new ++;
-											}
-											}
-											}
-												elseif($attrOp == '|=')
-													{
-														$attrValues = explode(' ',$e->attr[$attrName]);
-	
-														//setting ris to false to do for cicle
-														$res = false;
-														for($v = 0; $res === false, $v < sizeof($attrValues); $v++)
-														{
-														//  lang=en or lang=en-US
-														if($attrValues[$v] == $attrValue || stripos($attrValues[$v],$attrValue.'-') ===0)
-														{
-														$res = true;
-														$num_attr_value_new ++;
-											}
-											}
-											}
-											}
-											}
-											else
-											{
-											$res = false;
-											}
-											}
-	
-											break;
-	
-											case "star" :
-											//do nothing, any element is ok
-												$res = true;
-													break;
-	
-													case "tag" :
-													if($array_regole["prev"][$i] == $e->tag)
-													{
-													$res = true;
-													$num_tag_new++;
-											}
-											else
-												$res = false;
-											break;
-	
-											case "." :
-											$classes = trim($e->class);
-											//removing doble spaces
-											while (stripos($classes, '  '))
-												$classes = str_replace('  ', ' ', $classes);
-	
-												$classes = explode(' ',$classes);
-												$res = false;
-												for($cc = 0; $res == false,$cc < sizeof($classes); $cc++)
-													{
-														if($array_regole["prev"][$i] == '.'.$classes[$cc])
-															$res = true;
-														$num_class_new++;
-	
-												}
-												break;
-	
-												case "#" :
-												if($array_regole["prev"][$i] == '#'.trim($e->id))
-												{
-												$res = true;
-												$num_id_new++;
-											}
-											else
-												$res = false;
-											break;
-	
-	
-											case ">" :
-											if($e->parent()->tag != 'root')
-												$e = $e->parent();
-											else
-												$res = false;
-											break;
-	
-											case "+" :
-											if($e->prev_sibling() != null)
-												$e = $e->prev_sibling();
-												else
-													$res = false;
-													break;
-	
-														case "spazio" :
-														$res = false;
-														//                                                                    if(($i+1 < sizeof($array_regole["prev"])))
-															$pred = $array_regole ["prev"] [$i + 1];
-															//                                                                    else
-																//                                                                        $pred = null;
-	
-	
-															 
-	
-															while(isset($pred) && $e->parent()->tag!= 'root' && $res !== true)
+									$ris = true;
+									$num_tag_new ++;
+								} else
+									$ris = false;
+								
+								break;
+							
+							case "class" :
+								//casi: .id p, .id .class, .id #id
+								//$e=$e->parent();
+								
+
+								while ( $e != null && $e->class != str_replace ( '.', '', $array_regole ["prev"] [$i] ) ) {
+									$e = $e->parent ();
+								}
+								// tag: check that the predecessor is the tag of the rul
+								//tag: controllo che il predecessore sia il tag della regola
+								//if($e != null && $e->tag == $array_regole["prev"][$i])
+								if ($e != null /*&& $e->class == str_replace('.','',$array_regole["prev"][$i])*/)
 															{
-															$e = $e->parent();
-															//check if predecessor is a class, id or tag
-															if($pred == '*')
-															{
-															$res = true;
-	
-										}
-										elseif (stripos ( $pred, "." ) === 0) //class
-										{
-	
-										$classes = trim($e->class);
-										//removing doble spaces
-										while (stripos($classes, '  '))
-										{
-	
-										$classes = str_replace('  ', ' ', $classes);
-	
-										}
-											$classes = explode(' ',$classes);
-	
-												for($cClass = 0; $res == false,$cClass < sizeof($classes); $cClass++)
-												{
-												if('.'.$classes[$cClass] == $pred)
-													$res = true;
-										}
-										 
-										}
-										elseif (stripos ( $pred, "#" ) === 0) //id
-												{
-												if('#'.$e->id == $pred)
-													$res = true;
-										}
-										else //tag
-										{
-											if($e->tag == $pred)
-												$res = true;
-										}
-	
-										}
-										 
-	
-										if($e->parent()->tag != 'root' && $res == true)
-										{
-										$fork['i'] = $i;
-										$fork['e'] = $e;
-										$fork['pseudoclass'] = $pseudoClass;
-										$fork['num_class_new'] = $num_class_new;
-										$fork['num_id_new'] = $num_id_new;
-										$fork['num_pseudoclass_new'] = $num_pseudoclass_new;
-										$fork['num_attr_name_new'] = $num_attr_name_new;
-										$fork['num_attr_value_new'] = $num_attr_value_new;
-	
-										if(!isset($forks))
-											$forks = array();
-	
-										array_push($forks, $fork);
-										}
-	
-										break;
-	
-	
-										} //end switch
-										$i ++;
-											
-										} //end while
-	
-	
-										} //end else regola composta - compound rule
-	
-	
-	
-											//                                if($pseudoClass != null)//it means I was searching a pseudoclass (ie a:hover), but I didn't find it
-											//                                {
-											//                                   $res =false;
-											//
-											//                                }
-	
-											$forks = array();
-											$old_best = $num_regola_best;
-											if ($res === true && $i == $size_of_regole) { // analyze and apply the new rule
-											// check if the priority of the new greater than previous
-											//la nuova regola analizzata è applicabile
-											//controllo se la priorita della nuova supera quella della precedente
-												//echo("<p>".$array_regole ["prev_string"]."</p>");
-	
-												if (stripos ( $valore_proprieta_new, "!important" ) !== false && stripos ( $valore_proprieta, "!important" ) === false) {
-												// $proprieta is not !important while $proprietà_new is, then override $proprieta
-												//$proprieta non è !important mentre $proprietà_new si, quindi sovrascrivo $proprieta
-												$valore_proprieta = $valore_proprieta_new;
-												$num_id = $num_id_new;
-												$num_class = $num_class_new;
-												$num_tag = $num_tag_new;
-												$num_pseudoclass = $num_pseudoclass_new;
-													$num_attr_name = $num_attr_name_new;
-													$num_attr_value = $num_attr_value_new;
-													$num_regola_best = $num_regola;
-												} elseif (stripos ( $valore_proprieta_new, "!important" ) === false && stripos ( $valore_proprieta, "!important" ) === false || stripos ( $valore_proprieta_new, "!important" ) !== false && stripos ( $valore_proprieta, "!important" ) !== false)
-	
-												// have both  !important or neither is, then check the id
-												// hanno entrambe !important o non lo hanno nessuna della due, quindi verifico il numeo di id
-												{
-												//b
-												if ($num_id_new > $num_id) {
-													$valore_proprieta = $valore_proprieta_new;
-													$num_id = $num_id_new;
-													$num_class = $num_class_new;
-													$num_tag = $num_tag_new;
-													$num_pseudoclass = $num_pseudoclass_new;
-													$num_attr_name = $num_attr_name_new;
-													$num_attr_value = $num_attr_value_new;
-													$num_regola_best = $num_regola;
-												} elseif ($num_id_new == $num_id) { // same ID number, control the number of class
-												//stesso numero di id, controllo il numero di class
-													
-	
-												//							if ($num_class_new > $num_class) {
-												//								$valore_proprieta = $valore_proprieta_new;
-													//								$num_id = $num_id_new;
-														//								$num_class = $num_class_new;
-														//								$num_tag = $num_tag_new;
-														//                                                                $num_pseudoclass = $num_pseudoclass_new;
-														//                                                                $num_attr_name = $num_attr_name_new;
-															//                                                                $num_attr_value = $num_attr_value_new;
-																//								$num_regola_best = $num_regola;
-																//							} elseif ($num_class_new == $num_class) { // same id and class number, check number of tags
-																//stesso numero di id e class, controllo il numero di tag
-	
-																//c
-																if ($num_class_new + $num_pseudoclass_new + $num_attr_name_new + $num_attr_value_new > $num_class+ $num_pseudoclass + $num_attr_name + $num_attr_value) { // greater number of id, class and :link pseudoclasses: is the priority of the new rule
-																	$valore_proprieta = $valore_proprieta_new;
-																	$num_id = $num_id_new;
-																	$num_class = $num_class_new;
-																	$num_tag = $num_tag_new;
-																		$num_pseudoclass = $num_pseudoclass_new;
-																		$num_attr_name = $num_attr_name_new;
-																		$num_attr_value = $num_attr_value_new;
-																		$num_regola_best = $num_regola;
-																	}elseif($num_class_new + $num_pseudoclass_new + $num_attr_name_new + $num_attr_value_new == $num_class + $num_pseudoclass + $num_attr_name + $num_attr_value)
-																	{
-																	//d
-																		if($num_tag_new >= $num_tag) //same or greater number of id, class ":link" pseudoclasses and tag:is the priority of the new rule
-																	{
-																	$valore_proprieta = $valore_proprieta_new;
-																	$num_id = $num_id_new;
-																	$num_class = $num_class_new;
-																	$num_tag = $num_tag_new;
-																	$num_pseudoclass = $num_pseudoclass_new;
-																		$num_attr_name = $num_attr_name_new;
-																		$num_attr_value = $num_attr_value_new;
-																		$num_regola_best = $num_regola;
-	
-																	}
-																	}
-																		
-																	//							}
-																	}
-																	}
-																		
-	
-																	$valore_proprieta_new = null;
-																	}
-																		
-																	}
-																		
-	
-																	//eliminare
-																	//                        echo("<p>vince</p>");
-																	//                        echo($array_subset_selettori [$num_regola_best]);
-																		//                        echo("<p>contro</p>");
-																			//                        echo($array_subset_selettori [$num_regola]);
-	
-	
-																			$num_regola ++;
-	
-	
-																			}
-	
-																				if ($valore_proprieta == null)
-																					return null;
-	
-																					// create the structure info_proprieta
-																					// store the id number, class and tag  necessary to verify the priority
-																					// rules are starting from an id, a class or a tag
-																					// it is not always a rule that has the selectors as the last (or only) a descendant of id or a class that takes
-																					// ends with a tag
-	
-																					//creo la struttura info_proprieta'
-																					//memorizzare il numero di id, class e tag è necessario per verificare la priorita'
-																						//delle regole trovate partendo da un id, una class o un tag
-																						// non sempre infatti una regola che nei selettori ha come ultimo (o unico) discendente un id o class batte una che
-																						//termina con un tag
-																						//es:
-																						// "#id2 p{}" batte "#id1{}" (se p contiene id="id1")
-	
-	
-																						$info_proprieta = array ("valore" => $valore_proprieta, "num_id" => $num_id, "num_class" => $num_class, "num_tag" => $num_tag, "num_pseudoclass" => $num_pseudoclass, "num_attr_name" => $num_attr_name, "num_attr_value" => $num_attr_value, "css_rule" => $array_subset_selettori [$num_regola_best] );
-																							//echo("<p>regola per ". $elem_radice."</p>");
-																							//print_r($array_subset_selettori[$num_regola-1]);
-	
-	
-																							return $info_proprieta;
-																						}
-																						
-																						
+									$ris = true;
+									$num_tag_new ++;
+								
+								} else
+									$ris = false;
+								
+								break;
+						
+						} //end case
+						$i ++;
+					
+					} //end while
+				
+
+				} //end else regola composta - compound rule
+				
+
+				if ($ris == true) { // analyze and apply the new rule
+									// check if the priority of the new greater than previous
+									//la nuova regola analizzata è applicabile
+									//controllo se la priorita della nuova supera quella della precedente															
+					
+
+					if (stripos ( $valore_proprieta_new, "!important" ) !== false && stripos ( $valore_proprieta, "!important" ) === false) {
+						// $proprieta is not !important while $proprietà_new is, then override $proprieta
+						//$proprieta non è !important mentre $proprietà_new si, quindi sovrascrivo $proprieta
+						$valore_proprieta = $valore_proprieta_new;
+						$num_id = $num_id_new;
+						$num_class = $num_class_new;
+						$num_tag = $num_tag_new;
+						$num_regola_best = $num_regola;
+					} elseif (stripos ( $valore_proprieta_new, "!important" ) === false && stripos ( $valore_proprieta, "!important" ) === false || stripos ( $valore_proprieta_new, "!important" ) !== false && stripos ( $valore_proprieta, "!important" ) !== false) 
+
+					// have both are !important or niether is, then check the id
+					// hanno entrambe !important o non lo hanno nessuna della due, quindi verifico il numeo di id
+					{
+						
+						if ($num_id_new > $num_id) {
+							$valore_proprieta = $valore_proprieta_new;
+							$num_id = $num_id_new;
+							$num_class = $num_class_new;
+							$num_tag = $num_tag_new;
+							$num_regola_best = $num_regola;
+						} elseif ($num_id_new == $num_id) { // same ID number, control the number of class
+															//stesso numero di id, controllo il numero di class
+							
+
+							if ($num_class_new > $num_class) {
+								$valore_proprieta = $valore_proprieta_new;
+								$num_id = $num_id_new;
+								$num_class = $num_class_new;
+								$num_tag = $num_tag_new;
+								$num_regola_best = $num_regola;
+							} elseif ($num_class_new == $num_class) { // same id and class number, check number of tags
+																	//stesso numero di id e class, controllo in numero di tag
+								
+
+								if ($num_tag_new >= $num_tag) { // same or greater number of id, class and tags: is the priority of the new rule  //stesso o maggiore numero di id, class e tag: la priorità è della nuova regola
+									$valore_proprieta = $valore_proprieta_new;
+									$num_id = $num_id_new;
+									$num_class = $num_class_new;
+									$num_tag = $num_tag_new;
+									$num_regola_best = $num_regola;
+								}
+							
+							}
+						}
+					}
+					
+					$valore_proprieta_new = null;
+				}
+			
+			}
+			
+			$num_regola ++;
+		}
+		
+		if ($valore_proprieta == null)
+			return null;
+
+		// create the structure info_proprieta 
+		// store the id number, class and tag  necessary to verify the priority 
+		// rules are starting from an id, a class or a tag
+		// it is not always a rule that has the selectors as the last (or only) a descendant of id or a class that takes
+		// ends with a tag
+		
+		//creo la struttura info_proprieta'
+		//memorizzare il numero di id, class e tag è necessario per verificare la priorita'
+		//delle regole trovate partendo da un id, una class o un tag
+		// non sempre infatti una regola che nei selettori ha come ultimo (o unico) discendente un id o class batte una che
+		//termina con un tag
+		//es:
+		// "#id2 p{}" batte "#id1{}" (se p contiene id="id1")
+		
+
+		$info_proprieta = array ("valore" => $valore_proprieta, "num_id" => $num_id, "num_class" => $num_class, "num_tag" => $num_tag, "css_rule" => $array_subset_selettori [$num_regola_best] );
+		//echo("<p>regola per ". $elem_radice."</p>");
+		//print_r($array_subset_selettori[$num_regola-1]);
+		
+
+		return $info_proprieta;
+	}
 	// reorganize the style sheets, starting from the array of Filippo, in a data structure more 'structured
 	//riorganizzo i fogli di stile, partendo dagli array di Filippo, in una struttura dati piu' articolata
 	public static function setCssSelectors($content_dom) {
-		
-			
 		
 		global $selettori;
 		global $attributo_selettore;
 		global $selettori_appoggio;
 		global $array_css;
 		global $flag_selettori_appoggio;
-                global $csslist;
 		$array_css = array ();
+		
 		//echo("<p>entro in cssselector</p>");
 		
+
 		//echo("<p>isset selettori_appoggio=".isset ($selettori_appoggio)."</p>");
 		//print_r($selettori_appoggio);
 		
+
 		if (isset ( $flag_selettori_appoggio )) {
 			
 			//return ($selettori_appoggio);
-			
-			return true;
+			return;
 		} else {
 			$flag_selettori_appoggio = true;
+		
 		}
 		
-		
 		$spazio = "{_}";
+		
+		//$selettori_appoggio =array();
+		
+
+		// parte in prova
+		
+
 		$csslist = BasicChecks::get_style_external ( $content_dom );
 		$cssinternal = BasicChecks::get_style_internal ( $content_dom );
 		//echo("<p>Stampo la lista di stili</p>");
@@ -2202,9 +1866,8 @@ class BasicChecks {
 		//print_r($cssinternal);
 		// MB I create the data structure containing the css information
 		//MB creo la struttura dati contenente i dati dei css
-		BasicChecks::prepare_css_arrays ($csslist, $cssinternal );
-			
-                
+		BasicChecks::prepare_css_arrays ( $csslist, $cssinternal );
+		
 		//fine parte in prova - end part in test
 		$size_of_selettori = sizeof ( $selettori );
 		for($idcss = 0; $idcss < $size_of_selettori; $idcss ++) {
@@ -2213,119 +1876,46 @@ class BasicChecks {
 			for($i = 0; $i < count ( $selettori [$idcss] ); $i ++) {
 				$sel_string = str_ireplace ( '{', '', $selettori [$idcss] [$i] ); //rimuovo "{"
 				
+
+				$sel_string = str_ireplace ( '>', ' > ', $sel_string ); // metto gli spazi tra i ">"
+				$sel_string = str_ireplace ( '+', ' + ', $sel_string ); // metto gli spazi tra i "+"
+				// use the $spazio symbol to indicate that  an id or class is preceded by a space
+				// in fact "p.nome_classe" is different from "p .nome_classe"
+
+				//uso il simbolo $spazio e per indicare che un id o una classe e' preceduta da uno spazio
+				//infatti "p.nome_classe" è diverso da "p .nome_classe"
+				$sel_string = str_ireplace ( ' .', ' ' . $spazio . '.', $sel_string ); //put a space before - metto uno $spazio prima di "."
+				$sel_string = str_ireplace ( ' #', ' ' . $spazio . '#', $sel_string ); // metto uno $spazio prima di "#"
 				
-				$selettori_array = explode ( ',', $sel_string );  // create an array of selectors that are separated by ", "
+
+				$sel_string = str_ireplace ( '.', ' .', $sel_string ); // put a space before -  metto uno spazio prima di "."
+				$sel_string = str_ireplace ( '#', ' #', $sel_string ); // metto uno spazio prima di "#"
+				//echo ("<p>1 sel_string =".$sel_string."</p>");
+				while ( stripos ( $sel_string, '  ' ) !== false ) //rimuovo gli spazzi multipli
+				{
+					$sel_string = str_ireplace ( '  ', ' ', $sel_string );
+					//echo ("<p>sel_string =".$sel_string."</p>");
+				}
+				
+				//rimuovo i {_} ridondanti
+				$sel_string = str_ireplace ( '> {_}', '>', $sel_string );
+				
+				$selettori_array = split ( ',', $sel_string );  // create an array of switches that are separated by ", "
 																//creo un array dei selettori che sono separati da ","
 				foreach ( $selettori_array as $sel ) {
 					$sel = trim ( $sel );
-                                        $selectorsString = $sel;
-                                        
-                                        $sel = str_ireplace ( '>', ' > ', $sel ); // metto gli spazi tra i ">"
-                                        $sel = str_ireplace ( '+', ' + ', $sel ); // metto gli spazi tra i "+"
-                                        $sel = str_ireplace ( '=', ' = ', $sel ); // metto gli spazi tra i "="
-                                        $sel = str_ireplace ( '~=', ' ~= ', $sel ); // metto gli spazi tra i "~="
-                                        $sel = str_ireplace ( '|=', ' |= ', $sel ); // metto gli spazi tra i "~="
-                                        while ( stripos ( $sel, '  ' ) !== false ) //rimuovo gli spazi multipli
-                                        {
-                                                $sel = str_ireplace ( '  ', ' ', $sel );
-                                                //echo ("<p>sel_string =".$sel."</p>");
-                                        }
-                                        $sel = str_ireplace ( ' > ', '>', $sel );
-                                        $sel = str_ireplace ( ' + ', '+', $sel );
-                                        $sel = trim(str_ireplace ( ' , ', ',', $sel ));
-                                        $sel = str_ireplace ( ' ~= ', '~=', $sel ); // rimuovo gli spazi tra i "~="
-                                        $sel = str_ireplace ( ' |= ', '|=', $sel ); // rimuovo gli spazi tra i "~="
-                                        $sel = str_ireplace ( '( ', '(', $sel ); // rimuovo gli spazi tra "("; for lang(...)
-                                        $sel = str_ireplace ( ' )', ')', $sel ); // rimuovo gli spazi tra ")"; for lang(...)
-                                        $sel = str_ireplace ( ' ', ' ' . $spazio . ' ', $sel ); // put $spazio				
-                                        $sel = str_ireplace ( '>', ' > ', $sel ); // metto gli spazi tra i ">"
-                                        $sel = str_ireplace ( '+', ' + ', $sel ); // metto gli spazi tra i "+"                                 
-                                        //$sel = str_ireplace ( ':', ' :', $sel ); // metto gli spazi tra i ":"
-                                        // use the $spazio symbol to indicate that  an id or class is preceded by a space
-                                        // in fact "p.nome_classe" is different from "p .nome_classe"
-                                        //uso il simbolo $spazio e per indicare che un id o una classe e' preceduta da uno spazio
-                                        //infatti "p.nome_classe" è diverso da "p .nome_classe"
-                                        $sel = str_ireplace ( '.', ' .', $sel ); //put a space before - metto uno $spazio prima di "."
-                                        $sel = str_ireplace ( '#', ' #', $sel ); // metto uno $spazio prima di "#"
-                                        $sel = str_ireplace ( ':', ' :', $sel ); // metto uno $spazio prima di ":"
-                                        $sel = str_ireplace ( ' ' . $spazio . ' [', ' ' . $spazio . ' * [', $sel ); 
-                                        $sel = str_ireplace ( ' ' . $spazio . ' :', ' ' . $spazio . ' * :', $sel );  
-                                        $sel = str_ireplace ( '[', ' [', $sel ); // metto gli spazi tra i "["                                
-                                        $sel = str_ireplace ( '] [', '[', $sel ); // sostituisco "] [" con "["
-                                        $sel = str_ireplace ( ']', '', $sel ); // remove "]"                                
-                                        while ( stripos ( $sel, '  ' ) !== false ) //rimuovo gli spazi multipli
-                                        {
-                                                $sel = str_ireplace ( '  ', ' ', $sel );
-                                                //echo ("<p>sel_string =".$sel."</p>");
-                                        }                                          
-                                        
-                                        
-                                        
 					//rimuovo eventuali $spazio all'inizio della stringa (remove spaces from beginning of strings )
 					$sel = preg_replace ( "/^" . $spazio . "/", "", $sel );
 					//rimuovo eventuali $spazio alla fine della stringa (remove spaces from ends of strings)
 					$sel = preg_replace ( "/" . $spazio . "$/", "", $sel );
 					$sel = trim ( $sel );
-                                        
-                                        
-					//$selettore_array = split ( " ", $sel );                                        
-					$selettore_array = preg_split ( "/ /", $sel );
-                                        //edit selectors in this way: a [href] :hover ---> [href] a :hover --> [href] :hover a 
-                                        if(sizeof($selettore_array) >1)
-                                        {
-                                                for($kk = 0; $kk< sizeof($selettore_array); $kk++)
-                                                {
-                                                    if(stripos($selettore_array[$kk], '[') === 0 )
-                                                    {
-                                                        $temp = $selettore_array[$kk-1];
-                                                        $selettore_array[$kk-1] = $selettore_array[$kk];
-                                                        $selettore_array[$kk] = $temp;
-                                                        //if a.someclass[href]; a.someid[href]
-                                                        //edit selectors in this way: a#someid [href] ---> [href] a#someid 
-                                                        if($kk >1 && (stripos($selettore_array[$kk],'.') === 0 || stripos($selettore_array[$kk],'#') === 0)
-                                                                && stripos($selettore_array[$kk-2],'.') !== 0 
-                                                                && stripos($selettore_array[$kk-2],'#') !== 0 
-                                                                && $selettore_array[$kk-2] != '{_}'
-                                                                && $selettore_array[$kk-2] != '>'
-                                                                && $selettore_array[$kk-2] != '+')
-                                                        {
-                                                            $temp = $selettore_array[$kk-2];
-                                                            $selettore_array[$kk-2] = $selettore_array[$kk-1];
-                                                            $selettore_array[$kk-1] = $temp;
-                                                        }
-                                                        $kk++;
-                                                    }
-                                                }
-                                                
-                                                for($kk = 0; $kk< sizeof($selettore_array); $kk++)
-                                                {
-                                                    if( stripos($selettore_array[$kk], ':') === 0)
-                                                    {
-                                                        $temp = $selettore_array[$kk-1];
-                                                        $selettore_array[$kk-1] = $selettore_array[$kk];
-                                                        $selettore_array[$kk] = $temp;
-                                                        //if a.someclass:hover; a.someid:hover
-                                                        //edit selectors in this way: a#someid :hover --->  :hover a#someid
-                                                        if($kk >1 && (stripos($selettore_array[$kk],'.') === 0 || stripos($selettore_array[$kk],'#') === 0)
-                                                                && stripos($selettore_array[$kk-2],'.') !== 0 
-                                                                && stripos($selettore_array[$kk-2],'#') !== 0 
-                                                                && $selettore_array[$kk-2] != '{_}'
-                                                                && $selettore_array[$kk-2] != '>'
-                                                                && $selettore_array[$kk-2] != '+')
-                                                        {
-                                                            $temp = $selettore_array[$kk-2];
-                                                            $selettore_array[$kk-2] = $selettore_array[$kk-1];
-                                                            $selettore_array[$kk-1] = $temp;
-                                                        }
-                                                        $kk++;
-                                                    }
-                                                }                                                
-                                        }
+					$selettore_array = split ( " ", $sel );
 					// in the final position of $selettore_array ????
-					//nell'ultima posizione di $selettore_array c'è il selettore piu' a dx prima di una "," o di "{" 
+					//nell'ultima posizione di $selettore_array c'� il selettore piu' a dx prima di una "," o di "{" 
 					$size_of_selettore = sizeof ( $selettore_array ) - 1;
 					$last = $selettore_array [$size_of_selettore]; //ultimo elemento a dx, es: "div > p br" ---> br 
 					
+
 					$array_appoggio = array ();
 					$array_appoggio ["idcss"] = $idcss;
 					$array_appoggio ["posizione"] = $i;
@@ -2338,7 +1928,7 @@ class BasicChecks {
 							
 							//print_r($array_appoggio);							
 							$regola = trim ( $regola );
-							$regola = explode ( ":", $regola );
+							$regola = split ( ":", $regola );
 							if (sizeof ( $regola == 2 )) {
 								$proprieta = trim ( $regola [0] );
 								$valore = trim ( $regola [1] );
@@ -2361,14 +1951,12 @@ class BasicChecks {
 						
 						}
 					}
-                                        
+					
 					//memorizzo i "predecessori". es: il selettore =" div > p br", allora i predecessori di br (considero anche br stesso) sono br, p, > e div. li memorizzo da dx a sx
 					for($j = $size_of_selettore, $k = 0; $j >= 0; $j --, $k ++) {
 						$array_appoggio ["prev"] [$k] = $selettore_array [$j];
 					}
 					
-                                        $array_appoggio ["prev_string"] = $selectorsString;
-                                        
 					//if(isset($selettori_appoggio[$idcss][$last])) //ho gi inserito questo elemento (tag, id, class) almeno una volta 
 					if (isset ( $selettori_appoggio [$last] )) //ho gia' inserito questo elemento (tag, id, class) almeno una volta 
 					{
@@ -2379,27 +1967,26 @@ class BasicChecks {
 					}
 				}
 			}
-		}  
-                return true;
+		}
 	}
 	
 	// Function to search within a particular attribute associated with an id tag
 	//Funzione che ricerca un determinato attributo all'interno dell'id associato ad un tag
-	public static function GetElementStyleId($e, $id, $val, $pseudoClass = null) {
+	public static function GetElementStyleId($e, $id, $val) {
 		
-		return BasicChecks::getElementStyleGeneric ( $e, '#', $id, $val, $pseudoClass );
+		return BasicChecks::getElementStyleGeneric ( $e, '#', $id, $val );
 	}
 	// A function that searches for a particular attribute within the class associated with a tag in an external style sheet
 	//Funzione che ricerca un determinato attributo all'interno della class associata ad un tag, in un foglio di stile esterno
-	public static function GetElementStyleClass($e, $class, $val, $pseudoClass = null) {
-		return BasicChecks::getElementStyleGeneric ( $e, '.', $class, $val, $pseudoClass );
+	public static function GetElementStyleClass($e, $class, $val) {
+		
+		return BasicChecks::getElementStyleGeneric ( $e, '.', $class, $val );
 	}
 	// A function that searches for a particular attribute in a tag identified by the selector in an external style sheet
 	//Funzione che ricerca un determinato attributo all'interno di un selettore identificato con il tag in un foglio di stile esterno
-	public static function GetElementStyle($e, $child, $val, $pseudoClass = null) {
-               
+	public static function GetElementStyle($e, $child, $val) {
 		//return BasicChecks::getElementStyleGeneric($e,'',$child,$val,$idcss);
-		return BasicChecks::getElementStyleGeneric ( $e, '', $child, $val, $pseudoClass );
+		return BasicChecks::getElementStyleGeneric ( $e, '', $child, $val );
 	}
 	// Function for requirement 21 which retrieves the values of them away Vetical
 	//Funzione per il requsitio 21 che recupera i valori di distanza veticali di un li
@@ -2507,11 +2094,33 @@ class BasicChecks {
 		$p_right = trim ( str_ireplace ( "!important", "", $p_right ) );
 	}
 	
+	public static function getForegroundA($e, $link_sel) {
+		// Find the value of foreground explicitly defined for the link element $e
+		//cerco il valore di foreground esplicitamente definito per l'elemento link $e
+		$foreground = BasicChecks::get_p_css_a ( $e, "color", $link_sel );
+		
+		$foreground = str_replace ( "'", "", $foreground );
+		$foreground = str_replace ( "\"", "", $foreground );
+		$foreground = str_replace ( "!important", "", $foreground );
+		return $foreground;
 	
-	public static function getForeground($e, $pseudoClass = null) {
+	}
+	
+	public static function getBackgroundA($e, $link_sel) {
+		// Find the value of explicitly defined background for the element $e
+		//cerco il valore di background esplicitamente definito per l'elemento $e
+		$background = BasicChecks::get_p_css_a ( $e, "background-color", $link_sel );
+		$background = str_replace ( "'", "", $background );
+		$background = str_replace ( "\"", "", $background );
+		$background = str_replace ( "!important", "", $background );
+		return $background;
+	
+	}
+	
+	public static function getForeground($e) {
 		// Find the value of foreground explicitly defined for the element $e
 		//cerco il valore di foreground esplicitamente definito per l'elemento $e
-		$foreground = BasicChecks::get_p_css ( $e, "color", $pseudoClass );
+		$foreground = BasicChecks::get_p_css ( $e, "color" );
 		// links do not inherit the "color"defined style
 		//i link non ereditano "color" definito in style
 		if ($foreground == "" && $e->tag == "a")
@@ -2520,7 +2129,7 @@ class BasicChecks {
 		//per gli elementi normali se foreground == "" significa che il valore non è stato definito per $e: ricerco tra i suoi genitori
 		while ( ($foreground == "" || $foreground == null) && $e->tag != null && $e->tag != "body" && $e->tag != "html") {
 			$e = $e->parent ();
-			$foreground = BasicChecks::get_p_css ( $e, "color", $pseudoClass );
+			$foreground = BasicChecks::get_p_css ( $e, "color" );
 		}
 		// if a foreground, is found, check if it is defined in the body, if not check the if it is  black
 		// NOTE: must be added to the control link, alink, ...
@@ -2540,28 +2149,17 @@ class BasicChecks {
 	
 	}
 	
-	public static function getBackground($e, $pseudoClass = null) {
+	public static function getBackground($e) {
 		// Find the value of explicitly defined background for the element $ e
 		//cerco il valore di background esplicitamente definito per l'elemento $e
-            
-            
-                $bgImage = BasicChecks::get_p_css ( $e, "background-image", $pseudoClass );
-                if($bgImage != '')
-                    return "undetermined";
-                        
-                
-		$background = BasicChecks::get_p_css ( $e, "background-color", $pseudoClass );
-                
+		$background = BasicChecks::get_p_css ( $e, "background-color" );
+		
 		// if background == "" means that the value is not defined for $e: Searches its parents
 		//se background == "" significa che il valore non è stato definito per $e: ricerco tra i suoi genitori
 		while ( ($background == "" || $background == null) && $e->tag != null && $e->tag != "body" && $e->tag != "html") {
 			$e = $e->parent ();
 			
-                        $bgImage = BasicChecks::get_p_css ( $e, "background-image", $pseudoClass );
-                        if($bgImage != '')
-                            return "undetermined";
-                        
-			$background = BasicChecks::get_p_css ( $e, "background-color" , $pseudoClass);
+			$background = BasicChecks::get_p_css ( $e, "background-color" );
 			if ($background == "" || $background == null) //controllo se c'e bgcolor che ha priorita' inferiore dello stile
 			{
 				if (($e->tag == "table" || $e->tag == "tr" || $e->tag == "td") && isset ( $e->attr ["bgcolor"] ))
@@ -2569,7 +2167,7 @@ class BasicChecks {
 			}
 			// if the element has an absolute position and background not defined (default: transparent)
 			//se l'elemento ha posizione assoluta e background non definito (default:transparent)
-			if (BasicChecks::get_p_css ( $e, "position", $pseudoClass ) == "absolute" && ($background == "" || $background == null))
+			if (BasicChecks::get_p_css ( $e, "position" ) == "absolute" && ($background == "" || $background == null))
 				$background = - 1;
 		}
 		
@@ -2611,34 +2209,33 @@ class BasicChecks {
 	// check if the item is contained in an element with absolute position outside the page
 	//controllo se l'elemento è contenuto in un elemento con posizione assoluta esterna alla pagina
 	public static function isPositionOutOfPage($e) {
-		$p = BasicChecks::get_p_css ( $e, "position" );
-		while ( ($p == "" || $p == null || $p !== "absolute") && $e->tag != null && $e->tag != "html" ) {
-                    
-                        $e = $e->parent ();
-			$p = BasicChecks::get_p_css ( $e, "position" );
+		$p = BasicChecks::get_p_css ( $e, "display" );
+		while ( ($p == "" || $p == null || $p !== "none") && $e->tag != null && $e->tag != "html" ) {
+			$e = $e->parent ();
+			$p = BasicChecks::get_p_css ( $e, $propriety );
 		}
-                
+		
 		if ($p == "" || $p == null)
 			return false;
-		else {
+		else if ($p == "none") {
 			$top = BasicChecks::get_p_css ( $e, "top" );
 			if (stripos ( $top, "-" ) === 0)
-                                return true;
-                        
+				return true;
+			
 			$left = BasicChecks::get_p_css ( $e, "left" );
 			if (stripos ( $left, "-" ) === 0)
-                                return true;
+				return true;
 		
 		}
 		
 		return false;
 	}
+	
 	// check that the element is visible
 	// controllo che l'elemento sia visibile
 	public static function isElementVisible($e) {
 		//visibility:hidden o display:none
-                //note: actually overflow: hidden does not make alway an element invisible, it depens on element's width and height 
-		if (BasicChecks::isProprietyInerited ( $e, "visible", "hidden" ) || BasicChecks::isProprietyInerited ( $e, "display", "none" ) || BasicChecks::isProprietyInerited ( $e, "overflow", "hidden" ))
+		if (BasicChecks::isProprietyInerited ( $e, "visible", "hidden" ) || BasicChecks::isProprietyInerited ( $e, "display", "none" ))
 			return false;
 		// check if the item is within an element with absolute position outside the page	
 		//controllo se l'elemento è all'interno di un elemento con posizione assoluta esterna alla pagina
@@ -2657,12 +2254,11 @@ class BasicChecks {
 		$a_value = preg_split ( '/ /', $value );
 		//print_r($a_value);
 		
+
 		foreach ( $a_value as $value ) {
 			if ($value == "auto" || $value == ' ' || $value == 0)
 				; //ok
-			elseif ((substr ( $value, strlen ( $value ) - 2, 2 ) != "em") && (substr ( $value, strlen ( $value ) - 1, 1 ) != "%") 
-                                && $value != 'large' && $value != 'larger' && $value != 'medium' && $value != 'small' && $value != 'smaller' 
-                                && $value != 'x-large' && $value != 'xx-large' && $value != 'xx-small' && $value != 'x-small' /*&& (substr ( $value, strlen ( $value ) - 2, 2 ) != "px")*/)
+			elseif ((substr ( $value, strlen ( $value ) - 2, 2 ) != "em") && (substr ( $value, strlen ( $value ) - 1, 1 ) != "%") && (substr ( $value, strlen ( $value ) - 2, 2 ) != "px"))
 				return false;
 			//else 
 		//	return true;
@@ -2672,14 +2268,14 @@ class BasicChecks {
 	// check to see if the size of the property $val associated with the element $e' is relative
 	//check per verificare se la misura della proprieta' $val associata all'elemento $e e' relativa
 	public static function checkRelative($e, $val) {
-	
+		
 		$fs = BasicChecks::get_p_css ( $e, $val );
 		if ($fs != "" && $fs != null) {
-				
+			
 			return BasicChecks::isRelative ( $fs );
 		} else
 			return true;
-	}	
+	}
 	// Return true if the amount of $value is in px
 	//Restituisce true se la misura di $value è in px
 	public static function isPx($value) {
@@ -2708,7 +2304,9 @@ class BasicChecks {
 		} else
 			return true;
 	}
+	// CHANGE FILE SPETTAZA FROM THE ORIGINAL
 	// FUNCTION TO CALCULATE THE RATIO OF BRILLIANCE
+	//MODIFICA FILO SPETTAZA DALL'ORIGINALE
 	//FUNZIONE PER CALCOLARE IL RAPPORTO DI BRILLANTEZZA
 	public static function CalculateBrightness($color1, $color2) {
 		
@@ -2717,11 +2315,13 @@ class BasicChecks {
 		//echo("<p>CalcolateBrightness</p>");
 		//echo("<p>Colori prima di ColorValue: color1=".$color1.  "color2=".$color2. "</p>");
 		
+
 		$color1 = new ColorValue ( $color1 );
 		$color2 = new ColorValue ( $color2 );
 		
 		//echo("<p>Colori dopo ColorValue: color1=".$color1.  "color2=".$color2. "</p>");
 		
+
 		if (! $color1->isValid () || ! $color2->isValid ())
 			return true;
 		
@@ -2809,7 +2409,7 @@ class BasicChecks {
 		return $ContrastRatio;
 	}
 	
-	//TOSI e VIRRUSO convert font size to pt
+	//TOSI e VIRRUSO risale al font-size e lo converte in pt
 	public static function fontSizeToPt($e) {
 		global $tag_size;
 		$tag_size = BasicChecks::get_p_css ( $e, "font-size" );
@@ -2904,20 +2504,14 @@ class BasicChecks {
 			$f_color = substr ( $f_color, $a + 1 );
 			return $f_color;
 		} /* Se  in formato RGB lo converto in esadecimale poi lo restituisco */
-		//elseif (eregi ( 'rgb', $f_color )) {
-		elseif (preg_match ( '/rgb/i', $f_color )) {
-			//if (eregi ( '\(([^,]+),', $f_color, $red )) {
-			if (preg_match ( '/\(([^,]+/i),', $f_color, $red )) {
-
+		elseif (eregi ( 'rgb', $f_color )) {
+			if (eregi ( '\(([^,]+),', $f_color, $red )) {
 				$red = dechex ( $red [1] );
 			}
-			//if (eregi ( ',([^,]+),', $f_color, $green )) {
-			if (preg_match ( '/,([^,]+),/i', $f_color, $green )) {
-
+			if (eregi ( ',([^,]+),', $f_color, $green )) {
 				$green = dechex ( $green [1] );
 			}
-			//if (eregi ( ',([^\)]+)\)', $f_color, $blue )) {
-			if (preg_match ( '/,([^\)]+)\/i)', $f_color, $blue )) {
+			if (eregi ( ',([^\)]+)\)', $f_color, $blue )) {
 				$blue = dechex ( $blue [1] );
 			}
 			$f_color = $red . $green . $blue;
@@ -3060,6 +2654,7 @@ class BasicChecks {
 		if ($tr == null || $size_of_tr == 0)
 			return true; //tabella mal composta - table is not well formed
 		
+
 		for($i = 0; $i < $size_of_tr - 1; $i ++) {
 			$th_next = $tr [$i + 1]->find ( "th" );
 			if ($th_next == null || sizeof ( $th_next ) == 0)
@@ -3092,6 +2687,7 @@ class BasicChecks {
 	
 	}
 	
+	// funzioni per i css
 	
 	/* returns the list of external styles on the page */
 	/* ritorna la lista degli stili esterni presenti nella pagina */
@@ -3107,7 +2703,7 @@ class BasicChecks {
 		$i = 0;
 		foreach ( $vettore_link as $link ) {
 			if ($link->attr ["type"] == "text/css" && $link->attr ["rel"] == "stylesheet" && (! isset ( $link->attr ["media"] ) || $link->attr ["media"] == "all" || $link->attr ["media"] == "screen")) {
-				$csslist [$i]['href'] = $link->attr ["href"];
+				$csslist [$i] = $link->attr ["href"];
 				$i ++;
 			}
 		}
@@ -3115,33 +2711,29 @@ class BasicChecks {
 		if ($csslist == "")
 			return $csslist;
 			//MB ripulisco gli url dei css
-		global $uri, $base_href;
-// 		$uri2 = BasicChecks::getSiteUri ( $uri );
+		global $uri;
+		$uri2 = BasicChecks::getSiteUri ( $uri );
+		
 		$i = 0;
 		// change the relative addresses of style sheets
 		//modifico gli indirizzi relativi dei fogli di stile
 		foreach ( $csslist as $foglio ) {
 			
-			//$foglio = str_replace ( '"', '', $foglio );
-                        
-                        if(stripos($foglio['href'], './') === 0)
-                            $foglio['href'] = substr ($foglio['href'], 1);
-                    
+			$foglio = str_replace ( '"', '', $foglio );
 			
-			if (stripos ( $foglio['href'], "http://" ) === false) //indirizzo relativo
+			if (stripos ( $foglio, "http://" ) === false) //indirizzo relativo
 			{
-// 				if (substr ( $foglio['href'], 0, 1 ) == "/")
-// 					$foglio['href'] = $uri2 . $foglio['href'];
-// 				else
-// 					$foglio['href'] = $uri2 . "/" . $foglio['href'];
-				$indirizzo = $foglio['href'];
-								
-				$foglio['href'] = BasicChecks::getFile($indirizzo, $base_href, $uri);
+				if (substr ( $foglio, 0, 1 ) == "/")
+					$foglio = $uri2 . $foglio;
+				else
+					$foglio = $uri2 . "/" . $foglio;
 			}
 			
-			$csslist [$i]['absolute'] = $foglio['href'];
+			$csslist [$i] = $foglio;
 			$i ++;
 		}
+		
+		//print_r($csslist);
 		return $csslist;
 	}
 	// The function returns the css of a page
@@ -3149,14 +2741,13 @@ class BasicChecks {
 	public static function get_style_internal($content_dom) {
 		
 		//MB
+
 		//$dom=str_get_dom($content);
 		$dom = $content_dom;
 		//echo("<p> contenuto di style: </p>");
 		// change the URL of the site to be validated in order to set add the address of a relative css
 		//modifico l'url del sito da validare in modo da porterci aggiungere l'indirizzo di un css relativo
-		global $uri, $base_href;
-		
-		
+		global $uri;
 		$uri2 = BasicChecks::getSiteUri ( $uri );
 		
 		$vettore_stili_interni = $dom->find ( 'style' );
@@ -3165,44 +2756,25 @@ class BasicChecks {
 			if (! isset ( $one->attr ["media"] ) || $one->attr ["media"] == "all" || $one->attr ["media"] == "screen") {
 				$cssint = $cssint . $one->innertext;
 				$cssint = trim ( $cssint );
-				while (stripos($cssint,'@import') !== false){
-					$posStart = stripos($cssint,'@import');
-					$posEnd = stripos($cssint,';', $posStart);
+				while ( substr ( $cssint, 0, 7 ) == "@import" ) {
+					$import = substr ( $cssint, 7, stripos ( $cssint, ";" ) + 1 );
 					
-					$match = substr ($cssint, $posStart, $posEnd - $posStart +1);
+					$cssint = str_ireplace ( $import, "", $cssint );
 					
-					if(stripos($match,'"') !== false) //@import "an.url.css" or @import ("an.url.css")
-					{
-						$indirizzo = substr($match, stripos($match,'"')+1,strripos($match,'"') - stripos($match,'"') -1);
-					}
-					elseif(stripos($match,"'") !== false) //@import "an.url.css" or @import ("an.url.css")
-					{
-						$indirizzo = substr($match, stripos($match,"'")+1,strripos($match,"'") - stripos($match,"'") -1);
-					}
-					elseif(stripos($match,'(') !== false) //@import (an.url.css)
-					{
-						$indirizzo = substr($match, stripos($match,'(')+1,strripos($match,')') - stripos($match,'(') -1);
-					}
+					$indirizzo = substr ( $import, stripos ( $import, '(' ) + 1, stripos ( $import, ')' ) - stripos ( $import, '(' ) - 1 );
+					
+					$indirizzo = str_ireplace ( '"', '', $indirizzo );
 					
 					if (stripos ( $indirizzo, "http://" ) === false) //indirizzo relativo
-					{
-// 						if (substr ( $indirizzo, 0, 1 ) == "/")
-// 							$indirizzo = $uri2 . $indirizzo;
-// 						else
-// 							$indirizzo = $uri2 . "/" . $indirizzo;
-						$indirizzo = BasicChecks::getFile($indirizzo, $base_href, $uri);
-											
+{
+						if (substr ( $indirizzo, 0, 1 ) == "/")
+							$indirizzo = $uri2 . $indirizzo;
+						else
+							$indirizzo = $uri2 . "/" . $indirizzo;
 					}
 					
-					$atImportContent = @file_get_contents ( $indirizzo );
-                                        
-                                        
-					//$cssint = str_replace($match, $atImportContent, $cssint);
-					$cssint1 = substr ($cssint, 0, $posStart);
-					$cssint2 = substr ($cssint, $posEnd+1);
-					$cssint = $cssint1 .$atImportContent . $cssint2;
-					
-					
+					$cssint = @file_get_contents ( $indirizzo ) . "\n" . $cssint;
+					//echo($indirizzo);
 				}
 			}
 		}
@@ -3211,70 +2783,19 @@ class BasicChecks {
 	// The function creates an array of styles (internal and external) to be submitted for validation.
 	//La funzione crea l'array degli stili (interni ed esterni) da sottoporre alla validazione.
 	public static function prepare_css_arrays($array_css_esterni, $ci) {
-            
+		
 		for($b = 0; $b < count ( $array_css_esterni ); $b ++) {
-                    
-                        $absolute = $array_css_esterni [$b]['absolute'];
-                        $relative = $array_css_esterni [$b]['href'];
-                        
-                        if(stripos($relative, './') === 0)
-                                $relative = substr ($relative, 1);
-                        
-			$css_content = @file_get_contents ( $absolute );
-                        $whileFlag = false;
-                        //workaround for wrong urls
-                        //try to found css in parents directories
-                        $count = 0;
-                        while ($css_content == false && $whileFlag == false && $count < 50)
-                        {
-                            $count++;
-                            
-                            if($relative == $absolute)
-                            {   
-                                $whileFlag = true;
-                                break; //unreachable
-                            }
-                            //remove relative part
-                            $absolute = str_replace($relative, "", $absolute);
-                            //remove last position '/' if present
-                            if(substr($absolute, strlen($absolute)-1) == '/' )
-                                $absolute = substr($absolute, 0, -1);
-                            
-                            //remove minor directory
-                            $lastSlashPos = strripos($absolute, "/", -1);
-                            if($lastSlashPos == false)
-                            {
-                                $whileFlag = true;
-                                break;
-                            }
-                            $absolute = substr($absolute, 0, $lastSlashPos);
-                            //create new absolute path
-                            if(stripos($relative,'/') === 0)
-                                    $absolute = $absolute.''.$relative;
-                            else
-                               $absolute = $absolute.'/'.$relative;
-                            
-                            
-                            $css_content = @file_get_contents ( $absolute );
-                            //correct absolute css url
-                            if($css_content)
-                            {
-                                $array_css_esterni [$b]['absolute'] = $absolute;
-                            }
-                        }
+			$css_content = @file_get_contents ( $array_css_esterni [$b] );
 			BasicChecks::GetCSSDom ( $css_content, $b );
-                        
-	
-                        
 		}
+		
 		//MB
-		// last position: interior style
+		// last position Insrisco interior style
+		//Insrisco nell'ultima posizione lo stile interno
 		if ($ci != "") {
-                    
+			
 			BasicChecks::GetCSSDom ( $ci, $b );
 		}
-             
-                
 	}
 	// get the css code that caused an error, for the last check that was performed on css
 	// is called in after the Procedure AccessibilityValidator of each check
@@ -3285,87 +2806,51 @@ class BasicChecks {
 	//restituisce $css_code che, nel caso in cui il check non abbia riscontrato errori su un css interno/esterno o
 	//non sia un check sui css, viene impostata a ""
 	public static function getCssOutput() {
-            
 		// MB: To print the check on the rules of CSS
 		// css rulesrelating the error
 		// CSS: default font size and default font format
 		//MB:per stampare le regole dei check sui CSS														
 		//regole css relative all'errore
 		//CSS: default font size e default font format
-		define("DEFAULT_FONT_SIZE",12);
-		define("DEFAULT_FONT_FORMAT","pt");
 		global $tag_size;
-		global $font_weight;
 		global $csslist;
 		global $array_css;
 		global $background, $foreground;
-		global $showContrastExample;
-		global $showSurroundingTextExample;
-		
 		$back = $background;
 		$fore = $foreground;
-		$f_w = $font_weight;
-		$background = $foreground = $font_weight = '';
+		$background = $foreground = '';
 		
 		$spazio = "{_}";
 		$css_code = "";
-		
+		if (isset ( $array_css ) && $array_css != null) {
 			
-				if($showContrastExample)
-				{				
-								$tag_size = round($tag_size,2);
-								$css_code = $css_code.
+			$tag_size = round($tag_size,2);
+                        $css_code = $css_code.
 				//"<p style='font-size:20px;width:80px;text-align:center;background-color:#".
-								"<p>"._AC("fixed_size_example_text").": <span style='font-size:15px;background-color:#".        
-								$back.";color:#".$fore."'>"._AC("color_contrast_example")."</span></p>";
+                "<p>"._AC("fixed_size_example_text").": <span style='font-size:20px;background-color:#".        
+				$back.";color:#".$fore."'>"._AC("color_contrast_example")."</span></p>";
 		
-//				$bold = BasicChecks::get_p_css($e,"font-weight");
-//                                if($bold == 'inherit')
-//                                {
-//                                    $ePar = $e;
-//                                    while ($ePar->parent()->tag != 'root' && $bold == 'inherit' )
-//                                    {
-//                                        $ePar = $ePar->parent();
-//                                        $bold = BasicChecks::get_p_css($ePar,"font-weight");
-//                                    }
-//                                }
+				$bold = BasicChecks::get_p_css($e,"font-weight");
 				//if($e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6")
 				//	$bold="bold";
-				$real_size_text = '';
-				if($tag_size != 0 && trim($tag_size)!='')
+				if($bold =="bold" || $bold >= 700 || ($bold=="" && ($e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6")))				
 				{
-					if($f_w =="bold" || $f_w =="bolder" ||  $f_w >= 700 || ($f_w == "" && ($e->tag=="h1" || $e->tag=="h2" || $e->tag=="h3" || $e->tag=="h4" || $e->tag=="h5" || $e->tag=="h6")))				
-					{
-						//$css_code = $css_code."Font size: ".$tag_size."points bold";
-						$real_size_text="<p>"._AC("real_size_example_text")." (".$tag_size." "._AC("points")." "._AC("bold")."): <span style='font-weight:bold;font-size:".$tag_size."pt;background-color:#".       
-						$back.";color:#".$fore."'>"._AC("color_contrast_example")."</span></p>";
-					}
-					else
-					{
-	                                    
-						//$css_code = $css_code."Font size: ".$tag_size."points";
-						$real_size_text="<p>"._AC("real_size_example_text")." (".$tag_size." "._AC("points")."): <span style='font-size:".$tag_size."pt;background-color:#".       
-						$back.";color:#".$fore."'>"._AC("color_contrast_example")."<span></p>";
-					}
+					//$css_code = $css_code."Font size: ".$tag_size."points bold";
+					$real_size_text="<p>"._AC("real_size_example_text")." (".$tag_size." "._AC("points")." "._AC("bold")."): <span style='font-weight:bold;font-size:".$tag_size."pt;background-color:#".       
+					$back.";color:#".$fore."'>"._AC("color_contrast_example")."</span></p>";
+				}
+				else
+				{
+					//$css_code = $css_code."Font size: ".$tag_size."points";
+					$real_size_text="<p>"._AC("real_size_example_text")." (".$tag_size." "._AC("points")."): <span style='font-size:".$tag_size."pt;background-color:#".       
+					$back.";color:#".$fore."'>"._AC("color_contrast_example")."<span></p>";
 				}	
 				$css_code = $css_code.$real_size_text;
-                                $showContrastExample = false;
 					
 						
-                }
-                    
-                    if($showSurroundingTextExample)
-                    {
-                        $css_code = $css_code. 
-                                "<p>"._AC("surrounding_example_text").": 
-                                    <span style='font-size:15px;color:#".$back."'>"._AC("colored_surrounding_text")."</span> --  
-                                <span style='font-size:15px;color:#".$fore."'>"._AC("colored_inner_text")."</span>
-                                    -- <span style='font-size:15px;color:#".$back."'>"._AC("colored_surrounding_text")."</span>
-                                 </p>";
-                        $showSurroundingTextExample = false;
-                    }
+				
 			
-                    if (isset ( $array_css ) && $array_css != null) {			
+			
 			//------>
 			$css_code .= "<p style='padding:1em'>" . _AC ( "element_CSS_rules" ) . ": </p>\n\t\n\t<pre>\n\t\n\t";
 			$int_css = '';
@@ -3377,18 +2862,15 @@ class BasicChecks {
 				$temp_css_code = '';
 				$num_to_end = sizeof ( $rule ["prev"] ) - 1;
 				
-                                $temp_css_code = $rule ["prev_string"];
-                                
-//				for($i = $num_to_end; $i >= 0; $i --) {
-//					$temp_css_code .= " " . $rule ["prev"] [$i];
-//				}
-                                
-//				$temp_css_code = str_ireplace ( " .", ".", $temp_css_code );
-//				$temp_css_code = str_ireplace ( " #", "#", $temp_css_code );
-//				$temp_css_code = str_ireplace ( ">.", "> .", $temp_css_code );
-//				$temp_css_code = str_ireplace ( ">#", "> #", $temp_css_code );
-//				$temp_css_code = str_ireplace ( "+.", "+ .", $temp_css_code );
-//				$temp_css_code = str_ireplace ( "+#", "+ #", $temp_css_code );
+				for($i = $num_to_end; $i >= 0; $i --) {
+					$temp_css_code .= " " . $rule ["prev"] [$i];
+				}
+				$temp_css_code = str_ireplace ( " .", ".", $temp_css_code );
+				$temp_css_code = str_ireplace ( " #", "#", $temp_css_code );
+				$temp_css_code = str_ireplace ( ">.", "> .", $temp_css_code );
+				$temp_css_code = str_ireplace ( ">#", "> #", $temp_css_code );
+				$temp_css_code = str_ireplace ( "+.", "+ .", $temp_css_code );
+				$temp_css_code = str_ireplace ( "+#", "+ #", $temp_css_code );
 				$temp_css_code = str_ireplace ( " " . $spazio, "", $temp_css_code );
 				
 				$temp_css_code = $temp_css_code . "{\n\t\n\t";
@@ -3402,7 +2884,7 @@ class BasicChecks {
 					$int_css .= $temp_css_code;
 					//$css_code=$css_code._AC("internal_CSS").":\n\t\n\t      ";
 				else
-					$ext_css [$csslist [$rule ["idcss"]]['absolute']] .= $temp_css_code;
+					$ext_css [$csslist [$rule ["idcss"]]] .= $temp_css_code;
 				//$css_code=$css_code._AC("external_CSS")." (<a title='external CSS link' href='".$csslist[$rule["idcss"]]."'>".$csslist[$rule["idcss"]]."</a>):\n\t\n\t      ";
 			}
 			if ($int_css != '')
@@ -3417,31 +2899,30 @@ class BasicChecks {
 		}
 		$array_css = array ();
 		return $css_code;
-	}
+		//MB: per i check sui CSS (fine)
+	}	
 	
-	public static function checkLinkContrastWcag2AA($pseudoClass, $bodyAttribute) {
-		global $background, $foreground, $font_weight;
+	public static function checkLinkContrastWcag2AA($cssPropriety, $bodyAttribute) {
+
+		global $background, $foreground;
 		global $global_e, $global_content_dom;
 		global $stringa_testo_prova;
-		global $showContrastExample;
 		$e = $global_e;
 		$content_dom = $global_content_dom;
-                
-		if(!BasicChecks::setCssSelectors ( $content_dom ))
-			return true;
+		
+		BasicChecks::setCssSelectors ( $content_dom );
 		
 		if (! BasicChecks::isElementVisible ( $e ))
 			return true;
 		
 		$background = '';
 		$foreground = '';
-		$font_weight = '';
 		
 		if (trim ( BasicChecks::remove_children ( $e ) ) == "" || trim ( BasicChecks::remove_children ( $e ) ) == "&nbsp;") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
 		// the element has no visible text: Do not run the contrast control
 			return true;
 		
-		$foreground = BasicChecks::getForeground ( $e, $pseudoClass );
+		$foreground = BasicChecks::getForegroundA ( $e, $cssPropriety );
 		if ($foreground == "undetermined")
 			return true;
 		if (($foreground == "" || $foreground == null) && $bodyAttribute != null) {
@@ -3458,7 +2939,7 @@ class BasicChecks {
 		if ($foreground == "" || $foreground == null)
 			return true;
 		
-		$background = BasicChecks::getBackground ( $e, $pseudoClass );
+		$background = BasicChecks::getBackgroundA ( $e, $cssPropriety );
 		if ($background == "undetermined")
 			return true;
 		
@@ -3474,66 +2955,49 @@ class BasicChecks {
 		$background = BasicChecks::convert_color_to_hex ( $background );
 		$foreground = BasicChecks::convert_color_to_hex ( $foreground );
 		
-		$res = BasicChecks::ContrastRatio ( strtolower ( $background ), strtolower ( $foreground ) );
-		//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $res; echo "<br>";
+		$ris = BasicChecks::ContrastRatio ( strtolower ( $background ), strtolower ( $foreground ) );
+		//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";
 		
-		$size = BasicChecks::fontSizeToPt ( $e , $pseudoClass);
-                $font_weight = BasicChecks::getFontWeight($e, $pseudoClass);
-//                $font_weight = BasicChecks::get_p_css ( $e, "font-weight", $pseudoClass );
-//                        echo($e->plaintext."\n");
-//                        echo("f_w: $font_weight");
-//                
-//                while ( ($font_weight == "" || $font_weight == null) && $e->tag != null && $e->tag != "html")
-//			$e = $e->parent ();
-//                        
-//                if($font_weight == '' || $font_weight == null)
-//                    $font_weight = BasicChecks::get_p_css ( $e, "font-weight" );
+
+		$size = BasicChecks::fontSizeToPt ( $e );
+		$bold = BasicChecks::get_p_css ( $e, "font-weight" );
+
 		if ($size < 0) //formato non supportato
 			return true;
-		elseif ($size >= 18 || ($font_weight == "bold" || $font_weight == "bolder" || $font_weight >= 700 ) && $size >= 14)
+		elseif ($size >= 18 || ($bold == "bold" && $size >= 14))
 			$threashold = 3;
 		else
 			$threashold = 4.5;
-		
-		
-		
-		
-		if ($res < $threashold) {
-			$showContrastExample = true;
+		if ($ris < $threashold) {
 			return false;
 		} else {
 			return true;
 		}
-	
 		
 		return true;
 	}	
-	public static function checkLinkContrastWcag2AAA($pseudoClass, $bodyAttribute) 
-        {
-		global $background, $foreground, $font_weight;
+
+	public static function checkLinkContrastWcag2AAA($cssPropriety, $bodyAttribute) 
+{
+		global $background, $foreground;
 		global $global_e, $global_content_dom;
 		global $stringa_testo_prova;
-		global $showContrastExample;
-                
 		$e = $global_e;
 		$content_dom = $global_content_dom;
-                
 		
-		if(!BasicChecks::setCssSelectors ( $content_dom ))
-			return true;
+		BasicChecks::setCssSelectors ( $content_dom );
 		
 		if (! BasicChecks::isElementVisible ( $e ))
 			return true;
 		
 		$background = '';
 		$foreground = '';
-		$font_weight = '';
 		
 		if (trim ( BasicChecks::remove_children ( $e ) ) == "" || trim ( BasicChecks::remove_children ( $e ) ) == "&nbsp;") //l'elemento non contiene testo "visibile": non eseguo il controllo del contrasto
 		// the element has no text "visible": Do not run the contrast control
 			return true;
 		
-		$foreground = BasicChecks::getForeground ( $e, $pseudoClass );
+		$foreground = BasicChecks::getForegroundA ( $e, $cssPropriety );
 		if ($foreground == "undetermined")
 			return true;
 		if (($foreground == "" || $foreground == null) && $bodyAttribute != null) {
@@ -3550,37 +3014,43 @@ class BasicChecks {
 		if ($foreground == "" || $foreground == null)
 			return true;
 		
-		$background = BasicChecks::getBackground ( $e, $pseudoClass );
+		$background = BasicChecks::getBackgroundA ( $e, $cssPropriety );
 		if ($background == "undetermined")
 			return true;
 		
 		if ($background == "" || $background == null)
 			$background = BasicChecks::getBackground ( $e );
 		
-		if ($background == "" || $background == null || $background == "undetermined")
+		if ($background == "" || $background == null || $background == "-1")
 			return true;
 		
+		if ($background == "undetermined")
+			return true;
 		
 		$background = BasicChecks::convert_color_to_hex ( $background );
 		$foreground = BasicChecks::convert_color_to_hex ( $foreground );
-		$res = '';
-		$res = BasicChecks::ContrastRatio ( strtolower ( $background ), strtolower ( $foreground ) );
-		//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $res; echo "<br>";
+		$ris = '';
+		$ris = BasicChecks::ContrastRatio ( strtolower ( $background ), strtolower ( $foreground ) );
+		//echo "tag->"; echo $e->tag; echo " bg->"; echo $background; echo " fr->"; echo $foreground; echo " ris="; echo $ris; echo "<br>";
 		
-		$size = BasicChecks::fontSizeToPt ( $e , $pseudoClass );
-		$font_weight = BasicChecks::getFontWeight($e, $pseudoClass);
-                
+
+		$size = BasicChecks::fontSizeToPt ( $e );
+		$bold = BasicChecks::get_p_css ( $e, "font-weight" );
+
+
 		if ($size < 0) //formato non supportato
 			return true;
-		elseif ($size >= 18 || ($font_weight == "bold" || $font_weight == "bolder" || $font_weight >= 700 ) && $size >= 14)
+		elseif ($size >= 18 || ($bold == "bold" && $size >= 14))
 			$threashold = 4.5;
 		else
 			$threashold = 7;
 		
+		$stringa_testo_prova = '';
 		
-		if ($res < $threashold) {
+		$stringa_testo_prova = "<p>ris: " . $ris . " threashold: " . $threashold . "</p>";
+		
+		if ($ris < $threashold) {
 			
-                        $showContrastExample = true;
 			return false;
 		} else {
 			return true;
@@ -3589,314 +3059,6 @@ class BasicChecks {
 		return true;
 	
 	}
-	
-	
-	//return text in the element which is not in a child element (for <div>simple text <p>text in p</p></div> returns "simple text"
-	public static function getElementPlainText($e)
-	{
-		 
-		$innerText = $e->innertext;
-		$children = $e->children();
-	
-		for($i=0; $i<count($children); $i++){
-	
-			$cOuterText = $children[$i] ->outertext;
-			$innerText = str_replace($cOuterText, '', $innerText);
-	
-		}
-	
-		return trim($innerText);
-	
-	}
-	
-	//return text of the current a element only (removes text of its children image elements)
-	public static function aText($e)
-	{
-	
-		$content_a=$e->plaintext;
-		$figli_a=$e->find('img');
-	
-		foreach ($figli_a as $img)
-		{
-	
-			$txt=$img->plaintext;
-			if($txt!=null || $txt!='')
-			{
-				$arr=explode($txt, $content_a, 2);
-				$content_a=implode($arr);
-			}
-		}
-	
-		return $content_a;
-	}
-	
-	
-	//return text of the current object element only (removes text of its children object elements)
-	public static function objectText($e)
-	{
-	
-		$contenuto_obj=$e->plaintext;
-		$figli_obj=$e->find('object');
-	
-		foreach ($figli_obj as $obj)
-		{
-	
-			$txt=$obj->plaintext;
-			if($txt!=null || $txt!='')
-			{
-				$arr=explode($txt, $contenuto_obj, 2);
-				$contenuto_obj=implode($arr);
-			}
-		}
-	
-		return $contenuto_obj;
-	}
-	
-	
-	
-	
-	//recursive check for alternative text in objects (called in objectAltText())
-	public static function recursiveObjectAltText($e, $content_dom)
-	{
-	
-	
-		$text = BasicChecks::objectText($e);
-		if (isset($text) && trim($text)!='')//text found
-		{
-	
-			return true;
-		}
-		else //children
-		{
-			$obj_children = $e->children();
-	
-			if ($obj_children==null || sizeof($obj_children)==0)
-			{
-				 
-				return false;
-				 
-			}
-			$flag=0;
-			foreach ($obj_children as $child)
-			{
-	
-				if($child->tag=="object")
-				{
-					$flag=1; //at least one child object found
-					if(BasicChecks::recursiveObjectAltText($child, $content_dom)==false)
-					{
-						 
-						return false;
-					}
-				}
-	
-				//checking image alt
-				if ($child->tag=="img")
-				{
-					if(isset($child->attr["alt"]) && (trim($child->attr["alt"]) != ''))
-					{
-						 
-						return true;
-					}
-				}
-	
-			}
-			if($flag==0)
-			{
-	
-				return false;
-			}
-			return true;
-		}
-	
-	}
-	
-	/* unibo - roberto montebelli*/
-	/**
-	 * This method searches recursively to find if $e has a parent with tag $parent_tag
-	 *
-	 * @param $e: The element to start searching from.
-	 * @param $parent_tag: The parent tag to search.
-	 * @return The parent element if found, null otherwise.
-	 */
-	public static function getParent($e, $parent_tag)
-	{
-		if ($e->parent() == null) return null;
-	
-		if ($e->parent()->tag == $parent_tag)
-			return $e->parent();
-		else
-			return BasicChecks::getParent($e->parent(), $parent_tag);
-	}
-	
-	//check if for certain $pseudoclass a particular $propriety change its value
-	public static function doesElementPseudoclassEffectExist($property, $pseudoClass)
-	{
-	global $global_e;
-	$e = $global_e;
-	
-	$baseP = BasicChecks::get_p_css($e, $property);
-	
-	
-	$pseudoClassP = BasicChecks::get_p_css($e, $property, $pseudoClass );
-	
-	//            echo("<p>tag: ".$e->tag."</p>");
-			//            echo("<p>text: ".$e->plaintext."</p>");
-	//            echo("<p>prop: ".$property."</p>");
-					//            echo("<p>baseP = ".$baseP."</p>");
-					//            echo("<p>pseudoClassP = ".$pseudoClassP."</p>");
-	
-	
-					if($pseudoClassP == $baseP )
-		return false;
-	
-	
-		return true;
-	
-	
-	}
-	
-	//Check if document is well formed using HTML W3C Validator
-	public static function isDocumentWellFormed()
-	{
-	
-	global $htmlValidator;
-	global $hV;
-	
-	
-	if (isset($htmlValidator))
-	{
-	$hV = $htmlValidator;
-	
-	
-	}
-	elseif(!isset($hV))
-	{
-	$hV = BasicChecks::createHtmlValidator();
-	
-	}
-	if (!isset($hV) || $hV == null)
-		return true;
-	
-	
-	$out = $hV->getValidationRpt();
-	
-	//search for one of the following error messages:
-	//"... document type does not allow element "[element_name]" here ";
-	//"end tag for "[element_name]" omitted...";
-	//"end tag for element "[element_name]" which is not open";
-	//"Element [element_name] not allowed as child of element [parent_name] in this context".
-	
-		if (preg_match('/document type does not allow element (\S)* here/', $out) ||
-		preg_match('/end tag for (\S)* omitted/', $out) ||
-		preg_match('/end tag for element (\S)* which is not open/', $out) ||
-		preg_match('/Element (\S)* not allowed as child of element (\S)* in this context/', $out))
-			return false;
-			//echo $out;
-		return true;
-	
-	}
-	
-	//Check if any document's element contains a duplicate attribute using HTML W3C Validator
-	public static function doesDocumentElementsContainDuplicateAttribute()
-	{
-	
-	global $htmlValidator;
-	global $hV;
-	
-	
-	if (isset($htmlValidator))
-	{
-	$hV = $htmlValidator;
-	
-	
-	}
-	elseif(!isset($hV))
-	{
-	
-	$hV = BasicChecks::createHtmlValidator();
-	
-	}
-	if (!isset($hV) || $hV == null)
-	return true;
-	
-	$out = $hV->getValidationRpt();
-	
-	//search for one of the following error messages:
-	//"... duplicate specification of attribute "[attribute_name]"
-	
-			if (stripos($out, "duplicate specification of attribute ") !== false ||
-					stripos($out, "Duplicate attribute ") !== false)
-							return false;
-							//echo $out;
-							return true;
-	
-	}
-	
-							//call W3C validator if user didn't enable it
-							public static function createHtmlValidator()
-							{
-	
-							include_once(AC_INCLUDE_PATH. "classes/HTMLValidator.class.php");
-	
-	if (isset($_REQUEST["validate_uri"]) || isset($_GET["output"]))
-			{
-			 
-			global $addslashes;
-	
-			$uri = Utility::getValidURI($addslashes($_REQUEST["uri"]));
-	
-			// Check if the given URI is connectable
-			if ($uri === false)
-			{
-			return null;
-	}
-	
-	// don't accept localhost URI
-				if (stripos($uri, '://localhost') > 0)
-				{
-				return null;
-			}
-	
-			$_POST['uri'] = $_REQUEST['uri'] = $uri;
-			$hV = new HTMLValidator("uri", $uri);
-			}
-			elseif (isset($_REQUEST["validate_file"]))
-			{
-			$validate_content = @file_get_contents($_FILES['uploadfile']['tmp_name']);
-			$hV = new HTMLValidator("fragment", $validate_content);
-			}
-			elseif (isset($_REQUEST["validate_paste"]))
-			{
-			global $stripslashes;
-			$validate_content = $_POST["pastehtml"] = $stripslashes($_POST["pastehtml"]);
-			$hV = new HTMLValidator("fragment", $validate_content);
-			}
-	
-			return $hV;
-	
-			}
-	
-			//search the css value for "font-weight" of the $e element
-			public static function getFontWeight($e, $pseudoclass){
-	
-			$font_weight = BasicChecks::get_p_css ( $e, "font-weight", $pseudoClass );
-	
-	
-			if($font_weight == '' || $font_weight == null)
-				$font_weight = BasicChecks::get_p_css ( $e, "font-weight" );
-	
-			while ( ($font_weight == '' || $font_weight == null) && $e->tag != null && $e->tag != "html")
-	{
-	$e = $e->parent ();
-		$font_weight = BasicChecks::get_p_css ( $e, "font-weight" );
-			}
-	
-			return $font_weight;
-	
-			}
-	
-	
 	
 }
 ?>
