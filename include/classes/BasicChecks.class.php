@@ -1055,7 +1055,6 @@ class BasicChecks {
 			   l'estrazione degli elementi: ad ogni lettura prendo da '}' a '}' */
 		$css_content = '}' . $css_content;
 		$i = 0;
-		//while ( eregi ( '}([^}]*)}', $css_content, $elemento ) ) {
 		while ( preg_match( '/}([^}]*)}/i', $css_content, $elemento ) ) {
 			$elemento [1] = $elemento [1] . '}';
 			$css_content = substr ( $css_content, strlen ( $elemento [1] ) );
