@@ -80,6 +80,7 @@ class Utility {
 					else
 					{
 						return $prefixed_uri;
+
 					}
 				}
 			}
@@ -87,7 +88,7 @@ class Utility {
 		else
 		{
 			$connection = @file_get_contents($uri);
-			
+
 			if ($connection) return $uri;
 			else return $uri;
 		}
