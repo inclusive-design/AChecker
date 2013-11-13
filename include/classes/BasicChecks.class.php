@@ -1075,7 +1075,7 @@ class BasicChecks {
 			   l'estrazione degli elementi: ad ogni lettura prendo da '}' a '}' */
 		$css_content = '}' . $css_content;
 		$i = 0;
-		
+		$arrributo = array();
 		while ( preg_match ( '/}([^}]*)}/i', $css_content, $elemento ) ) {
 			$elemento [1] = $elemento [1] . '}';
 			$css_content = substr ( $css_content, strlen ( $elemento [1] ) );
@@ -1084,7 +1084,13 @@ class BasicChecks {
 			$selettori [$b] [$i] = trim ( $selettore ) . "{";
 			// Inside  list $selectori have selectors;
 			// Dentro $selettori ho la lisat dei selettori;
-			if (preg_match ( '/\{(.*)\}/i', $elemento [1], $attributo )) {
+	
+			$replaced = preg_replace('/(.*)\{/', '', $elemento[1]);
+			$replaced  = preg_replace('/(.*)\}/', '', $replaced);
+			$attributo[0] = "{".$replaced."}";
+			$attributo[1] = $replaced;
+	
+			if(count($attributo) > 0){
 				$attributo [1] = trim ( $attributo [1] );
 				$attributi [$b] [$i] = $attributo [1];
 			}
