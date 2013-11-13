@@ -697,7 +697,7 @@ class BasicChecks {
 			if (substr($e->tag, 0, 1) == "h" and intval(substr($e->tag, 1)) <> 0)
 				array_push($header_array, $e);
 			
-			BasicChecks::find_all_headers($e->children(), &$header_array);
+			BasicChecks::find_all_headers($e->children(), $header_array);
 		}
 		
 		return $header_array;
@@ -1113,7 +1113,8 @@ class BasicChecks {
 	public static function GetElementStyleInline($stile, $val) {
 		// create an array containing all the rules are separated by ";"
 		//creo un array contenente tutte le regole separate da ";"
-		$array_pr = split ( ";", $stile );
+		//$array_pr = split ( ";", $stile );
+		$array_pr = explode ( ";", $stile );
 		$arr_val = array ();
 		$valore_proprieta = "";
 		
@@ -1121,7 +1122,8 @@ class BasicChecks {
 		foreach ( $array_pr as $regola ) {
 			// break every rule, separated by ':' in: property => value
 			//spezzo ogni regola, separata dai ":" in: proprieta=>valore
-			$appoggio = split ( ":", trim ( $regola ) );
+			//$appoggio = split ( ":", trim ( $regola ) );
+			$appoggio = explode ( ":", trim ( $regola ) );
 			if (isset ( $array_val [trim ( $appoggio [0] )] ) && stripos ( $array_val [$appoggio [0]] ["val"], "!important" ) !== false) {
 				if (stripos ( $appoggio [1], "!important" ) !== false) {
 					$array_val [$appoggio [0]] ["val"] = trim ( $appoggio [1] );
@@ -1207,8 +1209,8 @@ class BasicChecks {
 		
 		$nomi_colori = array ('black', 'silver', 'gray', 'white', 'maroon', 'red', 'purple', 'fuchsia', 'green', 'lime', 'olive', 'yellow', 'navy', 'blue', 'teal', 'aqua', 'gold', 'navy' );
 		
-		$array_valori = split ( " ", $stringa_valori );
-		
+		//$array_valori = split ( " ", $stringa_valori );
+		$array_valori = explode ( " ", $stringa_valori );	
 		foreach ( $array_valori as $val ) {
 			if (stripos ( $val, "#" ) !== false || stripos ( $val, "rgb(" ) !== false) {
 				return $val;
@@ -1232,7 +1234,8 @@ class BasicChecks {
 			$stringa_valori = str_ireplace ( "!important", "", $stringa_valori );
 			$stringa_valori = trim ( $stringa_valori );
 		}
-		$array_valori = split ( " ", $stringa_valori );
+		//$array_valori = split ( " ", $stringa_valori );
+		$array_valori = explode ( " ", $stringa_valori );
 		$size = sizeof ( $array_valori );
 		if ($size <= 0)
 			return "";
@@ -1257,7 +1260,8 @@ class BasicChecks {
 			$stringa_valori = trim ( $stringa_valori );
 		}
 		
-		$array_valori = split ( " ", $stringa_valori );
+		//$array_valori = split ( " ", $stringa_valori );
+		$array_valori = explode ( " ", $stringa_valori );
 		$size = sizeof ( $array_valori );
 		if ($size <= 0)
 			return "";
@@ -1286,7 +1290,8 @@ class BasicChecks {
 			$stringa_valori = trim ( $stringa_valori );
 		}
 		
-		$array_valori = split ( " ", $stringa_valori );
+		//$array_valori = split ( " ", $stringa_valori );
+		$array_valori = explode ( " ", $stringa_valori );
 		if (sizeof ( $array_valori ) <= 0)
 			return "";
 		else
@@ -1310,7 +1315,8 @@ class BasicChecks {
 			$stringa_valori = trim ( $stringa_valori );
 		}
 		
-		$array_valori = split ( " ", $stringa_valori );
+		//$array_valori = split ( " ", $stringa_valori );
+		$array_valori = explode ( " ", $stringa_valori );
 		$size = sizeof ( $array_valori );
 		if ($size <= 0)
 			return "";
@@ -1900,8 +1906,10 @@ class BasicChecks {
 				//rimuovo i {_} ridondanti
 				$sel_string = str_ireplace ( '> {_}', '>', $sel_string );
 				
-				$selettori_array = split ( ',', $sel_string );  // create an array of switches that are separated by ", "
+				//$selettori_array = split ( ',', $sel_string );  // create an array of switches that are separated by ", "
 																//creo un array dei selettori che sono separati da ","
+				$selettori_array = explode ( ',', $sel_string );  // create an array of switches that are separated by ", "
+
 				foreach ( $selettori_array as $sel ) {
 					$sel = trim ( $sel );
 					//rimuovo eventuali $spazio all'inizio della stringa (remove spaces from beginning of strings )
@@ -1909,7 +1917,8 @@ class BasicChecks {
 					//rimuovo eventuali $spazio alla fine della stringa (remove spaces from ends of strings)
 					$sel = preg_replace ( "/" . $spazio . "$/", "", $sel );
 					$sel = trim ( $sel );
-					$selettore_array = split ( " ", $sel );
+					//$selettore_array = split ( " ", $sel );
+					$selettore_array = explode ( " ", $sel );
 					// in the final position of $selettore_array ????
 					//nell'ultima posizione di $selettore_array c'� il selettore piu' a dx prima di una "," o di "{" 
 					$size_of_selettore = sizeof ( $selettore_array ) - 1;
@@ -1928,7 +1937,8 @@ class BasicChecks {
 							
 							//print_r($array_appoggio);							
 							$regola = trim ( $regola );
-							$regola = split ( ":", $regola );
+							//$regola = split ( ":", $regola );
+							$regola = explode ( ":", $regola );
 							if (sizeof ( $regola == 2 )) {
 								$proprieta = trim ( $regola [0] );
 								$valore = trim ( $regola [1] );
@@ -2251,7 +2261,7 @@ class BasicChecks {
 		
 		$value = trim ( str_ireplace ( "!important", "", $value ) );
 		
-		$a_value = preg_split ( '/ /', $value );
+		$a_value = explode ( ' ', $value );
 		//print_r($a_value);
 		
 
@@ -2282,7 +2292,7 @@ class BasicChecks {
 		
 		$value = trim ( str_ireplace ( "!important", "", $value ) );
 		
-		$a_value = preg_split ( '/ /', $value );
+		$a_value = explode ( " ", $value );
 		
 		$ret = false;
 		foreach ( $a_value as $value ) {

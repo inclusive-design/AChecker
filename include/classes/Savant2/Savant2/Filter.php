@@ -69,7 +69,7 @@ class Savant2_Filter {
 	*
 	*/
 	
-	function filter(&$text)
+	function filter($text)
 	{
 	}
 }

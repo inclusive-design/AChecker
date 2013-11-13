@@ -408,7 +408,7 @@ class Savant2 {
 			$this->_compiler = null;
 		} elseif (is_object($compiler) && method_exists($compiler, 'compile')) {
 			// refer to a compiler object
-			$this->_compiler =& $compiler;
+			$this->_compiler = $compiler;
 		} else {
 			// no usable compiler passed
 			$this->_compiler = null;
@@ -1068,7 +1068,7 @@ class Savant2 {
 	function assignRef($key, &$val)
 	{
 		if (is_string($key) && substr($key, 0, 1) != '_') {
-			$this->$key =& $val;
+			$this->$key = $val;
 		} else {
 			return $this->error(
 				SAVANT2_ERROR_ASSIGNREF,
@@ -1309,7 +1309,7 @@ class Savant2 {
 				if (substr($_prop, 0, 1) != '_') {
 					// set a variable-variable to an object property
 					// reference
-					$$_prop =& $this->$_prop;
+					$$_prop = $this->$_prop;
 				}
 			}
 			
@@ -1419,11 +1419,11 @@ class Savant2 {
 			! is_a($this->_resource['plugin'][$name], $class)) {
 			
 			// instantiate it
-			$this->_resource['plugin'][$name] =& new $class($conf);
+			$this->_resource['plugin'][$name] = new $class($conf);
 			
 			// add a Savant reference if requested
 			if ($savantRef) {
-				$this->_resource['plugin'][$name]->Savant =& $this;
+				$this->_resource['plugin'][$name]->Savant = $this;
 			}
 			
 		}
@@ -1621,11 +1621,11 @@ class Savant2 {
 			! is_a($this->_resource['filter'][$name], $class)) {
 			
 			// instantiate it
-			$this->_resource['filter'][$name] =& new $class($conf);
+			$this->_resource['filter'][$name] = new $class($conf);
 			
 			// add a Savant reference if requested
 			if ($savantRef) {
-				$this->_resource['filter'][$name]->Savant =& $this;
+				$this->_resource['filter'][$name]->Savant = $this;
 			}
 			
 		}
@@ -1760,7 +1760,7 @@ class Savant2 {
 		}
 		
 		// instantiate and return the error class
-		$err =& new $class($conf);
+		$err = new $class($conf);
 		return $err;
 	}
 	
