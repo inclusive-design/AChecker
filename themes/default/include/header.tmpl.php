@@ -139,10 +139,7 @@ $lang_charset = "UTF-8";
 		<!-- the sub navigation -->
 		<div id="sub-navigation">
 		<?php if ($this->sub_menus): ?>
-			<?php if (isset($this->back_to_page)): ?>
-				<a href="<?php echo $this->back_to_page['url']; ?>" id="back-to"><?php echo _AC('back_to').' '.$this->back_to_page['title']; ?></a> | 
-			<?php endif; ?>
-	
+				<?php echo _AC('back_to');  ?>	        
 			<?php $num_pages = count($this->sub_menus); ?>
 			<?php for ($i=0; $i<$num_pages; $i++): ?>
 				<?php if ($this->sub_menus[$i]['url'] == $this->current_page): ?>
