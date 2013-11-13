@@ -1076,7 +1076,7 @@ class BasicChecks {
 		$css_content = '}' . $css_content;
 		$i = 0;
 		
-		while ( eregi ( '}([^}]*)}', $css_content, $elemento ) ) {
+		while ( preg_match ( '/}([^}]*)}/i', $css_content, $elemento ) ) {
 			$elemento [1] = $elemento [1] . '}';
 			$css_content = substr ( $css_content, strlen ( $elemento [1] ) );
 			$elemento [$i] = trim ( $elemento [1] );
@@ -1084,12 +1084,12 @@ class BasicChecks {
 			$selettori [$b] [$i] = trim ( $selettore ) . "{";
 			// Inside  list $selectori have selectors;
 			// Dentro $selettori ho la lisat dei selettori;
-			if (eregi ( '\{(.*)\}', $elemento [1], $attributo )) {
+			if (preg_match ( '/\{(.*)\}/i', $elemento [1], $attributo )) {
 				$attributo [1] = trim ( $attributo [1] );
 				$attributi [$b] [$i] = $attributo [1];
 			}
 			$cont = 0;
-			while ( eregi ( '^([^;]*);', $attributi [$b] [$i], $singolo ) ) {
+			while (preg_match( '/^([^;]*);/i', $attributi [$b] [$i], $singolo ) ) {
 				$attributi [$b] [$i] = substr ( $attributi [$b] [$i], strlen ( $singolo [1] ) + 1 );
 				$attributo_selettore [$b] [$i] [$cont] = trim ( $singolo [1] );
 				// controls to eliminate the white spaces by the selectors
@@ -2504,14 +2504,14 @@ class BasicChecks {
 			$f_color = substr ( $f_color, $a + 1 );
 			return $f_color;
 		} /* Se  in formato RGB lo converto in esadecimale poi lo restituisco */
-		elseif (eregi ( 'rgb', $f_color )) {
-			if (eregi ( '\(([^,]+),', $f_color, $red )) {
+		elseif (preg_match ( '/rgb/i', $f_color )) {
+			if (preg_match ( '/\(([^,]+),/i', $f_color, $red )) {
 				$red = dechex ( $red [1] );
 			}
-			if (eregi ( ',([^,]+),', $f_color, $green )) {
+			if (preg_match ( '/,([^,]+),/i', $f_color, $green )) {
 				$green = dechex ( $green [1] );
 			}
-			if (eregi ( ',([^\)]+)\)', $f_color, $blue )) {
+			if (preg_match ( '/,([^\)]+)\)/i', $f_color, $blue )) {
 				$blue = dechex ( $blue [1] );
 			}
 			$f_color = $red . $green . $blue;
