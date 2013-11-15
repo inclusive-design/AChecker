@@ -375,7 +375,13 @@ class AccessibilityValidator {
 				    else if ($e->attr['alt'] == '') $image_alt = '_EMPTY';
 				    else $image_alt = $e->attr['alt'];
 				}
-				
+				// If its a duplicate ID, switch the line number from the element line (body)
+				// to the line where the duplicate ID appears.
+				global $has_duplicate_attribute;
+                if(is_array($has_duplicate_attribute)){
+                        $line_number = $has_duplicate_attribute[0];
+                        $html_code .= "(".$has_duplicate_attribute[1].")";
+				}
 				$this->save_result($line_number, $col_number, $html_code, $check_id, $result, $image, $image_alt, $css_code);
 			}
 		}
