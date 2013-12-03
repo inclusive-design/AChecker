@@ -55,6 +55,7 @@ if ( get_magic_quotes_gpc() == 1 ) {
 
 function queryFromFile($sql_file_path)
 {
+	$sqlUtility = new SqlUtility;
 	global $db, $progress, $errors;
 
 	$tables = array();
@@ -65,7 +66,7 @@ function queryFromFile($sql_file_path)
 	}
 
 	$sql_query = trim(fread(fopen($sql_file_path, 'r'), filesize($sql_file_path)));
-	SqlUtility::splitSqlFile($pieces, $sql_query);
+	$sqlUtility->splitSqlFile($pieces, $sql_query);
 	
 	foreach ($pieces as $piece) 
 	{
@@ -74,7 +75,7 @@ function queryFromFile($sql_file_path)
 		// [4] contains unprefixed table name
 
 		if ($_POST['tb_prefix'] || ($_POST['tb_prefix'] == '')){ 
-			$prefixed_query = SqlUtility::prefixQuery($piece, $_POST['tb_prefix']);
+			$prefixed_query = $sqlUtility->prefixQuery($piece, $_POST['tb_prefix']);
 		}else{
 			$prefixed_query = $piece;
 		}
