@@ -1,0 +1,3 @@
+[submodule "include/classes/PHPMailer"]
+	path = include/classes/PHPMailer
+	url = https://github.com/PHPMailer/PHPMailer
