@@ -13,7 +13,7 @@
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 
-require(dirname(__FILE__) . '/class.phpmailer.php');
+require_once('PHPMailer/PHPMailerAutoload.php');
 
 /**
 * ACheckerMailer is modified from ATutorMailer
@@ -21,7 +21,7 @@ require(dirname(__FILE__) . '/class.phpmailer.php');
 * ACheckerMailer extends PHPMailer and sets all the default values
 * that are common for AChecker.
 * @access  public
-* @see     include/classes/phpmailer/class.phpmailer.php
+* @see     include/classes/PHPMailer/class.phpmailer.php
 * @since   AChecker 0.2
 * @author  Cindy Li
 */
@@ -53,7 +53,7 @@ class ACheckerMailer extends PHPMailer {
 
 	/**
 	* Appends a custom AChecker footer to all outgoing email then sends the email.
-	* If mail_queue is enabled then instead of sending the mail out right away, it 
+	* If mail_queue is enabled then instead of sending the mail out right away, it
 	* places it in the database and waits for the cron to send it using SendQueue().
 	* The mail queue does not support reply-to, or attachments, and converts all BCCs
 	* to regular To emails.
@@ -74,11 +74,11 @@ class ACheckerMailer extends PHPMailer {
 
 		// if this email has been queued then don't send it. instead insert it in the db
 		// for each bcc or to or cc
-		if ($_config['enable_mail_queue'] && !$this->attachment) 
+		if ($_config['enable_mail_queue'] && !$this->attachment)
 		{
 			require_once(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
 			$mailQueueDAO = new MailQueueDAO();
-			
+
 			for ($i = 0; $i < count($this->to); $i++) {
 				$mailQueueDAO->Create(addslashes($this->to[$i][0]), addslashes($this->to[$i][1]), addslashes($this->From), addslashes($this->FromName), addslashes($this->Subject), addslashes($this->Body), addslashes($this->CharSet));
 			}
@@ -109,29 +109,29 @@ class ACheckerMailer extends PHPMailer {
 		$rows = $mailQueueDAO->getAll();
 
 		$mail_ids = array();
-		
+
 		if (is_array($rows))
 		{
-			foreach ($rows as $id => $row) 
+			foreach ($rows as $id => $row)
 			{
 				$this->ClearAllRecipients();
-	
+
 				$this->AddAddress($row['to_email'], $row['to_name']);
 				$this->From     = $row['from_email'];
 				$this->FromName = $row['from_name'];
 				$this->CharSet  = $row['char_set'];
 				$this->Subject  = $row['subject'];
 				$this->Body     = $row['body'];
-	
+
 				parent::Send();
-	
+
 				$mail_ids[] = $row['mail_id'];
 			}
-			if ($mail_ids) 
+			if ($mail_ids)
 			{
 				include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
 				$mailQueueDAO = new MailQueueDAO();
-	
+
 				$mailQueueDAO->DeleteByIDs($mail_ids);
 			}
 		}
