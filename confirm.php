@@ -23,84 +23,84 @@ if (isset($_POST['cancel'])) {
 	exit;
 }
 
-if (isset($_GET['e'], $_GET['id'], $_GET['m'])) 
+if (isset($_GET['e'], $_GET['id'], $_GET['m']))
 {
 	$id = intval($_GET['id']);
 	$m  = $_GET['m'];
 	$e  = $addslashes($_GET['e']);
 
 	$usersDAO = new UsersDAO();
-	
-	if ($row = $usersDAO->getUserByID($id)) 
+
+	if ($row = $usersDAO->getUserByID($id))
 	{
 		$code = substr(md5($_GET['e'] . $row['creation_date'] . $id), 0, 10);
 
-		if ($code == $m) 
+		if ($code == $m)
 		{
 			$usersDAO->setEmail($id, $e);
 			$msg->addFeedback('CONFIRM_GOOD');
 
 			header('Location: '.$_base_href.'index.php');
 			exit;
-		} 
-		else 
+		}
+		else
 		{
 			$msg->addError('CONFIRM_BAD');
 		}
-	} 
-	else 
+	}
+	else
 	{
 		$msg->addError('CONFIRM_BAD');
 	}
 }
-else if (isset($_GET['id'], $_GET['m'])) 
+else if (isset($_GET['id'], $_GET['m']))
 {
 	$id = intval($_GET['id']);
 	$m  = $_GET['m'];
 
 	$usersDAO = new UsersDAO();
 	$row = $usersDAO->getUserByID($id);
-	
-	if ($row['status'] == AC_STATUS_UNCONFIRMED) 
+
+	if ($row['status'] == AC_STATUS_UNCONFIRMED)
 	{
 		$code = substr(md5($row['email'] . $row['creation_date'] . $id), 0, 10);
 
-		if ($code == $m) 
+		if ($code == $m)
 		{
 			$usersDAO->setStatus($id, AC_STATUS_ENABLED);
 
 			$msg->addFeedback('CONFIRM_GOOD');
 			header('Location: '.$_base_href.'login.php');
 			exit;
-		} 
-		else 
+		}
+		else
 		{
 			$msg->addError('CONFIRM_BAD');
 		}
-	} 
-	else 
+	}
+	else
 	{
 		$msg->addError('CONFIRM_BAD');
 	}
-} 
+}
 else if (isset($_POST['submit'])) {
 	$_POST['email'] = $addslashes($_POST['email']);
 
 	$usersDAO = new UsersDAO();
 	$row = $usersDAO->getUserByEmail($_POST['email']);
 
-	if ($row) 
+	if ($row)
 	{
-		if ($row['status'] == AC_STATUS_UNCONFIRMED) 
+		if ($row['status'] == AC_STATUS_UNCONFIRMED)
 		{
 			$code = substr(md5($row['email'] . $row['creation_date']. $row['user_id']), 0, 10);
-			
+
 			$confirmation_link = $_base_href . 'confirm.php?id='.$row['user_id'].SEP.'m='.$code;
 
 			/* send the email confirmation message: */
-			require(AC_INCLUDE_PATH . 'classes/phpmailer/acheckermailer.class.php');
+			require(AC_INCLUDE_PATH . 'classes/acheckermailer.class.php');
 			$mail = new ACheckerMailer();
-		
+
 			$mail->From     = $_config['contact_email'];
 			$mail->AddAddress($row['email']);
 			$mail->Subject = SITE_NAME . ': ' . _AC('email_confirmation_subject');
@@ -108,16 +108,16 @@ else if (isset($_POST['submit'])) {
 			$mail->Send();
 
 			$msg->addFeedback('CONFIRMATION_SENT');
-		} 
-		else 
+		}
+		else
 		{
 			$msg->addFeedback('ACCOUNT_CONFIRMED');
 		}
 
 		header('Location: '.$_base_href.'login.php');
 		exit;
-	} 
-	else 
+	}
+	else
 	{
 		$msg->addError('EMAIL_NOT_FOUND');
 	}
@@ -138,7 +138,7 @@ require(AC_INCLUDE_PATH.'header.inc.php'); ?>
 	</div>
 
 	<div class="row buttons">
-		<input type="submit" name="submit" value="<?php echo _AC('send'); ?>" /> 
+		<input type="submit" name="submit" value="<?php echo _AC('send'); ?>" />
 		<input type="submit" name="cancel" value="<?php echo _AC('cancel'); ?>" />
 	</div>
 </div>
