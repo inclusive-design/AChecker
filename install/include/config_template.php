@@ -45,12 +45,12 @@ function write_config_file($filename, $comments) {
     if (!@fwrite($handle, $config_template, strlen($config_template))) {
 		return false;
     }
-        
+
     @fclose($handle);
 	return true;
 }
 
-$config_template = "<"."?php 
+$config_template = "<"."?php
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
@@ -88,6 +88,13 @@ define('TABLE_PREFIX',                 '{TABLE_PREFIX}');
 /* recommended that the temporary directory be moved outside of the web	*/
 /* accessible area.														*/
 define('AC_TEMP_DIR', '{TEMP_DIR}');
+
+/* Server behind a proxy?												
+define('AC_PROXY_HOST', 'proxy.company.local');
+define('AC_PROXY_PORT', 3128);
+define('AC_PROXY_USER', 'user_n');
+define('AC_PROXY_PASS', 'changeme');
+*/
 
 /* DO NOT ALTER THIS LAST LINE                                          */
 define('AC_INSTALL', TRUE);

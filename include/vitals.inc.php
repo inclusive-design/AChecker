@@ -13,9 +13,14 @@
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 
-define('AC_DEVEL', 1);
-define('AC_ERROR_REPORTING', E_ALL ^  E_NOTICE); // default is E_ALL ^ E_NOTICE, use E_ALL or E_ALL + E_STRICT for developing
+define('AC_DEVEL', true);
 
+// default is E_ALL ^ E_NOTICE, use E_ALL or E_ALL + E_STRICT for developing
+if (true == AC_DEVEL) {
+   define('AC_ERROR_REPORTING', E_ALL ^ E_NOTICE);
+} else {
+   define('AC_ERROR_REPORTING', E_ALL ^ E_NOTICE);
+}
 // Emulate register_globals off. src: http://php.net/manual/en/faq.misc.php#faq.misc.registerglobals
 function unregister_GLOBALS() {
    if (!ini_get('register_globals')) { return; }
@@ -26,7 +31,7 @@ function unregister_GLOBALS() {
    // Variables that shouldn't be unset
    $noUnset = array('GLOBALS','_GET','_POST','_COOKIE','_REQUEST','_SERVER','_ENV', '_FILES');
    $input = array_merge($_GET,$_POST,$_COOKIE,$_SERVER,$_ENV,$_FILES,isset($_SESSION) && is_array($_SESSION) ? $_SESSION : array());
-  
+
    foreach ($input as $k => $v) {
        if (!in_array($k, $noUnset) && isset($GLOBALS[$k])) { unset($GLOBALS[$k]); }
    }
@@ -43,9 +48,9 @@ function unregister_GLOBALS() {
  * 5. start language block
  * 6. load common libraries
  * 7. initialize theme and template management
- * 8. initialize a user instance without user id. 
+ * 8. initialize a user instance without user id.
  *    if $_SESSION['user_id'] is set, it's assigned to instance in include/header.inc.php
- * 9. register pages based on current user's priviledge 
+ * 9. register pages based on current user's priviledge
  ***/
 
 /**** 0. start system configuration options block ****/
@@ -153,25 +158,25 @@ define('SITE_NAME',                 $_config['site_name']);
 	// set default template paths:
 	$savant = new Savant2();
 
-	if (isset($_SESSION['prefs']['PREF_THEME']) && file_exists(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']) && isset($_SESSION['valid_user']) && $_SESSION['valid_user']) 
+	if (isset($_SESSION['prefs']['PREF_THEME']) && file_exists(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']) && isset($_SESSION['valid_user']) && $_SESSION['valid_user'])
 	{
 		if (!is_dir(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']))
 		{
 			$_SESSION['prefs']['PREF_THEME'] = 'default';
-		} 
-		else 
+		}
+		else
 		{
 			//check if enabled
 			$themesDAO = new ThemesDAO();
 			$row = $themesDAO->getByID($_SESSION['prefs']['PREF_THEME']);
 
-			if ($row['status'] == 0) 
+			if ($row['status'] == 0)
 			{
 				// get default
 				$_SESSION['prefs']['PREF_THEME'] = get_default_theme();
 			}
 		}
-	} else 
+	} else
 	{
 		$_SESSION['prefs']['PREF_THEME'] = get_default_theme();
 	}
@@ -193,7 +198,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
 	include_once(AC_INCLUDE_PATH.'classes/DAO/UsersDAO.class.php');
 	$usersDAO = new UsersDAO();
 	$user = $usersDAO->getUserByID($_SESSION['user_id']);
-	
+
 	if (!$user)  // invalid user
 		unset($_SESSION['user_id']);
 	else
@@ -216,7 +221,7 @@ function query_bit( $bitfield, $bit ) {
 		$bit = intval($bit);
 	}
 	return ( $bitfield & $bit ) ? true : false;
-} 
+}
 
 /**
  * This function is used for printing variables for debugging.
@@ -229,12 +234,12 @@ function debug($var, $title='') {
 	if (!defined('AC_DEVEL') || !AC_DEVEL) {
 		return;
 	}
-	
+
 	echo '<pre style="border: 1px black solid; padding: 0px; margin: 10px;" title="debugging box">';
 	if ($title) {
 		echo '<h4>'.$title.'</h4>';
 	}
-	
+
 	ob_start();
 	print_r($var);
 	$str = ob_get_contents();
@@ -262,14 +267,14 @@ function debug_to_log($var, $log='') {
 	if (!defined('AC_DEVEL') || !AC_DEVEL) {
 		return;
 	}
-	
+
 	if ($log == '') $log = AC_TEMP_DIR. 'achecker.log';
 	$handle = fopen($log, 'a');
 	fwrite($handle, "\n\n");
 	fwrite($handle, date("F j, Y, g:i a"));
 	fwrite($handle, "\n");
 	fwrite($handle, var_export($var,1));
-	
+
 	fclose($handle);
 }
 
@@ -280,7 +285,7 @@ $num_bits = count($bits);
 $_my_uri  = '';
 
 for ($i=0; $i<$num_bits; $i++) {
-//	if (	(strpos($bits[$i], 'enable=')	=== 0) 
+//	if (	(strpos($bits[$i], 'enable=')	=== 0)
 //		||	(strpos($bits[$i], 'disable=')	=== 0)
 //		||	(strpos($bits[$i], 'expand=')	=== 0)
 //		||	(strpos($bits[$i], 'collapse=')	=== 0)
@@ -308,7 +313,7 @@ $_my_uri = $_SERVER['PHP_SELF'].$_my_uri;
 
 function get_default_theme() {
 	$themesDAO = new ThemesDAO();
-	
+
 	$rows = $themesDAO->getDefaultTheme();
 
 	if (!is_dir(AC_INCLUDE_PATH . '../themes/' . $rows[0]['dir_name']))
