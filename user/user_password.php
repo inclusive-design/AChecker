@@ -57,7 +57,7 @@ if (isset($_POST['submit'])) {
 		$tmp_message .= _AC('web_site').' : '.AC_BASE_HREF."\n";
 		$tmp_message .= _AC('login_name').' : '.$user_row['login']."\n";
 		
-		require(AC_INCLUDE_PATH . 'classes/phpmailer/acheckermailer.class.php');
+		require(AC_INCLUDE_PATH . 'classes/Mailer.class.php');
 		$mail = new ACheckerMailer;
 		$mail->From     = $_config['contact_email'];
 		$mail->AddAddress($user_row['email']);

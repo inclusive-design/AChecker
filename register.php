@@ -69,7 +69,7 @@ if (isset($_POST['cancel'])) {
 				$confirmation_link = $_base_href . 'confirm.php?id='.$user_id.SEP.'m='.$code;
 	
 				/* send the email confirmation message: */
-				require(AC_INCLUDE_PATH . 'classes/phpmailer/acheckermailer.class.php');
+				require(AC_INCLUDE_PATH . 'classes/Mailer.class.php');
 				$mail = new ACheckerMailer();
 	
 				$mail->From     = $_config['contact_email'];
