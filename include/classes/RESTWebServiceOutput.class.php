@@ -65,6 +65,7 @@ class RESTWebServiceOutput {
 <!ENTITY amp "&#38;#38;">
 <!ENTITY apos "&#39;">
 <!ENTITY quot "&#34;">
+<!ENTITY ndash "&#8211;">
 ]>
 <resultset>
   <summary>
@@ -225,7 +226,7 @@ class RESTWebServiceOutput {
 			                            $error['check_id'], 
 			                            htmlentities(_AC("suggest_improvements")),
 			                            htmlentities(_AC($row_check['err'])),
-			                            htmlentities($error["html_code"], ENT_QUOTES | ENT_IGNORE, "UTF-8"),
+			                            htmlentities($error["html_code"], ENT_QUOTES, "UTF-8"),
 			                            $repair,
 			                            $decision),
 			                      $this->rest_result);
