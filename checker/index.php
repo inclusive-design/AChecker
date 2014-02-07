@@ -214,7 +214,13 @@ if ($_POST["validate_uri"] || $_POST["validate_file"] || $_POST["validate_conten
 	if (isset($validate_content) && $has_enough_memory)
 	{
 		$aValidator = new AccessibilityValidator($validate_content, $_gids, $check_uri);
-		$aValidator->validate();
+		$validation_result = $aValidator->validate();
+
+        if (false == $validation_result)
+        {
+            $msg->addError('NO_ENOUGH_MEMORY');
+            $has_enough_memory = false;
+        }
 	}
 	// end of checking accessibility
 }

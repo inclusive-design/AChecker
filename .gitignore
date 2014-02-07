@@ -14,5 +14,11 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+# IDE Editors
+.idea
+*.komodo
+*.komodoproject
+
 # Local config AChecker
 include/config.inc.php
+temp
