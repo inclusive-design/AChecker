@@ -18,7 +18,7 @@ What sets AChecker apart from other automated accessibility checkers?
 2. Open the installer at AChecker/install
 3. Follow the instruction provided by the installer.
 
-Note, if you are installing from a Git clone of AChecker, before fullowing the instructions above, you will need to create an empty configuration file. In the AChecker directory, at the command prompt issue the following command:
+Note, if you are installing from a Git clone of AChecker, before following the instructions above, you will need to create an empty configuration file. In the AChecker directory, at the command prompt issue the following command:
 
 touch include/config.inc.php
 
