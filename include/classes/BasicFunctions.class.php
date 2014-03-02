@@ -43,7 +43,7 @@ class BasicFunctions {
 		if ($global_e->parent()->tag == "label")
 		{
 			$pattern = "/(.*)". preg_quote($global_e->outertext, '/') ."/";
-			preg_match($pattern, $global_e->parent->innertext, $matches);
+			preg_match($pattern, $global_e->parent()->outertext, $matches);
 			if (strlen(trim($matches[1])) > 0) return true;
 		}
 		
