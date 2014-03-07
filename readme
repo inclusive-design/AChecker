@@ -18,11 +18,19 @@ What sets AChecker apart from other automated accessibility checkers?
 2. Open the installer at AChecker/install
 3. Follow the instruction provided by the installer.
 
-Note, if you are installing from a Git clone of AChecker, before fullowing the instructions above, you will need to create an empty configuration file. In the AChecker directory, at the command prompt issue the following command:
+Note, if you are installing from a Git clone of AChecker, before following the instructions above, you will need to create an empty configuration file. In the AChecker directory, at the command prompt issue the following command:
 
 touch include/config.inc.php
 
 Then follow the instructions above.
+
+///////
+// Only for AChecker production site using Apache
+
+The steps below are to redirect PHP errors and warnings from browser interface to a log file.
+
+1. In AChecker root directory, rename ".htaccess-production" to ".htaccess"
+2. Edit ".htaccess" to rename [log-file-location] to a log file location such as /var/logs/achecker-PHP.log
 
 For more about using AChecker, see the instructional videos on YouTube.
 http://www.youtube.com/watch?v=jtNyF7KuOk8
