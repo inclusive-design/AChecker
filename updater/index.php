@@ -121,12 +121,18 @@ if ($_POST['install_upload'] && $_POST['uploading'])
 	Utility::clearDir($module_content_folder);
 	
 	// 1. unzip uploaded file to module's content directory
-	$archive = new PclZip($_FILES['patchfile']['tmp_name']);
+	$allowed_file_extensions = ["zip"];
 
-	if ($archive->extract(PCLZIP_OPT_PATH, $module_content_folder) == 0)
-	{
-	    Utility::clearDir($module_content_folder);
-	    $msg->addError('CANNOT_UNZIP');
+	if (!Utility::is_extension_in_list($_FILES['patchfile']['name'], $allowed_file_extensions)) {
+		$msg->addError(array('ALLOWED_FILE_TYPES', implode(", ", $allowed_file_extensions)));
+	} else {
+		$archive = new PclZip($_FILES['patchfile']['tmp_name']);
+
+		if ($archive->extract(PCLZIP_OPT_PATH, $module_content_folder) == 0)
+		{
+		    Utility::clearDir($module_content_folder);
+		    $msg->addError('CANNOT_UNZIP');
+		}
 	}
 }
 

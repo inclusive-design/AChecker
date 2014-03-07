@@ -348,5 +348,24 @@ class Utility {
 	    header("Status: 200");
 	    echo $successString;
 	}
+
+	/**
+	 * Return true or false to indicate if the extension of the given file name is in the list.
+	 * @access  public
+	 * @param   a string of a file name
+	 * @param   an array of all file extensions
+	 * @return  true or false
+	 * @author  Cindy Qi Li
+	 */
+	public static function is_extension_in_list($filename, $extension_list)
+	{
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+		if (in_array($ext, $extension_list)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 ?>
