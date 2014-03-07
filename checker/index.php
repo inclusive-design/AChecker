@@ -162,7 +162,7 @@ if ($_POST["validate_uri"])
 
 if ($_POST["validate_file"])
 {
-	$allowed_file_extensions = ["html", "htm"];
+	$allowed_file_extensions = array("html", "htm");
 
 	if (!Utility::is_extension_in_list($_FILES['uploadfile']['name'], $allowed_file_extensions)) {
 		$msg->addError(array('ALLOWED_FILE_TYPES', implode(", ", $allowed_file_extensions)));

@@ -121,7 +121,7 @@ if ($_POST['install_upload'] && $_POST['uploading'])
 	Utility::clearDir($module_content_folder);
 	
 	// 1. unzip uploaded file to module's content directory
-	$allowed_file_extensions = ["zip"];
+	$allowed_file_extensions = array("zip");
 
 	if (!Utility::is_extension_in_list($_FILES['patchfile']['name'], $allowed_file_extensions)) {
 		$msg->addError(array('ALLOWED_FILE_TYPES', implode(", ", $allowed_file_extensions)));
