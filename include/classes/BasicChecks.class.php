@@ -162,15 +162,19 @@ class BasicChecks {
 	{
 		global $has_duplicate_attribute;
 		
-		if ($has_duplicate_attribute) return;
-		
 		foreach($e->children() as $child)
 		{
 			$id_val = strtolower(trim($child->attr[$attr]));
 			
-			if ($id_val <> "" && in_array($id_val, $id_array)) $has_duplicate_attribute = true;
-			else 
-			{
+			// Swap out the element line number for the duplicate ID line number,
+			// This is a workaround to replace the usual lime number for body, returned 
+			// when duplicate IDs are found, with the line number and ID value to make 
+			// the offending duplicate easier to find.
+			if ($id_val <> "" && in_array($id_val, $id_array)){
+				$has_duplicate_attribute[] = $child->linenumber;
+				$has_duplicate_attribute[] = $child->id;
+				return $has_duplicate_attribute;
+			} else {
 				if ($id_val <> "") array_push($id_array, $id_val);
 				BasicChecks::hasDuplicateAttribute($child, $attr, $id_array);
 			}
