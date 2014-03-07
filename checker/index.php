@@ -162,14 +162,22 @@ if ($_POST["validate_uri"])
 
 if ($_POST["validate_file"])
 {
-	$validate_content = file_get_contents($_FILES['uploadfile']['tmp_name']);
-	$_SESSION['input_form']['file'] = $validate_content;
+	$allowed_file_extensions = ["html", "htm"];
 
-	if (isset($_POST["enable_html_validation"]))
-		$htmlValidator = new HTMLValidator("fragment", $validate_content);
+	if (!Utility::is_extension_in_list($_FILES['uploadfile']['name'], $allowed_file_extensions)) {
+		$msg->addError(array('ALLOWED_FILE_TYPES', implode(", ", $allowed_file_extensions)));
+	}
 
-	if (isset($_POST["show_source"]))
-		$source_array = file($_FILES['uploadfile']['tmp_name']);
+	if (!$msg->containsErrors()) {
+		$validate_content = file_get_contents($_FILES['uploadfile']['tmp_name']);
+		$_SESSION['input_form']['file'] = $validate_content;
+
+		if (isset($_POST["enable_html_validation"]))
+			$htmlValidator = new HTMLValidator("fragment", $validate_content);
+
+		if (isset($_POST["show_source"]))
+			$source_array = file($_FILES['uploadfile']['tmp_name']);
+	}
 }
 
 if ($_POST["validate_paste"])
