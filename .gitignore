@@ -14,5 +14,6 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
-# Local config AChecker
+# Local AChecker config files
 include/config.inc.php
+.htaccess
