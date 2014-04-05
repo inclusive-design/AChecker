@@ -118,7 +118,13 @@ $lang_charset = "UTF-8";
 	<!-- the main navigation. in our case, tabs -->
 		<ul class="navigation">
 			<?php foreach ($this->top_level_pages as $page): ?>
-				<?php if ($page['url'] == $this->current_top_level_page): ?>
+				<?php $flag_highlight = false; ?>
+				<?php foreach ($this->sub_menus as $sub_menu) {
+					if ($page['url'] == $sub_menu['url'] || $page['url'] == $this->back_to_page['url']){
+						$flag_highlight = true;
+					}
+				} ?>
+				<?php if ($page['url'] == $this->current_top_level_page || $flag_highlight): ?>
 					<li class="navigation"><a href="<?php echo $page['url']; ?>" title="<?php echo $page['title']; ?>" class="active"><span class="nav"><?php echo $page['title']; ?></span></a></li>
 				<?php else: ?>
 					<li class="navigation"><a href="<?php echo $page['url']; ?>"  title="<?php echo $page['title']; ?>"><span class="nav"><?php echo $page['title']; ?></span></a></li>
