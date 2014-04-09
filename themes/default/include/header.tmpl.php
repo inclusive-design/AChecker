@@ -120,7 +120,7 @@ $lang_charset = "UTF-8";
 			<?php foreach ($this->top_level_pages as $page): ?>
 				<?php $flag_highlight = false; ?>
 				<?php foreach ($this->sub_menus as $sub_menu) {
-					if ($page['url'] == $sub_menu['url'] || $page['url'] == $this->back_to_page['url']){
+					if ($page['url'] == $sub_menu['url'] || (!empty($this->back_to_page['url']) && $page['url'] == $this->back_to_page['url'])){
 						$flag_highlight = true;
 					}
 				} ?>
