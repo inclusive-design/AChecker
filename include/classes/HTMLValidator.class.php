@@ -81,8 +81,18 @@ class HTMLValidator {
     * send uri to 3rd party and return its response
 	*/
 	function validate_uri($uri)
-	{
-		return file_get_contents($this->validator_url. "?uri=".$uri);
+	{	
+		if($ch = curl_init()) {
+			curl_setopt($ch, CURLOPT_URL, $this->validator_url. "?uri=".$uri);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt ($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+			$pageOutput = curl_exec($ch);
+			curl_close($ch);
+			return $pageOutput;
+		}
+		else
+			return file_get_contents($this->validator_url. "?uri=".$uri);
 	}
 	
 	/**
