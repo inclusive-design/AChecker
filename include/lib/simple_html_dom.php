@@ -7,6 +7,12 @@ Acknowledge: Jose Solorzano (https://sourceforge.net/projects/php-html/)
 Contributions by: Yousuke Kumakura (Attribute filters)
 Licensed under The MIT License
 Redistributions of files must retain the above copyright notice.
+
+Feature improvements and bug fixes by Cindy Li (cli@ocadu.ca):
+1. Added a new feature to return line and column numbers for locating DOM
+   elements (2008);
+2. Upgrade to be used in PHP 5.3+ that stops supporting using references in
+   function definitions (June 2015).
 *******************************************************************************/
 
 define('HDOM_TYPE_ELEMENT', 1);
@@ -107,7 +113,7 @@ class simple_html_dom_node {
         return null;
     }
 
-    // returns the next sibling of node    
+    // returns the next sibling of node
     function next_sibling() {
         if ($this->parent===null) return null;
         $idx = 0;
@@ -201,7 +207,7 @@ class simple_html_dom_node {
         foreach($this->attr as $key=>$val) {
             // skip removed attribute
             if ($val===null || $val===false) {
-                ++$i; 
+                ++$i;
                 continue;
             }
             $ret .= $this->info[HDOM_INFO_SPACE][$i][0];
@@ -240,7 +246,7 @@ class simple_html_dom_node {
                 $ret = array();
                 foreach($head as $k=>$v) {
                     $n = ($k==-1) ? $this->dom->root : $this->dom->nodes[$k];
-                    $n->seek($selectors[$c][$l], $ret);
+                    $ret = $n->seek($selectors[$c][$l], $ret);
                 }
                 $head = $ret;
             }
@@ -297,7 +303,8 @@ class simple_html_dom_node {
     }
 
     // seek for given conditions
-    protected function seek($selector, &$ret) {
+    // protected function seek($selector, $ret) {
+    protected function seek($selector, $ret) {
         list($tag, $key, $val, $exp) = $selector;
 
         $end = $this->info[HDOM_INFO_END];
@@ -333,6 +340,7 @@ class simple_html_dom_node {
                 $ret[$i] = 1;
         }
         unset($node);
+        return $ret;
     }
 
     protected function match($exp, $pattern, $value) {
@@ -351,7 +359,7 @@ class simple_html_dom_node {
         }
         return $check;
     }
-    
+
     function __toString() {
         return $this->outertext();
     }
@@ -373,7 +381,7 @@ class simple_html_dom_node {
             case 'plaintext': return $this->dom->restore_noise($this->info[HDOM_INFO_TEXT]);
         }
         if (!isset($this->attr[$name])) {
-            $this->info[HDOM_INFO_SPACE][] = array(' ', '', ''); 
+            $this->info[HDOM_INFO_SPACE][] = array(' ', '', '');
             $this->info[HDOM_INFO_QUOTE][] = HDOM_QUOTE_DOUBLE;
         }
         $this->attr[$name] = $value;
@@ -543,7 +551,7 @@ class simple_html_dom {
         unset($this->html);
         unset($this->noise);
     }
-    
+
     // parse html content
     function parse() {
         $s = $this->copy_until_char('<');
@@ -621,7 +629,7 @@ class simple_html_dom {
         // doctype, cdata & comments...
         /* the next line was customized by UOT, ATRC, cindy Li, exclude '!doctype' so it will be returned as a normal node */
         if (strtolower($node->tag) == '!doctype') $node->tag = "doctype";
-        
+
         if (isset($node->tag[0]) && $node->tag[0]=='!') {
             $node->info[HDOM_INFO_TEXT] = '<' . $node->tag . $this->copy_until_char('>');
 
@@ -664,7 +672,7 @@ class simple_html_dom {
         }
         $this->parent->children[] = $node;
         $this->parent->nodes[] = $node;
-        
+
         $guard = 0; // prevent infinity loop
         $space = array($this->copy_skip($this->token_blank), '', '');
 
@@ -673,11 +681,11 @@ class simple_html_dom {
             /* customized by UOT, ATRC, cindy Li */
             if (strtolower($node->tag) == 'doctype')
             {
-            	$name = $this->copy_until($this->doctype_token_equal);
-              $this->parse_attr($node, $name, $space);
+                $name = $this->copy_until($this->doctype_token_equal);
+                $space = $this->parse_attr($node, $name, $space);
             }
             /* end of customized by UOT, ATRC, cindy Li */
-            
+
             if ($this->char!==null && $space[0]=='') break;
             $name = $this->copy_until($this->token_equal);
 
@@ -701,7 +709,7 @@ class simple_html_dom {
                 if ($this->lowercase) $name = strtolower($name);
                 if ($this->char=='=') {
                     $this->char = (++$this->pos<$this->size) ? $this->html[$this->pos] : null; // next
-                    $this->parse_attr($node, $name, $space);
+                    $space = $this->parse_attr($node, $name, $space);
                 }
                 else {
                     //no value attr: nowrap, checked selected...
@@ -746,18 +754,19 @@ class simple_html_dom {
         	$last_line = substr($text, $last_new_line_pos);
         else
         	$last_line = $text;
-        
+
         $col_num = strrpos($last_line, '<');
         if ($col_num == 0)
         	return 1;
         else
         	return $col_num;
     }
-    
+
     /* end of customized by UOT, ATRC, cindy Li */
-    
+
     // parse attributes
-    protected function parse_attr($node, $name, &$space) {
+    // protected function parse_attr($node, $name, &$space) {
+    protected function parse_attr($node, $name, $space) {
         $space[2] = $this->copy_skip($this->token_blank);
         switch($this->char) {
             case '"':
@@ -777,6 +786,7 @@ class simple_html_dom {
                 $value = $this->copy_until($this->token_attr);
         }
         $node->attr[$name] = $this->restore_noise($value);
+        return $space;
     }
 
     protected function skip($chars) {
@@ -857,11 +867,11 @@ class simple_html_dom {
             $key = '___noise___'.sprintf('% 3d', count($this->noise));
             $idx = ($remove_tag) ? 0 : 1;
             $this->noise[$key] = ($remove_contents) ? '' : $matches[$i][$idx][0];
-            
+
             $new_lines = '';
             for ($j = 0; $j < $this->count_line_number($matches[$i][$idx][0])-1; $j++)
             	$new_lines .= $this->new_line;
-            
+
             $this->html = substr_replace($this->html, $key.$new_lines, $matches[$i][$idx][1], strlen($matches[$i][$idx][0]));
         }
 
@@ -895,20 +905,20 @@ class simple_html_dom {
 
     /* customized by UOT, ATRC, cindy Li */
     // print debug information
-    protected function debug($var, $title='') 
+    protected function debug($var, $title='')
     {
 		echo '<pre style="border: 1px black solid; padding: 0px; margin: 10px;" title="debugging box">';
 		if ($title) {
 			echo '<h4>'.$title.'</h4>';
 		}
-		
+
 		ob_start();
 		print_r($var);
 		$str = ob_get_contents();
 		ob_end_clean();
-		
+
 		$str = str_replace('<', '&lt;', $str);
-		
+
 		$str = str_replace('[', '<span style="color: red; font-weight: bold;">[', $str);
 		$str = str_replace(']', ']</span>', $str);
 		$str = str_replace('=>', '<span style="color: blue; font-weight: bold;">=></span>', $str);
@@ -916,7 +926,7 @@ class simple_html_dom {
 		echo $str;
 		echo '</pre>';
 	}
-    
+
     // camel naming conventions
     function childNodes($idx=-1) {return $this->root->childNodes($idx);}
     function firstChild() {return $this->root->first_child();}
