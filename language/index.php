@@ -61,7 +61,7 @@ else if (isset($_POST['export']))
 }
 
 if (isset($_POST['import']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
-	$allowed_file_extensions = ["zip"];
+	$allowed_file_extensions = array("zip");
 
 	if (!Utility::is_extension_in_list($_FILES['file']['name'], $allowed_file_extensions)) {
 		$msg->addError(array('ALLOWED_FILE_TYPES', implode(", ", $allowed_file_extensions)));

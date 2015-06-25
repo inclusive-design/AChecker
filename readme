@@ -24,5 +24,13 @@ touch include/config.inc.php
 
 Then follow the instructions above.
 
+///////
+// Only for AChecker production site using Apache
+
+The steps below are to redirect PHP errors and warnings from browser interface to a log file.
+
+1. In AChecker root directory, rename ".htaccess-production" to ".htaccess"
+2. Edit ".htaccess" to rename [log-file-location] to a log file location such as /var/logs/achecker-PHP.log
+
 For more about using AChecker, see the instructional videos on YouTube.
 http://www.youtube.com/watch?v=jtNyF7KuOk8
