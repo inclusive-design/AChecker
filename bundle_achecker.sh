@@ -9,9 +9,7 @@
 set now = `date +"%Y_%m_%d"`
 set achecker_dir = "AChecker_$now"
 set bundle = "AChecker"
-#set svndir = "http://svn.atutor.ca/repos/achecker/trunk/"
-#set svnexec = "svn"
-set gitdir = "git://github.com/atutor/AChecker.git"
+set gitdir = "git://github.com/inclusive-design/AChecker.git"
 set gitexec = "git"
 
 echo "\033[1mAChecker Bundle Script [for CVS 1.3.1+] \033[0m"
@@ -56,11 +54,10 @@ $gitexec clone $gitdir
 mv 'AChecker' $achecker_dir/AChecker
 #sleep 1
 
-echo "Dumping language_text"
-rm $achecker_dir/AChecker/install/db/language_text.sql
-#echo "DROP TABLE `language_text`;" > $achecker_dir/AChecker/install/db/language_text.sql
-#wget --output-document=- http://atutor.ca/achecker/translate/dump_achecker_lang.php >> $achecker_dir/AChecker/install/db/language_text.sql
-wget --output-document=- http://atutor.ca/achecker/translate/dump_achecker_lang.php > $achecker_dir/AChecker/install/db/language_text.sql
+# June 2015: Fetching SQL statements for language texts from atutor.ca only returns create table statement without insertion statements. Need a fix.
+#echo "Dumping language_text"
+#rm $achecker_dir/AChecker/install/db/language_text.sql
+#wget --output-document=- http://atutor.ca/achecker/translate/dump_achecker_lang.php > $achecker_dir/AChecker/install/db/language_text.sql
 
 #sleep 1
 
@@ -138,3 +135,4 @@ echo "Bundle complete. Enjoy. Exiting."
 
 
 exit 1
+

@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2015                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -27,7 +27,7 @@ if (isset($_POST['id']))
 if ( (isset($_POST['delete']) || isset($_POST['export']) || isset($_POST['edit'])) && !isset($_POST['id']))
 {
 	$msg->addError('NO_ITEM_SELECTED');
-} 
+}
 else if ($_POST['delete'])
 {
 	global $msg;
@@ -36,7 +36,7 @@ else if ($_POST['delete'])
 // 	{
 // 		$msg->addConfirm(array('DEL_DEFAULT_LANG', DEFAULT_LANGUAGE_CODE));
 // 	}
-	
+
 	if (!$msg->containsErrors())
 	{
 		//$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
@@ -49,7 +49,7 @@ else if ($_POST['edit'])
 	header('Location: language_add_edit.php?id='.$_POST['id']);
 	exit;
 }
-else if (isset($_POST['export'])) 
+else if (isset($_POST['export']))
 {
 	$language = $languageManager->getLanguage($lang_code);
 	if ($language === FALSE) {

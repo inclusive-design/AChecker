@@ -9,10 +9,10 @@ Licensed under The MIT License
 Redistributions of files must retain the above copyright notice.
 
 Feature improvements and bug fixes by Cindy Li (cli@ocadu.ca):
-1. Added a new feature to return line and column numbers for locating DOM
-   elements (2008);
-2. Upgrade to be used in PHP 5.3+ that stops supporting using references in
-   function definitions (June 2015).
+1. 2008: Added a new feature to return line and column numbers for locating DOM
+   elements;
+2. June 2015: Upgrade to be used in PHP 5.3+ that stops supporting using references in
+   function definitions.
 *******************************************************************************/
 
 define('HDOM_TYPE_ELEMENT', 1);
