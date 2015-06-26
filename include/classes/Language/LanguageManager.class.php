@@ -35,7 +35,7 @@ class LanguageManager {
 	* @var array
 	*/
 	var $allLanguages;
-	
+
 	/**
 	* This array stores references to the Language Objects
 	* that are available in this installation.
@@ -54,16 +54,16 @@ class LanguageManager {
 
 	/**
 	* Constructor.
-	* 
+	*
 	* Initializes availableLanguages and numLanguages.
 	*/
 	function LanguageManager() {
 		require_once(AC_INCLUDE_PATH. 'classes/DAO/LanguagesDAO.class.php');
 		$languagesDAO = new LanguagesDAO();
-		
+
 		// initialize available lanuguages. Available languages are the ones with status "enabled"
 		$rows = $languagesDAO->getAllEnabled();
-		
+
 		// if there's no enabled language, set to default language and default charset
 		if (!is_array($rows))
 		{
@@ -76,7 +76,7 @@ class LanguageManager {
 
 			// initialize available lanuguages. Available languages are the ones with status "enabled"
 		$rows = $languagesDAO->getAll();
-		
+
 		foreach ($rows as $i => $row) {
 			$this->allLanguages[$row['language_code']][$row['charset']] = new Language($row);
 		}
@@ -123,7 +123,7 @@ class LanguageManager {
 	* @see		getLanguage()
 	*/
 	function getMyLanguage() {
-		global $addslashes, $db; 
+		global $addslashes, $db;
 
 		if (isset($_GET) && !empty($_GET['lang']) && isset($this->availableLanguages[$_GET['lang']])) {
 			$language = $this->getLanguage($_GET['lang']);
@@ -132,7 +132,7 @@ class LanguageManager {
 				return $language;
 			}
 
-		} 
+		}
 
 		if (isset($_POST) && !empty($_POST['lang']) && isset($this->availableLanguages[$_POST['lang']])) {
 			$language = $this->getLanguage($_POST['lang']);
@@ -141,7 +141,7 @@ class LanguageManager {
 				return $language;
 			}
 
-		} 
+		}
 		if (isset($_SESSION) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && isset($this->availableLanguages[$_SESSION['lang']])) {
 			$language = $this->getLanguage($_SESSION['lang']);
 
@@ -167,7 +167,7 @@ class LanguageManager {
 				}
 			}
 		}
-		
+
 		if (!empty($_SERVER['HTTP_USER_AGENT'])) {
 
 			// Language is not defined yet :
@@ -189,14 +189,14 @@ class LanguageManager {
 				return $language;
 			}
 		}
-		
+
 		// else pick one at random:
 		reset($this->availableLanguages);
 		$uknown_language = current($this->availableLanguages);
 		if ($unknown_language) {
 			return FALSE;
 		}
-		
+
 		return current($uknown_language);
 	}
 
@@ -260,30 +260,33 @@ class LanguageManager {
 	// import language pack from specified file
 	// return imported AChecker version if it does not match with the current version
 	function import($filename, $ignore_version = false) {
-		require_once(AC_INCLUDE_PATH . 'lib/pclzip.lib.php');
-
 		$import_path = AC_TEMP_DIR . 'import/';
 
-		$archive = new PclZip($filename);
-		if ($archive->extract(PCLZIP_OPT_PATH,	$import_path) == 0) {
-			exit('Error : ' . $archive->errorInfo(true));
+		$zip = new ZipArchive;
+		$result = $zip->open($filename);
+
+		if ($result === TRUE) {
+		    $zip->extractTo($import_path);
+		    $zip->close();
+		} else {
+			exit('Error : ' . $result);
 		}
-		
+
 		// import
 		$rtn = $this->import_from_path($import_path, $ignore_version);
-		
+
 		// the achecker version from the imported language pack does not match with the current version
 		// the array of ("imported version", "import path") is returned
 		if (is_array($rtn)) return $rtn;
-		
+
 		// remove uploaded zip file
 		@unlink($filename);
-		
+
 		return true;
 	}
 
 	// public
-	// import the languages from the files that are in the given folder 
+	// import the languages from the files that are in the given folder
 	public function import_from_path($import_path, $ignore_version=false) {
 		require_once(AC_INCLUDE_PATH . 'classes/Language/LanguageParser.class.php');
 
@@ -311,7 +314,7 @@ class LanguageManager {
 		$this->cleanup_language_files($import_path);
 		return true;
 	}
-	
+
 	// public
 	// remove language files in the given folder
 	public function cleanup_language_files($import_path) {
@@ -320,7 +323,7 @@ class LanguageManager {
 		@unlink($import_path . 'language_text.sql');
 		@unlink($import_path . 'readme.txt');
 	}
-	
+
 	// public
 	// imports LIVE language from the achecker language database
 	function liveImport($language_code) {
@@ -329,7 +332,7 @@ class LanguageManager {
 		$tmp_lang_db = mysql_connect(AC_LANG_DB_HOST, AC_LANG_DB_USER, AC_LANG_DB_PASS);
 		// set database connection using utf8
 		mysql_query("SET NAMES 'utf8'", $tmp_lang_db);
-		
+
 		if (!$tmp_lang_db) {
 			/* AC_ERROR_NO_DB_CONNECT */
 			echo 'Unable to connect to db.';
@@ -364,7 +367,7 @@ class LanguageManager {
 			mysql_query($sql, $db);
 		}
 	}
-	
+
 }
 
 
