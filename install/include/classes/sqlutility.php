@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2015                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -19,13 +19,16 @@ class SqlUtility
  	* Removes comment and splits large sql files into individual queries
  	*
 	* Last revision: September 23, 2001 - gandon
+  *
+  * Customized: June 2015, Cindy Li - remove the use of references in function
+  * declarations that PHP 5.4+ stops to support.
  	*
  	* @param   array    the splitted sql commands
  	* @param   string   the sql commands
  	* @return  boolean  always true
  	* @access  public
  	*/
-	function splitSqlFile(&$ret, $sql)
+	function splitSqlFile($ret, $sql)
 	{
 		$sql               = trim($sql);
 		$sql_len           = strlen($sql);
@@ -45,17 +48,17 @@ class SqlUtility
 					// substring to the returned array
                 	if (!$i) {
 						$ret[] = $sql;
-                    	return true;
+                    	return $ret;
                 	}
-					// Backquotes or no backslashes before 
-					// quotes: it's indeed the end of the 
+					// Backquotes or no backslashes before
+					// quotes: it's indeed the end of the
 					// string -> exit the loop
                 	else if ($string_start == '`' || $sql[$i-1] != '\\') {
 						$string_start      = '';
                    		$in_string         = false;
                     	break;
                 	}
-                	// one or more Backslashes before the presumed 
+                	// one or more Backslashes before the presumed
 					// end of string...
                 	else {
 						// first checks for escaped backslashes
@@ -65,7 +68,7 @@ class SqlUtility
 							$escaped_backslash = !$escaped_backslash;
                         	$j++;
                     	}
-                    	// ... if escaped backslashes: it's really the 
+                    	// ... if escaped backslashes: it's really the
 						// end of the string -> exit the loop
                     	if ($escaped_backslash) {
 							$string_start  = '';
@@ -89,7 +92,7 @@ class SqlUtility
 					$i      = -1;
             	} else {
                 	// The submited statement(s) end(s) here
-                	return true;
+                	return $ret;
 				}
         	} // end else if (is delimiter)
         	// ... then check for start of a string,...
@@ -111,7 +114,7 @@ class SqlUtility
                 // no eol found after '#', add the parsed part to the returned
                 // array and exit
                		$ret[]   = trim(substr($sql, 0, $i-1));
-               		return true;
+               		return $ret;
 				} else {
                 	$sql     = substr($sql, 0, $start_of_comment) . ltrim(substr($sql, $end_of_comment));
                 	$sql_len = strlen($sql);
@@ -124,12 +127,12 @@ class SqlUtility
     	if (!empty($sql) && trim($sql) != '') {
 			$ret[] = $sql;
     	}
-    	return true;
+    	return $ret;
 	}
 
 	/**
 	 * add a prefix.'_' to all tablenames in a query
-     * 
+     *
      * @param   string  $query  valid MySQL query string
      * @param   string  $prefix prefix to add to all table names
 	 * @return  mixed   FALSE on failure

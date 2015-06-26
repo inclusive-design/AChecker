@@ -25,7 +25,7 @@ class SqlUtility
  	* @return  boolean  always true
  	* @access  public
  	*/
-	function splitSqlFile(&$ret, $sql)
+	function splitSqlFile($ret, $sql)
 	{
 		$sql               = trim($sql);
 		$sql_len           = strlen($sql);
@@ -45,17 +45,17 @@ class SqlUtility
 					// substring to the returned array
                 	if (!$i) {
 						$ret[] = $sql;
-                    	return true;
+                    	return $ret;
                 	}
-					// Backquotes or no backslashes before 
-					// quotes: it's indeed the end of the 
+					// Backquotes or no backslashes before
+					// quotes: it's indeed the end of the
 					// string -> exit the loop
                 	else if ($string_start == '`' || $sql[$i-1] != '\\') {
 						$string_start      = '';
                    		$in_string         = false;
                     	break;
                 	}
-                	// one or more Backslashes before the presumed 
+                	// one or more Backslashes before the presumed
 					// end of string...
                 	else {
 						// first checks for escaped backslashes
@@ -65,7 +65,7 @@ class SqlUtility
 							$escaped_backslash = !$escaped_backslash;
                         	$j++;
                     	}
-                    	// ... if escaped backslashes: it's really the 
+                    	// ... if escaped backslashes: it's really the
 						// end of the string -> exit the loop
                     	if ($escaped_backslash) {
 							$string_start  = '';
@@ -89,7 +89,7 @@ class SqlUtility
 					$i      = -1;
             	} else {
                 	// The submited statement(s) end(s) here
-                	return true;
+                	return $ret;
 				}
         	} // end else if (is delimiter)
         	// ... then check for start of a string,...
@@ -111,7 +111,7 @@ class SqlUtility
                 // no eol found after '#', add the parsed part to the returned
                 // array and exit
                		$ret[]   = trim(substr($sql, 0, $i-1));
-               		return true;
+               		return $ret;
 				} else {
                 	$sql     = substr($sql, 0, $start_of_comment) . ltrim(substr($sql, $end_of_comment));
                 	$sql_len = strlen($sql);
@@ -124,12 +124,12 @@ class SqlUtility
     	if (!empty($sql) && trim($sql) != '') {
 			$ret[] = $sql;
     	}
-    	return true;
+    	return $ret;
 	}
 
 	/**
 	 * add a prefix.'_' to all tablenames in a query
-     * 
+     *
      * @param   string  $query  valid MySQL query string
      * @param   string  $prefix prefix to add to all table names
 	 * @return  mixed   FALSE on failure
@@ -148,10 +148,10 @@ class SqlUtility
 
 	function queryFromFile($sql_file_path, $table_prefix){
 		global $db, $progress, $errors;
-		
+
 		include_once(AC_INCLUDE_PATH.'classes/DAO/DAO.class.php');
 		$dao = new DAO();
-		
+
 		$tables = array();
 
         if (!file_exists($sql_file_path)) {
@@ -171,11 +171,11 @@ class SqlUtility
 			} else {
 				$prefixed_query = $piece;
 			}
-	
+
 			if ($prefixed_query != false ) {
                 $table = $table_prefix.$prefixed_query[4];
                 $prefixed_query[1] = strtoupper($prefixed_query[1]);
-                
+
                 if(strtoupper($prefixed_query[1]) == 'CREATE TABLE'){
                     if ($dao->execute($prefixed_query[0]) !== false) {
 						$progress[] = 'Table <b>'.$table . '</b> created successfully.';

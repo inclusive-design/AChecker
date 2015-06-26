@@ -66,31 +66,31 @@ function queryFromFile($sql_file_path)
 	}
 
 	$sql_query = trim(fread(fopen($sql_file_path, 'r'), filesize($sql_file_path)));
-	$sqlUtility->splitSqlFile($pieces, $sql_query);
-	
-	foreach ($pieces as $piece) 
+	$split_pieces = $sqlUtility->splitSqlFile($pieces, $sql_query);
+
+	foreach ($split_pieces as $piece)
 	{
 		$piece = trim($piece);
 		// [0] contains the prefixed query
 		// [4] contains unprefixed table name
 
-		if ($_POST['tb_prefix'] || ($_POST['tb_prefix'] == '')){ 
+		if ($_POST['tb_prefix'] || ($_POST['tb_prefix'] == '')){
 			$prefixed_query = $sqlUtility->prefixQuery($piece, $_POST['tb_prefix']);
 		}else{
 			$prefixed_query = $piece;
 		}
-	
-		if ($prefixed_query != false ) 
+
+		if ($prefixed_query != false )
 		{
 			$prefixed_query[1] = strtoupper($prefixed_query[1]);
-			
+
 			$table = $_POST['tb_prefix'].$prefixed_query[4];
 
 			if($prefixed_query[1] == 'CREATE TABLE')
 			{
 				if (mysql_query($prefixed_query[0],$db) !== false)
 					$progress[] = 'Table <strong>'.$table . '</strong> created successfully.';
-				else 
+				else
 					if (mysql_errno($db) == 1050)
 						$progress[] = 'Table <strong>'.$table . '</strong> already exists. Skipping.';
 					else
@@ -105,9 +105,9 @@ function queryFromFile($sql_file_path)
 				if (mysql_query($prefixed_query[0],$db) !== false)
 					$progress[] = 'Table <strong>'.$table.'</strong> altered successfully.';
 				else
-					if (mysql_errno($db) == 1060) 
+					if (mysql_errno($db) == 1060)
 						$progress[] = 'Table <strong>'.$table . '</strong> fields already exists. Skipping.';
-					elseif (mysql_errno($db) == 1091) 
+					elseif (mysql_errno($db) == 1091)
 						$progress[] = 'Table <strong>'.$table . '</strong> fields already dropped. Skipping.';
 					else
 						$errors[] = 'Table <strong>'.$table.'</strong> alteration failed.';
@@ -192,7 +192,7 @@ function print_hidden($current_step) {
 
 function print_progress($step) {
 	global $install_steps;
-	
+
 	echo '<div class="install"><h3>Installation Progress</h3><p>';
 
 	$num_steps = count($install_steps);
@@ -242,7 +242,7 @@ function debug($var, $title='') {
 	if ($title) {
 		echo '<h4>'.$title.'</h4>';
 	}
-	
+
 	ob_start();
 	print_r($var);
 	$str = ob_get_contents();
