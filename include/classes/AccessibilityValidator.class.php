@@ -380,6 +380,7 @@ class AccessibilityValidator {
 				if(is_array($has_duplicate_attribute)){
 					$line_number = $has_duplicate_attribute[0];
 					$html_code .= "(".$has_duplicate_attribute[1].")";
+					$has_duplicate_attribute = false;
 				}
 				$this->save_result($line_number, $col_number, $html_code, $check_id, $result, $image, $image_alt, $css_code);
 			}

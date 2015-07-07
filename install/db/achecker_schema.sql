@@ -262,7 +262,7 @@ CREATE TABLE `privileges` (
   `title_var` varchar(255) NOT NULL DEFAULT '',
   `description` text,
   `create_date` datetime NOT NULL,
-  `last_update` datetime,
+  `last_update` datetime DEFAULT NULL,
   `link` varchar(255) NOT NULL DEFAULT '',
   `menu_sequence` tinyint(4) NOT NULL,
   `open_to_public` tinyint(4) NOT NULL DEFAULT '0',
@@ -553,7 +553,7 @@ INSERT INTO `checks` (`check_id`, `user_id`, `html_tag`, `confidence`, `note`, `
 (168, 0, 'form', 0, '', '_CNAME_168', '_ERR_168', '_DESC_168', NULL, NULL, '', '_HOWTOREPAIR_168', '', '', '', '', '_PROCEDURE_168', '_EXPECTEDRESULT_168', '_FAILEDRESULT_168', 'return BasicFunctions::isRadioButtonsGrouped();', 1, '0000-00-00 00:00:00'),
 (169, 0, 'select', 1, '', '_CNAME_169', '_ERR_169', '_DESC_169', NULL, NULL, '', '', '', '_QUESTION_169', '_DECISIONPASS_169', '_DECISIONFAIL_169', '_PROCEDURE_169', '_EXPECTEDRESULT_169', '_FAILEDRESULT_169', '$num_of_options = BasicFunctions::getNumOfTagRecursiveInChildren(\"option\");\r\n$num_of_optgroups = BasicFunctions::getNumOfTagRecursiveInChildren(\"optgroup\");\r\n\r\nreturn !($num_of_options > 3 && $num_of_optgroups < 2);', 1, '0000-00-00 00:00:00'),
 (173, 0, 'a', 1, '', '_CNAME_173', '_ERR_173', '_DESC_173', '_SEARCHSTR_173', NULL, '', '', '', '_QUESTION_173', '_DECISIONPASS_173', '_DECISIONFAIL_173', '_PROCEDURE_173', '_EXPECTEDRESULT_173', '_FAILEDRESULT_173', 'return !BasicFunctions::isPlainTextInSearchString();', 1, '0000-00-00 00:00:00'),
-(174, 0, 'a', 0, '', '_CNAME_174', '_ERR_174', '_DESC_174', NULL, NULL, '', '_HOWTOREPAIR_174', '', '', '', '', '_PROCEDURE_174', '_EXPECTEDRESULT_174', '_FAILEDRESULT_174', 'return ((BasicFunctions::getPlainTextLength() > 0 || BasicFunctions::getAttributeTrimedValueLength(\'title\') > 0 || BasicFunctions::getLengthOfAttributeValueWithGivenTagInChildren(\'img\', \'alt\') > 0) || !BasicFunctions::hasAttribute(\'href\'));', 1, '0000-00-00 00:00:00'),
+(174, 0, 'a', 0, '', '_CNAME_174', '_ERR_174', '_DESC_174', NULL, NULL, '', '_HOWTOREPAIR_174', '', '', '', '', '_PROCEDURE_174', '_EXPECTEDRESULT_174', '_FAILEDRESULT_174', 'return ((BasicFunctions::getInnerTextLength() > 0 || BasicFunctions::getAttributeTrimedValueLength(''title'') > 0 || BasicFunctions::getLengthOfAttributeValueWithGivenTagInChildren(''img'', ''alt'') > 0) || !BasicFunctions::hasAttribute(''href''));', 1, '0000-00-00 00:00:00'),
 (175, 0, 'a', 0, '', '_CNAME_175', '_ERR_175', '_DESC_175', NULL, NULL, '', '_HOWTOREPAIR_175', '', '', '', '', '_PROCEDURE_175', '_EXPECTEDRESULT_175', '_FAILEDRESULT_175', '$alt_value = BasicFunctions::getLowerCaseAttributeValueWithGivenTagInChildren(\'img\', \'alt\');\r\n\r\nreturn !($alt_value <> \"\" && $alt_value == BasicFunctions::getPlainTextInLowerCase());', 1, '0000-00-00 00:00:00'),
 (176, 0, 'basefont', 0, '', '_CNAME_176', '_ERR_176', '_DESC_176', NULL, NULL, '', '_HOWTOREPAIR_176', '', '', '', '', '_PROCEDURE_176', '_EXPECTEDRESULT_176', '_FAILEDRESULT_176', 'return false;', 1, '0000-00-00 00:00:00'),
 (177, 0, 'font', 0, '', '_CNAME_177', '_ERR_177', '_DESC_177', NULL, NULL, '', '_HOWTOREPAIR_177', '', '', '', '', '_PROCEDURE_177', '_EXPECTEDRESULT_177', '_FAILEDRESULT_177', 'return false;', 1, '0000-00-00 00:00:00'),
@@ -3768,7 +3768,7 @@ INSERT INTO `themes` (`title`, `version`, `dir_name`, `last_updated`, `extra_inf
 
 # Dumping data for table `users`
 
-INSERT INTO `users` (`user_id`, `login`, `password`, `user_group_id`, `first_name`, `last_name`, `web_service_id`, `status`, `create_date`) VALUES 
+INSERT INTO `users` (`user_id`, `login`, `password`, `user_group_id`, `first_name`, `last_name`, `web_service_id`, `status`, `create_date`) VALUES
 (1, 'ATutor', '0cbab2aec26a53b0107487d43b1b8eb29384ad10', 2, 'ATutor', 'ATutor', '2f4149673d93b7f37eb27506905f19d63fbdfe2d', 1, '2009-03-11 10:16:55');
 
 
