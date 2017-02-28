@@ -161,7 +161,7 @@ if (strpos(@ini_get('arg_separator.input'), ';') !== false) {
 }
 
 /* get the base url	*/
-if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https')) {
+if (isset($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) == 'on')) {
 	$server_protocol = 'https://';
 } else {
 	$server_protocol = 'http://';
