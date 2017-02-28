@@ -249,17 +249,14 @@ echo get_guideline_div($this->rows, $this->num_of_guidelines_per_row, "checkbox"
 </form>
 <div style="float:right;margin-right:2em;clear:right;width:250px;"><br />
 <a href="checker/index.php#skipads"><img src="images/clr.gif" alt="<?php echo _AC("skip_over_ads"); ?>" border="0"/></a>	
-	<script type="text/javascript">
-	<!--
-	google_ad_client = "pub-8538177464726172";
-	/* 250x250, created 3/13/09 */
-	google_ad_slot = "0783349774";
-	google_ad_width = 250;
-	google_ad_height = 250;
-	//-->
-	</script>
-	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-	</script>
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:250px;height:250px"
+       data-ad-client="pub-8538177464726172"
+       data-ad-slot="0783349774"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
 <a name="skipads" title="passed ads"></a>
 </div>
 
