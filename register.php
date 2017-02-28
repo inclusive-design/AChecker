@@ -20,12 +20,12 @@ if (isset($_POST['cancel'])) {
 	exit;
 } else if (isset($_POST['submit'])) {
 	$has_error = false;
-	
+
 	if ($_SERVER['HTTP_REFERER'] <> AC_BASE_HREF.'register.php') exit;
-	
+
 	require_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
 	$usersDAO = new UsersDAO();
-	
+
 	/* password check: password is verified front end by javascript. here is to handle the errors from javascript */
 	if ($_POST['password_error'] <> "")
 	{
@@ -39,7 +39,7 @@ if (isset($_POST['cancel'])) {
 				$msg->addError($pwd_error);
 		}
 		$has_error = true;
-	} 
+	}
 	//CAPTCHA
 	if (isset($_POST['captcha_in_use']) && $_POST['captcha_in_use']){
 		$img = new Securimage();
@@ -49,7 +49,7 @@ if (isset($_POST['cancel'])) {
 			$msg->addError('SECRET_ERROR');
 		}
 	}
-	
+
 	if (!$has_error) {
 		$user_id = $usersDAO->Create(AC_USER_GROUP_USER,
                   $_POST['login'],
@@ -58,31 +58,31 @@ if (isset($_POST['cancel'])) {
 		              $_POST['first_name'],
 		              $_POST['last_name'],
 		              '');
-		
+
 		if (is_int($user_id) && $user_id > 0)
 		{
 			if (defined('AC_EMAIL_CONFIRMATION') && AC_EMAIL_CONFIRMATION) {
 				$msg->addFeedback('REG_THANKS_CONFIRM');
-	
+
 				$code = substr(md5($_POST['email'] . $now . $user_id), 0, 10);
-				
+
 				$confirmation_link = $_base_href . 'confirm.php?id='.$user_id.SEP.'m='.$code;
-	
+
 				/* send the email confirmation message: */
-				require(AC_INCLUDE_PATH . 'classes/phpmailer/acheckermailer.class.php');
+				require(AC_INCLUDE_PATH . 'classes/acheckermailer.class.php');
 				$mail = new ACheckerMailer();
-	
+
 				$mail->From     = $_config['contact_email'];
 				$mail->AddAddress($_POST['email']);
 				$mail->Subject = SITE_NAME . ' - ' . _AC('email_confirmation_subject');
 				$mail->Body    = _AC('email_confirmation_message', SITE_NAME, $confirmation_link)."\n\n";
-	
+
 				$mail->Send();
 			} else {
 				// auto login
 				$usersDAO->setLastLogin($user_id);
 				$_SESSION['user_id'] = $user_id;
-				
+
 				// show web service ID in success message
 				$row = $usersDAO->getUserByID($user_id);
 				$msg->addFeedback(array('REGISTER_SUCCESS', $row['web_service_id']));
