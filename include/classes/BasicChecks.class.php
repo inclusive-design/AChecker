@@ -158,7 +158,7 @@ class BasicChecks {
 	* Check recursively if there are duplicate $attr defined in children of $e
 	* set global var hasDuplicateAttribute to true if there is, otherwise, set it to false
 	*/
-	public static function hasDuplicateAttribute($e, $attr, &$id_array)
+	public static function hasDuplicateAttribute($e, $attr, $id_array)
 	{
 		global $has_duplicate_attribute;
 		
@@ -532,7 +532,7 @@ class BasicChecks {
 	* Check recursively if there are duplicate $attr defined in children of $e
 	* set global var $has_duplicate_attribute to true if there is, otherwise, set it to false
 	*/
-	public static function has_duplicate_attribute($e, $attr, &$id_array)
+	public static function has_duplicate_attribute($e, $attr, $id_array)
 	{
 		global $has_duplicate_attribute;
 		
@@ -694,7 +694,7 @@ class BasicChecks {
 			return true;
 	}
 	
-	public static function find_all_headers($elements, &$header_array)
+	public static function find_all_headers($elements, $header_array)
 	{
 		foreach ($elements as $e)
 		{

@@ -297,7 +297,7 @@ class simple_html_dom_node {
     }
 
     // seek for given conditions
-    protected function seek($selector, &$ret) {
+    protected function seek($selector, $ret) {
         list($tag, $key, $val, $exp) = $selector;
 
         $end = $this->info[HDOM_INFO_END];
@@ -757,7 +757,7 @@ class simple_html_dom {
     /* end of customized by UOT, ATRC, cindy Li */
     
     // parse attributes
-    protected function parse_attr($node, $name, &$space) {
+    protected function parse_attr($node, $name, $space) {
         $space[2] = $this->copy_skip($this->token_blank);
         switch($this->char) {
             case '"':
