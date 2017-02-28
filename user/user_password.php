@@ -39,10 +39,10 @@ if (isset($_POST['submit'])) {
 	if (!$msg->containsErrors()) {
 		// insert into the db.
 		$password   = $addslashes($_POST['form_password_hidden']);
-		
+
 		$usersDAO = new UsersDAO();
 
-		if (!$usersDAO->setPassword($_GET['id'], $password)) 
+		if (!$usersDAO->setPassword($_GET['id'], $password))
 		{
 			require(AC_INCLUDE_PATH.'header.inc.php');
 			$msg->printErrors('DB_NOT_UPDATED');
@@ -56,15 +56,15 @@ if (isset($_POST['submit'])) {
 		$tmp_message  = _AC('password_change_msg')."\n\n";
 		$tmp_message .= _AC('web_site').' : '.AC_BASE_HREF."\n";
 		$tmp_message .= _AC('login_name').' : '.$user_row['login']."\n";
-		
-		require(AC_INCLUDE_PATH . 'classes/phpmailer/acheckermailer.class.php');
+
+		require(AC_INCLUDE_PATH . 'classes/acheckermailer.class.php');
 		$mail = new ACheckerMailer;
 		$mail->From     = $_config['contact_email'];
 		$mail->AddAddress($user_row['email']);
 		$mail->Subject = $_config['site_name'] . ': ' . _AC('password_changed');
 		$mail->Body    = $tmp_message;
 
-		if(!$mail->Send()) 
+		if(!$mail->Send())
 		{
 		   $msg->addError('SENDING_ERROR');
 		}
@@ -72,7 +72,7 @@ if (isset($_POST['submit'])) {
 		{
 			$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 		}
-		
+
 		header('Location: index.php');
 		exit;
 	}

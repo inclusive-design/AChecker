@@ -23,7 +23,7 @@ if (isset($_POST['cancel'])) {
 } else if (isset($_POST['submit'])) {
 	require_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
 	$usersDAO = new UsersDAO();
-	
+
 	/* password check: password is verified front end by javascript. here is to handle the errors from javascript */
 	if ($_POST['password_error'] <> "")
 	{
@@ -48,28 +48,28 @@ if (isset($_POST['cancel'])) {
 			              $_POST['first_name'],
 			              $_POST['last_name'],
 			              $_POST['status']);
-			
+
 			if (is_int($user_id) && $user_id > 0)
 			{
 				if (defined('AC_EMAIL_CONFIRMATION') && AC_EMAIL_CONFIRMATION) {
 					$msg->addFeedback('REG_THANKS_CONFIRM');
-		
+
 					$code = substr(md5($_POST['email'] . $now . $user_id), 0, 10);
-					
+
 					$confirmation_link = $_base_href . 'confirm.php?id='.$user_id.SEP.'m='.$code;
-		
+
 					/* send the email confirmation message: */
-					require(AC_INCLUDE_PATH . 'classes/phpmailer/acheckermailer.class.php');
+					require(AC_INCLUDE_PATH . 'classes/acheckermailer.class.php');
 					$mail = new ACheckerMailer();
-		
+
 					$mail->From     = $_config['contact_email'];
 					$mail->AddAddress($_POST['email']);
 					$mail->Subject = SITE_NAME . ' - ' . _AC('email_confirmation_subject');
 					$mail->Body    = _AC('email_confirmation_message', SITE_NAME, $confirmation_link)."\n\n";
-		
+
 					$mail->Send();
-				} 
-				else 
+				}
+				else
 				{
 					$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 					header('Location: index.php');
@@ -79,14 +79,14 @@ if (isset($_POST['cancel'])) {
 		}
 		else  // edit existing user
 		{
-			if ($usersDAO->Update($_GET['id'], 
+			if ($usersDAO->Update($_GET['id'],
 			                  $_POST['user_group_id'],
 	                          $_POST['login'],
 			                  $_POST['email'],
 			                  $_POST['first_name'],
 			                  $_POST['last_name'],
 			                  $_POST['status']))
-			
+
 			{
 				$msg->addFeedback('ACTION_COMPLETED_SUCCESSFULLY');
 				header('Location: index.php');
@@ -97,7 +97,7 @@ if (isset($_POST['cancel'])) {
 }
 // end of handle submit
 
-// initialize page 
+// initialize page
 $userGroupsDAO = new UserGroupsDAO();
 
 if (isset($_GET['id'])) // edit existing user
@@ -105,12 +105,12 @@ if (isset($_GET['id'])) // edit existing user
 	$usersDAO = new UsersDAO();
 	$savant->assign('user_row', $usersDAO->getUserByID($_GET['id']));
 	$savant->assign('show_password', false);
-	
+
 }
 else  // create new user
 {
 	$savant->assign('show_password', true);
-	
+
 }
 /*****************************/
 /* template starts down here */
