@@ -1,8 +1,9 @@
-///////////
-// AChecker Readme
+AChecker
+========
 
 AChecker is an automated accessibility checker used to evaluate the accessibility of HTML pages, and help ensure they can be accessed by all individuals, including those with disabilities, using assistive technologies to navigate the Internet.
-http://achecker.ca
+
+AChecker live site: http://achecker.ca
 
 What sets AChecker apart from other automated accessibility checkers?
 
@@ -12,16 +13,18 @@ What sets AChecker apart from other automated accessibility checkers?
 4. View existing guidelines in AChecker to see exactly what it is reviewing.
 5. Design new accessibility checks and have them added to AChecker.
 
-///////
-// Installing AChecker
+Installation
+------------
 
 1. Unzip the achecker.tar.gz file into a php enabled, web accessible directory.
 2. Open the installer at AChecker/install
 3. Follow the instruction provided by the installer.
 
-Note, if you are installing from a Git clone of AChecker, before following the instructions above, you will need to create an empty configuration file. In the AChecker directory, at the command prompt issue the following command:
+Note, if you are installing from a Git clone of AChecker, before following the instructions above, you will need to create an empty configuration file. In the AChecker directory, at the command prompt, issue the following command:
 
+```
 touch include/config.inc.php
+```
 
 Then follow the instructions above.
 
