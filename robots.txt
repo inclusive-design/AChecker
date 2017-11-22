@@ -8,10 +8,10 @@ User-agent: Mediapartners-Google*
 Disallow: /
 
 User-agent: IsraBot
-Disallow:
+Disallow: /
 
 User-agent: Orthogaffe
-Disallow:
+Disallow: /
 
 User-agent: UbiCrawler
 Disallow: /
