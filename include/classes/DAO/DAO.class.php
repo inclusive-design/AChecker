@@ -26,10 +26,10 @@ class DAO {
 	
 	function DAO()
 	{
-		if (!isset($this->db))
+		if (!isset(self::$db))
 		{
-			$this->db = @mysql_connect(DB_HOST . ':' . DB_PORT, DB_USER, DB_PASSWORD);
-			if (!$this->db) {
+			self::$db = @mysql_connect(DB_HOST . ':' . DB_PORT, DB_USER, DB_PASSWORD);
+			if (!self::$db) {
 				die('Unable to connect to db.');
 				/* AC_ERROR_NO_DB_CONNECT 
 				require_once(AC_INCLUDE_PATH . 'classes/ErrorHandler/ErrorHandler.class.php');
@@ -38,7 +38,7 @@ class DAO {
 				exit;
 				*/
 			}
-			if (!@mysql_select_db(DB_NAME, $this->db)) {
+			if (!@mysql_select_db(DB_NAME, self::$db)) {
 				die('DB connection established, but database "'.DB_NAME.'" cannot be selected.');
 				/*
 				require_once(AC_INCLUDE_PATH . 'classes/ErrorHandler/ErrorHandler.class.php');
