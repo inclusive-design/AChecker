@@ -63,7 +63,7 @@ class DAO {
 	function execute($sql)
 	{
 		$sql = trim($sql);
-		$result = mysql_query($sql, $this->db) or die($sql . "<br />". mysql_error());
+		$result = mysql_query($sql, self::$db) or die($sql . "<br />". mysql_error());
 
 		// Deal with "select" statement: return false if no row is returned, otherwise, return an array
 		if ($result !== true && $result !== false) {
