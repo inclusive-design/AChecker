@@ -2921,7 +2921,6 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_HELP_VIEW_GUIDELINE ','<h
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_INFOS_INVALID_USER','You must <a href=\"login.php\">login</a> to use this section.','2009-01-15 16:13:14','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_INFOS_UPDATE_INSTALLED_AND_REMOVE_PERMISSION','The update has been installed. Please remove write permission as instruction.','2009-06-22 14:49:02','Updater: info msg');
 INSERT INTO `language_text` VALUES ('eng', '_template','8_min_chars','8 characters minimum','2009-01-09 10:16:38','');
-INSERT INTO `language_text` VALUES ('eng', '_template','20_max_chars','20 character maximum','2009-01-09 10:16:38','');
 INSERT INTO `language_text` VALUES ('eng', '_template','abbr','Abbreviation','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','accessibility_review','Accessibility Review','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','achecker_documentation','AChecker Documentation','2009-06-16 10:25:25','');
