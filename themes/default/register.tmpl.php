@@ -105,7 +105,7 @@ function encrypt_password()
 
 		<tr>
 			<td colspan="2" align="left"><small>&middot; <?php echo _AC('combination'); ?><br />
-				   &middot; <?php echo "8 characters minimum"; ?></small></td>
+				   &middot; <?php echo _AC('8_min_chars'); ?></small></td>
 		</tr>
 
 		<tr>
