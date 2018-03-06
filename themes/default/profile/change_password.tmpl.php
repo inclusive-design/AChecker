@@ -60,7 +60,7 @@ function encrypt_password()
 					<label for="old_password"><?php echo _AC('password_old'); ?></label>:
 				</td>
 				<td align="left">
-					<input id="old_password" name="old_password" type="password" size="25" maxlength="15" />
+					<input id="old_password" name="old_password" type="password" size="25" minlength="8" />
 				</td>
 			</tr>
 		
@@ -70,14 +70,14 @@ function encrypt_password()
 					<label for="password"><?php echo _AC('new_password'); ?></label>:
 				</td>
 				<td align="left">
-					<input id="password" name="password" type="password" size="25" maxlength="15" />
+					<input id="password" name="password" type="password" size="25" minlength="8" />
 				</td>
 			</tr>
 		
 			<tr>
 				<td colspan="2">
 					<small>&middot; <?php echo _AC('combination'); ?><br />
-					&middot; <?php echo _AC('15_max_chars'); ?></small>
+					&middot; <?php echo _AC('8_min_chars'); ?></small>
 				</td>
 			</tr>
 		
