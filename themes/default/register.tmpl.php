@@ -73,13 +73,13 @@ function encrypt_password()
 
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="login"><?php echo _AC('login_name'); ?></label>:</td>
-			<td align="left"><input id="login" name="login" type="text" maxlength="20" size="30" value="<?php if (isset($_POST['login'])) echo $stripslashes(htmlspecialchars($_POST['login'])); else echo $stripslashes(htmlspecialchars($this->user_row['login'])); ?>" /></td>
+			<td align="left"><input id="login" name="login" type="text" size="50" value="<?php if (isset($_POST['login'])) echo $stripslashes(htmlspecialchars($_POST['login'])); else echo $stripslashes(htmlspecialchars($this->user_row['login'])); ?>" /></td>
 		</tr>
 
 		<tr>
 			<td align="left" colspan="2">
 				<small>&middot; <?php echo _AC('contain_only'); ?><br />
-					   &middot; <?php echo _AC('20_max_chars'); ?></small>
+					    </small>
 			</td>
 		</tr>
 		
@@ -100,17 +100,17 @@ function encrypt_password()
 		<?php if ($this->show_password) { ?>
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="form_password1"><?php echo _AC('password'); ?></label>:</td>
-			<td align="left"><input id="form_password1" name="form_password1" type="password" size="15" maxlength="15" /></td>
+			<td align="left"><input id="form_password1" name="form_password1" type="password" size="50"  /></td>
 		</tr>
 
 		<tr>
 			<td colspan="2" align="left"><small>&middot; <?php echo _AC('combination'); ?><br />
-				   &middot; <?php echo _AC('15_max_chars'); ?></small></td>
+				   &middot; <?php echo "8 characters minimum"; ?></small></td>
 		</tr>
 
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="form_password2"><?php echo _AC('password_again'); ?></label>:</td>
-			<td align="left"><input id="form_password2" name="form_password2" type="password" size="15" maxlength="15" /></td>
+			<td align="left"><input id="form_password2" name="form_password2" type="password" size="50" /></td>
 		</tr>
 		<?php } ?>
 
