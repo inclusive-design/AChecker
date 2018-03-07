@@ -320,7 +320,7 @@ CREATE TABLE `themes` (
 
 CREATE TABLE `users` (
   `user_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `login` varchar(20) NOT NULL,
+  `login` varchar(50) NOT NULL,
   `password` varchar(40) NOT NULL,
   `user_group_id` mediumint(8) NOT NULL,
   `first_name` varchar(100) DEFAULT NULL,

@@ -2920,8 +2920,7 @@ INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_HELP_USER_PASSWORD ','<h2
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_HELP_VIEW_GUIDELINE ','<h2>View Guidelines</h2>\r\n<p>Under the Guidelines tab, choose a radio button beside one of the listed guidelines, then press the View button to view details about that guideline. Details include the guideline\'s basic information, as well as all the checks being run when this guideline is selected during an accessibility review.</p> \r\n','2009-04-15 09:53:24','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_INFOS_INVALID_USER','You must <a href=\"login.php\">login</a> to use this section.','2009-01-15 16:13:14','');
 INSERT INTO `language_text` VALUES ('eng', '_msgs','AC_INFOS_UPDATE_INSTALLED_AND_REMOVE_PERMISSION','The update has been installed. Please remove write permission as instruction.','2009-06-22 14:49:02','Updater: info msg');
-INSERT INTO `language_text` VALUES ('eng', '_template','15_max_chars','8 characters minimum, 15 characters maximum','2009-01-09 10:16:38','');
-INSERT INTO `language_text` VALUES ('eng', '_template','20_max_chars','20 character maximum','2009-01-09 10:16:38','');
+INSERT INTO `language_text` VALUES ('eng', '_template','8_min_chars','8 characters minimum','2018-03-08 02:00:00','');
 INSERT INTO `language_text` VALUES ('eng', '_template','abbr','Abbreviation','2009-01-21 12:38:17','');
 INSERT INTO `language_text` VALUES ('eng', '_template','accessibility_review','Accessibility Review','2008-11-24 14:12:25','');
 INSERT INTO `language_text` VALUES ('eng', '_template','achecker_documentation','AChecker Documentation','2009-06-16 10:25:25','');
