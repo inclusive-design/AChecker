@@ -7,7 +7,7 @@
 # For More details, Visit http://www.atutor.ca/atutor/mantis/view.php?id=5846
 # since 1.3
 
-ALTER TABLE `users` MODIFY `login` VARCHAR(50);
+ALTER TABLE `users` MODIFY `login` VARCHAR(50) NOT NULL;
 
 # ---------------------------------------------------------------------
 # Data Updated and Removed from Table 'language_text'
