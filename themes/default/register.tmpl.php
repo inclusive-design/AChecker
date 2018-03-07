@@ -73,7 +73,7 @@ function encrypt_password()
 
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="login"><?php echo _AC('login_name'); ?></label>:</td>
-			<td align="left"><input id="login" name="login" type="text" size="50" value="<?php if (isset($_POST['login'])) echo $stripslashes(htmlspecialchars($_POST['login'])); else echo $stripslashes(htmlspecialchars($this->user_row['login'])); ?>" /></td>
+			<td align="left"><input id="login" name="login" type="text" maxlength="50" size="50" value="<?php if (isset($_POST['login'])) echo $stripslashes(htmlspecialchars($_POST['login'])); else echo $stripslashes(htmlspecialchars($this->user_row['login'])); ?>" /></td>
 		</tr>
 
 		<tr>
@@ -100,7 +100,7 @@ function encrypt_password()
 		<?php if ($this->show_password) { ?>
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="form_password1"><?php echo _AC('password'); ?></label>:</td>
-			<td align="left"><input id="form_password1" name="form_password1" type="password" size="50"  /></td>
+			<td align="left"><input id="form_password1" name="form_password1" minlength="8" type="password" size="50"  /></td>
 		</tr>
 
 		<tr>
@@ -110,7 +110,7 @@ function encrypt_password()
 
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="form_password2"><?php echo _AC('password_again'); ?></label>:</td>
-			<td align="left"><input id="form_password2" name="form_password2" type="password" size="50" /></td>
+			<td align="left"><input id="form_password2" name="form_password2" minlength="8" type="password" size="50" /></td>
 		</tr>
 		<?php } ?>
 
