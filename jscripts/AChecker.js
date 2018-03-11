@@ -91,10 +91,10 @@ var AChecker = AChecker || {};
         var d = $("#" + parentDivID); // parent div to expand the disabled div
         var e = $("#" + divID);  // the dynamically generated disabled div
 
-        var xPos = e.offsetLeft;
-        var yPos = e.offsetTop;
-        var oWidth = e.offsetWidth;    
-        var oHeight = e.offsetHeight;
+        var xPos = e.offsetLeft,
+         yPos = e.offsetTop,
+         oWidth = e.offsetWidth,   
+         oHeight = e.offsetHeight;
         cDivs[cDivs.length] = document.createElement("DIV");
         cDivs[cDivs.length - 1].style.width = oWidth + "px";
         cDivs[cDivs.length - 1].style.height = oHeight + "px";
