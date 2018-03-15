@@ -139,7 +139,7 @@ class Language {
 			} elseif ($is_admin === 1) {
 				$sql = "UPDATE ".TABLE_PREFIX."admins SET language='".$this->code."', last_login=last_login WHERE login='$id'";
 			}
-			mysql_query($sql,$db);
+			mysqli_query($db,$sql);
 		}
 	}
 

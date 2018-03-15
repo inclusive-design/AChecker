@@ -191,7 +191,6 @@ class Patch {
 			foreach($this->backup_files as $backup_file)
 				$backup_files .= $backup_file. '|';
 		
-			$updateInfo = array("backup_files"=>mysql_real_escape_string($backup_files));
 		}
 	
 		if (count($this->patch_files) > 0)

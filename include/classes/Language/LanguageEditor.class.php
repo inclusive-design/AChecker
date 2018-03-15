@@ -203,7 +203,7 @@ class LanguageEditor extends Language {
 		
 			if (($text != '') && ($text != $_POST['old'][$term])) {
 				$sql = "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ('".$this->getCode()."', '_template', '$term', '$text', NOW(), '')";
-				mysql_query($sql, $this->db);
+				mysqli_query($this->db,$sql);
 			}
 		}
 	}

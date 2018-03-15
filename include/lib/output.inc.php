@@ -821,9 +821,9 @@ function getTranslatedCodeStr($codes) {
 
 			/* get $_msgs_new from the DB */
 			$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text WHERE variable="_msgs" AND (language_code="'.$_SESSION['lang'].'" OR language_code="'.$parent.'")';
-			$result	= @mysql_query($sql, $db);
+			$result	= @mysqli_query($db,$sql);
 			$i = 1;
-			while ($row = @mysql_fetch_assoc($result)) {
+			while ($row = @mysqli_fetch_assoc($result)) {
 				// do not cache key as a digit (no contstant(), use string)
 				$_cache_msgs_new[$row['term']] = str_replace('SITE_URL/', $_base_path, $row['text']);
 				if (AC_DEVEL) {
@@ -854,9 +854,9 @@ function getTranslatedCodeStr($codes) {
 			/* the language for this msg is missing: */
 		
 			$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text WHERE variable="_msgs"';
-			$result	= @mysql_query($sql, $db);
+			$result	= @mysqli_query($db,$sql);
 			$i = 1;
-			while ($row = @mysql_fetch_assoc($result)) {
+			while ($row = @mysqli_fetch_assoc($result)) {
 				if (($row['term']) === $codes) {
 					$message = '['.$row['term'].']';
 					break;

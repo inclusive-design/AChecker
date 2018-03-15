@@ -82,7 +82,7 @@ class ChecksDAO extends DAO {
 		}
 		else
 		{
-			$checkID = mysql_insert_id();
+			$checkID = mysqli_insert_id($this->db);
 			
 			if ($note <> '')
 			{
