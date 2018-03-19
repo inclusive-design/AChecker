@@ -53,7 +53,7 @@ class AccessibilityRpt {
 	* $errors: an array, output of AccessibilityValidator -> getValidationErrorRpt
 	* $type: html
 	*/
-	function AccessibilityRpt($errors, $user_link_id = '')
+	function __construct($errors, $user_link_id = '')
 	{
 		$this->errors = $errors;
 		$this->user_link_id = $user_link_id;

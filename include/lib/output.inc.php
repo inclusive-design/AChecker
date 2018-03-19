@@ -58,10 +58,11 @@ function _AC() {
 		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_CONF'))) {
 			global $_base_path, $addslashes;
 
-			$args[0] = $addslashes($args[0]);
+			$temp=$addslashes+'('+$db+','+$args[0]+')'; 
+			//$args[0] = $addslashes($temp);
 					
 			/* get $_msgs_new from the DB */
-			$rows = $languageTextDAO->getMsgByTermAndLang($args[0], $_SESSION['lang']);
+			$rows = $languageTextDAO->getMsgByTermAndLang($temp, $_SESSION['lang']);
 			$msgs = '';
 					
 			if (is_array($rows)) 

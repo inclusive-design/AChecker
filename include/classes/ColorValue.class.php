@@ -34,7 +34,7 @@ class ColorValue {
 	
 	var $isValid;
 
-	function ColorValue($color)
+	function __construct($color)
 	{
 	  $color = str_replace(" ", "", $color);  // remove whitespaces
 	  
