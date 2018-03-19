@@ -21,8 +21,8 @@
 
 class DAO {
 
-	// private
-	private $db;     // global database connection
+	// protected  to allow LanguageTextDAO to use it
+	protected $db;     // global database connection
 	
 	function __construct() 
 	{

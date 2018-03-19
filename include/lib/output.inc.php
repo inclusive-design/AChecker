@@ -59,6 +59,7 @@ function _AC() {
 			global $_base_path, $addslashes;
 
 			$temp=$addslashes+'('+$db+','+$args[0]+')'; 
+			//echo $args[0];
 			//$args[0] = $addslashes($temp);
 					
 			/* get $_msgs_new from the DB */
@@ -68,13 +69,15 @@ function _AC() {
 			if (is_array($rows)) 
 			{
 				$row = $rows[0];
+				
 				// do not cache key as a digit (no contstant(), use string)
 				$msgs = str_replace('SITE_URL/', $_base_path, $row['text']);
+				
 				if (defined('AC_DEVEL') && AC_DEVEL) {
 					$msgs .= ' <small><small>('. $args[0] .')</small></small>';
 				}
 			}
-
+			
 			return $msgs;
 		}
 	}
