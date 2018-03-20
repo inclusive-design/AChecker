@@ -59,9 +59,7 @@ function _AC() {
 			global $_base_path, $addslashes;
 
 			$temp=$addslashes+'('+$db+','+$args[0]+')'; 
-			//echo $args[0];
-			//$args[0] = $addslashes($temp);
-					
+			
 			/* get $_msgs_new from the DB */
 			$rows = $languageTextDAO->getMsgByTermAndLang($temp, $_SESSION['lang']);
 			$msgs = '';

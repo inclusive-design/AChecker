@@ -50,8 +50,6 @@ if(isset($_POST['submit']) && ($_POST['action'] == 'process')) {
 	}
 
 	if (!isset($errors)) {
-		//$db = @mysql_connect($_POST['step2']['db_host'] . ':' . $_POST['step2']['db_port'], $_POST['step2']['db_login'], urldecode($_POST['step2']['db_password']));
-		//@mysql_select_db($_POST['step2']['db_name'], $db);
 		$db=@ mysqli_connect($_POST['step2']['db_host'],$_POST['step2']['db_login'], urldecode($_POST['step2']['db_password']),"",$_POST['step2']['db_port']);
 		@mysqli_select_db($db,$_POST['step2']['db_name']);
 

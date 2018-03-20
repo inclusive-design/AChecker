@@ -73,12 +73,12 @@ class LanguageTextDAO extends DAO {
 		$sql = "REPLACE INTO ".TABLE_PREFIX."language_text
 		        (`language_code`, `variable`, `term`, `text`, `revised_date`, `context`)
 		        VALUES
-		        ('".$addslashes($this->db,$language_code)."', 
-		         '".$addslashes($this->db,$variable)."', 
-		         '".$addslashes($this->db,$term)."', 
-		         '".$addslashes($this->db,$text)."', 
+		        ('".$addslashes($this->db, $language_code)."', 
+		         '".$addslashes($this->db, $variable)."', 
+		         '".$addslashes($this->db, $term)."', 
+		         '".$addslashes($this->db, $text)."', 
 		         now(), 
-		         '".$addslashes($this->db,$context)."')";
+		         '".$addslashes($this->db, $context)."')";
 		        
 		return $this->execute($sql);
 	}
@@ -96,8 +96,8 @@ class LanguageTextDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$variable=$addslashes($this->db,$variable);
-		$term=$addslashes($this->db,$term);
+		$variable=$addslashes($this->db, $variable);
+		$term=$addslashes($this->db, $term);
 		
 		$sql = "DELETE FROM ".TABLE_PREFIX."language_text
 		        WHERE `variable` = '".$variable."'
@@ -118,8 +118,8 @@ class LanguageTextDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$term = $addslashes($this->db,$term);
-		$lang = $addslashes($this->db,$lang);
+		$term = $addslashes($this->db, $term);
+		$lang = $addslashes($this->db, $lang);
 		
 		$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text 
 						WHERE term="' . $term . '" 
@@ -143,8 +143,8 @@ class LanguageTextDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$term = $addslashes($this->db,$term);
-		$lang = $addslashes($this->db,$lang);
+		$term = $addslashes($this->db, $term);
+		$lang = $addslashes($this->db, $lang);
 		
 		$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text 
 						WHERE term="' . $term . '" 
@@ -190,7 +190,7 @@ class LanguageTextDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$lang = $addslashes($this->db,$lang);
+		$lang = $addslashes($this->db, $lang);
 		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE language_code='".$lang."' 
@@ -210,7 +210,7 @@ class LanguageTextDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$lang = $addslashes($this->db,$lang);
+		$lang = $addslashes($this->db, $lang);
 		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE language_code='".$lang."' 
@@ -235,10 +235,10 @@ class LanguageTextDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$languageCode = $addslashes($this->db,$languageCode);
-		$variable = $addslashes($this->db,$variable);
-		$term = $addslashes($this->db,$term);
-		$text = $addslashes($this->db,$text);
+		$languageCode = $addslashes($this->db, $languageCode);
+		$variable = $addslashes($this->db, $variable);
+		$term = $addslashes($this->db, $term);
+		$text = $addslashes($this->db, $text);
 		
 		$sql = "UPDATE ".TABLE_PREFIX."language_text 
 		           SET text='".$text."',

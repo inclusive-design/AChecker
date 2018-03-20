@@ -18,6 +18,7 @@ include_once(AC_INCLUDE_PATH. 'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/ChecksDAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/UserLinksDAO.class.php');
+include_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
 include_once(AC_INCLUDE_PATH. 'classes/Decision.class.php');
 
 global $starttime;
@@ -30,6 +31,7 @@ $starttime = $mtime;
 unset($_SESSION['input_form']); 
 
 $guidelinesDAO = new GuidelinesDAO();
+$DAO = new DAO(); //to establish db connection
 
 // process to make decision
 if (isset($_POST['make_decision']) || isset($_POST['reverse']))
@@ -127,7 +129,7 @@ if (!is_array($_gids)) { // $_gids hasn't been set at validating referer URIs
 if ($_POST["validate_uri"])
 {
 	$_POST['uri'] = htmlentities($_POST['uri']);
-	$url=$addslashes+'('+$db+','+$_POST["uri"]+')'; 
+	$url=$DAO->addSlash($_POST["uri"]);
 	$uri = Utility::getValidURI($url);
 	$_SESSION['input_form']['uri'] = $uri;
 	

@@ -28,27 +28,12 @@ class DAO {
 	{
 		if (!isset($this->db))
 		{
-			//$this->db = @mysql_connect(DB_HOST . ':' . DB_PORT, DB_USER, DB_PASSWORD);
-			$this->db=@mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,"",DB_PORT); 
+			$this->db=@mysqli_connect(DB_HOST, DB_USER,DB_PASSWORD,"",DB_PORT); 
 			if (!$this->db) {
 				die('Unable to connect to db.');
-				/* AC_ERROR_NO_DB_CONNECT 
-				require_once(AC_INCLUDE_PATH . 'classes/ErrorHandler/ErrorHandler.class.php');
-				$err = new ErrorHandler();
-				trigger_error('VITAL#Unable to connect to db.', E_USER_ERROR);
-				exit;
-				*/
 			}
-			//if (!@mysql_select_db(DB_NAME, $this->db)) {
-				if(!@mysqli_select_db($this->db,DB_NAME)){
+				if(!@mysqli_select_db($this->db, DB_NAME)){
 				die('DB connection established, but database "'.DB_NAME.'" cannot be selected.');
-				/*
-				require_once(AC_INCLUDE_PATH . 'classes/ErrorHandler/ErrorHandler.class.php');
-				$err = new ErrorHandler();
-				trigger_error('VITAL#DB connection established, but database "'.DB_NAME.'" cannot be selected.',
-								E_USER_ERROR);
-				exit;
-				*/
 			}
 		}
 	}
@@ -65,13 +50,13 @@ class DAO {
 	function execute($sql)
 	{
 		$sql = trim($sql);
-		$result = mysqli_query( $this->db,$sql) or die($sql . "<br />". mysqli_error());
+		$result = mysqli_query($this->db, $sql) or die($sql . "<br />". mysqli_error());
 
 		// Deal with "select" statement: return false if no row is returned, otherwise, return an array
 		if ($result !== true && $result !== false) {
 			$rows = false;
 			
-			while ($row =  $result->fetch_assoc()){
+			while ($row = $result->fetch_assoc()){
 				if (!$rows) $rows = array();
 				
 			    $rows[] = $row;
@@ -80,6 +65,13 @@ class DAO {
 			return $rows;
 		}
 		return true;
+	}
+	
+	function addSlash($code)
+	{
+		global $addslashes;
+		
+		return $addslashes($this->db,$code);
 	}
 
 }
