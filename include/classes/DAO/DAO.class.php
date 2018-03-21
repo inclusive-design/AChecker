@@ -67,7 +67,7 @@ class DAO {
 		return true;
 	}
 	
-	function addSlash($code)
+	function addSlashes($code)
 	{
 		global $addslashes;
 		
