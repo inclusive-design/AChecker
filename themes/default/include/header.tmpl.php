@@ -117,8 +117,12 @@ $lang_charset = "UTF-8";
 	<div class="topnavlistcontainer">
 	<!-- the main navigation. in our case, tabs -->
 		<ul class="navigation">
-			<?php foreach ($this->top_level_pages as $page): ?>
-				<?php $is_submenu_accessed = false; ?>
+			<?php 
+				if (is_array($this->top_level_pages) || is_object($this->top_level_pages))
+				foreach ($this->top_level_pages as $page): 
+				$is_submenu_accessed = false; 
+				
+				?>
 				<?php foreach ($this->sub_menus as $sub_menu) {
 					if ($page['url'] == $sub_menu['url'] || (!empty($this->back_to_page['url']) && $page['url'] == $this->back_to_page['url'])){
 						$is_submenu_accessed = true;

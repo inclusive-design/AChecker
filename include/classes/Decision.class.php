@@ -46,7 +46,7 @@ class Decision {
 	 * @param   None
 	 * @author  Cindy Qi Li
 	 */
-	function Decision($userID, $URI, $output, $sessionID)
+	function __construct($userID, $URI, $output, $sessionID)
 	{
 		global $msg;
 

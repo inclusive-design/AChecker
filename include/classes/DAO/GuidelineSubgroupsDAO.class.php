@@ -37,11 +37,9 @@ class GuidelineSubgroupsDAO extends DAO {
 	*/
 	public function Create($groupID, $name, $abbr)
 	{
-		global $addslashes;
-		
 		$groupID = intval($groupID);
 		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTxetDAO->Create()
-		$abbr = $addslashes(trim($abbr));
+		$abbr = $this->addSlashes(trim($abbr));
 		
 		$sql = "INSERT INTO ".TABLE_PREFIX."guideline_subgroups
 				(`group_id`, `abbr`) 
@@ -87,11 +85,9 @@ class GuidelineSubgroupsDAO extends DAO {
 	*/
 	public function Update($subgroupID, $name, $abbr)
 	{
-		global $addslashes;
-		
 		$subgroupID = intval($subgroupID);
 		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTxetDAO->updateLang()
-		$abbr = $addslashes(trim($abbr));
+		$abbr = $this->addSlashes(trim($abbr));
 		
 		$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups
 				   SET abbr='".$abbr."' 
@@ -283,8 +279,6 @@ class GuidelineSubgroupsDAO extends DAO {
 	 */
 	private function updateLang($subgroupID, $term, $text, $fieldName)
 	{
-		global $addslashes;
-		
 		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 		$langTextDAO = new LanguageTextDAO();
 		
@@ -292,7 +286,7 @@ class GuidelineSubgroupsDAO extends DAO {
 
 		if (is_array($langs))
 		{// term already exists. Only need to update modified text
-			if ($langs[0]['text'] <> $addslashes($text)) $langTextDAO->setText($_SESSION['lang'], '_guideline',$term,$text);
+			if ($langs[0]['text'] <> $this->addSlashes($text)) $langTextDAO->setText($_SESSION['lang'], '_guideline',$term,$text);
 		}
 		else
 		{

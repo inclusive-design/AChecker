@@ -134,7 +134,7 @@ class HTMLRpt extends AccessibilityRpt {
 	* $errors: an array, output of AccessibilityValidator -> getValidationErrorRpt
 	* $type: html
 	*/
-	function HTMLRpt($errors, $user_link_id = '')
+	function __construct($errors, $user_link_id = '')
 	{
 		// run parent constructor
 		parent::AccessibilityRpt($errors, $user_link_id);

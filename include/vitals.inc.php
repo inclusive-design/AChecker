@@ -101,7 +101,7 @@ if ( get_magic_quotes_gpc() == 1 ) {
 	$addslashes   = 'my_add_null_slashes';
 	$stripslashes = 'stripslashes';
 } else {
-	$addslashes   = 'mysql_real_escape_string';
+	$addslashes   = 'mysqli_real_escape_string';
 	$stripslashes = 'my_null_slashes';
 }
 

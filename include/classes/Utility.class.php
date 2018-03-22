@@ -137,6 +137,9 @@ class Utility {
 	*/
 	public static function getSeals($guidelines)
 	{
+		echo $guidelines;
+		if (is_array($guidelines))
+		{
 		foreach ($guidelines as $guideline)
 		{
 			if ($guideline['subset'] == '0')
@@ -156,7 +159,7 @@ class Utility {
 				}
 			}// end of outer if
 		} // end of foreach
-		
+		}
 		if (is_array($highest_priority))
 		{
 			foreach ($highest_priority as $group => $guideline_to_display)

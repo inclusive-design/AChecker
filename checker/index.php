@@ -127,8 +127,8 @@ if (!is_array($_gids)) { // $_gids hasn't been set at validating referer URIs
 if ($_POST["validate_uri"])
 {
 	$_POST['uri'] = htmlentities($_POST['uri']);
-	
-	$uri = Utility::getValidURI($addslashes($_POST["uri"]));
+	$url=filter_var($_POST["uri"], FILTER_SANITIZE_URL);
+	$uri = Utility::getValidURI($url);
 	$_SESSION['input_form']['uri'] = $uri;
 	
 	// Check if the given URI is connectable
