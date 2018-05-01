@@ -51,7 +51,6 @@ class GuidelinesDAO extends DAO {
 		$long_name = trim($long_name);   // $addslashes is not necessary as it's called in LanguageTextDAO->Create()
 		$earlid = $addslashes(trim($earlid));
 		$preamble = $addslashes(trim($preamble));
-		if ($published_date == '' || is_null($published_date)) $published_date = '0000-00-00';
 		
 		if (!$this->isFieldsValid($title, $abbr, true)) return false;
 		

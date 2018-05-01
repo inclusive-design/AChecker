@@ -16,7 +16,7 @@ CREATE TABLE `language_text` (
   `variable` varchar(30) NOT NULL default '',
   `term` varchar(50) NOT NULL default '',
   `text` blob NOT NULL,
-  `revised_date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `revised_date` datetime default NULL,
   `context` text,
   PRIMARY KEY  (`language_code`,`variable`,`term`),
   UNIQUE KEY `idx_unique_lang_term` (`language_code`,`term`)
