@@ -43,7 +43,7 @@ function print_patch_row($patch_row, $row_id, $enable_radiotton)
 		<td><?php if (!isset($patch_row['status'])) echo _AC("not_installed"); else echo htmlspecialchars($patch_row["status"]); ?></td>
 		<td><?php echo htmlspecialchars($patch_row["available_to"]); ?></td>
 		<td><?php echo htmlspecialchars($patch_row["author"]); ?></td>
-		<td><?php if (isset($patch_row['status'])) echo ($patch_row["installed_date"] == NULL)?_AC('na'):htmlspecialchars($patch_row["installed_date"]); ?></td>
+		<td><?php if (isset($patch_row['status'])) echo (is_null($patch_row["installed_date"]))?_AC('na'):htmlspecialchars($patch_row["installed_date"]); ?></td>
 		<td>
 		<?php 
 		if (preg_match('/Installed/', $patch_row["status"]) > 0 && ($patch_row["remove_permission_files"]<> "" || $patch_row["backup_files"]<>"" || $patch_row["patch_files"]<> ""))
