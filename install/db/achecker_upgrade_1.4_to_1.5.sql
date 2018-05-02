@@ -9,7 +9,7 @@
 
 ALTER TABLE `checks` MODIFY `create_date` datetime DEFAULT NULL;
 
-ALTER TABLE `themes` MODIFY `last_updated` date DEFAULT NULL;
+ALTER TABLE `themes` MODIFY `last_updated` date NOT NULL;
 
 ALTER TABLE `language_text` MODIFY `revised_date` datetime default NULL;
 
