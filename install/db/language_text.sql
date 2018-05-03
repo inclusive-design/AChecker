@@ -9,7 +9,7 @@ CREATE TABLE `language_text` (
   `variable` varchar(30) NOT NULL default '',
   `term` varchar(50) NOT NULL default '',
   `text` blob NOT NULL,
-  `revised_date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `revised_date` datetime default NULL,
   `context` text,
   PRIMARY KEY  (`language_code`,`variable`,`term`),
   UNIQUE KEY `idx_unique_lang_term` (`language_code`,`term`)
@@ -2996,7 +2996,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','create_edit_user_group',
 INSERT INTO `language_text` VALUES ('eng', '_template','create_guideline','Create Guideline','2009-01-21 15:58:32','');
 INSERT INTO `language_text` VALUES ('eng', '_template','create_update','Create Update','2009-06-22 14:49:02','Updater');
 INSERT INTO `language_text` VALUES ('eng', '_template','create_user','Create User','2009-01-21 15:58:32','');
-INSERT INTO `language_text` VALUES ('eng', '_template','css_validation_result','CSS Validation','0000-00-00 00:00:00','');
+INSERT INTO `language_text` VALUES ('eng', '_template','css_validation_result','CSS Validation',NULL,'');
 INSERT INTO `language_text` VALUES ('eng', '_template','css_validator_disabled','CSS Validator is turned off. Enable it in \"Options\".','2011-02-01 10:22:32','');
 INSERT INTO `language_text` VALUES ('eng', '_template','css_validator_provided_by','<strong>Note: Results are provided by http://jigsaw.w3.org/css-validator </strong>','2011-03-02 18:56:34','');
 INSERT INTO `language_text` VALUES ('eng', '_template','css_validator_unavailable','CSS Validator is only available when validating by URL.','2011-02-02 10:33:34','');
