@@ -52,7 +52,7 @@ class MyownPatchesFilesDAO extends DAO {
 	                '".$location."', 
 	                '".$code_from."', 
 	                '".$code_to."',
-	                '".mysql_real_escape_string($uploaded_file)."')";
+	                '".mysqli_real_escape_string($this->db, $uploaded_file)."')";
 		
 		if (!$this->execute($sql))
 		{
@@ -61,7 +61,7 @@ class MyownPatchesFilesDAO extends DAO {
 		}
 		else
 		{
-			return mysql_insert_id();
+			return mysqli_insert_id($this->db);
 		}
 	}
 

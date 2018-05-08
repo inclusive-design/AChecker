@@ -42,8 +42,8 @@ class GuidelineGroupsDAO extends DAO {
 		
 		$guidelineID = intval($guidelineID);
 		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTextDAO->Create()
-		$abbr = $addslashes(trim($abbr));
-		$principle = $addslashes(trim($principle));
+		$abbr = $addslashes($this->db, trim($abbr));
+		$principle = $addslashes($this->db, trim($principle));
 		
 		$sql = "INSERT INTO ".TABLE_PREFIX."guideline_groups
 				(`guideline_id`, `abbr`, `principle`) 
@@ -94,8 +94,8 @@ class GuidelineGroupsDAO extends DAO {
 		
 		$groupID = intval($groupID);
 		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTextDAO->updateLang()
-		$abbr = $addslashes(trim($abbr));
-		$principle = $addslashes(trim($principle));
+		$abbr = $addslashes($this->db, trim($abbr));
+		$principle = $addslashes($this->db, trim($principle));
 		
 		$sql = "UPDATE ".TABLE_PREFIX."guideline_groups
 				   SET abbr='".$abbr."', 
@@ -310,7 +310,7 @@ class GuidelineGroupsDAO extends DAO {
 
 		if (is_array($langs))
 		{// term already exists. Only need to update modified text
-			if ($langs[0]['text'] <> $addslashes($text)) $langTextDAO->setText($_SESSION['lang'], '_guideline',$term,$text);
+			if ($langs[0]['text'] <> $addslashes($this->db, $text)) $langTextDAO->setText($_SESSION['lang'], '_guideline',$term,$text);
 		}
 		else
 		{

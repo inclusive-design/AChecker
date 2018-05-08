@@ -44,8 +44,8 @@ class PatchesFilesDAO extends DAO {
 					  VALUES
 					  (".$patch_id.",
 					   '".$action."',
-					   '".$addslashes($name)."',
-					   '".$addslashes($location)."')";
+					   '".$addslashes($this->db, $name)."',
+					   '".$addslashes($this->db, $location)."')";
 		
 		if (!$this->execute($sql))
 		{
@@ -54,7 +54,7 @@ class PatchesFilesDAO extends DAO {
 		}
 		else
 		{
-			return mysql_insert_id();
+			return mysqli_insert_id($this->id);
 		}
 	}
 

@@ -49,7 +49,7 @@ class LangCodesDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$code = $addslashes($code);
+		$code = $addslashes($this->db, $code);
 		
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
 					WHERE code_2letters = '".$code ."'";
@@ -68,7 +68,7 @@ class LangCodesDAO extends DAO {
 	{
 		global $addslashes;
 
-		$code = $addslashes($code);
+		$code = $addslashes($this->db, $code);
 		
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
 					WHERE code_3letters = '".$code ."'";
@@ -92,7 +92,7 @@ class LangCodesDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$direction = $addslashes($direction);
+		$direction = $addslashes($this->db, $direction);
 		
 		$rtn_array = array();
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 

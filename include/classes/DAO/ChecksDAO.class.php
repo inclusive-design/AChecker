@@ -47,7 +47,7 @@ class ChecksDAO extends DAO {
 		global $addslashes;
 		
 		$userID = intval($userID);
-		$html_tag = $addslashes(strtolower(trim($html_tag)));
+		$html_tag = $addslashes($this->db, strtolower(trim($html_tag)));
 
 		// $addslashes are not needed on the following fields since they are eventually
 		// calling LanguageTextDAO->setText() where $addslashes is used.
@@ -82,7 +82,7 @@ class ChecksDAO extends DAO {
 		}
 		else
 		{
-			$checkID = mysql_insert_id();
+			$checkID = mysqli_insert_id($this->db);
 			
 			if ($note <> '')
 			{
@@ -186,7 +186,7 @@ class ChecksDAO extends DAO {
 		global $addslashes;
 		
 		$userID = intval($userID);
-		$html_tag = $addslashes(strtolower(trim($html_tag)));
+		$html_tag = $addslashes($this->db, strtolower(trim($html_tag)));
 		$confidence = intval($confidence);
 		$open_to_public = intval($open_to_public);
 		
@@ -453,7 +453,7 @@ class ChecksDAO extends DAO {
 		global $addslashes;
 		
 		$sql = "UPDATE ". TABLE_PREFIX ."checks 
-		           SET func = '".$addslashes($func)."' 
+		           SET func = '".$addslashes($this->db, $func)."' 
 		         WHERE check_id=".intval($checkID);
 		
 		return $this->execute($sql);
@@ -795,7 +795,7 @@ class ChecksDAO extends DAO {
 
 		if (is_array($langs))
 		{// term already exists. Only need to update modified text
-			if ($langs[0]['text'] <> $addslashes($text)) $langTextDAO->setText($_SESSION['lang'], '_check',$term,$text);
+			if ($langs[0]['text'] <> $addslashes($this->db, $text)) $langTextDAO->setText($_SESSION['lang'], '_check',$term,$text);
 		}
 		else
 		{

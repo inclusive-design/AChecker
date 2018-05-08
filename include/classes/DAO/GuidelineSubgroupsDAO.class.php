@@ -41,7 +41,7 @@ class GuidelineSubgroupsDAO extends DAO {
 		
 		$groupID = intval($groupID);
 		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTxetDAO->Create()
-		$abbr = $addslashes(trim($abbr));
+		$abbr = $addslashes($this->db, trim($abbr));
 		
 		$sql = "INSERT INTO ".TABLE_PREFIX."guideline_subgroups
 				(`group_id`, `abbr`) 
@@ -55,7 +55,7 @@ class GuidelineSubgroupsDAO extends DAO {
 		}
 		else
 		{
-			$subgroup_id = mysql_insert_id();
+			$subgroup_id = mysqli_insert_id($this->db);
 
 			if ($name <> '')
 			{
@@ -91,7 +91,7 @@ class GuidelineSubgroupsDAO extends DAO {
 		
 		$subgroupID = intval($subgroupID);
 		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTxetDAO->updateLang()
-		$abbr = $addslashes(trim($abbr));
+		$abbr = $addslashes($this->db, trim($abbr));
 		
 		$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups
 				   SET abbr='".$abbr."' 
@@ -292,7 +292,7 @@ class GuidelineSubgroupsDAO extends DAO {
 
 		if (is_array($langs))
 		{// term already exists. Only need to update modified text
-			if ($langs[0]['text'] <> $addslashes($text)) $langTextDAO->setText($_SESSION['lang'], '_guideline',$term,$text);
+			if ($langs[0]['text'] <> $addslashes($this->db, $text)) $langTextDAO->setText($_SESSION['lang'], '_guideline',$term,$text);
 		}
 		else
 		{

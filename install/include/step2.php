@@ -19,33 +19,33 @@ if(isset($_POST['submit'])) {
 
 	//check DB & table connection
 
-	$db = @mysql_connect($_POST['db_host'] . ':' . $_POST['db_port'], $_POST['db_login'], $_POST['db_password']);
+	$db = mysqli_connect($_POST['db_host'], $_POST['db_login'], $_POST['db_password'], $_POST['db_name'], $_POST['db_port']);
 	if (!$db) {
 		$errors[] = 'Unable to connect to database server.';
 	} else {
 		// check mysql version number
 		$sql = "SELECT VERSION() AS version";
-		$result = mysql_query($sql, $db);
-		$row = mysql_fetch_assoc($result);
-		if (version_compare($row['version'], '4.1.10', '>=') === FALSE) {
-			$errors[] = 'MySQL version '.$row['version'].' was detected. AChecker requires version 4.1.10 or later.';
+		$result = mysqli_query($db, $sql);
+		$row = mysqli_fetch_assoc($result);
+		if (version_compare($row['version'], '4.1.13', '>=') === FALSE) {
+			$errors[] = 'MySQL version '.$row['version'].' was detected. AChecker requires version 4.1.13 or later.';
 		}
 
 		if (!isset($errors)){
-			if (!mysql_select_db($_POST['db_name'], $db)) {
+			if (!mysqli_select_db($db, $_POST['db_name'])) {
 				$sql = "CREATE DATABASE $_POST[db_name] CHARACTER SET utf8 COLLATE utf8_general_ci";
-				$result = mysql_query($sql, $db);
+				$result = mysqli_query($db, $sql);
 				if (!$result) {
 					$errors[] = 'Unable to select or create database <b>'.$_POST['db_name'].'</b>.';
 				} else {
 					$progress[] = 'Database <b>'.$_POST['db_name'].'</b> created successfully.';
-					mysql_select_db($_POST['db_name'], $db);
+					mysqli_select_db($db, $_POST['db_name']);
 				}
 			} else {
 				/* Check if the database that existed is in UTF-8, if not, ask for retry */
 				$sql = "SHOW CREATE DATABASE $_POST[db_name]";
-				$result = mysql_query($sql, $db);
-				$row = mysql_fetch_assoc($result);
+				$result = mysqli_query($db, $sql);
+				$row = mysqli_fetch_assoc($result);
 				
 				if (!preg_match('/CHARACTER SET utf8/i', $row['Create Database'])){
 					$errors[] = 'Database <b>'.$_POST['db_name'].'</b> is not in UTF8.  Please set the database character set to UTF8 before continuing by using the following query: ALTER DATABASE `'.$_POST['db_name'].'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci.  To use ALTER DATABASE, you need the ALTER privilege on the database.';

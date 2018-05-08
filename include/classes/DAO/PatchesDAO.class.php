@@ -64,17 +64,17 @@ class PatchesDAO extends DAO {
 					   author,
 					   installed_date)
 					  VALUES
-					  ('".$addslashes($achecker_patch_id)."',
-					   '".$addslashes($applied_version)."',
-					   '".$addslashes($patch_folder)."',
-					   '".$addslashes($description)."',
-					   '".$addslashes($available_to)."',
-					   '".$addslashes($sql_statement)."',
-					   '".$addslashes($status)."',
-					   '".$addslashes($remove_permission_files)."',
-					   '".$addslashes($backup_files)."',
-					   '".$addslashes($patch_files)."',
-					   '".$addslashes($author)."',
+					  ('".$addslashes($this->db, $achecker_patch_id)."',
+					   '".$addslashes($this->db, $applied_version)."',
+					   '".$addslashes($this->db, $patch_folder)."',
+					   '".$addslashes($this->db, $description)."',
+					   '".$addslashes($this->db, $available_to)."',
+					   '".$addslashes($this->db, $sql_statement)."',
+					   '".$addslashes($this->db, $status)."',
+					   '".$addslashes($this->db, $remove_permission_files)."',
+					   '".$addslashes($this->db, $backup_files)."',
+					   '".$addslashes($this->db, $patch_files)."',
+					   '".$addslashes($this->db, $author)."',
 					   now()
 					   )";
 
@@ -85,7 +85,7 @@ class PatchesDAO extends DAO {
 		}
 		else
 		{
-			return mysql_insert_id();
+			return mysqli_insert_id($this->id);
 		}
 	}
 
