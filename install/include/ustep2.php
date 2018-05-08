@@ -31,25 +31,25 @@ $_POST['db_password'] = urldecode($_POST['db_password']);
 
 	//check DB & table connection
 
-	$db = mysqli_connect($_POST['db_host'], $_POST['db_login'], urldecode($_POST['db_password']), $_POST['db_name'], $_POST['db_port']);
+	$db = @mysql_connect($_POST['db_host'] . ':' . $_POST['db_port'], $_POST['db_login'], urldecode($_POST['db_password']));
 
 	if (!$db) {
-		$error_no = mysqli_errno($db);
+		$error_no = mysql_errno();
 		if ($error_no == 2005) {
 			$errors[] = 'Unable to connect to database server. Database with hostname '.$_POST['db_host'].' not found.';
 		} else {
 			$errors[] = 'Unable to connect to database server. Wrong username/password combination.';
 		}
 	} else {
-		if (!mysqli_select_db($db, $_POST['db_name'])) {
+		if (!mysql_select_db($_POST['db_name'], $db)) {
 			$errors[] = 'Unable to connect to database <b>'.$_POST['db_name'].'</b>.';
 		}
 
 		$sql = "SELECT VERSION() AS version";
-		$result = mysqli_query($db, $sql);
-		$row = mysqli_fetch_assoc($result);
-		if (version_compare($row['version'], '5.6', '>=') === FALSE) {
-			$errors[] = 'MySQL version '.$row['version'].' was detected. AChecker requires version 5.6 or later.';
+		$result = mysql_query($sql, $db);
+		$row = mysql_fetch_assoc($result);
+		if (version_compare($row['version'], '4.0.2', '>=') === FALSE) {
+			$errors[] = 'MySQL version '.$row['version'].' was detected. AChecker requires version 4.0.2 or later.';
 		}
 
 		if (!$errors) {
@@ -69,7 +69,7 @@ $_POST['db_password'] = urldecode($_POST['db_password']);
 //			@mysql_query($sql, $db);
 
 			$sql = "DELETE FROM ".$_POST['tb_prefix']."languages WHERE language_code<>'eng'";
-			mysqli_query($db, $sql);
+			@mysql_query($sql, $db);
 
 			//get list of all update scripts minus sql extension
 			$files = scandir('db'); 

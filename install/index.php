@@ -82,7 +82,7 @@ $not_as_good = FALSE;
 		</tr>
 		<tr>
 			<td><kbd>mysql</kbd></td>
-			<td><?php if (extension_loaded('mysqli')) {
+			<td><?php if (extension_loaded('mysql')) {
 						echo 'Enabled</td><td align="center">';
 						echo $good;
 					} else {
@@ -203,9 +203,9 @@ $not_as_good = FALSE;
 			<th scope="col">Status</th>
 		</tr>
 		<tr>
-			<td>MySQL 5.6+</td>
-			<td><?php if (defined('MYSQLI_NUM')) {
-						$mysql_version = mysqli_get_client_info();
+			<td>MySQL 4.1.10+</td>
+			<td><?php if (defined('MYSQL_NUM')) {
+						$mysql_version = mysql_get_client_info();
 						echo 'Found  Version '.$mysql_version.'</td><td align="center">';
 						echo $good;
 					} else {

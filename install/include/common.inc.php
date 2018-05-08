@@ -39,7 +39,7 @@ require('include/classes/sqlutility.php');
 
 
 function my_add_null_slashes( $string ) {
-    return @mysqli_real_escape_string($db, stripslashes($string));
+    return @mysql_real_escape_string(stripslashes($string));
 }
 function my_null_slashes($string) {
 	return $string;
@@ -49,7 +49,7 @@ if ( get_magic_quotes_gpc() == 1 ) {
 	$addslashes   = 'my_add_null_slashes';
 	$stripslashes = 'stripslashes';
 } else {
-	$addslashes   = 'mysqli_real_escape_string';
+	$addslashes   = 'mysql_real_escape_string';
 	$stripslashes = 'my_null_slashes';
 }
 
@@ -88,33 +88,33 @@ function queryFromFile($sql_file_path)
 
 			if($prefixed_query[1] == 'CREATE TABLE')
 			{
-				if (mysqli_query($db, $prefixed_query[0]) !== false)
+				if (mysql_query($prefixed_query[0],$db) !== false)
 					$progress[] = 'Table <strong>'.$table . '</strong> created successfully.';
 				else 
-					if (mysqli_errno($db) == 1050)
+					if (mysql_errno($db) == 1050)
 						$progress[] = 'Table <strong>'.$table . '</strong> already exists. Skipping.';
 					else
 						$errors[] = 'Table <strong>' . $table . '</strong> creation failed.';
 			}elseif($prefixed_query[1] == 'INSERT INTO'){
-				mysqli_query($db, $prefixed_query[0]);
+				mysql_query($prefixed_query[0],$db);
 			}elseif($prefixed_query[1] == 'DELETE FROM'){
-				mysqli_query($db, $prefixed_query[0]);
+				mysql_query($prefixed_query[0],$db);
 			}elseif($prefixed_query[1] == 'REPLACE INTO'){
-				mysqli_query($db, $prefixed_query[0]);
+				mysql_query($prefixed_query[0],$db);
 			}elseif($prefixed_query[1] == 'ALTER TABLE'){
-				if (mysqli_query($db, $prefixed_query[0]) !== false)
+				if (mysql_query($prefixed_query[0],$db) !== false)
 					$progress[] = 'Table <strong>'.$table.'</strong> altered successfully.';
 				else
-					if (mysqli_errno($db) == 1060) 
+					if (mysql_errno($db) == 1060) 
 						$progress[] = 'Table <strong>'.$table . '</strong> fields already exists. Skipping.';
-					elseif (mysqli_errno($db) == 1091) 
+					elseif (mysql_errno($db) == 1091) 
 						$progress[] = 'Table <strong>'.$table . '</strong> fields already dropped. Skipping.';
 					else
 						$errors[] = 'Table <strong>'.$table.'</strong> alteration failed.';
 			}elseif($prefixed_query[1] == 'DROP TABLE'){
-				mysqli_query($db, $prefixed_query[1] . ' ' .$table);
+				mysql_query($prefixed_query[1] . ' ' .$table,$db);
 			}elseif($prefixed_query[1] == 'UPDATE'){
-				mysqli_query($db, $prefixed_query[0]);
+				mysql_query($prefixed_query[0],$db);
 			}
 		}
 	}
