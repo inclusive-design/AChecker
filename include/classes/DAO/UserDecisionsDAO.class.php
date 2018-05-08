@@ -126,7 +126,7 @@ class UserDecisionsDAO extends DAO {
 		$line_num = intval($line_num);
 		$col_num = intval($col_num);
 		$check_id = intval($check_id);
-		$decision = $addslashes($decision);
+		$decision = $addslashes($this->db, $decision);
 		
 		$row = $this->getByUserLinkIDAndLineNumAndColNumAndCheckID
         ($user_link_id, $line_num, $col_num, $check_id);

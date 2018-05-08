@@ -57,7 +57,7 @@ class GuidelineGroupsDAO extends DAO {
 		}
 		else
 		{
-			$group_id = mysql_insert_id();
+			$group_id = mysqli_insert_id($this->db);
 
 			if ($name <> '')
 			{

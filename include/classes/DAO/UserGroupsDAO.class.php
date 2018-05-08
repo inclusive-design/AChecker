@@ -40,8 +40,8 @@ class UserGroupsDAO extends DAO {
 		$missing_fields = array();
 
 		/* email check */
-		$title = $addslashes(trim($title));
-		$description = $addslashes(trim($description));
+		$title = $addslashes($this->db, trim($title));
+		$description = $addslashes($this->db, trim($description));
 
 		/* login name check */
 		if ($title == '')
@@ -75,7 +75,7 @@ class UserGroupsDAO extends DAO {
 			}
 			else
 			{
-				return mysql_insert_id();
+				return mysqli_insert_id($this->id);
 			}
 		}
 		else
@@ -101,8 +101,8 @@ class UserGroupsDAO extends DAO {
 		$missing_fields = array();
 
 		$user_group_id = intval($user_group_id);
-		$title = $addslashes(trim($title));
-		$description = $addslashes(trim($description));
+		$title = $addslashes($this->db, trim($title));
+		$description = $addslashes($this->db, trim($description));
 
 		/* login name check */
 		if ($title == '')

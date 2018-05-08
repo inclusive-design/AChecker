@@ -55,10 +55,10 @@ class LanguageEditor extends Language {
 	function updateTerm($variable, $term, $text) {
 		$addslashes = $this->addslashes;
 
-		$variable = $addslashes($variable);
-		$term     = $addslashes($term);
-		$text     = $addslashes($text);
-		$code     = $addslashes($this->getCode());
+		$variable = $addslashes($this->db, $variable);
+		$term     = $addslashes($this->db, $term);
+		$text     = $addslashes($this->db, $text);
+		$code     = $addslashes($this->db, $this->getCode());
 
 		$sql	= "UPDATE ".TABLE_PREFIX."language_text SET text='$text', revised_date=NOW() WHERE language_code='$code' AND variable='$variable' AND term='$term'";
 
@@ -76,11 +76,11 @@ class LanguageEditor extends Language {
 	function insertTerm($variable, $key, $text, $context) {
 		$addslashes = $this->addslashes;
 
-		$variable = $addslashes($variable);
-		$key      = $addslashes($key);
-		$text     = $addslashes($text);
-		$code     = $addslashes($this->getCode());
-		$context  = $addslashes($context);
+		$variable = $addslashes($this->db, $variable);
+		$key      = $addslashes($this->db, $key);
+		$text     = $addslashes($this->db, $text);
+		$code     = $addslashes($this->db, $this->getCode());
+		$context  = $addslashes($this->db, $context);
 
 		$sql = "INSERT INTO ".TABLE_PREFIX."language_text VALUES('$code', '$variable', '$key', '$text', NOW(), '$context')";
 	}
@@ -123,7 +123,7 @@ class LanguageEditor extends Language {
 
 		$counter = 0;
 
-		$terms = unserialize(stripslashes($addslashes($terms)));
+		$terms = unserialize(stripslashes($addslashes($this->db, $terms)));
 
 		natcasesort($terms);
 
@@ -198,12 +198,12 @@ class LanguageEditor extends Language {
 		global $addslashes;
 
 		foreach($terms as $term => $text) {
-			$text = $addslashes($text);
-			$term = $addslashes($term);
+			$text = $addslashes($this->db, $text);
+			$term = $addslashes($this->db, $term);
 		
 			if (($text != '') && ($text != $_POST['old'][$term])) {
 				$sql = "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ('".$this->getCode()."', '_template', '$term', '$text', NOW(), '')";
-				mysql_query($sql, $this->db);
+				mysqli_query($this->db, $sql);
 			}
 		}
 	}
@@ -256,8 +256,8 @@ class LanguageEditor extends Language {
 			{
 //				$row['text']    = str_replace($search, $replace, $row['text']);
 //				$row['context'] = str_replace($search, $replace, $row['context']);
-				$row['text']    = $addslashes($row['text']);
-				$row['context'] = $addslashes($row['context']);
+				$row['text']    = $addslashes($this->db, $row['text']);
+				$row['context'] = $addslashes($this->db, $row['context']);
 				
 				$sql_dump .= "('$this->code', '$row[variable]', '$row[term]', '$row[text]', '$row[revised_date]', '$row[context]'),\r\n";
 			}

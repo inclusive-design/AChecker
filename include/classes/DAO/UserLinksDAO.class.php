@@ -40,7 +40,7 @@ class UserLinksDAO extends DAO {
 		global $addslashes;
 		
 		$user_id = intval($user_id);
-		$URI = $addslashes($URI);
+		$URI = $addslashes($this->db, $URI);
 		
 		if ($this->isFieldsValid($guideline_ids, $URI))
 		{
@@ -63,7 +63,7 @@ class UserLinksDAO extends DAO {
 			}
 			else
 			{
-				return mysql_insert_id();
+				return mysqli_insert_id($this->db);
 			}
 		}
 		else
@@ -91,7 +91,7 @@ class UserLinksDAO extends DAO {
 		{
 			$user_link_id = intval($user_link_id);
 			$user_id = intval($user_id);
-			$URI = $addslashes($URI);
+			$URI = $addslashes($this->db, $URI);
 			
 			/* insert into the db */
 			$sql = "UPDATE ".TABLE_PREFIX."user_links
@@ -170,7 +170,7 @@ class UserLinksDAO extends DAO {
 		global $addslashes;
 		
 		$user_link_id = intval($user_link_id);
-		$sessionID = $addslashes($sessionID);
+		$sessionID = $addslashes($this->db, $sessionID);
 		
 		$sql = "UPDATE ".TABLE_PREFIX."user_links SET last_sessionID = '".$sessionID."'
 		         WHERE user_link_id = ".$user_link_id;
@@ -221,7 +221,7 @@ class UserLinksDAO extends DAO {
 		global $addslashes;
 
 		$user_id = intval($user_id);
-		$URI = $addslashes($URI);
+		$URI = $addslashes($this->db, $URI);
 		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."user_links 
 		         WHERE user_id=".$user_id."
@@ -244,8 +244,8 @@ class UserLinksDAO extends DAO {
 		global $addslashes;
 		
 		$user_id = intval($user_id);
-		$URI = $addslashes($URI);
-		$sessionID = $addslashes($sessionID);
+		$URI = $addslashes($this->db, $URI);
+		$sessionID = $addslashes($this->db, $sessionID);
 
 		$sql = "SELECT * FROM ".TABLE_PREFIX."user_links 
 		         WHERE user_id=".$user_id."

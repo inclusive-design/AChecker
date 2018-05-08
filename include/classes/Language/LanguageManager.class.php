@@ -326,42 +326,42 @@ class LanguageManager {
 	function liveImport($language_code) {
 		global $db;
 
-		$tmp_lang_db = mysql_connect(AC_LANG_DB_HOST, AC_LANG_DB_USER, AC_LANG_DB_PASS);
+		$tmp_lang_db = mysqli_connect(AC_LANG_DB_HOST, AC_LANG_DB_USER, AC_LANG_DB_PASS, AC_LANG_DB_NAME);
 		// set database connection using utf8
-		mysql_query("SET NAMES 'utf8'", $tmp_lang_db);
+		mysqli_query($tmp_lang_db, "SET NAMES 'utf8'");
 		
 		if (!$tmp_lang_db) {
 			/* AC_ERROR_NO_DB_CONNECT */
 			echo 'Unable to connect to db.';
 			exit;
 		}
-		if (!mysql_select_db('dev_achecker_langs', $tmp_lang_db)) {
+		if (!mysqli_select_db($tmp_lang_db, 'dev_achecker_langs')) {
 			echo 'DB connection established, but database "dev_achecker_langs" cannot be selected.';
 			exit;
 		}
 
 		$sql = "SELECT * FROM languages_SVN WHERE language_code='$language_code'";
-		$result = mysql_query($sql, $tmp_lang_db);
+		$result = mysqli_query($tmp_lang_db, $sql);
 
-		if ($row = mysql_fetch_assoc($result)) {
+		if ($row = mysqli_fetch_assoc($result)) {
 			$row['reg_exp'] = addslashes($row['reg_exp']);
 			$row['native_name'] = addslashes($row['native_name']);
 			$row['english_name'] = addslashes($row['english_name']);
 
 			$sql = "REPLACE INTO ".TABLE_PREFIX."languages VALUES ('{$row['language_code']}', '{$row['charset']}', '{$row['reg_exp']}', '{$row['native_name']}', '{$row['english_name']}', 3)";
-			$result = mysql_query($sql, $db);
+			$result = mysqli_query($db, $sql);
 
 			$sql = "SELECT * FROM language_text_SVN WHERE language_code='$language_code'";
-			$result = mysql_query($sql, $tmp_lang_db);
+			$result = mysqli_query($tmp_lang_db, $sql);
 
 			$sql = "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ";
-			while ($row = mysql_fetch_assoc($result)) {
+			while ($row = mysqli_fetch_assoc($result)) {
 				$row['text'] = addslashes($row['text']);
 				$row['context'] = addslashes($row['context']);
 				$sql .= "('{$row['language_code']}', '{$row['variable']}', '{$row['term']}', '{$row['text']}', '{$row['revised_date']}', '{$row['context']}'),";
 			}
 			$sql = substr($sql, 0, -1);
-			mysql_query($sql, $db);
+			mysqli_query($db, $sql);
 		}
 	}
 	

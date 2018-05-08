@@ -26,7 +26,7 @@ if (isset($_POST['cancel']))
 else if (isset($_POST['form_password_reminder'])) 
 {
 	//get database info to create & email change-password-link
-	$_POST['form_email'] = $addslashes($_POST['form_email']);
+	$_POST['form_email'] = $addslashes($db, $_POST['form_email']);
 
 		if ($row = $usersDAO->getUserByEmail($_POST['form_email'])) 
 		{
@@ -133,7 +133,7 @@ else if (isset($_POST['form_password_reminder']))
 		if (!$msg->containsErrors()) 
 		{
 			//save data
-			$password   = $addslashes($_POST['form_password_hidden']);
+			$password   = $addslashes($db, $_POST['form_password_hidden']);
 
 			$usersDAO->setPassword(intval($_REQUEST['id']), $password);
 

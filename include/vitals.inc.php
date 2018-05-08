@@ -67,6 +67,7 @@ if (!defined('AC_INSTALL') || !AC_INSTALL) {
 //if (!defined('AC_REDIRECT_LOADED')){
 //	require_once(AC_INCLUDE_PATH.'lib/mysql_connect.inc.php');
 //}
+	$db =mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
 /***** end database connection ****/
 
 /*** 2. constants ***/
@@ -90,7 +91,7 @@ require_once(AC_INCLUDE_PATH.'constants.inc.php');
 /***** end session initilization block ****/
 
 function my_add_null_slashes( $string ) {
-    return mysql_real_escape_string(stripslashes($string));
+    return mysqli_real_escape_string($db, stripslashes($string));
 }
 
 function my_null_slashes($string) {
@@ -101,7 +102,7 @@ if ( get_magic_quotes_gpc() == 1 ) {
 	$addslashes   = 'my_add_null_slashes';
 	$stripslashes = 'stripslashes';
 } else {
-	$addslashes   = 'mysql_real_escape_string';
+	$addslashes   = 'mysqli_real_escape_string';
 	$stripslashes = 'my_null_slashes';
 }
 

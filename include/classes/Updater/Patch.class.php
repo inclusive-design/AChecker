@@ -191,7 +191,7 @@ class Patch {
 			foreach($this->backup_files as $backup_file)
 				$backup_files .= $backup_file. '|';
 		
-			$updateInfo = array("backup_files"=>mysql_real_escape_string($backup_files));
+			$updateInfo = array("backup_files"=>mysqli_real_escape_string($db, $backup_files));
 		}
 	
 		if (count($this->patch_files) > 0)
@@ -199,7 +199,7 @@ class Patch {
 			foreach($this->patch_files as $patch_file)
 				$patch_files .= $patch_file. '|';
 		
-			$updateInfo = array_merge($updateInfo, array("patch_files"=>mysql_real_escape_string($patch_files)));
+			$updateInfo = array_merge($updateInfo, array("patch_files"=>mysqli_real_escape_string($db, $patch_files)));
 		}
 	
 		if (is_array($_SESSION['remove_permission']) && count($_SESSION['remove_permission']))
@@ -207,7 +207,7 @@ class Patch {
 			foreach($_SESSION['remove_permission'] as $remove_permission_file)
 				$remove_permission_files .= $remove_permission_file. '|';
 
-			$updateInfo = array_merge($updateInfo, array("remove_permission_files"=>mysql_real_escape_string($remove_permission_files), "status"=>"Partly Installed"));
+			$updateInfo = array_merge($updateInfo, array("remove_permission_files"=>mysqli_real_escape_string($db, $remove_permission_files), "status"=>"Partly Installed"));
 		}
 		else
 		{

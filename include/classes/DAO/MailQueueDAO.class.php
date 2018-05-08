@@ -37,20 +37,20 @@ class MailQueueDAO extends DAO {
 	{
 		global $addslashes;
 		
-		$to_email = $addslashes($to_email);
-		$to_name = $addslashes($to_name);
-		$from_email = $addslashes($from_email);
-		$from_name = $addslashes($from_name);
-		$subject = $addslashes($subject);
-		$body = $addslashes($body);
-		$charset = $addslashes($charset);
+		$to_email = $addslashes($this->db, $to_email);
+		$to_name = $addslashes($this->db, $to_name);
+		$from_email = $addslashes($this->db, $from_email);
+		$from_name = $addslashes($this->db, $from_name);
+		$subject = $addslashes($this->db, $subject);
+		$body = $addslashes($this->db, $body);
+		$charset = $addslashes($this->db, $charset);
 		
 		$sql = "INSERT INTO ".TABLE_PREFIX."mail_queue 
 						VALUES (NULL, '$to_email', '$to_name', '$from_email', '$from_name', '$charset', '$subject', '$body')";
 		
 		if ($this->execute($sql))
 		{
-			return mysql_insert_id($this->db);
+			return mysqli_insert_id($this->db);
 		}
 		else
 		{

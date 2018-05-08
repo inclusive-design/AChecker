@@ -62,7 +62,7 @@ if (isset($_REQUEST['submit']) || isset($_REQUEST['search']))
 	{
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE language_code='".DEFAULT_LANGUAGE_CODE."'
-						  AND lower(term) like '%".$addslashes(strtolower(trim($_REQUEST['search_phase'])))."%'";
+						  AND lower(term) like '%".$addslashes($db, strtolower(trim($_REQUEST['search_phase'])))."%'";
 	}
 	
 	$rows = $dao->execute($sql);
@@ -73,7 +73,7 @@ if (isset($_REQUEST['submit']) || isset($_REQUEST['search']))
 
 if (isset($_REQUEST["save"]))
 {
-	$sql_save	= "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ('".$_POST["lang_code"]."', '".$_POST["variable"]."', '".$_POST["term"]."', '".$addslashes($_POST["translated_text"])."', NOW(), '')";
+	$sql_save	= "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ('".$_POST["lang_code"]."', '".$_POST["variable"]."', '".$_POST["term"]."', '".$addslashes($db, $_POST["translated_text"])."', NOW(), '')";
 
 	if (!$dao->execute($sql_save)) {
 		$success_error = '<div class="error">Error: changes not saved!</div>';

@@ -444,8 +444,8 @@ class BasicChecks {
 		else if (strlen($code) == 3) $sql .= "code_3letters = '".$code ."'";
 		else return false;
 		
-		$result	= mysql_query($sql, $db) or die(mysql_error());
-		$row = mysql_fetch_assoc($result);
+		$result	= mysqli_query($db, $sql) or die(mysqli_error($db));
+		$row = mysqli_fetch_assoc($result);
 
 		return ($row["cnt"] > 0);
 	}

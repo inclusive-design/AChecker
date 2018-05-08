@@ -55,10 +55,11 @@ function _AC() {
 		// 0002767:  a substring+in_array test should be faster than a preg_match test.
 		// replaced the preg_match with a test of the substring.
 		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AC_INFO)
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_CONF'))) {
 			global $_base_path, $addslashes;
 
-			$args[0] = $addslashes($args[0]);
+			$args[0] = $addslashes($db, $args[0]);
 					
 			/* get $_msgs_new from the DB */
 			$rows = $languageTextDAO->getMsgByTermAndLang($args[0], $_SESSION['lang']);
@@ -821,9 +822,9 @@ function getTranslatedCodeStr($codes) {
 
 			/* get $_msgs_new from the DB */
 			$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text WHERE variable="_msgs" AND (language_code="'.$_SESSION['lang'].'" OR language_code="'.$parent.'")';
-			$result	= @mysql_query($sql, $db);
+			$result	= mysqli_query($db, $sql);
 			$i = 1;
-			while ($row = @mysql_fetch_assoc($result)) {
+			while ($row = mysqli_fetch_assoc($result)) {
 				// do not cache key as a digit (no contstant(), use string)
 				$_cache_msgs_new[$row['term']] = str_replace('SITE_URL/', $_base_path, $row['text']);
 				if (AC_DEVEL) {
@@ -854,9 +855,9 @@ function getTranslatedCodeStr($codes) {
 			/* the language for this msg is missing: */
 		
 			$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text WHERE variable="_msgs"';
-			$result	= @mysql_query($sql, $db);
+			$result	= mysqli_query($db, $sql);
 			$i = 1;
-			while ($row = @mysql_fetch_assoc($result)) {
+			while ($row = mysqli_fetch_assoc($result)) {
 				if (($row['term']) === $codes) {
 					$message = '['.$row['term'].']';
 					break;

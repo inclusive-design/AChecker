@@ -62,10 +62,10 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 	
 	echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'."\n\r";
 	echo '<input type="hidden" name="jsessionid" value="'.$sessionID.'" />'."\n\r";
-	echo '<input type="hidden" name="uri" value="'.$addslashes($_POST["uri"]).'" />'."\n\r";
+	echo '<input type="hidden" name="uri" value="'.$addslashes($db, $_POST["uri"]).'" />'."\n\r";
 	echo '<input type="hidden" name="output" value="html" />'."\n\r";
 	echo '<input type="hidden" name="validate_uri" value="1" />'."\n\r";
-	echo '<input type="hidden" name="rpt_format" value="'.$addslashes($_POST['rpt_format']).'" />'."\n\r";
+	echo '<input type="hidden" name="rpt_format" value="'.$addslashes($db, $_POST['rpt_format']).'" />'."\n\r";
 
 	// report for referer URI
 	if (isset($this->referer_report))
