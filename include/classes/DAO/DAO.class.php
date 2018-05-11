@@ -21,9 +21,10 @@
 
 class DAO {
 
-	// private
+	// protected
 	protected $db;     // global database connection
-	
+	protected $addslashes;
+
 	function DAO()
 	{
 		if (!isset($this->db))
@@ -80,5 +81,12 @@ class DAO {
 		return true;
 	}
 
+	function addSlashes($sql){
+		return $this->addslashes = mysqli_real_escape_string($this->db,$sql);
+	}
+
+	function insertID(){
+		return mysqli_insert_id($this->db);
+	}
 }
 ?>

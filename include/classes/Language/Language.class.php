@@ -33,9 +33,20 @@ class Language {
 	var $status;
 	var $achecker_version;
 
+	protected $db; // Database Connection
+	protected $addslashes;
 	// constructor
 	function Language($language_row) {
-
+		if (!isset($this->db))
+		{
+			$this->db = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
+			if (!$this->db) {
+				die('Unable to connect to db.');
+			}
+			if (!mysqli_select_db($this->db, DB_NAME)) {
+				die('DB connection established, but database "'.DB_NAME.'" cannot be selected.');
+			}
+		}
 		if (is_array($language_row)) {
 			$this->code              = $language_row['language_code'];
 			$this->characterSet      = $language_row['charset'];
@@ -102,7 +113,7 @@ class Language {
 		// this code has to be translated:
 		return _AT('lang_' . str_replace('-', '_', $this->code));
 	}
-
+ 
 	function getNativeName() {
 		return $this->nativeName;
 	}
@@ -132,14 +143,13 @@ class Language {
 	 * @param	1 for admin, 0 for members, all other integers are ignored. 
 	 */
 	function saveToPreferences($id, $is_admin) {
-		global $db;
 		if ($id) {
 			if ($is_admin === 0) {
 				$sql = "UPDATE ".TABLE_PREFIX."members SET language='".$this->code."', creation_date=creation_date, last_login=last_login WHERE member_id=$id";
 			} elseif ($is_admin === 1) {
 				$sql = "UPDATE ".TABLE_PREFIX."admins SET language='".$this->code."', last_login=last_login WHERE login='$id'";
 			}
-			mysqli_query($db, $sql);
+			mysqli_query($this->db, $sql);
 		}
 	}
 
@@ -199,6 +209,9 @@ class Language {
 		</language>';
 
 		return $xml;
+	}
+	function addSlashesLang($sql){
+		return $this->addslashes = mysqli_real_escape_string($this->db, $sql);
 	}
 }
 ?>

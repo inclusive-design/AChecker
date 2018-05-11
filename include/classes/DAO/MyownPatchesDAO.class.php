@@ -35,7 +35,6 @@ class MyownPatchesDAO extends DAO {
 	public function Create($achecker_patch_id, $applied_version, 
 	                       $description, $sql_statement)
 	{
-		global $addslashes;
 
 		$sql = "INSERT INTO ".TABLE_PREFIX."myown_patches 
 	               (achecker_patch_id, 
@@ -58,7 +57,7 @@ class MyownPatchesDAO extends DAO {
 		}
 		else
 		{
-			return mysqli_insert_id($this->db);
+			$this->insertID();
 		}
 	}
 
@@ -72,7 +71,6 @@ class MyownPatchesDAO extends DAO {
 	public function Update($myown_patch_id, $achecker_patch_id, $applied_version, 
 	                       $description, $sql_statement)
 	{
-		global $addslashes;
 
 		$sql = "UPDATE ".TABLE_PREFIX."myown_patches 
 		           SET achecker_patch_id = '". $achecker_patch_id ."',

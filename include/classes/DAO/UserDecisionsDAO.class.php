@@ -120,13 +120,12 @@ class UserDecisionsDAO extends DAO {
 	 */
 	public function setDecision($user_link_id, $line_num, $col_num, $check_id, $decision)
 	{
-		global $addslashes;
 		
 		$user_link_id = intval($user_link_id);
 		$line_num = intval($line_num);
 		$col_num = intval($col_num);
 		$check_id = intval($check_id);
-		$decision = $addslashes($this->db, $decision);
+		$decision = $this->addSlashes($decision);
 		
 		$row = $this->getByUserLinkIDAndLineNumAndColNumAndCheckID
         ($user_link_id, $line_num, $col_num, $check_id);

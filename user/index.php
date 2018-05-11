@@ -76,9 +76,10 @@ if (isset($_GET['include']) && $_GET['include'] == 'one') {
 
 if ($_GET['search']) {
 	$page_string .= htmlspecialchars(SEP).'search='.urlencode($stripslashes($_GET['search']));
-	$search = $addslashes($db, $_GET['search']);
+	
+	$search = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_SPECIAL_CHARS);
 	$search = explode(' ', $search);
-
+	
 	if ($_GET['include'] == 'all') {
 		$predicate = 'AND ';
 	} else {

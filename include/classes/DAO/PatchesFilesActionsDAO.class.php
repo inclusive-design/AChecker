@@ -34,7 +34,6 @@ class PatchesFilesActionsDAO extends DAO {
 	 */
 	public function Create($patches_files_id, $action, $code_from, $code_to)
 	{
-		global $addslashes;
 
 		$sql = "INSERT INTO " . TABLE_PREFIX. "patches_files_actions " .
 					 "(patches_files_id, 
@@ -44,8 +43,8 @@ class PatchesFilesActionsDAO extends DAO {
 					  VALUES
 					  (".$patches_files_id.",
 					   '".$action."',
-					   '".$addslashes($this->db, $code_from)."',
-					   '".$addslashes($this->db, $code_to)."')";
+					   '".$this->addSlashes($code_from)."',
+					   '".$this->addSlashes($code_to)."')";
 		
 		if (!$this->execute($sql))
 		{
@@ -54,7 +53,7 @@ class PatchesFilesActionsDAO extends DAO {
 		}
 		else
 		{
-			return mysqli_insert_id($this->id);
+			$this->insertID();
 		}
 	}
 }

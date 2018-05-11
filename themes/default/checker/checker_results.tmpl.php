@@ -11,7 +11,7 @@
 /************************************************************************/
 // $Id$
 
-global $addslashes, $congrats_msg_for_likely, $congrats_msg_for_potential;;
+global $congrats_msg_for_likely, $congrats_msg_for_potential;;
 
 include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
@@ -62,10 +62,10 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 	
 	echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'."\n\r";
 	echo '<input type="hidden" name="jsessionid" value="'.$sessionID.'" />'."\n\r";
-	echo '<input type="hidden" name="uri" value="'.$addslashes($db, $_POST["uri"]).'" />'."\n\r";
+	echo '<input type="hidden" name="uri" value="'.filter_var($_POST["uri"], FILTER_VALIDATE_URL).'" />'."\n\r";
 	echo '<input type="hidden" name="output" value="html" />'."\n\r";
 	echo '<input type="hidden" name="validate_uri" value="1" />'."\n\r";
-	echo '<input type="hidden" name="rpt_format" value="'.$addslashes($db, $_POST['rpt_format']).'" />'."\n\r";
+	echo '<input type="hidden" name="rpt_format" value="'.addslashes($_POST['rpt_format']).'" />'."\n\r";
 
 	// report for referer URI
 	if (isset($this->referer_report))

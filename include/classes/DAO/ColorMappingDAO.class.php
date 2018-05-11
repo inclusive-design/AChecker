@@ -33,9 +33,8 @@ class ColorMappingDAO extends DAO {
 	*/
 	function GetByColorName($colorName)
 	{
-		global $addslashes;
 		
-		$sql = "SELECT * FROM ". TABLE_PREFIX ."color_mapping WHERE color_name='".$addslashes($this->db, $colorName)."'";
+		$sql = "SELECT * FROM ". TABLE_PREFIX ."color_mapping WHERE color_name='".$this->addSlashes($colorName)."'";
 		return $this->execute($sql);
 	}
 

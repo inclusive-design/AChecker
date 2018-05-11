@@ -38,12 +38,11 @@ class GuidelineGroupsDAO extends DAO {
 	*/
 	public function Create($guidelineID, $name, $abbr, $principle)
 	{
-		global $addslashes;
 		
 		$guidelineID = intval($guidelineID);
 		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTextDAO->Create()
-		$abbr = $addslashes($this->db, trim($abbr));
-		$principle = $addslashes($this->db, trim($principle));
+		$abbr = $this->addSlashes(trim($abbr));
+		$principle = $this->addSlashes(trim($principle));
 		
 		$sql = "INSERT INTO ".TABLE_PREFIX."guideline_groups
 				(`guideline_id`, `abbr`, `principle`) 
@@ -57,7 +56,7 @@ class GuidelineGroupsDAO extends DAO {
 		}
 		else
 		{
-			$group_id = mysqli_insert_id($this->db);
+			$group_id = $this->insertID();
 
 			if ($name <> '')
 			{
@@ -90,12 +89,11 @@ class GuidelineGroupsDAO extends DAO {
 	*/
 	public function Update($groupID, $name, $abbr, $principle)
 	{
-		global $addslashes;
 		
 		$groupID = intval($groupID);
 		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTextDAO->updateLang()
-		$abbr = $addslashes($this->db, trim($abbr));
-		$principle = $addslashes($this->db, trim($principle));
+		$abbr = $this->addSlashes(trim($abbr));
+		$principle = $this->addSlashes(trim($principle));
 		
 		$sql = "UPDATE ".TABLE_PREFIX."guideline_groups
 				   SET abbr='".$abbr."', 
@@ -302,7 +300,6 @@ class GuidelineGroupsDAO extends DAO {
 	 */
 	private function updateLang($groupID, $term, $text, $fieldName)
 	{
-		global $addslashes;
 		
 		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 		$langTextDAO = new LanguageTextDAO();
@@ -310,7 +307,7 @@ class GuidelineGroupsDAO extends DAO {
 
 		if (is_array($langs))
 		{// term already exists. Only need to update modified text
-			if ($langs[0]['text'] <> $addslashes($this->db, $text)) $langTextDAO->setText($_SESSION['lang'], '_guideline',$term,$text);
+			if ($langs[0]['text'] <> $this->addSlashes($text)) $langTextDAO->setText($_SESSION['lang'], '_guideline',$term,$text);
 		}
 		else
 		{

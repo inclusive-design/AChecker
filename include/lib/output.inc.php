@@ -55,11 +55,10 @@ function _AC() {
 		// 0002767:  a substring+in_array test should be faster than a preg_match test.
 		// replaced the preg_match with a test of the substring.
 		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AC_INFO)
-		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_CONF'))) {
-			global $_base_path, $addslashes;
+			global $_base_path;
 
-			$args[0] = $addslashes($db, $args[0]);
+			$args[0] = addslashes($args[0]);
 					
 			/* get $_msgs_new from the DB */
 			$rows = $languageTextDAO->getMsgByTermAndLang($args[0], $_SESSION['lang']);

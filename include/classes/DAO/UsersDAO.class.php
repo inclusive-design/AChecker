@@ -36,10 +36,9 @@ class UsersDAO extends DAO {
 	 */
 	public function Validate($login, $pwd)
 	{
-		global $addslashes;
 
-		$login = $addslashes($this->db, $login);
-		$pwd = $addslashes($this->db, $pwd);
+		$login = $this->addSlashes($login);
+		$pwd = $this->addSlashes($pwd);
 
 		$sql = "SELECT user_id FROM ".TABLE_PREFIX."users
 		         WHERE (login='".$login."' OR email='".$login."')
@@ -71,15 +70,14 @@ class UsersDAO extends DAO {
 	 */
 	public function Create($user_group_id, $login, $pwd, $email, $first_name, $last_name, $status)
 	{
-		global $addslashes;
 
 		/* email check */
 		$user_group_id = intval($user_group_id);
-		$login = $addslashes($this->db, strtolower(trim($login)));
-		$pwd = $addslashes($this->db, $pwd);
-		$email = $addslashes($this->db, trim($email));
-		$first_name = $addslashes($this->db, str_replace('<', '', trim($first_name)));
-		$last_name = $addslashes($this->db, str_replace('<', '', trim($last_name)));
+		$login = $this->addSlashes(strtolower(trim($login)));
+		$pwd = $this->addSlashes($pwd);
+		$email = $this->addSlashes(trim($email));
+		$first_name = $this->addSlashes(str_replace('<', '', trim($first_name)));
+		$last_name = $this->addSlashes(str_replace('<', '', trim($last_name)));
 		$status = intval($status);
 
 		if ($this->isFieldsValid('new', $user_group_id,$login, $email,$first_name, $last_name))
@@ -125,7 +123,7 @@ class UsersDAO extends DAO {
 			}
 			else
 			{
-				return mysqli_insert_id($this->db);
+				$this->insertID();
 			}
 		}
 		else
@@ -149,15 +147,15 @@ class UsersDAO extends DAO {
 	 */
 	public function Update($userID, $user_group_id, $login, $email, $first_name, $last_name, $status)
 	{
-		global $addslashes, $msg;
+		global $msg;
 
 		/* email check */
 		$userID = intval($userID);
 		$user_group_id = intval($user_group_id);
-		$login = $addslashes($this->db, strtolower(trim($login)));
-		$email = $addslashes($this->db, trim($email));
-		$first_name = $addslashes($this->db, str_replace('<', '', trim($first_name)));
-		$last_name = $addslashes($this->db, str_replace('<', '', trim($last_name)));
+		$login = $this->addSlashes(strtolower(trim($login)));
+		$email = $this->addSlashes(trim($email));
+		$first_name = $this->addSlashes(str_replace('<', '', trim($first_name)));
+		$last_name = $this->addSlashes(str_replace('<', '', trim($last_name)));
 		$status = intval($status);
 
 		if ($this->isFieldsValid('update', $user_group_id,$login, $email,$first_name, $last_name))
@@ -268,9 +266,8 @@ class UsersDAO extends DAO {
 	 */
 	public function getUserByWebServiceID($webServiceID)
 	{
-	    global $addslashes;
 
-	    $webServiceID = $addslashes($this->db, $webServiceID);
+	    $webServiceID = $this->addSlashes($webServiceID);
 
 		$sql = "SELECT * FROM ".TABLE_PREFIX."users WHERE web_service_id='".$webServiceID."'";
 		if ($rows = $this->execute($sql))
@@ -290,9 +287,8 @@ class UsersDAO extends DAO {
 	 */
 	public function getUserByEmail($email)
 	{
-	    global $addslashes;
 
-	    $email = $addslashes($this->db, $email);
+	    $email = $this->addSlashes($email);
 
 	    $sql = "SELECT * FROM ".TABLE_PREFIX."users WHERE email='".$email."'";
 
@@ -316,10 +312,9 @@ class UsersDAO extends DAO {
 	 */
 	public function getUserByName($firstName, $lastName)
 	{
-	    global $addslashes;
 
-	    $firstName = $addslashes($this->db, $firstName);
-	    $lastName = $addslashes($this->db, $lastName);
+	    $firstName = $this->addSlashes($firstName);
+	    $lastName = $this->addSlashes($lastName);
 
 	    $sql = "SELECT user_id FROM ".TABLE_PREFIX."users
 			        WHERE first_name='".$firstName."'
@@ -436,11 +431,10 @@ class UsersDAO extends DAO {
 	 */
 	public function setName($userID, $firstName, $lastName)
 	{
-		global $addslashes;
 
 		$userID = intval($userID);
-		$firstName = $addslashes($this->db, $firstName);
-		$lastName = $addslashes($this->db, $lastName);
+		$firstName = $this->addSlashes($firstName);
+		$lastName = $this->addSlashes($lastName);
 
 		$sql = "Update ".TABLE_PREFIX."users SET first_name='".$firstName."', last_name='".$lastName."' WHERE user_id='".$userID."'";
 		return $this->execute($sql);
@@ -457,10 +451,9 @@ class UsersDAO extends DAO {
 	 */
 	public function setPassword($userID, $password)
 	{
-	    global $addslashes;
 
 	    $userID = intval($userID);
-	    $password = $addslashes($this->db, $password);
+	    $password = $this->addSlashes($password);
 
 		$sql = "Update ".TABLE_PREFIX."users SET password='".$password."' WHERE user_id='".$userID."'";
 		return $this->execute($sql);
@@ -477,10 +470,9 @@ class UsersDAO extends DAO {
 	 */
 	public function setEmail($userID, $email)
 	{
-		global $addslashes;
 
 		$userID = intval($userID);
-		$email = $addslashes($this->db, $email);
+		$email = $this->addSlashes($email);
 
 		$sql = "Update ".TABLE_PREFIX."users SET email='".$email."' WHERE user_id='".$userID."'";
 		return $this->execute($sql);

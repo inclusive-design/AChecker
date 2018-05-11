@@ -27,7 +27,7 @@ if (isset($_GET['e'], $_GET['id'], $_GET['m']))
 {
 	$id = intval($_GET['id']);
 	$m  = $_GET['m'];
-	$e  = $addslashes($db, $_GET['e']);
+	$e  = filter_input(INPUT_GET, 'e');
 
 	$usersDAO = new UsersDAO();
 	
@@ -84,7 +84,7 @@ else if (isset($_GET['id'], $_GET['m']))
 	}
 } 
 else if (isset($_POST['submit'])) {
-	$_POST['email'] = $addslashes($db, $_POST['email']);
+	$_POST['email'] = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 
 	$usersDAO = new UsersDAO();
 	$row = $usersDAO->getUserByEmail($_POST['email']);

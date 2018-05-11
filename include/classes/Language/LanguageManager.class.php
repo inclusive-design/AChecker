@@ -123,7 +123,7 @@ class LanguageManager {
 	* @see		getLanguage()
 	*/
 	function getMyLanguage() {
-		global $addslashes, $db; 
+		global $db; 
 
 		if (isset($_GET) && !empty($_GET['lang']) && isset($this->availableLanguages[$_GET['lang']])) {
 			$language = $this->getLanguage($_GET['lang']);

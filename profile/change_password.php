@@ -66,7 +66,7 @@ if (isset($_POST['submit'])) {
 
 	if (!$msg->containsErrors()) {
 		// insert into the db.
-		$password   = $addslashes($db, $_POST['form_password_hidden']);
+		$password   = $_POST['form_password_hidden'];
 
 		if (!$_current_user->setPassword($password)) 
 		{

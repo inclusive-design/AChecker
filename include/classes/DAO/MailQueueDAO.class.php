@@ -35,22 +35,21 @@ class MailQueueDAO extends DAO {
 	*/
 	function Create($to_email, $to_name, $from_email, $from_name, $subject, $body, $charset)
 	{
-		global $addslashes;
 		
-		$to_email = $addslashes($this->db, $to_email);
-		$to_name = $addslashes($this->db, $to_name);
-		$from_email = $addslashes($this->db, $from_email);
-		$from_name = $addslashes($this->db, $from_name);
-		$subject = $addslashes($this->db, $subject);
-		$body = $addslashes($this->db, $body);
-		$charset = $addslashes($this->db, $charset);
+		$to_email = $this->addSlashes($to_email);
+		$to_name = $this->addSlashes($to_name);
+		$from_email = $this->addSlashes($from_email);
+		$from_name = $this->addSlashes($from_name);
+		$subject = $this->addSlashes($subject);
+		$body = $this->addSlashes($body);
+		$charset = $this->addSlashes($charset);
 		
 		$sql = "INSERT INTO ".TABLE_PREFIX."mail_queue 
 						VALUES (NULL, '$to_email', '$to_name', '$from_email', '$from_name', '$charset', '$subject', '$body')";
 		
 		if ($this->execute($sql))
 		{
-			return mysqli_insert_id($this->db);
+			$this->insertID();
 		}
 		else
 		{
@@ -84,7 +83,7 @@ class MailQueueDAO extends DAO {
 	{
 		if (!is_array($mids)) return false;
 		
-		$sanitized_mids = Utility::sanitizeIntArray($mids);
+		$sanitized_mids = Utility::sanitizeIntArray(filter_var($mids));
 		$sanitized_mids_str = implode(",", $sanitized_mids);
 		
 		$sql = "DELETE FROM ".TABLE_PREFIX."mail_queue WHERE mail_id IN (".$sanitized_mids_str.")";

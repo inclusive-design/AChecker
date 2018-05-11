@@ -47,7 +47,7 @@ class MyownPatchesDependentDAO extends DAO {
 		}
 		else
 		{
-			return mysqli_insert_id($this->id);
+			$this->insertID();
 		}
 	}
 

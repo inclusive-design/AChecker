@@ -37,6 +37,7 @@ class ChecksDAO extends DAO {
 	*          false : if not successful
 	* @author  Cindy Qi Li
 	*/
+	
 	public function Create($userID, $html_tag, $confidence, 
 	                       $note, $name, $err, $desc, $search_str, $long_desc, 
 	                       $rationale, $how_to_repair, $repair_example,
@@ -44,11 +45,9 @@ class ChecksDAO extends DAO {
 	                       $test_procedure, $test_expected_result, 
 	                       $test_failed_result, $open_to_public)
 	{
-		global $addslashes;
 		
 		$userID = intval($userID);
-		$html_tag = $addslashes($this->db, strtolower(trim($html_tag)));
-
+		$html_tag = $this->addSlashes(strtolower(trim($html_tag)));
 		// $addslashes are not needed on the following fields since they are eventually
 		// calling LanguageTextDAO->setText() where $addslashes is used.
 		$note = trim($note);
@@ -82,7 +81,7 @@ class ChecksDAO extends DAO {
 		}
 		else
 		{
-			$checkID = mysqli_insert_id($this->db);
+			$checkID = $this->insertID();
 			
 			if ($note <> '')
 			{
@@ -183,10 +182,10 @@ class ChecksDAO extends DAO {
 	                       $test_procedure, $test_expected_result, 
 	                       $test_failed_result, $open_to_public)
 	{
-		global $addslashes;
+		
 		
 		$userID = intval($userID);
-		$html_tag = $addslashes($this->db, strtolower(trim($html_tag)));
+		$html_tag = $this->addSlashes(strtolower(trim($html_tag)));
 		$confidence = intval($confidence);
 		$open_to_public = intval($open_to_public);
 		
@@ -450,10 +449,9 @@ class ChecksDAO extends DAO {
 	*/
 	function setFunction($checkID, $func)
 	{
-		global $addslashes;
 		
 		$sql = "UPDATE ". TABLE_PREFIX ."checks 
-		           SET func = '".$addslashes($this->db, $func)."' 
+		           SET func = '".$this->addSlashes($func)."' 
 		         WHERE check_id=".intval($checkID);
 		
 		return $this->execute($sql);
@@ -787,7 +785,6 @@ class ChecksDAO extends DAO {
 	 */
 	private function updateLang($checkID, $term, $text, $fieldName)
 	{
-		global $addslashes;
 		
 		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 		$langTextDAO = new LanguageTextDAO();
@@ -795,7 +792,7 @@ class ChecksDAO extends DAO {
 
 		if (is_array($langs))
 		{// term already exists. Only need to update modified text
-			if ($langs[0]['text'] <> $addslashes($this->db, $text)) $langTextDAO->setText($_SESSION['lang'], '_check',$term,$text);
+			if ($langs[0]['text'] <> $this->addSlashes($text)) $langTextDAO->setText($_SESSION['lang'], '_check',$term,$text);
 		}
 		else
 		{

@@ -43,14 +43,13 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function Create($userID, $title, $abbr, $long_name, $published_date, $earlid, $preamble, $status, $open_to_public)
 	{
-		global $addslashes;
 		
 		$userID = intval($userID);
-		$title = $addslashes($this->db, trim($title));	
-		$abbr = $addslashes($this->db, trim($abbr));	
+		$title = $this->addSlashes(trim($title));	
+		$abbr = $this->addSlashes(trim($abbr));	
 		$long_name = trim($long_name);   // $addslashes is not necessary as it's called in LanguageTextDAO->Create()
-		$earlid = $addslashes($this->db, trim($earlid));
-		$preamble = $addslashes($this->db, trim($preamble));
+		$earlid = $this->addSlashes(trim($earlid));
+		$preamble = $this->addSlashes(trim($preamble));
 		if ($published_date == '') $published_date = NULL;
 		
 		if (!$this->isFieldsValid($title, $abbr, true)) return false;
@@ -69,7 +68,7 @@ class GuidelinesDAO extends DAO {
 		}
 		else
 		{
-			$guidelineID = mysqli_insert_id($this->db);
+			$guidelineID = $this->insertID();
 
 			if ($long_name <> '')
 			{
@@ -107,15 +106,14 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function update($guidelineID, $userID, $title, $abbr, $long_name, $published_date, $earlid, $preamble, $status, $open_to_public)
 	{
-		global $addslashes;
 		
 		$guidelineID = intval($guidelineID);
 		$userID = intval($userID);
-		$title = $addslashes($this->db, trim($title));	
-		$abbr = $addslashes($this->db, trim($abbr));	
+		$title = $this->addSlashes(trim($title));	
+		$abbr = $this->addSlashes(trim($abbr));	
 		$long_name = trim($long_name);   // $addslashes is not necessary as it's called in LanguageTextDAO->setText()
-		$earlid = $addslashes($this->db, trim($earlid));
-		$preamble = $addslashes($this->db, trim($preamble));
+		$earlid = $this->addSlashes(trim($earlid));
+		$preamble = $this->addSlashes(trim($preamble));
 		
 		if (!$this->isFieldsValid($title, $abbr, false, $guidelineID)) return false;
 		
@@ -285,9 +283,8 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function getGuidelineByAbbr($abbr)
 	{
-		global $addslashes;
 		
-		$abbr = $addslashes($this->db, $abbr);
+		$abbr = $this->addSlashes($abbr);
 		
 		$sql = "select * from ". TABLE_PREFIX ."guidelines
 						where abbr = '" . $abbr . "'";
@@ -373,9 +370,8 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function getEnabledGuidelinesByAbbr($abbr, $ignoreCase=1)
 	{
-		global $addslashes;
 		
-		$abbr = $addslashes($this->db, $abbr);
+		$abbr = $this->addSlashes($abbr);
 		
 		if ($ignoreCase) $sql_abbr = "lower(abbr) = '".strtolower($abbr)."'";
 		else $sql_abbr = "abbr = '".$abbr."'";
@@ -541,9 +537,8 @@ class GuidelinesDAO extends DAO {
 	// Restituisce una stringa con tutti gli id dei check, separati da virgola, che riguardano la guideline e l'elemento specificato
 	public function getCheckByTagAndGuideline($tag, $guideline)
 	{
-		global $addslashes;
 		
-		$tag = $addslashes($this->db, $tag);
+		$tag = $this->addSlashes($tag);
 		$guideline = intval($guideline);
 		
 		$sql = "select distinct c.check_id,c.html_tag
