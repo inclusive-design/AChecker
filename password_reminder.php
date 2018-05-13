@@ -133,7 +133,7 @@ else if (isset($_POST['form_password_reminder']))
 		if (!$msg->containsErrors()) 
 		{
 			//save data
-			$password   = $_POST['form_password_hidden'];
+			$password   = $usersDAO->is_sha1($_POST['form_password_hidden']);
 
 			$usersDAO->setPassword(intval($_REQUEST['id']), $password);
 

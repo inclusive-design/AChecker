@@ -27,7 +27,7 @@ if (isset($_GET['e'], $_GET['id'], $_GET['m']))
 {
 	$id = intval($_GET['id']);
 	$m  = $_GET['m'];
-	$e  = filter_input(INPUT_GET, 'e');
+	$e  = filter_input(INPUT_GET, 'e', FILTER_SANITIZE_EMAIL);
 
 	$usersDAO = new UsersDAO();
 	

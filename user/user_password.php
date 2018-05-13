@@ -38,10 +38,12 @@ if (isset($_POST['submit'])) {
 
 	if (!$msg->containsErrors()) {
 		// insert into the db.
-		$password   = addslashes($_POST['form_password_hidden']);
+		
 		
 		$usersDAO = new UsersDAO();
 
+		$password   = $usersDAO->is_sha1($_POST['form_password_hidden']);
+		
 		if (!$usersDAO->setPassword($_GET['id'], $password)) 
 		{
 			require(AC_INCLUDE_PATH.'header.inc.php');
