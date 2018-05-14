@@ -376,10 +376,8 @@ class Utility {
 
 	public static function is_sha1($str)
 	{
-		if (strlen($str) == 40 && ctype_xdigit($str))
-			return true;
-		else 
-			return false;
+		return strlen($str) == 40 && ctype_xdigit($str);
 	}
+		
 }
 ?>
