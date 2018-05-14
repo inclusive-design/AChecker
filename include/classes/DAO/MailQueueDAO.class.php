@@ -49,7 +49,7 @@ class MailQueueDAO extends DAO {
 		
 		if ($this->execute($sql))
 		{
-			$this->insertID();
+			$this->getInsertID();
 		}
 		else
 		{

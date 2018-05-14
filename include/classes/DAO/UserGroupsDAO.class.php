@@ -75,7 +75,7 @@ class UserGroupsDAO extends DAO {
 			}
 			else
 			{
-				$this->insertID();
+				$this->getInsertID();
 			}
 		}
 		else

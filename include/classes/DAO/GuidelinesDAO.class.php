@@ -47,7 +47,7 @@ class GuidelinesDAO extends DAO {
 		$userID = intval($userID);
 		$title = $this->addSlashes(trim($title));	
 		$abbr = $this->addSlashes(trim($abbr));	
-		$long_name = trim($long_name);   // $addslashes is not necessary as it's called in LanguageTextDAO->Create()
+		$long_name = trim($long_name);   // $this->addSlashess is not necessary as it's called in LanguageTextDAO->Create()
 		$earlid = $this->addSlashes(trim($earlid));
 		$preamble = $this->addSlashes(trim($preamble));
 		if ($published_date == '') $published_date = NULL;
@@ -68,7 +68,7 @@ class GuidelinesDAO extends DAO {
 		}
 		else
 		{
-			$guidelineID = $this->insertID();
+			$guidelineID = $this->getInsertID();
 
 			if ($long_name <> '')
 			{
@@ -111,7 +111,7 @@ class GuidelinesDAO extends DAO {
 		$userID = intval($userID);
 		$title = $this->addSlashes(trim($title));	
 		$abbr = $this->addSlashes(trim($abbr));	
-		$long_name = trim($long_name);   // $addslashes is not necessary as it's called in LanguageTextDAO->setText()
+		$long_name = trim($long_name);   // $this->addSlashes is not necessary as it's called in LanguageTextDAO->setText()
 		$earlid = $this->addSlashes(trim($earlid));
 		$preamble = $this->addSlashes(trim($preamble));
 		

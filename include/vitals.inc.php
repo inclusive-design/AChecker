@@ -61,14 +61,7 @@ if (!defined('AC_INSTALL') || !AC_INSTALL) {
 	header('Location: ' . $relative_path . 'install/not_installed.php');
 	exit;
 }
-/*** end system config block ****/
 
-/***** 1. database connection *****/
-//if (!defined('AC_REDIRECT_LOADED')){
-//	require_once(AC_INCLUDE_PATH.'lib/mysql_connect.inc.php');
-//}
-	$db =mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
-/***** end database connection ****/
 
 /*** 2. constants ***/
 require_once(AC_INCLUDE_PATH.'constants.inc.php');
@@ -90,19 +83,14 @@ require_once(AC_INCLUDE_PATH.'constants.inc.php');
 
 /***** end session initilization block ****/
 
-function my_add_null_slashes( $string ) {
-    return mysqli_real_escape_string($db, stripslashes($string));
-}
 
 function my_null_slashes($string) {
 	return $string;
 }
 
 if ( get_magic_quotes_gpc() == 1 ) {
-	$addslashes   = 'my_add_null_slashes';
 	$stripslashes = 'stripslashes';
 } else {
-	$addslashes   = 'mysqli_real_escape_string';
 	$stripslashes = 'my_null_slashes';
 }
 
@@ -281,12 +269,7 @@ $num_bits = count($bits);
 $_my_uri  = '';
 
 for ($i=0; $i<$num_bits; $i++) {
-//	if (	(strpos($bits[$i], 'enable=')	=== 0) 
-//		||	(strpos($bits[$i], 'disable=')	=== 0)
-//		||	(strpos($bits[$i], 'expand=')	=== 0)
-//		||	(strpos($bits[$i], 'collapse=')	=== 0)
-//		||	(strpos($bits[$i], 'lang=')		=== 0)
-//		) {
+
 	if (	(strpos($bits[$i], 'lang=')		=== 0)
 		) {
 		/* we don't want this variable added to $_my_uri */

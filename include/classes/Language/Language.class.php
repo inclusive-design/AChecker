@@ -34,7 +34,6 @@ class Language {
 	var $achecker_version;
 
 	protected $db; // Database Connection
-	protected $addslashes;
 	// constructor
 	function Language($language_row) {
 		if (!isset($this->db))
@@ -211,7 +210,7 @@ class Language {
 		return $xml;
 	}
 	function addSlashesLang($sql){
-		return $this->addslashes = mysqli_real_escape_string($this->db, $sql);
+		return mysqli_real_escape_string($this->db, $sql);
 	}
 }
 ?>

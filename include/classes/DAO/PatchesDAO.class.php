@@ -84,7 +84,7 @@ class PatchesDAO extends DAO {
 		}
 		else
 		{
-			$this->insertID();
+			$this->getInsertID();
 		}
 	}
 

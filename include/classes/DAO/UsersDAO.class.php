@@ -123,7 +123,7 @@ class UsersDAO extends DAO {
 			}
 			else
 			{
-				$this->insertID();
+				$this->getInsertID();
 			}
 		}
 		else

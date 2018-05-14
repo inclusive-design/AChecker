@@ -40,7 +40,7 @@ class GuidelineGroupsDAO extends DAO {
 	{
 		
 		$guidelineID = intval($guidelineID);
-		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTextDAO->Create()
+		$name = trim($name);	// $this->addSlashes is not necessary as it's called in LanguageTextDAO->Create()
 		$abbr = $this->addSlashes(trim($abbr));
 		$principle = $this->addSlashes(trim($principle));
 		
@@ -56,7 +56,7 @@ class GuidelineGroupsDAO extends DAO {
 		}
 		else
 		{
-			$group_id = $this->insertID();
+			$group_id = $this->getInsertID();
 
 			if ($name <> '')
 			{
@@ -91,7 +91,7 @@ class GuidelineGroupsDAO extends DAO {
 	{
 		
 		$groupID = intval($groupID);
-		$name = trim($name);	// $addslashes is not necessary as it's called in LanguageTextDAO->updateLang()
+		$name = trim($name);	// $this->addSlashes is not necessary as it's called in LanguageTextDAO->updateLang()
 		$abbr = $this->addSlashes(trim($abbr));
 		$principle = $this->addSlashes(trim($principle));
 		

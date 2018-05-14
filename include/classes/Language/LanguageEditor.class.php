@@ -115,11 +115,11 @@ class LanguageEditor extends Language {
 
 	// public
 	function printTerms($terms){
-		global $languageManager; // why won't $addslashes = $this->addslashes; work?
+		global $languageManager; // why won't $this->addSlashes work?
 
 		$counter = 0;
 
-		$terms = unserialize(stripslashes($terms));
+		$terms = unserialize(stripslashes($this->addSlashesLang($terms)));
 
 		natcasesort($terms);
 
