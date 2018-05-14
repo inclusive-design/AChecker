@@ -22,10 +22,7 @@ global $_current_user;
 	 * @access  public
 	 * @param   $str : Sha_1 Encryted String
 	 */
-function is_sha1($str)
-{
-	return strlen($str) == 40 && ctype_xdigit($str);
-}
+
 if (!isset($_current_user)) {
 	require(AC_INCLUDE_PATH.'header.inc.php');
 	$msg->printInfos('INVALID_USER');
@@ -74,9 +71,14 @@ if (isset($_POST['submit'])) {
 		}
 	}
 
+	/* Checking if inputted pasword is hash */
+	if(!Utility::is_sha1($_POST['form_password_hidden'])) {
+		$msg->addError('WRONG_PASSWORD_FORMAT_USED');
+	}
+	
 	if (!$msg->containsErrors()) {
 		// insert into the db.
-		$password   = is_sha1($_POST['form_password_hidden']);
+		$password   = $_POST['form_password_hidden'];
 
 		if (!$_current_user->setPassword($password)) 
 		{

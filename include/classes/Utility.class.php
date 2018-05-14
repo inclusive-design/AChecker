@@ -367,5 +367,19 @@ class Utility {
 			return false;
 		}
 	}
+
+	/**
+	 * Verify that a string is Sha_1
+	 * @access  public
+	 * @param   $str : Sha_1 Encryted String
+	 */
+
+	public static function is_sha1($str)
+	{
+		if (strlen($str) == 40 && ctype_xdigit($str))
+			return true;
+		else 
+			return false;
+	}
 }
 ?>

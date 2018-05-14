@@ -125,15 +125,21 @@ else if (isset($_POST['form_password_reminder']))
 			{
 				if ($pwd_error == "missing_password")
 					$missing_fields[] = _AC('password');
-				else
+				else 
 					$msg->addError($pwd_error);
+					
 			}
 		}
 
+		/* Checking if inputted pasword is hash */
+		if(!Utility::is_sha1($_POST['form_password_hidden'])) {
+			$msg->addError('WRONG_PASSWORD_FORMAT_USED');
+		}
+		
 		if (!$msg->containsErrors()) 
 		{
 			//save data
-			$password   = $usersDAO->is_sha1($_POST['form_password_hidden']);
+			$password   = $_POST['form_password_hidden'];
 
 			$usersDAO->setPassword(intval($_REQUEST['id']), $password);
 

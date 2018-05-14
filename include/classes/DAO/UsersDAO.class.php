@@ -441,17 +441,6 @@ class UsersDAO extends DAO {
 	}
 
 	/**
-	 * Verify that a string is Sha_1
-	 * @access  public
-	 * @param   $str : Sha_1 Encryted String
-	 */
-
-	public function is_sha1($str)
-	{
-		return strlen($str) == 40 && ctype_xdigit($str);
-	}
-
-	/**
 	 * Update user's password
 	 * @access  public
 	 * @param   $userID : user ID
@@ -463,8 +452,9 @@ class UsersDAO extends DAO {
 	public function setPassword($userID, $password)
 	{
 
+
 	    $userID = intval($userID);
-	    $password = is_sha1($password);
+	    $password = $this->addSlashes($password);
 
 		$sql = "Update ".TABLE_PREFIX."users SET password='".$password."' WHERE user_id='".$userID."'";
 		return $this->execute($sql);
