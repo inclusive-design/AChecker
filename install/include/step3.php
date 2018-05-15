@@ -35,8 +35,19 @@ if(isset($_POST['submit']) && ($_POST['action'] == 'process')) {
 	}
 	if ($_POST['admin_email'] == '') {
 		$errors[] = 'Administrator email cannot be empty.';
-	} else if (!preg_match("/^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$/i", $_POST['admin_email'])) {
+	} /*else if (!preg_match("/^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$/i", $_POST['admin_email'])) {
 		$errors[] = 'Administrator email is not valid.';
+	}*/
+	/* Issue 4947 filter_var used for php>5.2.0 which allows + symbol in email */
+	if(PHP_MAJOR_VERSION>=5 && PHP_MINOR_VERSION>=2){
+		if(!filter_var($_POST['admin_email'], FILTER_VALIDATE_EMAIL)){
+			$msg->addError('EMAIL_INVALID');			
+		}				
+	}
+	else{
+		if(!preg_match("/^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$/i", $_POST['admin_email'])){
+			$msg->addError('EMAIL_INVALID');
+		}		
 	}
 
 	/* System Preferences checking: */
