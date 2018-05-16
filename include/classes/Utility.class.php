@@ -318,9 +318,9 @@ class Utility {
 		
 		$sanitized_array = array();
 		foreach ($int_array as $i => $value) {
-			$sanitized_array[$i] = intval($value);
+			$sanitized_array[$i] = array('filter' => FILTER_VALIDATE_INT, 'flags'  => FILTER_REQUIRE_SCALAR,);
 		}
-		return $sanitized_array;
+		return filter_var_array($int_array, $sanitized_array);
 	}
 	
 	/**

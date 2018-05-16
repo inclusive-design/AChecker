@@ -83,7 +83,7 @@ class MailQueueDAO extends DAO {
 	{
 		if (!is_array($mids)) return false;
 		
-		$sanitized_mids = Utility::sanitizeIntArray(filter_var($mids));
+		$sanitized_mids = Utility::sanitizeIntArray($mids);
 		$sanitized_mids_str = implode(",", $sanitized_mids);
 		
 		$sql = "DELETE FROM ".TABLE_PREFIX."mail_queue WHERE mail_id IN (".$sanitized_mids_str.")";
