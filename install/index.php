@@ -17,7 +17,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 require('../include/constants.inc.php');
 
 $new_version = VERSION;
-
+ 
 header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Pragma: no-cache');
 

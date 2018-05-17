@@ -100,7 +100,7 @@ class PatchesDAO extends DAO {
 		
 		foreach ($fieldArray as $key => $value)
 		{
-			$sql_middle .= $key . "='" . $value . "', ";
+			$sql_middle .= $key . "='" . $this->addSlashes($value) . "', ";
 		}
 		
 		$sql = substr($sql_prefix . $sql_middle, 0, -2) . 
