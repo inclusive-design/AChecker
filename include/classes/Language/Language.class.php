@@ -34,7 +34,18 @@ class Language {
 	var $achecker_version;
 
 	// constructor
-	function Language($language_row) {
+
+	function __construct($language_row) {
+		if (!isset($this->db))
+		{
+			$this->db = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
+			if (!$this->db) {
+				die('Unable to connect to db.');
+			}
+			if (!mysqli_select_db($this->db, DB_NAME)) {
+				die('DB connection established, but database "'.DB_NAME.'" cannot be selected.');
+			}
+		}
 
 		if (is_array($language_row)) {
 			$this->code              = $language_row['language_code'];

@@ -34,7 +34,7 @@ class ACheckerMailer extends PHPMailer {
 	* @since   AChecker 0.2
 	* @author  Joel Kronenberg
 	*/
-	function ACheckerMailer() {
+	function __construct() {
 		if (MAIL_USE_SMTP) {
 			$this->IsSMTP(); // set mailer to use SMTP
 			$this->Host = ini_get('SMTP');  // specify main and backup server

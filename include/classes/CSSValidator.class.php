@@ -48,7 +48,7 @@ class CSSValidator {
 	* private
   * main process
 	*/
-	function CSSValidator($type, $content, $return_array = false)
+	function __construct($type, $content, $return_array = false)
 	{
 		$this->validate_type = $type;
 		$this->validate_content = $content;
