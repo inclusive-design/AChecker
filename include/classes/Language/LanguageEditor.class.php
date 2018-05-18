@@ -115,7 +115,7 @@ class LanguageEditor extends Language {
 
 	// public
 	function printTerms($terms){
-		global $languageManager; // why won't $this->addSlashes work?
+		global $languageManager; 
 
 		$counter = 0;
 
