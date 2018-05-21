@@ -48,8 +48,6 @@ class ChecksDAO extends DAO {
 		
 		$userID = intval($userID);
 		$html_tag = $this->addSlashes(strtolower(trim($html_tag)));
-		// $this->addSlashes are not needed on the following fields since they are eventually
-		// calling LanguageTextDAO->setText() where $this->addSlashes is used.
 		$note = trim($note);
 		$name = trim($name);
 		$err = trim($err);
@@ -188,9 +186,6 @@ class ChecksDAO extends DAO {
 		$html_tag = $this->addSlashes(strtolower(trim($html_tag)));
 		$confidence = intval($confidence);
 		$open_to_public = intval($open_to_public);
-		
-		// $this->addSlashes are not needed on the following fields since they are eventually
-		// calling LanguageTextDAO->setText() where $this->addSlashess is used.
 		$note = trim($note);
 		$name = trim($name);
 		$err = trim($err);

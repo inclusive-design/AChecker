@@ -40,7 +40,7 @@ class GuidelineGroupsDAO extends DAO {
 	{
 		
 		$guidelineID = intval($guidelineID);
-		$name = trim($name);	// $this->addSlashes is not necessary as it's called in LanguageTextDAO->Create()
+		$name = trim($name);	
 		$abbr = $this->addSlashes(trim($abbr));
 		$principle = $this->addSlashes(trim($principle));
 		
@@ -91,7 +91,7 @@ class GuidelineGroupsDAO extends DAO {
 	{
 		
 		$groupID = intval($groupID);
-		$name = trim($name);	// $this->addSlashes is not necessary as it's called in LanguageTextDAO->updateLang()
+		$name = trim($name);	
 		$abbr = $this->addSlashes(trim($abbr));
 		$principle = $this->addSlashes(trim($principle));
 		
