@@ -12,7 +12,7 @@
 // $Id$
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
-require_once(AC_INCLUDE_PATH. 'classes/DAO.class.php');
+require_once(AC_INCLUDE_PATH. 'classes/InstallDAO.class.php');
 if(isset($_POST['submit']) && ($_POST['action'] == 'process')) {
 	unset($errors);
 
