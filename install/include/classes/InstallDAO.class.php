@@ -13,27 +13,27 @@
 
 /**
 * Root data access object
-* Each table has a DAO class, all inherits from this class
+* Each table has a InstallDAO class, all inherits from this class
 * @access	public
 * @author	Cindy Qi Li
 * @package	DAO
 */
 
-class DAO {
+class InstallDAO {
 
 	// protected
 	protected $db;     // global database connection
 
-	function DAO()
+	function __construct($db_host, $db_login, $db_password, $db_name, $db_port)
 	{
 		if (!isset($this->db))
 		{
-			$this->db = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
+			$this->db = mysqli_connect($db_host, $db_login, $db_password, $db_name, $db_port);
 			if (!$this->db) {
 				die('Unable to connect to db.');
 			}
-			if (!mysqli_select_db($this->db, DB_NAME)) {
-				die('DB connection established, but database "'.DB_NAME.'" cannot be selected.');
+			if (!mysqli_select_db($this->db, $db_name)) {
+				die('DB connection established, but database "'.$db_name.'" cannot be selected.');
 			}
 		}
 	}
@@ -50,21 +50,7 @@ class DAO {
 	function execute($sql)
 	{
 		$sql = trim($sql);
-		$result = mysqli_query($this->db, $sql) or die($sql . "<br />". mysqli_error($this->db));
-
-		// Deal with "select" statement: return false if no row is returned, otherwise, return an array
-		if ($result !== true && $result !== false) {
-			$rows = false;
-			
-			while ($row = mysqli_fetch_assoc($result)){
-				if (!$rows) $rows = array();
-				
-			    $rows[] = $row;
-			}
-			mysqli_free_result($result);
-			return $rows;
-		}
-		return true;
+		return $result = mysqli_query($this->db, $sql);
 	}
 
 	function my_add_null_slashes($string) {
@@ -83,10 +69,6 @@ class DAO {
 			return $this->my_null_slashes($string);
 		}
 		
-	}
-
-	function getInsertID(){
-		return mysqli_insert_id($this->db);
 	}
 }
 ?>

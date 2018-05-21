@@ -37,19 +37,13 @@ $_defaults['content_dir'] = realpath('../').DIRECTORY_SEPARATOR.'temp';
 
 require('include/classes/sqlutility.php');
 
-
-function my_add_null_slashes( $string ) {
-    return mysqli_real_escape_string(stripslashes($string));
-}
 function my_null_slashes($string) {
 	return $string;
 }
-
+ 
 if ( get_magic_quotes_gpc() == 1 ) {
-	$addslashes   = 'my_add_null_slashes';
 	$stripslashes = 'stripslashes';
 } else {
-	$addslashes   = 'mysqli_real_escape_string';
 	$stripslashes = 'my_null_slashes';
 }
 

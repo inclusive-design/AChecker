@@ -73,7 +73,7 @@ if (isset($_GET['include']) && $_GET['include'] == 'one') {
 	$checked_include_all = ' checked="checked"';
 	$page_string .= htmlspecialchars(SEP).'include=all';
 }
-
+ 
 if ($_GET['search']) {
 	$page_string .= htmlspecialchars(SEP).'search='.urlencode($stripslashes($_GET['search']));
 	
