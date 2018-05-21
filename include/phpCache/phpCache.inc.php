@@ -90,7 +90,7 @@ if (!defined('CACHE_DIR')) {
 	}
 
 	/* This is a function used internally by phpCache to evaluate the conditional expiration.  This allows the eval() to have its own simulated namespace so it doesnt conflict with any others. */
-	function cache_eval_expire($cond, &$vars) {
+	function cache_eval_expire($cond, $vars) {
 		extract($vars);
 		$EXPIRE=FALSE;
 		eval($cond);

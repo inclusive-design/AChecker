@@ -63,7 +63,7 @@ class Savant2_Filter {
 	*
 	* @access public
 	* 
-	* @param string &$text The text to filter.
+	* @param string $text The text to filter.
 	*
 	* @return void
 	*

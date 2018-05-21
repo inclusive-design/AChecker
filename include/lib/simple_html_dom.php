@@ -240,7 +240,7 @@ class simple_html_dom_node {
                 $ret = array();
                 foreach($head as $k=>$v) {
                     $n = ($k==-1) ? $this->dom->root : $this->dom->nodes[$k];
-                    $n->seek($selectors[$c][$l], $ret);
+                    $ret = $n->seek($selectors[$c][$l], $ret);
                 }
                 $head = $ret;
             }
@@ -297,7 +297,7 @@ class simple_html_dom_node {
     }
 
     // seek for given conditions
-    protected function seek($selector, &$ret) {
+    protected function seek($selector, $ret) {
         list($tag, $key, $val, $exp) = $selector;
 
         $end = $this->info[HDOM_INFO_END];
@@ -333,6 +333,7 @@ class simple_html_dom_node {
                 $ret[$i] = 1;
         }
         unset($node);
+        return $ret;
     }
 
     protected function match($exp, $pattern, $value) {
@@ -674,7 +675,7 @@ class simple_html_dom {
             if (strtolower($node->tag) == 'doctype')
             {
             	$name = $this->copy_until($this->doctype_token_equal);
-              $this->parse_attr($node, $name, $space);
+                $space = $this->parse_attr($node, $name, $space);
             }
             /* end of customized by UOT, ATRC, cindy Li */
             
@@ -701,7 +702,7 @@ class simple_html_dom {
                 if ($this->lowercase) $name = strtolower($name);
                 if ($this->char=='=') {
                     $this->char = (++$this->pos<$this->size) ? $this->html[$this->pos] : null; // next
-                    $this->parse_attr($node, $name, $space);
+                    $space = $this->parse_attr($node, $name, $space);
                 }
                 else {
                     //no value attr: nowrap, checked selected...
@@ -757,7 +758,7 @@ class simple_html_dom {
     /* end of customized by UOT, ATRC, cindy Li */
     
     // parse attributes
-    protected function parse_attr($node, $name, &$space) {
+    protected function parse_attr($node, $name, $space) {
         $space[2] = $this->copy_skip($this->token_blank);
         switch($this->char) {
             case '"':
@@ -777,6 +778,7 @@ class simple_html_dom {
                 $value = $this->copy_until($this->token_attr);
         }
         $node->attr[$name] = $this->restore_noise($value);
+        return $space;
     }
 
     protected function skip($chars) {
