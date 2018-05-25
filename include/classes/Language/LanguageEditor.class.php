@@ -47,7 +47,7 @@ class LanguageEditor extends Language {
 		$this->addslashes = $addslashes;
 
 		if (isset($myLang)) {
-			$this->Language($myLang);
+			parent::__construct($myLang);
 		}
 		$this->missingTerms = array();
 	}
