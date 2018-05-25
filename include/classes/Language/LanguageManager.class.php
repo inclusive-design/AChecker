@@ -260,13 +260,17 @@ class LanguageManager {
 	// import language pack from specified file
 	// return imported AChecker version if it does not match with the current version
 	function import($filename, $ignore_version = false) {
-		require_once(AC_INCLUDE_PATH . 'lib/pclzip.lib.php');
-
+		
 		$import_path = AC_TEMP_DIR . 'import/';
 
-		$archive = new PclZip($filename);
-		if ($archive->extract(PCLZIP_OPT_PATH,	$import_path) == 0) {
-			exit('Error : ' . $archive->errorInfo(true));
+		$zip = new ZipArchive();
+
+		 $zip->open($filename);
+		if ($zip->open($filename)) {
+			$zip->extractTo($import_path);
++		    $zip->close();
+		}else{
+			exit('Error : ' . $zip->open($filename));
 		}
 		
 		// import
