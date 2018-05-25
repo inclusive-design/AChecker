@@ -130,7 +130,7 @@ if ($_POST['install_upload'] && $_POST['uploading'])
 
 		$zip->open($_FILES['patchfile']['tmp_name']);
 
-		if ($zip->open($_FILES['patchfile']['tmp_name']) === TRUE){
+		if ($zip->open($_FILES['patchfile']['tmp_name'])){
 			$zip->extractTo($module_content_folder);
 	   		$zip->close();
 		}else{
