@@ -41,9 +41,9 @@ if (isset($_POST['cancel'])) {
 		$has_error = true;
 	} 
 	//CAPTCHA
-	if (isset($_POST['captcha_in_use']) && $_POST['captcha_in_use']){
+	if (isset($_POST['captcha'])){
 		$img = new Securimage();
-		$valid = $img->check($_POST['secret']);
+		$valid = $img->check($_POST['captcha']);
 		if (!$valid) {
 			$has_error = true;
 			$msg->addError('SECRET_ERROR');
