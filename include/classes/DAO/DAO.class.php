@@ -24,18 +24,34 @@ class DAO {
 	// protected
 	protected $db;     // global database connection
 
-	function DAO()
+	function DAO($db_host, $db_user, $db_pass, $db_name, $db_port)
 	{
-		if (!isset($this->db))
+		if(isset($db_host) && isset($db_user) && isset($db_pass) && isset($db_name))
 		{
-			$this->db = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
-			if (!$this->db) {
-				die('Unable to connect to db.');
-			}
-			if (!mysqli_select_db($this->db, DB_NAME)) {
-				die('DB connection established, but database "'.DB_NAME.'" cannot be selected.');
-			}
+			if (!isset($this->db))
+			{
+				$this->db = mysqli_connect($db_host, $db_user, $db_pass, $db_name, $db_port);
+				if (!$this->db) {
+					die('Unable to connect to db.');
+				}
+				if (!mysqli_select_db($this->db, $db_name)) {
+					die('DB connection established, but database "'.$db_name.'" cannot be selected.');
+				}
+		    }
+		}else
+		{
+			if (!isset($this->db))
+			{
+				$this->db = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
+				if (!$this->db) {
+					die('Unable to connect to db.');
+				}
+				if (!mysqli_select_db($this->db, DB_NAME)) {
+					die('DB connection established, but database "'.DB_NAME.'" cannot be selected.');
+				}
+		    }
 		}
+		
 	}
 	
 	/**
@@ -67,22 +83,12 @@ class DAO {
 		return true;
 	}
 
-	function my_add_null_slashes($string) {
-		$string = stripslashes($string);
-		return mysqli_real_escape_string($this->db, $string);
-	}
-
-	function my_null_slashes($string) {
-		return mysqli_real_escape_string($this->db, $string);
-	} 
-
 	function addSlashes($string){
 		if ( get_magic_quotes_gpc() == 1 ) {
-			return $this->my_add_null_slashes($string);
-		} else {
-			return $this->my_null_slashes($string);
-		}
-		
+			$string = stripslashes($string);
+		} 
+		return mysqli_real_escape_string($this->db, $string);
+
 	}
 
 	function getInsertID(){

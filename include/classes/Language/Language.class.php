@@ -209,21 +209,12 @@ class Language {
 
 		return $xml;
 	}
-	function my_add_null_slashes($string) {
-		$string = stripslashes($string);
-		return mysqli_real_escape_string($this->db, $string);
-	}
-
-	function my_null_slashes($string) {
-		return mysqli_real_escape_string($this->db, $string);
-	} 
 
 	function addSlashesLang($string){
 		if ( get_magic_quotes_gpc() == 1 ) {
-			return $this->my_add_null_slashes($string);
-		} else {
-			return $this->my_null_slashes($string);
-		}
+			$string = stripslashes($string);
+		} 
+		return mysqli_real_escape_string($this->db, $string);
 	}
 }
 ?>

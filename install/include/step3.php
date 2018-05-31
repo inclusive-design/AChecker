@@ -12,7 +12,8 @@
 // $Id$
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
-require_once(AC_INCLUDE_PATH. 'classes/InstallDAO.class.php');
+require_once('../include/classes/DAO/DAO.class.php');
+
 if(isset($_POST['submit']) && ($_POST['action'] == 'process')) {
 	unset($errors);
 
@@ -50,7 +51,7 @@ if(isset($_POST['submit']) && ($_POST['action'] == 'process')) {
 	}
 
 	if (!isset($errors)) {
-		$dao = new InstallDAO($_POST['step2']['db_host'], $_POST['step2']['db_login'], urldecode($_POST['step2']['db_password']), $_POST['step2']['db_name'], $_POST['step2']['db_port']);
+		$dao = new DAO($_POST['step2']['db_host'], $_POST['step2']['db_login'], urldecode($_POST['step2']['db_password']), $_POST['step2']['db_name'], $_POST['step2']['db_port']);
  
 		$status = 3; // for instructor account
 

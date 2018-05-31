@@ -317,11 +317,8 @@ class Utility {
 		if (!is_array($int_array)) return false;
 		
 		$sanitized_array = array();
-		foreach ($int_array as $i => $value) {
-			$sanitized_array[$i] = intval($value);
-		}
-
-		return $sanitized_array;
+	
+		return $sanitized_array = array_filter($int_array, 'is_numeric');
 		 
 	}
 	
