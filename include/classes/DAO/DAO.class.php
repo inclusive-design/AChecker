@@ -22,14 +22,14 @@
 class DAO {
 
 	// private
-	private $db;     // global database connection
+	private static $db;     // global database connection
 	
 	function DAO()
 	{
-		if (!isset($this->db))
+		if (!isset(self::$db))
 		{
-			$this->db = @mysql_connect(DB_HOST . ':' . DB_PORT, DB_USER, DB_PASSWORD);
-			if (!$this->db) {
+			self::$db = @mysql_connect(DB_HOST . ':' . DB_PORT, DB_USER, DB_PASSWORD);
+			if (!self::$db) {
 				die('Unable to connect to db.');
 				/* AC_ERROR_NO_DB_CONNECT 
 				require_once(AC_INCLUDE_PATH . 'classes/ErrorHandler/ErrorHandler.class.php');
@@ -38,7 +38,7 @@ class DAO {
 				exit;
 				*/
 			}
-			if (!@mysql_select_db(DB_NAME, $this->db)) {
+			if (!@mysql_select_db(DB_NAME, self::$db)) {
 				die('DB connection established, but database "'.DB_NAME.'" cannot be selected.');
 				/*
 				require_once(AC_INCLUDE_PATH . 'classes/ErrorHandler/ErrorHandler.class.php');
@@ -63,7 +63,7 @@ class DAO {
 	function execute($sql)
 	{
 		$sql = trim($sql);
-		$result = mysql_query($sql, $this->db) or die($sql . "<br />". mysql_error());
+		$result = mysql_query($sql, self::$db) or die($sql . "<br />". mysql_error());
 
 		// Deal with "select" statement: return false if no row is returned, otherwise, return an array
 		if ($result !== true && $result !== false) {
