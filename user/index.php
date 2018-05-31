@@ -136,7 +136,7 @@ $user_rows = $dao->execute($sql);
 
 if ( isset($_GET['apply_all']) && $_GET['change_status'] >= -1) {
 	$ids = '';
-	while ($row = mysql_fetch_assoc($result)) {
+	while ($row = mysqli_fetch_assoc($result)) {
 		$ids .= $row['user_id'].','; 
 	}
 	$ids = substr($ids,0,-1);

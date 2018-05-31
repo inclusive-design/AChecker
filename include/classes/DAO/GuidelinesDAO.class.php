@@ -69,7 +69,7 @@ class GuidelinesDAO extends DAO {
 		}
 		else
 		{
-			$guidelineID = mysql_insert_id();
+			$guidelineID = mysqli_insert_id($this->db);
 
 			if ($long_name <> '')
 			{
