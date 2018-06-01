@@ -26,30 +26,24 @@ class DAO {
 
 	function DAO($db_host, $db_user, $db_pass, $db_name, $db_port)
 	{
-		if(isset($db_host) && isset($db_user) && isset($db_pass) && isset($db_name))
+		if(!isset($db_host) || !isset($db_user) || !isset($db_pass) || !isset($db_name) || !isset($db_port))
+		{	
+			$db_host = DB_HOST;
+			$db_user = DB_USER;
+			$db_pass = DB_PASSWORD;
+			$db_name = DB_NAME;
+			$db_port = DB_PORT;
+			
+		}
+		if (!isset($this->db))
 		{
-			if (!isset($this->db))
-			{
-				$this->db = mysqli_connect($db_host, $db_user, $db_pass, $db_name, $db_port);
-				if (!$this->db) {
-					die('Unable to connect to db.');
-				}
-				if (!mysqli_select_db($this->db, $db_name)) {
-					die('DB connection established, but database "'.$db_name.'" cannot be selected.');
-				}
-		    }
-		}else
-		{
-			if (!isset($this->db))
-			{
-				$this->db = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
-				if (!$this->db) {
-					die('Unable to connect to db.');
-				}
-				if (!mysqli_select_db($this->db, DB_NAME)) {
-					die('DB connection established, but database "'.DB_NAME.'" cannot be selected.');
-				}
-		    }
+			$this->db = mysqli_connect($db_host, $db_user, $db_pass, $db_name, $db_port);
+			if (!$this->db) {
+				die('Unable to connect to db.');
+			}
+			if (!mysqli_select_db($this->db, $db_name)) {
+				die('DB connection established, but database "'.$db_name.'" cannot be selected.');
+			}
 		}
 		
 	}
