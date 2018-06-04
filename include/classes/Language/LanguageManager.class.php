@@ -266,8 +266,10 @@ class LanguageManager {
 		$zip = new ZipArchive();
 	
 		if ($zip->open($filename) === TRUE) {
+
 			$zip->extractTo($import_path);
-		    $zip->close();
+			$zip->close();
+			
 		}else{
 			exit('Error : ' . $zip->open($filename));
 		}
