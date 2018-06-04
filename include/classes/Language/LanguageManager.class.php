@@ -260,7 +260,7 @@ class LanguageManager {
 	// import language pack from specified file
 	// return imported AChecker version if it does not match with the current version
 	function import($filename, $ignore_version = false) {
-		
+		global $msg;
 		$import_path = AC_TEMP_DIR . 'import/';
 
 		$zip = new ZipArchive();
@@ -269,7 +269,8 @@ class LanguageManager {
 			$zip->extractTo($import_path);
 			$zip->close();			
 		} else {
-			exit('Error : ' . $zip->open($filename));
+			$msg->addError('CANNOT_UNZIP');
+			return false;
 		}
 		
 		// import
