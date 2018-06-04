@@ -128,9 +128,7 @@ if ($_POST['install_upload'] && $_POST['uploading'])
 	} else {
 		$zip = new ZipArchive();
 
-		$zip->open($_FILES['patchfile']['tmp_name']);
-
-		if ($zip->open($_FILES['patchfile']['tmp_name'])){
+		if ($zip->open($_FILES['patchfile']['tmp_name']) === TRUE){
 			$zip->extractTo($module_content_folder);
 	   		$zip->close();
 		}else{
