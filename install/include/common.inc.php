@@ -212,7 +212,7 @@ function print_progress($step) {
 }
 
 
-if (version_compare(phpversion(), '5.0') < 0) {
+if (version_compare(phpversion(), '5.2') < 0) {
 	function scandir($dirstr) {
 		$files = array();
 		$fh = opendir($dirstr);

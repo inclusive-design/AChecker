@@ -71,9 +71,9 @@ $not_as_good = FALSE;
 			<th scope="col">Status</th>
 		</tr>
 		<tr>
-			<td>PHP 5.0.0+</td>
+			<td>PHP 5.2.0+</td>
 			<td><?php echo phpversion(); ?></td>
-			<td align="center"><?php	if (version_compare(phpversion(), '5.0.0', '>=')) {
+			<td align="center"><?php	if (version_compare(phpversion(), '5.2.0', '>=')) {
 							echo $good;
 						} else {
 							echo $bad;
