@@ -69,5 +69,4 @@ function escapeString($string) {
 
     return str_replace(array_keys($escape), array_values($escape), htmlspecialchars($string));
 }	
-
 ?>

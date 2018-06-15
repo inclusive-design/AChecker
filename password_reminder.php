@@ -26,7 +26,7 @@ if (isset($_POST['cancel']))
 else if (isset($_POST['form_password_reminder'])) 
 {
 	//get database info to create & email change-password-link
-	$_POST['form_email'] =  filter_input(INPUT_POST, 'form_email', FILTER_VALIDATE_EMAIL);
+	$_POST['form_email'] = filter_input(INPUT_POST, 'form_email', FILTER_VALIDATE_EMAIL);
 
 		if ($row = $usersDAO->getUserByEmail($_POST['form_email'])) 
 		{

@@ -60,7 +60,7 @@ class MyownPatchesFilesDAO extends DAO {
 		}
 		else
 		{
-			$this->getInsertID();
+			return $this->getInsertID();
 		}
 	}
 

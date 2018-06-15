@@ -56,17 +56,6 @@ $_POST['db_password'] = urldecode($_POST['db_password']);
 			$progress[] = 'Connected to database <b>'.$_POST['db_name'].'</b> successfully.';
 			unset($errors);
 
-			//Save all the course primary language into session variables iff it has not been set. 
-//			if (!isset($_SESSION['course_info'])){
-//				$sql = "SELECT a.course_id, a.title, l.language_code, l.char_set FROM ".$_POST['tb_prefix']."courses a left join ".$_POST['tb_prefix']."languages l ON l.language_code = a.primary_language";
-//				$result = mysql_query($sql, $db);
-//				while ($row = mysql_fetch_assoc($result)){
-//					$_SESSION['course_info'][$row['course_id']] = array('char_set'=>$row['char_set'], 'language_code'=>$row['language_code']);
-//				}
-//			}
-
-//			$sql = "DELETE FROM ".$_POST['tb_prefix']."language_text";
-//			@mysql_query($sql, $db);
 
 			$sql = "DELETE FROM ".$_POST['tb_prefix']."languages WHERE language_code<>'eng'";
 			mysqli_query($db, $sql);
@@ -88,10 +77,6 @@ $_POST['db_password'] = urldecode($_POST['db_password']);
 				}
 			}
 			
-			/* reset all the accounts to English */
-//			$sql = "UPDATE ".$_POST['tb_prefix']."users SET language='eng', creation_date=creation_date, last_login=last_login";
-//			@mysql_query($sql, $db);
-
 			queryFromFile('db/language_text.sql');
 
 			if (!$errors) {

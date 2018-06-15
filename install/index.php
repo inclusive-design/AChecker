@@ -205,8 +205,8 @@ $not_as_good = FALSE;
 		<tr>
 			<td>MySQL 4.1.13+</td>
 			<td><?php if (defined('MYSQLI_NUM')) {
-						$mysql_version = mysqli_get_client_info();
-						echo 'Found  Version '.$mysql_version.'</td><td align="center">';
+						$mysqli_version = mysqli_get_client_info();
+						echo 'Found  Version '.$mysqli_version.'</td><td align="center">';
 						echo $good;
 					} else {
 						echo 'Not Found</td><td align="center">';

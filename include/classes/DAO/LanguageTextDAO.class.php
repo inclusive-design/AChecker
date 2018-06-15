@@ -233,5 +233,15 @@ class LanguageTextDAO extends DAO {
 
 		return $this->execute($sql);
   }
+
+  function getMsgByVar($variable)
+  {
+		$variable = $this->addSlashes($variable);
+
+		$sql = "SELECT * FROM ".TABLE_PREFIX."
+					language_text WHERE variable='.$variable.'";
+
+		return $this->execute($sql);
+  }
 }
 ?>

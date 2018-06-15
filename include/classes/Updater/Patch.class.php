@@ -97,6 +97,7 @@ class Patch {
 		$this->patchesFilesDAO = new PatchesFilesDAO();
 		$this->patchesFilesActionsDAO = new PatchesFilesActionsDAO();
 		
+		
 		session_start();
 		
 		if (!is_array($_SESSION['remove_permission'])) $_SESSION['remove_permission']=array();
@@ -480,7 +481,7 @@ class Patch {
 	*/
 	function isFileModified($folder, $file)
 	{
-		global $db;
+		
 
 		if (!$this->svn_server_connected) return true;
 		

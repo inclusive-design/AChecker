@@ -128,8 +128,8 @@ class PatchCreator {
 	*/
 	function saveInfo() 
 	{
-		global $db;
-		
+		require_once(AC_INCLUDE_PATH. "classes/DAO/DAO.class.php");
+		$dao = new DAO();	
 		if ($this->current_patch_id == 0)
 		{
 			$this->current_patch_id = $this->myownPatchesDAO->Create(
@@ -149,7 +149,7 @@ class PatchCreator {
 
 		if ($this->current_patch_id == 0)
 		{
-			$this->current_patch_id = mysqli_insert_id($db);
+			$this->current_patch_id = mysqli_insert_id($dao->db);
 		}
 		else // delete records for current_patch_id in tables myown_patches_dependent & myown_patches_files
 		{

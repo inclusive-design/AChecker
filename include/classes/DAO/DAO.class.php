@@ -24,7 +24,7 @@ class DAO {
 	// protected
 	protected $db;     // global database connection
 
-	function DAO($db_host, $db_user, $db_pass, $db_name, $db_port)
+	function DAO($db_host = NULL, $db_user = NULL, $db_pass = NULL, $db_name = NULL, $db_port = NULL)
 	{
 		if(!isset($db_host) || !isset($db_user) || !isset($db_pass) || !isset($db_name) || !isset($db_port))
 		{	
@@ -38,10 +38,12 @@ class DAO {
 		if (!isset($this->db))
 		{
 			$this->db = mysqli_connect($db_host, $db_user, $db_pass, $db_name, $db_port);
-			if (!$this->db) {
+			if (!$this->db) 
+			{
 				die('Unable to connect to db.');
 			}
-			if (!mysqli_select_db($this->db, $db_name)) {
+			if (!mysqli_select_db($this->db, $db_name)) 
+			{
 				die('DB connection established, but database "'.$db_name.'" cannot be selected.');
 			}
 		}
@@ -63,10 +65,12 @@ class DAO {
 		$result = mysqli_query($this->db, $sql) or die($sql . "<br />". mysqli_error($this->db));
 
 		// Deal with "select" statement: return false if no row is returned, otherwise, return an array
-		if ($result !== true && $result !== false) {
+		if ($result !== true && $result !== false) 
+		{
 			$rows = false;
 			
-			while ($row = mysqli_fetch_assoc($result)){
+			while ($row = mysqli_fetch_assoc($result))
+			{
 				if (!$rows) $rows = array();
 				
 			    $rows[] = $row;
@@ -77,15 +81,18 @@ class DAO {
 		return true;
 	}
 
-	function addSlashes($string){
-		if ( get_magic_quotes_gpc() == 1 ) {
+	function addSlashes($string)
+	{
+		if ( get_magic_quotes_gpc() == 1 ) 
+		{
 			$string = stripslashes($string);
 		} 
 		return mysqli_real_escape_string($this->db, $string);
 
 	}
 
-	function getInsertID(){
+	function getInsertID()
+	{
 		return mysqli_insert_id($this->db);
 	}
 }

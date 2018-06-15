@@ -316,9 +316,7 @@ class Utility {
 	public static function sanitizeIntArray($int_array) {
 		if (!is_array($int_array)) return false;
 		
-		$sanitized_array = array();
-	
-		return $sanitized_array = array_filter($int_array, 'is_numeric');
+		return array_filter($int_array, 'is_numeric');
 		 
 	}
 	

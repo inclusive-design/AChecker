@@ -62,7 +62,7 @@ class UserLinksDAO extends DAO {
 			}
 			else
 			{
-				$this->getInsertID();
+				return $this->getInsertID();
 			}
 		}
 		else

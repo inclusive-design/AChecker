@@ -58,7 +58,6 @@ function _AC() {
 		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_CONF'))) {
 			global $_base_path;
 
-			$args[0] = $languageTextDAO->addSlashes($args[0]);
 					
 			/* get $_msgs_new from the DB */
 			$rows = $languageTextDAO->getMsgByTermAndLang($args[0], $_SESSION['lang']);
@@ -812,16 +811,17 @@ function getTranslatedCodeStr($codes) {
 	/* this is where we want to get the msgs from the database inside a static variable */
 	global $_cache_msgs_new;
 	static $_msgs_new;
-
+	$languagesDAO = new LanguageTextDAO();
+ 
 	if (!isset($_msgs_new)) {
 		if ( !($lang_et = cache(120, 'msgs_new', $_SESSION['lang'])) ) {
-			global $db, $_base_path;
+			global $_base_path;
 
 			$parent = Language::getParentCode($_SESSION['lang']);
 
 			/* get $_msgs_new from the DB */
 			$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text WHERE variable="_msgs" AND (language_code="'.$_SESSION['lang'].'" OR language_code="'.$parent.'")';
-			$result	= mysqli_query($db, $sql);
+			$result	= mysqli_query($languagesDAO->db, $sql);
 			$i = 1;
 			while ($row = mysqli_fetch_assoc($result)) {
 				// do not cache key as a digit (no contstant(), use string)
@@ -853,8 +853,9 @@ function getTranslatedCodeStr($codes) {
 		if ($message == '') {
 			/* the language for this msg is missing: */
 		
+			//$rows = $languagesDAO->getMsgByVar('_msgs');
 			$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text WHERE variable="_msgs"';
-			$result	= mysqli_query($db, $sql);
+			$result	= mysqli_query($languagesDAO->db, $sql);
 			$i = 1;
 			while ($row = mysqli_fetch_assoc($result)) {
 				if (($row['term']) === $codes) {

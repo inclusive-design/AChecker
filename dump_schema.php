@@ -2,15 +2,15 @@
 
 // modify these constants to your settings
 $host = 'localhost';
-$mysql_user = 'root';
-$mysql_password = '';
+$mysqli_user = 'root';
+$mysqli_password = '';
 $db = 'achecker';
 $port = 3306;
 
 define('TABLE_PREFIX', 'AC_');
 
 // the script starts here
-$lang_db = mysqli_connect($host, $mysql_user, $mysql_password, $db, $port) or die(mysqli_error($lang_db));
+$lang_db = mysqli_connect($host, $mysqli_user, $mysqli_password, $db, $port) or die(mysqli_error($lang_db));
 mysqli_select_db($lang_db, $db) or die(mysqli_error($lang_db));
 echo "Database connected!<br /><br />";
 

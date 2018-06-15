@@ -58,7 +58,7 @@ class CheckExamplesDAO extends DAO {
 		}
 		else
 		{
-			$this->getInsertID();
+			return $this->getInsertID();
 		}
 	}
 	

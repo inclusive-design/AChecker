@@ -170,7 +170,6 @@ function trans_form() {
 	global $row_english, $rows_selected;
 	global $langs;
 	global $success_error;
-	global $db;
 
 	if (!is_array($rows_selected)) // add new term
 		$add_new = true;

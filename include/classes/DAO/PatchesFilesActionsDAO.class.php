@@ -53,7 +53,7 @@ class PatchesFilesActionsDAO extends DAO {
 		}
 		else
 		{
-			$this->getInsertID();
+			return $this->getInsertID();
 		}
 	}
 }

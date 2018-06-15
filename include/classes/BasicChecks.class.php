@@ -427,31 +427,7 @@ class BasicChecks {
 		$words = explode("-", $lang);
 		return trim($words[0]);
 	}
-	
-		/**
-	* check if $code is a valid language code
-	* return true if valid, otherwise, return false
-	*/
-	public static function valid_lang_code($code)
-	{
-		global $db;
-
-		$code = BasicChecks::cut_out_lang_code($code);
-
-		$sql = "SELECT COUNT(*) cnt FROM ". TABLE_PREFIX ."lang_codes WHERE ";
 		
-		if (strlen($code) == 2) $sql .= "code_2letters = '".$code ."'";
-		else if (strlen($code) == 3) $sql .= "code_3letters = '".$code ."'";
-		else return false;
-		
-		$result	= mysqli_query($db, $sql) or die(mysqli_error($db));
-		$row = mysqli_fetch_assoc($result);
-
-		return ($row["cnt"] > 0);
-	}
-	
-	
-	
 	/**
 	* find language code defined in html
 	* return language code

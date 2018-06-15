@@ -102,7 +102,6 @@ class ACheckerMailer extends PHPMailer {
 	* @author Joel Kronenberg
 	*/
 	function SendQueue() {
-		global $db;
 
 		require_once(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
 		$mailQueueDAO = new MailQueueDAO();

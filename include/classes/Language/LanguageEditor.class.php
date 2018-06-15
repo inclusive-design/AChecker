@@ -31,13 +31,14 @@ class LanguageEditor extends Language {
 	// array of filters ['new', 'update']
 	var $filters;
 	
+	
 	/**
 	* Constructor.
 	* 
 	* Initializes db and parent properties.
 	*/
 	function LanguageEditor($myLang) {
-		global $db, $msg;
+		global $msg;
 		
 		global $savant;
 		$this->msg = $msg;
@@ -52,31 +53,23 @@ class LanguageEditor extends Language {
 	// public
 	function updateTerm($variable, $term, $text) {
 
-		$variable = $this->addSlashesLang($variable);
-		$term     = $this->addSlashesLang($term);
-		$text     = $this->addSlashesLang($text);
-		$code     = $this->addSlashesLang($this->getCode());
+		$variable = $this->addSlashes($variable);
+		$term     = $this->addSlashes($term);
+		$text     = $this->addSlashes($text);
+		$code     = $this->addSlashes($this->getCode());
 		
 		$sql	= "UPDATE ".TABLE_PREFIX."language_text SET text='$text', revised_date=NOW() WHERE language_code='$code' AND variable='$variable' AND term='$term'";
 
-		/*
-		if (mysql_query($sql, $this->db)) {
-			return TRUE;
-		} else {
-			debug(mysql_error($this->db));
-			return FALSE;
-		}
-		*/
 	}
 
 	// public
 	function insertTerm($variable, $key, $text, $context) {
 
-		$variable = $this->addSlashesLang($variable);
-		$key      = $this->addSlashesLang($key);
-		$text     = $this->addSlashesLang($text);
-		$code     = $this->addSlashesLang($this->getCode());
-		$context  = $this->addSlashesLang($context);
+		$variable = $this->addSlashes($variable);
+		$key      = $this->addSlashes($key);
+		$text     = $this->addSlashes($text);
+		$code     = $this->addSlashes($this->getCode());
+		$context  = $this->addSlashes($context);
 
 		$sql = "INSERT INTO ".TABLE_PREFIX."language_text VALUES('$code', '$variable', '$key', '$text', NOW(), '$context')";
 	}
@@ -116,10 +109,9 @@ class LanguageEditor extends Language {
 	// public
 	function printTerms($terms){
 		global $languageManager; 
-
 		$counter = 0;
 
-		$terms = unserialize(stripslashes($this->addSlashesLang($terms)));
+		$terms = unserialize(stripslashes($this->addSlashes($terms)));
 
 		natcasesort($terms);
 
@@ -193,8 +185,8 @@ class LanguageEditor extends Language {
 	function updateTerms($terms) {
 
 		foreach($terms as $term => $text) {
-			$text = $this->addSlashesLang($text);
-			$term = $this->addSlashesLang($term);
+			$text = $this->addSlashes($text);
+			$term = $this->addSlashes($term);
 		
 			if (($text != '') && ($text != $_POST['old'][$term])) {
 				$sql = "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ('".$this->getCode()."', '_template', '$term', '$text', NOW(), '')";
@@ -251,8 +243,8 @@ class LanguageEditor extends Language {
 			{
 //				$row['text']    = str_replace($search, $replace, $row['text']);
 //				$row['context'] = str_replace($search, $replace, $row['context']);
-				$row['text']    = filter_var(trim($row['text']), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-				$row['context'] = filter_var(trim($row['context']), FILTER_SANITIZE_STRING);
+				$row['text']    = $this->addSlashes($row['text']);
+				$row['context'] = $this->addSlashes($row['context']);
 				
 				$sql_dump .= "('$this->code', '$row[variable]', '$row[term]', '$row[text]', '$row[revised_date]', '$row[context]'),\r\n";
 			}
