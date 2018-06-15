@@ -820,17 +820,19 @@ function getTranslatedCodeStr($codes) {
 			$parent = Language::getParentCode($_SESSION['lang']);
 
 			/* get $_msgs_new from the DB */
-			$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text WHERE variable="_msgs" AND (language_code="'.$_SESSION['lang'].'" OR language_code="'.$parent.'")';
-			$result	= mysqli_query($languagesDAO->db, $sql);
-			$i = 1;
-			while ($row = mysqli_fetch_assoc($result)) {
+			$rows = $languagesDAO->getMsgByVarAndLang('_msgs', $_SESSION['lang'], $parent);
+	
+					
+			if (is_array($rows)) 
+			{
+				$row = $rows[0];
 				// do not cache key as a digit (no contstant(), use string)
 				$_cache_msgs_new[$row['term']] = str_replace('SITE_URL/', $_base_path, $row['text']);
 				if (AC_DEVEL) {
 					$_cache_msgs_new[$row['term']] .= ' <small><small>('.$row['term'].')</small></small>';
 				}
 			}
-
+			
 			cache_variable('_cache_msgs_new');
 			endcache(true, false);
 		}
@@ -853,14 +855,14 @@ function getTranslatedCodeStr($codes) {
 		if ($message == '') {
 			/* the language for this msg is missing: */
 		
-			//$rows = $languagesDAO->getMsgByVar('_msgs');
-			$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text WHERE variable="_msgs"';
-			$result	= mysqli_query($languagesDAO->db, $sql);
-			$i = 1;
-			while ($row = mysqli_fetch_assoc($result)) {
-				if (($row['term']) === $codes) {
+			$rows = $languagesDAO->getMsgByVar('_msgs');
+			if (is_array($rows)) 
+			{
+				$row = $rows[0];
+				
+				if (($row['term']) === $codes) 
+				{
 					$message = '['.$row['term'].']';
-					break;
 				}
 			}
 		}
