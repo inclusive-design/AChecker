@@ -238,8 +238,8 @@ class LanguageTextDAO extends DAO {
   {
 		$variable = $this->addSlashes($variable);
 
-		$sql = "SELECT * FROM ".TABLE_PREFIX."
-					language_text WHERE variable='.$variable.'";
+		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text
+					WHERE variable='.$variable.'";
 
 		return $this->execute($sql);
   }
@@ -248,10 +248,10 @@ class LanguageTextDAO extends DAO {
   {
 		$variable = $this->addSlashes($variable);
 		
-		$sql = "SELECT * FROM ".TABLE_PREFIX."
-				language_text WHERE variable=".$variable." 
-				AND (language_code=".$lang." 
-				OR language_code=".$parent.")";
+		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text
+					WHERE variable=".$variable."
+					AND (language_code=".$lang."
+					OR language_code=".$parent.")";
 		
 		return $this->execute($sql);
   }
