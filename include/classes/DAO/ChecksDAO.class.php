@@ -825,18 +825,18 @@ class ChecksDAO extends DAO {
 
 	public function getChecks($condition, $col, $order, $offset, $results_per_page)
 	{
-		$sql = "SELECT * FROM ".TABLE_PREFIX.
-					"checks WHERE $condition 
-					ORDER BY $col $order 
-					LIMIT $offset, $results_per_page";
+		$sql = "SELECT * FROM ".TABLE_PREFIX."checks WHERE $condition
+				ORDER BY $col $order 
+				LIMIT $offset, $results_per_page";
 
 		return $this->execute($sql);
 	}
 
 	public function getChecksByID($condition)
 	{
-		$sql = "SELECT COUNT(check_id) AS 
-				cnt FROM ".TABLE_PREFIX."checks WHERE $condition";
+		$sql = "SELECT COUNT(check_id) AS cnt FROM ".TABLE_PREFIX."checks WHERE $condition";
+
+		return $this->execute($sql);
 
 	}
 }

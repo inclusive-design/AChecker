@@ -820,11 +820,8 @@ function getTranslatedCodeStr($codes) {
 			$parent = Language::getParentCode($_SESSION['lang']);
 
 			/* get $_msgs_new from the DB */
-			$rows = $languagesDAO->getMsgByVarAndLang('_msgs', $_SESSION['lang'], $parent);
-	
-					
-			if (is_array($rows)) 
-			{
+			$rows = $languagesDAO->getMsgByVarAndLang('_msgs', $_SESSION['lang'], $parent);	
+			if (is_array($rows)) {
 				$row = $rows[0];
 				// do not cache key as a digit (no contstant(), use string)
 				$_cache_msgs_new[$row['term']] = str_replace('SITE_URL/', $_base_path, $row['text']);
@@ -854,14 +851,11 @@ function getTranslatedCodeStr($codes) {
 
 		if ($message == '') {
 			/* the language for this msg is missing: */
-		
 			$rows = $languagesDAO->getMsgByVar('_msgs');
-			if (is_array($rows)) 
-			{
+			if (is_array($rows)) {
 				$row = $rows[0];
-				
-				if (($row['term']) === $codes) 
-				{
+		
+				if (($row['term']) === $codes) {
 					$message = '['.$row['term'].']';
 				}
 			}
