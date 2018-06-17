@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Project:     Securimage: A PHP class for creating and managing form CAPTCHA images<br />
  * File:        securimage_show.php<br />
@@ -45,13 +46,15 @@
  */
 
 // Remove the "//" from the following line for debugging problems
-// error_reporting(E_ALL); ini_set('display_errors', 1);
+error_reporting(E_ALL); ini_set('display_errors', 1);
+
 define('AC_INCLUDE_PATH', '../');
 require (AC_INCLUDE_PATH.'vitals.inc.php');
 session_start();
-include 'securimage.php';
-$img = new Securimage();
 
+include 'securimage.php';
+
+$img = new Securimage();
 // You can customize the image by making changes below, some examples are included - remove the "//" to uncomment
 
 //$img->ttf_file        = './Quiff.ttf';
@@ -78,4 +81,4 @@ if (!empty($_GET['namespace'])) $img->setNamespace($_GET['namespace']);
 $img->show();  // outputs the image and content headers to the browser
 // alternate use:
 // $img->show('/path/to/background_image.jpg');
-exit;
+?>

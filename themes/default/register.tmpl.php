@@ -163,7 +163,7 @@ function encrypt_password()
 				
 					require_once (AC_INCLUDE_PATH."securimage/securimage.php");
 					$options = array();
-					$options['input_name']             = 'captcha'; // change name of input element for form post
+					$options['input_name']             = 'captcha_in_use'; // change name of input element for form post
 		
 					echo Securimage::getCaptchaHtml($options, Securimage::HTML_IMG);
 

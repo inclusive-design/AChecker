@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Project:     Securimage: A PHP class for creating and managing form CAPTCHA images<br />
  * File:        securimage_play.php<br />
@@ -33,11 +32,12 @@
  * @package Securimage
  *
  */
-
 define('AC_INCLUDE_PATH', '../');
 require (AC_INCLUDE_PATH.'vitals.inc.php');
 session_start();
+
 include 'securimage.php';
+
 $img = new Securimage();
 
 // Other audio settings
@@ -61,5 +61,6 @@ if (!empty($_GET['namespace'])) $img->setNamespace($_GET['namespace']);
 $format = (isset($_GET['format']) && strtolower($_GET['format']) == 'mp3') ? 'mp3' : null;
 
 $img->outputAudioFile($format);
-exit;
+// exit;
+
 ?>
