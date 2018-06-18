@@ -159,15 +159,30 @@ function encrypt_password()
 		<?php if ($this->show_captcha) { ?>
 		<tr>
 			<td align="left">
-				<div class="required" title="<?php echo _AC('required_field'); ?>">*</div>
-				<label for="secret"><img src="<?php echo AC_INCLUDE_PATH; ?>securimage/securimage_show.php?sid=<?php echo md5(uniqid(time())); ?>" id="simage" align="left" /></label>
-				<a href="<?php echo AC_INCLUDE_PATH; ?>securimage/securimage_play.php" title="<?php echo _AC('audible_captcha'); ?>"><img src="<?php echo AC_INCLUDE_PATH; ?>securimage/images/audio_icon.gif" alt="<?php echo _AC('audible_captcha'); ?>" onclick="this.blur()" align="top" border="0"></a><br>
-				<a href="#" title="<?php echo _AC('refresh_image'); ?>" onclick="document.getElementById('simage').src = '<?php echo AC_INCLUDE_PATH; ?>securimage/securimage_show.php?sid=' + Math.random(); return false"><img src="<?php echo AC_INCLUDE_PATH; ?>securimage/images/refresh.gif" alt="<?php echo _AC('refresh_image'); ?>" onclick="this.blur()" align="bottom" border="0"></a>
+			<div class="required" title="<?php echo _AC('required_field'); ?>">*</div>
+				<?php  
+				
+					require_once (AC_INCLUDE_PATH."securimage/securimage.php");
+					$options = array();
+					$options['input_name']             = 'captcha_in_use'; // change name of input element for form post
+		
+					echo Securimage::getCaptchaHtml($options, Securimage::HTML_IMG);
+
+					echo Securimage::getCaptchaHtml($options, Securimage::HTML_ICON_REFRESH);
+					echo Securimage::getCaptchaHtml($options, Securimage::HTML_AUDIO);
+					
+				
+				?>
 			</td>
 			<td align="left">
-				<input id="secret" name="secret" type="text" size="10" maxlength="6" value="" />
-				<input type="hidden" name="captcha_in_use" value="1" />
+				<?php
+					echo Securimage::getCaptchaHtml($options, Securimage::HTML_INPUT);
+				?>
 			</td>
+
+		
+				
+				
 		</tr>
 
 		<tr>
