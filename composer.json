@@ -1,0 +1,7 @@
+{
+    "name": "ACHECKER",
+    "description": "A Web Accessibility Checker",
+    "require": {
+        "mpdf/mpdf": "^7.1"
+    }
+}
