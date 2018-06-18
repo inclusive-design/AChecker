@@ -159,6 +159,7 @@ function encrypt_password()
 		<?php if ($this->show_captcha) { ?>
 		<tr>
 			<td align="left">
+			<div class="required" title="<?php echo _AC('required_field'); ?>">*</div>
 				<?php  
 				
 					require_once (AC_INCLUDE_PATH."securimage/securimage.php");
@@ -169,7 +170,7 @@ function encrypt_password()
 
 					echo Securimage::getCaptchaHtml($options, Securimage::HTML_ICON_REFRESH);
 					echo Securimage::getCaptchaHtml($options, Securimage::HTML_AUDIO);
-					echo Securimage::getCaptchaHtml($options, Securimage::HTML_INPUT_LABEL);
+					
 				
 				?>
 			</td>
