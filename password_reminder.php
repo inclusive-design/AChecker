@@ -45,7 +45,7 @@ else if (isset($_POST['form_password_reminder']))
 		$tmp_message  = _AC(array('password_request2',$reply_name, $_base_href, AC_PASSWORD_REMINDER_EXPIRY, $change_link));
 
 		//send email
-		require(AC_INCLUDE_PATH . 'classes/phpmailer/acheckermailer.class.php');
+		require(AC_INCLUDE_PATH . 'classes/Mailer.class.php');
 		$mail = new ACheckerMailer;
 		$mail->From     = $_config['contact_email'];
 		$mail->AddAddress($row['email']);
@@ -138,7 +138,7 @@ else if (isset($_POST['form_password_reminder']))
 			$usersDAO->setPassword(intval($_REQUEST['id']), $password);
 
 			//send confirmation email
-			require(AC_INCLUDE_PATH . 'classes/phpmailer/acheckermailer.class.php');
+			require(AC_INCLUDE_PATH . 'classes/Mailer.class.php');
 
 			$tmp_message  = _AC(array('password_change_confirm', $_config['site_name'], $_base_href))."\n\n";
 

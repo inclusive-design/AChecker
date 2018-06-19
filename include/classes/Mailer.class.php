@@ -13,7 +13,7 @@
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 
-require(dirname(__FILE__) . '/class.phpmailer.php');
+require(dirname(__FILE__) . 'PHPMailer/PHPMailerAutoload.php');
 
 /**
 * ACheckerMailer is modified from ATutorMailer
@@ -25,7 +25,8 @@ require(dirname(__FILE__) . '/class.phpmailer.php');
 * @since   AChecker 0.2
 * @author  Cindy Li
 */
-class ACheckerMailer extends PHPMailer {
+class ACheckerMailer extends PHPMailer
+{
 
 	/**
 	* The constructor sets whether to use SMTP or Sendmail depending
@@ -35,17 +36,17 @@ class ACheckerMailer extends PHPMailer {
 	* @author  Joel Kronenberg
 	*/
 	function ACheckerMailer() {
-		if (MAIL_USE_SMTP) {
+		if (true === MAIL_USE_SMTP) {
 			$this->IsSMTP(); // set mailer to use SMTP
 			$this->Host = ini_get('SMTP');  // specify main and backup server
 		} else {
 			$this->IsSendmail(); // use sendmail
 			$this->Sendmail = ini_get('sendmail_path');
 		}
-
+		
 		$this->SMTPAuth = false;  // turn on SMTP authentication
 		$this->IsHTML(false);
-
+		
 		// send the email in the current encoding:
 		global $myLang;
 		$this->CharSet = $myLang->getCharacterSet();
@@ -65,13 +66,13 @@ class ACheckerMailer extends PHPMailer {
 	*/
 	function Send() {
 		global $_config;
-
+		
 		// attach the AChecker footer to the body first:
 		$this->Body .= 	"\n\n".'----------------------------------------------'."\n";
 		$this->Body .= _AC('sent_via_achecker', AC_BASE_HREF);
-
+		
 		$this->Body .= "\n"._AC('achecker_home').': http://achecker.ca';
-
+		
 		// if this email has been queued then don't send it. instead insert it in the db
 		// for each bcc or to or cc
 		if ($_config['enable_mail_queue'] && !$this->attachment) 
@@ -103,11 +104,10 @@ class ACheckerMailer extends PHPMailer {
 	*/
 	function SendQueue() {
 		global $db;
-
+		
 		require_once(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
 		$mailQueueDAO = new MailQueueDAO();
 		$rows = $mailQueueDAO->getAll();
-
 		$mail_ids = array();
 		
 		if (is_array($rows))
@@ -115,28 +115,24 @@ class ACheckerMailer extends PHPMailer {
 			foreach ($rows as $id => $row) 
 			{
 				$this->ClearAllRecipients();
-	
+				
 				$this->AddAddress($row['to_email'], $row['to_name']);
 				$this->From     = $row['from_email'];
 				$this->FromName = $row['from_name'];
 				$this->CharSet  = $row['char_set'];
 				$this->Subject  = $row['subject'];
 				$this->Body     = $row['body'];
-	
 				parent::Send();
-	
+				
 				$mail_ids[] = $row['mail_id'];
 			}
 			if ($mail_ids) 
 			{
 				include(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
 				$mailQueueDAO = new MailQueueDAO();
-	
 				$mailQueueDAO->DeleteByIDs($mail_ids);
 			}
 		}
 	}
 
 }
-
-?>

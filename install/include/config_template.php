@@ -25,7 +25,7 @@ function write_config_file($filename, $comments) {
 					'{TEMP_DIR}',
 					'{GENERATED_COMMENTS}',
 				);
-
+	
 		$values = array(urldecode($_POST['step2']['db_login']),
 					addslashes(urldecode($_POST['step2']['db_password'])),
 					$_POST['step2']['db_host'],
@@ -92,6 +92,7 @@ define('AC_TEMP_DIR', '{TEMP_DIR}');
 /* DO NOT ALTER THIS LAST LINE                                          */
 define('AC_INSTALL', TRUE);
 
-?".">";
+/* Use SMTP mailer?							*/
+define('MAIL_USE_SMTP', false);
 
-?>
+?".">";
