@@ -25,6 +25,12 @@ define('DEFAULT_CHARSET', 'utf-8');
 define('AC_LANGUAGE_LOCALE_SEP', '-');
 //$_config['default_language'] = DEFAULT_LANGUAGE_CODE;
 
+// Overridable configuration,
+if(false == defined('AC_MAX_VALIDATION_SIZE'))
+{
+    define('AC_MAX_VALIDATION_SIZE', 256*1024);
+}
+
 // check confidence
 define('KNOWN', 0);
 define('LIKELY', 1);

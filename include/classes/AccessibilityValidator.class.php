@@ -76,20 +76,20 @@ class AccessibilityValidator {
 	 */
 	public function validate()
 	{
+        if (strlen($this->validate_content) > AC_MAX_VALIDATION_SIZE)
+        {
+            return false;
+        }
 		// dom of the content to be validated
 		$this->content_dom = $this->get_simple_html_dom($this->validate_content);
-		
 		// prepare gobal vars used in BasicFunctions.class.php to fasten the validation
 		$this->prepare_global_vars();
-		
 		// set arrays of check_id, prerequisite check_id, next check_id
 		$this->prepare_check_arrays($this->guidelines);
-
 		$this->validate_element($this->content_dom->find('html'));
-		
 		$this->finalize();
 
-		// end of validation process
+        return true;
 	}
 	
 	/** private
