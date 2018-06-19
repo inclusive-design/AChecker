@@ -249,14 +249,13 @@ if ($num_results > 0)
 				echo '<li>'."\n".'<a name="anchor" title="anchor"></a>'."\n";
 			else
 				echo '<li>'."\n";
-	
-//			
+			
 				echo '<a href="'.$_SERVER['PHP_SELF'].'?selected_term='.$row['term'].htmlspecialchars(SEP).'lang_code='.$_REQUEST['lang_code'].htmlspecialchars(SEP).'new_or_translated='.$_REQUEST["new_or_translated"].htmlspecialchars(SEP).'term_type='.$_REQUEST["term_type"].htmlspecialchars(SEP).'search_phase='.$_REQUEST["search_phase"].$submits.'#anchor" ';
 				if ($row['term'] == $_REQUEST["selected_term"]) echo 'class="selected"';
 				echo '>';
 				echo $row['term'];
 				echo '</a>'."\n";
-//		
+
 	
 			// display if the term is new or translated
 			$rows_check = $languageTextDAO->getByTermAndLang($row['term'], $_REQUEST['lang_code']);
