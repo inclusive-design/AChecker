@@ -149,7 +149,7 @@ class PatchCreator {
 
 		if ($this->current_patch_id == 0)
 		{
-			$this->current_patch_id = mysqli_insert_id($dao->db);
+			$this->current_patch_id = $dao->getInsertID(); 
 		}
 		else // delete records for current_patch_id in tables myown_patches_dependent & myown_patches_files
 		{
