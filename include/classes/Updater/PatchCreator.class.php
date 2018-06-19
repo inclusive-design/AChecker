@@ -128,8 +128,8 @@ class PatchCreator {
 	*/
 	function saveInfo() 
 	{
-		require_once(AC_INCLUDE_PATH. "classes/DAO/DAO.class.php");
-		$dao = new DAO();	
+		require_once(AC_INCLUDE_PATH."classes/DAO/DAO.class.php");
+		$dao = new DAO();
 		if ($this->current_patch_id == 0)
 		{
 			$this->current_patch_id = $this->myownPatchesDAO->Create(

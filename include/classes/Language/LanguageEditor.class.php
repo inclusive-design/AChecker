@@ -77,7 +77,6 @@ class LanguageEditor extends Language {
 	// public
 	function showMissingTermsFrame(){
 		global $_base_path;
-		//$terms = array_slice($this->missingTerms, 0, 20);
 		$terms = $this->missingTerms;
 		$terms = serialize($terms);
 		$terms = urlencode($terms);
@@ -223,8 +222,6 @@ class LanguageEditor extends Language {
 	// sends the generated language pack to the browser
 	// public
 	function export($filename = '') {
-//		$search  = array('"', "'", "\x00", "\x0a", "\x0d", "\x1a"); //\x08\\x09, not required
-//		$replace = array('\"', "\'", '\0', '\n', '\r', '\Z');
 
 		// use a function to generate the ini file
 		// use a diff fn to generate the sql dump
@@ -241,8 +238,6 @@ class LanguageEditor extends Language {
 		if (is_array($rows)) {
 			foreach ($rows as $row)
 			{
-//				$row['text']    = str_replace($search, $replace, $row['text']);
-//				$row['context'] = str_replace($search, $replace, $row['context']);
 				$row['text']    = $this->addSlashes($row['text']);
 				$row['context'] = $this->addSlashes($row['context']);
 				

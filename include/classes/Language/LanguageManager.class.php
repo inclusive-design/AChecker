@@ -13,10 +13,7 @@
 
 require_once(dirname(__FILE__) . '/Language.class.php');
 
-//define('AC_LANG_STATUS_EMPTY',       0);
-//define('AC_LANG_STATUS_INCOMPLETE',  1);
-//define('AC_LANG_STATUS_COMPLETE',    2);
-//define('AC_LANG_STATUS_PUBLISHED',   3);
+
 
 /**
 * LanguageManager

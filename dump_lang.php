@@ -1,7 +1,5 @@
 <?php
 
-//define(AC_INCLUDE_PATH, 'include/');
-//include(AC_INCLUDE_PATH.'vitals.inc.php');
 
 $lang_db = mysqli_connect('localhost', 'root', '', 'achecker');
 mysqli_select_db($lang_db, 'achecker');

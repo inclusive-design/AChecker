@@ -232,28 +232,29 @@ class LanguageTextDAO extends DAO {
 		           AND term = '".$term."'";
 
 		return $this->execute($sql);
-  }
+  	}
 
-  function getMsgByVar($variable)
-  {
+  	function getMsgByVar($variable)
+  	{
 		$variable = $this->addSlashes($variable);
 
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text
-					WHERE variable='.$variable.'";
+				 WHERE variable='.$variable.'";
 
 		return $this->execute($sql);
-  }
+  	}
 
-  function getMsgByVarAndLang($variable, $lang, $parent)
-  {
+  	function getMsgByVarAndLang($variable, $lang, $parent)
+  	{
 		$variable = $this->addSlashes($variable);
 		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text
-					WHERE variable=".$variable."
-					AND (language_code=".$lang."
-					OR language_code=".$parent.")";
+				 WHERE variable=".$variable."
+				 AND (language_code=".$lang."
+				 OR language_code=".$parent.")";
 		
 		return $this->execute($sql);
-  }
+	}
+	  
 }
 ?>

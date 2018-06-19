@@ -28,7 +28,6 @@ require(AC_INCLUDE_PATH . 'classes/DAO/LanguageTextDAO.class.php');
 *								i.e		$args[0] = the term to the format string $_template[term]
 *										$args[1..x] = optional arguments to the formatting string 
 * @return	string|array		full resulting message
-* @see		$db			        in include/vitals.inc.php
 * @see		cache()				in include/phpCache/phpCache.inc.php
 * @see		cache_variable()	in include/phpCache/phpCache.inc.php
 * @author	Joel Kronenberg

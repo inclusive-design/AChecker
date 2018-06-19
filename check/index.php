@@ -197,7 +197,7 @@ if (isset($_GET['list']))
 if ($condition == '') $condition = '1';
 $checksDAO = new ChecksDAO(); 
 
-$rows = $checksDAO->getChecksByID($condition);
+$rows = $checksDAO->getNumOfChecksByCondition($condition);
 
 $num_results = $rows[0]['cnt'];
 
@@ -216,7 +216,7 @@ if ( isset($_GET['apply_all']) && $_GET['change_status'] >= -1) {
 
 
 
-$check_rows = $checksDAO->getChecks($condition, $col, $order, $offset, $results_per_page);
+$check_rows = $checksDAO->getChecksByCondition($condition, $col, $order, $offset, $results_per_page);
 
 
 // if prerequisite or next checks are inserted into db successfully, 
