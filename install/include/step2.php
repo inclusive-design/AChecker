@@ -19,7 +19,7 @@ if(isset($_POST['submit'])) {
 
 	//check DB & table connection
 
-	$db = mysqli_connect($_POST['db_host'], $_POST['db_login'], $_POST['db_password'], $_POST['db_name'], $_POST['db_port']);
+	$db = mysqli_connect($_POST['db_host'], $_POST['db_login'], $_POST['db_password']);
 	if (!$db) {
 		$errors[] = 'Unable to connect to database server.';
 	} else {
