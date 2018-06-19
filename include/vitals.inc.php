@@ -13,12 +13,12 @@
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 
-require_once '/vendor/autoload.php';
+define('AC_PHP_COMPOSER_PATH', AC_INCLUDE_PATH .'../vendor/');
+require_once AC_PHP_COMPOSER_PATH.'autoload.php';
 $mpdf = new \Mpdf\Mpdf();
-$mpdf->WriteHTML('<h1>Hello world!</h1>');
+$mpdf->WriteHTML('<h1>Hello worqeq!</h1>');
 $mpdf->Output();
-// var_dump('../'.AC_INCLUDE_PATH. 'vendor/autoload.php');
-die();
+
 define('AC_DEVEL', 1);
 define('AC_ERROR_REPORTING', E_ALL ^  E_NOTICE); // default is E_ALL ^ E_NOTICE, use E_ALL or E_ALL + E_STRICT for developing
 
