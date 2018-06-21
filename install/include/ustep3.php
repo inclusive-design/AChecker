@@ -20,8 +20,6 @@ session_unset();
 $_SESSION= array();
 if(isset($_POST['submit']) && ($_POST['action'] == 'process')) {
 	unset($errors);
-//	$db = @mysql_connect($_POST['step1']['db_host'] . ':' . $_POST['step1']['db_port'], $_POST['step1']['db_login'], urldecode($_POST['step1']['db_password']));
-//	@mysql_select_db($_POST['step1']['db_name'], $db);
 
 	if (!isset($errors)) {
 		unset($errors);

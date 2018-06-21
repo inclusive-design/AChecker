@@ -28,7 +28,6 @@ require(AC_INCLUDE_PATH . 'classes/DAO/LanguageTextDAO.class.php');
 *								i.e		$args[0] = the term to the format string $_template[term]
 *										$args[1..x] = optional arguments to the formatting string 
 * @return	string|array		full resulting message
-* @see		$db			        in include/vitals.inc.php
 * @see		cache()				in include/phpCache/phpCache.inc.php
 * @see		cache_variable()	in include/phpCache/phpCache.inc.php
 * @author	Joel Kronenberg
@@ -56,9 +55,8 @@ function _AC() {
 		// replaced the preg_match with a test of the substring.
 		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AC_INFO)
 		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_CONF'))) {
-			global $_base_path, $addslashes;
+			global $_base_path;
 
-			$args[0] = $addslashes($args[0]);
 					
 			/* get $_msgs_new from the DB */
 			$rows = $languageTextDAO->getMsgByTermAndLang($args[0], $_SESSION['lang']);
@@ -767,7 +765,7 @@ function format_content($input, $html = 0, $glossary, $simple = false) {
 			} else {
 				$input = preg_replace
 						("/(\[\?\])$term(\[\/\?\])/i",
-						'\\2<sup><a href="'.$_base_path.'glossary/index.php?g_cid='.$_SESSION['s_cid'].SEP.'w='.urlencode($original_term).'#term" onmouseover="return overlib(\''.$def.'\', CAPTION, \''.addslashes($original_term).'\', AUTOSTATUS);" onmouseout="return nd();" onfocus="return overlib(\''.$def.'\', CAPTION, \''.addslashes($original_term).'\', AUTOSTATUS);" onblur="return nd();"><span style="color: blue; text-decoration: none;font-size:small; font-weight:bolder;">?</span></a></sup>',
+						'\\2<sup><a href="'.$_base_path.'glossary/index.php?g_cid='.$_SESSION['s_cid'].SEP.'w='.urlencode($original_term).'#term" onmouseover="return overlib(\''.$def.'\', CAPTION, \''.htmlspecialchars($original_term).'\', AUTOSTATUS);" onmouseout="return nd();" onfocus="return overlib(\''.$def.'\', CAPTION, \''.htmlspecialchars($original_term).'\', AUTOSTATUS);" onblur="return nd();"><span style="color: blue; text-decoration: none;font-size:small; font-weight:bolder;">?</span></a></sup>',
 						$input);
 			}
 		}
@@ -812,25 +810,25 @@ function getTranslatedCodeStr($codes) {
 	/* this is where we want to get the msgs from the database inside a static variable */
 	global $_cache_msgs_new;
 	static $_msgs_new;
-
+	$languagesDAO = new LanguageTextDAO();
+ 
 	if (!isset($_msgs_new)) {
 		if ( !($lang_et = cache(120, 'msgs_new', $_SESSION['lang'])) ) {
-			global $db, $_base_path;
+			global $_base_path;
 
 			$parent = Language::getParentCode($_SESSION['lang']);
 
 			/* get $_msgs_new from the DB */
-			$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text WHERE variable="_msgs" AND (language_code="'.$_SESSION['lang'].'" OR language_code="'.$parent.'")';
-			$result	= @mysql_query($sql, $db);
-			$i = 1;
-			while ($row = @mysql_fetch_assoc($result)) {
+			$rows = $languagesDAO->getMsgByVarAndLang('_msgs', $_SESSION['lang'], $parent);	
+			if (is_array($rows)) {
+				$row = $rows[0];
 				// do not cache key as a digit (no contstant(), use string)
 				$_cache_msgs_new[$row['term']] = str_replace('SITE_URL/', $_base_path, $row['text']);
 				if (AC_DEVEL) {
 					$_cache_msgs_new[$row['term']] .= ' <small><small>('.$row['term'].')</small></small>';
 				}
 			}
-
+			
 			cache_variable('_cache_msgs_new');
 			endcache(true, false);
 		}
@@ -852,14 +850,12 @@ function getTranslatedCodeStr($codes) {
 
 		if ($message == '') {
 			/* the language for this msg is missing: */
+			$rows = $languagesDAO->getMsgByVar('_msgs');
+			if (is_array($rows)) {
+				$row = $rows[0];
 		
-			$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text WHERE variable="_msgs"';
-			$result	= @mysql_query($sql, $db);
-			$i = 1;
-			while ($row = @mysql_fetch_assoc($result)) {
 				if (($row['term']) === $codes) {
 					$message = '['.$row['term'].']';
-					break;
 				}
 			}
 		}

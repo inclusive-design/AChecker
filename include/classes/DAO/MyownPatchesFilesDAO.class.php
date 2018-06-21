@@ -36,7 +36,6 @@ class MyownPatchesFilesDAO extends DAO {
 	public function Create($myown_patch_id, $action, $name, $location,
 	                       $code_from, $code_to, $uploaded_file)
 	{
-		global $addslashes;
 
 		$sql = "INSERT INTO ".TABLE_PREFIX."myown_patches_files
                (myown_patch_id, 
@@ -52,7 +51,7 @@ class MyownPatchesFilesDAO extends DAO {
 	                '".$location."', 
 	                '".$code_from."', 
 	                '".$code_to."',
-	                '".mysql_real_escape_string($uploaded_file)."')";
+	                '".$this->addSlashes($uploaded_file)."')";
 		
 		if (!$this->execute($sql))
 		{
@@ -61,7 +60,7 @@ class MyownPatchesFilesDAO extends DAO {
 		}
 		else
 		{
-			return mysql_insert_id();
+			return $this->getInsertID();
 		}
 	}
 

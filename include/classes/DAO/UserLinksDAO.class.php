@@ -37,10 +37,9 @@ class UserLinksDAO extends DAO {
 	 */
 	public function Create($user_id, $guideline_ids, $URI)
 	{
-		global $addslashes;
 		
 		$user_id = intval($user_id);
-		$URI = $addslashes($URI);
+		$URI = $this->addSlashes($URI);
 		
 		if ($this->isFieldsValid($guideline_ids, $URI))
 		{
@@ -63,7 +62,7 @@ class UserLinksDAO extends DAO {
 			}
 			else
 			{
-				return mysql_insert_id();
+				return $this->getInsertID();
 			}
 		}
 		else
@@ -85,13 +84,12 @@ class UserLinksDAO extends DAO {
 	 */
 	public function Update($user_link_id, $user_id, $guideline_ids, $URI)
 	{
-		global $addslashes;
 
 		if ($this->isFieldsValid($guideline_ids, $URI))
 		{
 			$user_link_id = intval($user_link_id);
 			$user_id = intval($user_id);
-			$URI = $addslashes($URI);
+			$URI = $this->addSlashes($URI);
 			
 			/* insert into the db */
 			$sql = "UPDATE ".TABLE_PREFIX."user_links
@@ -167,10 +165,9 @@ class UserLinksDAO extends DAO {
 	 */
 	public function setLastSessionID($user_link_id, $sessionID)
 	{
-		global $addslashes;
 		
 		$user_link_id = intval($user_link_id);
-		$sessionID = $addslashes($sessionID);
+		$sessionID = $this->addSlashes($sessionID);
 		
 		$sql = "UPDATE ".TABLE_PREFIX."user_links SET last_sessionID = '".$sessionID."'
 		         WHERE user_link_id = ".$user_link_id;
@@ -218,10 +215,9 @@ class UserLinksDAO extends DAO {
 	 */
 	public function getByUserIDAndURI($user_id, $URI)
 	{
-		global $addslashes;
 
 		$user_id = intval($user_id);
-		$URI = $addslashes($URI);
+		$URI = $this->addSlashes($URI);
 		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."user_links 
 		         WHERE user_id=".$user_id."
@@ -241,11 +237,10 @@ class UserLinksDAO extends DAO {
 	 */
 	public function getByUserIDAndURIAndSession($user_id, $URI, $sessionID)
 	{
-		global $addslashes;
 		
 		$user_id = intval($user_id);
-		$URI = $addslashes($URI);
-		$sessionID = $addslashes($sessionID);
+		$URI = $this->addSlashes($URI);
+		$sessionID = $this->addSlashes($sessionID);
 
 		$sql = "SELECT * FROM ".TABLE_PREFIX."user_links 
 		         WHERE user_id=".$user_id."

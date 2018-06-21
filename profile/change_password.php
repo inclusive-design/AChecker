@@ -16,6 +16,13 @@ require(AC_INCLUDE_PATH.'vitals.inc.php');
 
 global $_current_user;
 
+
+    /**
+	 * Verify that a string is Sha_1
+	 * @access  public
+	 * @param   $str : Sha_1 Encryted String
+	 */
+
 if (!isset($_current_user)) {
 	require(AC_INCLUDE_PATH.'header.inc.php');
 	$msg->printInfos('INVALID_USER');
@@ -64,9 +71,14 @@ if (isset($_POST['submit'])) {
 		}
 	}
 
+	/* Checking if inputted pasword is hash */
+	if(!Utility::is_sha1($_POST['form_password_hidden'])) {
+		$msg->addError('WRONG_PASSWORD_FORMAT_USED');
+	}
+	
 	if (!$msg->containsErrors()) {
 		// insert into the db.
-		$password   = $addslashes($_POST['form_password_hidden']);
+		$password   = $_POST['form_password_hidden'];
 
 		if (!$_current_user->setPassword($password)) 
 		{

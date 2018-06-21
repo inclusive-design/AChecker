@@ -12,6 +12,7 @@
 // $Id$
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
+require_once('../include/classes/DAO/DAO.class.php');
 
 if(isset($_POST['submit']) && ($_POST['action'] == 'process')) {
 	unset($errors);
@@ -50,22 +51,21 @@ if(isset($_POST['submit']) && ($_POST['action'] == 'process')) {
 	}
 
 	if (!isset($errors)) {
-		$db = @mysql_connect($_POST['step2']['db_host'] . ':' . $_POST['step2']['db_port'], $_POST['step2']['db_login'], urldecode($_POST['step2']['db_password']));
-		@mysql_select_db($_POST['step2']['db_name'], $db);
-
+		$dao = new DAO($_POST['step2']['db_host'], $_POST['step2']['db_login'], urldecode($_POST['step2']['db_password']), $_POST['step2']['db_name'], $_POST['step2']['db_port']);
+ 
 		$status = 3; // for instructor account
 
 		$sql = "INSERT INTO ".$_POST['step2']['tb_prefix']."users (login, password, user_group_id, email, web_service_id, create_date)
 		VALUES ('$_POST[admin_username]', '$_POST[form_admin_password_hidden]', 1, '$_POST[admin_email]', '".sha1(mt_rand() . microtime(TRUE))."', NOW())";
-		$result= mysql_query($sql, $db);
+		$result = $dao->execute($sql);
 
-		$_POST['site_name'] = $addslashes($_POST['site_name']);
+		$_POST['site_name'] = $dao->addSlashes($_POST['site_name']);
 		$sql = "INSERT INTO ".$_POST['step2']['tb_prefix']."config (name, value) VALUES ('site_name', '$_POST[site_name]')";
-		$result = mysql_query($sql ,$db);
+		$result = $dao->execute($sql);
 
-		$_POST['email'] = $addslashes($_POST['email']);
+		$_POST['email'] = $dao->addSlashes($_POST['email']);
 		$sql = "INSERT INTO ".$_POST['step2']['tb_prefix']."config (name, value) VALUES ('contact_email', '$_POST[email]')";
-		$result = mysql_query($sql ,$db);
+		$result = $dao->execute($sql);
 
 		unset($_POST['admin_username']);
 		unset($_POST['form_admin_password_hidden']);
