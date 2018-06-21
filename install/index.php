@@ -205,14 +205,14 @@ $not_as_good = FALSE;
 		<tr>
 			<td>MySQL 4.1.13+</td>
 			<td><?php if (defined('MYSQLI_NUM')) {
-						$mysqli_version = mysqli_get_client_info();
-						echo 'Found  Version '.$mysqli_version.'</td><td align="center">';
-						echo $good;
+						echo 'Will be verified in the next step, when database credentials are provided</td><td align="center">';
+						echo '&#63';
 					} else {
 						echo 'Not Found</td><td align="center">';
 						echo $bad;
 						$no_good = TRUE;
-					} ?></td>
+					} ?>
+			</td>
 		</tr>
 		</tbody>
 		</table>
