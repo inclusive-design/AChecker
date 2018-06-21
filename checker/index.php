@@ -128,7 +128,7 @@ if ($_POST["validate_uri"])
 {
 	$_POST['uri'] = htmlentities($_POST['uri']);
 	
-	$uri = Utility::getValidURI($addslashes($_POST["uri"]));
+	$uri = Utility::getValidURI(filter_var($_POST["uri"], FILTER_SANITIZE_URL));
 	$_SESSION['input_form']['uri'] = $uri;
 	
 	// Check if the given URI is connectable

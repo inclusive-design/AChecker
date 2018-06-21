@@ -31,45 +31,34 @@ $_POST['db_password'] = urldecode($_POST['db_password']);
 
 	//check DB & table connection
 
-	$db = @mysql_connect($_POST['db_host'] . ':' . $_POST['db_port'], $_POST['db_login'], urldecode($_POST['db_password']));
+	$db = mysqli_connect($_POST['db_host'], $_POST['db_login'], urldecode($_POST['db_password']), $_POST['db_name'], $_POST['db_port']);
 
 	if (!$db) {
-		$error_no = mysql_errno();
+		$error_no = mysqli_errno($db);
 		if ($error_no == 2005) {
 			$errors[] = 'Unable to connect to database server. Database with hostname '.$_POST['db_host'].' not found.';
 		} else {
 			$errors[] = 'Unable to connect to database server. Wrong username/password combination.';
 		}
 	} else {
-		if (!mysql_select_db($_POST['db_name'], $db)) {
+		if (!mysqli_select_db($db, $_POST['db_name'])) {
 			$errors[] = 'Unable to connect to database <b>'.$_POST['db_name'].'</b>.';
 		}
 
 		$sql = "SELECT VERSION() AS version";
-		$result = mysql_query($sql, $db);
-		$row = mysql_fetch_assoc($result);
-		if (version_compare($row['version'], '4.0.2', '>=') === FALSE) {
-			$errors[] = 'MySQL version '.$row['version'].' was detected. AChecker requires version 4.0.2 or later.';
+		$result = mysqli_query($db, $sql);
+		$row = mysqli_fetch_assoc($result);
+		if (version_compare($row['version'], '4.1.13', '>=') === FALSE) {
+			$errors[] = 'MySQL version '.$row['version'].' was detected. AChecker requires version 4.1.13 or later.';
 		}
 
 		if (!$errors) {
 			$progress[] = 'Connected to database <b>'.$_POST['db_name'].'</b> successfully.';
 			unset($errors);
 
-			//Save all the course primary language into session variables iff it has not been set. 
-//			if (!isset($_SESSION['course_info'])){
-//				$sql = "SELECT a.course_id, a.title, l.language_code, l.char_set FROM ".$_POST['tb_prefix']."courses a left join ".$_POST['tb_prefix']."languages l ON l.language_code = a.primary_language";
-//				$result = mysql_query($sql, $db);
-//				while ($row = mysql_fetch_assoc($result)){
-//					$_SESSION['course_info'][$row['course_id']] = array('char_set'=>$row['char_set'], 'language_code'=>$row['language_code']);
-//				}
-//			}
-
-//			$sql = "DELETE FROM ".$_POST['tb_prefix']."language_text";
-//			@mysql_query($sql, $db);
 
 			$sql = "DELETE FROM ".$_POST['tb_prefix']."languages WHERE language_code<>'eng'";
-			@mysql_query($sql, $db);
+			mysqli_query($db, $sql);
 
 			//get list of all update scripts minus sql extension
 			$files = scandir('db'); 
@@ -88,10 +77,6 @@ $_POST['db_password'] = urldecode($_POST['db_password']);
 				}
 			}
 			
-			/* reset all the accounts to English */
-//			$sql = "UPDATE ".$_POST['tb_prefix']."users SET language='eng', creation_date=creation_date, last_login=last_login";
-//			@mysql_query($sql, $db);
-
 			queryFromFile('db/language_text.sql');
 
 			if (!$errors) {

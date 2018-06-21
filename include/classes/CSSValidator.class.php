@@ -148,7 +148,7 @@ class CSSValidator {
 				{		
 					// "primo ciclo";
 					$res_exp[$i] = str_replace("<div class='error-section-all'>", "<ul class='msg_err'>", $res_exp[$i]);
-					//$res_exp[$i] = str_replace('<div id="errors">', "<ol>", $res_exp[$i]);
+				
 					
 				}
 				elseif ( $i==(sizeof($res_exp)-1) )
@@ -170,7 +170,7 @@ class CSSValidator {
 						else if ($j==sizeof($res_exp_int)-2)
 						{		
 							//"ultimo ciclo interno - last inner loop";
-						//	$res_exp_int[$j] = "</div>";
+						
 						}
 						else 
 						{

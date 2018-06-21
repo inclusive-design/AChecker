@@ -35,13 +35,13 @@ class UserGroupsDAO extends DAO {
 	 */
 	public function Create($title, $description)
 	{
-		global $addslashes, $msg;
+		global $msg;
 
 		$missing_fields = array();
 
 		/* email check */
-		$title = $addslashes(trim($title));
-		$description = $addslashes(trim($description));
+		$title = $this->addSlashes(trim($title));
+		$description = $this->addSlashes(trim($description));
 
 		/* login name check */
 		if ($title == '')
@@ -75,7 +75,7 @@ class UserGroupsDAO extends DAO {
 			}
 			else
 			{
-				return mysql_insert_id();
+				return $this->getInsertID();
 			}
 		}
 		else
@@ -96,13 +96,13 @@ class UserGroupsDAO extends DAO {
 	 */
 	public function Update($user_group_id, $title, $description)
 	{
-		global $addslashes, $msg;
+		global $msg;
 
 		$missing_fields = array();
 
 		$user_group_id = intval($user_group_id);
-		$title = $addslashes(trim($title));
-		$description = $addslashes(trim($description));
+		$title = $this->addSlashes(trim($title));
+		$description = $this->addSlashes(trim($description));
 
 		/* login name check */
 		if ($title == '')

@@ -195,10 +195,10 @@ if (isset($_GET['list']))
 }
 
 if ($condition == '') $condition = '1';
+$checksDAO = new ChecksDAO(); 
 
-$sql = "SELECT COUNT(check_id) AS cnt FROM ".TABLE_PREFIX."checks WHERE $condition";
+$rows = $checksDAO->getNumOfChecksByCondition($condition);
 
-$rows = $dao->execute($sql);
 $num_results = $rows[0]['cnt'];
 
 $num_pages = max(ceil($num_results / $results_per_page), 1);
@@ -214,12 +214,9 @@ if ( isset($_GET['apply_all']) && $_GET['change_status'] >= -1) {
 	$results_per_page = 999999;
 }
 
-$checksDAO = new ChecksDAO();
 
-$sql = "SELECT * 
-          FROM ".TABLE_PREFIX."checks
-          WHERE $condition ORDER BY $col $order LIMIT $offset, $results_per_page";
-$check_rows = $dao->execute($sql);
+
+$check_rows = $checksDAO->getChecksByCondition($condition, $col, $order, $offset, $results_per_page);
 
 
 // if prerequisite or next checks are inserted into db successfully, 

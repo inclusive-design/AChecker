@@ -147,7 +147,7 @@ class SqlUtility
 	}
 
 	function queryFromFile($sql_file_path, $table_prefix){
-		global $db, $progress, $errors;
+		global  $progress, $errors;
 		
 		include_once(AC_INCLUDE_PATH.'classes/DAO/DAO.class.php');
 		$dao = new DAO();
@@ -180,7 +180,7 @@ class SqlUtility
                     if ($dao->execute($prefixed_query[0]) !== false) {
 						$progress[] = 'Table <b>'.$table . '</b> created successfully.';
                     } else {
-						if (mysql_errno($db) == 1050) {
+						if (mysqli_errno($dao->db) == 1050) {
 							$progress[] = 'Table <b>'.$table . '</b> already exists. Skipping.';
 						} else {
 							$errors[] = 'Table <b>' . $table . '</b> creation failed.';
