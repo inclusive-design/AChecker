@@ -24,7 +24,6 @@ include_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 
 class LanguageEditor extends Language {
 
-	var $addslashes;
 
 	// array of missing terms
 	var $missingTerms;
@@ -32,18 +31,18 @@ class LanguageEditor extends Language {
 	// array of filters ['new', 'update']
 	var $filters;
 	
+	
 	/**
 	* Constructor.
 	* 
 	* Initializes db and parent properties.
 	*/
 	function LanguageEditor($myLang) {
-		global $db, $addslashes, $msg;
+		global $msg;
 		
 		global $savant;
 		$this->msg = $msg;
 
-		$this->addslashes = $addslashes;
 
 		if (isset($myLang)) {
 			$this->Language($myLang);
@@ -53,42 +52,31 @@ class LanguageEditor extends Language {
 
 	// public
 	function updateTerm($variable, $term, $text) {
-		$addslashes = $this->addslashes;
 
-		$variable = $addslashes($variable);
-		$term     = $addslashes($term);
-		$text     = $addslashes($text);
-		$code     = $addslashes($this->getCode());
-
+		$variable = $this->addSlashes($variable);
+		$term     = $this->addSlashes($term);
+		$text     = $this->addSlashes($text);
+		$code     = $this->addSlashes($this->getCode());
+		
 		$sql	= "UPDATE ".TABLE_PREFIX."language_text SET text='$text', revised_date=NOW() WHERE language_code='$code' AND variable='$variable' AND term='$term'";
 
-		/*
-		if (mysql_query($sql, $this->db)) {
-			return TRUE;
-		} else {
-			debug(mysql_error($this->db));
-			return FALSE;
-		}
-		*/
 	}
 
 	// public
 	function insertTerm($variable, $key, $text, $context) {
-		$addslashes = $this->addslashes;
 
-		$variable = $addslashes($variable);
-		$key      = $addslashes($key);
-		$text     = $addslashes($text);
-		$code     = $addslashes($this->getCode());
-		$context  = $addslashes($context);
+		$variable = $this->addSlashes($variable);
+		$key      = $this->addSlashes($key);
+		$text     = $this->addSlashes($text);
+		$code     = $this->addSlashes($this->getCode());
+		$context  = $this->addSlashes($context);
 
 		$sql = "INSERT INTO ".TABLE_PREFIX."language_text VALUES('$code', '$variable', '$key', '$text', NOW(), '$context')";
 	}
 
 	// public
 	function showMissingTermsFrame(){
-		global $_base_path, $addslashes;
-		//$terms = array_slice($this->missingTerms, 0, 20);
+		global $_base_path;
 		$terms = $this->missingTerms;
 		$terms = serialize($terms);
 		$terms = urlencode($terms);
@@ -119,11 +107,10 @@ class LanguageEditor extends Language {
 
 	// public
 	function printTerms($terms){
-		global $addslashes, $languageManager; // why won't $addslashes = $this->addslashes; work?
-
+		global $languageManager; 
 		$counter = 0;
 
-		$terms = unserialize(stripslashes($addslashes($terms)));
+		$terms = unserialize(stripslashes($this->addSlashes($terms)));
 
 		natcasesort($terms);
 
@@ -195,15 +182,14 @@ class LanguageEditor extends Language {
 
 	// public
 	function updateTerms($terms) {
-		global $addslashes;
 
 		foreach($terms as $term => $text) {
-			$text = $addslashes($text);
-			$term = $addslashes($term);
+			$text = $this->addSlashes($text);
+			$term = $this->addSlashes($term);
 		
 			if (($text != '') && ($text != $_POST['old'][$term])) {
 				$sql = "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ('".$this->getCode()."', '_template', '$term', '$text', NOW(), '')";
-				mysql_query($sql, $this->db);
+				mysqli_query($this->db, $sql);
 			}
 		}
 	}
@@ -236,13 +222,11 @@ class LanguageEditor extends Language {
 	// sends the generated language pack to the browser
 	// public
 	function export($filename = '') {
-//		$search  = array('"', "'", "\x00", "\x0a", "\x0d", "\x1a"); //\x08\\x09, not required
-//		$replace = array('\"', "\'", '\0', '\n', '\r', '\Z');
 
 		// use a function to generate the ini file
 		// use a diff fn to generate the sql dump
 		// use the zipfile class to package the ini file and the sql dump
-		global $addslashes;
+		
 		
 		$sql_dump = "INSERT INTO `languages` VALUES ('$this->code', '$this->characterSet', '$this->regularExpression', '$this->nativeName', '$this->englishName', $this->status);\r\n\r\n";
 
@@ -250,14 +234,12 @@ class LanguageEditor extends Language {
 
 		$languageTextDAO = new LanguageTextDAO();
 		$rows = $languageTextDAO->getAllByLang($this->code);
-
+		
 		if (is_array($rows)) {
 			foreach ($rows as $row)
 			{
-//				$row['text']    = str_replace($search, $replace, $row['text']);
-//				$row['context'] = str_replace($search, $replace, $row['context']);
-				$row['text']    = $addslashes($row['text']);
-				$row['context'] = $addslashes($row['context']);
+				$row['text']    = $this->addSlashes($row['text']);
+				$row['context'] = $this->addSlashes($row['context']);
 				
 				$sql_dump .= "('$this->code', '$row[variable]', '$row[term]', '$row[text]', '$row[revised_date]', '$row[context]'),\r\n";
 			}
@@ -275,7 +257,7 @@ class LanguageEditor extends Language {
 		$zipfile->add_file($sql_dump, 'language_text.sql');
 		$zipfile->add_file($readme, 'readme.txt');
 		$zipfile->add_file($this->getXML(), 'language.xml');  
-
+	
 		if ($filename) {
 			$fp = fopen($filename, 'wb+');
 			fwrite($fp, $zipfile->get_file(), $zipfile->get_size());
@@ -284,6 +266,7 @@ class LanguageEditor extends Language {
 
 			$zipfile->send_file('achecker_' . $version . '_' . $this->code);
 		}
+		
 	}
 
 }

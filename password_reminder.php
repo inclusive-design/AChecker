@@ -26,7 +26,7 @@ if (isset($_POST['cancel']))
 else if (isset($_POST['form_password_reminder'])) 
 {
 	//get database info to create & email change-password-link
-	$_POST['form_email'] = $addslashes($_POST['form_email']);
+	$_POST['form_email'] = filter_input(INPUT_POST, 'form_email', FILTER_VALIDATE_EMAIL);
 
 		if ($row = $usersDAO->getUserByEmail($_POST['form_email'])) 
 		{
@@ -125,15 +125,21 @@ else if (isset($_POST['form_password_reminder']))
 			{
 				if ($pwd_error == "missing_password")
 					$missing_fields[] = _AC('password');
-				else
+				else 
 					$msg->addError($pwd_error);
+					
 			}
 		}
 
+		/* Checking if inputted pasword is hash */
+		if(!Utility::is_sha1($_POST['form_password_hidden'])) {
+			$msg->addError('WRONG_PASSWORD_FORMAT_USED');
+		}
+		
 		if (!$msg->containsErrors()) 
 		{
 			//save data
-			$password   = $addslashes($_POST['form_password_hidden']);
+			$password   = $_POST['form_password_hidden'];
 
 			$usersDAO->setPassword(intval($_REQUEST['id']), $password);
 

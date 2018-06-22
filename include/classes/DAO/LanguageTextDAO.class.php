@@ -37,17 +37,16 @@ class LanguageTextDAO extends DAO {
 	*/
 	function Create($language_code, $variable, $term, $text, $context)
 	{
-		global $addslashes;
 		
 		$sql = "INSERT INTO ".TABLE_PREFIX."language_text
 		        (`language_code`, `variable`, `term`, `text`, `revised_date`, `context`)
 		        VALUES
-		        ('".$addslashes($language_code)."', 
-		         '".$addslashes($variable)."', 
-		         '".$addslashes($term)."', 
-		         '".$addslashes($text)."', 
+		        ('".$this->addSlashes($language_code)."', 
+		         '".$this->addSlashes($variable)."', 
+		         '".$this->addSlashes($term)."', 
+		         '".$this->addSlashes($text)."', 
 		         now(), 
-		         '".$addslashes($context)."')";
+		         '".$this->addSlashes($context)."')";
 
 		return $this->execute($sql);
 	}
@@ -66,17 +65,16 @@ class LanguageTextDAO extends DAO {
 	*/
 	function Replace($language_code, $variable, $term, $text, $context)
 	{
-		global $addslashes;
 		
 		$sql = "REPLACE INTO ".TABLE_PREFIX."language_text
 		        (`language_code`, `variable`, `term`, `text`, `revised_date`, `context`)
 		        VALUES
-		        ('".$addslashes($language_code)."', 
-		         '".$addslashes($variable)."', 
-		         '".$addslashes($term)."', 
-		         '".$addslashes($text)."', 
+		        ('".$this->addSlashes($language_code)."', 
+		         '".$this->addSlashes($variable)."', 
+		         '".$this->addSlashes($term)."', 
+		         '".$this->addSlashes($text)."', 
 		         now(), 
-		         '".$addslashes($context)."')";
+		         '".$this->addSlashes($context)."')";
 		        
 		return $this->execute($sql);
 	}
@@ -92,11 +90,10 @@ class LanguageTextDAO extends DAO {
 	*/
 	function DeleteByVarAndTerm($variable, $term)
 	{
-		global $addslashes;
 		
 		$sql = "DELETE FROM ".TABLE_PREFIX."language_text
-		        WHERE `variable` = '".$addslashes($variable)."'
-		          AND `term` = '".$addslashes($term)."'";
+		        WHERE `variable` = '".$this->addSlashes($variable)."'
+		          AND `term` = '".$this->addSlashes($term)."'";
 		        
 		return $this->execute($sql);
 	}
@@ -111,10 +108,9 @@ class LanguageTextDAO extends DAO {
 	*/
 	function getMsgByTermAndLang($term, $lang)
 	{
-		global $addslashes;
 		
-		$term = $addslashes($term);
-		$lang = $addslashes($lang);
+		$term = $this->addSlashes($term);
+		$lang = $this->addSlashes($lang);
 		
 		$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text 
 						WHERE term="' . $term . '" 
@@ -135,10 +131,9 @@ class LanguageTextDAO extends DAO {
 	*/
 	function getByTermAndLang($term, $lang)
 	{
-		global $addslashes;
 		
-		$term = $addslashes($term);
-		$lang = $addslashes($lang);
+		$term = $this->addSlashes($term);
+		$lang = $this->addSlashes($lang);
 		
 		$sql	= 'SELECT * FROM '.TABLE_PREFIX.'language_text 
 						WHERE term="' . $term . '" 
@@ -158,10 +153,9 @@ class LanguageTextDAO extends DAO {
 	*/
 	function getHelpByMatchingText($text, $lang)
 	{
-		global $addslashes;
 		
-		$text = $addslashes(strtolower($text));
-		$lang = $addslashes($lang);
+		$text = $this->addSlashes(strtolower($text));
+		$lang = $this->addSlashes($lang);
 		
 		$sql	= "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE term like 'AC_HELP_%'
@@ -181,9 +175,8 @@ class LanguageTextDAO extends DAO {
 	*/
 	function getAllByLang($lang)
 	{
-		global $addslashes;
 		
-		$lang = $addslashes($lang);
+		$lang = $this->addSlashes($lang);
 		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE language_code='".$lang."' 
@@ -201,9 +194,8 @@ class LanguageTextDAO extends DAO {
 	*/
 	function getAllTemplateByLang($lang)
 	{
-		global $addslashes;
 		
-		$lang = $addslashes($lang);
+		$lang = $this->addSlashes($lang);
 		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE language_code='".$lang."' 
@@ -226,12 +218,11 @@ class LanguageTextDAO extends DAO {
 	*/
 	function setText($languageCode, $variable, $term, $text)
 	{
-		global $addslashes;
 		
-		$languageCode = $addslashes($languageCode);
-		$variable = $addslashes($variable);
-		$term = $addslashes($term);
-		$text = $addslashes($text);
+		$languageCode = $this->addSlashes($languageCode);
+		$variable = $this->addSlashes($variable);
+		$term = $this->addSlashes($term);
+		$text = $this->addSlashes($text);
 		
 		$sql = "UPDATE ".TABLE_PREFIX."language_text 
 		           SET text='".$text."',
@@ -241,6 +232,29 @@ class LanguageTextDAO extends DAO {
 		           AND term = '".$term."'";
 
 		return $this->execute($sql);
-  }
+  	}
+
+  	function getMsgByVar($variable)
+  	{
+		$variable = $this->addSlashes($variable);
+
+		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text
+				 WHERE variable='.$variable.'";
+
+		return $this->execute($sql);
+  	}
+
+  	function getMsgByVarAndLang($variable, $lang, $parent)
+  	{
+		$variable = $this->addSlashes($variable);
+		
+		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text
+				 WHERE variable=".$variable."
+				 AND (language_code=".$lang."
+				 OR language_code=".$parent.")";
+		
+		return $this->execute($sql);
+	}
+	  
 }
 ?>

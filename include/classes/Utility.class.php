@@ -316,11 +316,8 @@ class Utility {
 	public static function sanitizeIntArray($int_array) {
 		if (!is_array($int_array)) return false;
 		
-		$sanitized_array = array();
-		foreach ($int_array as $i => $value) {
-			$sanitized_array[$i] = intval($value);
-		}
-		return $sanitized_array;
+		return array_filter($int_array, 'is_numeric');
+		 
 	}
 	
 	/**
@@ -367,5 +364,16 @@ class Utility {
 			return false;
 		}
 	}
+
+	/**
+	 * Verify that a string is Sha_1
+	 * @access  public
+	 * @param   $str : Sha_1 Encryted String
+	 */
+
+	public static function is_sha1($str)
+	{
+		return strlen($str) == 40 && ctype_xdigit($str);
+	}	
 }
 ?>

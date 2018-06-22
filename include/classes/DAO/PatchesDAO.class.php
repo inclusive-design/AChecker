@@ -48,7 +48,6 @@ class PatchesDAO extends DAO {
 	                       $status, $remove_permission_files,
 	                       $backup_files, $patch_files, $author)
 	{
-		global $addslashes;
 
 		$sql = "INSERT INTO " . TABLE_PREFIX. "patches " .
 					 "(achecker_patch_id, 
@@ -64,17 +63,17 @@ class PatchesDAO extends DAO {
 					   author,
 					   installed_date)
 					  VALUES
-					  ('".$addslashes($achecker_patch_id)."',
-					   '".$addslashes($applied_version)."',
-					   '".$addslashes($patch_folder)."',
-					   '".$addslashes($description)."',
-					   '".$addslashes($available_to)."',
-					   '".$addslashes($sql_statement)."',
-					   '".$addslashes($status)."',
-					   '".$addslashes($remove_permission_files)."',
-					   '".$addslashes($backup_files)."',
-					   '".$addslashes($patch_files)."',
-					   '".$addslashes($author)."',
+					  ('".$this->addSlashes($achecker_patch_id)."',
+					   '".$this->addSlashes($applied_version)."',
+					   '".$this->addSlashes($patch_folder)."',
+					   '".$this->addSlashes($description)."',
+					   '".$this->addSlashes($available_to)."',
+					   '".$this->addSlashes($sql_statement)."',
+					   '".$this->addSlashes($status)."',
+					   '".$this->addSlashes($remove_permission_files)."',
+					   '".$this->addSlashes($backup_files)."',
+					   '".$this->addSlashes($patch_files)."',
+					   '".$this->addSlashes($author)."',
 					   now()
 					   )";
 
@@ -85,7 +84,7 @@ class PatchesDAO extends DAO {
 		}
 		else
 		{
-			return mysql_insert_id();
+			return $this->getInsertID();
 		}
 	}
 
@@ -101,7 +100,7 @@ class PatchesDAO extends DAO {
 		
 		foreach ($fieldArray as $key => $value)
 		{
-			$sql_middle .= $key . "='" . $value . "', ";
+			$sql_middle .= $key . "='" . $this->addSlashes($value) . "', ";
 		}
 		
 		$sql = substr($sql_prefix . $sql_middle, 0, -2) . 
