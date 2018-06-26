@@ -279,6 +279,10 @@ if ($num_results > 0)
 	echo '</ul>'."\n";
 	echo '</div>'."\n";
 }
-
+ob_clean();
+$mpdf = new \Mpdf\Mpdf();
+$mpdf->WriteHTML('<h1>Hello worqeq!</h1>');
+$mpdf->Output();
+ob_end_clean();
 include(AC_INCLUDE_PATH.'footer.inc.php'); 
 ?>

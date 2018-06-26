@@ -157,11 +157,18 @@ if ($file == 'pdf') {
 		list($known, $likely, $potential) = $a_rpt->generateRpt();
 		list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
 	}
-	include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportTFPDF.class.php');
+	include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportMPDF.class.php');
 	
-	$pdf = new acheckerTFPDF($known, $likely, $potential, $html, $css, 
+	$pdf = new acheckerMPDF($known, $likely, $potential, $html, $css, 
 		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 	$path = $pdf->getPDF($title, $uri, $problem, $mode, $_gids);
+
+	// include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportTFPDF.class.php');
+	
+	// $pdf = new acheckerTFPDF($known, $likely, $potential, $html, $css, 
+	// 	$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
+	// $path = $pdf->getPDF($title, $uri, $problem, $mode, $_gids);
+	
 			
 } else {	
 	if ($problem != 'html' && $problem != 'css') {
