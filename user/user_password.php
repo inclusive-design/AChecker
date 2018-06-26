@@ -33,15 +33,23 @@ if (isset($_POST['submit'])) {
 				$missing_fields[] = _AC('password');
 			else
 				$msg->addError($pwd_error);
+
 		}
 	}
 
+	/* Checking if inputted pasword is hash */
+	if(!Utility::is_sha1($_POST['form_password_hidden'])) {
+		$msg->addError('WRONG_PASSWORD_FORMAT_USED');
+	}
+	
 	if (!$msg->containsErrors()) {
 		// insert into the db.
-		$password   = $addslashes($_POST['form_password_hidden']);
 		
+		$password   = $_POST['form_password_hidden'];
+
 		$usersDAO = new UsersDAO();
 
+		
 		if (!$usersDAO->setPassword($_GET['id'], $password)) 
 		{
 			require(AC_INCLUDE_PATH.'header.inc.php');

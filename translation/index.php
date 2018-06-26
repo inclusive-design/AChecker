@@ -18,7 +18,7 @@ include_once(AC_INCLUDE_PATH.'classes/DAO/DAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/LanguagesDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 
-global $msg, $addslashes;
+global $msg;
 
 $dao = new DAO();
 $languagesDAO = new LanguagesDAO();
@@ -62,7 +62,7 @@ if (isset($_REQUEST['submit']) || isset($_REQUEST['search']))
 	{
 		$sql = "SELECT * FROM ".TABLE_PREFIX."language_text 
 						WHERE language_code='".DEFAULT_LANGUAGE_CODE."'
-						  AND lower(term) like '%".$addslashes(strtolower(trim($_REQUEST['search_phase'])))."%'";
+						  AND lower(term) like '%".$dao->addSlashes(strtolower(trim($_REQUEST['search_phase'])))."%'";
 	}
 	
 	$rows = $dao->execute($sql);
@@ -73,7 +73,7 @@ if (isset($_REQUEST['submit']) || isset($_REQUEST['search']))
 
 if (isset($_REQUEST["save"]))
 {
-	$sql_save	= "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ('".$_POST["lang_code"]."', '".$_POST["variable"]."', '".$_POST["term"]."', '".$addslashes($_POST["translated_text"])."', NOW(), '')";
+	$sql_save	= "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ('".$_POST["lang_code"]."', '".$_POST["variable"]."', '".$_POST["term"]."', '".$dao->addSlashes($_POST["translated_text"])."', NOW(), '')";
 
 	if (!$dao->execute($sql_save)) {
 		$success_error = '<div class="error">Error: changes not saved!</div>';
@@ -170,8 +170,6 @@ function trans_form() {
 	global $row_english, $rows_selected;
 	global $langs;
 	global $success_error;
-	global $db;
-	global $addslashes;
 
 	if (!is_array($rows_selected)) // add new term
 		$add_new = true;
@@ -251,14 +249,13 @@ if ($num_results > 0)
 				echo '<li>'."\n".'<a name="anchor" title="anchor"></a>'."\n";
 			else
 				echo '<li>'."\n";
-	
-//			if ($row['term'] == $_REQUEST["search_phase"]) {
+			
 				echo '<a href="'.$_SERVER['PHP_SELF'].'?selected_term='.$row['term'].htmlspecialchars(SEP).'lang_code='.$_REQUEST['lang_code'].htmlspecialchars(SEP).'new_or_translated='.$_REQUEST["new_or_translated"].htmlspecialchars(SEP).'term_type='.$_REQUEST["term_type"].htmlspecialchars(SEP).'search_phase='.$_REQUEST["search_phase"].$submits.'#anchor" ';
 				if ($row['term'] == $_REQUEST["selected_term"]) echo 'class="selected"';
 				echo '>';
 				echo $row['term'];
 				echo '</a>'."\n";
-//			} 
+
 	
 			// display if the term is new or translated
 			$rows_check = $languageTextDAO->getByTermAndLang($row['term'], $_REQUEST['lang_code']);

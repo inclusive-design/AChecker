@@ -1,16 +1,17 @@
 <?php
 
 // modify these constants to your settings
-$host = 'localhost:3306';
-$mysql_user = 'root';
-$mysql_password = '';
+$host = 'localhost';
+$mysqli_user = 'root';
+$mysqli_password = '';
 $db = 'achecker';
+$port = 3306;
 
 define('TABLE_PREFIX', 'AC_');
 
 // the script starts here
-$lang_db = mysql_connect($host, $mysql_user, $mysql_password) or die(mysql_error());
-mysql_select_db($db, $lang_db) or die(mysql_error());
+$lang_db = mysqli_connect($host, $mysqli_user, $mysqli_password, $db, $port) or die(mysqli_error($lang_db));
+mysqli_select_db($lang_db, $db) or die(mysqli_error($lang_db));
 echo "Database connected!<br /><br />";
 
 $dump_tables = array('checks', 'check_examples', 'check_prerequisites', 'color_mapping',
@@ -20,18 +21,18 @@ $dump_tables = array('checks', 'check_examples', 'check_prerequisites', 'color_m
 
 foreach ($dump_tables as $table_name) {
 	$sql = "SELECT * FROM ".TABLE_PREFIX.$table_name;
-	$result = mysql_query($sql, $lang_db) or die(mysql_error());
+	$result = mysqli_query($lang_db, $sql) or die(mysqli_error($lang_db));
 
 	// if the table contains data
-	if (mysql_num_rows($result) > 0) {
+	if (mysqli_num_rows($result) > 0) {
 		$field_types = array();
 		
 		$output .= "# Dumping data for table `".$table_name."`\n\n".
 		          "INSERT INTO `".$table_name."` (";
 		
-		for ($i = 0; $i < mysql_num_fields($result); ++$i) {
-		    $field_name = mysql_field_name($result, $i);
-		    $field_type = mysql_field_type($result, $i);
+		for ($i = 0; $i < mysqli_num_fields($result); ++$i) {
+		    $field_name = mysqli_fetch_field_direct($result, $i);
+		    $field_type = mysqli_fetch_field_direct($result, $i);
 		
 		    $output .= "`".$field_name."`, ";
 		    $field_types[$field_name] = $field_type;
@@ -39,7 +40,7 @@ foreach ($dump_tables as $table_name) {
 		$output = substr($output, 0, -2); // remove the last ", "
 		$output .= ") VALUES\n";
 		
-		while($row = mysql_fetch_assoc($result)) {
+		while($row = mysqli_fetch_assoc($result)) {
 			$output .= "(";
 			foreach ($field_types as $field_name => $field_type) {
 				if ($field_type == "int") {
@@ -47,7 +48,7 @@ foreach ($dump_tables as $table_name) {
 				} else if (is_null($row[$field_name])) {
 					$output .= "NULL, ";
 				} else {
-					$output .= "'". mysql_real_escape_string($row[$field_name])."', ";
+					$output .= "'". mysqli_real_escape_string($lang_db, $row[$field_name])."', ";
 				}
 			}
 			$output = substr($output, 0, -2);  // remove the last ", "

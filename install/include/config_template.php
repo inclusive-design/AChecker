@@ -27,12 +27,12 @@ function write_config_file($filename, $comments) {
 				);
 
 		$values = array(urldecode($_POST['step2']['db_login']),
-					addslashes(urldecode($_POST['step2']['db_password'])),
+					htmlspecialchars(urldecode($_POST['step2']['db_password'])),
 					$_POST['step2']['db_host'],
 					$_POST['step2']['db_port'],
 					$_POST['step2']['db_name'],
 					$_POST['step2']['tb_prefix'],
-					addslashes(urldecode($_POST['step4']['content_dir'])),
+					htmlspecialchars(urldecode($_POST['step4']['content_dir'])),
 					$comments,
 				);
 

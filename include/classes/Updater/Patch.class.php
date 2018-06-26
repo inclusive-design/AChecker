@@ -97,6 +97,7 @@ class Patch {
 		$this->patchesFilesDAO = new PatchesFilesDAO();
 		$this->patchesFilesActionsDAO = new PatchesFilesActionsDAO();
 		
+		
 		session_start();
 		
 		if (!is_array($_SESSION['remove_permission'])) $_SESSION['remove_permission']=array();
@@ -185,13 +186,13 @@ class Patch {
 		// if only has backup files info, patch is considered successfully installed
 		// if has permission to remove, considered partly installed
 		$updateInfo = array();
-
+ 
 		if (count($this->backup_files) > 0)
 		{
 			foreach($this->backup_files as $backup_file)
 				$backup_files .= $backup_file. '|';
 		
-			$updateInfo = array("backup_files"=>mysql_real_escape_string($backup_files));
+			$updateInfo = array("backup_files"=>$backup_files);
 		}
 	
 		if (count($this->patch_files) > 0)
@@ -199,7 +200,7 @@ class Patch {
 			foreach($this->patch_files as $patch_file)
 				$patch_files .= $patch_file. '|';
 		
-			$updateInfo = array_merge($updateInfo, array("patch_files"=>mysql_real_escape_string($patch_files)));
+			$updateInfo = array_merge($updateInfo, array("patch_files"=>$patch_files));
 		}
 	
 		if (is_array($_SESSION['remove_permission']) && count($_SESSION['remove_permission']))
@@ -207,7 +208,7 @@ class Patch {
 			foreach($_SESSION['remove_permission'] as $remove_permission_file)
 				$remove_permission_files .= $remove_permission_file. '|';
 
-			$updateInfo = array_merge($updateInfo, array("remove_permission_files"=>mysql_real_escape_string($remove_permission_files), "status"=>"Partly Installed"));
+			$updateInfo = array_merge($updateInfo, array("remove_permission_files"=>$remove_permission_files, "status"=>"Partly Installed"));
 		}
 		else
 		{
@@ -480,7 +481,7 @@ class Patch {
 	*/
 	function isFileModified($folder, $file)
 	{
-		global $db;
+		
 
 		if (!$this->svn_server_connected) return true;
 		

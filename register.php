@@ -25,7 +25,7 @@ if (isset($_POST['cancel'])) {
 	
 	require_once(AC_INCLUDE_PATH. 'classes/DAO/UsersDAO.class.php');
 	$usersDAO = new UsersDAO();
-	
+	$img = new Securimage();
 	/* password check: password is verified front end by javascript. here is to handle the errors from javascript */
 	if ($_POST['password_error'] <> "")
 	{
@@ -43,12 +43,13 @@ if (isset($_POST['cancel'])) {
 	//CAPTCHA
 	if (isset($_POST['captcha_in_use']) && $_POST['captcha_in_use']){
 		$img = new Securimage();
-		$valid = $img->check($_POST['secret']);
+		$valid = $img->check($_POST['captcha_in_use']);
 		if (!$valid) {
 			$has_error = true;
 			$msg->addError('SECRET_ERROR');
 		}
 	}
+	
 	
 	if (!$has_error) {
 		$user_id = $usersDAO->Create(AC_USER_GROUP_USER,

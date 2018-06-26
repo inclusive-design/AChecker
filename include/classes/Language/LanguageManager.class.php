@@ -13,10 +13,7 @@
 
 require_once(dirname(__FILE__) . '/Language.class.php');
 
-//define('AC_LANG_STATUS_EMPTY',       0);
-//define('AC_LANG_STATUS_INCOMPLETE',  1);
-//define('AC_LANG_STATUS_COMPLETE',    2);
-//define('AC_LANG_STATUS_PUBLISHED',   3);
+
 
 /**
 * LanguageManager
@@ -123,7 +120,6 @@ class LanguageManager {
 	* @see		getLanguage()
 	*/
 	function getMyLanguage() {
-		global $addslashes, $db; 
 
 		if (isset($_GET) && !empty($_GET['lang']) && isset($this->availableLanguages[$_GET['lang']])) {
 			$language = $this->getLanguage($_GET['lang']);
@@ -260,13 +256,17 @@ class LanguageManager {
 	// import language pack from specified file
 	// return imported AChecker version if it does not match with the current version
 	function import($filename, $ignore_version = false) {
-		require_once(AC_INCLUDE_PATH . 'lib/pclzip.lib.php');
-
+		global $msg;
 		$import_path = AC_TEMP_DIR . 'import/';
 
-		$archive = new PclZip($filename);
-		if ($archive->extract(PCLZIP_OPT_PATH,	$import_path) == 0) {
-			exit('Error : ' . $archive->errorInfo(true));
+		$zip = new ZipArchive();
+	
+		if ($zip->open($filename) === TRUE) {
+			$zip->extractTo($import_path);
+			$zip->close();			
+		} else {
+			$msg->addError('CANNOT_UNZIP');
+			return false;
 		}
 		
 		// import
@@ -324,48 +324,47 @@ class LanguageManager {
 	// public
 	// imports LIVE language from the achecker language database
 	function liveImport($language_code) {
-		global $db;
 
-		$tmp_lang_db = mysql_connect(AC_LANG_DB_HOST, AC_LANG_DB_USER, AC_LANG_DB_PASS);
+		require_once(AC_INCLUDE_PATH. 'classes/DAO/LanguagesDAO.class.php');
+		$languagesDAO = new LanguagesDAO();
+		$tmp_lang_db = mysqli_connect(AC_LANG_DB_HOST, AC_LANG_DB_USER, AC_LANG_DB_PASS, AC_LANG_DB_NAME);
 		// set database connection using utf8
-		mysql_query("SET NAMES 'utf8'", $tmp_lang_db);
+		mysqli_query($tmp_lang_db, "SET NAMES 'utf8'");
 		
 		if (!$tmp_lang_db) {
 			/* AC_ERROR_NO_DB_CONNECT */
 			echo 'Unable to connect to db.';
 			exit;
 		}
-		if (!mysql_select_db('dev_achecker_langs', $tmp_lang_db)) {
+		if (!mysqli_select_db($tmp_lang_db, 'dev_achecker_langs')) {
 			echo 'DB connection established, but database "dev_achecker_langs" cannot be selected.';
 			exit;
 		}
 
 		$sql = "SELECT * FROM languages_SVN WHERE language_code='$language_code'";
-		$result = mysql_query($sql, $tmp_lang_db);
+		$result = mysqli_query($tmp_lang_db, $sql);
 
-		if ($row = mysql_fetch_assoc($result)) {
-			$row['reg_exp'] = addslashes($row['reg_exp']);
-			$row['native_name'] = addslashes($row['native_name']);
-			$row['english_name'] = addslashes($row['english_name']);
+		if ($row = mysqli_fetch_assoc($result)) {
+			$row['reg_exp'] = $languagesDAO->addSlashes($row['reg_exp']);
+			$row['native_name'] = $languagesDAO->addSlashes($row['native_name']);
+			$row['english_name'] = $languagesDAO->addSlashes($row['english_name']);
 
 			$sql = "REPLACE INTO ".TABLE_PREFIX."languages VALUES ('{$row['language_code']}', '{$row['charset']}', '{$row['reg_exp']}', '{$row['native_name']}', '{$row['english_name']}', 3)";
-			$result = mysql_query($sql, $db);
+			$result = mysqli_query($languagesDAO->db, $sql);
 
 			$sql = "SELECT * FROM language_text_SVN WHERE language_code='$language_code'";
-			$result = mysql_query($sql, $tmp_lang_db);
+			$result = mysqli_query($tmp_lang_db, $sql);
 
 			$sql = "REPLACE INTO ".TABLE_PREFIX."language_text VALUES ";
-			while ($row = mysql_fetch_assoc($result)) {
-				$row['text'] = addslashes($row['text']);
-				$row['context'] = addslashes($row['context']);
+			while ($row = mysqli_fetch_assoc($result)) {
+				$row['text'] = $languagesDAO->addSlashes($row['text']);
+				$row['context'] = $languagesDAO->addSlashes($row['context']);
 				$sql .= "('{$row['language_code']}', '{$row['variable']}', '{$row['term']}', '{$row['text']}', '{$row['revised_date']}', '{$row['context']}'),";
 			}
 			$sql = substr($sql, 0, -1);
-			mysql_query($sql, $db);
+			mysqli_query($languagesDAO->db, $sql);
 		}
 	}
 	
 }
-
-
 ?>

@@ -21,8 +21,8 @@
 * @package	Language
 */
 include_once(AC_INCLUDE_PATH.'classes/DAO/LangCodesDAO.class.php');
-
-class Language {
+require_once(AC_INCLUDE_PATH. 'classes/DAO/DAO.class.php');
+class Language extends DAO {
 	// all private
 	var $code;
 	var $characterSet;
@@ -32,6 +32,7 @@ class Language {
 	var $englishName;
 	var $status;
 	var $achecker_version;
+
 
 	// constructor
 
@@ -103,7 +104,7 @@ class Language {
 		// this code has to be translated:
 		return _AT('lang_' . str_replace('-', '_', $this->code));
 	}
-
+ 
 	function getNativeName() {
 		return $this->nativeName;
 	}
@@ -133,14 +134,13 @@ class Language {
 	 * @param	1 for admin, 0 for members, all other integers are ignored. 
 	 */
 	function saveToPreferences($id, $is_admin) {
-		global $db;
 		if ($id) {
 			if ($is_admin === 0) {
 				$sql = "UPDATE ".TABLE_PREFIX."members SET language='".$this->code."', creation_date=creation_date, last_login=last_login WHERE member_id=$id";
 			} elseif ($is_admin === 1) {
 				$sql = "UPDATE ".TABLE_PREFIX."admins SET language='".$this->code."', last_login=last_login WHERE login='$id'";
 			}
-			mysql_query($sql,$db);
+			mysqli_query($this->db, $sql);
 		}
 	}
 

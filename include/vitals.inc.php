@@ -36,16 +36,15 @@ function unregister_GLOBALS() {
  * structure of this document (in order):
  *
  * 0. load config.inc.php
- * 1. initilize db connection
- * 2. load constants
- * 3. initilize session
- * 4. load $_config from table 'config'
- * 5. start language block
- * 6. load common libraries
- * 7. initialize theme and template management
- * 8. initialize a user instance without user id. 
+ * 1. load constants
+ * 2. initilize session
+ * 3. load $_config from table 'config'
+ * 4. start language block
+ * 5. load common libraries
+ * 6. initialize theme and template management
+ * 7. initialize a user instance without user id. 
  *    if $_SESSION['user_id'] is set, it's assigned to instance in include/header.inc.php
- * 9. register pages based on current user's priviledge 
+ * 8. register pages based on current user's priviledge 
  ***/
 
 /**** 0. start system configuration options block ****/
@@ -61,18 +60,12 @@ if (!defined('AC_INSTALL') || !AC_INSTALL) {
 	header('Location: ' . $relative_path . 'install/not_installed.php');
 	exit;
 }
-/*** end system config block ****/
 
-/***** 1. database connection *****/
-//if (!defined('AC_REDIRECT_LOADED')){
-//	require_once(AC_INCLUDE_PATH.'lib/mysql_connect.inc.php');
-//}
-/***** end database connection ****/
 
-/*** 2. constants ***/
+/*** 1. constants ***/
 require_once(AC_INCLUDE_PATH.'constants.inc.php');
 
-/*** 3. initilize session ***/
+/*** 2. initilize session ***/
 	@set_time_limit(0);
 	@ini_set('session.gc_maxlifetime', '36000'); /* 10 hours */
 	@session_cache_limiter('private, must-revalidate');
@@ -89,19 +82,14 @@ require_once(AC_INCLUDE_PATH.'constants.inc.php');
 
 /***** end session initilization block ****/
 
-function my_add_null_slashes( $string ) {
-    return mysql_real_escape_string(stripslashes($string));
-}
 
 function my_null_slashes($string) {
 	return $string;
 }
 
 if ( get_magic_quotes_gpc() == 1 ) {
-	$addslashes   = 'my_add_null_slashes';
 	$stripslashes = 'stripslashes';
 } else {
-	$addslashes   = 'mysql_real_escape_string';
 	$stripslashes = 'my_null_slashes';
 }
 
@@ -109,7 +97,7 @@ require(AC_INCLUDE_PATH.'phpCache/phpCache.inc.php'); // cache library
 require(AC_INCLUDE_PATH.'classes/DAO/ThemesDAO.class.php');
 require(AC_INCLUDE_PATH.'classes/DAO/ConfigDAO.class.php');
 
-/***** 4. load $_config from table 'config' *****/
+/***** 3. load $_config from table 'config' *****/
 $configDAO = new ConfigDAO();
 $rows = $configDAO->getAll();
 foreach ($rows as $id => $row)
@@ -122,7 +110,7 @@ define('EMAIL',                     $_config['contact_email']);
 define('SITE_NAME',                 $_config['site_name']);
 /***** end loading $_config *****/
 
-/***** 5. start language block *****/
+/***** 4. start language block *****/
 	// set current language
 	require(AC_INCLUDE_PATH . 'classes/Language/LanguageManager.class.php');
 	$languageManager = new LanguageManager();
@@ -143,11 +131,11 @@ define('SITE_NAME',                 $_config['site_name']);
 	}
 /***** end language block ****/
 
-/***** 6. load common libraries *****/
+/***** 5. load common libraries *****/
 	require(AC_INCLUDE_PATH.'lib/output.inc.php');           /* output functions */
 /***** end load common libraries ****/
 
-/***** 7. initialize theme and template management *****/
+/***** 6. initialize theme and template management *****/
 	require(AC_INCLUDE_PATH.'classes/Savant2/Savant2.php');
 
 	// set default template paths:
@@ -185,7 +173,7 @@ define('SITE_NAME',                 $_config['site_name']);
 
 /***** end of initialize theme and template management *****/
 
-/***** 8. initialize user instance *****/
+/***** 7. initialize user instance *****/
 // used as global var
 if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
 {
@@ -204,7 +192,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
 }
 /***** end of initialize user instance *****/
 
-/*** 9. register pages based on user's priviledge ***/
+/*** 8. register pages based on user's priviledge ***/
 require_once(AC_INCLUDE_PATH.'page_constants.inc.php');
 
 // used in AC_print @ include/lib/output.inc.php
@@ -280,12 +268,7 @@ $num_bits = count($bits);
 $_my_uri  = '';
 
 for ($i=0; $i<$num_bits; $i++) {
-//	if (	(strpos($bits[$i], 'enable=')	=== 0) 
-//		||	(strpos($bits[$i], 'disable=')	=== 0)
-//		||	(strpos($bits[$i], 'expand=')	=== 0)
-//		||	(strpos($bits[$i], 'collapse=')	=== 0)
-//		||	(strpos($bits[$i], 'lang=')		=== 0)
-//		) {
+
 	if (	(strpos($bits[$i], 'lang=')		=== 0)
 		) {
 		/* we don't want this variable added to $_my_uri */
