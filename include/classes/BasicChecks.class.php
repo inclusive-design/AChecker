@@ -160,7 +160,7 @@ class BasicChecks {
 	*/
 	public static function hasDuplicateAttribute($e, $attr, $id_array)
 	{
-		global $has_duplicate_attribute, $id_array;
+		global $has_duplicate_attribute;
 		
 		foreach($e->children() as $child)
 		{
@@ -510,7 +510,7 @@ class BasicChecks {
 	*/
 	public static function has_duplicate_attribute($e, $attr, $id_array)
 	{
-		global $has_duplicate_attribute, $id_array;
+		global $has_duplicate_attribute;
 		
 		if ($has_duplicate_attribute) return;
 		
