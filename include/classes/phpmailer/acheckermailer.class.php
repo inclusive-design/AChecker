@@ -80,13 +80,13 @@ class ACheckerMailer extends PHPMailer {
 			$mailQueueDAO = new MailQueueDAO();
 			
 			for ($i = 0; $i < count($this->to); $i++) {
-				$mailQueueDAO->Create(addslashes($this->to[$i][0]), addslashes($this->to[$i][1]), addslashes($this->From), addslashes($this->FromName), addslashes($this->Subject), addslashes($this->Body), addslashes($this->CharSet));
+				$mailQueueDAO->Create($mailQueueDAO->addSlashes($this->to[$i][0]), $mailQueueDAO->addSlashes($this->to[$i][1]), $mailQueueDAO->addSlashes($this->From), $mailQueueDAO->addSlashes($this->FromName), $mailQueueDAO->addSlashes($this->Subject), $mailQueueDAO->addSlashes($this->Body), $mailQueueDAO->addSlashes($this->CharSet));
 			}
 			for($i = 0; $i < count($this->cc); $i++) {
-				$mailQueueDAO->Create(addslashes($this->cc[$i][0]), addslashes($this->cc[$i][1]), addslashes($this->From), addslashes($this->FromName), addslashes($this->Subject), addslashes($this->Body), addslashes($this->CharSet));
+				$mailQueueDAO->Create($mailQueueDAO->addSlashes($this->cc[$i][0]), $mailQueueDAO->addSlashes($this->cc[$i][1]), $mailQueueDAO->addSlashes($this->From), $mailQueueDAO->addSlashes($this->FromName), $mailQueueDAO->addSlashes($this->Subject), $mailQueueDAO->addSlashes($this->Body), $mailQueueDAO->addSlashes($this->CharSet));
 			}
 			for($i = 0; $i < count($this->bcc); $i++) {
-				$mailQueueDAO->Create(addslashes($this->bcc[$i][0]), addslashes($this->bcc[$i][1]), addslashes($this->From), addslashes($this->FromName), addslashes($this->Subject), addslashes($this->Body), addslashes($this->CharSet));
+				$mailQueueDAO->Create($mailQueueDAO->addSlashes($this->bcc[$i][0]), $mailQueueDAO->addSlashes($this->bcc[$i][1]), $mailQueueDAO->addSlashes($this->From), $mailQueueDAO->addSlashes($this->FromName), $mailQueueDAO->addSlashes($this->Subject), $mailQueueDAO->addSlashes($this->Body), $mailQueueDAO->addSlashes($this->CharSet));
 			}
 			return true;
 		} else {
@@ -102,7 +102,6 @@ class ACheckerMailer extends PHPMailer {
 	* @author Joel Kronenberg
 	*/
 	function SendQueue() {
-		global $db;
 
 		require_once(AC_INCLUDE_PATH.'classes/DAO/MailQueueDAO.class.php');
 		$mailQueueDAO = new MailQueueDAO();

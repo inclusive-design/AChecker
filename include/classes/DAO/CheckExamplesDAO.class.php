@@ -34,12 +34,11 @@ class CheckExamplesDAO extends DAO {
 	*/
 	public function Create($checkID, $type, $description, $content)
 	{
-		global $addslashes;
-
+	
 		$checkID = intval($checkID);
-		$type = $addslashes($type);
-		$description = $addslashes(trim($description));
-		$content = $addslashes(trim($content));
+		$type = $this->addSlashes($type);
+		$description = $this->addSlashes(trim($description));
+		$content = $this->addSlashes(trim($content));
 		
 		// don't insert if no desc and content
 		if ($description == '' && $content == '') return true;
@@ -59,7 +58,7 @@ class CheckExamplesDAO extends DAO {
 		}
 		else
 		{
-			return mysql_insert_id();
+			return $this->getInsertID();
 		}
 	}
 	
@@ -73,11 +72,10 @@ class CheckExamplesDAO extends DAO {
 	*/
 	public function getByCheckIDAndType($checkID, $type)
 	{
-		global $addslashes;
 		
 		$sql = "SELECT * FROM ".TABLE_PREFIX."check_examples
 				WHERE check_id = ".intval($checkID)."
-				  AND type = ".$addslashes($type);
+				  AND type = ".$this->addSlashes($type);
 
 		return $this->execute($sql);
 	}

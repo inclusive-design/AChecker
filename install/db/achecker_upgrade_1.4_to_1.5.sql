@@ -11,7 +11,7 @@ ALTER TABLE `checks` MODIFY `create_date` datetime DEFAULT NULL;
 
 ALTER TABLE `language_text` MODIFY `revised_date` datetime default NULL;
 
-ALTER TABLE `themes` MODIFY `last_updated` date NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE `themes` MODIFY `last_updated` datetime;
 
 UPDATE `checks` SET create_date = NULL WHERE create_date = '0000-00-00 00:00:00';
 

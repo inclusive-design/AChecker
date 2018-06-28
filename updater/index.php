@@ -115,7 +115,7 @@ if (!is_dir($module_content_folder)) mkdir($module_content_folder);
 
 if ($_POST['install_upload'] && $_POST['uploading'])
 {
-	include_once(AC_INCLUDE_PATH . 'lib/pclzip.lib.php');
+	
 	
 	// clean up module content folder
 	Utility::clearDir($module_content_folder);
@@ -126,10 +126,12 @@ if ($_POST['install_upload'] && $_POST['uploading'])
 	if (!Utility::is_extension_in_list($_FILES['patchfile']['name'], $allowed_file_extensions)) {
 		$msg->addError(array('ALLOWED_FILE_TYPES', implode(", ", $allowed_file_extensions)));
 	} else {
-		$archive = new PclZip($_FILES['patchfile']['tmp_name']);
+		$zip = new ZipArchive();
 
-		if ($archive->extract(PCLZIP_OPT_PATH, $module_content_folder) == 0)
-		{
+		if ($zip->open($_FILES['patchfile']['tmp_name']) === TRUE) {
+			$zip->extractTo($module_content_folder);
+	   		$zip->close();
+		} else {
 		    Utility::clearDir($module_content_folder);
 		    $msg->addError('CANNOT_UNZIP');
 		}

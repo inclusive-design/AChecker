@@ -17,7 +17,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 require('../include/constants.inc.php');
 
 $new_version = VERSION;
-
+ 
 header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Pragma: no-cache');
 
@@ -71,9 +71,9 @@ $not_as_good = FALSE;
 			<th scope="col">Status</th>
 		</tr>
 		<tr>
-			<td>PHP 5.0.0+</td>
+			<td>PHP 5.2.0+</td>
 			<td><?php echo phpversion(); ?></td>
-			<td align="center"><?php	if (version_compare(phpversion(), '5.0.0', '>=')) {
+			<td align="center"><?php	if (version_compare(phpversion(), '5.2.0', '>=')) {
 							echo $good;
 						} else {
 							echo $bad;
@@ -82,7 +82,7 @@ $not_as_good = FALSE;
 		</tr>
 		<tr>
 			<td><kbd>mysql</kbd></td>
-			<td><?php if (extension_loaded('mysql')) {
+			<td><?php if (extension_loaded('mysqli')) {
 						echo 'Enabled</td><td align="center">';
 						echo $good;
 					} else {
@@ -203,16 +203,16 @@ $not_as_good = FALSE;
 			<th scope="col">Status</th>
 		</tr>
 		<tr>
-			<td>MySQL 4.1.10+</td>
-			<td><?php if (defined('MYSQL_NUM')) {
-						$mysql_version = mysql_get_client_info();
-						echo 'Found  Version '.$mysql_version.'</td><td align="center">';
-						echo $good;
+			<td>MySQL 4.1.13+</td>
+			<td><?php if (defined('MYSQLI_NUM')) {
+						echo 'Will be verified in the next step, when database credentials are provided</td><td align="center">';
+						echo '&#63';
 					} else {
 						echo 'Not Found</td><td align="center">';
 						echo $bad;
 						$no_good = TRUE;
-					} ?></td>
+					} ?>
+			</td>
 		</tr>
 		</tbody>
 		</table>

@@ -73,12 +73,13 @@ if (isset($_GET['include']) && $_GET['include'] == 'one') {
 	$checked_include_all = ' checked="checked"';
 	$page_string .= htmlspecialchars(SEP).'include=all';
 }
-
+ 
 if ($_GET['search']) {
 	$page_string .= htmlspecialchars(SEP).'search='.urlencode($stripslashes($_GET['search']));
-	$search = $addslashes($_GET['search']);
+	
+	$search = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_SPECIAL_CHARS);
 	$search = explode(' ', $search);
-
+	
 	if ($_GET['include'] == 'all') {
 		$predicate = 'AND ';
 	} else {
@@ -136,7 +137,7 @@ $user_rows = $dao->execute($sql);
 
 if ( isset($_GET['apply_all']) && $_GET['change_status'] >= -1) {
 	$ids = '';
-	while ($row = mysql_fetch_assoc($result)) {
+	while ($row = mysqli_fetch_assoc($result)) {
 		$ids .= $row['user_id'].','; 
 	}
 	$ids = substr($ids,0,-1);
