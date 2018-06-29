@@ -46,7 +46,7 @@ class Menu {
 	 * @param   None
 	 * @author  Cindy Qi Li
 	 */
-	function Menu()
+	function __construct()
 	{
 		$this->pages[AC_NAV_TOP] = array();        // top tab pages
 

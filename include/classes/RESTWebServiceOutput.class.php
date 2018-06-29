@@ -124,7 +124,7 @@ class RESTWebServiceOutput {
 	* $user_link_id: user link id
 	* $guideline_array: an array of guideline ids
 	*/
-	function RESTWebServiceOutput($errors, $userLinkID, $guidelineArray)
+	function __construct($errors, $userLinkID, $guidelineArray)
 	{
 		$this->errors = $errors;
 		$this->userLinkID = $userLinkID;
