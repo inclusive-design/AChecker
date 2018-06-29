@@ -34,7 +34,7 @@ class User {
 	 * @param   None
 	 * @author  Cindy Qi Li
 	 */
-	function User($user_id)
+	function __construct($user_id)
 	{
 		$this->userID = $user_id;
 
