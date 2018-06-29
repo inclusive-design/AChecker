@@ -161,7 +161,8 @@ class BasicChecks {
 	public static function hasDuplicateAttribute($e, $attr, $id_array)
 	{
 		global $has_duplicate_attribute, $id_array;
-		is_array($id_array) ? $id_array= array() : $id_array = array();
+
+		is_array($id_array) ? $id_array  : $id_array = array();
 		
 		foreach($e->children() as $child)
 		{
@@ -513,7 +514,7 @@ class BasicChecks {
 	{
 		global $has_duplicate_attribute, $id_array;
 		
-		is_array($id_array) ? $id_array= array() : $id_array = array();
+		is_array($id_array) ? $id_array  : $id_array = array();
 
 		if ($has_duplicate_attribute) return;
 		
