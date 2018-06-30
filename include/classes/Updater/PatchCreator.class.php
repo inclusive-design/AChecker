@@ -78,7 +78,7 @@ class PatchCreator {
 	* )
 	*/
 	
-	function PatchCreator($patch_info_array, $patch_id)
+	function __construct($patch_info_array, $patch_id)
 	{
 	
 		$this->patch_info_array = $patch_info_array; 

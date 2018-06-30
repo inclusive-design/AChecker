@@ -54,7 +54,7 @@ class LanguageManager {
 	* 
 	* Initializes availableLanguages and numLanguages.
 	*/
-	function LanguageManager() {
+	function __construct() {
 		require_once(AC_INCLUDE_PATH. 'classes/DAO/LanguagesDAO.class.php');
 		$languagesDAO = new LanguagesDAO();
 		

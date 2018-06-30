@@ -146,10 +146,10 @@ class HTMLByGuidelineRpt extends AccessibilityRpt {
 	* $errors: an array, output of AccessibilityValidator -> getValidationErrorRpt
 	* $type: html
 	*/
-	function HTMLByGuidelineRpt($errors, $gid, $user_link_id = '')
+	function __construct($errors, $gid, $user_link_id = '')
 	{
 		// run parent constructor
-		parent::AccessibilityRpt($errors, $user_link_id);
+		parent::__construct($errors, $user_link_id);
 		
 		$this->gid = $gid;
 		

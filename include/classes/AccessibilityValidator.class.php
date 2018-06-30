@@ -62,7 +62,7 @@ class AccessibilityValidator {
 	 * $content: string, html content to check
 	 * $guidelines: array, guidelines to check on
 	 */
-	function AccessibilityValidator($content, $guidelines, $uri = '')
+	function __construct($content, $guidelines, $uri = '')
 	{
 		$this->validate_content = $content;
 		$this->guidelines = $guidelines;

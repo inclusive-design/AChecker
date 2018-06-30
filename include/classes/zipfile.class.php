@@ -55,7 +55,7 @@ class zipfile {
 	* @access	public
 	* @author	Joel Kronenberg
 	*/
-	function zipfile() {
+	function __construct() {
 		$this->files_data = '';
 		$this->central_directory_headers = '';
 		$this->num_entries = 0;

@@ -35,8 +35,9 @@ class Language extends DAO {
 
 
 	// constructor
-	function Language($language_row) {
-		
+
+	function __construct($language_row) {
+
 		if (is_array($language_row)) {
 			$this->code              = $language_row['language_code'];
 			$this->characterSet      = $language_row['charset'];
