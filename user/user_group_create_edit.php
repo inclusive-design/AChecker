@@ -88,7 +88,9 @@ if (!isset($id))
 	// create user group
 	$privilegesDAO = new PrivilegesDAO();
 	
-	$savant->assign('privs_to_add_rows', $privilegesDAO->getAll());
+	//$savant->assign('privs_to_add_rows', $privilegesDAO->getAll());
+
+	$plate['privs_to_add_rows'] = $privilegesDAO->getAll();
 }
 else
 {
@@ -104,10 +106,15 @@ else
 			$privs[] .= $priv_row['privilege_id'];
 	}
 	
-	$savant->assign('user_group_row', $userGroupsDAO->getUserGroupByID($id));
-	$savant->assign('privs_rows', $privs_rows);
-	$savant->assign('privs_to_add_rows', $privilegesDAO->getAllPrivsExceptListed($privs));
+	// $savant->assign('user_group_row', $userGroupsDAO->getUserGroupByID($id));
+	// $savant->assign('privs_rows', $privs_rows);
+	// $savant->assign('privs_to_add_rows', $privilegesDAO->getAllPrivsExceptListed($privs));
+
+	$plate['user_group_row'] = $userGroupsDAO->getUserGroupByID($id);
+	$plate['privs_rows'] = $privs_rows;
+	$plate['privs_to_add_rows'] = $privilegesDAO->getAllPrivsExceptListed($privs);
 }
 
-$savant->display('user/user_group_create_edit.tmpl.php');
+// $savant->display('user/user_group_create_edit.tmpl.php');
+echo $plates->render('user/user_group_create_edit.tmpl.php', $plate);
 ?>

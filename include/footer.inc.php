@@ -11,9 +11,10 @@
 /************************************************************************/
 // $Id$
 
-global $savant;
-
+//global $savant;
+global $plates;
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 
-$savant->display('include/footer.tmpl.php');
+//$savant->display('include/footer.tmpl.php');
+echo $plates->render('include/footer.tmpl.php');
 ?>

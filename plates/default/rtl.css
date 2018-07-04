@@ -1,0 +1,28 @@
+/************************************************************************/
+/* AChecker                                                             */
+/************************************************************************/
+/* Copyright (c) 2008 - 2011                                            */
+/* Inclusive Design Institute                                           */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or        */
+/* modify it under the terms of the GNU General Public License          */
+/* as published by the Free Software Foundation.                        */
+/************************************************************************/
+/* $Id$ */
+
+/* for right to left languages */
+html, body {
+	direction: rtl;
+}
+
+.img-size-tree {
+	vertical-align: middle;
+	margin-top: 0px;
+	height:1.45em;
+	width:1.45em;
+	float: right;
+}
+
+div.box {
+	line-height:150%;
+}

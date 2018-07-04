@@ -221,30 +221,49 @@ $check_rows = $checksDAO->getChecksByCondition($condition, $col, $order, $offset
 
 // if prerequisite or next checks are inserted into db successfully, 
 // $javascript_run_now is set to refresh parent window 
-if (isset($javascript_run_now)) $savant->assign('javascript_run_now', $javascript_run_now);
+if (isset($javascript_run_now)) $plate['javascript_run_now'] = $javascript_run_now; //$savant->assign('javascript_run_now', $javascript_run_now);
 
-$savant->assign('check_rows', $check_rows);
-$savant->assign('all_html_tags', $checksDAO->getAllHtmlTags());
-$savant->assign('results_per_page', $results_per_page);
-$savant->assign('num_results', $num_results);
-$savant->assign('col_counts', $col_counts);
-$savant->assign('page',$page);
-$savant->assign('page_string', $page_string);
-$savant->assign('orders', $orders);
-$savant->assign('order', $order);
-$savant->assign('col', $col);
+// $savant->assign('check_rows', $check_rows);
+// $savant->assign('all_html_tags', $checksDAO->getAllHtmlTags());
+// $savant->assign('results_per_page', $results_per_page);
+// $savant->assign('num_results', $num_results);
+// $savant->assign('col_counts', $col_counts);
+// $savant->assign('page',$page);
+// $savant->assign('page_string', $page_string);
+// $savant->assign('orders', $orders);
+// $savant->assign('order', $order);
+// $savant->assign('col', $col);
+
+$plate['check_rows'] = $check_rows;
+$plate['all_html_tags'] = $checksDAO->getAllHtmlTags();
+$plate['results_per_page'] = $results_per_page;
+$plate['num_results'] = $num_results;
+$plate['col_counts'] = $col_counts;
+$plate['page'] = $page;
+$plate['page_string'] = $page_string;
+$plate['orders'] = $orders;
+$plate['order'] = $order;
+$plate['col'] = $col;
 
 if (isset($_GET['list']))
 {
-	$savant->assign('row_button_type', 'checkbox');
-	$savant->assign('buttons', array('add'));
+	// $savant->assign('row_button_type', 'checkbox');
+	// $savant->assign('buttons', array('add'));
+
+	$plate['row_button_type'] = 'checkbox';
+	$plate['buttons'] = array('add');
 }
 else
 {
-	$savant->assign('row_button_type', 'radio');
-	$savant->assign('buttons', array('edit', 'edit_function','delete'));
+	// $savant->assign('row_button_type', 'radio');
+	// $savant->assign('buttons', array('edit', 'edit_function','delete'));
+
+	$plate['row_button_type'] = 'radio';
+	$plate['buttons'] = array('edit', 'edit_function','delete');
 }
 
-$savant->display('check/index.tmpl.php');
+// $savant->display('check/index.tmpl.php');
+
+echo $plates->render('check/index.tmpl.php',$plate);
 
 ?>

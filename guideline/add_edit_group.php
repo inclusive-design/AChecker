@@ -78,11 +78,15 @@ if ($_GET['action'] == 'edit')
 	if (isset($_GET['gsgid']))
 		$row = $guidelineSubgroupsDAO->getSubgroupByID($_GET['gsgid']);
 	
-	$savant->assign('row', $row);
+	// $savant->assign('row', $row);
+
+	$plate['row'] = $row;
 }
 
-if (isset($javascript_run_now)) $savant->assign('javascript_run_now', $javascript_run_now);
+if (isset($javascript_run_now)) $plate['javascript_run_now'] = $javascript_run_now; //$savant->assign('javascript_run_now', $javascript_run_now);
 
-$savant->display('guideline/add_edit_group.tmpl.php');
+//$savant->display('guideline/add_edit_group.tmpl.php');
+
+echo $plates->render('guideline/add_edit_group.tmpl.php', $plate);
 
 ?>

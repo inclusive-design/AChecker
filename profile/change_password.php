@@ -93,6 +93,6 @@ if (isset($_POST['submit'])) {
 }
 
 /* template starts here */
-$savant->display('profile/change_password.tmpl.php');
-
+//$savant->display('profile/change_password.tmpl.php');
+echo $plates->render('profile/change_password.tmpl.php');
 ?>

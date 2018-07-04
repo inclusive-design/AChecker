@@ -154,18 +154,31 @@ if ( isset($_GET['apply_all']) && $_GET['change_status'] >= -1) {
 
 $userGroupsDAO = new UserGroupsDAO();
 
-$savant->assign('user_rows', $user_rows);
-$savant->assign('all_user_groups', $userGroupsDAO->getAll());
-$savant->assign('results_per_page', $results_per_page);
-$savant->assign('num_results', $num_results);
-$savant->assign('checked_include_all', $checked_include_all);
-$savant->assign('col_counts', $col_counts);
-$savant->assign('page',$page);
-$savant->assign('page_string', $page_string);
-$savant->assign('orders', $orders);
-$savant->assign('order', $order);
-$savant->assign('col', $col);
+// $savant->assign('user_rows', $user_rows);
+// $savant->assign('all_user_groups', $userGroupsDAO->getAll());
+// $savant->assign('results_per_page', $results_per_page);
+// $savant->assign('num_results', $num_results);
+// $savant->assign('checked_include_all', $checked_include_all);
+// $savant->assign('col_counts', $col_counts);
+// $savant->assign('page',$page);
+// $savant->assign('page_string', $page_string);
+// $savant->assign('orders', $orders);
+// $savant->assign('order', $order);
+// $savant->assign('col', $col);
 
-$savant->display('user/index.tmpl.php');
+$plate['user_rows'] = $user_rows;
+$plate['all_user_groups'] = $userGroupsDAO->getAll();
+$plate['results_per_page'] = $results_per_page;
+$plate['num_results'] = $num_results;
+$plate['checked_include_all'] = $checked_include_all;
+$plate['col_counts'] = $col_counts;
+$plate['page'] = $page;
+$plate['page_string'] = $page_string;
+$plate['orders'] = $orders;
+$plate['order'] = $order;
+$plate['col'] = $col;
+
+// $savant->display('user/index.tmpl.php');
+echo $plates->render('user/index.tmpl.php', $plate);
 
 ?>

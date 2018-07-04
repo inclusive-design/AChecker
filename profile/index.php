@@ -76,10 +76,13 @@ if (!isset($_POST['submit'])) {
 
 /* template starts here */
 
-$savant->assign('row', $row);
+// $savant->assign('row', $row);
+
+$plate['row'] = $row;
 
 global $onload;
 $onload = 'document.form.first_name.focus();';
 
-$savant->display('profile/profile.tmpl.php');
+// $savant->display('profile/profile.tmpl.php');
+echo $plates->render('profile/profile.tmpl.php', $plate);
 ?>

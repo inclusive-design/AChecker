@@ -54,18 +54,21 @@ else if (isset($_POST['form_password_reminder']))
 
 		if(!$mail->Send()) {
 		   $msg->addError('SENDING_ERROR');
-		   $savant->display('password_reminder_feedback.tmpl.php'); 
+		//    $savant->display('password_reminder_feedback.tmpl.php'); 
+			echo $plates->render('password_reminder_feedback.tmpl.php');
 		   exit;
 		}
 
 		$msg->addFeedback('CONFIRM_EMAIL2');
 		unset($mail);
 
-		$savant->display('password_reminder_feedback.tmpl.php'); 
+		//$savant->display('password_reminder_feedback.tmpl.php'); 
+		echo $plates->render('password_reminder_feedback.tmpl.php');
 
 	} else {
 		$msg->addError('EMAIL_NOT_FOUND');
-		$savant->display('password_reminder.tmpl.php'); 
+		// $savant->display('password_reminder.tmpl.php'); 
+		echo $plates->render('password_reminder.tmpl.php');
 	}
 
 } else if (isset($_REQUEST['id']) && isset($_REQUEST['g']) && isset($_REQUEST['h'])) 
@@ -79,7 +82,8 @@ else if (isset($_POST['form_password_reminder']))
 	if ($current > $expiry_date) 
 	{
 		$msg->addError('INVALID_LINK'); 
-		$savant->display('password_reminder_feedback.tmpl.php'); 
+		// $savant->display('password_reminder_feedback.tmpl.php'); 
+		echo $plates->render('password_reminder_feedback.tmpl.php');
 		exit;
 	}
 
@@ -96,20 +100,28 @@ else if (isset($_POST['form_password_reminder']))
 		if ($_REQUEST['h'] != $hash_bit) 
 		{
 			$msg->addError('INVALID_LINK');
-			$savant->display('password_reminder_feedback.tmpl.php'); 
+			// $savant->display('password_reminder_feedback.tmpl.php'); 
+			echo $plates->render('password_reminder_feedback.tmpl.php');
 		} 
 		else if (($_REQUEST['h'] == $hash_bit) && !isset($_POST['form_change'])) 
 		{
-			$savant->assign('id', $_REQUEST['id']);
-			$savant->assign('g', $_REQUEST['g']);
-			$savant->assign('h', $_REQUEST['h']);
-			$savant->display('change_password.tmpl.php');
+			// $savant->assign('id', $_REQUEST['id']);
+			// $savant->assign('g', $_REQUEST['g']);
+			// $savant->assign('h', $_REQUEST['h']);
+
+			$plate['id'] = $_REQUEST['id'];
+			$plate['g'] = $_REQUEST['g'];
+			$plate['h'] = $_REQUEST['h'];
+			// $savant->display('change_password.tmpl.php');
+			echo $plates->render('change_password.tmpl.php', $plate);
 		}
 	} 
 	else 
 	{
 		$msg->addError('INVALID_LINK');
-		$savant->display('password_reminder_feedback.tmpl.php'); 
+		// $savant->display('password_reminder_feedback.tmpl.php'); 
+
+		echo $plates->render('password_reminder_feedback.tmpl.php');
 		exit;
 	}
 
@@ -165,15 +177,24 @@ else if (isset($_POST['form_password_reminder']))
 			header('Location:index.php');
 
 		} else {
-			$savant->assign('id', $_REQUEST['id']);
-			$savant->assign('g', $_REQUEST['g']);
-			$savant->assign('h', $_REQUEST['h']);
-			$savant->display('change_password.tmpl.php');
+			// $savant->assign('id', $_REQUEST['id']);
+			// $savant->assign('g', $_REQUEST['g']);
+			// $savant->assign('h', $_REQUEST['h']);
+
+			$plate['id'] = $_REQUEST['id'];
+			$plate['g'] = $_REQUEST['g'];
+			$plate['h'] = $_REQUEST['h'];
+
+			//$savant->display('change_password.tmpl.php');
+
+			echo $plates->render('change_password.tmpl.php', $plate);
 		} 
 	}
 
 } else {
 	$savant->display('password_reminder.tmpl.php');
+
+	echo $plates->render('password_reminder.tmpl.php');
 }
 
 ?>

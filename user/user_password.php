@@ -87,6 +87,8 @@ if (isset($_POST['submit'])) {
 }
 
 /* template starts here */
-$savant->display('user/user_password.tmpl.php');
+// $savant->display('user/user_password.tmpl.php');
+
+echo $plates->render('user/user_password.tmpl.php',$plate);
 
 ?>

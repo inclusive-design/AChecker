@@ -25,8 +25,10 @@ if (!isset($_POST["rpt_format"])) $_POST["rpt_format"] = REPORT_FORMAT_GUIDELINE
 $guidelinesDAO = new GuidelinesDAO();
 $open_guidelines = $guidelinesDAO->getOpenGuidelines();
 
-$savant->assign('default_uri_value', $default_uri_value);
-$savant->assign('num_of_guidelines_per_row', $num_of_guidelines_per_row);
+// $savant->assign('default_uri_value', $default_uri_value);
+// $savant->assign('num_of_guidelines_per_row', $num_of_guidelines_per_row);
+$plate['default_uri_value'] = $default_uri_value;
+$plate['num_of_guidelines_per_row'] = $num_of_guidelines_per_row;
 
 if (isset($_current_user))
 {
@@ -42,8 +44,9 @@ else
 	
 }
 
-if (isset($decision_error)) $savant->assign('error', $decision_error);
-$savant->assign('rows', $guidelines);
-
-$savant->display('checker/checker_input_form.tmpl.php');
+if (isset($decision_error)) $plate['error'] = $decision_error; //$savant->assign('error', $decision_error);
+// $savant->assign('rows', $guidelines);
+$plate['rows'] = $guidelines;
+echo $plates->render('checker/checker_input_form.tmpl.php', $plate);
+// $savant->display('checker/checker_input_form.tmpl.php');
 ?>

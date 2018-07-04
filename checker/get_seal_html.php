@@ -36,9 +36,14 @@ if (is_array($seals)) {
 	$userLinksDAO = new UserLinksDAO();
 	$rows = $userLinksDAO->getByUserIDAndURIAndSession($_SESSION['user_id'], $_POST['uri'], $_POST['jsessionid']);
 	
-	$savant->assign('user_link_id', $rows[0]['user_link_id']);
-	$savant->assign('seals', $seals);
-	$savant->display('checker/seals.tmpl.php');
+	// $savant->assign('user_link_id', $rows[0]['user_link_id']);
+	// $savant->assign('seals', $seals);
+
+	$plate['user_link_id'] = $rows[0]['user_link_id'];
+	$plate['seals'] = $seals;
+
+	// $savant->display('checker/seals.tmpl.php');
+	echo $plates->render('checker/seals.tmpl.php',$plate);
 }
 
 exit;

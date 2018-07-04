@@ -125,7 +125,7 @@ if (isset($check_id)) // edit existing user
 	$usersDAO = new UsersDAO();
 	$user_name = $usersDAO->getUserName($check_row['user_id']);
 
-	if ($user_name <> '') $savant->assign('author', $user_name);
+	if ($user_name <> '') $plate['author'] = $user_name; //$savant->assign('author', $user_name);
 
 	$check_pass_example_rows = $checkExamplesDAO->getByCheckIDAndType($check_id, AC_CHECK_EXAMPLE_PASS);
 	$check_fail_example_rows = $checkExamplesDAO->getByCheckIDAndType($check_id, AC_CHECK_EXAMPLE_FAIL);
@@ -134,16 +134,23 @@ if (isset($check_id)) // edit existing user
 	$check_example_row['fail_example_desc'] = $check_fail_example_rows[0]['description'];
 	$check_example_row['fail_example'] = $check_fail_example_rows[0]['content'];
 	
-	$savant->assign('check_row', $check_row);
-	$savant->assign('pre_rows', $checkPrerequisitesDAO->getPreChecksByCheckID($check_id));
-	$savant->assign('next_rows', $testPassDAO->getNextChecksByCheckID($check_id));
-	$savant->assign('guideline_rows', $guidelinesDAO->getEnabledGuidelinesByCheckID($check_id));
-	$savant->assign('check_example_row', $check_example_row);
+	// $savant->assign('check_row', $check_row);
+	// $savant->assign('pre_rows', $checkPrerequisitesDAO->getPreChecksByCheckID($check_id));
+	// $savant->assign('next_rows', $testPassDAO->getNextChecksByCheckID($check_id));
+	// $savant->assign('guideline_rows', $guidelinesDAO->getEnabledGuidelinesByCheckID($check_id));
+	// $savant->assign('check_example_row', $check_example_row);
+
+	$plate['check_row'] = $check_row;
+	$plate['pre_rows'] = $checkPrerequisitesDAO->getPreChecksByCheckID($check_id);
+	$plate['next_rows'] = $testPassDAO->getNextChecksByCheckID($check_id);
+	$plate['guideline_rows'] = $guidelinesDAO->getEnabledGuidelinesByCheckID($check_id);
+	$plate['check_example_row'] = $check_example_row;
 }
 
 /*****************************/
 /* template starts down here */
 
-$savant->display('check/check_create_edit.tmpl.php');
+// $savant->display('check/check_create_edit.tmpl.php');
+echo $plates->render('check/check_create_edit.tmpl.php',$plate);
 
 ?>
