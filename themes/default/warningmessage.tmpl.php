@@ -15,9 +15,9 @@ global $_base_href;
 ?>
 
 <div id="warning">
-	<?php if (is_array($this->item)) : ?>
+	<?php if (is_array($item)) : ?>
 		<ul>
-		<?php foreach($this->item as $e) : ?>
+		<?php foreach($item as $e) : ?>
 			<li><?php echo $e; ?></li>
 		<?php endforeach; ?>
 		</ul>

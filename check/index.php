@@ -221,7 +221,7 @@ $check_rows = $checksDAO->getChecksByCondition($condition, $col, $order, $offset
 
 // if prerequisite or next checks are inserted into db successfully, 
 // $javascript_run_now is set to refresh parent window 
-if (isset($javascript_run_now)) $plate['javascript_run_now'] = $javascript_run_now; //$savant->assign('javascript_run_now', $javascript_run_now);
+if (isset($javascript_run_now)) $plate['javascript_run_now'] = $javascript_run_now; // $savant->assign('javascript_run_now', $javascript_run_now);
 
 // $savant->assign('check_rows', $check_rows);
 // $savant->assign('all_html_tags', $checksDAO->getAllHtmlTags());

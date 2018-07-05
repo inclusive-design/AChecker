@@ -14,12 +14,12 @@
 ?>
 
 <div class="seq">
-	<?php if (isset($this->prev_page)): ?>
-		<?php echo _AC('previous_chapter'); ?>: <a href="frame_content.php?p=<?php echo $this->prev_page; ?>" accesskey="," title="<?php echo _AC($this->pages[$this->prev_page]['title_var']); ?> Alt+,"><?php echo _AC($this->pages[$this->prev_page]['title_var']); ?></a><br />
+	<?php if (isset($prev_page)): ?>
+		<?php echo _AC('previous_chapter'); ?>: <a href="frame_content.php?p=<?php echo $prev_page; ?>" accesskey="," title="<?php echo _AC($pages[$prev_page]['title_var']); ?> Alt+,"><?php echo _AC($pages[$prev_page]['title_var']); ?></a><br />
 	<?php endif; ?>
 
-	<?php if (isset($this->next_page)): ?>
-		<?php echo _AC('next_chapter'); ?>: <a href="frame_content.php?p=<?php echo $this->next_page; ?>" accesskey="," title="<?php echo _AC($this->pages[$this->next_page]['title_var']); ?> Alt+,"><?php echo _AC($this->pages[$this->next_page]['title_var']); ?></a><br />
+	<?php if (isset($next_page)): ?>
+		<?php echo _AC('next_chapter'); ?>: <a href="frame_content.php?p=<?php echo $next_page; ?>" accesskey="," title="<?php echo _AC($pages[$next_page]['title_var']); ?> Alt+,"><?php echo _AC($pages[$next_page]['title_var']); ?></a><br />
 	<?php endif; ?>
 </div>
 

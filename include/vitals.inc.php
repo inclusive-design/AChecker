@@ -182,7 +182,7 @@ define('SITE_NAME',                 $_config['site_name']);
 	$savant->addPath('template', AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/');
 	// Add folders
 
-	$plates = League\Plates\Engine::create(AC_INCLUDE_PATH . '../plates/' . $_SESSION['prefs']['PREF_THEME'] . '/', 'tmpl.php');
+	$plates = League\Plates\Engine::create(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/', 'tmpl.php');
 
 	require(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/theme.cfg.php');
 

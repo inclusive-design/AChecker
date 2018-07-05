@@ -17,24 +17,24 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?php _AC('achecker_documentation'); ?></title>
-	<link rel="stylesheet" href="<?php echo $this->base_path.'themes/'.$this->theme; ?>/handbook_styles.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo $base_path.'themes/'.$theme; ?>/handbook_styles.css" type="text/css" />
 </head>
 
 <body onload="doparent();">
 <script type="text/javascript">
 // <!--
 function doparent() {
-	if (parent.toc && parent.toc.highlight) parent.toc.highlight('id<?php echo $this->this_page; ?>');
+	if (parent.toc && parent.toc.highlight) parent.toc.highlight('id<?php echo $this_page; ?>');
 }
 // -->
 </script>
 
 <div class="seq">
-	<?php if (isset($this->prev_page)): ?>
-		<?php echo _AC('previous_chapter'); ?>: <a href="frame_content.php?p=<?php echo $this->prev_page; ?>" accesskey="," title="<?php echo _AC($this->pages[$this->prev_page]['title_var']); ?> Alt+,"><?php echo _AC($this->pages[$this->prev_page]['title_var']); ?></a><br />
+	<?php if (isset($prev_page)): ?>
+		<?php echo _AC('previous_chapter'); ?>: <a href="frame_content.php?p=<?php echo $prev_page; ?>" accesskey="," title="<?php echo _AC($pages[$prev_page]['title_var']); ?> Alt+,"><?php echo _AC($pages[$prev_page]['title_var']); ?></a><br />
 	<?php endif; ?>
 
-	<?php if (isset($this->next_page)): ?>
-		<?php echo _AC('next_chapter'); ?>: <a href="frame_content.php?p=<?php echo $this->next_page; ?>" accesskey="," title="<?php echo _AC($this->pages[$this->next_page]['title_var']); ?> Alt+,"><?php echo _AC($this->pages[$this->next_page]['title_var']); ?></a><br />
+	<?php if (isset($next_page)): ?>
+		<?php echo _AC('next_chapter'); ?>: <a href="frame_content.php?p=<?php echo $next_page; ?>" accesskey="," title="<?php echo _AC($pages[$next_page]['title_var']); ?> Alt+,"><?php echo _AC($pages[$next_page]['title_var']); ?></a><br />
 	<?php endif; ?>
 </div>

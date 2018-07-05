@@ -11,9 +11,9 @@
 ?>
 <div id="error">
 	<h4><?php echo _AC('the_follow_errors_occurred'); ?></h4>
-	<?php if (is_array($this->item)) : ?>
+	<?php if (is_array($item)) : ?>
 		<ul>
-		<?php foreach($this->item as $e) : ?>
+		<?php foreach($item as $e) : ?>
 			<li><?php echo $e; ?></li>
 		<?php endforeach; ?>
 		</ul>

@@ -337,6 +337,6 @@ $plate['patch_list_array'] = $patch_list_array;
 $plate['patches_in_db'] = $rows;
 $plate['patches_in_db'] = $rows;
 
-// $savant->display('updater/index.tmpl.php');
+//$savant->display('updater/index.tmpl.php');
 echo $plates->render('updater/index.tmpl.php', $plate);
 ?>

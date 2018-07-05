@@ -15,6 +15,8 @@
 global $plates;
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 
+$plate['base_path'] = AC_BASE_HREF;
+$plate['theme'] = $_SESSION['prefs']['PREF_THEME'];
 //$savant->display('include/footer.tmpl.php');
-echo $plates->render('include/footer.tmpl.php');
+echo $plates->render('include/footer.tmpl.php', $plate);
 ?>
