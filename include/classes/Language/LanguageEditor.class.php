@@ -41,7 +41,7 @@ class LanguageEditor extends Language {
 	function __construct($myLang) {
 		global $db, $msg;
 		
-		global $savant, $plates;
+		global $plates;
 		$this->msg = $msg;
 
 

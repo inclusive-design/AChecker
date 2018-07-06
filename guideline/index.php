@@ -52,14 +52,12 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 if ($_current_user->isAdmin())
 {
 	$my_guidelines = $guidelinesDAO->getCustomizedGuidelines();
-	// $savant->assign('title', _AC('customized_guidelines'));
 
 	$plate['title'] = _AC('customized_guidelines');
 }
 else
 {
 	$my_guidelines = $guidelinesDAO->getGuidelineByUserIDs(array($_SESSION['user_id']));
-	//$savant->assign('title', _AC('my_guidelines'));
 
 	$plate['title']  = _AC('my_guidelines');
 }
@@ -67,19 +65,12 @@ else
 // generate section of "my guidelines" 
 if (is_array($my_guidelines))
 {
-	// $savant->assign('rows', $my_guidelines);
-	// $savant->assign('buttons', array('edit', 'delete'));
-	// $savant->assign('showStatus', true);
-	// $savant->assign('formName', 'myGuideline');
-	// $savant->assign('isAdmin', $_current_user->isAdmin());
-
 	$plate['rows'] = $my_guidelines;
 	$plate['buttons'] = array('edit', 'delete');
 	$plate['showStatus'] = true;
 	$plate['formName'] = 'myGuideline';
 	$plate['isAdmin'] = $_current_user->isAdmin();
 
-	// $savant->display('guideline/index.tmpl.php');
 	echo $plates->render('guideline/index.tmpl.php', $plate);
 }
 
@@ -87,22 +78,12 @@ if (is_array($my_guidelines))
 if ($_current_user->isAdmin())
 {
 	// admin can set standard guidelines open to or close from public
-	//$savant->assign('buttons', array('view', 'edit', 'open_to_public', 'close_from_public'));
-
 	$plate['buttons'] = array('view', 'edit', 'open_to_public', 'close_from_public');
 }
 else
 {
-	//$savant->assign('buttons', array('view'));
-
 	$plate['buttons'] = array('view');
 }
-// $savant->assign('title', _AC('standard_guidelines'));
-// $savant->assign('rows', $guidelinesDAO->getStandardGuidelines());
-// $savant->assign('showStatus', false);
-// $savant->assign('formName', 'standardGuideline');
-// $savant->assign('isAdmin', $_current_user->isAdmin());
-// $savant->display('guideline/index.tmpl.php');
 
 $plate['title'] = _AC('standard_guidelines');
 $plate['rows'] = $guidelinesDAO->getStandardGuidelines();
@@ -110,7 +91,7 @@ $plate['showStatus'] = false;
 $plate['formName'] = 'standardGuideline';
 $plate['isAdmin'] = $_current_user->isAdmin();
 
-// $savant->display('guideline/index.tmpl.php');
+
 echo $plates->render('guideline/index.tmpl.php', $plate);
 
 

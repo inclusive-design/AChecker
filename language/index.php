@@ -78,10 +78,7 @@ if (isset($_POST['import']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
 }
 
 // interface
-// $savant->assign('rows', $languagesDAO->getAll());
 $plate['rows'] = $languagesDAO->getAll();
-
-// $savant->display('language/index.tmpl.php');
 
 echo $plates->render('language/index.tmpl.php', $plate);
 

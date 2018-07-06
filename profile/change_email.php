@@ -120,7 +120,6 @@ if (!isset($_POST['submit'])) {
 }
 
 /* template starts here */
-// $savant->assign('row', $row);
 
 $plate['row'] = $row;
 echo $plates->render('profile/change_email.tmpl.php', $plate);

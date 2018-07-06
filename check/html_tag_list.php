@@ -19,11 +19,9 @@ $checksDAO = new ChecksDAO();
 
 $all_html_tags = $checksDAO->getAllHtmlTags();
 
-// $savant->assign('all_html_tags', $checksDAO->getAllHtmlTags());
 
 $plate['all_html_tags'] = $checksDAO->getAllHtmlTags();
 
-// $savant->display('check/html_tag_list.tmpl.php');
 
 echo $plates->render('check/html_tag_list.tmpl.php', $plate);
 

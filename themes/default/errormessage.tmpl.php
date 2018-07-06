@@ -2,7 +2,7 @@
 /*
  * @author Jacek Materna
  *
- *	One Savant variable: $item which is the processed ouput message content according to lang spec.
+ *	One Plates variable: $item which is the processed ouput message content according to lang spec.
  */
  
  global $_base_href;

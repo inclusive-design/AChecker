@@ -325,11 +325,6 @@ else $num_of_patches_in_db = 0;
 
 $num_of_patches = $num_of_patches_in_db + count($patch_list_array);
 
-// $savant->assign('num_of_patches', $num_of_patches);
-// $savant->assign('patches_in_db', $rows);
-// $savant->assign('patch_list_array', $patch_list_array);
-// $savant->assign('patches_in_db', $rows);
-// $savant->assign('patches_in_db', $rows);
 
 $plate['num_of_patches'] = $num_of_patches;
 $plate['patches_in_db'] = $rows;
@@ -337,6 +332,5 @@ $plate['patch_list_array'] = $patch_list_array;
 $plate['patches_in_db'] = $rows;
 $plate['patches_in_db'] = $rows;
 
-//$savant->display('updater/index.tmpl.php');
 echo $plates->render('updater/index.tmpl.php', $plate);
 ?>

@@ -139,21 +139,11 @@ define('SITE_NAME',                 $_config['site_name']);
 /***** end load common libraries ****/
 
 /***** 6. initialize theme and template management *****/
-	// require(AC_INCLUDE_PATH.'classes/plates/Engine.php');
-	// require(AC_INCLUDE_PATH.'classes/plates/Template/Directory.php');
-	// require(AC_INCLUDE_PATH.'classes/plates/Template/FileExtension.php');
-	// require(AC_INCLUDE_PATH.'classes/plates/Template/Folders.php');
-	// require(AC_INCLUDE_PATH.'classes/plates/Template/Functions.php');
-	// require(AC_INCLUDE_PATH.'classes/plates/Template/Data.php');
-	// require(AC_INCLUDE_PATH.'classes/plates/Template.php');
-	// require(AC_INCLUDE_PATH.'classes/plates/Template/Name.php');
-	// require(AC_INCLUDE_PATH.'classes/plates/Template/Func.php');
-	// require(AC_INCLUDE_PATH.'classes/plates/Template/Folder.php');
-	require(AC_INCLUDE_PATH.'classes/Savant2/Savant2.php');
+	
+
 
 	// set default template paths:
-	// $plates = new League\Plates\Engine();
-	$savant = new Savant2();
+	
 	
 
 	if (isset($_SESSION['prefs']['PREF_THEME']) && file_exists(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']) && isset($_SESSION['valid_user']) && $_SESSION['valid_user']) 
@@ -179,15 +169,14 @@ define('SITE_NAME',                 $_config['site_name']);
 		$_SESSION['prefs']['PREF_THEME'] = get_default_theme();
 	}
 
-	$savant->addPath('template', AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/');
+	
 	// Add folders
-
 	$plates = League\Plates\Engine::create(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/', 'tmpl.php');
 
 	require(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/theme.cfg.php');
 
 	require(AC_INCLUDE_PATH.'classes/Message/Message.class.php');
-	$msg = new Message($savant);
+	$msg = new Message($plates);
 
 /***** end of initialize theme and template management *****/
 

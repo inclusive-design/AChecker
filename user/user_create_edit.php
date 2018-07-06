@@ -103,17 +103,12 @@ $userGroupsDAO = new UserGroupsDAO();
 if (isset($_GET['id'])) // edit existing user
 {
 	$usersDAO = new UsersDAO();
-	// $savant->assign('user_row', $usersDAO->getUserByID($_GET['id']));
-	// $savant->assign('show_password', false);
-
 	$plate['user_row'] = $usersDAO->getUserByID($_GET['id']);
 	$plate['show_password'] = false;
 	
 }
 else  // create new user
 {
-	// $savant->assign('show_password', true);
-
 	$plate['show_password'] = true;
 	
 }
@@ -123,22 +118,12 @@ else  // create new user
 global $onload;
 $onload = 'document.form.login.focus();';
 
-// $savant->assign('show_user_group', true);
-// $savant->assign('show_status', true);
-// $savant->assign('all_user_groups', $userGroupsDAO->getAll());
-// $savant->assign('title', _AC('create_edit_user'));
-// $savant->assign('submit_button_text', _AC('save'));
-// $savant->assign('show_captcha', false);
-
 $plate['show_user_group'] = true;
 $plate['show_status'] = true;
 $plate['all_user_groups'] = $userGroupsDAO->getAll();
 $plate['title'] = _AC('create_edit_user');
 $plate['submit_button_text'] = _AC('save');
 $plate['show_captcha'] = false;
-
-
-// $savant->display('register.tmpl.php');
 
 echo $plates->render('register.tmpl.php', $plate);
 

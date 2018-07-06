@@ -30,19 +30,11 @@ $myownPatchesDependentDAO = new MyownPatchesDependentDAO();
 $myownPatchesFilesDAO = new MyownPatchesFilesDAO();
 
 // URL called by form action
-// $savant->assign('url', dirname($_SERVER['PHP_SELF']) . "/patch_creator.php?myown_patch_id=" . $myown_patch_id);
-
-// $savant->assign('patch_row', $myownPatchesDAO->getByID($myown_patch_id));
-// $savant->assign('dependent_rows', $myownPatchesDependentDAO->getByPatchID($myown_patch_id));
-// $savant->assign('file_rows', $myownPatchesFilesDAO->getByPatchID($myown_patch_id));
-
-
 $plate['url'] = dirname($_SERVER['PHP_SELF']) . "/patch_creator.php?myown_patch_id=" . $myown_patch_id;
 
 $plate['patch_row'] = $myownPatchesDAO->getByID($myown_patch_id);
 $plate['dependent_rows'] = $myownPatchesDependentDAO->getByPatchID($myown_patch_id);
 $plate['file_rows'] = $myownPatchesFilesDAO->getByPatchID($myown_patch_id);
 
-// $savant->display('updater/patch_create_edit.tmpl.php');
 echo $plates->render('updater/patch_create_edit.tmpl.php',$plate);
 ?>
