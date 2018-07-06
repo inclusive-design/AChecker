@@ -146,7 +146,6 @@ if (isset($aValidator))
 	
 	// vars for displaying seals
 	if (is_array($seals)) {
-		//$plate['savant'] = $savant;
 		$plate['plates'] = $plates;
  		$plate['seals'] = $seals;
 	}
