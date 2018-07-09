@@ -24,5 +24,4 @@ $plate['all_html_tags'] = $checksDAO->getAllHtmlTags();
 
 
 echo $plates->render('check/html_tag_list.tmpl.php', $plate);
-
 ?>

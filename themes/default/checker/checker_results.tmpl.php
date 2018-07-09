@@ -30,7 +30,7 @@ if (is_array($seals))
 	
 	if (isset($user_link_id))
 		$user_link_url = '&amp;id='.$user_link_id;
-	
+
 	foreach ($seals as $seal)
 	{
 ?>

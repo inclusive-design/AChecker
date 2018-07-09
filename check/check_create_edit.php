@@ -146,5 +146,4 @@ if (isset($check_id)) // edit existing user
 /* template starts down here */
 
 echo $plates->render('check/check_create_edit.tmpl.php',$plate);
-
 ?>

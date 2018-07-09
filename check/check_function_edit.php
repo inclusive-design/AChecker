@@ -97,5 +97,4 @@ if (isset($check_id)) // edit existing check function
 
 
 echo $plates->render('check/check_function_edit.tmpl.php',$plate);
-
 ?>

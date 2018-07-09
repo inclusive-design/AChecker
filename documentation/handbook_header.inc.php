@@ -65,5 +65,4 @@ $plate['base_path'] = AC_BASE_HREF;
 $plate['theme'] = $_SESSION['prefs']['PREF_THEME'];
 
 echo $plates->render('include/handbook_header.tmpl.php', $plate);
-
 ?>

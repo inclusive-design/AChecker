@@ -126,5 +126,4 @@ $plate['submit_button_text'] = _AC('save');
 $plate['show_captcha'] = false;
 
 echo $plates->render('register.tmpl.php', $plate);
-
 ?>

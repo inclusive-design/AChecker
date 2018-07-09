@@ -88,5 +88,4 @@ if (isset($_POST['submit'])) {
 
 /* template starts here */
 echo $plates->render('user/user_password.tmpl.php',$plate);
-
 ?>
