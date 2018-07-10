@@ -123,52 +123,52 @@ class acheckerMPDF extends Mpdf {
 	* $guidelines_text: string of all guidelines separated by ", "
 	* $time: time when function to create file called (showed in file title and inside document)
 	*/
-	private function printInfo($title, $uri, $guidelines_text, $time) 
-	{	
-		$this->AliasNbPages();		
+	// private function printInfo($title, $uri, $guidelines_text, $time) 
+	// {	
+	// 	$this->AliasNbPages();		
 
-		// add Unicode fonts (uses UTF-8)
-		$this->AddFont('DejaVu',  '',  'DejaVuSansCondensed.ttf', true);
-		$this->AddFont('DejaVu', 'B',  'DejaVuSansCondensed-Bold.ttf', true);
-		$this->AddFont('DejaVu', 'I',  'DejaVuSansCondensed-Oblique.ttf', true);
-		$this->AddFont('DejaVu', 'BI', 'DejaVuSansCondensed-BoldOblique.ttf', true);
+	// 	// add Unicode fonts (uses UTF-8)
+	// 	// $this->AddFont('DejaVu',  '',  'DejaVuSansCondensed.ttf', true);
+	// 	// $this->AddFont('DejaVu', 'B',  'DejaVuSansCondensed-Bold.ttf', true);
+	// 	// $this->AddFont('DejaVu', 'I',  'DejaVuSansCondensed-Oblique.ttf', true);
+	// 	// $this->AddFont('DejaVu', 'BI', 'DejaVuSansCondensed-BoldOblique.ttf', true);
 		
-		// add a page
-		$this->AddPage();
+	// 	// add a page
+	// 	$this->AddPage();
 		
-		// time
-		$time_to_print = str_replace("-", ":", $time);
+	// 	// time
+	// 	$time_to_print = str_replace("-", ":", $time);
 
-		// date
-		$today = getdate();
-		$date_to_print = AC_date('%l').' '.AC_date('%F').' '.$today['mday'].', '.$today['year'];
-		$this->SetFont('DejaVu', '', 9);
-		$this->Write(5, $date_to_print. ' '. $time_to_print);
-		$this->Ln(8);	
+	// 	// date
+	// 	$today = getdate();
+	// 	$date_to_print = AC_date('%l').' '.AC_date('%F').' '.$today['mday'].', '.$today['year'];
+	// 	$this->SetFont('Helvetica', '', 9);
+	// 	$this->Write(5, $date_to_print. ' '. $time_to_print);
+	// 	$this->Ln(8);	
 
-		// url
-		if ($uri != '') {
-			$this->SetFont('DejaVu', '', 12);
-			$this->Write(5, _AC('file_source_url').': '.$uri);
-			$this->Ln(5);
-		}
+	// 	// url
+	// 	if ($uri != '') {
+	// 		$this->SetFont('Helvetica', '', 12);
+	// 		$this->Write(5, _AC('file_source_url').': '.$uri);
+	// 		$this->Ln(5);
+	// 	}
 		
-		// title
-		if ($title != '') {
-			$this->SetFont('DejaVu', '', 12);			
-			$this->Write(5, _AC('file_source_title').': '.$title);
-			$this->Ln(8);
-		}
+	// 	// title
+	// 	if ($title != '') {
+	// 		$this->SetFont('Helvetica', '', 12);			
+	// 		$this->Write(5, _AC('file_source_title').': '.$title);
+	// 		$this->Ln(8);
+	// 	}
 
-		// guidelines
-		$this->SetFont('DejaVu', 'B', 12);
-		$this->Write(5, _AC("accessibility_review") . ' ('. _AC("guidelines"). ': ');
-		$this->SetTextColor(165,7,7);
-		$this->Write(5, $guidelines_text);
-		$this->SetTextColor(0);
-		$this->Write(5, ')');
-		$this->Ln(6);
-	}
+	// 	// guidelines
+	// 	$this->SetFont('Helvetica', 'B', 12);
+	// 	$this->Write(5, _AC("accessibility_review") . ' ('. _AC("guidelines"). ': ');
+	// 	$this->SetTextColor(165,7,7);
+	// 	$this->Write(5, $guidelines_text);
+	// 	$this->SetTextColor(0);
+	// 	$this->Write(5, ')');
+	// 	$this->Ln(6);
+	// }
 
 	/**
 	* private
@@ -176,137 +176,137 @@ class acheckerMPDF extends Mpdf {
 	* @param
 	* $problem_type: known, potential or likely; corresponding array in class should be set before calling
 	*/
-	private function printGuideline($problem_type) 
-	{	
-		if ($problem_type == 'known') {
-			$array = $this->known;
-			$nr = $this->error_nr_known;
-		} else if ($problem_type == 'likely') {
-			$array = $this->likely;
-			$nr = $this->error_nr_likely;
-		} else if ($problem_type == 'potential') {
-			$array = $this->potential;
-			$nr = $this->error_nr_potential;
-		}
+	// private function printGuideline($problem_type) 
+	// {	
+	// 	if ($problem_type == 'known') {
+	// 		$array = $this->known;
+	// 		$nr = $this->error_nr_known;
+	// 	} else if ($problem_type == 'likely') {
+	// 		$array = $this->likely;
+	// 		$nr = $this->error_nr_likely;
+	// 	} else if ($problem_type == 'potential') {
+	// 		$array = $this->potential;
+	// 		$nr = $this->error_nr_potential;
+	// 	}
 		
-		if ($nr == '') $nr = 0;		
+	// 	if ($nr == '') $nr = 0;		
 	
-		// str with error type and nr of errors
-		$this->SetFont('DejaVu', 'B', 14);
-		$this->SetTextColor(0);
-		$this->Write(5, _AC('file_report_'.$problem_type).' ('.$nr.' '._AC('file_report_found').'):');		
-		$this->Ln(10);
+	// 	// str with error type and nr of errors
+	// 	$this->SetFont('Helvetica', 'B', 14);
+	// 	$this->SetTextColor(0);
+	// 	$this->Write(5, _AC('file_report_'.$problem_type).' ('.$nr.' '._AC('file_report_found').'):');		
+	// 	$this->Ln(10);
 		
-		// show congratulations if no errors found
-		if ($nr == 0) {
-			$this->Ln(3);
-			$this->SetTextColor(0, 128, 0);
-			$path = AC_BASE_HREF."images/jpg/feedback.jpg";
-			$this->SetX(11);
-			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
-			$this->SetX(17);
-			$this->SetFont('DejaVu', 'B', 12);
-			$this->Write(5, _AC('congrats_no_'.$problem_type));
-			$this->Ln(3);
-		} 
+	// 	// show congratulations if no errors found
+	// 	if ($nr == 0) {
+	// 		$this->Ln(3);
+	// 		$this->SetTextColor(0, 128, 0);
+	// 		$path = AC_BASE_HREF."images/jpg/feedback.jpg";
+	// 		$this->SetX(11);
+	// 		$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
+	// 		$this->SetX(17);
+	// 		$this->SetFont('Helvetica', 'B', 12);
+	// 		$this->Write(5, _AC('congrats_no_'.$problem_type));
+	// 		$this->Ln(3);
+	// 	} 
 
-		// Display the list of problems, including the problems that the user has made pass decisions on.
-		if (is_array($array) && count($array) > 0) { // make report on errors
-			// group level output
-			foreach($array as $group_title => $group_content) {
-				$this->Ln(3);						
-				$this->SetTextColor(165,7,7);
-				$this->SetX(10);
-				$this->SetFont('DejaVu', 'B', 12);	
-				$this->Write(5, $group_title);
-				$this->Ln(8);
+	// 	// Display the list of problems, including the problems that the user has made pass decisions on.
+	// 	if (is_array($array) && count($array) > 0) { // make report on errors
+	// 		// group level output
+	// 		foreach($array as $group_title => $group_content) {
+	// 			$this->Ln(3);						
+	// 			$this->SetTextColor(165,7,7);
+	// 			$this->SetX(10);
+	// 			$this->SetFont('Helvetica', 'B', 12);	
+	// 			$this->Write(5, $group_title);
+	// 			$this->Ln(8);
 			
-				// subgroup level output
-				foreach($group_content as $subgroup_title => $subgroup_content) {
-					$this->SetFont('DejaVu', 'B', 10);
-					$this->SetTextColor(165,7,7);
-					$this->SetX(17);
-					$this->Write(5, $subgroup_title);
-					$this->Ln(8);
+	// 			// subgroup level output
+	// 			foreach($group_content as $subgroup_title => $subgroup_content) {
+	// 				$this->SetFont('Helvetica', 'B', 10);
+	// 				$this->SetTextColor(165,7,7);
+	// 				$this->SetX(17);
+	// 				$this->Write(5, $subgroup_title);
+	// 				$this->Ln(8);
 	
-					// check level output
-					foreach($subgroup_content as $check_group) {
-						$this->SetTextColor(0);	
-						$this->SetFont('DejaVu', 'B', 10);
-						$this->SetX(21);
-						$check = $check_group['check_label']." ".$check_group['check_id'].": ".strip_tags($check_group['error']);
-						$this->Write(5, $check);				
-						$this->SetTextColor(0);
-						$this->SetFont('DejaVu', '', 10);
-						$this->Ln(8);					
-						if (is_array($check_group['repair'])) {
-							$this->SetX(28);
-							$this->Write(5, $check_group['repair']['label'].": ".strip_tags($check_group['repair']['detail']));
-							$this->Ln(8);
-						}
+	// 				// check level output
+	// 				foreach($subgroup_content as $check_group) {
+	// 					$this->SetTextColor(0);	
+	// 					$this->SetFont('Helvetica', 'B', 10);
+	// 					$this->SetX(21);
+	// 					$check = $check_group['check_label']." ".$check_group['check_id'].": ".strip_tags($check_group['error']);
+	// 					$this->Write(5, $check);				
+	// 					$this->SetTextColor(0);
+	// 					$this->SetFont('Helvetica', '', 10);
+	// 					$this->Ln(8);					
+	// 					if (is_array($check_group['repair'])) {
+	// 						$this->SetX(28);
+	// 						$this->Write(5, $check_group['repair']['label'].": ".strip_tags($check_group['repair']['detail']));
+	// 						$this->Ln(8);
+	// 					}
 						
-						// one error output
-						foreach($check_group['errors'] as $error) {
-							// error icon img, line, column, error text
-							$img_data = explode(".", $error['img_src']);		
-							$path = $error['base_href']."images/jpg/".$img_data[0].".jpg";
-							$this->Image($path, $this->GetX()+18, $this->GetY(), 4, 4);
-							$this->SetX(32);
-							$this->SetFont('DejaVu', 'BI', 9);
-							$this->SetTextColor(0);
-							$location = " ".$error['line_text']." ".$error['line_nr'].", ".$error['col_text']." ".$error['col_nr'].":";
-							$this->Write(5, $location);
-							$this->Ln(5);
+	// 					// one error output
+	// 					foreach($check_group['errors'] as $error) {
+	// 						// error icon img, line, column, error text
+	// 						$img_data = explode(".", $error['img_src']);		
+	// 						$path = $error['base_href']."images/jpg/".$img_data[0].".jpg";
+	// 						$this->Image($path, $this->GetX()+18, $this->GetY(), 4, 4);
+	// 						$this->SetX(32);
+	// 						$this->SetFont('Helvetica', 'BI', 9);
+	// 						$this->SetTextColor(0);
+	// 						$location = " ".$error['line_text']." ".$error['line_nr'].", ".$error['col_text']." ".$error['col_nr'].":";
+	// 						$this->Write(5, $location);
+	// 						$this->Ln(5);
 							
-							// html code of error (if there is image in error show full img src in even if string is >100 long)
-							$this->SetTextColor(0);
-							$this->SetX(28);
-							$this->SetFont('DejaVu', '', 9);						
-							if (($error['error_img'] != '') && ($error['error_img']['img_src'] != '')) {
-								preg_match('/src=(.)*/', html_entity_decode($error['html_code']), $match);
-								$img_parts = explode('"', $match[0]);
-								if (count($img_parts)<3) {
-									$error['html_code'] = "<img ".$img_parts[0].'"'.$error['error_img']['img_src'].'" ...';
-								}
-							}
-							$str = str_replace("\t", "    ", html_entity_decode($error['html_code']));
-							$this->Write(5, $str);
-							$this->Ln(8);
+	// 						// html code of error (if there is image in error show full img src in even if string is >100 long)
+	// 						$this->SetTextColor(0);
+	// 						$this->SetX(28);
+	// 						$this->SetFont('Helvetica', '', 9);						
+	// 						if (($error['error_img'] != '') && ($error['error_img']['img_src'] != '')) {
+	// 							preg_match('/src=(.)*/', html_entity_decode($error['html_code']), $match);
+	// 							$img_parts = explode('"', $match[0]);
+	// 							if (count($img_parts)<3) {
+	// 								$error['html_code'] = "<img ".$img_parts[0].'"'.$error['error_img']['img_src'].'" ...';
+	// 							}
+	// 						}
+	// 						$str = str_replace("\t", "    ", html_entity_decode($error['html_code']));
+	// 						$this->Write(5, $str);
+	// 						$this->Ln(8);
 							
-							// css code
-							if ($error['css_code'] != '') {
-								$pattern = "/CSS.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s/";
-								if (preg_match($pattern, strip_tags($error['css_code']), $matches)) {
-									$this->SetFont('Helvetica', '', 8);
-									$this->SetX(28);
-									$this->MultiCell(0, 5, $matches[0], 0, 'L', false);	
-									$this->Ln(3);
-								}							
-							}	
+	// 						// css code
+	// 						if ($error['css_code'] != '') {
+	// 							$pattern = "/CSS.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s/";
+	// 							if (preg_match($pattern, strip_tags($error['css_code']), $matches)) {
+	// 								$this->SetFont('Helvetica', '', 8);
+	// 								$this->SetX(28);
+	// 								$this->MultiCell(0, 5, $matches[0], 0, 'L', false);	
+	// 								$this->Ln(3);
+	// 							}							
+	// 						}	
 							
-							// if user is logged in display labels 'passed', 'failed' or 'no decision'
-							if ((isset($_SESSION['user_id'])) && ($problem_type != 'known')) {
-								$this->SetFont('DejaVu', 'B', 10);
-								$this->SetX(170);
-								if ($error['test_passed'] == 'true') {
-									$this->SetTextColor(134, 218, 130);
-									$this->Write(5, strtoupper(_AC('file_passed')));
-								} else if ($error['test_passed'] == false) {
-									$this->SetTextColor(246, 114, 114);
-									$this->Write(5, strtoupper(_AC('file_failed')));
-								} else if ($error['test_passed'] == 'none') {
-									$this->SetTextColor(106, 175, 233);
-									$this->Write(5, strtoupper(_AC('file_no_decision')));
-								}
-								$this->Ln(10);								
-							} // end if user is logged in
-						} // end of roreach $error
-					} 		
-				} 
-			} 
-		} // end of else (for shownig errors)
+	// 						// if user is logged in display labels 'passed', 'failed' or 'no decision'
+	// 						if ((isset($_SESSION['user_id'])) && ($problem_type != 'known')) {
+	// 							$this->SetFont('Helvetica', 'B', 10);
+	// 							$this->SetX(170);
+	// 							if ($error['test_passed'] == 'true') {
+	// 								$this->SetTextColor(134, 218, 130);
+	// 								$this->Write(5, strtoupper(_AC('file_passed')));
+	// 							} else if ($error['test_passed'] == false) {
+	// 								$this->SetTextColor(246, 114, 114);
+	// 								$this->Write(5, strtoupper(_AC('file_failed')));
+	// 							} else if ($error['test_passed'] == 'none') {
+	// 								$this->SetTextColor(106, 175, 233);
+	// 								$this->Write(5, strtoupper(_AC('file_no_decision')));
+	// 							}
+	// 							$this->Ln(10);								
+	// 						} // end if user is logged in
+	// 					} // end of roreach $error
+	// 				} 		
+	// 			} 
+	// 		} 
+	// 	} // end of else (for shownig errors)
 		
-	}
+	// }
 	
 	/**
 	* private
@@ -314,155 +314,155 @@ class acheckerMPDF extends Mpdf {
 	* @param
 	* $problem_type: known, potential or likely; corresponding array in class should be set before calling
 	*/
-	private function printLine($problem_type) 
-	{
-		if ($problem_type == 'known') {
-			$array = $this->known;
-			$nr = $this->error_nr_known;
-		} else if ($problem_type == 'likely') {
-			$array = $this->likely;
-			$nr = $this->error_nr_likely;
-		} else if ($problem_type == 'potential') {
-			$array = $this->potential;
-			$nr = $this->error_nr_potential;
-		}
+	// private function printLine($problem_type) 
+	// {
+	// 	if ($problem_type == 'known') {
+	// 		$array = $this->known;
+	// 		$nr = $this->error_nr_known;
+	// 	} else if ($problem_type == 'likely') {
+	// 		$array = $this->likely;
+	// 		$nr = $this->error_nr_likely;
+	// 	} else if ($problem_type == 'potential') {
+	// 		$array = $this->potential;
+	// 		$nr = $this->error_nr_potential;
+	// 	}
 		
-		if ($nr == '') $nr = 0;	
+	// 	if ($nr == '') $nr = 0;	
 		
-		// str with error type and nr of errors
-		$this->SetFont('DejaVu', 'B', 14);
-		$this->SetTextColor(0);
-		$this->Write(5, _AC('file_report_'.$problem_type).' ('.$nr.' '._AC('file_report_found').'):');		
-		$this->Ln(10);
+	// 	// str with error type and nr of errors
+	// 	$this->SetFont('Helvetica', 'B', 14);
+	// 	$this->SetTextColor(0);
+	// 	$this->Write(5, _AC('file_report_'.$problem_type).' ('.$nr.' '._AC('file_report_found').'):');		
+	// 	$this->Ln(10);
 		
-		// show congratulations if no errors found
-		if ($nr == 0) {
-			$this->Ln(3);
-			$this->SetTextColor(0, 128, 0);
-			$path = AC_BASE_HREF."images/jpg/feedback.jpg";
-			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
-			$this->SetX(14);
-			$this->SetFont('DejaVu', 'B', 12);
-			$this->Write(5, _AC('congrats_no_'.$problem_type));
-		} else { // else make report on errors
+	// 	// show congratulations if no errors found
+	// 	if ($nr == 0) {
+	// 		$this->Ln(3);
+	// 		$this->SetTextColor(0, 128, 0);
+	// 		$path = AC_BASE_HREF."images/jpg/feedback.jpg";
+	// 		$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
+	// 		$this->SetX(14);
+	// 		$this->SetFont('Helvetica', 'B', 12);
+	// 		$this->Write(5, _AC('congrats_no_'.$problem_type));
+	// 	} else { // else make report on errors
 
-			// known
-			if ($problem_type == 'known') {
-				foreach($array as $error) {
-					// error icon img, line, column, error text
-					$img_data = explode(".", $error['img_src']);		
-					$path = $error['base_href']."images/jpg/".$img_data[0].".jpg";
-					$this->Image($path, $this->GetX()+7, $this->GetY(), 4, 4);
-					$this->SetX(21);
-					$this->SetTextColor(0);
-					$this->SetFont('DejaVu', 'BI', 9);
-					$location = " ".$error['line_text']." ".$error['line_nr'].", ".$error['col_text']." ".$error['col_nr'].":  ";
-					$this->Write(5, $location);
-					$this->SetTextColor(26, 74, 114);
-					$this->SetFont('DejaVu', '', 10);
-					$this->Write(5, strip_tags($error['error']));
-					$this->Ln(7);
+	// 		// known
+	// 		if ($problem_type == 'known') {
+	// 			foreach($array as $error) {
+	// 				// error icon img, line, column, error text
+	// 				$img_data = explode(".", $error['img_src']);		
+	// 				$path = $error['base_href']."images/jpg/".$img_data[0].".jpg";
+	// 				$this->Image($path, $this->GetX()+7, $this->GetY(), 4, 4);
+	// 				$this->SetX(21);
+	// 				$this->SetTextColor(0);
+	// 				$this->SetFont('Helvetica', 'BI', 9);
+	// 				$location = " ".$error['line_text']." ".$error['line_nr'].", ".$error['col_text']." ".$error['col_nr'].":  ";
+	// 				$this->Write(5, $location);
+	// 				$this->SetTextColor(26, 74, 114);
+	// 				$this->SetFont('Helvetica', '', 10);
+	// 				$this->Write(5, strip_tags($error['error']));
+	// 				$this->Ln(7);
 
-					// html code of error (if there is image in error show full img src in even if string is >100 long)
-					$this->SetFont('DejaVu', '', 9);
-					$this->SetTextColor(0);
-					$this->SetX(17);
-					if (($error['image'] != '') && ($error['image']['src'] != '')) {
-						preg_match('/src=(.)*/', html_entity_decode($error['html_code']), $match);
-						$img_parts = explode('"', $match[0]);
-						if (count($img_parts)<3) {
-							$error['html_code'] = "<img ".$img_parts[0].'"'.$error['image']['src'].'" ...';
-						}
-					}
-					$str = str_replace("\t", "    ", html_entity_decode($error['html_code']));
-					$this->Write(5, $str);
-					$this->Ln(8);
+	// 				// html code of error (if there is image in error show full img src in even if string is >100 long)
+	// 				$this->SetFont('Helvetica', '', 9);
+	// 				$this->SetTextColor(0);
+	// 				$this->SetX(17);
+	// 				if (($error['image'] != '') && ($error['image']['src'] != '')) {
+	// 					preg_match('/src=(.)*/', html_entity_decode($error['html_code']), $match);
+	// 					$img_parts = explode('"', $match[0]);
+	// 					if (count($img_parts)<3) {
+	// 						$error['html_code'] = "<img ".$img_parts[0].'"'.$error['image']['src'].'" ...';
+	// 					}
+	// 				}
+	// 				$str = str_replace("\t", "    ", html_entity_decode($error['html_code']));
+	// 				$this->Write(5, $str);
+	// 				$this->Ln(8);
 					
-					// css code
-					if ($error['css_code'] != '') {
-						$pattern = "/CSS.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s/";
-						if (preg_match($pattern, strip_tags($error['css_code']), $matches)) {
-							$this->SetFont('Helvetica', '', 8);
-							$this->SetX(17);
-							$this->MultiCell(0, 5, $matches[0], 0, 'L', false);	
-							$this->Ln(3);
-						}							
-					}
+	// 				// css code
+	// 				if ($error['css_code'] != '') {
+	// 					$pattern = "/CSS.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s/";
+	// 					if (preg_match($pattern, strip_tags($error['css_code']), $matches)) {
+	// 						$this->SetFont('Helvetica', '', 8);
+	// 						$this->SetX(17);
+	// 						$this->MultiCell(0, 5, $matches[0], 0, 'L', false);	
+	// 						$this->Ln(3);
+	// 					}							
+	// 				}
 					
-					// repair
-					if (is_array($error['repair'])) {
-						$this->SetX(17);
-						$this->SetFont('DejaVu', '', 10);
-						$this->Write(5, $error['repair']['label'].": ".strip_tags($error['repair']['detail']));
-						$this->Ln(10);
-					}
-				}
-			} else { // likely and potential. needed to show 'passed', 'failed' or 'no decision' label	
-				foreach($array as $category) {
-					foreach($category as $error) {
-						// error icon img, line, column, error text
-						$img_data = explode(".", $error['img_src']);		
-						$path = $error['base_href']."images/jpg/".$img_data[0].".jpg";
-						$this->Image($path, $this->GetX()+7, $this->GetY(), 4, 4);
-						$this->SetX(21);
-						$this->SetTextColor(0);
-						$this->SetFont('DejaVu', 'BI', 9);
-						$location = " ".$error['line_text']." ".$error['line_nr'].", ".$error['col_text']." ".$error['col_nr'].":  ";
-						$this->Write(5, $location);
-						$this->SetTextColor(26, 74, 114);
-						$this->SetFont('DejaVu', '', 10);
-						$this->Write(5, strip_tags($error['error']));
-						$this->Ln(7);
+	// 				// repair
+	// 				if (is_array($error['repair'])) {
+	// 					$this->SetX(17);
+	// 					$this->SetFont('Helvetica', '', 10);
+	// 					$this->Write(5, $error['repair']['label'].": ".strip_tags($error['repair']['detail']));
+	// 					$this->Ln(10);
+	// 				}
+	// 			}
+	// 		} else { // likely and potential. needed to show 'passed', 'failed' or 'no decision' label	
+	// 			foreach($array as $category) {
+	// 				foreach($category as $error) {
+	// 					// error icon img, line, column, error text
+	// 					$img_data = explode(".", $error['img_src']);		
+	// 					$path = $error['base_href']."images/jpg/".$img_data[0].".jpg";
+	// 					$this->Image($path, $this->GetX()+7, $this->GetY(), 4, 4);
+	// 					$this->SetX(21);
+	// 					$this->SetTextColor(0);
+	// 					$this->SetFont('Helvetica', 'BI', 9);
+	// 					$location = " ".$error['line_text']." ".$error['line_nr'].", ".$error['col_text']." ".$error['col_nr'].":  ";
+	// 					$this->Write(5, $location);
+	// 					$this->SetTextColor(26, 74, 114);
+	// 					$this->SetFont('Helvetica', '', 10);
+	// 					$this->Write(5, strip_tags($error['error']));
+	// 					$this->Ln(7);
 									
-						// html code of error (if there is image in error show full img src in even if string is >100 long)
-						$this->SetFont('DejaVu', '', 9);
-						$this->SetTextColor(0);
-						$this->SetX(17);
-						if (($error['image'] != '') && ($error['image']['src'] != '')) {
-							preg_match('/src=(.)*/', html_entity_decode($error['html_code']), $match);
-							$img_parts = explode('"', $match[0]);
-							if (count($img_parts)<3) {
-								$error['html_code'] = "<img ".$img_parts[0].'"'.$error['image']['src'].'" ...';
-							}
-						}
-						$str = str_replace("\t", "    ", html_entity_decode($error['html_code']));
-						$this->Write(5, $str);
-						$this->Ln(8);
+	// 					// html code of error (if there is image in error show full img src in even if string is >100 long)
+	// 					$this->SetFont('Helvetica', '', 9);
+	// 					$this->SetTextColor(0);
+	// 					$this->SetX(17);
+	// 					if (($error['image'] != '') && ($error['image']['src'] != '')) {
+	// 						preg_match('/src=(.)*/', html_entity_decode($error['html_code']), $match);
+	// 						$img_parts = explode('"', $match[0]);
+	// 						if (count($img_parts)<3) {
+	// 							$error['html_code'] = "<img ".$img_parts[0].'"'.$error['image']['src'].'" ...';
+	// 						}
+	// 					}
+	// 					$str = str_replace("\t", "    ", html_entity_decode($error['html_code']));
+	// 					$this->Write(5, $str);
+	// 					$this->Ln(8);
 
-						// css code
-						if ($error['css_code'] != '') {
-							$pattern = "/CSS.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s/";
-							if (preg_match($pattern, strip_tags($error['css_code']), $matches)) {
-								$this->SetFont('Helvetica', '', 8);
-								$this->SetX(17);
-								$this->MultiCell(0, 5, $matches[0], 0, 'L', false);	
-								$this->Ln(3);
-							}							
-						}
+	// 					// css code
+	// 					if ($error['css_code'] != '') {
+	// 						$pattern = "/CSS.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s.*\s/";
+	// 						if (preg_match($pattern, strip_tags($error['css_code']), $matches)) {
+	// 							$this->SetFont('Helvetica', '', 8);
+	// 							$this->SetX(17);
+	// 							$this->MultiCell(0, 5, $matches[0], 0, 'L', false);	
+	// 							$this->Ln(3);
+	// 						}							
+	// 					}
 						
-						// if user is logged in display labels 'passed', 'failed' or 'no decision'
-						if ((isset($_SESSION['user_id'])) && ($problem_type != 'known')) {
-							$this->SetFont('DejaVu', 'B', 10);
-							$this->SetX(170);
-							if ($error['test_passed'] == 'true') {
-								$this->SetTextColor(134, 218, 130);
-								$this->Write(5, strtoupper(_AC('file_passed')));
-							} else if ($error['test_passed'] == false) {
-								$this->SetTextColor(246, 114, 114);
-								$this->Write(5, strtoupper(_AC('file_failed')));
-							} else if ($error['test_passed'] == 'none') {
-								$this->SetTextColor(106, 175, 233);
-								$this->Write(5, strtoupper(_AC('file_no_decision')));
-							}
-							$this->Ln(10);						
-						} // end if user is logged in
-					}
-				}
+	// 					// if user is logged in display labels 'passed', 'failed' or 'no decision'
+	// 					if ((isset($_SESSION['user_id'])) && ($problem_type != 'known')) {
+	// 						$this->SetFont('Helvetica', 'B', 10);
+	// 						$this->SetX(170);
+	// 						if ($error['test_passed'] == 'true') {
+	// 							$this->SetTextColor(134, 218, 130);
+	// 							$this->Write(5, strtoupper(_AC('file_passed')));
+	// 						} else if ($error['test_passed'] == false) {
+	// 							$this->SetTextColor(246, 114, 114);
+	// 							$this->Write(5, strtoupper(_AC('file_failed')));
+	// 						} else if ($error['test_passed'] == 'none') {
+	// 							$this->SetTextColor(106, 175, 233);
+	// 							$this->Write(5, strtoupper(_AC('file_no_decision')));
+	// 						}
+	// 						$this->Ln(10);						
+	// 					} // end if user is logged in
+	// 				}
+	// 			}
 			
-			} // end else for likely & potential
-		} // end else for showing errors
+	// 		} // end else for likely & potential
+	// 	} // end else for showing errors
 			
-	}
+	// }
 	
 	/**
 	* private
@@ -476,15 +476,15 @@ class acheckerMPDF extends Mpdf {
 			$path = AC_BASE_HREF."images/jpg/info.jpg";
 			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 			$this->SetX(14);
-			$this->SetFont('DejaVu', 'B', 12);			
+			$this->SetFont('Helvetica', 'B', 12);			
 			$this->Write(5,_AC("html_validator_disabled"));
 			$this->SetTextColor(0);
 		} else {				
-			$this->SetFont('DejaVu', 'B', 14);
+			$this->SetFont('Helvetica', 'B', 14);
 			$this->SetTextColor(0);
 			$this->Write(5, _AC('file_report_html').' ('.$this->error_nr_html.' '._AC('file_report_found').'):');		
 			$this->Ln(10);
-			$this->SetFont('DejaVu', 'B', 12);
+			$this->SetFont('Helvetica', 'B', 12);
 			$this->Write(5,strip_tags(_AC("html_validator_provided_by")));
 			$this->Ln(10);		
 		
@@ -496,13 +496,13 @@ class acheckerMPDF extends Mpdf {
 				$path = AC_BASE_HREF."images/jpg/feedback.jpg";
 				$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 				$this->SetX(14);
-				$this->SetFont('DejaVu', 'B', 12);
+				$this->SetFont('Helvetica', 'B', 12);
 				$this->Write(5, _AC("congrats_html_validation"));
 			} else if($this->error_nr_html == 0 && $this->html_error != '') {
 				// html validation errors
 				$this->Ln(3);
 				$this->SetTextColor(0);
-				$this->SetFont('DejaVu', '', 10);
+				$this->SetFont('Helvetica', '', 10);
 				$this->Write(5, $this->html_error);
 			} else { // else make report on errors
 				foreach($this->html as $error) {
@@ -513,18 +513,18 @@ class acheckerMPDF extends Mpdf {
 					$this->SetX(21);
 					if ($error['line'] != '' && $error['col'] != '') {
 						$this->SetTextColor(0);
-						$this->SetFont('DejaVu', 'BI', 9);
+						$this->SetFont('Helvetica', 'BI', 9);
 						$location = " "._AC('line')." ".$error['line'].", "._AC('column')." ".$error['col'].":  ";
 						$this->Write(5, $location);
 					}
 					$this->SetTextColor(26, 74, 114);
-					$this->SetFont('DejaVu', '', 10);
+					$this->SetFont('Helvetica', '', 10);
 					$this->Write(5, html_entity_decode(strip_tags($error['err'])));
 					$this->Ln(7);
 	
 					// html code of error
 					if ($error['html_1'] != '' || $error['html_2'] != '' || $error['html_3'] != '') {
-						$this->SetFont('DejaVu', '', 9);
+						$this->SetFont('Helvetica', '', 9);
 						$this->SetX(17);
 						$this->SetTextColor(0);
 						$str = str_replace("\t", "    ", html_entity_decode(htmlspecialchars_decode($error['html_1'], ENT_QUOTES)));
@@ -541,7 +541,7 @@ class acheckerMPDF extends Mpdf {
 					// text
 					if ($error['text'] != '') {
 						$this->SetX(17);
-						$this->SetFont('DejaVu', '', 10);
+						$this->SetFont('Helvetica', '', 10);
 						$this->Write(5, html_entity_decode(strip_tags($error['text'])));
 						$this->Ln(10);
 					}
@@ -559,11 +559,11 @@ class acheckerMPDF extends Mpdf {
 	{		
 		// str with error type and nr of errors
 		if ($this->css_error == '' && $this->error_nr_css != -1) {
-			$this->SetFont('DejaVu', 'B', 14);
+			$this->SetFont('Helvetica', 'B', 14);
 			$this->SetTextColor(0);
 			$this->Write(5, _AC('file_report_css').' ('.$this->error_nr_css.' '._AC('file_report_found').'):');		
 			$this->Ln(10);
-			$this->SetFont('DejaVu', 'B', 12);
+			$this->SetFont('Helvetica', 'B', 12);
 			$this->Write(5,strip_tags(_AC("css_validator_provided_by")));
 			$this->Ln(10);
 		} else if ($this->css_error == '' && $this->error_nr_css == -1) {
@@ -572,7 +572,7 @@ class acheckerMPDF extends Mpdf {
 			$path = AC_BASE_HREF."images/jpg/info.jpg";
 			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 			$this->SetX(14);
-			$this->SetFont('DejaVu', 'B', 12);			
+			$this->SetFont('Helvetica', 'B', 12);			
 			$this->Write(5,_AC("css_validator_disabled"));
 			$this->SetTextColor(0);
 		}
@@ -584,7 +584,7 @@ class acheckerMPDF extends Mpdf {
 			$path = AC_BASE_HREF."images/jpg/info.jpg";
 			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 			$this->SetX(14);
-			$this->SetFont('DejaVu', 'B', 12);
+			$this->SetFont('Helvetica', 'B', 12);
 			$this->Write(5, $this->css_error);
 		} else {
 			if ($this->error_nr_css == 0) {
@@ -594,7 +594,7 @@ class acheckerMPDF extends Mpdf {
 				$path = AC_BASE_HREF."images/jpg/feedback.jpg";
 				$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 				$this->SetX(14);
-				$this->SetFont('DejaVu', 'B', 12);
+				$this->SetFont('Helvetica', 'B', 12);
 				$this->Write(5, _AC("congrats_css_validation"));
 			} else { // else make report on errors
 				foreach($this->css as $uri => $group) {
@@ -602,10 +602,10 @@ class acheckerMPDF extends Mpdf {
 					$this->Ln(3);
 					$this->SetX(17);
 					$this->SetTextColor(0);
-					$this->SetFont('DejaVu', 'B', 10);
+					$this->SetFont('Helvetica', 'B', 10);
 					$this->Write(5, "URI: ");
 					$this->SetTextColor(26, 74, 114);
-					$this->SetFont('DejaVu', 'B', 12);
+					$this->SetFont('Helvetica', 'B', 12);
 					$this->Write(5, $uri);
 					$this->Ln(10);
 					
@@ -613,11 +613,11 @@ class acheckerMPDF extends Mpdf {
 						// line, code
 						$this->SetX(17);
 						$this->SetTextColor(0);
-						$this->SetFont('DejaVu', 'BI', 9);
+						$this->SetFont('Helvetica', 'BI', 9);
 						$location = _AC('line')." ".$error['line'].":  ";
 						$this->Write(5, $location);
 						if ($error['code'] != '') {
-							$this->SetFont('DejaVu', '', 9);
+							$this->SetFont('Helvetica', '', 9);
 							$this->Write(5, $error['code']); 
 						}
 						$this->Ln(7);
@@ -625,7 +625,7 @@ class acheckerMPDF extends Mpdf {
 						// parse
 						if ($error['parse'] != '') {
 							$this->SetX(17);
-							$this->SetFont('DejaVu', '', 10);
+							$this->SetFont('Helvetica', '', 10);
 							$str = str_replace("\t", "    ", strip_tags(htmlspecialchars_decode(html_entity_decode($error['parse']), ENT_QUOTES)));
 							$this->Write(5, $str);
 							$this->Ln(10);
@@ -668,54 +668,54 @@ class acheckerMPDF extends Mpdf {
 		// print time, date, [resource title,] [resource url,] str with guidelines
 		$this->printInfo($title, $uri, $guidelines_text, $time);
 
-		// if report by guideline
-		if ($mode == 'guideline') {
-			if ($problem == 'all') {
-				$this->printGuideline('known');
-				$this->AddPage();
-				$this->printGuideline('likely');
-				$this->AddPage();
-				$this->printGuideline('potential');
-				if ($this->error_nr_html != -1) {
-					$this->AddPage();
-					$this->printHTML();
-				}
-				if ($this->error_nr_css != -1) {
-					$this->AddPage();
-					$this->printCSS();
-				}
-			} else if ($problem == 'html') {
-				$this->printHTML();
-			} else if ($problem == 'css') {
-				$this->printCSS();
-			} else {
-				$this->printGuideline($problem);
-			}
-		} 
-		// if report by line
-		else if ($mode == 'line') {
-			if ($problem == 'all') {
-				$this->printLine('known');
-				$this->AddPage();
-				$this->printLine('likely');
-				$this->AddPage();
-				$this->printLine('potential');
-				if ($this->error_nr_html != -1) {
-					$this->AddPage();
-					$this->printHTML();
-				}
-				if ($this->error_nr_css != -1) {
-					$this->AddPage();
-					$this->printCSS();
-				}
-			} else if ($problem == 'html') {
-				$this->printHTML();
-			} else if ($problem == 'css') {
-				$this->printCSS();
-			} else {			
-				$this->printLine($problem);
-			}
-		}
+		// // if report by guideline
+		// if ($mode == 'guideline') {
+		// 	if ($problem == 'all') {
+		// 		$this->printGuideline('known');
+		// 		$this->AddPage();
+		// 		$this->printGuideline('likely');
+		// 		$this->AddPage();
+		// 		$this->printGuideline('potential');
+		// 		if ($this->error_nr_html != -1) {
+		// 			$this->AddPage();
+		// 			$this->printHTML();
+		// 		}
+		// 		if ($this->error_nr_css != -1) {
+		// 			$this->AddPage();
+		// 			$this->printCSS();
+		// 		}
+		// 	} else if ($problem == 'html') {
+		// 		$this->printHTML();
+		// 	} else if ($problem == 'css') {
+		// 		$this->printCSS();
+		// 	} else {
+		// 		$this->printGuideline($problem);
+		// 	}
+		// } 
+		// // if report by line
+		// else if ($mode == 'line') {
+		// 	if ($problem == 'all') {
+		// 		$this->printLine('known');
+		// 		$this->AddPage();
+		// 		$this->printLine('likely');
+		// 		$this->AddPage();
+		// 		$this->printLine('potential');
+		// 		if ($this->error_nr_html != -1) {
+		// 			$this->AddPage();
+		// 			$this->printHTML();
+		// 		}
+		// 		if ($this->error_nr_css != -1) {
+		// 			$this->AddPage();
+		// 			$this->printCSS();
+		// 		}
+		// 	} else if ($problem == 'html') {
+		// 		$this->printHTML();
+		// 	} else if ($problem == 'css') {
+		// 		$this->printCSS();
+		// 	} else {			
+		// 		$this->printLine($problem);
+		// 	}
+		// }
 
 		// close and save PDF document		
 		$path = AC_EXPORT_RPT_DIR.$filename.'.pdf';  
