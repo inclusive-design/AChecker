@@ -87,7 +87,7 @@ span.err_type{ padding: .1em .5em; font-size: smaller;}
 	* @return  web service html output
 	* @author  Cindy Qi Li
 	*/
-	function HTMLWebServiceOutput($aValidator, $userLinkID, $guidelineIDs)
+	function __construct($aValidator, $userLinkID, $guidelineIDs)
 	{
 		$this->aValidator = $aValidator;
 		$this->guidelineIDs = $guidelineIDs;

@@ -37,15 +37,16 @@ class LanguageEditor extends Language {
 	* 
 	* Initializes db and parent properties.
 	*/
-	function LanguageEditor($myLang) {
-		global $msg;
+
+	function __construct($myLang) {
+		global $db, $msg;
 		
 		global $savant;
 		$this->msg = $msg;
 
 
 		if (isset($myLang)) {
-			$this->Language($myLang);
+			parent::__construct($myLang);
 		}
 		$this->missingTerms = array();
 	}

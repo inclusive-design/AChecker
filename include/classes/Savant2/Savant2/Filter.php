@@ -48,7 +48,7 @@ class Savant2_Filter {
 	* 
 	*/
 	
-	function Savant2_Filter($conf = array())
+	function __construct($conf = array())
 	{
 		settype($conf, 'array');
 		foreach ($conf as $key => $val) {
@@ -63,7 +63,7 @@ class Savant2_Filter {
 	*
 	* @access public
 	* 
-	* @param string &$text The text to filter.
+	* @param string $text The text to filter.
 	*
 	* @return void
 	*
