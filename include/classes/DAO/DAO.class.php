@@ -21,7 +21,7 @@
 
 class DAO {
 
-	// private
+	// protected	+	// private
 	protected $db;      // global database connection
 
 	function __construct($db_host = NULL, $db_user = NULL, $db_pass = NULL, $db_name = NULL, $db_port = NULL)
