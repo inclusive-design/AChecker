@@ -2288,8 +2288,6 @@ class BasicChecks {
 		foreach ( $a_value as $value ) {
 			if (substr ( $value, strlen ( $value ) - 2, 2 ) == "px")
 				$ret = true;
-			//else
-		//	return false;
 		}
 		return $ret;
 	}

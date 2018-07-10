@@ -25,7 +25,7 @@ class SqlUtility
  	* @return  boolean  always true
  	* @access  public
  	*/
-	function splitSqlFile($ret, $sql)
+	function splitSqlFile(&$ret, $sql)
 	{
 		$sql               = trim($sql);
 		$sql_len           = strlen($sql);

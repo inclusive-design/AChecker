@@ -25,7 +25,7 @@ class SqlUtility
  	* @return  boolean  always true
  	* @access  public
  	*/
-	function splitSqlFile($ret, $sql)
+	function splitSqlFile(&$ret, $sql)
 	{
 		$sql               = trim($sql);
 		$sql_len           = strlen($sql);
@@ -159,7 +159,7 @@ class SqlUtility
         }
 
         $sql_query = trim(fread(fopen($sql_file_path, 'r'), filesize($sql_file_path)));
-        SqlUtility::splitSqlFile($pieces, $sql_query);
+        $this->splitSqlFile($pieces, $sql_query);
 
 	    foreach ($pieces as $piece) {
 	        $piece = trim($piece);
@@ -167,7 +167,7 @@ class SqlUtility
             // [4] contains unprefixed table name
 
 			if ($table_prefix || ($table_prefix == '')) {
-	            $prefixed_query = SqlUtility::prefixQuery($piece, $table_prefix);
+	            $prefixed_query = $this->prefixQuery($piece, $table_prefix);
 			} else {
 				$prefixed_query = $piece;
 			}
