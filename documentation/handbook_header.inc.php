@@ -65,5 +65,4 @@ $savant->assign('base_path', AC_BASE_HREF);
 $savant->assign('theme', $_SESSION['prefs']['PREF_THEME']);
 
 $savant->display('include/handbook_header.tmpl.php');
-
 ?>
