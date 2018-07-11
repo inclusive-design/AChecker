@@ -18,4 +18,4 @@ $RECYCLE.BIN/
 include/config.inc.php
 
 # Vendor Folder
-vendor
+vendor/

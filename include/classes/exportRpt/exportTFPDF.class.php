@@ -125,10 +125,10 @@ class acheckerTFPDF extends tFPDF {
 		$this->AliasNbPages();		
 
 		// add Unicode fonts (uses UTF-8)
-		// $this->AddFont('DejaVu',  '',  'DejaVuSansCondensed.ttf', true);
-		// $this->AddFont('DejaVu', 'B',  'DejaVuSansCondensed-Bold.ttf', true);
-		// $this->AddFont('DejaVu', 'I',  'DejaVuSansCondensed-Oblique.ttf', true);
-		// $this->AddFont('DejaVu', 'BI', 'DejaVuSansCondensed-BoldOblique.ttf', true);
+		$this->AddFont('DejaVu',  '',  'DejaVuSansCondensed.ttf', true);
+		$this->AddFont('DejaVu', 'B',  'DejaVuSansCondensed-Bold.ttf', true);
+		$this->AddFont('DejaVu', 'I',  'DejaVuSansCondensed-Oblique.ttf', true);
+		$this->AddFont('DejaVu', 'BI', 'DejaVuSansCondensed-BoldOblique.ttf', true);
 		
 		// add a page
 		$this->AddPage();
@@ -139,26 +139,26 @@ class acheckerTFPDF extends tFPDF {
 		// date
 		$today = getdate();
 		$date_to_print = AC_date('%l').' '.AC_date('%F').' '.$today['mday'].', '.$today['year'];
-		$this->SetFont('Helvetica', '', 9);
+		$this->SetFont('DejaVu', '', 9);
 		$this->Write(5, $date_to_print. ' '. $time_to_print);
 		$this->Ln(8);	
 
 		// url
 		if ($uri != '') {
-			$this->SetFont('Helvetica', '', 12);
+			$this->SetFont('DejaVu', '', 12);
 			$this->Write(5, _AC('file_source_url').': '.$uri);
 			$this->Ln(5);
 		}
 		
 		// title
 		if ($title != '') {
-			$this->SetFont('Helvetica', '', 12);			
+			$this->SetFont('DejaVu', '', 12);			
 			$this->Write(5, _AC('file_source_title').': '.$title);
 			$this->Ln(8);
 		}
 
 		// guidelines
-		$this->SetFont('Helvetica', 'B', 12);
+		$this->SetFont('DejaVu', 'B', 12);
 		$this->Write(5, _AC("accessibility_review") . ' ('. _AC("guidelines"). ': ');
 		$this->SetTextColor(165,7,7);
 		$this->Write(5, $guidelines_text);
@@ -189,7 +189,7 @@ class acheckerTFPDF extends tFPDF {
 		if ($nr == '') $nr = 0;		
 	
 		// str with error type and nr of errors
-		$this->SetFont('Helvetica', 'B', 14);
+		$this->SetFont('DejaVu', 'B', 14);
 		$this->SetTextColor(0);
 		$this->Write(5, _AC('file_report_'.$problem_type).' ('.$nr.' '._AC('file_report_found').'):');		
 		$this->Ln(10);
@@ -202,7 +202,7 @@ class acheckerTFPDF extends tFPDF {
 			$this->SetX(11);
 			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 			$this->SetX(17);
-			$this->SetFont('Helvetica', 'B', 12);
+			$this->SetFont('DejaVu', 'B', 12);
 			$this->Write(5, _AC('congrats_no_'.$problem_type));
 			$this->Ln(3);
 		} 
@@ -214,13 +214,13 @@ class acheckerTFPDF extends tFPDF {
 				$this->Ln(3);						
 				$this->SetTextColor(165,7,7);
 				$this->SetX(10);
-				$this->SetFont('Helvetica', 'B', 12);	
+				$this->SetFont('DejaVu', 'B', 12);	
 				$this->Write(5, $group_title);
 				$this->Ln(8);
 			
 				// subgroup level output
 				foreach($group_content as $subgroup_title => $subgroup_content) {
-					$this->SetFont('Helvetica', 'B', 10);
+					$this->SetFont('DejaVu', 'B', 10);
 					$this->SetTextColor(165,7,7);
 					$this->SetX(17);
 					$this->Write(5, $subgroup_title);
@@ -229,12 +229,12 @@ class acheckerTFPDF extends tFPDF {
 					// check level output
 					foreach($subgroup_content as $check_group) {
 						$this->SetTextColor(0);	
-						$this->SetFont('Helvetica', 'B', 10);
+						$this->SetFont('DejaVu', 'B', 10);
 						$this->SetX(21);
 						$check = $check_group['check_label']." ".$check_group['check_id'].": ".strip_tags($check_group['error']);
 						$this->Write(5, $check);				
 						$this->SetTextColor(0);
-						$this->SetFont('Helvetica', '', 10);
+						$this->SetFont('DejaVu', '', 10);
 						$this->Ln(8);					
 						if (is_array($check_group['repair'])) {
 							$this->SetX(28);
@@ -249,7 +249,7 @@ class acheckerTFPDF extends tFPDF {
 							$path = $error['base_href']."images/jpg/".$img_data[0].".jpg";
 							$this->Image($path, $this->GetX()+18, $this->GetY(), 4, 4);
 							$this->SetX(32);
-							$this->SetFont('Helvetica', 'BI', 9);
+							$this->SetFont('DejaVu', 'BI', 9);
 							$this->SetTextColor(0);
 							$location = " ".$error['line_text']." ".$error['line_nr'].", ".$error['col_text']." ".$error['col_nr'].":";
 							$this->Write(5, $location);
@@ -258,7 +258,7 @@ class acheckerTFPDF extends tFPDF {
 							// html code of error (if there is image in error show full img src in even if string is >100 long)
 							$this->SetTextColor(0);
 							$this->SetX(28);
-							$this->SetFont('Helvetica', '', 9);						
+							$this->SetFont('DejaVu', '', 9);						
 							if (($error['error_img'] != '') && ($error['error_img']['img_src'] != '')) {
 								preg_match('/src=(.)*/', html_entity_decode($error['html_code']), $match);
 								$img_parts = explode('"', $match[0]);
@@ -283,7 +283,7 @@ class acheckerTFPDF extends tFPDF {
 							
 							// if user is logged in display labels 'passed', 'failed' or 'no decision'
 							if ((isset($_SESSION['user_id'])) && ($problem_type != 'known')) {
-								$this->SetFont('Helvetica', 'B', 10);
+								$this->SetFont('DejaVu', 'B', 10);
 								$this->SetX(170);
 								if ($error['test_passed'] == 'true') {
 									$this->SetTextColor(134, 218, 130);
@@ -327,7 +327,7 @@ class acheckerTFPDF extends tFPDF {
 		if ($nr == '') $nr = 0;	
 		
 		// str with error type and nr of errors
-		$this->SetFont('Helvetica', 'B', 14);
+		$this->SetFont('DejaVu', 'B', 14);
 		$this->SetTextColor(0);
 		$this->Write(5, _AC('file_report_'.$problem_type).' ('.$nr.' '._AC('file_report_found').'):');		
 		$this->Ln(10);
@@ -339,7 +339,7 @@ class acheckerTFPDF extends tFPDF {
 			$path = AC_BASE_HREF."images/jpg/feedback.jpg";
 			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 			$this->SetX(14);
-			$this->SetFont('Helvetica', 'B', 12);
+			$this->SetFont('DejaVu', 'B', 12);
 			$this->Write(5, _AC('congrats_no_'.$problem_type));
 		} else { // else make report on errors
 
@@ -352,16 +352,16 @@ class acheckerTFPDF extends tFPDF {
 					$this->Image($path, $this->GetX()+7, $this->GetY(), 4, 4);
 					$this->SetX(21);
 					$this->SetTextColor(0);
-					$this->SetFont('Helvetica', 'BI', 9);
+					$this->SetFont('DejaVu', 'BI', 9);
 					$location = " ".$error['line_text']." ".$error['line_nr'].", ".$error['col_text']." ".$error['col_nr'].":  ";
 					$this->Write(5, $location);
 					$this->SetTextColor(26, 74, 114);
-					$this->SetFont('Helvetica', '', 10);
+					$this->SetFont('DejaVu', '', 10);
 					$this->Write(5, strip_tags($error['error']));
 					$this->Ln(7);
 
 					// html code of error (if there is image in error show full img src in even if string is >100 long)
-					$this->SetFont('Helvetica', '', 9);
+					$this->SetFont('DejaVu', '', 9);
 					$this->SetTextColor(0);
 					$this->SetX(17);
 					if (($error['image'] != '') && ($error['image']['src'] != '')) {
@@ -389,7 +389,7 @@ class acheckerTFPDF extends tFPDF {
 					// repair
 					if (is_array($error['repair'])) {
 						$this->SetX(17);
-						$this->SetFont('Helvetica', '', 10);
+						$this->SetFont('DejaVu', '', 10);
 						$this->Write(5, $error['repair']['label'].": ".strip_tags($error['repair']['detail']));
 						$this->Ln(10);
 					}
@@ -403,16 +403,16 @@ class acheckerTFPDF extends tFPDF {
 						$this->Image($path, $this->GetX()+7, $this->GetY(), 4, 4);
 						$this->SetX(21);
 						$this->SetTextColor(0);
-						$this->SetFont('Helvetica', 'BI', 9);
+						$this->SetFont('DejaVu', 'BI', 9);
 						$location = " ".$error['line_text']." ".$error['line_nr'].", ".$error['col_text']." ".$error['col_nr'].":  ";
 						$this->Write(5, $location);
 						$this->SetTextColor(26, 74, 114);
-						$this->SetFont('Helvetica', '', 10);
+						$this->SetFont('DejaVu', '', 10);
 						$this->Write(5, strip_tags($error['error']));
 						$this->Ln(7);
 									
 						// html code of error (if there is image in error show full img src in even if string is >100 long)
-						$this->SetFont('Helvetica', '', 9);
+						$this->SetFont('DejaVu', '', 9);
 						$this->SetTextColor(0);
 						$this->SetX(17);
 						if (($error['image'] != '') && ($error['image']['src'] != '')) {
@@ -439,7 +439,7 @@ class acheckerTFPDF extends tFPDF {
 						
 						// if user is logged in display labels 'passed', 'failed' or 'no decision'
 						if ((isset($_SESSION['user_id'])) && ($problem_type != 'known')) {
-							$this->SetFont('Helvetica', 'B', 10);
+							$this->SetFont('DejaVu', 'B', 10);
 							$this->SetX(170);
 							if ($error['test_passed'] == 'true') {
 								$this->SetTextColor(134, 218, 130);
@@ -473,15 +473,15 @@ class acheckerTFPDF extends tFPDF {
 			$path = AC_BASE_HREF."images/jpg/info.jpg";
 			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 			$this->SetX(14);
-			$this->SetFont('Helvetica', 'B', 12);			
+			$this->SetFont('DejaVu', 'B', 12);			
 			$this->Write(5,_AC("html_validator_disabled"));
 			$this->SetTextColor(0);
 		} else {				
-			$this->SetFont('Helvetica', 'B', 14);
+			$this->SetFont('DejaVu', 'B', 14);
 			$this->SetTextColor(0);
 			$this->Write(5, _AC('file_report_html').' ('.$this->error_nr_html.' '._AC('file_report_found').'):');		
 			$this->Ln(10);
-			$this->SetFont('Helvetica', 'B', 12);
+			$this->SetFont('DejaVu', 'B', 12);
 			$this->Write(5,strip_tags(_AC("html_validator_provided_by")));
 			$this->Ln(10);		
 		
@@ -493,13 +493,13 @@ class acheckerTFPDF extends tFPDF {
 				$path = AC_BASE_HREF."images/jpg/feedback.jpg";
 				$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 				$this->SetX(14);
-				$this->SetFont('Helvetica', 'B', 12);
+				$this->SetFont('DejaVu', 'B', 12);
 				$this->Write(5, _AC("congrats_html_validation"));
 			} else if($this->error_nr_html == 0 && $this->html_error != '') {
 				// html validation errors
 				$this->Ln(3);
 				$this->SetTextColor(0);
-				$this->SetFont('Helvetica', '', 10);
+				$this->SetFont('DejaVu', '', 10);
 				$this->Write(5, $this->html_error);
 			} else { // else make report on errors
 				foreach($this->html as $error) {
@@ -510,18 +510,18 @@ class acheckerTFPDF extends tFPDF {
 					$this->SetX(21);
 					if ($error['line'] != '' && $error['col'] != '') {
 						$this->SetTextColor(0);
-						$this->SetFont('Helvetica', 'BI', 9);
+						$this->SetFont('DejaVu', 'BI', 9);
 						$location = " "._AC('line')." ".$error['line'].", "._AC('column')." ".$error['col'].":  ";
 						$this->Write(5, $location);
 					}
 					$this->SetTextColor(26, 74, 114);
-					$this->SetFont('Helvetica', '', 10);
+					$this->SetFont('DejaVu', '', 10);
 					$this->Write(5, html_entity_decode(strip_tags($error['err'])));
 					$this->Ln(7);
 	
 					// html code of error
 					if ($error['html_1'] != '' || $error['html_2'] != '' || $error['html_3'] != '') {
-						$this->SetFont('Helvetica', '', 9);
+						$this->SetFont('DejaVu', '', 9);
 						$this->SetX(17);
 						$this->SetTextColor(0);
 						$str = str_replace("\t", "    ", html_entity_decode(htmlspecialchars_decode($error['html_1'], ENT_QUOTES)));
@@ -538,7 +538,7 @@ class acheckerTFPDF extends tFPDF {
 					// text
 					if ($error['text'] != '') {
 						$this->SetX(17);
-						$this->SetFont('Helvetica', '', 10);
+						$this->SetFont('DejaVu', '', 10);
 						$this->Write(5, html_entity_decode(strip_tags($error['text'])));
 						$this->Ln(10);
 					}
@@ -556,11 +556,11 @@ class acheckerTFPDF extends tFPDF {
 	{		
 		// str with error type and nr of errors
 		if ($this->css_error == '' && $this->error_nr_css != -1) {
-			$this->SetFont('Helvetica', 'B', 14);
+			$this->SetFont('DejaVu', 'B', 14);
 			$this->SetTextColor(0);
 			$this->Write(5, _AC('file_report_css').' ('.$this->error_nr_css.' '._AC('file_report_found').'):');		
 			$this->Ln(10);
-			$this->SetFont('Helvetica', 'B', 12);
+			$this->SetFont('DejaVu', 'B', 12);
 			$this->Write(5,strip_tags(_AC("css_validator_provided_by")));
 			$this->Ln(10);
 		} else if ($this->css_error == '' && $this->error_nr_css == -1) {
@@ -569,7 +569,7 @@ class acheckerTFPDF extends tFPDF {
 			$path = AC_BASE_HREF."images/jpg/info.jpg";
 			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 			$this->SetX(14);
-			$this->SetFont('Helvetica', 'B', 12);			
+			$this->SetFont('DejaVu', 'B', 12);			
 			$this->Write(5,_AC("css_validator_disabled"));
 			$this->SetTextColor(0);
 		}
@@ -581,7 +581,7 @@ class acheckerTFPDF extends tFPDF {
 			$path = AC_BASE_HREF."images/jpg/info.jpg";
 			$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 			$this->SetX(14);
-			$this->SetFont('Helvetica', 'B', 12);
+			$this->SetFont('DejaVu', 'B', 12);
 			$this->Write(5, $this->css_error);
 		} else {
 			if ($this->error_nr_css == 0) {
@@ -591,7 +591,7 @@ class acheckerTFPDF extends tFPDF {
 				$path = AC_BASE_HREF."images/jpg/feedback.jpg";
 				$this->Image($path, $this->GetX(), $this->GetY(), 4, 4);
 				$this->SetX(14);
-				$this->SetFont('Helvetica', 'B', 12);
+				$this->SetFont('DejaVu', 'B', 12);
 				$this->Write(5, _AC("congrats_css_validation"));
 			} else { // else make report on errors
 				foreach($this->css as $uri => $group) {
@@ -599,10 +599,10 @@ class acheckerTFPDF extends tFPDF {
 					$this->Ln(3);
 					$this->SetX(17);
 					$this->SetTextColor(0);
-					$this->SetFont('Helvetica', 'B', 10);
+					$this->SetFont('DejaVu', 'B', 10);
 					$this->Write(5, "URI: ");
 					$this->SetTextColor(26, 74, 114);
-					$this->SetFont('Helvetica', 'B', 12);
+					$this->SetFont('DejaVu', 'B', 12);
 					$this->Write(5, $uri);
 					$this->Ln(10);
 					
@@ -610,11 +610,11 @@ class acheckerTFPDF extends tFPDF {
 						// line, code
 						$this->SetX(17);
 						$this->SetTextColor(0);
-						$this->SetFont('Helvetica', 'BI', 9);
+						$this->SetFont('DejaVu', 'BI', 9);
 						$location = _AC('line')." ".$error['line'].":  ";
 						$this->Write(5, $location);
 						if ($error['code'] != '') {
-							$this->SetFont('Helvetica', '', 9);
+							$this->SetFont('DejaVu', '', 9);
 							$this->Write(5, $error['code']); 
 						}
 						$this->Ln(7);
@@ -622,7 +622,7 @@ class acheckerTFPDF extends tFPDF {
 						// parse
 						if ($error['parse'] != '') {
 							$this->SetX(17);
-							$this->SetFont('Helvetica', '', 10);
+							$this->SetFont('DejaVu', '', 10);
 							$str = str_replace("\t", "    ", strip_tags(htmlspecialchars_decode(html_entity_decode($error['parse']), ENT_QUOTES)));
 							$this->Write(5, $str);
 							$this->Ln(10);
