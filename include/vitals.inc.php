@@ -13,6 +13,7 @@
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
 
+ // Enable the composer autoload file
 define('AC_PHP_COMPOSER_PATH', AC_INCLUDE_PATH .'../vendor/');
 require_once AC_PHP_COMPOSER_PATH.'autoload.php';
 
@@ -140,11 +141,7 @@ define('SITE_NAME',                 $_config['site_name']);
 
 /***** 6. initialize theme and template management *****/
 	
-
-
 	// set default template paths:
-	
-	
 
 	if (isset($_SESSION['prefs']['PREF_THEME']) && file_exists(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']) && isset($_SESSION['valid_user']) && $_SESSION['valid_user']) 
 	{
@@ -168,9 +165,8 @@ define('SITE_NAME',                 $_config['site_name']);
 	{
 		$_SESSION['prefs']['PREF_THEME'] = get_default_theme();
 	}
-
 	
-	// Add folders
+	// Create new Plates instance
 	$plates = League\Plates\Engine::create(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/', 'tmpl.php');
 
 	require(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/theme.cfg.php');
