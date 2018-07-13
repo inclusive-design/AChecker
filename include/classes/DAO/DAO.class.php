@@ -21,10 +21,10 @@
 
 class DAO {
 
-	// private
-	private $db;      // global database connection
+	// protected	+	// private
+	protected $db;      // global database connection
 
-	function __construct()
+	function __construct($db_host = NULL, $db_user = NULL, $db_pass = NULL, $db_name = NULL, $db_port = NULL)
 	{
 		if(!isset($db_host) || !isset($db_user) || !isset($db_pass) || !isset($db_name) || !isset($db_port))
 		{	
