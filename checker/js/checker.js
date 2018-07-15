@@ -214,6 +214,7 @@ AChecker.output = AChecker.output || {};
             
                 // change src and start downloading
                 var ifrm = document.getElementById("downloadFrame");
+                // alert(returned_data);
                 ifrm.src = "checker/download.php?path=" + returned_data;
             },
         

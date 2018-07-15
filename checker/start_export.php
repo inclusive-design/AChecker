@@ -150,18 +150,10 @@ $error_nr_potential = 0;
 
 // create file depending on user choice
 if ($file == 'pdf') {	
-	if ($problem != 'html' && $problem != 'css') {
-		if ($mode == 'guideline') $a_rpt = new FileExportRptGuideline($errors, $_gids[0], $user_link_id);
-		else if ($mode == 'line') $a_rpt = new FileExportRptLine($errors, $user_link_id);
+		include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportMPDF.class.php');
 	
-		list($known, $likely, $potential) = $a_rpt->generateRpt();
-		list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
-	}
-	include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportMPDF.class.php');
-	
-	$pdf = new acheckerMPDF($known, $likely, $potential, $html, $css, 
-		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
-	$path = $pdf->getPDF($title, $uri, $problem, $mode, $_gids);
+	$pdf = new acheckerMPDF();
+	$path = $pdf->getPDF();
 
 	// include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportTFPDF.class.php');
 	
