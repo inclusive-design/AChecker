@@ -65,7 +65,6 @@ if (!defined('AC_INSTALL') || !AC_INSTALL) {
 	exit;
 }
 
-
 /*** 1. constants ***/
 require_once(AC_INCLUDE_PATH.'constants.inc.php');
 
@@ -85,7 +84,6 @@ require_once(AC_INCLUDE_PATH.'constants.inc.php');
 	unregister_GLOBALS();
 
 /***** end session initilization block ****/
-
 
 function my_null_slashes($string) {
 	return $string;

@@ -130,15 +130,12 @@ if (isset($aValidator))
 		$seals = $utility->getSeals($guideline_rows);
 	}
 	
-
 	$plate['a_rpt'] = $a_rpt;
 	$plate['num_of_errors'] = $num_of_errors;
 	$plate['num_of_likely_problems'] = $num_of_likely_problems;
 	$plate['num_of_likely_problems_no_decision'] = $num_of_likely_problems_no_decision;
 	$plate['num_of_potential_problems'] = $num_of_potential_problems;
 	$plate['num_of_potential_problems_no_decision'] = $num_of_potential_problems_no_decision;
-
-
 
 	$plate['aValidator'] = $aValidator;
 	$plate['guidelines_text'] = $guidelines_text;
@@ -159,7 +156,6 @@ if (isset($aValidator))
 	}
 
 }
-
 
 echo $plates->render('checker/checker_results.tmpl.php', $plate);
 ?>

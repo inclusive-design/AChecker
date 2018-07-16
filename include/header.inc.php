@@ -39,8 +39,6 @@ $current_page = $menu->getCurrentPage();
 $_sub_menus = $menu->getSubMenus();
 $back_to_page = $menu->getBackToPage();
 
-
-
 $plate['top_level_pages'] = $_top_level_pages;
 $plate['current_top_level_page'] = $_current_root_page;
 $plate['sub_menus'] = $_sub_menus;
@@ -97,5 +95,4 @@ $plate['custom_head'] = $custom_head;
 if ($onload)	$plate['onload'] = $onload;
 
 echo $plates->render('include/header.tmpl.php', $plate);
-
 ?>

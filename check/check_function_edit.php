@@ -88,13 +88,11 @@ if (isset($check_id)) // edit existing check function
 		exit;
 	}
 	
-
 	$plate['check_row'] = $check_row;
 }
 
 /*****************************/
 /* template starts down here */
-
 
 echo $plates->render('check/check_function_edit.tmpl.php',$plate);
 ?>

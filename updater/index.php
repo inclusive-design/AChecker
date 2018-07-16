@@ -325,7 +325,6 @@ else $num_of_patches_in_db = 0;
 
 $num_of_patches = $num_of_patches_in_db + count($patch_list_array);
 
-
 $plate['num_of_patches'] = $num_of_patches;
 $plate['patches_in_db'] = $rows;
 $plate['patch_list_array'] = $patch_list_array;

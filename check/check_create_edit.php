@@ -133,8 +133,7 @@ if (isset($check_id)) // edit existing user
 	$check_example_row['pass_example'] = $check_pass_example_rows[0]['content'];
 	$check_example_row['fail_example_desc'] = $check_fail_example_rows[0]['description'];
 	$check_example_row['fail_example'] = $check_fail_example_rows[0]['content'];
-
-
+	
 	$plate['check_row'] = $check_row;
 	$plate['pre_rows'] = $checkPrerequisitesDAO->getPreChecksByCheckID($check_id);
 	$plate['next_rows'] = $testPassDAO->getNextChecksByCheckID($check_id);

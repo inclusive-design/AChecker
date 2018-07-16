@@ -54,7 +54,6 @@ if (isset($_POST['make_decision']) || isset($_POST['reverse']))
 	}
 }
 // end of process to made decision
-
 // validate referer URIs that has passed validation and received seal. The click on the seal triggers 
 // the if - else below.
 if ($_GET['uri'] == 'referer')
@@ -259,5 +258,4 @@ if ($show_achecker_whatis)
 
 // display footer
 include(AC_INCLUDE_PATH.'footer.inc.php');
-
 ?>

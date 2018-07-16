@@ -45,8 +45,6 @@ if (isset($_POST['submit'])) {
 	$_POST['first_name'] = str_replace('<', '', $_POST['first_name']);
 	$_POST['last_name'] = str_replace('<', '', $_POST['last_name']);
 
-
-
 	if ($missing_fields) {
 		$missing_fields = implode(', ', $missing_fields);
 		$msg->addError(array('EMPTY_FIELDS', $missing_fields));

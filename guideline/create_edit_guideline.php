@@ -135,10 +135,7 @@ if (!isset($gid))
 {
 	// create guideline
 	$checksDAO = new ChecksDAO();
-
-
 	$plate['author'] = $_current_user->getUserName();
-	
 }
 else
 {

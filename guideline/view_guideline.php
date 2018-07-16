@@ -32,7 +32,6 @@ else
 {
 	$plate['row'] = $rows[0];
 	$plate['gid'] = $gid;
-
 	echo $plates->render('guideline/view_guideline.tmpl.php', $plate);
 }
 ?>

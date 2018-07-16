@@ -83,7 +83,6 @@ if (isset($lang_code) && isset($charset))
 	$plate['row'] = $row;
 }
 
-
 $plate['rows_lang'] = $langCodesDAO->GetAll();
 
 echo $plates->render('language/language_add_edit.tmpl.php', $plate);

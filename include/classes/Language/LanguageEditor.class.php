@@ -39,11 +39,9 @@ class LanguageEditor extends Language {
 	*/
 
 	function __construct($myLang) {
-		global $db, $msg;
-		
-		global $plates;
-		$this->msg = $msg;
+		global $db, $msg, $plates;
 
+		$this->msg = $msg;
 
 		if (isset($myLang)) {
 			parent::__construct($myLang);
@@ -147,7 +145,6 @@ class LanguageEditor extends Language {
 				$is_old = true;
 			}
 
-
 			if ($this->checkFilter('new') && !$is_new) {
 				continue;
 			}
@@ -201,7 +198,6 @@ class LanguageEditor extends Language {
 			$this->missingTerms[$term] = '';
 		}
 	}
-
 
 	// this method should be called staticly: LanguageEditor::import()
 	// public

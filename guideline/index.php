@@ -91,11 +91,8 @@ $plate['showStatus'] = false;
 $plate['formName'] = 'standardGuideline';
 $plate['isAdmin'] = $_current_user->isAdmin();
 
-
 echo $plates->render('guideline/index.tmpl.php', $plate);
-
 
 // display footer
 include(AC_INCLUDE_PATH.'footer.inc.php');
-
 ?>

@@ -77,13 +77,10 @@ if ($_GET['action'] == 'edit')
 
 	if (isset($_GET['gsgid']))
 		$row = $guidelineSubgroupsDAO->getSubgroupByID($_GET['gsgid']);
-
-
-	$plate['row'] = $row;
+		$plate['row'] = $row;
 }
 
 if (isset($javascript_run_now)) $plate['javascript_run_now'] = $javascript_run_now;
-
 
 echo $plates->render('guideline/add_edit_group.tmpl.php', $plate);
 

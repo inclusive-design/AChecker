@@ -50,5 +50,4 @@ $plate['user_group_rows'] = $userGroupsDAO->getAll();
 $plate['privilegesDAO'] = $privilegesDAO;
 
 echo $plates->render('user/user_group.tmpl.php', $plate);
-
 ?>

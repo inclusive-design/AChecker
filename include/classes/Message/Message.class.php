@@ -468,7 +468,4 @@ class Message {
 	}
 	
 } // end of class
-
-
-
 ?>

@@ -91,7 +91,6 @@ window.opener.location.href = window.opener.location.href;
 	$msg->addError('NO_ITEM_SELECTED');
 } 
 
-
 // page initialize
 if ($_GET['reset_filter']) {
 	unset($_GET);
@@ -190,18 +189,16 @@ if (isset($_GET['list']))
 	}
 	
 	if ($condition <> '') $condition .= ' AND';
-	$condition .= " open_to_public=1";
+		$condition .= " open_to_public=1";
 	if ($str_existing_checks <> '') $condition .= " AND check_id NOT IN (".$str_existing_checks.")";
 }
 
 if ($condition == '') $condition = '1';
 $checksDAO = new ChecksDAO(); 
-
 $rows = $checksDAO->getNumOfChecksByCondition($condition);
-
 $num_results = $rows[0]['cnt'];
-
 $num_pages = max(ceil($num_results / $results_per_page), 1);
+
 $page = intval($_GET['p']);
 if (!$page) {
 	$page = 1;
@@ -214,16 +211,11 @@ if ( isset($_GET['apply_all']) && $_GET['change_status'] >= -1) {
 	$results_per_page = 999999;
 }
 
-
-
 $check_rows = $checksDAO->getChecksByCondition($condition, $col, $order, $offset, $results_per_page);
-
 
 // if prerequisite or next checks are inserted into db successfully, 
 // $javascript_run_now is set to refresh parent window 
 if (isset($javascript_run_now)) $plate['javascript_run_now'] = $javascript_run_now;
-
-
 $plate['check_rows'] = $check_rows;
 $plate['all_html_tags'] = $checksDAO->getAllHtmlTags();
 $plate['results_per_page'] = $results_per_page;
@@ -237,19 +229,13 @@ $plate['col'] = $col;
 
 if (isset($_GET['list']))
 {
-
 	$plate['row_button_type'] = 'checkbox';
 	$plate['buttons'] = array('add');
 }
 else
 {
-
-
 	$plate['row_button_type'] = 'radio';
 	$plate['buttons'] = array('edit', 'edit_function','delete');
 }
-
-
 echo $plates->render('check/index.tmpl.php',$plate);
-
 ?>

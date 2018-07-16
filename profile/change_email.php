@@ -123,5 +123,4 @@ if (!isset($_POST['submit'])) {
 
 $plate['row'] = $row;
 echo $plates->render('profile/change_email.tmpl.php', $plate);
-
 ?>

@@ -36,7 +36,6 @@ if (is_array($seals)) {
 	$userLinksDAO = new UserLinksDAO();
 	$rows = $userLinksDAO->getByUserIDAndURIAndSession($_SESSION['user_id'], $_POST['uri'], $_POST['jsessionid']);
 
-
 	$plate['user_link_id'] = $rows[0]['user_link_id'];
 	$plate['seals'] = $seals;
 

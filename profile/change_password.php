@@ -16,7 +16,6 @@ require(AC_INCLUDE_PATH.'vitals.inc.php');
 
 global $_current_user;
 
-
     /**
 	 * Verify that a string is Sha_1
 	 * @access  public

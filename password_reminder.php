@@ -171,7 +171,6 @@ else if (isset($_POST['form_password_reminder']))
 			$plate['g'] = $_REQUEST['g'];
 			$plate['h'] = $_REQUEST['h'];
 
-
 			echo $plates->render('change_password.tmpl.php', $plate);
 		} 
 	}
@@ -179,5 +178,4 @@ else if (isset($_POST['form_password_reminder']))
 } else {
 	echo $plates->render('password_reminder.tmpl.php');
 }
-
 ?>
