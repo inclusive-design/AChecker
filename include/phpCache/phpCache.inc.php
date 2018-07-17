@@ -1,7 +1,7 @@
 <?php
 /*
-   phpCache v1.4.1 - PHP caching engine 
-   Copyright (C) 2001 Nathan <nathan@0x00.org> 
+   phpCache v1.4.1 - PHP caching engine
+   Copyright (C) 2001 Nathan <nathan@0x00.org>
    '.1' Bug Fix By Joel Kronenberg <joel.kronenberg@utoronto.ca>
 
    This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ if (!defined('CACHE_DIR')) {
 	define('THIS_CACHE_DIR', CACHE_DIR . '/atutor_cache_' . DB_NAME);
 
 	define('CACHE_GC', .10);	/* Default: .10 - Probability of garbage collection */
-	define('CACHE_USE_STORAGE_HASH', 0);	/* Default: 1 - Use storage hashing.  This will increase peformance if you are caching many pages. */ 
+	define('CACHE_USE_STORAGE_HASH', 0);	/* Default: 1 - Use storage hashing.  This will increase peformance if you are caching many pages. */
 	define('CACHE_STORAGE_CREATED', 0);	/* Default: 0 - This is a peformance tweak.  If you set this to 1, phpCache will not check if storage structures have been created.  Don't change this unles you are *SURE* the cache storage has been created. */
 	define('CACHE_MAX_STORAGE_HASH', 23);	/* Don't touch this unless you know what you're doing */
 	define('CACHE_STORAGE_PERM',	 0700);	/* Default: 0700 - Default permissions for storage directories. */
@@ -46,13 +46,13 @@ if (!defined('CACHE_DIR')) {
 					);
 
 	define('CACHE_VERSION', '1.4.1');
-	define('CACHE_STORAGE_CHECKFILE',	THIS_CACHE_DIR 
+	define('CACHE_STORAGE_CHECKFILE',	THIS_CACHE_DIR
 										. '/.phpCache-storage-V'
 										. CACHE_VERSION
 										. '-HASH='
 										. CACHE_USE_STORAGE_HASH);
 
-	define('CACHE_INFO', 'phpCache v1.4.1 By nathan@0x00.org (.1 Bug Fix By joel.kronenberg@utoronto.ca)');	
+	define('CACHE_INFO', 'phpCache v1.4.1 By nathan@0x00.org (.1 Bug Fix By joel.kronenberg@utoronto.ca)');
 
 	/* This resets the cache state */
 	function cache_reset() {
@@ -90,7 +90,7 @@ if (!defined('CACHE_DIR')) {
 	}
 
 	/* This is a function used internally by phpCache to evaluate the conditional expiration.  This allows the eval() to have its own simulated namespace so it doesnt conflict with any others. */
-	function cache_eval_expire($cond, $vars) {
+	function cache_eval_expire($cond, &$vars) {
 		extract($vars);
 		$EXPIRE=FALSE;
 		eval($cond);
@@ -228,14 +228,14 @@ if (!defined('CACHE_DIR')) {
 						$ret=$expirein;
 						if ($cdata['cachetime']=='0') $ret='INFINITE';
 						cache_reset();
-						return $ret; 
+						return $ret;
 					}
 				}
 			}
 		} else {
 			cache_debug(__LINE__.': Failed to open previous cache of '.$cache_absfile);
 		}
-	
+
 		$oldum = umask();
 		umask(0077);
 		/* readlink() is not supported on win32, changed to is_link */
@@ -246,7 +246,7 @@ if (!defined('CACHE_DIR')) {
 			cache_debug(__LINE__.': not a symlink');
 			cache_debug(__LINE__.': Got cache_storage: '.$cache_absfile);
 			@touch($cache_absfile);
-	
+
 			/* cases probs on win32 */
 			//cache_lock($cache_absfile, TRUE);
 			/* */
@@ -273,7 +273,7 @@ if (!defined('CACHE_DIR')) {
 	}
 
 	/* This *MUST* be at the end of a cache() block or else the cache
-		will not be stored! */ 
+		will not be stored! */
 	function endcache($store=TRUE, $send_output = TRUE) {
 		global $cache_pbufferlen, $cache_absfile, $cache_data, $cache_variables, $cache_headers, $cache_ob_handler, $cache_output_buffer;
 		cache_debug(__LINE__ .': $cache_absfile -> '.$cache_absfile);
@@ -363,7 +363,7 @@ if (!defined('CACHE_DIR')) {
 	/* This is the function that writes out the cache */
 	function cache_write($file, $data) {
 		cache_debug(__LINE__.': Writing cache data to file: '.$file);
-		
+
 		$fp = fopen($file, 'wb+');
 		@flock($fp, LOCK_EX); /* get a shared lock */
 		if (!$fp) {
@@ -421,7 +421,7 @@ if (!defined('CACHE_DIR')) {
 		$temp="${newobject}=${newkey}";
 		if (strlen($temp)>=CACHE_MAX_FILENAME_LEN) $temp="HUGE." . md5($temp);
 		$cacheobject = 'phpCache.' . $temp;
-		
+
 		$thedir=THIS_CACHE_DIR . '/';
 
 		if (CACHE_USE_STORAGE_HASH) {
@@ -523,7 +523,7 @@ if (!defined('CACHE_DIR')) {
 		cache_create_storage();
 		if (!@touch(CACHE_STORAGE_CHECKFILE)) {
 			global $msg;
-		
+
 			$msg->printErrors('CACHE_DIR_BAD');
 			exit;
 		}
