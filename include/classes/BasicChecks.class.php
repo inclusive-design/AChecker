@@ -428,30 +428,6 @@ class BasicChecks {
 		return trim($words[0]);
 	}
 
-		/**
-	* check if $code is a valid language code
-	* return true if valid, otherwise, return false
-	*/
-	public static function valid_lang_code($code)
-	{
-		global $db;
-
-		$code = BasicChecks::cut_out_lang_code($code);
-
-		$sql = "SELECT COUNT(*) cnt FROM ". TABLE_PREFIX ."lang_codes WHERE ";
-
-		if (strlen($code) == 2) $sql .= "code_2letters = '".$code ."'";
-		else if (strlen($code) == 3) $sql .= "code_3letters = '".$code ."'";
-		else return false;
-
-		$result	= mysql_query($sql, $db) or die(mysql_error());
-		$row = mysql_fetch_assoc($result);
-
-		return ($row["cnt"] > 0);
-	}
-
-
-
 	/**
 	* find language code defined in html
 	* return language code
@@ -480,9 +456,9 @@ class BasicChecks {
 
 
 		/**
-	Check if the luminosity contrast ratio between $color1 and $color2 is at least 5:1
-	Input: color values to compare: $color1 & $color2. Color value can be one of: rgb(x,x,x), #xxxxxx, colorname
-	Return: true or false
+		* Check if the luminosity contrast ratio between $color1 and $color2 is at least 5:1
+		* Input: color values to compare: $color1 & $color2. Color value can be one of: rgb(x,x,x), #xxxxxx, colorname
+	 	* Return: true or false
 	*/
 	public static function get_luminosity_contrast_ratio($color1, $color2)
 	{
@@ -2866,11 +2842,6 @@ class BasicChecks {
 					$back.";color:#".$fore."'>"._AC("color_contrast_example")."<span></p>";
 				}
 				$css_code = $css_code.$real_size_text;
-
-
-
-
-
 			//------>
 			$css_code .= "<p style='padding:1em'>" . _AC ( "element_CSS_rules" ) . ": </p>\n\t\n\t<pre>\n\t\n\t";
 			$int_css = '';
