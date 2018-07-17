@@ -13,7 +13,7 @@
 
 // Called by ajax request from guidelineline view report -> "make decision(s)" buttons
 // @ see checker/js/checker.js
- 
+
 define('AC_INCLUDE_PATH', '../include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
