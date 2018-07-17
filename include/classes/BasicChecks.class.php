@@ -158,11 +158,9 @@ class BasicChecks {
 	* Check recursively if there are duplicate $attr defined in children of $e
 	* set global var hasDuplicateAttribute to true if there is, otherwise, set it to false
 	*/
-	public static function hasDuplicateAttribute($e, $attr, $id_array)
+	public static function hasDuplicateAttribute($e, $attr, &$id_array)
 	{
-		global $has_duplicate_attribute, $id_array;
-
-		is_array($id_array) ? $id_array  : $id_array = array();
+		global $has_duplicate_attribute;
 
 		foreach($e->children() as $child)
 		{
@@ -458,9 +456,9 @@ class BasicChecks {
 
 
 		/**
-	Check if the luminosity contrast ratio between $color1 and $color2 is at least 5:1
-	Input: color values to compare: $color1 & $color2. Color value can be one of: rgb(x,x,x), #xxxxxx, colorname
-	Return: true or false
+		* Check if the luminosity contrast ratio between $color1 and $color2 is at least 5:1
+		* Input: color values to compare: $color1 & $color2. Color value can be one of: rgb(x,x,x), #xxxxxx, colorname
+	 	* Return: true or false
 	*/
 	public static function get_luminosity_contrast_ratio($color1, $color2)
 	{
@@ -510,11 +508,9 @@ class BasicChecks {
 	* Check recursively if there are duplicate $attr defined in children of $e
 	* set global var $has_duplicate_attribute to true if there is, otherwise, set it to false
 	*/
-	public static function has_duplicate_attribute($e, $attr, $id_array)
+	public static function has_duplicate_attribute($e, $attr, &$id_array)
 	{
-		global $has_duplicate_attribute, $id_array;
-
-		is_array($id_array) ? $id_array  : $id_array = array();
+		global $has_duplicate_attribute;
 
 		if ($has_duplicate_attribute) return;
 
@@ -674,7 +670,7 @@ class BasicChecks {
 			return true;
 	}
 
-	public static function find_all_headers($elements, $header_array)
+	public static function find_all_headers($elements, &$header_array)
 	{
 		foreach ($elements as $e)
 		{
@@ -2288,6 +2284,8 @@ class BasicChecks {
 		foreach ( $a_value as $value ) {
 			if (substr ( $value, strlen ( $value ) - 2, 2 ) == "px")
 				$ret = true;
+			//else
+		//	return false;
 		}
 		return $ret;
 	}
@@ -2844,11 +2842,6 @@ class BasicChecks {
 					$back.";color:#".$fore."'>"._AC("color_contrast_example")."<span></p>";
 				}
 				$css_code = $css_code.$real_size_text;
-
-
-
-
-
 			//------>
 			$css_code .= "<p style='padding:1em'>" . _AC ( "element_CSS_rules" ) . ": </p>\n\t\n\t<pre>\n\t\n\t";
 			$int_css = '';
