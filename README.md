@@ -16,6 +16,7 @@ What sets AChecker apart from other automated accessibility checkers?
 
 - Clone this repository
 - Be sure to have Composer [setup on your system/server](https://getcomposer.org/download/)
+- Run `composer update` to install dependencies
 - Open the installer at AChecker/install
 - Follow the instructions provided by the installer.
 
