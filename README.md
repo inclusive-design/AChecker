@@ -12,6 +12,12 @@ What sets AChecker apart from other automated accessibility checkers?
 - View existing guidelines in AChecker to see exactly what it is reviewing.
 - Design new accessibility checks and have them added to AChecker.
 
+## Requirements
+
+- PHP 7+
+- MySQL 4.1.13+
+- Composer
+
 ## Installation
 
 - Clone this repository
