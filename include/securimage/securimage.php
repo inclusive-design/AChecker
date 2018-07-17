@@ -1248,7 +1248,7 @@ class Securimage
      */
     public function show($background_image = '')
     {
-        set_error_handler(array($this, 'errorHandler'));
+        set_error_handler(array(&$this, 'errorHandler'));
 
         if($background_image != '' && is_readable($background_image)) {
             $this->bgimg = $background_image;
@@ -1585,7 +1585,7 @@ class Securimage
      */
     public function outputAudioFile($format = null)
     {
-        set_error_handler(array($this, 'errorHandler'));
+        set_error_handler(array(&$this, 'errorHandler'));
 
         if (isset($_SERVER['HTTP_RANGE'])) {
             $range   = true;
@@ -2056,13 +2056,13 @@ class Securimage
             $width     = $this->image_width * $this->iscale;
             $height    = $this->image_height * $this->iscale;
             $font_size = $height * $ratio;
-            $im        = $this->tmpimg;
+            $im        = &$this->tmpimg;
             $scale     = $this->iscale;
         } else {
             $height    = $this->image_height;
             $width     = $this->image_width;
             $font_size = $this->image_height * $ratio;
-            $im        = $this->im;
+            $im        = &$this->im;
             $scale     = 1;
         }
 
