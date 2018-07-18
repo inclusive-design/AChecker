@@ -41,7 +41,7 @@ AChecker.output = AChecker.output || {};
             menuID: "AC_menu_errors"
         },
         "AC_likely_problems": {
-            menuID: "AC_menu_likely_problems" 
+            menuID: "AC_menu_likely_problems"
         },
         "AC_potential_problems": {
             menuID: "AC_menu_potential_problems"
@@ -59,17 +59,17 @@ AChecker.output = AChecker.output || {};
 
     // Private variables that are only available in this script
     var disableClass = "AC_disabled";
-    
+
     var clickOptionRptGDL = function () {
         $("#guideline_in_checkbox").hide();
         $("#guideline_in_radio").show();
     };
-    
+
     var clickOptionRptLine = function () {
         $("#guideline_in_checkbox").show();
         $("#guideline_in_radio").hide();
     };
-    
+
     /**
      * Display the clicked tab and show/hide "made decision" button according to the displayed tab.
      * @param tab: "validate_uri", "validate_file", "validate_paste"
@@ -78,27 +78,27 @@ AChecker.output = AChecker.output || {};
     AChecker.input.initialize = function (tab, rptFormat) {
         // initialize input form
         $("#" + inputDivMapping[tab].spinnerID).hide();
-        
+
         AChecker.showDivOutof(tab, inputDivMapping);
-        
+
         // initialize output form
         var div_errors_id = "AC_errors";
         var div_errors = document.getElementById(div_errors_id);
 
         if (div_errors) {
             // show tab "errors", hide other tabs
-            AChecker.showDivOutof(div_errors_id, outputDivMapping);            
+            AChecker.showDivOutof(div_errors_id, outputDivMapping);
 
             // hide button "make decision" as tab "errors" are selected
             $("#" + AChecker.output.makeDecisionButtonId).hide();
         } else { // no output yet, set focus on "check by uri" input box
             document.getElementById("checkuri").focus();
         }
-        
+
         // link click event on radio buttons on "options" => "report format"
         $("#option_rpt_gdl").click(clickOptionRptGDL);
         $("#option_rpt_line").click(clickOptionRptLine);
-        
+
         // initialized the "options" => "guidelines" section, based on the selected "report format"
         if (rptFormat === "by_guideline") {
             $("#option_rpt_gdl").trigger("click");
@@ -106,7 +106,7 @@ AChecker.output = AChecker.output || {};
             $("#option_rpt_line").trigger("click");
         }
     };
-    
+
     /**
      * Display and activate the selected input div
      * @param divId: the id of the selected input div
@@ -125,19 +125,19 @@ AChecker.output = AChecker.output || {};
         for (var key in inputDivMapping) {
             $('#' + inputDivMapping[key].menuID).addClass(disableClass);
         }
-        
+
         $("#" + spinnerID).show();
         document.getElementById(spinnerID).focus();
     };
-    
+
     var enableClickablesAndHideSpinner = function (spinnerID) {
         for (var key in inputDivMapping) {
             $('#' + inputDivMapping[key].menuID).removeClass(disableClass);
         }
-        
+
         $("#" + spinnerID).hide();
     };
-    
+
     /**
      * Validates if a uri is provided
      */
@@ -150,7 +150,7 @@ AChecker.output = AChecker.output || {};
         }
         disableClickablesAndShowSpinner(inputDivMapping.AC_by_uri.spinnerID);
     };
-        
+
     /**
      * Validates if a html file is provided
      */
@@ -161,7 +161,7 @@ AChecker.output = AChecker.output || {};
             alert(AChecker.lang.provide_html_file);
             return false;
         }
-        
+
         var file_extension = upload_file.slice(upload_file.lastIndexOf(".")).toLowerCase();
         if (file_extension !== '.html' && file_extension !== '.htm') {
             alert(AChecker.lang.provide_upload_file);
@@ -182,7 +182,7 @@ AChecker.output = AChecker.output || {};
         }
         disableClickablesAndShowSpinner(inputDivMapping.AC_by_paste.spinnerID);
     };
-    
+
     /**
      * Validates file select menu, sends file & problem type to start_export.php,
      * receives file's path and starts downloading
@@ -191,15 +191,15 @@ AChecker.output = AChecker.output || {};
         // check selected items
         var file = document.getElementById("fileselect").value;
         var problem = document.getElementById("problemselect").value;
-        
+
         $("#validate_file_button").val(AChecker.lang.wait);
-        
-        // show spinner        
-        disableClickablesAndShowSpinner(exportSpinnerID);             
-        
+
+        // show spinner
+        disableClickablesAndShowSpinner(exportSpinnerID);
+
         // make dataString and send it
         var dataString = 'file=' + file + '&problem=' + problem;
-        
+
         $.ajax({
             type: "POST",
             url: "checker/start_export.php",
@@ -208,16 +208,15 @@ AChecker.output = AChecker.output || {};
             success: function (returned_data) {
                 // change button label
                 $("#validate_file_button").val(AChecker.lang.get_file);
-            
+
                 // enable the clickable tabs/buttons and hide the spinner
                 enableClickablesAndHideSpinner(exportSpinnerID);
-            
+
                 // change src and start downloading
                 var ifrm = document.getElementById("downloadFrame");
-                // alert(returned_data);
                 ifrm.src = "checker/download.php?path=" + returned_data;
             },
-        
+
             error: function (xhr, errorType, exception) {
                 alert(AChecker.lang.error_occur + exception);
 
@@ -240,10 +239,10 @@ AChecker.output = AChecker.output || {};
         } else {
             $("#" + AChecker.output.makeDecisionButtonId).show();
         }
-        
+
         return false;
     };
-    
+
     /**
      * private
      * clicking the last unchecked or checked child checkbox should check or uncheck the parent "select all" checkbox
@@ -252,7 +251,7 @@ AChecker.output = AChecker.output || {};
         if ($(this_child).parents('table:eq(0)').find('.AC_selectAllCheckBox').attr('checked') === true && this_child.checked === false) {
             $(this_child).parents('table:eq(0)').find('.AC_selectAllCheckBox').attr('checked', false);
         }
-        
+
         if (this_child.checked) {
             var flag = true;
             $(this_child).parents('table:eq(0)').find('.AC_childCheckBox').each(
@@ -268,7 +267,7 @@ AChecker.output = AChecker.output || {};
             $(this_child).parent().parent().removeClass('selected');
         }
     };
-    
+
     /**
      * private
      * Display server response message - success
@@ -279,7 +278,7 @@ AChecker.output = AChecker.output || {};
         serverMsgSpan.addClass("gd_success");
         serverMsgSpan.html(message);
     };
-    
+
     /**
      * private
      * Display server response message - error.
@@ -290,12 +289,12 @@ AChecker.output = AChecker.output || {};
         serverMsgSpan.addClass("gd_error");
         serverMsgSpan.html(message);
     };
-    
+
     /**
      * private
      * When the pass decision is made, flip the likely/potential icons to green congrats icons;
      * When the pass decision is cancelled, flip green congrats icons to the likely/potential icons.
-     * Called by makeDecisions() 
+     * Called by makeDecisions()
      */
     var flipMsgIcon = function (btn_make_decision) {
         $(btn_make_decision).parents('table:eq(0)').find('.AC_childCheckBox').each(function () {
@@ -303,7 +302,7 @@ AChecker.output = AChecker.output || {};
             var checkboxName = $(this).attr('name');
             var msgIconID = checkboxName.replace('d[', '');
             msgIconID = msgIconID.replace(']', '');
-            
+
             var msgIconIDValue = '#msg_icon_' + msgIconID;
 
             var msgIcon = $(msgIconIDValue);
@@ -320,19 +319,19 @@ AChecker.output = AChecker.output || {};
                     msgIcon.attr('src', 'images/warning.png');
                     msgIcon.attr('title', AChecker.lang.warning);
                     msgIcon.attr('alt', AChecker.lang.warning);
-                } 
+                }
                 if (inPotentialDiv.length) { // potential problem
                     msgIcon.attr('src', 'images/info.png');
                     msgIcon.attr('title', AChecker.lang.manual_check);
                     msgIcon.attr('alt', AChecker.lang.manual_check);
-                } 
+                }
             }
         });
     };
-    
+
     /**
      * private
-     * Modify the number of problems on the tab bar. 
+     * Modify the number of problems on the tab bar.
      * Called by makeDecisions()
      */
     var changeNumOfProblems = function () {
@@ -346,22 +345,22 @@ AChecker.output = AChecker.output || {};
             // find number of all problems (checkboxes) in the current tab
             var total = $(currentDiv).find("input[class=AC_childCheckBox]").length;
             var checked = $(currentDiv).find("input[class=AC_childCheckBox]:checked").length;
-            
+
             var numOfProblems = total - checked;
             $("#" + divIDsToUpdateErrorNum[i]).html(numOfProblems);
-            
+
             arrayNumOfProblems[i] = numOfProblems;
         }
-        
+
         return arrayNumOfProblems;
     };
-    
+
     /**
      * retrieve and display seal
      * Called by makeDecisions()
      */
     var showSeal = function (btn_make_decision) {
-        var ajaxPostStr = "uri" + "=" + $.URLEncode($('input[name="uri"]').attr('value')) + "&" + 
+        var ajaxPostStr = "uri" + "=" + $.URLEncode($('input[name="uri"]').attr('value')) + "&" +
                           "jsessionid" + "=" + $('input[name="jsessionid"]').attr('value') + "&" +
                           "gids[]=" + $('input[name="radio_gid[]"][type="hidden"]').attr('value');
 
@@ -369,7 +368,7 @@ AChecker.output = AChecker.output || {};
             type: "POST",
             url: "checker/get_seal_html.php",
             data: ajaxPostStr,
-            
+
             success: function (data) {
                 // display seal
                 $('#' + AChecker.output.sealDivID).html(data);
@@ -380,14 +379,14 @@ AChecker.output = AChecker.output || {};
             }
         });
     };
-    
+
     /**
      * Click event on "make decision" buttons. It does:
      * 1. ajax post to save into db
      * 2. prompt success or error msg returned from server besides the "make decision" button
      * 3. flip warning/info icons besides problems with pass decisons made to green pass icons
      * 4. change the number of problems on the tab bar
-     * 5. when the number of problems is reduced to 0, 
+     * 5. when the number of problems is reduced to 0,
      *    ajax request the seal html from server and display it in seal container
      */
     var makeDecision = function (btn_make_decision) {
@@ -401,10 +400,10 @@ AChecker.output = AChecker.output || {};
             }
         });
 
-        ajaxPostStr += "uri" + "=" + $.URLEncode($('input[name="uri"]').attr('value')) + "&" + 
+        ajaxPostStr += "uri" + "=" + $.URLEncode($('input[name="uri"]').attr('value')) + "&" +
             "output" + "=" + $('input[name="output"]').attr('value') + "&" +
             "jsessionid" + "=" + $('input[name="jsessionid"]').attr('value');
-    
+
         $.ajax({
             type: "POST",
             url: "checker/save_decisions.php",
@@ -413,13 +412,13 @@ AChecker.output = AChecker.output || {};
             success: function (data) {
                 // display success message
                 displaySuccessMsg(btn_make_decision, data);
-                
+
                 // flip icon to green pass icon
                 flipMsgIcon(btn_make_decision);
-                
+
                 // modify and store the number of problems on the tab bar
                 var arrayNumOfProblems = changeNumOfProblems();
-                
+
                 // No more likely problems, display congrats message on "likely problems" tab
                 if (arrayNumOfProblems[0] === 0) {
                     $("#AC_congrats_msg_for_likely").html(AChecker.lang.congrats_likely);
@@ -428,7 +427,7 @@ AChecker.output = AChecker.output || {};
                     $("#AC_congrats_msg_for_likely").html("");
                     $("#AC_congrats_msg_for_likely").removeClass("congrats_msg");
                 }
-                
+
                 // No more potential problems, display congrats message on "potential problems" tab
                 if (arrayNumOfProblems[1] === 0) {
                     $("#AC_congrats_msg_for_potential").html(AChecker.lang.congrats_potential);
@@ -437,7 +436,7 @@ AChecker.output = AChecker.output || {};
                     $("#AC_congrats_msg_for_potential").html("");
                     $("#AC_congrats_msg_for_potential").removeClass("congrats_msg");
                 }
-                
+
                 // if all errors, likely, potential problems are 0, retrieve seal
                 if (arrayNumOfProblems[0] === 0 && arrayNumOfProblems[1] === 0) {
                     // find the number of errors
@@ -449,8 +448,8 @@ AChecker.output = AChecker.output || {};
                 } else {
                     $('#' + AChecker.output.sealDivID).html("");
                 }
-            }, 
-            
+            },
+
             error: function (xhr, errorType, exception) {
                 // display error message
                 displayErrorMsg(btn_make_decision, $(xhr.responseText).text());
@@ -470,12 +469,12 @@ AChecker.output = AChecker.output || {};
                     $(table).find('tr').removeClass("selected");
                 }
             });
-        
+
             //clicking the last unchecked or checked checkbox should check or uncheck the parent "select all" checkbox
             $('.AC_childCheckBox').click(function () {
                 undoSelectAll(this);
             });
-        
+
             //clicking the last unchecked or checked checkbox should check or uncheck the parent "select all" checkbox
             $('.AC_problem_detail').click(function () {
                 $(this).siblings().find('.AC_childCheckBox').each(
@@ -485,12 +484,12 @@ AChecker.output = AChecker.output || {};
                     }
                 );
             });
-        
+
             // clicking on "make decision" button
             $('input[id^="AC_btn_make_decision"]').click(function () {
                 makeDecision(this);
             });
-        
+
         }
     );
 })(jQuery);

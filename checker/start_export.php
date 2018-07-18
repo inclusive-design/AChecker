@@ -13,7 +13,7 @@
 
 // Called by ajax request; main file to generate files
 // @ see checker/js/checker.js
- 
+
 define('AC_INCLUDE_PATH', '../include/');
 include(AC_INCLUDE_PATH.'vitals.inc.php');
 
@@ -24,7 +24,7 @@ define(DAY, time() - 60*60*24); // day ago
 define(WEEK, time() - 60*60*24*7); // week ago
 
 if ($handle = opendir(AC_EXPORT_RPT_DIR)) {
-    while (false !== ($file = readdir($handle))) { 
+    while (false !== ($file = readdir($handle))) {
         $file_delete_pattern = '/achecker_(.*)/';
         if(preg_match($file_delete_pattern, $file, $match)) {
 			// chose 1 from MINUTE|HOUR|DAY|WEEK
@@ -32,17 +32,17 @@ if ($handle = opendir(AC_EXPORT_RPT_DIR)) {
         		unlink(AC_EXPORT_RPT_DIR.$file);
         	}
         }
-    }    
-    closedir($handle); 
+    }
+    closedir($handle);
 }
 
 // get user choise on file format
 if (isset($_POST['file']) && isset($_POST['problem'])) {
 	$file = $_POST['file'];
 	$problem = $_POST['problem'];
-} 
-	
-// content to validate	
+}
+
+// content to validate
 $uri = '';
 if (isset($_SESSION['input_form']['uri'])) {
 	$uri = $_SESSION['input_form']['uri'];
@@ -60,7 +60,7 @@ if (isset($_SESSION['input_form']['paste'])) {
 	$input_content_type = 'paste';
 }
 
-// guidelines	
+// guidelines
 if (isset($_SESSION['input_form']['gids'])) 		$_gids = $_SESSION['input_form']['gids'];
 
 // report mode
@@ -86,7 +86,7 @@ if ($_SESSION['input_form']['enable_html_validation'] == true) {
 			$htmlValidator = new HTMLValidator("fragment", $validate_content, true);
 			$html = $htmlValidator->getValidationRptArray();
 		}
-		
+
 	} else {
 		if ($file == 'html') {
 			$htmlValidator = new HTMLValidator("uri", $input_content_type);
@@ -96,11 +96,11 @@ if ($_SESSION['input_form']['enable_html_validation'] == true) {
 			$html = $htmlValidator->getValidationRptArray();
 		}
 	}
-	
+
 	if ($htmlValidator->containErrors()) {
 		$html_error = $htmlValidator->getErrorMsg();
 	}
-		
+
 	$error_nr_html = $htmlValidator->getNumOfValidateError();
 }
 
@@ -117,7 +117,7 @@ if ($_SESSION['input_form']['enable_css_validation'] == true) {
 		if ($file == 'html') $css = $cssValidator->getValidationRpt();
 		else $css = $cssValidator->getValidationRptArray();
 		$error_nr_css = $cssValidator->getNumOfValidateError();
-		
+
 		if ($cssValidator->containErrors())
 			$css_error = $cssValidator->getErrorMsg();
 	} else {
@@ -149,50 +149,50 @@ $error_nr_likely = 0;
 $error_nr_potential = 0;
 
 // create file depending on user choice
-if ($file == 'pdf') {	
+if ($file == 'pdf') {
 		include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportMPDF.class.php');
-	
+
 	$pdf = new acheckerMPDF();
 	$path = $pdf->getPDF();
 
 	// include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportTFPDF.class.php');
-	
-	// $pdf = new acheckerTFPDF($known, $likely, $potential, $html, $css, 
+
+	// $pdf = new acheckerTFPDF($known, $likely, $potential, $html, $css,
 	// 	$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 	// $path = $pdf->getPDF($title, $uri, $problem, $mode, $_gids);
-	
-			
-} else {	
+
+
+} else {
 	if ($problem != 'html' && $problem != 'css') {
 		$a_rpt = new FileExportRptLine($errors, $user_link_id);
 		list($known, $likely, $potential) = $a_rpt->generateRpt();
 		list($error_nr_known, $error_nr_likely, $error_nr_potential) = $a_rpt->getErrorNr();
 	}
-	
+
 	if ($file == 'earl') {
 		include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportEARL.class.php');
-		
-		$earl = new acheckerEARL($known, $likely, $potential, $html, $css, 
+
+		$earl = new acheckerEARL($known, $likely, $potential, $html, $css,
 			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 		$path = $earl->getEARL($problem, $input_content_type, $title, $_gids);
-		
-	} else if ($file == 'csv') {	
-		include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportCSV.class.php');		
-		
-		$csv = new acheckerCSV($known, $likely, $potential, $html, $css, 
+
+	} else if ($file == 'csv') {
+		include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportCSV.class.php');
+
+		$csv = new acheckerCSV($known, $likely, $potential, $html, $css,
 			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 		$path = $csv->getCSV($problem, $input_content_type, $title, $_gids);
-		
-	} else if ($file == 'html') {	
-		include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportHTML.class.php');		
-		$html_file = new acheckerHTML($known, $likely, $potential, $html, $css, 
+
+	} else if ($file == 'html') {
+		include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportHTML.class.php');
+		$html_file = new acheckerHTML($known, $likely, $potential, $html, $css,
 			$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error);
 		$path = $html_file->getHTMLfile($problem, $_gids, $errors, $user_link_id);
 
 	}
-} 
+}
 
 echo $path;
-exit();	
+exit();
 
 ?>

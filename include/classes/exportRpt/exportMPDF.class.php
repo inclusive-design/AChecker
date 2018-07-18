@@ -14,12 +14,12 @@
 /**
 * acheckerTFPDF
 * Class to generate error report in PDF file (both by lines and by guidelines)
-* for each of types: known, likely, potential, html, css and all selected 
+* for each of types: known, likely, potential, html, css and all selected
 * @access	public
 * @author	Casian Olga
 */
 if (!defined("AC_INCLUDE_PATH")) exit;
- 
+
 include_once(AC_INCLUDE_PATH. 'lib/output.inc.php');
 include_once(AC_INCLUDE_PATH. 'classes/DAO/GuidelinesDAO.class.php');
 
@@ -33,29 +33,40 @@ class acheckerMPDF extends Mpdf {
 		parent::__construct([
 			'debug' => true,
 			'mode' => 'utf-8',
-			'format' => 'A4-L', 
+			'format' => 'A4-L',
 			'allow_output_buffering' => true,
 			'tempDir' => AC_EXPORT_RPT_DIR
 		]);
-	
-	}
-	
+		$logger = new Logger('name');
+		$logger->pushHandler(new StreamHandler(AC_INCLUDE_PATH.'log.log', Logger::DEBUG));
 
-	public function getPDF() 
-	{		
+
+	}
+
+
+	public function getPDF()
+	{
 		// set filename
 		$date = AC_date('%Y-%m-%d');
 		$time = AC_date('%H-%i-%s');
-		$filename = 'achecker_'.$date.'_'.$time.$rand_str;		
+		$filename = 'achecker_'.$date.'_'.$time.$rand_str;
 		$this->SetHeader('Document Title');
 		$this->WriteHTML('Document text');
-		// close and save PDF document		
-		$path = AC_EXPORT_RPT_DIR.$filename.'.pdf';  
-		$this->Output($filename.'.pdf', 'F');	
-		
-		return $path;	
+		// close and save PDF document
+		$path = AC_EXPORT_RPT_DIR.$filename.'.pdf';
+	try{
+
+		$this->Output($filename.'.pdf', 'F');
+
+	} catch (\Mpdf\MpdfException $e) { // Note: safer fully qualified exception name used for catch
+		// Process the exception, log, print etc.
+		echo $e->getMessage();
 	}
-	
-	
+
+
+		return $path;
+	}
+
+
 }
 ?>
