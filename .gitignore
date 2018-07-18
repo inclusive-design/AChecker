@@ -16,5 +16,3 @@ $RECYCLE.BIN/
 
 # Local config AChecker
 include/config.inc.php
-
-vendor
