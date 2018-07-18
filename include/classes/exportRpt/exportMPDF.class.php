@@ -37,10 +37,6 @@ class acheckerMPDF extends Mpdf {
 			'allow_output_buffering' => true,
 			'tempDir' => AC_EXPORT_RPT_DIR
 		]);
-		$logger = new Logger('name');
-		$logger->pushHandler(new StreamHandler(AC_INCLUDE_PATH.'log.log', Logger::DEBUG));
-
-
 	}
 
 
