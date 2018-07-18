@@ -279,5 +279,6 @@ if ($num_results > 0)
 	echo '</ul>'."\n";
 	echo '</div>'."\n";
 }
+
 include(AC_INCLUDE_PATH.'footer.inc.php');
 ?>
