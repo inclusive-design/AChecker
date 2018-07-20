@@ -50,14 +50,16 @@ class acheckerMPDF extends Mpdf {
 		$this->WriteHTML('Document text');
 		// close and save PDF document
 		$path = AC_EXPORT_RPT_DIR.$filename.'.pdf';
-	try{
+		try{
 
-		$this->Output($filename.'.pdf', 'F');
+			$this->Output($filename.'.pdf', 'D');
+exit();
 
-	} catch (\Mpdf\MpdfException $e) { // Note: safer fully qualified exception name used for catch
-		// Process the exception, log, print etc.
-		echo $e->getMessage();
-	}
+
+		} catch (\Mpdf\MpdfException $e) { // Note: safer fully qualified exception name used for catch
+			// Process the exception, log, print etc.
+			echo $e->getMessage();
+		}
 
 
 		return $path;

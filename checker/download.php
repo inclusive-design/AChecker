@@ -31,10 +31,10 @@ require (AC_INCLUDE_PATH.'constants.inc.php');
 	} else if (preg_match($pattern_html, $path, $match)) {
 		$filename = $match[0];
 	}
-	
+
 	if(strstr($path, AC_EXPORT_RPT_DIR)){
         header('Content-Type: application/force-download');
-        header('Content-transfer-encoding: binary'); 
+        header('Content-transfer-encoding: binary');
         header('Content-Disposition: attachment; filename='.$filename);
         header('x-Sendfile: ', TRUE);
         readfile(trim($path));

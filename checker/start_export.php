@@ -153,7 +153,7 @@ if ($file == 'pdf') {
 		include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportMPDF.class.php');
 
 	$pdf = new acheckerMPDF();
-	$path = $pdf->getPDF();
+	return $pdf->getPDF();
 
 	// include_once(AC_INCLUDE_PATH. 'classes/exportRpt/exportTFPDF.class.php');
 
