@@ -817,7 +817,7 @@ class WavFile
         return $this->_samples;
     }
 
-    public function setSamples($samples = '') {
+    public function setSamples(&$samples = '') {
         if (strlen($samples) % $this->_blockAlign != 0) {
             throw new WavFileException('Incorrect samples size. Has to be a multiple of BlockAlign.');
         }
@@ -1003,7 +1003,7 @@ class WavFile
      * @throws WavFormatException
      * @throws WavFileException
      */
-    public function setWavData($data, $free = true)
+    public function setWavData(&$data, $free = true)
     {
         // check preconditions
         if (is_resource($this->_fp)) $this->closeWav();
