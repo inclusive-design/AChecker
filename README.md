@@ -21,9 +21,9 @@ What sets AChecker apart from other automated accessibility checkers?
 ## Installation
 
 - Clone this repository
-- Be sure to have Composer [setup on your system/server](https://getcomposer.org/download/)
-- Run `composer update` to install dependencies
-- Open the installer at AChecker/install
+- Be sure to have Composer [setup on your system/server](https://getcomposer.org/doc/00-intro.md)
+- Run `composer install` or `composer update` to install dependencies
+- Open a web browser to access the installation directory where AChecker was installed or cloned to
 - Follow the instructions provided by the installer.
 
 Note, if you are installing from a Git clone of AChecker, before following the instructions above, you will need to create an empty configuration file. In the AChecker directory, at the command prompt, issue the following command:
