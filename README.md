@@ -22,8 +22,7 @@ What sets AChecker apart from other automated accessibility checkers?
 
 - Clone this repository
 - Be sure to have Composer [setup on your system/server](https://getcomposer.org/doc/00-intro.md)
-- Run `composer install` or `composer update` to install dependencies
-    - To install dependencies locally in your achecker installation folder, run ```composer require league/plates:v4.0.0-alpha```  
+- Follow this [instructions](https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies) to install dependencies
 - Open a web browser to access the installation directory where AChecker was installed or cloned to
 - Follow the instructions provided by the installer.
 
