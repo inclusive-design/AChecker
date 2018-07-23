@@ -22,6 +22,7 @@
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
 include (AC_INCLUDE_PATH . "lib/simple_html_dom.php");
+include (AC_INCLUDE_PATH . "lib/simple_html_dom_new.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicChecks.class.php");
 include_once (AC_INCLUDE_PATH . "classes/BasicFunctions.class.php");
 include_once (AC_INCLUDE_PATH . "classes/CheckFuncUtility.class.php");
@@ -77,15 +78,15 @@ class AccessibilityValidator {
 	public function validate()
 	{
 		// dom of the content to be validated
-		$this->content_dom = $this->get_simple_html_dom($this->validate_content);
-		
+		//$this->content_dom = $this->get_simple_html_dom($this->validate_content);
+		$this->content_dom = $this->get_simple_html_html($this->validate_content);
 		// prepare gobal vars used in BasicFunctions.class.php to fasten the validation
 		$this->prepare_global_vars();
 		
 		// set arrays of check_id, prerequisite check_id, next check_id
 		$this->prepare_check_arrays($this->guidelines);
 
-		$this->validate_element($this->content_dom->getElementsByTagName('html'));
+		$this->validate_element($this->content_dom->find('html'));
 		
 		$this->finalize();
 
@@ -102,10 +103,10 @@ class AccessibilityValidator {
 		global $header_array, $base_href;
 
 		// find all header tags which are used in BasicFunctions.class.php
-		$header_array = $this->content_dom->getElementsByTagName("h1, h2, h3, h4, h5, h6, h7");
+		$header_array = $this->content_dom->find("h1, h2, h3, h4, h5, h6, h7");
 
 		// find base href, used to check image size
-		$all_base_elements = $this->content_dom->getElementsByTagName("base");
+		$all_base_elements = $this->content_dom->find("base");
 
 		if (is_array($all_base_elements))
 		{
@@ -139,24 +140,37 @@ class AccessibilityValidator {
 	private function get_simple_html_dom($content)
 	{
 		global $msg;
-		$dom = new DOMDocument();
-		//$dom = str_get_html($content);
-		libxml_use_internal_errors(true);
-
-		$dom->loadHTML($content);
-		libxml_clear_errors();
-		//$dom_xpath = new DOMXpath($dom);
-		if (count($dom->getElementsByTagName('html')) == 0)
+		
+		$dom = str_get_dom($content);
+		
+		if (count($dom->find('html')) == 0)
 		{
-			$complete_html = '<!DOCTYPE html">'.
+			$complete_html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'.
 			                 '<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">'.
 			                 $content.
 			                 '</html>';
 			$this->col_offset = 175;  // The number of extra characters that are added onto the first line.
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($complete_html);
-			libxml_clear_errors();
-			//$dom = str_get_html($complete_html);
+			
+			$dom = str_get_dom($complete_html);
+		}
+		return $dom;
+	}
+
+	private function get_simple_html_html($content)
+	{
+		global $msg;
+		
+		$dom = str_get_dom($content);
+		
+		if (count($dom->find('html')) == 0)
+		{
+			$complete_html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'.
+			                 '<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">'.
+			                 $content.
+			                 '</html>';
+			$this->col_offset = 175;  // The number of extra characters that are added onto the first line.
+			
+			$dom = str_get_dom($complete_html);
 		}
 		return $dom;
 	}
@@ -292,7 +306,7 @@ class AccessibilityValidator {
 				}
 			}
 			
-			$this->validate_element($e->documentElement);
+			$this->validate_element($e->children());
 		}
 	}
 
