@@ -45,8 +45,6 @@ if (isset($_POST['submit'])) {
 	$_POST['first_name'] = str_replace('<', '', $_POST['first_name']);
 	$_POST['last_name'] = str_replace('<', '', $_POST['last_name']);
 
-
-
 	if ($missing_fields) {
 		$missing_fields = implode(', ', $missing_fields);
 		$msg->addError(array('EMPTY_FIELDS', $missing_fields));
@@ -75,11 +73,10 @@ if (!isset($_POST['submit'])) {
 }
 
 /* template starts here */
-
-$savant->assign('row', $row);
+$plate['row'] = $row;
 
 global $onload;
 $onload = 'document.form.first_name.focus();';
 
-$savant->display('profile/profile.tmpl.php');
+echo $plates->render('profile/profile.tmpl.php', $plate);
 ?>

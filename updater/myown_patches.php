@@ -33,7 +33,7 @@ else if (!empty($_POST) && !isset($_POST['myown_patch_id'])) {
 $myownPatchesDAO = new MyownPatchesDAO();
 $patch_rows = $myownPatchesDAO->getAll();
 
-$savant->assign('patch_rows', $patch_rows);
+$plate['patch_rows'] = $patch_rows;
 
-$savant->display('updater/myown_patches.tmpl.php');
+echo $plates->render('updater/myown_patches.tmpl.php',$plate);
 ?>

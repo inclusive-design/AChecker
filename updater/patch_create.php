@@ -15,7 +15,7 @@ define('AC_INCLUDE_PATH', '../include/');
 require (AC_INCLUDE_PATH.'vitals.inc.php');
 
 // URL called by form action
-$savant->assign('url', dirname($_SERVER['PHP_SELF']) . "/patch_creator.php");
+$plate['url'] = dirname($_SERVER['PHP_SELF']) . "/patch_creator.php";
 
-$savant->display('updater/patch_create_edit.tmpl.php');
+echo $plates->render('updater/patch_create_edit.tmpl.php', $plate);
 ?>

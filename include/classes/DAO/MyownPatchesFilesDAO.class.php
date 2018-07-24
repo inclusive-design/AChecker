@@ -38,21 +38,21 @@ class MyownPatchesFilesDAO extends DAO {
 	{
 
 		$sql = "INSERT INTO ".TABLE_PREFIX."myown_patches_files
-               (myown_patch_id, 
+               (myown_patch_id,
                	action,
                	name,
                	location,
                	code_from,
                 code_to,
                 uploaded_file)
-	        VALUES ('".$myown_patch_id."', 
-	                '".$action."', 
-	                '".$name."', 
-	                '".$location."', 
-	                '".$code_from."', 
+	        VALUES ('".$myown_patch_id."',
+	                '".$action."',
+	                '".$name."',
+	                '".$location."',
+	                '".$code_from."',
 	                '".$code_to."',
 	                '".$this->addSlashes($uploaded_file)."')";
-		
+
 		if (!$this->execute($sql))
 		{
 			$msg->addError('DB_NOT_UPDATED');
@@ -76,7 +76,7 @@ class MyownPatchesFilesDAO extends DAO {
 	{
 		$sql = "DELETE FROM ".TABLE_PREFIX."myown_patches_files
 		         WHERE myown_patch_id = ".$patchID;
-		
+
 		return $this->execute($sql);
 	}
 
@@ -92,7 +92,7 @@ class MyownPatchesFilesDAO extends DAO {
 		$sql = "SELECT * from ".TABLE_PREFIX."myown_patches_files
 		         WHERE myown_patch_id=". $patchID."
 		         ORDER BY myown_patches_files_id";
-		
+
 		return $this->execute($sql);
 	}
 

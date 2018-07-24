@@ -16,7 +16,6 @@ require(AC_INCLUDE_PATH.'vitals.inc.php');
 
 global $_current_user;
 
-
     /**
 	 * Verify that a string is Sha_1
 	 * @access  public
@@ -93,6 +92,5 @@ if (isset($_POST['submit'])) {
 }
 
 /* template starts here */
-$savant->display('profile/change_password.tmpl.php');
-
+echo $plates->render('profile/change_password.tmpl.php');
 ?>
