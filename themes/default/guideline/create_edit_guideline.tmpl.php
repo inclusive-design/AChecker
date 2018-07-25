@@ -70,7 +70,7 @@ function dispaly_check_table($checks_array, $prefix)
 global $onload;
 $onload = "initial();";
 
-$gid = $this->gid;
+$gid = $gid;
 
 $guidelineGroupsDAO = new GuidelineGroupsDAO();
 $guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
@@ -84,18 +84,18 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <fieldset class="group_form"><legend class="group_form"><?php echo _AC('create_edit_guideline'); ?></legend>
 
 <form name="input_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?><?php if (isset($_GET["id"])) echo '?id='.$_GET["id"]; ?>" >
-<?php if (isset($this->row["user_id"])) {?>
-<input type="hidden" name="user_id" value="<?php echo $this->row["user_id"]; ?>" />
+<?php if (isset($row["user_id"])) {?>
+<input type="hidden" name="user_id" value="<?php echo $row["user_id"]; ?>" />
 <?php }?>
 
-<?php if (isset($this->row)) {?>
-	<input type="hidden" name="title_orig" value="<?php echo htmlspecialchars($this->row['title']); ?>" />
-	<input type="hidden" name="abbr_orig" value="<?php echo htmlspecialchars($this->row['abbr']); ?>" />
-	<input type="hidden" name="long_name_orig" value="<?php echo htmlentities(_AC($this->row['long_name'])); ?>" />
-	<input type="hidden" name="published_date_orig" value="<?php echo $this->row['published_date']; ?>" />
-	<input type="hidden" name="earlid_orig" value="<?php echo htmlspecialchars($this->row['earlid']); ?>" />
-	<input type="hidden" name="status_orig" value="<?php echo $this->row['status']; ?>" />
-	<input type="hidden" name="open_to_public_orig" value="<?php echo $this->row['open_to_public']; ?>" />
+<?php if (isset($row)) {?>
+	<input type="hidden" name="title_orig" value="<?php echo htmlspecialchars($row['title']); ?>" />
+	<input type="hidden" name="abbr_orig" value="<?php echo htmlspecialchars($row['abbr']); ?>" />
+	<input type="hidden" name="long_name_orig" value="<?php echo htmlentities(_AC($row['long_name'])); ?>" />
+	<input type="hidden" name="published_date_orig" value="<?php echo $row['published_date']; ?>" />
+	<input type="hidden" name="earlid_orig" value="<?php echo htmlspecialchars($row['earlid']); ?>" />
+	<input type="hidden" name="status_orig" value="<?php echo $row['status']; ?>" />
+	<input type="hidden" name="open_to_public_orig" value="<?php echo $row['open_to_public']; ?>" />
 <?php }?>
 
 	<table class="form-data">
@@ -105,58 +105,58 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="title"><?php echo _AC('title'); ?></label></th>
-			<td><input type="text" name="title" size="70" id="title" value="<?php if (isset($_POST['title'])) echo htmlspecialchars($_POST['title']); else echo htmlspecialchars($this->row["title"]); ?>" /></td>
+			<td><input type="text" name="title" size="70" id="title" value="<?php if (isset($_POST['title'])) echo htmlspecialchars($_POST['title']); else echo htmlspecialchars($row["title"]); ?>" /></td>
 		</tr>
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="abbr"><?php echo _AC('abbr'); ?></label></th>
-			<td><input type="text" name="abbr" size="70" id="abbr" value="<?php if (isset($_POST['abbr'])) echo htmlspecialchars($_POST['abbr']); else echo htmlspecialchars($this->row["abbr"]); ?>" /></td>
+			<td><input type="text" name="abbr" size="70" id="abbr" value="<?php if (isset($_POST['abbr'])) echo htmlspecialchars($_POST['abbr']); else echo htmlspecialchars($row["abbr"]); ?>" /></td>
 		</tr>
 
-		<?php if ($this->is_admin) {?>
+		<?php if ($is_admin) {?>
 		<tr>
 			<th align="left"><? echo _AC("author"); ?></th>
-			<td><?php echo $this->author; ?></td>
+			<td><?php echo $author; ?></td>
 		</tr>
 		<?php } ?>
 
 		<tr>
 			<th align="left"><label for="long_name"><?php echo _AC('long_name'); ?></label></th>
-			<td><textarea cols="10" rows="3" name="long_name" id="long_name"><?php if (isset($_POST['long_name'])) echo htmlspecialchars($_POST['long_name']); else echo htmlspecialchars(_AC($this->row["long_name"])); ?></textarea></td>
+			<td><textarea cols="10" rows="3" name="long_name" id="long_name"><?php if (isset($_POST['long_name'])) echo htmlspecialchars($_POST['long_name']); else echo htmlspecialchars(_AC($row["long_name"])); ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="published_date"><?php echo _AC('published_date').'<br />('._AC("yyyy-mm-dd").')'; ?></label></th>
 			<td>
-				<input type="text" name="published_date" id="published_date" value="<?php if (isset($_POST['published_date'])) echo $_POST['published_date']; else echo $this->row["published_date"]; ?>" />
+				<input type="text" name="published_date" id="published_date" value="<?php if (isset($_POST['published_date'])) echo $_POST['published_date']; else echo $row["published_date"]; ?>" />
 				<img src="images/calendar.gif" alt="<?php echo _AC('calendar'); ?>" style="vertical-align: middle; cursor: pointer;" onclick="scwShow(scwID('published_date'),event);" />
 			</td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="earlid"><?php echo _AC('earlid'); ?></label></th>
-			<td><input type="text" name="earlid" size="70" id="earlid" value="<?php if (isset($_POST['earlid'])) echo htmlspecialchars($_POST['earlid']); else echo htmlspecialchars($this->row["earlid"]); ?>" /></td>
+			<td><input type="text" name="earlid" size="70" id="earlid" value="<?php if (isset($_POST['earlid'])) echo htmlspecialchars($_POST['earlid']); else echo htmlspecialchars($row["earlid"]); ?>" /></td>
 		</tr>
 
 		<tr>
 			<th align="left"><?php echo _AC("status"); ?></th>
 			<td>
-				<input type="radio" name="status" id="statusD" value="0" <?php if ((isset($_POST['status']) && $_POST['status']==0) || (!isset($_POST['status']) && $this->row['status']==0)) echo 'checked="checked"'; ?> /><label for="statusD"><?php echo _AC('disabled'); ?></label> 
-				<input type="radio" name="status" id="statusE" value="1" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $this->row['status']==1)) echo 'checked="checked"'; ?> /><label for="statusE"><?php echo _AC('enabled'); ?></label>
+				<input type="radio" name="status" id="statusD" value="0" <?php if ((isset($_POST['status']) && $_POST['status']==0) || (!isset($_POST['status']) && $row['status']==0)) echo 'checked="checked"'; ?> /><label for="statusD"><?php echo _AC('disabled'); ?></label> 
+				<input type="radio" name="status" id="statusE" value="1" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $row['status']==1)) echo 'checked="checked"'; ?> /><label for="statusE"><?php echo _AC('enabled'); ?></label>
 			</td>
 		</tr>
 			
-		<?php if ($this->is_admin) {?>
+		<?php if ($is_admin) {?>
 		<tr>
 			<th align="left"><?php echo _AC("open_to_public"); ?></th>
 			<td>
-				<input type="radio" name="open_to_public" id="open_to_publicN" value="0" <?php if ((isset($_POST['open_to_public']) && $_POST['open_to_public']==0) || (!isset($_POST['open_to_public']) && $this->row['open_to_public']==0)) echo 'checked="checked"'; ?> /><label for="open_to_publicN"><?php echo _AC('no'); ?></label> 
-				<input type="radio" name="open_to_public" id="open_to_publicY" value="1" <?php if ((isset($_POST['open_to_public']) && $_POST['open_to_public']==1) || (!isset($_POST['open_to_public']) && $this->row['open_to_public']==1)) echo 'checked="checked"'; ?> /><label for="open_to_publicY"><?php echo _AC('yes'); ?></label>
+				<input type="radio" name="open_to_public" id="open_to_publicN" value="0" <?php if ((isset($_POST['open_to_public']) && $_POST['open_to_public']==0) || (!isset($_POST['open_to_public']) && $row['open_to_public']==0)) echo 'checked="checked"'; ?> /><label for="open_to_publicN"><?php echo _AC('no'); ?></label> 
+				<input type="radio" name="open_to_public" id="open_to_publicY" value="1" <?php if ((isset($_POST['open_to_public']) && $_POST['open_to_public']==1) || (!isset($_POST['open_to_public']) && $row['open_to_public']==1)) echo 'checked="checked"'; ?> /><label for="open_to_publicY"><?php echo _AC('yes'); ?></label>
 			</td>
 		</tr>
 		<?php } else {?>
 		<tr>
-			<td><input type="hidden" name="open_to_public" value="<?php if (isset($this->row["open_to_public"])) echo $this->row["open_to_public"]; else echo "0"; ?>" /></td>
+			<td><input type="hidden" name="open_to_public" value="<?php if (isset($row["open_to_public"])) echo $row["open_to_public"]; else echo "0"; ?>" /></td>
 		</tr>
 		<?php }?>
 	</table>
@@ -170,23 +170,23 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	<br/>
 </form>
 
-<?php if (isset($this->row)) {?>
+<?php if (isset($row)) {?>
 	<h2>
 		<?php echo _AC('checks');?>
-		<a href="<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;gid=<?php echo $this->gid; ?>'); return false;" 
+		<a href="<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;gid=<?php echo $gid; ?>'); return false;" 
 		       title="<?php echo _AC("add_group");?>"
-		       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;gid=<?php echo $this->gid; ?>'); return false;" >
+		       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>guideline/add_edit_group.php?action=add&amp;gid=<?php echo $gid; ?>'); return false;" >
 		<img alt="<?php echo _AC("add_group");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add_group.gif" />
 		</a>
-		<a href="<?php echo AC_BASE_HREF; ?>check/index.php?list=guideline&amp;gid=<?php echo $this->gid; ?>'); return false;" 
+		<a href="<?php echo AC_BASE_HREF; ?>check/index.php?list=guideline&amp;gid=<?php echo $gid; ?>'); return false;" 
 		       title="<?php echo _AC("add_checks_into_guideline");?>"
-		       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=guideline&amp;gid=<?php echo $this->gid; ?>'); return false;" >
+		       onclick="check_unsaved_info(); AChecker.popup('<?php echo AC_BASE_HREF; ?>check/index.php?list=guideline&amp;gid=<?php echo $gid; ?>'); return false;" >
 		<img alt="<?php echo _AC("add_checks_into_guideline");?>" src="themes/<?php echo $_SESSION['prefs']['PREF_THEME']; ?>/images/add.gif" />
 		</a>
 	</h2><br/>
 <?php 
 	// display guideline level checks
-	$guidelineLevel_checks = $this->checksDAO->getGuidelineLevelChecks($gid);
+	$guidelineLevel_checks = $checksDAO->getGuidelineLevelChecks($gid);
 	
 	if (is_array($guidelineLevel_checks))
 	{
@@ -226,7 +226,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 		</h3><br/>
 	<?php
 			// get group level checks: the checks in subgroups without subgroup names
-			$groupLevel_checks = $this->checksDAO->getGroupLevelChecks($group['group_id']);
+			$groupLevel_checks = $checksDAO->getGroupLevelChecks($group['group_id']);
 			if (is_array($groupLevel_checks))
 			{
 				$num_of_checks += count($groupLevel_checks);
@@ -259,7 +259,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			</a>
 		</h4><br/>
 	<?php 
-					$subgroup_checks = $this->checksDAO->getChecksBySubgroupID($subgroup['subgroup_id']);
+					$subgroup_checks = $checksDAO->getChecksBySubgroupID($subgroup['subgroup_id']);
 					if (is_array($subgroup_checks))
 					{
 						$num_of_checks += count($subgroup_checks);
@@ -272,7 +272,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	
 	// display "none found" if no check is defined in this guideline
 	if ($num_of_checks == 0) echo _AC('none_found');
-} // end of if (isset($this->row))
+} // end of if (isset($row))
 ?>
 </fieldset>
 </div>

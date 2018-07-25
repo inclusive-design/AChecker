@@ -135,9 +135,7 @@ if (!isset($gid))
 {
 	// create guideline
 	$checksDAO = new ChecksDAO();
-	
-	$savant->assign('author', $_current_user->getUserName());
-	
+	$plate['author'] = $_current_user->getUserName();
 }
 else
 {
@@ -150,14 +148,14 @@ else
 	$user_name = $usersDAO->getUserName($rows[0]['user_id']);
 
 	if (!$user_name) $user_name = _AC('author_not_exist');
-	
-	$savant->assign('gid', $gid);
-	$savant->assign('row', $rows[0]);
-	$savant->assign('author', $user_name);
-	$savant->assign('checksDAO', $checksDAO);
+
+	$plate['gid'] = $gid;
+	$plate['row'] = $rows[0];
+	$plate['author'] = $user_name;
+	$plate['checksDAO'] = $checksDAO;
 }
 
-if (isset($_current_user)) $savant->assign('is_admin', $_current_user->isAdmin());
+if (isset($_current_user)) $plate['is_admin'] = $_current_user->isAdmin();
 
-$savant->display('guideline/create_edit_guideline.tmpl.php');
+echo $plates->render('guideline/create_edit_guideline.tmpl.php', $plate);
 ?>

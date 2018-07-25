@@ -35,7 +35,7 @@ class MailQueueDAO extends DAO {
 	*/
 	function Create($to_email, $to_name, $from_email, $from_name, $subject, $body, $charset)
 	{
-		
+
 		$to_email = $this->addSlashes($to_email);
 		$to_name = $this->addSlashes($to_name);
 		$from_email = $this->addSlashes($from_email);
@@ -43,17 +43,17 @@ class MailQueueDAO extends DAO {
 		$subject = $this->addSlashes($subject);
 		$body = $this->addSlashes($body);
 		$charset = $this->addSlashes($charset);
-		
-		$sql = "INSERT INTO ".TABLE_PREFIX."mail_queue 
+
+		$sql = "INSERT INTO ".TABLE_PREFIX."mail_queue
 						VALUES (NULL, '$to_email', '$to_name', '$from_email', '$from_name', '$charset', '$subject', '$body')";
-		
+
 		if ($this->execute($sql))
 		{
 			return $this->getInsertID();
 		}
 		else
 		{
-			return false;			
+			return false;
 		}
 	}
 
@@ -66,8 +66,8 @@ class MailQueueDAO extends DAO {
 	*/
 	function GetAll()
 	{
-		$sql = "SELECT * FROM ".TABLE_PREFIX."mail_queue"; 
-		
+		$sql = "SELECT * FROM ".TABLE_PREFIX."mail_queue";
+
 		return $this->execute($sql);
 	}
 
@@ -82,12 +82,12 @@ class MailQueueDAO extends DAO {
 	function DeleteByIDs($mids)
 	{
 		if (!is_array($mids)) return false;
-		
+
 		$sanitized_mids = Utility::sanitizeIntArray($mids);
 		$sanitized_mids_str = implode(",", $sanitized_mids);
-		
+
 		$sql = "DELETE FROM ".TABLE_PREFIX."mail_queue WHERE mail_id IN (".$sanitized_mids_str.")";
-		
+
 		return $this->execute($sql);
 	}
 

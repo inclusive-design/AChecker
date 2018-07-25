@@ -30,8 +30,8 @@ if (!$rows)
 }
 else
 {
-	$savant->assign('row', $rows[0]);
-	$savant->assign('gid', $gid);
-	$savant->display('guideline/view_guideline.tmpl.php');
+	$plate['row'] = $rows[0];
+	$plate['gid'] = $gid;
+	echo $plates->render('guideline/view_guideline.tmpl.php', $plate);
 }
 ?>

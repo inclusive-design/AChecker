@@ -31,8 +31,6 @@ if ( (isset($_POST['delete']) || isset($_POST['export']) || isset($_POST['edit']
 else if ($_POST['delete'])
 {
 	global $msg;
-
-
 	
 	if (!$msg->containsErrors())
 	{
@@ -78,7 +76,7 @@ if (isset($_POST['import']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
 }
 
 // interface
-$savant->assign('rows', $languagesDAO->getAll());
-$savant->display('language/index.tmpl.php');
+$plate['rows'] = $languagesDAO->getAll();
 
+echo $plates->render('language/index.tmpl.php', $plate);
 ?>

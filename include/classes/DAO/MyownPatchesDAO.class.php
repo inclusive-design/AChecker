@@ -32,24 +32,24 @@ class MyownPatchesDAO extends DAO {
 	 *          false and add error into global var $msg, if unsuccessful
 	 * @author  Cindy Qi Li
 	 */
-	public function Create($achecker_patch_id, $applied_version, 
+	public function Create($achecker_patch_id, $applied_version,
 	                       $description, $sql_statement)
 	{
 
-		$sql = "INSERT INTO ".TABLE_PREFIX."myown_patches 
-	               (achecker_patch_id, 
+		$sql = "INSERT INTO ".TABLE_PREFIX."myown_patches
+	               (achecker_patch_id,
 	                applied_version,
 	                description,
 	                sql_statement,
 	                status,
 	                last_modified)
-		        VALUES ('".$achecker_patch_id."', 
-		                '".$applied_version."', 
-		                '".$description."', 
-		                '".$sql_statement."', 
+		        VALUES ('".$achecker_patch_id."',
+		                '".$applied_version."',
+		                '".$description."',
+		                '".$sql_statement."',
 		                'Created',
 		                now())";
-		
+
 		if (!$this->execute($sql))
 		{
 			$msg->addError('DB_NOT_UPDATED');
@@ -68,11 +68,11 @@ class MyownPatchesDAO extends DAO {
 	 * @return  true, if successful. Otherwise, false
 	 * @author  Cindy Qi Li
 	 */
-	public function Update($myown_patch_id, $achecker_patch_id, $applied_version, 
+	public function Update($myown_patch_id, $achecker_patch_id, $applied_version,
 	                       $description, $sql_statement)
 	{
 
-		$sql = "UPDATE ".TABLE_PREFIX."myown_patches 
+		$sql = "UPDATE ".TABLE_PREFIX."myown_patches
 		           SET achecker_patch_id = '". $achecker_patch_id ."',
 		               applied_version = '". $applied_version ."',
 		               description = '". $description ."',
@@ -80,7 +80,7 @@ class MyownPatchesDAO extends DAO {
 		               status = 'Created',
 		               last_modified = now()
 		         WHERE myown_patch_id = ". $myown_patch_id;
-	
+
 		return $this->execute($sql);
 	}
 
@@ -110,7 +110,7 @@ class MyownPatchesDAO extends DAO {
 	public function getAll()
 	{
 		$sql = "SELECT * from ".TABLE_PREFIX."myown_patches m order by last_modified desc";
-		
+
 		return $this->execute($sql);
 	}
 
@@ -124,9 +124,9 @@ class MyownPatchesDAO extends DAO {
 	public function getByID($patchID)
 	{
 		$sql = "SELECT * from ".TABLE_PREFIX."myown_patches where myown_patch_id=". $patchID;
-		
+
 		$rows = $this->execute($sql);
-		
+
 		if (is_array($rows)) return $rows[0];
 		else return false;
 	}

@@ -13,7 +13,7 @@
 
 include(AC_INCLUDE_PATH.'header.inc.php');
 
-if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
+if (isset($javascript_run_now)) echo $javascript_run_now;
 ?>
 
 <div class="center-input-form">
@@ -36,16 +36,16 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 <?php }?>
 		<table class="filter">
 		<tr>
-			<td colspan="2"><h2><?php echo _AC('results_found', $this->num_results); ?></h2></td>
+			<td colspan="2"><h2><?php echo _AC('results_found', $num_results); ?></h2></td>
 		</tr>
 
-		<?php if (is_array($this->all_html_tags)) { ?>
+		<?php if (is_array($all_html_tags)) { ?>
 		<tr>
 			<th><label for="html_tag"><?php echo _AC('html_tag'); ?></label>:</th>
 			<td>
 			<select name="html_tag" id="html_tag">
 				<option value="-1">- <?php echo _AC('all'); ?> -</option>
-				<?php foreach ($this->all_html_tags as $html_tag) {?>
+				<?php foreach ($all_html_tags as $html_tag) {?>
 				<option value="<?php echo $html_tag['html_tag']; ?>" <?php if($_GET['html_tag']==$html_tag['html_tag']) { echo 'selected="selected"';}?>><?php echo $html_tag['html_tag']; ?></option>
 				<?php } ?>
 			</select>
@@ -92,7 +92,7 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 <form name="form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("checks"); ?></legend>
 
-<?php print_paginator($this->page, $this->num_results, $this->page_string . htmlspecialchars(SEP) . $this->order .'='. $this->col, $this->results_per_page); ?>
+<?php print_paginator($page, $num_results, $page_string . htmlspecialchars(SEP) . $order .'='. $col, $results_per_page); ?>
 
 <input type="hidden" name="html_tag" value="<?php echo htmlspecialchars($_GET['html_tag']); ?>" />
 <input type="hidden" name="confidence" value="<?php echo $_GET['confidence']; ?>" />
@@ -115,54 +115,54 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 
 <table summary="" class="data" rules="rows">
 <colgroup>
-	<?php if ($this->col == 'html_tag'): ?>
+	<?php if ($col == 'html_tag'): ?>
 		<col />
 		<col class="sort" />
-		<col span="<?php echo 2 + $this->col_counts; ?>" />
-	<?php elseif($this->col == 'public_field'): ?>
-		<col span="<?php echo 1 + $this->col_counts; ?>" />
+		<col span="<?php echo 2 + $col_counts; ?>" />
+	<?php elseif($col == 'public_field'): ?>
+		<col span="<?php echo 1 + $col_counts; ?>" />
 		<col class="sort" />
 		<col span="1" />
-	<?php elseif($this->col == 'error_type'): ?>
-		<col span="<?php echo 3 + $this->col_counts; ?>" />
+	<?php elseif($col == 'error_type'): ?>
+		<col span="<?php echo 3 + $col_counts; ?>" />
 		<col class="sort" />
 		<col span="2" />
-	<?php elseif($this->col == 'description'): ?>
-		<col span="<?php echo 4 + $this->col_counts; ?>" />
+	<?php elseif($col == 'description'): ?>
+		<col span="<?php echo 4 + $col_counts; ?>" />
 		<col class="sort" />
 		<col span="3" />
-	<?php elseif($this->col == 'open_to_public'): ?>
-		<col span="<?php echo 5 + $this->col_counts; ?>" />
+	<?php elseif($col == 'open_to_public'): ?>
+		<col span="<?php echo 5 + $col_counts; ?>" />
 		<col class="sort" />
 		<col span="4" />
-	<?php elseif($this->col == 'check_id'): ?>
-		<col span="<?php echo 5 + $this->col_counts; ?>" />
+	<?php elseif($col == 'check_id'): ?>
+		<col span="<?php echo 5 + $col_counts; ?>" />
 		<col class="sort" />
 		<col span="5" />
 	<?php endif; ?>
 </colgroup>
 <thead>
 <tr>
-	<?php if ($this->row_button_type == 'radio') {?>
+	<?php if ($row_button_type == 'radio') {?>
 	<th scope="col">&nbsp;</th>
 	<?php }?>
-	<?php if ($this->row_button_type == 'checkbox') {?>
+	<?php if ($row_button_type == 'checkbox') {?>
 	<th scope="col"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall" onclick="CheckAll();" /></th>
 	<?php }?>
-	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=html_tag<?php echo htmlspecialchars(SEP).$this->page_string; ?>"><?php echo _AC('html_tag');      ?></a></th>
-	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=confidence<?php echo htmlspecialchars(SEP).$this->page_string; ?>"><?php echo _AC('error_type'); ?></a></th>
-	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=description<?php echo htmlspecialchars(SEP).$this->page_string; ?>"><?php echo _AC('description');   ?></a></th>
-	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=open_to_public<?php echo htmlspecialchars(SEP).$this->page_string; ?>"><?php echo _AC('open_to_public'); ?></a></th>
-	<th scope="col"><a href="check/index.php?<?php echo $this->orders[$this->order]; ?>=check_id<?php echo htmlspecialchars(SEP).$this->page_string; ?>"><?php echo _AC('check_id'); ?></a></th>
+	<th scope="col"><a href="check/index.php?<?php echo $orders[$order]; ?>=html_tag<?php echo htmlspecialchars(SEP).$page_string; ?>"><?php echo _AC('html_tag');      ?></a></th>
+	<th scope="col"><a href="check/index.php?<?php echo $orders[$order]; ?>=confidence<?php echo htmlspecialchars(SEP).$page_string; ?>"><?php echo _AC('error_type'); ?></a></th>
+	<th scope="col"><a href="check/index.php?<?php echo $orders[$order]; ?>=description<?php echo htmlspecialchars(SEP).$page_string; ?>"><?php echo _AC('description');   ?></a></th>
+	<th scope="col"><a href="check/index.php?<?php echo $orders[$order]; ?>=open_to_public<?php echo htmlspecialchars(SEP).$page_string; ?>"><?php echo _AC('open_to_public'); ?></a></th>
+	<th scope="col"><a href="check/index.php?<?php echo $orders[$order]; ?>=check_id<?php echo htmlspecialchars(SEP).$page_string; ?>"><?php echo _AC('check_id'); ?></a></th>
 </tr>
 
 </thead>
-<?php if ($this->num_results > 0): ?>
+<?php if ($num_results > 0): ?>
 
 <tfoot>
 <tr>
-	<td colspan="<?php echo 8 + $this->col_counts; ?>">
-		<?php if (is_array($this->buttons)) { foreach ($this->buttons as $button_text) {?>
+	<td colspan="<?php echo 8 + $col_counts; ?>">
+		<?php if (is_array($buttons)) { foreach ($buttons as $button_text) {?>
 		<input type="submit" name="<?php echo $button_text?>" value="<?php echo _AC($button_text); ?>" />
 		<?php }}?>
 
@@ -171,15 +171,15 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 </tfoot>
 
 <tbody>
-	<?php if (is_array($this->check_rows)){ foreach ($this->check_rows as $row) {?>
-		<?php if ($this->row_button_type == 'radio') {?>
+	<?php if (is_array($check_rows)){ foreach ($check_rows as $row) {?>
+		<?php if ($row_button_type == 'radio') {?>
 		<tr onmousedown="document.form['m<?php echo $row["check_id"]; ?>'].checked = true; rowselect(this);" 
 		    onkeydown="document.form['m<?php echo $row["check_id"]; ?>'].checked = true; rowselect(this);"
 		    id="r_<?php echo $row["check_id"]; ?>">
 			<td><input type="radio" name="id" value="<?php echo $row["check_id"]; ?>" id="m<?php echo $row['check_id']; ?>" 
 			           onmouseup="this.checked=!this.checked" onkeyup="this.checked=!this.checked" /></td>
 		<?php }?>
-		<?php if ($this->row_button_type == 'checkbox') {?>
+		<?php if ($row_button_type == 'checkbox') {?>
 		<tr onmousedown="document.form['m<?php echo $row['check_id']; ?>'].checked = !document.form['m<?php echo $row['check_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['check_id']; ?>');" 
 		    onkeydown="document.form['m<?php echo $row['check_id']; ?>'].checked = !document.form['m<?php echo $row['check_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['check_id']; ?>');"
 		    id="rm<?php echo $row['check_id']; ?>">
@@ -195,7 +195,7 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 	<?php }} ?>
 <?php else: ?>
 	<tr>
-		<td colspan="<?php echo 5 + $this->col_counts; ?>"><?php echo _AC('none_found'); ?></td>
+		<td colspan="<?php echo 5 + $col_counts; ?>"><?php echo _AC('none_found'); ?></td>
 	</tr>
 <?php endif; ?>
 </tbody>
