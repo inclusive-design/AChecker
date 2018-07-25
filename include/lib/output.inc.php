@@ -56,8 +56,7 @@ function _AC() {
 		$sub_arg = substr($args[0], 0, 7); // 7 is the shortest type of msg (AC_INFO)
 		if (in_array($sub_arg, array('AC_ERRO','AC_INFO','AC_WARN','AC_FEED','AC_CONF'))) {
 			global $_base_path;
-
-					
+	
 			/* get $_msgs_new from the DB */
 			$rows = $languageTextDAO->getMsgByTermAndLang($args[0], $_SESSION['lang']);
 			$msgs = '';
@@ -359,7 +358,6 @@ function AC_print($input, $name, $runtime_html = true) {
 		$input = trim(image_replace(' ' . $input . ' '));
 	}
 
-
 	return $input;
 }
 
@@ -440,7 +438,6 @@ function smile_replace($text) {
 
 	return $text;
 }
-
 
 /* Used specifically for the visual editor
 */
@@ -726,7 +723,6 @@ function highlight($input, $var) {//$input is the string, $var is the text to be
 	}
 	return $input;
 }
-
 
 /* @See: ./index.php */
 function format_content($input, $html = 0, $glossary, $simple = false) {

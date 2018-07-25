@@ -34,17 +34,17 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<table class="form-data">
 		<tr>
 			<th align="left" width="20%"><?php echo _AC('html_tag'); ?>:</th>
-			<td align="left"><?php echo htmlspecialchars($this->check_row['html_tag']); ?></td>
+			<td align="left"><?php echo htmlspecialchars($check_row['html_tag']); ?></td>
 		</tr>
 
 		<tr>
 			<th align="left"><?php echo _AC('error_type'); ?>:</th>
-			<td align="left"><?php echo get_confidence_by_code($this->check_row['confidence']); ?></td>
+			<td align="left"><?php echo get_confidence_by_code($check_row['confidence']); ?></td>
 		</tr>
 
 		<tr>
 			<th align="left"><?php echo _AC('name'); ?>:</th>
-			<td align="left"><?php echo htmlspecialchars(_AC($this->check_row['name'])); ?></td>
+			<td align="left"><?php echo htmlspecialchars(_AC($check_row['name'])); ?></td>
 		</tr>
 
 		<tr>
@@ -52,7 +52,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 		</tr>
 		
 		<tr>
-			<td align="left" colspan="2"><textarea rows="15" cols="120" name="func" id="func"><?php if (isset($_POST['func'])) echo $_POST['func']; else echo $this->check_row["func"]; ?></textarea></td>
+			<td align="left" colspan="2"><textarea rows="15" cols="120" name="func" id="func"><?php if (isset($_POST['func'])) echo $_POST['func']; else echo $check_row["func"]; ?></textarea></td>
 		</tr>
 
 	</table>

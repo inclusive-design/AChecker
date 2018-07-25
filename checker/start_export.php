@@ -69,7 +69,6 @@ if (isset($_SESSION['input_form']['mode'])) 		$mode = $_SESSION['input_form']['m
 // user link id
 if (isset($_SESSION['input_form']['user_link_id'])) $user_link_id = $_SESSION['input_form']['user_link_id'];
 
-
 $html = '';
 $error_nr_html = -1;
 $html_error = '';
@@ -140,7 +139,6 @@ if ($problem != 'html' && $problem != 'css') {
 $title = '';
 if (preg_match("/<title>(.+)<\/title>/siU", $validate_content, $matches)) $title = $matches[1];
 
-
 $known = array();
 $likely = array();
 $potential = array();
@@ -195,5 +193,4 @@ if ($file == 'pdf') {
 
 echo $path;
 exit();	
-
 ?>

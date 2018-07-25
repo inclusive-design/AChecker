@@ -19,7 +19,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("filter"); ?></legend>
 		<table class="filter">
 		<tr>
-			<td colspan="2"><h2><?php echo _AC('results_found', $this->num_results); ?></h2></td>
+			<td colspan="2"><h2><?php echo _AC('results_found', $num_results); ?></h2></td>
 		</tr>
 
 		<tr>
@@ -31,13 +31,13 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			</td>
 		</tr>
 
-		<?php if (is_array($this->all_user_groups)) { ?>
+		<?php if (is_array($all_user_groups)) { ?>
 		<tr>
 			<th><label for="user_group_id"><?php echo _AC('user_group'); ?></label>:</th>
 			<td>
 			<select name="user_group_id" id="user_group_id">
 				<option value="-1">- <?php echo _AC('select'); ?> -</option>
-				<?php foreach ($this->all_user_groups as $user_group) {?>
+				<?php foreach ($all_user_groups as $user_group) {?>
 				<option value="<?php echo $user_group['user_group_id']; ?>" <?php if($_GET['user_group_id']==$user_group['user_group_id']) { echo 'selected="selected"';}?>><?php echo htmlspecialchars($user_group['title']); ?></option>
 				<?php } ?>
 			</select>
@@ -52,8 +52,8 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<td colspan="2" align="center">
-			<input type="radio" name="include" value="all" id="match_all" <?php echo $this->checked_include_all; ?> /><label for="match_all"><?php echo _AC('match_all_words'); ?></label> 
-			<input type="radio" name="include" value="one" id="match_one" <?php echo $this->checked_include_one; ?> /><label for="match_one"><?php echo _AC('match_any_word'); ?></label>
+			<input type="radio" name="include" value="all" id="match_all" <?php echo $checked_include_all; ?> /><label for="match_all"><?php echo _AC('match_all_words'); ?></label> 
+			<input type="radio" name="include" value="one" id="match_one" <?php echo $checked_include_one; ?> /><label for="match_one"><?php echo _AC('match_any_word'); ?></label>
 			</td>
 		</tr>
 
@@ -70,7 +70,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	
 <div id="output_div" class="output-form">
 <fieldset class="group_form"><legend class="group_form"><?php echo _AC("users"); ?></legend>
-<?php print_paginator($this->page, $this->num_results, $this->page_string . htmlspecialchars(SEP) . $this->order .'='. $this->col, $this->results_per_page); ?>
+<?php print_paginator($page, $num_results, $page_string . htmlspecialchars(SEP) . $order .'='. $col, $results_per_page); ?>
 
 <form name="form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <input type="hidden" name="status" value="<?php echo $_GET['status']; ?>" />
@@ -79,36 +79,36 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 <table summary="Edit, change passwords, or delete users" class="data" rules="rows">
 <colgroup>
-	<?php if ($this->col == 'login'): ?>
+	<?php if ($col == 'login'): ?>
 		<col />
 		<col class="sort" />
-		<col span="<?php echo 5 + $this->col_counts; ?>" />
-	<?php elseif($this->col == 'public_field'): ?>
-		<col span="<?php echo 1 + $this->col_counts; ?>" />
+		<col span="<?php echo 5 + $col_counts; ?>" />
+	<?php elseif($col == 'public_field'): ?>
+		<col span="<?php echo 1 + $col_counts; ?>" />
 		<col class="sort" />
 		<col span="6" />
-	<?php elseif($this->col == 'first_name'): ?>
-		<col span="<?php echo 2 + $this->col_counts; ?>" />
+	<?php elseif($col == 'first_name'): ?>
+		<col span="<?php echo 2 + $col_counts; ?>" />
 		<col class="sort" />
 		<col span="5" />
-	<?php elseif($this->col == 'last_name'): ?>
-		<col span="<?php echo 3 + $this->col_counts; ?>" />
+	<?php elseif($col == 'last_name'): ?>
+		<col span="<?php echo 3 + $col_counts; ?>" />
 		<col class="sort" />
 		<col span="4" />
-	<?php elseif($this->col == 'user_group'): ?>
-		<col span="<?php echo 4 + $this->col_counts; ?>" />
+	<?php elseif($col == 'user_group'): ?>
+		<col span="<?php echo 4 + $col_counts; ?>" />
 		<col class="sort" />
 		<col span="3" />
-	<?php elseif($this->col == 'email'): ?>
-		<col span="<?php echo 5 + $this->col_counts; ?>" />
+	<?php elseif($col == 'email'): ?>
+		<col span="<?php echo 5 + $col_counts; ?>" />
 		<col class="sort" />
 		<col span="2" />
-	<?php elseif($this->col == 'status'): ?>
-		<col span="<?php echo 6 + $this->col_counts; ?>" />
+	<?php elseif($col == 'status'): ?>
+		<col span="<?php echo 6 + $col_counts; ?>" />
 		<col class="sort" />
 		<col />
-	<?php elseif($this->col == 'last_login'): ?>
-		<col span="<?php echo 7 + $this->col_counts; ?>" />
+	<?php elseif($col == 'last_login'): ?>
+		<col span="<?php echo 7 + $col_counts; ?>" />
 		<col class="sort" />
 	<?php endif; ?>
 </colgroup>
@@ -116,20 +116,20 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 <tr>
 	<th scope="col" align="left" width="5%"><input type="checkbox" value="<?php echo _AC('select_all'); ?>" id="all" title="<?php echo _AC('select_all'); ?>" name="selectall" onclick="CheckAll();" /></th>
 
-	<th scope="col" width="15%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=login<?php echo $page_string; ?>"><?php echo _AC('login_name');      ?></a></th>
-	<th scope="col" width="15%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=first_name<?php echo $page_string; ?>"><?php echo _AC('first_name'); ?></a></th>
-	<th scope="col" width="10%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=last_name<?php echo $page_string; ?>"><?php echo _AC('last_name');   ?></a></th>
-	<th scope="col" width="10%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=user_group<?php echo $page_string; ?>"><?php echo _AC('user_group'); ?></a></th>
-	<th scope="col" width="15%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=email<?php echo $page_string; ?>"><?php echo _AC('email');           ?></a></th>
-	<th scope="col" width="10%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=status<?php echo $page_string; ?>"><?php echo _AC('user_status'); ?></a></th>
-	<th scope="col" width="20%"><a href="user/index.php?<?php echo $this->orders[$this->order]; ?>=last_login<?php echo $page_string; ?>"><?php echo _AC('last_login'); ?></a></th>
+	<th scope="col" width="15%"><a href="user/index.php?<?php echo $orders[$order]; ?>=login<?php echo $page_string; ?>"><?php echo _AC('login_name');      ?></a></th>
+	<th scope="col" width="15%"><a href="user/index.php?<?php echo $orders[$order]; ?>=first_name<?php echo $page_string; ?>"><?php echo _AC('first_name'); ?></a></th>
+	<th scope="col" width="10%"><a href="user/index.php?<?php echo $orders[$order]; ?>=last_name<?php echo $page_string; ?>"><?php echo _AC('last_name');   ?></a></th>
+	<th scope="col" width="10%"><a href="user/index.php?<?php echo $orders[$order]; ?>=user_group<?php echo $page_string; ?>"><?php echo _AC('user_group'); ?></a></th>
+	<th scope="col" width="15%"><a href="user/index.php?<?php echo $orders[$order]; ?>=email<?php echo $page_string; ?>"><?php echo _AC('email');           ?></a></th>
+	<th scope="col" width="10%"><a href="user/index.php?<?php echo $orders[$order]; ?>=status<?php echo $page_string; ?>"><?php echo _AC('user_status'); ?></a></th>
+	<th scope="col" width="20%"><a href="user/index.php?<?php echo $orders[$order]; ?>=last_login<?php echo $page_string; ?>"><?php echo _AC('last_login'); ?></a></th>
 </tr>
 
 </thead>
-<?php if ($this->num_results > 0): ?>
+<?php if ($num_results > 0): ?>
 	<tfoot>
 	<tr>
-		<td colspan="<?php echo 8 + $this->col_counts; ?>">
+		<td colspan="<?php echo 8 + $col_counts; ?>">
 			<input type="submit" name="edit" value="<?php echo _AC('edit'); ?>" /> 
 			<input type="submit" name="password" value="<?php echo _AC('password'); ?>" />
 			<input type="submit" name="delete" value="<?php echo _AC('delete'); ?>" />
@@ -137,7 +137,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	</tr>
 	</tfoot>
 	<tbody>
-		<?php if (is_array($this->user_rows)){ foreach ($this->user_rows as $row) {?>
+		<?php if (is_array($user_rows)){ foreach ($user_rows as $row) {?>
 			<tr onmousedown="document.form['m<?php echo $row['user_id']; ?>'].checked = !document.form['m<?php echo $row['user_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['user_id']; ?>');" 
 			    onkeydown="document.form['m<?php echo $row['user_id']; ?>'].checked = !document.form['m<?php echo $row['user_id']; ?>'].checked; togglerowhighlight(this, 'm<?php echo $row['user_id']; ?>');"
 			    id="rm<?php echo $row['user_id']; ?>">
@@ -163,7 +163,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	</tbody>
 <?php else: ?>
 	<tr>
-		<td colspan="<?php echo 8 + $this->col_counts; ?>"><?php echo _AC('none_found'); ?></td>
+		<td colspan="<?php echo 8 + $col_counts; ?>"><?php echo _AC('none_found'); ?></td>
 	</tr>
 <?php endif; ?>
 </table>

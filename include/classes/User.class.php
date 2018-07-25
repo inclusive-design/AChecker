@@ -54,7 +54,7 @@ class User {
 	}
 
 	/**
-	 * Return all info of this->userID 
+	 * Return all info of this->userID
 	 * @access  public
 	 * @param   none
 	 * @return  table row
@@ -66,7 +66,7 @@ class User {
 	}
 
 	/**
-	 * Check if user is admin 
+	 * Check if user is admin
 	 * @access  public
 	 * @param   none
 	 * @return  true : if is an admin
@@ -76,7 +76,7 @@ class User {
 	public function isAdmin()
 	{
 		$row = $this->userDAO->getUserByID($this->userID);
-		
+
 		if ($row['user_group_id'] == AC_USER_GROUP_ADMIN)
 			return true;
 		else

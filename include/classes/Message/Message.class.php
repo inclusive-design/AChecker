@@ -21,15 +21,16 @@
 class Message {
 
 	/*
-	* Reference to savant obj.
+	* Reference to plates obj.
 	* @access private
-	* @see /include/classes/Savant/Savant.php
+	* @see /vendor/league/plate/Engine.php
 	* @var object	
 	*/
-	var $savant;
+	
+	var $plates;
 	
 	/*
-	* Stastic assoc. array of message types mapped to Savant template file names
+	* Stastic assoc. array of message types mapped to Plates template file names
 	* @access private
 	* @see /templates/
 	* @var array
@@ -58,16 +59,16 @@ class Message {
 	/**
 	* Constructor
 	* @access  public
-	* @param   obj $savant Reference to Savant object
+	* @param   obj $plates Reference to Plates object
 	* @author  Jacek Materna
 	*/
-	function __construct($savant) { 
-		$this->savant = $savant;
+	function __construct($plates) { 
+		$this->plates = $plates;
 	} 
 		
 	/**
 	* Print message(s) of type $type. Processes stored messages in session var for type $type
-	* and translates them into language spec. Then passes processed data to savant template for display
+	* and translates them into language spec. Then passes processed data to plates template for display
 	* @access  public
 	* @param   string $type					error|warning|info|feedback|help|help_pop
 	* @author  Jacek Materna
@@ -119,27 +120,27 @@ class Message {
 		}
 		
 		if (count($_result) > 0) {
-			$this->savant->assign('item', $_result);	// pass translated payload to savant var for processing
+			$plate['item'] = $_result;	// pass translated payload to plates var for processing
 			
 			if ($type == 'confirm') {
-				$this->savant->assign('hidden_vars', $hidden_vars);
-				$this->savant->assign('button_yes_text', $button_yes_text);
-				$this->savant->assign('button_no_text', $button_no_text);
-				$this->savant->assign('hide_button_no', $hide_button_no);
+				$plate['hidden_vars'] = $hidden_vars;
+				$plate['button_yes_text'] = $button_yes_text;
+				$plate['button_no_text'] = $button_no_text;
+				$plate['hide_button_no'] = $hide_button_no;
 
 			} else if ($type == 'help') { // special case for help message, we need to check a few conditions
 				$a = (!isset($_GET['e']) && !$_SESSION['prefs']['PREF_HELP'] && !$_GET['h']);
 				$b = ($_SESSION['prefs']['PREF_CONTENT_ICONS'] == 2);
 				$c = isset($_GET['e']);
 				$d = $_SESSION['course_id'];
-				
-				$this->savant->assign('a', $a);
-				$this->savant->assign('b', $b);
-				$this->savant->assign('c', $c);
-				$this->savant->assign('d', $d);
+
+				$plate['a'] = $a;
+				$plate['b'] = $b;
+				$plate['c'] = $c;
+				$plate['d'] = $d;
 			}
 		
-			$this->savant->display($this->tmpl[$type]);
+			echo $this->plates->render($this->tmpl[$type], $plate);
 		}
 
 		unset($_SESSION['message'][$type]);
@@ -268,7 +269,7 @@ class Message {
 	}
 	
 	/**
-	* Print error messages using Savant template
+	* Print error messages using Plates template
 	* @access  public
 	* @author  Jacek Materna
 	*/
@@ -316,7 +317,7 @@ class Message {
 	}
 	
 	/**
-	* Print warning messages using Savant template
+	* Print warning messages using Plates template
 	* @access  public
 	* @author  Jacek Materna
 	*/
@@ -338,7 +339,7 @@ class Message {
 	}
 	
 	/**
-	* Print info messages using Savant template
+	* Print info messages using Plate template
 	* @access  public
 	* @author  Jacek Materna
 	*/
@@ -360,7 +361,7 @@ class Message {
 	}
 	
 	/**
-	* Print feedback messages using Savant template
+	* Print feedback messages using Plates template
 	* @access  public
 	* @author  Jacek Materna
 	*/
@@ -382,7 +383,7 @@ class Message {
 	}
 	
 	/**
-	* Print help messages using Savant template
+	* Print help messages using Plates template
 	* @access  public
 	* @author  Jacek Materna
 	*/
@@ -407,7 +408,7 @@ class Message {
 	}
 	
 	/**
-	* Print feedback message using Savant template with no Session dialog and
+	* Print feedback message using Plates template with no Session dialog and
 	* no database dialog, straight text inside feedback box
 	* @access  public
 	* @param String String message to display inside feedback box
@@ -415,8 +416,8 @@ class Message {
 	*/
 	function printNoLookupFeedback($str) {
 		if (str != null) {
-			$this->savant->assign('item', array($str));	// pass string to savant var for processing
-			$this->savant->display($this->tmpl['feedback']);
+			$plate['item'] = array($str);	// pass string to plate var for processing
+			echo $this->plates->render($this->tmpl['feedback'], $plate);
 		}
 	}
 	
@@ -467,7 +468,4 @@ class Message {
 	}
 	
 } // end of class
-
-
-
 ?>

@@ -74,11 +74,11 @@ class Decision {
 
 		foreach ($decisions as $sequenceID => $decision) {
 			list($line_num, $col_num, $check_id) = explode("_", $sequenceID);
-			
+
 			$line_num = intval($line_num);
 			$col_num = intval($col_num);
 			$check_id = intval($check_id);
-			
+
 			$this->userDecisionsDAO->setDecision($this->userLinkID, $line_num, $col_num, $check_id, $decision);
 		}
 	}

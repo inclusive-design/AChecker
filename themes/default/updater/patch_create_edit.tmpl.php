@@ -17,7 +17,7 @@ require (AC_INCLUDE_PATH.'header.inc.php');
 
 <h2 align="center"><?php echo _AC("create_edit_update"); ?></h2>
 
-<form enctype="multipart/form-data" action='<?php echo $this->url; ?>' method="post" name="form" target="messageIFrame">
+<form enctype="multipart/form-data" action='<?php echo $url; ?>' method="post" name="form" target="messageIFrame">
 
 <div class="input-form">
 <fieldset class="group_form"><legend class="group_form"><?php echo _AC('create_edit_update'); ?></legend>
@@ -33,24 +33,24 @@ require (AC_INCLUDE_PATH.'header.inc.php');
 			<th align="left" style="width: 25%">
 				<div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="achecker_patch_id"><?php echo _AC('achecker_update_id'); ?>:</label><br />
 			</th>
-			<td align="left"><input id="achecker_patch_id" name="achecker_patch_id" type="text" maxlength="100" size="30" value="<?php echo $this->patch_row['achecker_patch_id']; ?>" /></td>
+			<td align="left"><input id="achecker_patch_id" name="achecker_patch_id" type="text" maxlength="100" size="30" value="<?php echo $patch_row['achecker_patch_id']; ?>" /></td>
 		</tr>
 		
 		<tr><th align="left" colspan="2"><small>&middot; <?php echo _AC('contain_only'); ?></small></th></tr>
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="achecker_version_to_apply"><?php echo _AC('achecker_version_to_apply'); ?>:</label></th>
-			<td align="left"><input id="achecker_version_to_apply" name="achecker_version_to_apply" type="text" maxlength="100" size="30" value="<?php echo $this->patch_row['applied_version']; ?>" /></td>
+			<td align="left"><input id="achecker_version_to_apply" name="achecker_version_to_apply" type="text" maxlength="100" size="30" value="<?php echo $patch_row['applied_version']; ?>" /></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="description"><?php echo _AC('description'); ?>:</label></th>
-			<td align="left"><textarea id="description" name="description" rows="4"><?php echo $this->patch_row['description']; ?></textarea></td>
+			<td align="left"><textarea id="description" name="description" rows="4"><?php echo $patch_row['description']; ?></textarea></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="sql_statement"><?php echo _AC('sql_statement'); ?>:</label></th>
-			<td align="left"><textarea id="sql_statement" name="sql_statement" cols="40" rows="8"><?php echo $this->patch_row['sql_statement']; ?></textarea></td>
+			<td align="left"><textarea id="sql_statement" name="sql_statement" cols="40" rows="8"><?php echo $patch_row['sql_statement']; ?></textarea></td>
 		</tr>
 	</table>
 	
@@ -72,10 +72,10 @@ require (AC_INCLUDE_PATH.'header.inc.php');
 		<tbody>
 <?php
 // when edit existing patch
-if (is_array($this->dependent_rows))  
+if (is_array($dependent_rows))  
 {
-	$num_of_dependents = count($this->dependent_rows);
-	foreach ($this->dependent_rows as $row_patch_dependent)
+	$num_of_dependents = count($dependent_rows);
+	foreach ($dependent_rows as $row_patch_dependent)
 	{
 	?>
 			<tr>
@@ -337,7 +337,7 @@ var ACTION_HTML_TEMPLATE = ' \
 
 
 <script language="JavaScript" type="text/javascript">
-	var patch_files = <?php echo json_encode_result($this->file_rows); ?>;
+	var patch_files = <?php echo json_encode_result($file_rows); ?>;
 	
 	window.onload = function() {
 		for(var i=0; i<patch_files.length; i++) {

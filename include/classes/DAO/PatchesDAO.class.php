@@ -27,12 +27,12 @@ class PatchesDAO extends DAO {
 	/**
 	 * Create new patch
 	 * @access  public
-	 * @param   achecker_patch_id: atutor patch id, 
+	 * @param   achecker_patch_id: atutor patch id,
 	 *          applied_version
 	 *          patch_folder
 	 *          description
 	 *          available_to
-	 *          sql_statement, 
+	 *          sql_statement,
 	 *          status
 	 *          remove_permission_files,
 	 *          backup_files
@@ -42,15 +42,15 @@ class PatchesDAO extends DAO {
 	 *          false and add error into global var $msg, if unsuccessful
 	 * @author  Cindy Qi Li
 	 */
-	public function Create($achecker_patch_id, $applied_version, 
-	                       $patch_folder, $description, 
-	                       $available_to, $sql_statement, 
+	public function Create($achecker_patch_id, $applied_version,
+	                       $patch_folder, $description,
+	                       $available_to, $sql_statement,
 	                       $status, $remove_permission_files,
 	                       $backup_files, $patch_files, $author)
 	{
 
 		$sql = "INSERT INTO " . TABLE_PREFIX. "patches " .
-					 "(achecker_patch_id, 
+					 "(achecker_patch_id,
 					   applied_version,
 					   patch_folder,
 					   description,
@@ -97,15 +97,15 @@ class PatchesDAO extends DAO {
 	public function UpdateByArray($patchID, $fieldArray)
 	{
 		$sql_prefix = "Update ". TABLE_PREFIX. "patches set ";
-		
+
 		foreach ($fieldArray as $key => $value)
 		{
 			$sql_middle .= $key . "='" . $this->addSlashes($value) . "', ";
 		}
-		
-		$sql = substr($sql_prefix . $sql_middle, 0, -2) . 
+
+		$sql = substr($sql_prefix . $sql_middle, 0, -2) .
 		       " WHERE patches_id = " . $patchID;
-		
+
 		return $this->execute($sql);
 	}
 
@@ -119,13 +119,13 @@ class PatchesDAO extends DAO {
 	public function getByID($patchID)
 	{
 		$sql = "SELECT * from ".TABLE_PREFIX."patches where patches_id=". $patchID;
-		
+
 		$rows = $this->execute($sql);
-		
+
 		if (is_array($rows)) return $rows[0];
 		else return false;
 	}
-	
+
 	/**
 	 * Return patch information by given version
 	 * @access  public
@@ -135,10 +135,10 @@ class PatchesDAO extends DAO {
 	 */
 	public function getPatchByVersion($version)
 	{
-		$sql = "SELECT * FROM ".TABLE_PREFIX."patches 
-		         WHERE applied_version = '" . $version . "' 
+		$sql = "SELECT * FROM ".TABLE_PREFIX."patches
+		         WHERE applied_version = '" . $version . "'
 		         ORDER BY achecker_patch_id";
-		
+
 		return $this->execute($sql);
 	}
 

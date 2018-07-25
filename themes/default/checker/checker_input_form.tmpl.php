@@ -42,7 +42,7 @@ $_custom_head .= '	//-->'."\n".
 
 include(AC_INCLUDE_PATH.'header.inc.php');
 
-if (isset($this->error)) echo $this->error;
+if (isset($error)) echo $error;
 
 /** return the string of a div html to display all the available guidelines
  * 2 formats: checkbox or radio button in front of the guideline
@@ -117,9 +117,9 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 		</div>
 		
 		<div id="AC_by_uri" class="input_tab" style="<?php if (!isset($_POST["validate_file"]) && !isset($_POST["validate_paste"])) echo "display:block"; else echo "display:none"; ?>">
-			<div style="text-align:center;">
+			<div style="text-align:center;"> 
 				<label for="checkuri"><?php echo _AC('URL'); ?>:</label>
-				<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else echo $this->default_uri_value; ?>" size="50"   />
+				<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else $v($default_uri_value); ?>" size="50"   />
 				<div class="validation_submit_div">
 					<div class="spinner_div">
 						<img class="spinner_img" id="AC_spinner_by_uri" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
@@ -196,11 +196,11 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 <?php
 $count_guidelines_in_current_row = 0;
 
-if (is_array($this->rows))
+if (is_array($rows))
 {
-	foreach ($this->rows as $id => $row)
+	foreach ($rows as $id => $row)
 	{
-		if ($count_guidelines_in_current_row == 0 || $count_guidelines_in_current_row == $this->num_of_guidelines_per_row)
+		if ($count_guidelines_in_current_row == 0 || $count_guidelines_in_current_row == $num_of_guidelines_per_row)
 		{
 			$count_guidelines_in_current_row = 0;
 			echo "			<tr>\n";
@@ -219,7 +219,7 @@ if (is_array($this->rows))
 <?php
 		$count_guidelines_in_current_row++;
 	
-		if ($count_guidelines_in_current_row == $this->num_of_guidelines_per_row)
+		if ($count_guidelines_in_current_row == $num_of_guidelines_per_row)
 			echo "			</tr>\n";
 	
 	}
@@ -229,8 +229,8 @@ if (is_array($this->rows))
 			<tr>
 			<td colspan="3">
 <?php 
-echo get_guideline_div($this->rows, $this->num_of_guidelines_per_row, "radio");  // used at "view by guideline"
-echo get_guideline_div($this->rows, $this->num_of_guidelines_per_row, "checkbox");  // used at "view by line"
+echo get_guideline_div($rows, $num_of_guidelines_per_row, "radio");  // used at "view by guideline"
+echo get_guideline_div($rows, $num_of_guidelines_per_row, "checkbox");  // used at "view by line"
 ?>
 			</td>
 			</tr>

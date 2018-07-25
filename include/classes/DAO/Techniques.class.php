@@ -40,6 +40,6 @@ class Techniques extends DAO {
 
 		return $this->execute($sql);
 	}
-	
+
 }
 ?>

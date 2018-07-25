@@ -25,8 +25,8 @@ if (isset($htmlValidator))
 {
 	$num_of_html_errors = $htmlValidator->getNumOfValidateError();
 
-	$savant->assign('htmlValidator', $htmlValidator);
-	$savant->assign('num_of_html_errors', $num_of_html_errors);
+	$plate['htmlValidator'] = $htmlValidator;
+	$plate['num_of_html_errors'] = $num_of_html_errors;
 }
 
 // CSS Validator
@@ -34,8 +34,8 @@ if (isset($cssValidator))
 {
 	$num_of_css_errors = $cssValidator->getNumOfValidateError();
 
-	$savant->assign('cssValidator', $cssValidator);
-	$savant->assign('num_of_css_errors', $num_of_css_errors);
+	$plate['cssValidator'] = $cssValidator;
+	$plate['num_of_css_errors'] = $num_of_css_errors;
 }
 
 if (isset($aValidator))
@@ -130,33 +130,32 @@ if (isset($aValidator))
 		$seals = $utility->getSeals($guideline_rows);
 	}
 	
-	$savant->assign('a_rpt', $a_rpt);
-	$savant->assign('num_of_errors', $num_of_errors);
-	$savant->assign('num_of_likely_problems', $num_of_likely_problems);
-	$savant->assign('num_of_likely_problems_no_decision', $num_of_likely_problems_no_decision);
-	$savant->assign('num_of_potential_problems', $num_of_potential_problems);
-	$savant->assign('num_of_potential_problems_no_decision', $num_of_potential_problems_no_decision);
+	$plate['a_rpt'] = $a_rpt;
+	$plate['num_of_errors'] = $num_of_errors;
+	$plate['num_of_likely_problems'] = $num_of_likely_problems;
+	$plate['num_of_likely_problems_no_decision'] = $num_of_likely_problems_no_decision;
+	$plate['num_of_potential_problems'] = $num_of_potential_problems;
+	$plate['num_of_potential_problems_no_decision'] = $num_of_potential_problems_no_decision;
 
-	$savant->assign('aValidator', $aValidator);
-	$savant->assign('guidelines_text', $guidelines_text);
-	$savant->assign('num_of_total_a_errors', $num_of_total_a_errors);
+	$plate['aValidator'] = $aValidator;
+	$plate['guidelines_text'] = $guidelines_text;
+	$plate['num_of_total_a_errors'] = $num_of_total_a_errors;
 	
 	// vars for displaying seals
 	if (is_array($seals)) {
-		$savant->assign('savant', $savant);
-		$savant->assign('seals', $seals);
+		$plate['plates'] = $plates;
+ 		$plate['seals'] = $seals;
 	}
-	if ($user_link_id <> '') $savant->assign('user_link_id', $user_link_id);
+	if ($user_link_id <> '') $plate['user_link_id'] = $user_link_id;
 	
 	// vars for displaying report from referer URI
 	if ($_REQUEST['uri'] == 'referer')
 	{
-		$savant->assign('referer_report', 1);
-		if (intval($user_link_id) > 0) $savant->assign('referer_user_link_id', $user_link_id);
+		$plate['referer_report'] = 1;
+		if (intval($user_link_id) > 0) $plate['referer_user_link_id'] = $user_link_id;
 	}
 
 }
 
-
-$savant->display('checker/checker_results.tmpl.php');
+echo $plates->render('checker/checker_results.tmpl.php', $plate);
 ?>
