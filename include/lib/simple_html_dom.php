@@ -62,7 +62,7 @@ define('HDOM_INFO_ENDSPACE',7);
 define('DEFAULT_TARGET_CHARSET', 'UTF-8');
 define('DEFAULT_BR_TEXT', "\r\n");
 define('DEFAULT_SPAN_TEXT', " ");
-define('MAX_FILE_SIZE', 600000);
+define('MAX_FILE_SIZE', 9999999999); // New Code
 // helper functions
 // -----------------------------------------------------------------------------
 // get html dom from file
@@ -997,9 +997,8 @@ class simple_html_dom
     protected $default_br_text = "";
     public $default_span_text = "";
     /* customized by UOT, ATRC, cindy Li */
-    protected $doctype_token_equal = ">";
+    protected $doctype_token_equal ='>';
     /* end of customized by UOT, ATRC, cindy Li */
-
     // use isset instead of in_array, performance boost about 30%...
     protected $self_closing_tags = array('img'=>1, 'br'=>1, 'input'=>1, 'meta'=>1, 'link'=>1, 'hr'=>1, 'base'=>1, 'embed'=>1, 'spacer'=>1);
     protected $block_tags = array('root'=>1, 'body'=>1, 'form'=>1, 'div'=>1, 'span'=>1, 'table'=>1);
@@ -1341,14 +1340,12 @@ class simple_html_dom
         $node->_[HDOM_INFO_BEGIN] = $this->cursor;
         ++$this->cursor;
         $tag = $this->copy_until($this->token_slash);
-
-         /* customized by UOT, ATRC, cindy Li */
-         $portion = substr($this->html, 0, $this->pos);
-         $node->linenumber = $this->count_line_number($portion);
-         $node->colnumber = $this->count_col_number($portion);
-         unset($portion);
-         /* end of customized by UOT, ATRC, cindy Li */
-
+        /* customized by UOT, ATRC, cindy Li */
+        $portion = substr($this->html, 0, $this->pos);
+        $node->linenumber = $this->count_line_number($portion);
+        $node->colnumber = $this->count_col_number($portion);
+        unset($portion);
+        /* end of customized by UOT, ATRC, cindy Li */
         $node->tag_start = $begin_tag_pos;
 
         // doctype, cdata & comments...
@@ -1373,7 +1370,7 @@ class simple_html_dom
 
         // text
         /* the next line was customized by UOT, ATRC, cindy Li, exclude 'doctype' so it will be returned as a normal node */
-        if ($pos=strpos($tag, '<')!==false && strtolower($tag) <> 'doctype') {
+        if (!preg_match("/^[A-Za-z0-9_\\-:]+$/", $node->tag) && strtolower($tag) <> 'doctype') {
             $tag = '<' . substr($tag, 0, -1);
             $node->_[HDOM_INFO_TEXT] = $tag;
             $this->link_nodes($node, false);
@@ -1417,7 +1414,7 @@ class simple_html_dom
         do
         {
             /* customized by UOT, ATRC, cindy Li */
-            if (strtolower($node->tag) == 'doctype')
+            if (strtolower($tag) == 'doctype')
             {
             	$name = $this->copy_until($this->doctype_token_equal);
               $this->parse_attr($node, $name, $space);

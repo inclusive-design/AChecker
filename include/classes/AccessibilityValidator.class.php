@@ -78,6 +78,7 @@ class AccessibilityValidator {
 	{
 		// dom of the content to be validated
 		$this->content_dom = $this->get_simple_html_dom($this->validate_content);
+	
 		// prepare gobal vars used in BasicFunctions.class.php to fasten the validation
 		$this->prepare_global_vars();
 		
@@ -140,7 +141,10 @@ class AccessibilityValidator {
 		global $msg;
 		
 		$dom = str_get_html($content);
-		
+
+		if(count(($dom->find('html')) == 0) == false){
+			$msg->addError('Error with Library');
+		}
 		if (count($dom->find('html')) == 0)
 		{
 			$complete_html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'.
@@ -149,7 +153,7 @@ class AccessibilityValidator {
 			                 '</html>';
 			$this->col_offset = 175;  // The number of extra characters that are added onto the first line.
 			
-			$dom = str_get_htmk($complete_html);
+			$dom = str_get_html($complete_html);
 		}
 		return $dom;
 	}
