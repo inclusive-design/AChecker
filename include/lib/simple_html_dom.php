@@ -62,7 +62,7 @@ define('HDOM_INFO_ENDSPACE',7);
 define('DEFAULT_TARGET_CHARSET', 'UTF-8');
 define('DEFAULT_BR_TEXT', "\r\n");
 define('DEFAULT_SPAN_TEXT', " ");
-define('MAX_FILE_SIZE', 9999999999); // New Code
+define('MAX_FILE_SIZE', 9999999999); // Modify by Victor Alagwu
 // helper functions
 // -----------------------------------------------------------------------------
 // get html dom from file
@@ -80,7 +80,8 @@ function file_get_html($url, $use_include_path = false, $context=null, $offset =
         return false;
     }
     // The second parameter can force the selectors to all be lowercase.
-    $dom->load($contents, $lowercase, $stripRN);
+    // Modify by Victor Alagwu
+    $dom->load($contents, $lowercase);
     return $dom;
 }
 
@@ -93,7 +94,8 @@ function str_get_html($str, $lowercase=true, $forceTagsClosed=true, $target_char
         $dom->clear();
         return false;
     }
-    $dom->load($str, $lowercase, $stripRN);
+    // Modify by Victor Alagwu
+    $dom->load($str, $lowercase);
     return $dom;
 }
 
@@ -119,11 +121,11 @@ class simple_html_dom_node
     public $children = array();
     public $nodes = array();
     public $parent = null;
-    public $linenumber = 0;      // customized by UOT, ATRC, cindy Li
-    public $colnumber = 0;      // customized by UOT, ATRC, cindy Li
     // The "info" array - see HDOM_INFO_... for what each element contains.
     public $_ = array();
     public $tag_start = 0;
+    public $linenumber = 0;      // customized by UOT, ATRC, cindy Li
+    public $colnumber = 0;      // customized by UOT, ATRC, cindy Li
     private $dom = null;
 
     function __construct($dom)
@@ -500,7 +502,7 @@ class simple_html_dom_node
         $ret = $this->dom->restore_noise($ret);
         return $ret . $this->_[HDOM_INFO_ENDSPACE] . '>';
     }
- 
+
     // find elements by css selector
     //PaperG - added ability for find to lowercase the value of the selector.
     function find($selector, $idx=null, $lowercase=false)
@@ -764,6 +766,30 @@ class simple_html_dom_node
             unset($this->attr[$name]);
     }
 
+     /* customized by UOT, ATRC, cindy Li */
+    // print debug information
+    protected function debug($var, $title='') 
+    {
+		echo '<pre style="border: 1px black solid; padding: 0px; margin: 10px;" title="debugging box">';
+		if ($title) {
+			echo '<h4>'.$title.'</h4>';
+		}
+		
+		ob_start();
+		print_r($var);
+		$str = ob_get_contents();
+		ob_end_clean();
+		
+		$str = str_replace('<', '&lt;', $str);
+		
+		$str = str_replace('[', '<span style="color: red; font-weight: bold;">[', $str);
+		$str = str_replace(']', ']</span>', $str);
+		$str = str_replace('=>', '<span style="color: blue; font-weight: bold;">=></span>', $str);
+		$str = str_replace('Array', '<span style="color: purple; font-weight: bold;">Array</span>', $str);
+		echo $str;
+		echo '</pre>';
+	}
+    
     // PaperG - Function to convert the text from one character set to another if the two sets are not the same.
     function convert_text($text)
     {
@@ -989,6 +1015,9 @@ class simple_html_dom
     protected $noise = array();
     protected $token_blank = " \t\r\n";
     protected $token_equal = ' =/>';
+    /* customized by UOT, ATRC, cindy Li */
+    protected $doctype_token_equal = '>';
+    /* end of customized by UOT, ATRC, cindy Li */
     protected $token_slash = " />\r\n\t";
     protected $token_attr = ' >';
     // Note that this is referenced by a child node, and so it needs to be public for that node to see this information.
@@ -996,9 +1025,7 @@ class simple_html_dom
     public $_target_charset = '';
     protected $default_br_text = "";
     public $default_span_text = "";
-    /* customized by UOT, ATRC, cindy Li */
-    protected $doctype_token_equal ='>';
-    /* end of customized by UOT, ATRC, cindy Li */
+
     // use isset instead of in_array, performance boost about 30%...
     protected $self_closing_tags = array('img'=>1, 'br'=>1, 'input'=>1, 'meta'=>1, 'link'=>1, 'hr'=>1, 'base'=>1, 'embed'=>1, 'spacer'=>1);
     protected $block_tags = array('root'=>1, 'body'=>1, 'form'=>1, 'div'=>1, 'span'=>1, 'table'=>1);
@@ -1018,7 +1045,7 @@ class simple_html_dom
 		'option'=>array('option'=>1),
     );
     protected $new_line = "\n";
-    
+
     function __construct($str=null, $lowercase=true, $forceTagsClosed=true, $target_charset=DEFAULT_TARGET_CHARSET, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT, $defaultSpanText=DEFAULT_SPAN_TEXT)
     {
         if ($str)
@@ -1029,7 +1056,8 @@ class simple_html_dom
             }
             else
             {
-                $this->load($str, $lowercase, $stripRN, $defaultBRText, $defaultSpanText);
+                // Modify by Victor Alagwu
+                $this->load($str, $lowercase);
             }
         }
         // Forcing tags to be closed implies that we don't trust the html, but it can lead to parsing errors if we SHOULD trust the html.
@@ -1045,7 +1073,8 @@ class simple_html_dom
     }
 
     // load html from string
-    function load($str, $lowercase=true, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT, $defaultSpanText=DEFAULT_SPAN_TEXT)
+    // Modify by Victor Alagwu
+    function load($str, $lowercase=true)
     {
         global $debugObject;
 
@@ -1340,16 +1369,17 @@ class simple_html_dom
         $node->_[HDOM_INFO_BEGIN] = $this->cursor;
         ++$this->cursor;
         $tag = $this->copy_until($this->token_slash);
+        $node->tag_start = $begin_tag_pos;
+
         /* customized by UOT, ATRC, cindy Li */
-        $portion = substr($this->html, 0, $this->pos);
+        $portion = substr($this->doc, 0, $this->pos);  
         $node->linenumber = $this->count_line_number($portion);
         $node->colnumber = $this->count_col_number($portion);
         unset($portion);
         /* end of customized by UOT, ATRC, cindy Li */
-        $node->tag_start = $begin_tag_pos;
 
         // doctype, cdata & comments...
-
+        /* the next line was customized by UOT, ATRC, cindy Li, exclude '!doctype' so it will be returned as a normal node */
         if (strtolower($tag) == '!doctype') $tag = "doctype";
         
         if (isset($tag[0]) && $tag[0]==='!') {
@@ -1369,8 +1399,7 @@ class simple_html_dom
         }
 
         // text
-        /* the next line was customized by UOT, ATRC, cindy Li, exclude 'doctype' so it will be returned as a normal node */
-        if (!preg_match("/^[A-Za-z0-9_\\-:]+$/", $node->tag) && strtolower($tag) <> 'doctype') {
+        if ($pos=strpos($tag, '<')!==false) {
             $tag = '<' . substr($tag, 0, -1);
             $node->_[HDOM_INFO_TEXT] = $tag;
             $this->link_nodes($node, false);
@@ -1378,7 +1407,8 @@ class simple_html_dom
             return true;
         }
 
-        if (!preg_match("/^[\w-:]+$/", $tag)) {
+        /* the next line was customized by UOT, ATRC, cindy Li, exclude 'doctype' so it will be returned as a normal node */
+        if (!preg_match("/^[\w-:]+$/", $tag)  && strtolower($tag) <> 'doctype') {
             $node->_[HDOM_INFO_TEXT] = '<' . $tag . $this->copy_until('<>');
             if ($this->char==='<') {
                 $this->link_nodes($node, false);
@@ -1416,11 +1446,11 @@ class simple_html_dom
             /* customized by UOT, ATRC, cindy Li */
             if (strtolower($tag) == 'doctype')
             {
-            	$name = $this->copy_until($this->doctype_token_equal);
-              $this->parse_attr($node, $name, $space);
+                $name = $this->copy_until($this->doctype_token_equal);
+            $this->parse_attr($node, $name, $space);
             }
             /* end of customized by UOT, ATRC, cindy Li */
-
+            
             if ($this->char!==null && $space[0]==='')
             {
                 break;
@@ -1475,7 +1505,7 @@ class simple_html_dom
             }
             else
                 break;
-        } while($this->char!='>' && $this->char!='/');  /* this line was customized by UOT, ATRC, cindy Li, exclude 'doctype' from parsing attributes */
+        } while ($this->char!=='>' && $this->char!=='/');  /* this line was customized by UOT, ATRC, cindy Li, exclude 'doctype' from parsing attributes */
 
         $this->link_nodes($node, true);
         $node->_[HDOM_INFO_ENDSPACE] = $space[0];
@@ -1504,7 +1534,7 @@ class simple_html_dom
         return true;
     }
 
-     /* customized by UOT, ATRC, cindy Li */
+    /* customized by UOT, ATRC, cindy Li */
     // return the number of all new line characters in given $text
     protected function count_line_number($text)
     {
@@ -1755,30 +1785,6 @@ class simple_html_dom
         }
     }
 
-     /* customized by UOT, ATRC, cindy Li */
-    // print debug information
-    protected function debug($var, $title='') 
-    {
-		echo '<pre style="border: 1px black solid; padding: 0px; margin: 10px;" title="debugging box">';
-		if ($title) {
-			echo '<h4>'.$title.'</h4>';
-		}
-		
-		ob_start();
-		print_r($var);
-		$str = ob_get_contents();
-		ob_end_clean();
-		
-		$str = str_replace('<', '&lt;', $str);
-		
-		$str = str_replace('[', '<span style="color: red; font-weight: bold;">[', $str);
-		$str = str_replace(']', ']</span>', $str);
-		$str = str_replace('=>', '<span style="color: blue; font-weight: bold;">=></span>', $str);
-		$str = str_replace('Array', '<span style="color: purple; font-weight: bold;">Array</span>', $str);
-		echo $str;
-		echo '</pre>';
-    }
-    
     // camel naming conventions
     function childNodes($idx=-1) {return $this->root->childNodes($idx);}
     function firstChild() {return $this->root->first_child();}

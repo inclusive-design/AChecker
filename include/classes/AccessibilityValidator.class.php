@@ -144,6 +144,7 @@ class AccessibilityValidator {
 		if(count(($dom->find('html')) == 0) == false){
 			$msg->addError('Network Problem');
 		}
+		
 		if (count($dom->find('html')) == 0)
 		{
 			$complete_html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'.
@@ -314,7 +315,6 @@ class AccessibilityValidator {
 		}
 		
 		$line_number = $e->linenumber-$this->line_offset;
-		
 		$result = $this->get_check_result($line_number, $col_number, $check_id);
 
 		// has not been checked
