@@ -1,7 +1,5 @@
 {
-    "name": "ACHECKER",
-    "description": "A Web Accessibility Checker",
     "require": {
-        "mpdf/mpdf": "^7.1"
+        "league/plates": "v4.0.0-alpha"
     }
 }

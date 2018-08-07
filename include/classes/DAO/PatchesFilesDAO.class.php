@@ -36,7 +36,7 @@ class PatchesFilesDAO extends DAO {
 	{
 
 		$sql = "INSERT INTO " . TABLE_PREFIX. "patches_files " .
-					 "(patches_id, 
+					 "(patches_id,
 					   action,
 					   name,
 					   location)
@@ -45,7 +45,7 @@ class PatchesFilesDAO extends DAO {
 					   '".$action."',
 					   '".$this->addSlashes($name)."',
 					   '".$this->addSlashes($location)."')";
-		
+
 		if (!$this->execute($sql))
 		{
 			$msg->addError('DB_NOT_UPDATED');
@@ -71,8 +71,8 @@ class PatchesFilesDAO extends DAO {
 			       "  AND patches.status = 'Installed' " .
 			       "  AND patches.patches_id = patches_files.patches_id " .
 			       "  AND patches_files.name = '" . $file . "'";
-		
+
 		return $this->execute($sql);
-	}		
+	}
 }
 ?>

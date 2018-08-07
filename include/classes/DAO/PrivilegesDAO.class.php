@@ -68,7 +68,7 @@ class PrivilegesDAO extends DAO {
 	function getUserPrivileges($userID)
 	{
 		$userID = intval($userID);
-		
+
 		$sql = 'SELECT *
 				FROM '.TABLE_PREFIX.'users u, '.TABLE_PREFIX.'user_groups ug, '.TABLE_PREFIX.'user_group_privilege ugp, '.TABLE_PREFIX.'privileges p
 				WHERE u.user_id = '.$userID.'
@@ -90,19 +90,19 @@ class PrivilegesDAO extends DAO {
 	function getUserGroupPrivileges($userGroupID)
 	{
 		$userGroupID = intval($userGroupID);
-		
+
 		$sql = 'SELECT *, ug.description user_group_desc, p.description privilege_desc
 				FROM '.TABLE_PREFIX.'user_groups ug, '.TABLE_PREFIX.'user_group_privilege ugp, '.TABLE_PREFIX.'privileges p
 				WHERE ug.user_group_id = '.$userGroupID.'
 				AND ug.user_group_id = ugp.user_group_id
 				AND ugp.privilege_id = p.privilege_id
 				ORDER BY p.menu_sequence';
-	
+
 		return $this->execute($sql);
 	}
 
 	/**
-	* Return all privileges except the privilege ids in given string  
+	* Return all privileges except the privilege ids in given string
 	* @access  public
 	* @param   $privilegeIDs : a string of check ids separated by comma. for example: 1, 2, 3
 	* @return  table rows
@@ -111,19 +111,19 @@ class PrivilegesDAO extends DAO {
 	function getAllPrivsExceptListed($privilegeIDs)
 	{
 		if (!is_array($privilegeIDs)) return false;
-		
+
 		$sanitized_privs = Utility::sanitizeIntArray($privilegeIDs);
-		
+
 		if (count($sanitized_privs) == 0)
 			return $this->getAll();
 		else
 		{
 			$sanitized_privs_str = implode(",", $sanitized_privs);
-			$sql = "SELECT * FROM ". TABLE_PREFIX ."privileges 
+			$sql = "SELECT * FROM ". TABLE_PREFIX ."privileges
 			         WHERE privilege_id NOT IN (".$sanitized_privs_str.")";
 			return $this->execute($sql);
 		}
 	}
-	
+
 }
 ?>

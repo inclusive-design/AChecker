@@ -423,7 +423,7 @@ function GetStringWidth($s)
 {
 	//Get width of a string in the current font
 	$s=(string)$s;
-	$cw=$this->CurrentFont['cw'];
+	$cw=&$this->CurrentFont['cw'];
 	$w=0;
 	if ($this->unifontSubset) {
 		$unicode = $this->UTF8StringToArray($s);
@@ -643,7 +643,7 @@ function SetFont($family, $style='', $size=0)
 	$this->FontStyle=$style;
 	$this->FontSizePt=$size;
 	$this->FontSize=$size/$this->k;
-	$this->CurrentFont=$this->fonts[$fontkey];
+	$this->CurrentFont=&$this->fonts[$fontkey];
 	if ($this->fonts[$fontkey]['type']=='TrueTypesubset') { $this->unifontSubset = true; }
 	else { $this->unifontSubset = false; }
 	if($this->page>0)
@@ -791,7 +791,7 @@ function Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=false, $link
 function MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false)
 {
 	//Output text with automatic or explicit line breaks
-	$cw=$this->CurrentFont['cw'];
+	$cw=&$this->CurrentFont['cw'];
 	if($w==0)
 		$w=$this->w-$this->rMargin-$this->x;
 	$wmax=($w-2*$this->cMargin);
@@ -938,7 +938,7 @@ function MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false)
 function Write($h, $txt, $link='')
 {
 	//Output text in flowing mode
-	$cw=$this->CurrentFont['cw'];
+	$cw=&$this->CurrentFont['cw'];
 	$w=$this->w-$this->rMargin-$this->x;
 
 	$wmax=($w-2*$this->cMargin);
@@ -1718,7 +1718,7 @@ function _putfonts()
 			$this->_out('endobj');
 			//Widths
 			$this->_newobj();
-			$cw=$font['cw'];
+			$cw=&$font['cw'];
 			$s='[';
 			for($i=32;$i<=255;$i++)
 				$s.=$cw[chr($i)].' ';

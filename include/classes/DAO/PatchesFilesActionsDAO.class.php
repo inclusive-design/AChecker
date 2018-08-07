@@ -36,7 +36,7 @@ class PatchesFilesActionsDAO extends DAO {
 	{
 
 		$sql = "INSERT INTO " . TABLE_PREFIX. "patches_files_actions " .
-					 "(patches_files_id, 
+					 "(patches_files_id,
 					   action,
 					   code_from,
 					   code_to)
@@ -45,7 +45,7 @@ class PatchesFilesActionsDAO extends DAO {
 					   '".$action."',
 					   '".$this->addSlashes($code_from)."',
 					   '".$this->addSlashes($code_to)."')";
-		
+
 		if (!$this->execute($sql))
 		{
 			$msg->addError('DB_NOT_UPDATED');

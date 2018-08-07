@@ -12,7 +12,7 @@
 // $Id: checker_results.tmpl.php 501 2011-02-25 17:43:05Z greg $
 
 // display seals
-if (is_array($this->seals))
+if (is_array($seals))
 {
 ?>
 <h3><?php echo _AC('valid_icons');?></h3>
@@ -20,10 +20,10 @@ if (is_array($this->seals))
 <?php 
 	$user_link_url = '';
 	
-	if (isset($this->user_link_id))
-		$user_link_url = '&amp;id='.$this->user_link_id;
+	if (isset($user_link_id))
+		$user_link_url = '&amp;id='.$user_link_id;
 	
-	foreach ($this->seals as $seal)
+	foreach ($seals as $seal)
 	{
 ?>
 	<img class="inline-badge" src="<?php echo SEAL_ICON_FOLDER . $seal['seal_icon_name'];?>"

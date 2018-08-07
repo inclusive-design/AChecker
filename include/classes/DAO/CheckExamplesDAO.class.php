@@ -34,19 +34,19 @@ class CheckExamplesDAO extends DAO {
 	*/
 	public function Create($checkID, $type, $description, $content)
 	{
-	
+
 		$checkID = intval($checkID);
 		$type = $this->addSlashes($type);
 		$description = $this->addSlashes(trim($description));
 		$content = $this->addSlashes(trim($content));
-		
+
 		// don't insert if no desc and content
 		if ($description == '' && $content == '') return true;
-		
+
 		if (!$this->isFieldsValid($checkID, $type)) return false;
-		
+
 		$sql = "INSERT INTO ".TABLE_PREFIX."check_examples
-				(`check_id`, `type`, `description`, `content`) 
+				(`check_id`, `type`, `description`, `content`)
 				VALUES
 				(".$checkID.",".$type.",'".$description."', ".
 		         "'".$content."')";
@@ -61,7 +61,7 @@ class CheckExamplesDAO extends DAO {
 			return $this->getInsertID();
 		}
 	}
-	
+
 	/**
 	* return rows with given check id and type
 	* @access  public
@@ -72,14 +72,14 @@ class CheckExamplesDAO extends DAO {
 	*/
 	public function getByCheckIDAndType($checkID, $type)
 	{
-		
+
 		$sql = "SELECT * FROM ".TABLE_PREFIX."check_examples
 				WHERE check_id = ".intval($checkID)."
 				  AND type = ".$this->addSlashes($type);
 
 		return $this->execute($sql);
 	}
-	
+
 	/**
 	* Delete all entries with given check id
 	* @access  public
@@ -95,11 +95,11 @@ class CheckExamplesDAO extends DAO {
 
 		return $this->execute($sql);
 	}
-	
+
 	/**
 	 * Validate fields preparing for insert and update
 	 * @access  private
-	 * @param   $checkID  
+	 * @param   $checkID
 	 *          $type
 	 * @return  true    if all fields are valid
 	 *          false   if any field is not valid
@@ -108,7 +108,7 @@ class CheckExamplesDAO extends DAO {
 	private function isFieldsValid($checkID, $type)
 	{
 		global $msg;
-		
+
 		$missing_fields = array();
 
 		if ($checkID == '')
@@ -119,13 +119,13 @@ class CheckExamplesDAO extends DAO {
 		{
 			$missing_fields[] = _AC('example_type');
 		}
-		
+
 		if ($missing_fields)
 		{
 			$missing_fields = implode(', ', $missing_fields);
 			$msg->addError(array('EMPTY_FIELDS', $missing_fields));
 		}
-		
+
 		if (!$msg->containsErrors())
 			return true;
 		else

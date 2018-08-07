@@ -14,7 +14,7 @@
 global $onload;
 $onload = "initial();";
 
-if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
+if (isset($javascript_run_now)) echo $javascript_run_now;
 
 include(AC_INCLUDE_PATH.'header.inc.php');
 ?>
@@ -31,7 +31,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="name"><?php echo _AC('name'); ?></label></th>
-			<td><textarea cols="80" rows="3" name="name" id="name"><?php if (isset($_POST['name'])) echo htmlspecialchars($_POST['name']); else echo htmlspecialchars(_AC($this->row['name'])); ?></textarea></td>
+			<td><textarea cols="80" rows="3" name="name" id="name"><?php if (isset($_POST['name'])) echo htmlspecialchars($_POST['name']); else echo htmlspecialchars(_AC($row['name'])); ?></textarea></td>
 		</tr>
 	</table>
 

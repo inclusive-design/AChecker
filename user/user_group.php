@@ -46,9 +46,8 @@ if ( isset($_GET['edit']) && isset($_GET['id']) && count($_GET['id']) > 1) {
 $userGroupsDAO = new UserGroupsDAO();
 $privilegesDAO = new PrivilegesDAO();
 
-$savant->assign('user_group_rows', $userGroupsDAO->getAll());
-$savant->assign('privilegesDAO', $privilegesDAO);
+$plate['user_group_rows'] = $userGroupsDAO->getAll();
+$plate['privilegesDAO'] = $privilegesDAO;
 
-$savant->display('user/user_group.tmpl.php');
-
+echo $plates->render('user/user_group.tmpl.php', $plate);
 ?>
