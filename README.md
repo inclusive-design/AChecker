@@ -17,7 +17,11 @@ What sets AChecker apart from other automated accessibility checkers?
 - PHP 7+
 - MySQL 4.1.13+
 - Composer
+- Ensure that the ```mysqli``` extension is enabled.
 
+## ChangeLog
+
+See [Changelog](CHANGELOG.md)
 ## Installation
 
 - Clone this repository
