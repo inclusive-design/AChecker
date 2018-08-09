@@ -17,4 +17,6 @@ UPDATE `checks` SET create_date = NULL WHERE create_date = '0000-00-00 00:00:00'
 
 UPDATE `language_text` SET revised_date = NULL WHERE revised_date = '0000-00-00 00:00:00';
 
+UPDATE `AC_language_text` SET text = 'Web site engine\'s code is copyright &copy; 2018' WHERE term = 'acheck_copyright';
+
 
