@@ -5,31 +5,28 @@ All notable changes to this project will be documented in this file.
 
 ## 1.5 - (2018)
 ### Added
-- Changelog
+- [ACHECKER-15](https://issues.fluidproject.org/browse/ACHECKER-15) Changelog
 - sql upgrade script `achecker_upgrade_1.4_to_1.5.sql`
 - Plates template engine
 
 ### Changed
 
-- [#84](https://github.com/inclusive-design/AChecker/pull/84) 
+- [ACHECKER-4](https://issues.fluidproject.org/browse/ACHECKER-4) 
     The `mysql` syntax were changed to `mysqli`.
-- [#86](https://github.com/inclusive-design/AChecker/pull/86)
+- [ACHECKER-3](https://issues.fluidproject.org/browse/ACHECKER-3)
 Fixing Issue with last_updated syntax in the `achecker_schema.sql` and `achecker_upgrade_1.4_to_1.5.sql`
-- [#81](https://github.com/inclusive-design/AChecker/pull/81), [#83](https://github.com/inclusive-design/AChecker/pull/83), and [#86](https://github.com/inclusive-design/AChecker/pull/86)
+- [ACHECKER-3](https://issues.fluidproject.org/browse/ACHECKER-3)
 Changing all "0000-00-00 00:00:00" values to NULL, modifying `date` to `datetime` and also changing from `version 1.4` to `version 1.5`
-- [#85](https://github.com/inclusive-design/AChecker/pull/85/files#diff-a80b6a376616d67306ba8f0cfad27bb9R31)
+- [ACHECKER-5](https://issues.fluidproject.org/browse/ACHECKER-5)
 Change static calls to method that are not static 
-- [#85](https://github.com/inclusive-design/AChecker/pull/85/files#diff-a80b6a376616d67306ba8f0cfad27bb9R31)
+- [ACHECKER-5](https://issues.fluidproject.org/browse/ACHECKER-5)
 Old style contructors, are replaced with `__construct()`
-- [#85](https://github.com/inclusive-design/AChecker/pull/85), [#91](https://github.com/inclusive-design/AChecker/pull/91) and [#93](https://github.com/inclusive-design/AChecker/pull/93)
+- [ACHECKER-5](https://issues.fluidproject.org/browse/ACHECKER-5)
 Deprecated call-by-references codes
-- [#92](https://github.com/inclusive-design/AChecker/pull/92) Template Engine: Savant2 to Plate
-- [#88](https://github.com/inclusive-design/AChecker/pull/88) PCLZIP was changed to ZipArchive Class
-- [#89](https://github.com/inclusive-design/AChecker/pull/89) Upgrade securimage library from version 1.0.2 to version 3.6.7
-
-- [#95](https://github.com/inclusive-design/AChecker/pull/95) Changing simple html dom parser from version 0.98 to version 1.5
-
-
+- [ACHECKER-6](https://issues.fluidproject.org/browse/ACHECKER-6) Template Engine: Savant2 to Plate
+- [ACHECKER-8](https://issues.fluidproject.org/browse/ACHECKER-8) PCLZIP was changed to ZipArchive Class
+- [ACHECKER-9](https://issues.fluidproject.org/browse/ACHECKER-9) Upgrade securimage library from version 1.0.2 to version 3.6.7
+- [ACHECKER-13](https://issues.fluidproject.org/browse/ACHECKER-13) Changing simple html dom parser from version 0.98 to version 1.5
 
 ### Removed
 - Savant2 Template Engine
