@@ -21,9 +21,9 @@
 */
 if (!defined("AC_INCLUDE_PATH")) die("Error: AC_INCLUDE_PATH is not defined.");
 
-define(IS_ERROR, 1);
-define(IS_WARNING, 2);
-define(IS_INFO, 3);
+define('IS_ERROR', 1);
+define('IS_WARNING', 2);
+define('IS_INFO', 3);
 
 class AccessibilityRpt {
 

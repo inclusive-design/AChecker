@@ -141,9 +141,6 @@ class AccessibilityValidator {
 		global $msg;
 		
 		$dom = str_get_html($content);
-		if(count(($dom->find('html')) == 0) == false){
-			$msg->addError('Network Problem');
-		}
 		
 		if (count($dom->find('html')) == 0)
 		{

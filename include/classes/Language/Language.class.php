@@ -159,7 +159,7 @@ class Language extends DAO {
 		if (!$code && isset($this)) {
 			$code = $this->code;
 		}
-		$peices = explode(AT_LANGUAGE_LOCALE_SEP, $code, 2);
+		$peices = explode('AT_LANGUAGE_LOCALE_SEP', $code, 2);
 		return $peices[0];
 	}
 
@@ -169,7 +169,7 @@ class Language extends DAO {
 		if (!$code && isset($this)) {
 			$code = $this->code;
 		}
-		$peices = explode(AT_LANGUAGE_LOCALE_SEP, $code, 2);
+		$peices = explode('AT_LANGUAGE_LOCALE_SEP', $code, 2);
 		return $peices[1];
 	}
 	
