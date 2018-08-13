@@ -39,3 +39,7 @@ touch include/config.inc.php
 Then follow the instructions above.
 
 For more about using AChecker, see the instructional videos on [YouTube](http://www.youtube.com/watch?v=jtNyF7KuOk8).
+
+## Contributiom
+ If you are interested in contributing to this project, then follow the [instructions here](CONTRIBUTING.md).
+
