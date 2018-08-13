@@ -808,7 +808,6 @@ function getTranslatedCodeStr($codes) {
 	static $_msgs_new;
 	$languagesDAO = new LanguageTextDAO();
 	$language = new Language();
-	var_dump($language);
 	if (!isset($_msgs_new)) {
 		if ( !($lang_et = cache(120, 'msgs_new', $_SESSION['lang'])) ) {
 			global $_base_path;
