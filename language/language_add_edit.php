@@ -28,7 +28,7 @@ if (isset($_GET["id"]))
   *  Victor Alagwu added this because of the statement 
   *  in the documentation that the charset should always be 'utf-8'
   */
-$charset = 'utf-8'; 
+//$charset = 'utf-8'; 
 
 $languagesDAO = new LanguagesDAO();
 $langCodesDAO = new LangCodesDAO();
