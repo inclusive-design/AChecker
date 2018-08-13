@@ -29,8 +29,8 @@ class LanguageUtility {
 	* @return  language code
 	* @author  Cindy Qi Li
 	*/
-	public static function getParentCode($code) {
-		$code = !isset($code) ? (self::$code) : $code;
+	public static function getParentCode($code = '') {
+		$code = !$code && isset(self::$code) ? (self::$code) : $code;
 		$peices = explode(AC_LANGUAGE_LOCALE_SEP, $code, 2);
 		return $peices[0];
 	}
@@ -42,8 +42,8 @@ class LanguageUtility {
 	* @return  charset
 	* @author  Cindy Qi Li
 	*/
-	public static function getLocale($code) {
-		$code = !isset($code) ? (self::$code) : $code;
+	public static function getLocale($code = '') {
+		$code = !$code && isset(self::$code) ? (self::$code) : $code;
 		$peices = explode(AC_LANGUAGE_LOCALE_SEP, $code, 2);
 		return $peices[1];
 	}
