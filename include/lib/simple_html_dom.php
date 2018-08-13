@@ -1081,7 +1081,7 @@ class simple_html_dom
         global $debugObject;
 
         // prepare
-        $this->prepare($str, $lowercase, $stripRN, $defaultBRText, $defaultSpanText);
+        $this->prepare($str, $lowercase);
         // strip out comments
         $this->remove_noise("'<!--(.*?)-->'is");
         // strip out cdata

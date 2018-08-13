@@ -1027,7 +1027,7 @@ class BasicChecks {
 	*/
 	public static function check_blink($e, $content_dom) {
 
-		$inlinea = BasicChecks::get_p_css ( $e, "text-decoration", $b );
+		$inlinea = BasicChecks::get_p_css ( $e, "text-decoration");
 		//echo("<p>blink--->".$inlinea."</p>");
 		if (strpos ( $inlinea, "blink" ) !== false)
 			return false;
