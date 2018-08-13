@@ -26,7 +26,6 @@ Deprecated call-by-references codes
 - [ACHECKER-6](https://issues.fluidproject.org/browse/ACHECKER-6) Template Engine: Savant2 to Plate
 - [ACHECKER-8](https://issues.fluidproject.org/browse/ACHECKER-8) PCLZIP was changed to ZipArchive Class
 - [ACHECKER-9](https://issues.fluidproject.org/browse/ACHECKER-9) Upgrade securimage library from version 1.0.2 to version 3.6.7
-- [ACHECKER-13](https://issues.fluidproject.org/browse/ACHECKER-13) Changing simple html dom parser from version 0.98 to version 1.5
 
 ### Removed
 - Savant2 Template Engine
