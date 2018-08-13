@@ -67,8 +67,9 @@ class LanguagesDAO extends DAO {
 	{
 
 		// check if the required fields are filled
-		if (!$this->ValidateFields($langCode, $charset, $nativeName, $englishName)) return false;
 
+		if (!$this->ValidateFields($langCode, $charset, $nativeName, $englishName)) return false;
+		
 		$langCode = $this->addSlashes($langCode);
 		$charset = $this->addSlashes($charset);
 		$regExp = $this->addSlashes($regExp);
