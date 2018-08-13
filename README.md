@@ -26,7 +26,7 @@ See [Changelog](CHANGELOG.md)
 
 ## Contribution
  If you are interested in contributing to this project, then follow the [instructions here](CONTRIBUTING.md).
- 
+
 ## Installation
 
 - Clone this repository
