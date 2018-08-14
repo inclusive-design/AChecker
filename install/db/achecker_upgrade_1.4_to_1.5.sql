@@ -9,9 +9,11 @@
 
 ALTER TABLE `checks` MODIFY `create_date` datetime DEFAULT NULL;
 
-ALTER TABLE `language_text` MODIFY `revised_date` datetime default NULL;
+ALTER TABLE `language_text` MODIFY `revised_date` datetime DEFAULT NULL;
 
 ALTER TABLE `themes` MODIFY `last_updated` datetime;
+
+UPDATE `language_text` SET text = replace(text, 'Web site engine\'s code is copyright &copy; 2011', 'Web site engine\'s code is copyright &copy; 2018') WHERE term = 'acheck_copyright';
 
 UPDATE `checks` SET create_date = NULL WHERE create_date = '0000-00-00 00:00:00';
 

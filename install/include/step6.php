@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -57,7 +57,7 @@ if (isset($_POST['submit'])) {
 
 		if ($_POST['step1']['old_path'] != '') {
 			// get some usage data from this upgrade:
-			$db     = mysqli_connect($_POST['step1']['db_host'], $_POST['step1']['db_login'], urldecode($_POST['step1']['db_name']), $_POST['step1']['db_port'], $_POST['step1']['db_port']);
+			$db     = mysqli_connect($_POST['step1']['db_host'], $_POST['step1']['db_login'], urldecode($_POST['step1']['db_password']), $_POST['step1']['db_name'], $_POST['step1']['db_port']);
 			mysqli_select_db($db, $_POST['step1']['db_name']);
 
 			$db_size = 0; // db size in bytes
