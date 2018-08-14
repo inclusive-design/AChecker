@@ -2929,7 +2929,7 @@ INSERT INTO `language_text` VALUES ('eng', '_template','achecker_home','AChecker
 INSERT INTO `language_text` VALUES ('eng', '_template','achecker_update_id','AChecker Update ID','2009-06-22 14:49:01','Updater');
 INSERT INTO `language_text` VALUES ('eng', '_template','achecker_version_to_apply','AChecker Version to Apply','2009-06-22 14:49:02','Updater');
 INSERT INTO `language_text` VALUES ('eng', '_template','achecker_whatis','<strong>Welcome to AChecker</strong>. This tool checks single HTML pages for conformance with accessibility standards to ensure the content can be accessed by everyone. See the Handbook link to the upper right for more about the Web Accessibility Checker.','2011-02-01 10:19:52','');
-INSERT INTO `language_text` VALUES ('eng', '_template','acheck_copyright','Web site engine\'s code is copyright &copy; 2011','2011-01-14 11:48:19','');
+INSERT INTO `language_text` VALUES ('eng', '_template','acheck_copyright','Web site engine\'s code is copyright &copy; 2018','2011-01-14 11:48:19','');
 INSERT INTO `language_text` VALUES ('eng', '_template','add','Add','2009-03-24 13:47:37','');
 INSERT INTO `language_text` VALUES ('eng', '_template','add_a_file','Add A File','2009-06-22 14:49:02','Updater');
 INSERT INTO `language_text` VALUES ('eng', '_template','add_checks','Add Checks','2009-01-21 16:23:10','');
