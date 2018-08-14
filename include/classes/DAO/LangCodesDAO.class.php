@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -34,10 +34,10 @@ class LangCodesDAO extends DAO {
 	public function GetAll()
 	{
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes ORDER BY description";
-		
+
 		return $this->execute($sql);
 	}
-	
+
 	/**
 	* Return lang code info of the given 2 letters code
 	* @access  public
@@ -47,12 +47,12 @@ class LangCodesDAO extends DAO {
 	*/
 	public function GetLangCodeBy2LetterCode($code)
 	{
-		
+
 		$code = $this->addSlashes($code);
-		
-		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
+
+		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes
 					WHERE code_2letters = '".$code ."'";
-		
+
 		return $this->execute($sql);
 	}
 
@@ -66,10 +66,10 @@ class LangCodesDAO extends DAO {
 	public function GetLangCodeBy3LetterCode($code)
 	{
 		$code = $this->addSlashes($code);
-		
-		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
+
+		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes
 					WHERE code_3letters = '".$code ."'";
-		
+
 		if ($rows = $this->execute($sql))
 		{
 			return $rows[0];
@@ -87,15 +87,15 @@ class LangCodesDAO extends DAO {
 	*/
 	public function GetLangCodeByDirection($direction)
 	{
-		
+
 		$direction = $this->addSlashes($direction);
-		
+
 		$rtn_array = array();
-		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes 
+		$sql = "SELECT * FROM ". TABLE_PREFIX ."lang_codes
 					WHERE direction = '".$direction ."'";
-		
+
 		$rows = $this->execute($sql);
-		
+
 		if (is_array($rows))
 		{
 			foreach ($rows as $row)

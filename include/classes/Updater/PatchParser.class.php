@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -29,7 +29,7 @@ class PatchParser {
 	var $action_detail_num;
 	var $dependent_patches_num;
 
-	function PatchParser() {
+	function __construct() {
 		$this->parser = xml_parser_create(''); 
 
 		xml_set_object($this->parser, $this);

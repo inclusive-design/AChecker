@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -42,13 +42,13 @@ if($languageManager->getNumEnabledLanguages() > 1)
 	<small><?php echo _AC("acheck_copyright"); ?></small><br />
 	
 </div>
-
+ 
 
 </div> <!--  end center-content div -->
 <div class="bottom"><span></span></div><!--  bottom for liquid-round theme -->
 </div> <!-- end liquid-round div -->
 <div style="margin-left:auto; margin-right:auto; width:56px;">
-		<a href="http://inclusivedesign.ca/"><img width="56" src="<?php echo $this->base_path.'themes/'.$this->theme; ?>/images/IDI.png" height="73" alt="Inclusive Design Institute" title="Inclusive Design Institute" style="border:none;"/></a> 
+		<a href="http://inclusivedesign.ca/"><img width="56" src="<?php echo $base_path.'themes/'.$theme; ?>/images/IDI.png" height="73" alt="Inclusive Design Institute" title="Inclusive Design Institute" style="border:none;"/></a> 
 	</div>
 <script language="javascript" type="text/javascript">
 //<!--

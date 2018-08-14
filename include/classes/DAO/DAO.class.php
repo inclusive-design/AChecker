@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -21,10 +21,10 @@
 
 class DAO {
 
-	// protected
-	protected $db;     // global database connection
+	// protected	+	// private
+	protected $db;      // global database connection
 
-	function DAO($db_host = NULL, $db_user = NULL, $db_pass = NULL, $db_name = NULL, $db_port = NULL)
+	function __construct($db_host = NULL, $db_user = NULL, $db_pass = NULL, $db_name = NULL, $db_port = NULL)
 	{
 		if(!isset($db_host) || !isset($db_user) || !isset($db_pass) || !isset($db_name) || !isset($db_port))
 		{	

@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -88,12 +88,11 @@ if (isset($check_id)) // edit existing check function
 		exit;
 	}
 	
-	$savant->assign('check_row', $check_row);
+	$plate['check_row'] = $check_row;
 }
 
 /*****************************/
 /* template starts down here */
 
-$savant->display('check/check_function_edit.tmpl.php');
-
+echo $plates->render('check/check_function_edit.tmpl.php',$plate);
 ?>

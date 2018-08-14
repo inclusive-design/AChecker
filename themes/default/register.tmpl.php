@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -64,7 +64,7 @@ function encrypt_password()
 <input type="hidden" name="form_password_hidden" value="" />
 
 <div class="center-input-form">
-<fieldset class="group_form"><legend class="group_form"><?php echo $this->title; ?></legend>
+<fieldset class="group_form"><legend class="group_form"><?php echo $title; ?></legend>
 
 	<table class="form-data" align="center">
 		<tr>
@@ -73,7 +73,7 @@ function encrypt_password()
 
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="login"><?php echo _AC('login_name'); ?></label>:</td>
-			<td align="left"><input id="login" name="login" type="text" maxlength="50" size="50" value="<?php if (isset($_POST['login'])) echo $stripslashes(htmlspecialchars($_POST['login'])); else echo $stripslashes(htmlspecialchars($this->user_row['login'])); ?>" /></td>
+			<td align="left"><input id="login" name="login" type="text" maxlength="50" size="50" value="<?php if (isset($_POST['login'])) echo $stripslashes(htmlspecialchars($_POST['login'])); else echo $stripslashes(htmlspecialchars($user_row['login'])); ?>" /></td>
 		</tr>
 
 		<tr>
@@ -83,21 +83,21 @@ function encrypt_password()
 			</td>
 		</tr>
 		
-		<?php if ($this->show_user_group) { ?>
+		<?php if ($show_user_group) { ?>
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="user_group_id"><?php echo _AC('user_group'); ?>:</label>:</td>
 			<td align="left">
 			<select name="user_group_id" id="user_group_id">
 				<option value="-1">- <?php echo _AC('select'); ?> -</option>
-				<?php foreach ($this->all_user_groups as $user_group) {?>
-				<option value="<?php echo $user_group['user_group_id']; ?>" <?php if ((isset($_POST['user_group_id']) && $_POST['user_group_id']==$user_group['user_group_id']) || (!isset($_POST['user_group_id']) && !isset($this->user_row['user_group_id']) && $user_group['user_group_id'] == $default_user_group_id) || (!isset($_POST['user_group_id']) && isset($this->user_row['user_group_id']) && $this->user_row['user_group_id'] == $user_group['user_group_id'] )) echo 'selected="selected"'; ?>><?php echo htmlspecialchars($user_group['title']); ?></option>
+				<?php foreach ($all_user_groups as $user_group) {?>
+				<option value="<?php echo $user_group['user_group_id']; ?>" <?php if ((isset($_POST['user_group_id']) && $_POST['user_group_id']==$user_group['user_group_id']) || (!isset($_POST['user_group_id']) && !isset($user_row['user_group_id']) && $user_group['user_group_id'] == $default_user_group_id) || (!isset($_POST['user_group_id']) && isset($user_row['user_group_id']) && $user_row['user_group_id'] == $user_group['user_group_id'] )) echo 'selected="selected"'; ?>><?php echo htmlspecialchars($user_group['title']); ?></option>
 				<?php } ?>
 			</select>
 			</td>
 		</tr>
 		<?php } ?>
 
-		<?php if ($this->show_password) { ?>
+		<?php if ($show_password) { ?>
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="form_password1"><?php echo _AC('password'); ?></label>:</td>
 			<td align="left"><input id="form_password1" name="form_password1" minlength="8" type="password" size="50"  /></td>
@@ -116,7 +116,7 @@ function encrypt_password()
 
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="email"><?php echo _AC('email_address'); ?></label>:</td>
-			<td align="left"><input id="email" name="email" type="text" size="50" maxlength="50" value="<?php if (isset($_POST['email'])) echo $stripslashes(htmlspecialchars($_POST['email'])); else echo $stripslashes(htmlspecialchars($this->user_row['email'])); ?>" /></td>
+			<td align="left"><input id="email" name="email" type="text" size="50" maxlength="50" value="<?php if (isset($_POST['email'])) echo $stripslashes(htmlspecialchars($_POST['email'])); else echo $stripslashes(htmlspecialchars($user_row['email'])); ?>" /></td>
 		</tr>
 <?php if(AC_EMAIL_CONFIRMATION == 1){ ?>
 		<tr>
@@ -128,35 +128,35 @@ function encrypt_password()
 <?php } ?>
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="first_name"><?php echo _AC('first_name'); ?></label>:</td>
-			<td align="left"><input id="first_name" name="first_name" type="text" value="<?php if (isset($_POST['first_name'])) echo $stripslashes(htmlspecialchars($_POST['first_name'])); else echo $stripslashes(htmlspecialchars($this->user_row['first_name'])); ?>" /></td>
+			<td align="left"><input id="first_name" name="first_name" type="text" value="<?php if (isset($_POST['first_name'])) echo $stripslashes(htmlspecialchars($_POST['first_name'])); else echo $stripslashes(htmlspecialchars($user_row['first_name'])); ?>" /></td>
 		</tr>
 
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="last_name"><?php echo _AC('last_name'); ?></label>:</td>
-			<td align="left"><input id="last_name" name="last_name" type="text" value="<?php if (isset($_POST['last_name'])) echo $stripslashes(htmlspecialchars($_POST['last_name'])); else echo $stripslashes(htmlspecialchars($this->user_row['last_name'])); ?>" /></td>
+			<td align="left"><input id="last_name" name="last_name" type="text" value="<?php if (isset($_POST['last_name'])) echo $stripslashes(htmlspecialchars($_POST['last_name'])); else echo $stripslashes(htmlspecialchars($user_row['last_name'])); ?>" /></td>
 		</tr>
 
-		<?php if ($this->show_status) {?>
+		<?php if ($show_status) {?>
 		<tr>
 			<td align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><?php echo _AC('status'); ?>:</td>
 			<td align="left">
-				<input type="radio" name="status" id="statusD" value="<?php echo AC_STATUS_DISABLED; ?>" <?php if ((isset($_POST['status']) && $_POST['status']==0) || (!isset($_POST['status']) && $this->user_row['status']==AC_STATUS_DISABLED)) echo 'checked="checked"'; ?> /><label for="statusD"><?php echo _AC('disabled'); ?></label> 
-				<input type="radio" name="status" id="statusE" value="<?php echo AC_STATUS_ENABLED; ?>" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $this->user_row['status']==AC_STATUS_ENABLED)) echo 'checked="checked"'; ?> /><label for="statusE"><?php echo _AC('enabled'); ?></label>
+				<input type="radio" name="status" id="statusD" value="<?php echo AC_STATUS_DISABLED; ?>" <?php if ((isset($_POST['status']) && $_POST['status']==0) || (!isset($_POST['status']) && $user_row['status']==AC_STATUS_DISABLED)) echo 'checked="checked"'; ?> /><label for="statusD"><?php echo _AC('disabled'); ?></label> 
+				<input type="radio" name="status" id="statusE" value="<?php echo AC_STATUS_ENABLED; ?>" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $user_row['status']==AC_STATUS_ENABLED)) echo 'checked="checked"'; ?> /><label for="statusE"><?php echo _AC('enabled'); ?></label>
 				<?php if (defined('AC_EMAIL_CONFIRMATION') && AC_EMAIL_CONFIRMATION) {?>
-				<input type="radio" name="status" id="statusU" value="<?php echo AC_STATUS_UNCONFIRMED; ?>" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $this->user_row['status']==AC_STATUS_UNCONFIRMED)) echo 'checked="checked"'; ?> /><label for="statusU"><?php echo _AC('unconfirmed'); ?></label>
+				<input type="radio" name="status" id="statusU" value="<?php echo AC_STATUS_UNCONFIRMED; ?>" <?php if ((isset($_POST['status']) && $_POST['status']==1) || (!isset($_POST['status']) && $user_row['status']==AC_STATUS_UNCONFIRMED)) echo 'checked="checked"'; ?> /><label for="statusU"><?php echo _AC('unconfirmed'); ?></label>
 				<?php }?>
 			</td>
 		</tr>
 		<?php }?>
 		
-		<?php if (isset($this->user_row['web_service_id'])) {?>
+		<?php if (isset($user_row['web_service_id'])) {?>
 		<tr>
 			<td align="left"><?php echo _AC('web_service_id'); ?>:</td>
-			<td align="left"><?php echo $this->user_row['web_service_id']; ?></td>
+			<td align="left"><?php echo $user_row['web_service_id']; ?></td>
 		</tr>
 		<?php }?>
 
-		<?php if ($this->show_captcha) { ?>
+		<?php if ($show_captcha) { ?>
 		<tr>
 			<td align="left">
 			<div class="required" title="<?php echo _AC('required_field'); ?>">*</div>
@@ -195,7 +195,7 @@ function encrypt_password()
 		<tr>
 			<td colspan="2">
 			<p class="submit_button">
-				<input type="submit" name="submit" value="<?php echo $this->submit_button_text; ?>" class="submit" onclick="return encrypt_password();" /> 
+				<input type="submit" name="submit" value="<?php echo $submit_button_text; ?>" class="submit" onclick="return encrypt_password();" /> 
 				<input type="submit" name="cancel" value=" <?php echo _AC('cancel'); ?> "  class="submit" />
 			</p>
 			</td>

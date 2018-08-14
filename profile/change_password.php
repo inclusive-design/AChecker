@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -15,7 +15,6 @@ define('AC_INCLUDE_PATH', '../include/');
 require(AC_INCLUDE_PATH.'vitals.inc.php');
 
 global $_current_user;
-
 
     /**
 	 * Verify that a string is Sha_1
@@ -93,6 +92,5 @@ if (isset($_POST['submit'])) {
 }
 
 /* template starts here */
-$savant->display('profile/change_password.tmpl.php');
-
+echo $plates->render('profile/change_password.tmpl.php');
 ?>

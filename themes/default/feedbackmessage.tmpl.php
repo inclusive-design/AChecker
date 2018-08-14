@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -15,9 +15,9 @@ global $_base_href;
 ?>
 
 <div id="feedback">
-	<?php if (is_array($this->item)) : ?>
+	<?php if (is_array($item)) : ?>
 		<ul>
-		<?php foreach($this->item as $e) : ?>
+		<?php foreach($item as $e) : ?>
 			<li><?php echo $e; ?></li>
 		<?php endforeach; ?>
 		</ul>

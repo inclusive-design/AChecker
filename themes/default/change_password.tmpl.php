@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -44,9 +44,9 @@ function encrypt_password()
 
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="form">
 		<input type="hidden" name="form_change" value="true" />
-		<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
-		<input type="hidden" name="g" value="<?php echo $this->g; ?>" />
-		<input type="hidden" name="h" value="<?php echo $this->h; ?>" />
+		<input type="hidden" name="id" value="<?php echo $id; ?>" />
+		<input type="hidden" name="g" value="<?php echo $g; ?>" />
+		<input type="hidden" name="h" value="<?php echo $h; ?>" />
 		<input type="hidden" name="form_password_hidden" value="" />
 		<input type="hidden" name="password_error" value="" />
 

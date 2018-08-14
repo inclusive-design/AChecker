@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -33,7 +33,7 @@ class ColorMappingDAO extends DAO {
 	*/
 	function GetByColorName($colorName)
 	{
-		
+
 		$sql = "SELECT * FROM ". TABLE_PREFIX ."color_mapping WHERE color_name='".$this->addSlashes($colorName)."'";
 		return $this->execute($sql);
 	}

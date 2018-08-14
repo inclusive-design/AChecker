@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -20,26 +20,26 @@
 class zipfile {
 
 	/**
-	* string $files_data - stores file information like the header and description 
-	* @access  public 
+	* string $files_data - stores file information like the header and description
+	* @access  public
 	*/
 	var $files_data;
 
 	/**
 	* string $central_directory_headers - headers necessary for including file in central record
-	* @access  public 
+	* @access  public
 	*/
-	var $central_directory_headers; 
+	var $central_directory_headers;
 
 	/**
 	* int $num_entries - a counter for the number of entries in the archive
-	* @access  public 
+	* @access  public
 	*/
 	var $num_entries = 0;
 
 	/**
 	* string $zip_file - complete contents of file
-	* @access  public 
+	* @access  public
 	*/
 	var $zip_file;
 
@@ -47,7 +47,7 @@ class zipfile {
 	* boolean $is_closed - flag set to true if file is closed, false if still open
 	* @access  private
 	*/
-	var $is_closed; 
+	var $is_closed;
 
 
 	/**
@@ -55,7 +55,7 @@ class zipfile {
 	* @access	public
 	* @author	Joel Kronenberg
 	*/
-	function zipfile() {
+	function __construct() {
 		$this->files_data = '';
 		$this->central_directory_headers = '';
 		$this->num_entries = 0;
@@ -65,7 +65,7 @@ class zipfile {
 	/**
 	* Public interface for adding a dir and its contents recursively to zip file
 	* @access  public
-	* @param   string $dir				the real system directory that contains the files to add to the zip		 
+	* @param   string $dir				the real system directory that contains the files to add to the zip
 	* @param   string $zip_prefix_dir	the zip dir where the contents of $dir will be put in
 	* @param   string $pre_pend_dir		used during the recursion to keep track of the path, default=''
 	* @see     $_base_path				in include/vitals.inc.php
@@ -112,36 +112,36 @@ class zipfile {
 	}
 
 	/**
-	* Adding a dir to the archive 
+	* Adding a dir to the archive
 	* @access  private
 	* @param   string $name				directory name
 	* @param   string $timestamp		time, default=''
 	* @author  Joel Kronenberg
 	*/
-    function priv_add_dir($name, $timestamp = '') {   
-        $name = str_replace("\\", "/", $name);   
+    function priv_add_dir($name, $timestamp = '') {
+        $name = str_replace("\\", "/", $name);
 		$old_offset = strlen($this->files_data);
 
-        $local_file_header  = "\x50\x4b\x03\x04";												// local file header signature 4 bytes (0x04034b50) 
+        $local_file_header  = "\x50\x4b\x03\x04";												// local file header signature 4 bytes (0x04034b50)
         $local_file_header .= "\x0a\x00";    // ver needed to extract							// version needed to extract 2 bytes
         $local_file_header .= "\x00\x00";    // gen purpose bit flag							// general purpose bit flag 2 bytes
         $local_file_header .= "\x00\x00";    // compression method								// compression method 2 bytes
-        $local_file_header .= "\x00\x00\x00\x00"; // last mod time and date					// last mod file time 2 bytes & last mod file date 2 bytes 
+        $local_file_header .= "\x00\x00\x00\x00"; // last mod time and date					// last mod file time 2 bytes & last mod file date 2 bytes
         $local_file_header .= pack("V",0); // crc32											// crc-32 4 bytes
-        $local_file_header .= pack("V",0); //compressed filesize								// compressed size 4 bytes 
+        $local_file_header .= pack("V",0); //compressed filesize								// compressed size 4 bytes
         $local_file_header .= pack("V",0); //uncompressed filesize								// uncompressed size 4 bytes
-        $local_file_header .= pack("v", strlen($name) ); //length of pathname					// file name length 2 bytes 
-        $local_file_header .= pack("v", 0 ); //extra field length								// extra field length 2 bytes		
+        $local_file_header .= pack("v", strlen($name) ); //length of pathname					// file name length 2 bytes
+        $local_file_header .= pack("v", 0 ); //extra field length								// extra field length 2 bytes
         $local_file_header .= $name;															// file name (variable size)  & extra field (variable size)
-        // end of "local file header" segment 
+        // end of "local file header" segment
 
-        // no "file data" segment for path 
+        // no "file data" segment for path
 
-        // add this entry to array 
+        // add this entry to array
         $this->files_data .= $local_file_header;
 
-        // ext. file attributes mirrors MS-DOS directory attr byte, detailed 
-        // at http://support.microsoft.com/support/kb/articles/Q125/0/19.asp 
+        // ext. file attributes mirrors MS-DOS directory attr byte, detailed
+        // at http://support.microsoft.com/support/kb/articles/Q125/0/19.asp
 
 		if ($timestamp) {
 			$v_date = getdate($timestamp);
@@ -151,7 +151,7 @@ class zipfile {
 		$time = ($v_date['hours']<<11) + ($v_date['minutes']<<5) + $v_date['seconds']/2;
 		$date = (($v_date['year']-1980)<<9) + ($v_date['mon']<<5) + $v_date['mday'];
 
-        // now add to central record 
+        // now add to central record
         $central_directory = "\x50\x4b\x01\x02";											// central file header signature 4 bytes (0x02014b50)
         $central_directory .="\x14\x00";    // version made by								// version made by 2 bytes
         $central_directory .="\x14\x00";    // version needed to extract					// version needed to extract 2 bytes
@@ -164,7 +164,7 @@ class zipfile {
         $central_directory .= pack("V", 0); // uncompressed filesize						// uncompressed size 4 bytes
         $central_directory .= pack("v", strlen($name) ); //length of filename				// file name length 2 bytes
         $central_directory .= pack("v", 0); // extra field length							// extra field length 2 bytes
-        $central_directory .= pack("v", 0); // file comment length							// file comment length 2 bytes 
+        $central_directory .= pack("v", 0); // file comment length							// file comment length 2 bytes
         $central_directory .= pack("v", 0); // disk number start							// disk number start 2 bytes
         $central_directory .= pack("v", 0); // internal file attributes						// internal file attributes 2 bytes
         $central_directory .= pack("V", 16+32); //external file attributes  - 'directory' 'archive' bit set // external file attributes 4 bytes
@@ -174,8 +174,8 @@ class zipfile {
     	$this->central_directory_headers .= $central_directory;
 
 		$this->num_entries++;
-    } 
-	
+    }
+
 	/**
 	* Public interface to create a directory in the archive.
 	* @access  public
@@ -207,7 +207,7 @@ class zipfile {
 	* @author  Joel Kronenberg
 	*/
     function add_file($file_data, $name, $timestamp = '') {
-        $name = str_replace("\\", "/", $name);   
+        $name = str_replace("\\", "/", $name);
         $crc = crc32($file_data);
         $uncompressed_size = strlen($file_data);
 		$file_data = substr(gzcompress($file_data, 9), 2, -4);
@@ -215,19 +215,19 @@ class zipfile {
 		$old_offset = strlen($this->files_data);
 
 		/* local file header */
-        $local_file_header = "\x50\x4b\x03\x04";								// local file header signature 4 bytes (0x04034b50) 
-        $local_file_header .= "\x14\x00";    // ver needed to extract			// version needed to extract 2 bytes 
-        $local_file_header .= "\x00\x00";    // gen purpose bit flag			// general purpose bit flag 2 bytes 
-        $local_file_header .= "\x08\x00";    // compression method				// compression method 2 bytes 
-        $local_file_header .= "\x00\x00\x00\x00"; // last mod time and date	// last mod file time 2 bytes & last mod file date 2 bytes 
-        $local_file_header .= pack("V",$crc); // crc32							// crc-32 4 bytes 
-        $local_file_header .= pack("V",$compressed_size); //compressed filesize			// compressed size 4 bytes 
-        $local_file_header .= pack("V",$uncompressed_size); //uncompressed filesize		// uncompressed size 4 bytes 
-        $local_file_header .= pack("v", strlen($name) ); //length of filename  // file name length 2 bytes 
-        $local_file_header .= "\x00\x00"; //extra field length				// extra field length 2 bytes 
-        $local_file_header .= $name;											// file name (variable size)  & extra field (variable size) 
+        $local_file_header = "\x50\x4b\x03\x04";								// local file header signature 4 bytes (0x04034b50)
+        $local_file_header .= "\x14\x00";    // ver needed to extract			// version needed to extract 2 bytes
+        $local_file_header .= "\x00\x00";    // gen purpose bit flag			// general purpose bit flag 2 bytes
+        $local_file_header .= "\x08\x00";    // compression method				// compression method 2 bytes
+        $local_file_header .= "\x00\x00\x00\x00"; // last mod time and date	// last mod file time 2 bytes & last mod file date 2 bytes
+        $local_file_header .= pack("V",$crc); // crc32							// crc-32 4 bytes
+        $local_file_header .= pack("V",$compressed_size); //compressed filesize			// compressed size 4 bytes
+        $local_file_header .= pack("V",$uncompressed_size); //uncompressed filesize		// uncompressed size 4 bytes
+        $local_file_header .= pack("v", strlen($name) ); //length of filename  // file name length 2 bytes
+        $local_file_header .= "\x00\x00"; //extra field length				// extra field length 2 bytes
+        $local_file_header .= $name;											// file name (variable size)  & extra field (variable size)
 		/* end of local file header */
-          
+
 		$this->files_data .= $local_file_header . $file_data; // . $data_descriptor;;
 
 		/* create the central directory */
@@ -240,31 +240,31 @@ class zipfile {
 		$time = ($v_date['hours']<<11) + ($v_date['minutes']<<5) + $v_date['seconds']/2;
 		$date = (($v_date['year']-1980)<<9) + ($v_date['mon']<<5) + $v_date['mday'];
 
-        // now add to central directory record 
+        // now add to central directory record
         $central_directory = "\x50\x4b\x01\x02";											// central file header signature 4 bytes (0x02014b50)
-        $central_directory .="\x14\x00";    // version made by								// version made by 2 bytes 
-        $central_directory .="\x14\x00";    // version needed to extract					// version needed to extract 2 bytes 
-        $central_directory .="\x00\x00";    // gen purpose bit flag							// general purpose bit flag 2 bytes 
-        $central_directory .="\x08\x00";    // compression method							// compression method 2 bytes         
-        $central_directory .= pack("v",$time); // time										// last mod file time 2 bytes 
-		$central_directory .= pack("v",$date); // date										// last mod file date 2 bytes 
-		$central_directory .= pack("V",$crc); // crc32										// crc-32 4 bytes 
-        $central_directory .= pack("V",$compressed_size); //compressed filesize						// compressed size 4 bytes 
-        $central_directory .= pack("V",$uncompressed_size); //uncompressed filesize					// uncompressed size 4 bytes 
-        $central_directory .= pack("v", strlen($name) ); //length of filename				// file name length 2 bytes 
-        $central_directory .= "\x00\x00"; //extra field length							// extra field length 2 bytes 
-        $central_directory .= "\x00\x00"; //file comment length							// file comment length 2 bytes 
-        $central_directory .= "\x00\x00"; //disk number start							// disk number start 2 bytes 
-        $central_directory .= "\x00\x00"; //internal file attributes						// internal file attributes 2 bytes 
-        $central_directory .= pack("V", 32); //external file attributes - 'archive' bit set // external file attributes 4 bytes 
+        $central_directory .="\x14\x00";    // version made by								// version made by 2 bytes
+        $central_directory .="\x14\x00";    // version needed to extract					// version needed to extract 2 bytes
+        $central_directory .="\x00\x00";    // gen purpose bit flag							// general purpose bit flag 2 bytes
+        $central_directory .="\x08\x00";    // compression method							// compression method 2 bytes
+        $central_directory .= pack("v",$time); // time										// last mod file time 2 bytes
+		$central_directory .= pack("v",$date); // date										// last mod file date 2 bytes
+		$central_directory .= pack("V",$crc); // crc32										// crc-32 4 bytes
+        $central_directory .= pack("V",$compressed_size); //compressed filesize						// compressed size 4 bytes
+        $central_directory .= pack("V",$uncompressed_size); //uncompressed filesize					// uncompressed size 4 bytes
+        $central_directory .= pack("v", strlen($name) ); //length of filename				// file name length 2 bytes
+        $central_directory .= "\x00\x00"; //extra field length							// extra field length 2 bytes
+        $central_directory .= "\x00\x00"; //file comment length							// file comment length 2 bytes
+        $central_directory .= "\x00\x00"; //disk number start							// disk number start 2 bytes
+        $central_directory .= "\x00\x00"; //internal file attributes						// internal file attributes 2 bytes
+        $central_directory .= pack("V", 32); //external file attributes - 'archive' bit set // external file attributes 4 bytes
 		$central_directory .= pack("V", $old_offset);
 
         $central_directory .= $name;														// file name (variable size)
 
 		$this->central_directory_headers .= $central_directory;
-	
+
 		$this->num_entries++;
-    } 
+    }
 
 	/**
 	* Closes archive, sets $is_closed to true
@@ -273,12 +273,12 @@ class zipfile {
 	* @author  Joel Kronenberg
 	*/
 	function close() {
-		$this->files_data .= $this->central_directory_headers . "\x50\x4b\x05\x06\x00\x00\x00\x00" .   
-            pack("v", $this->num_entries).     // total # of entries "on this disk" 
-            pack("v", $this->num_entries).     // total # of entries overall 
-            pack("V", strlen($this->central_directory_headers)).             // size of central dir 
-            pack("V", strlen($this->files_data)).                 // offset to start of central dir 
-            "\x00\x00"; 
+		$this->files_data .= $this->central_directory_headers . "\x50\x4b\x05\x06\x00\x00\x00\x00" .
+            pack("v", $this->num_entries).     // total # of entries "on this disk"
+            pack("v", $this->num_entries).     // total # of entries overall
+            pack("V", strlen($this->central_directory_headers)).             // size of central dir
+            pack("V", strlen($this->files_data)).                 // offset to start of central dir
+            "\x00\x00";
 
 		unset($this->central_directory_headers);
 		unset($this->num_entries);
@@ -307,7 +307,7 @@ class zipfile {
 	* @access	public
 	* @see		get_size()		in include/classes/zipfile.class.php
 	* @author  Joel Kronenberg
-	*/	
+	*/
 	function get_file() {
 		if (!$this->is_closed) {
 			$this->close();
@@ -350,7 +350,7 @@ class zipfile {
 		$file_name = str_replace(array('"', '<', '>', '|', '?', '*', ':', '/', '\\'), '', $file_name);
 
 		header('Content-Type: application/x-zip');
-		header('Content-transfer-encoding: binary'); 
+		header('Content-transfer-encoding: binary');
 		header('Content-Disposition: attachment; filename="'.htmlspecialchars($file_name).'.zip"');
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -362,5 +362,4 @@ class zipfile {
 		exit;
 	}
 }
-
 ?>

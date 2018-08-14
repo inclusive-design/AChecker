@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -31,15 +31,15 @@ class ColorValue {
 	var $red;
 	var $green;
 	var $blue;
-	
+
 	var $isValid;
 
-	function ColorValue($color)
+	function __construct($color)
 	{
 	  $color = str_replace(" ", "", $color);  // remove whitespaces
-	  
+
 	  if ($color[0] == '#') $color = substr($color, 1);
-	  
+
 	  $this->isValid = true;  // set default
 	  if (strlen($color) == 6)
 	  {
@@ -59,7 +59,7 @@ class ColorValue {
 			$colorMappingDAO = new ColorMappingDAO();
 			$rows = $colorMappingDAO->GetByColorName($color);
 
-			
+
 			if (!is_array($rows) == 0)
 				$this->isValid = false;
 			else
@@ -73,8 +73,8 @@ class ColorValue {
 			}
 	  }
 
-	  $this->red = hexdec($r); 
-	  $this->green = hexdec($g); 
+	  $this->red = hexdec($r);
+	  $this->green = hexdec($g);
 	  $this->blue = hexdec($b);
 	}
 

@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -62,7 +62,7 @@ class AccessibilityValidator {
 	 * $content: string, html content to check
 	 * $guidelines: array, guidelines to check on
 	 */
-	function AccessibilityValidator($content, $guidelines, $uri = '')
+	function __construct($content, $guidelines, $uri = '')
 	{
 		$this->validate_content = $content;
 		$this->guidelines = $guidelines;

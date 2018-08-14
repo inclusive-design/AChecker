@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -37,15 +37,14 @@ class LanguageEditor extends Language {
 	* 
 	* Initializes db and parent properties.
 	*/
-	function LanguageEditor($myLang) {
-		global $msg;
-		
-		global $savant;
+
+	function __construct($myLang) {
+		global $db, $msg, $plates;
+
 		$this->msg = $msg;
 
-
 		if (isset($myLang)) {
-			$this->Language($myLang);
+			parent::__construct($myLang);
 		}
 		$this->missingTerms = array();
 	}
@@ -146,7 +145,6 @@ class LanguageEditor extends Language {
 				$is_old = true;
 			}
 
-
 			if ($this->checkFilter('new') && !$is_new) {
 				continue;
 			}
@@ -200,7 +198,6 @@ class LanguageEditor extends Language {
 			$this->missingTerms[$term] = '';
 		}
 	}
-
 
 	// this method should be called staticly: LanguageEditor::import()
 	// public

@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -30,8 +30,8 @@ if (!$rows)
 }
 else
 {
-	$savant->assign('row', $rows[0]);
-	$savant->assign('gid', $gid);
-	$savant->display('guideline/view_guideline.tmpl.php');
+	$plate['row'] = $rows[0];
+	$plate['gid'] = $gid;
+	echo $plates->render('guideline/view_guideline.tmpl.php', $plate);
 }
 ?>

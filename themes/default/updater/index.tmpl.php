@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -13,7 +13,8 @@
 
 //include(AC_INCLUDE_PATH.'header.inc.php');
 
-if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
+if (isset($javascript_run_now)) echo $javascript_run_now;
+
 ?>
 
 <div class="center-input-form">
@@ -34,7 +35,7 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 	</tr>
 </thead>
 
-<?php if ($this->num_of_patches == 0){?>
+<?php if ($num_of_patches == 0){?>
 <tbody>
 <tr>
 	<td colspan="8">
@@ -52,15 +53,15 @@ if (isset($this->javascript_run_now)) echo $this->javascript_run_now;
 </tr>
 </tfoot>
 <tbody>
-<?php	if (is_array($this->patches_in_db))
-		foreach ($this->patches_in_db as $row)
+<?php	if (is_array($patches_in_db))
+		foreach ($patches_in_db as $row)
 				print_patch_row($row, $row['patches_id'], false);
 	
 	$array_id = 0;
 	// display un-installed patches
-	if(is_array($this->patch_list_array))
+	if(is_array($patch_list_array))
 	{
-		foreach ($this->patch_list_array as $row_num => $new_patch)
+		foreach ($patch_list_array as $row_num => $new_patch)
 		{
 			if (!is_patch_installed($new_patch['achecker_patch_id']))
 			{

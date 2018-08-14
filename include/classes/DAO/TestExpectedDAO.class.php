@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -34,9 +34,9 @@ class TestExpectedDAO extends DAO {
 	function getExpectedStepsByID($checkID)
 	{
 		$checkID = intval($checkID);
-		
+
 		$sql = "SELECT step_id, step
-						FROM ". TABLE_PREFIX ."test_expected 
+						FROM ". TABLE_PREFIX ."test_expected
 						WHERE check_id=". $checkID ."
 						ORDER BY step_id";
 

@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -12,6 +12,10 @@
 // $Id$
 
 if (!defined('AC_INCLUDE_PATH')) { exit; }
+
+ // Enable the composer autoload file
+define('AC_PHP_COMPOSER_PATH', AC_INCLUDE_PATH .'../vendor/');
+require_once AC_PHP_COMPOSER_PATH.'autoload.php';
 
 define('AC_DEVEL', 1);
 define('AC_ERROR_REPORTING', E_ALL ^  E_NOTICE); // default is E_ALL ^ E_NOTICE, use E_ALL or E_ALL + E_STRICT for developing
@@ -61,7 +65,6 @@ if (!defined('AC_INSTALL') || !AC_INSTALL) {
 	exit;
 }
 
-
 /*** 1. constants ***/
 require_once(AC_INCLUDE_PATH.'constants.inc.php');
 
@@ -81,7 +84,6 @@ require_once(AC_INCLUDE_PATH.'constants.inc.php');
 	unregister_GLOBALS();
 
 /***** end session initilization block ****/
-
 
 function my_null_slashes($string) {
 	return $string;
@@ -136,10 +138,8 @@ define('SITE_NAME',                 $_config['site_name']);
 /***** end load common libraries ****/
 
 /***** 6. initialize theme and template management *****/
-	require(AC_INCLUDE_PATH.'classes/Savant2/Savant2.php');
-
+	
 	// set default template paths:
-	$savant = new Savant2();
 
 	if (isset($_SESSION['prefs']['PREF_THEME']) && file_exists(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME']) && isset($_SESSION['valid_user']) && $_SESSION['valid_user']) 
 	{
@@ -163,13 +163,14 @@ define('SITE_NAME',                 $_config['site_name']);
 	{
 		$_SESSION['prefs']['PREF_THEME'] = get_default_theme();
 	}
-
-	$savant->addPath('template', AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/');
+	
+	// Create new Plates instance
+	$plates = League\Plates\Engine::create(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/', 'tmpl.php');
 
 	require(AC_INCLUDE_PATH . '../themes/' . $_SESSION['prefs']['PREF_THEME'] . '/theme.cfg.php');
 
 	require(AC_INCLUDE_PATH.'classes/Message/Message.class.php');
-	$msg = new Message($savant);
+	$msg = new Message($plates);
 
 /***** end of initialize theme and template management *****/
 

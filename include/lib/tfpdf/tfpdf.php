@@ -78,7 +78,7 @@ var $PDFVersion;         //PDF version number
 *                               Public methods                                 *
 *                                                                              *
 *******************************************************************************/
-function tFPDF($orientation='P', $unit='mm', $format='A4')
+function __construct($orientation='P', $unit='mm', $format='A4')
 {
 	//Some checks
 	$this->_dochecks();

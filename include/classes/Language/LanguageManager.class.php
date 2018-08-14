@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -54,7 +54,7 @@ class LanguageManager {
 	* 
 	* Initializes availableLanguages and numLanguages.
 	*/
-	function LanguageManager() {
+	function __construct() {
 		require_once(AC_INCLUDE_PATH. 'classes/DAO/LanguagesDAO.class.php');
 		$languagesDAO = new LanguagesDAO();
 		

@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -33,7 +33,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 </tfoot>
 
 <tbody>
-<?php foreach ($this->all_html_tags as $row) { $html_tag_no_space = str_replace(' ', '', $row['html_tag']); ?>
+<?php foreach ($all_html_tags as $row) { $html_tag_no_space = str_replace(' ', '', $row['html_tag']); ?>
 	<tr onmousedown="document.form['m<?php echo $html_tag_no_space; ?>'].checked = true; rowselect(this);" 
 	    onkeydown="document.form['m<?php echo $html_tag_no_space; ?>'].checked = true; rowselect(this);"
 	    id="r_<?php echo $html_tag_no_space; ?>">

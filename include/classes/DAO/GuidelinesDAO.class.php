@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -43,20 +43,20 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function Create($userID, $title, $abbr, $long_name, $published_date, $earlid, $preamble, $status, $open_to_public)
 	{
-		
+
 		$userID = intval($userID);
-		$title = $this->addSlashes(trim($title));	
-		$abbr = $this->addSlashes(trim($abbr));	
+		$title = $this->addSlashes(trim($title));
+		$abbr = $this->addSlashes(trim($abbr));
 		$long_name = trim($long_name);
 		$earlid = $this->addSlashes(trim($earlid));
 		$preamble = $this->addSlashes(trim($preamble));
 		if ($published_date == '') $published_date = NULL;
-		
+
 		if (!$this->isFieldsValid($title, $abbr, true)) return false;
-		
+
 		$sql = "INSERT INTO ".TABLE_PREFIX."guidelines
-				(`user_id`, `title`, `abbr`, `published_date`,  
-				 `earlid`, `preamble`, `status`, `open_to_public`) 
+				(`user_id`, `title`, `abbr`, `published_date`,
+				 `earlid`, `preamble`, `status`, `open_to_public`)
 				VALUES
 				(".$userID.",'".$title."', '".$abbr."', '".$published_date."',
 				 '".$earlid."','".$preamble."', ".$status.",".$open_to_public.")";
@@ -76,7 +76,7 @@ class GuidelinesDAO extends DAO {
 
 				require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 				$langTextDAO = new LanguageTextDAO();
-				
+
 				if ($langTextDAO->Create($_SESSION['lang'], '_guideline',$term,$long_name,''))
 				{
 					$sql = "UPDATE ".TABLE_PREFIX."guidelines SET long_name='".$term."' WHERE guideline_id=".$guidelineID;
@@ -86,7 +86,7 @@ class GuidelinesDAO extends DAO {
 			return $guidelineID;
 		}
 	}
-	
+
 	/**
 	* Update an existing guideline
 	* @access  public
@@ -106,26 +106,26 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function update($guidelineID, $userID, $title, $abbr, $long_name, $published_date, $earlid, $preamble, $status, $open_to_public)
 	{
-		
+
 		$guidelineID = intval($guidelineID);
 		$userID = intval($userID);
-		$title = $this->addSlashes(trim($title));	
-		$abbr = $this->addSlashes(trim($abbr));	
-		$long_name = trim($long_name); 
+		$title = $this->addSlashes(trim($title));
+		$abbr = $this->addSlashes(trim($abbr));
+		$long_name = trim($long_name);
 		$earlid = $this->addSlashes(trim($earlid));
 		$preamble = $this->addSlashes(trim($preamble));
-		
+
 		if (!$this->isFieldsValid($title, $abbr, false, $guidelineID)) return false;
-		
+
 		$sql = "UPDATE ".TABLE_PREFIX."guidelines
-				   SET `user_id`=".$userID.", 
-				       `title` = '".$title."', 
-				       `abbr` = '".$abbr."', 
-				       `published_date` = '".$published_date."',  
-				       `earlid` = '".$earlid."', 
-				       `preamble` = '".$preamble."', 
-				       `status` = ".$status.", 
-				       `open_to_public` = ".$open_to_public." 
+				   SET `user_id`=".$userID.",
+				       `title` = '".$title."',
+				       `abbr` = '".$abbr."',
+				       `published_date` = '".$published_date."',
+				       `earlid` = '".$earlid."',
+				       `preamble` = '".$preamble."',
+				       `status` = ".$status.",
+				       `open_to_public` = ".$open_to_public."
 				 WHERE guideline_id = ".$guidelineID;
 
 		if (!$this->execute($sql))
@@ -135,20 +135,20 @@ class GuidelinesDAO extends DAO {
 		}
 		else
 		{
-			// find language term to update	
+			// find language term to update
 			$rows = $this->getGuidelineByIDs($guidelineID);
 			$term = $rows[0]['long_name'];
-			
+
 			require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 			$langTextDAO = new LanguageTextDAO();
-			
+
 			if ($langTextDAO->setText($_SESSION['lang'],'_guideline',$term,$long_name))
 				return true;
 			else
 				return false;
 		}
 	}
-	
+
 	/**
 	* Add checks into guideline
 	* @access  public
@@ -163,41 +163,41 @@ class GuidelinesDAO extends DAO {
 		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
 		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
-		
+
 		$guidelineID = intval($guidelineID);
 		if ($guidelineID == 0)
 		{
 			$msg->addError('MISSING_GID');
 			return false;
 		}
-		
+
 		$guidelineGroupsDAO = new GuidelineGroupsDAO();
 		$groups = $guidelineGroupsDAO->getUnnamedGroupsByGuidelineID($guidelineID);
-		
+
 		if (is_array($groups))
 			$group_id = $groups[0]['group_id'];
 		else
 			$group_id = $guidelineGroupsDAO->Create($guidelineID, '','','');
-		
+
 		if ($group_id)
 		{
 			$guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
 			$subgroups = $guidelineSubgroupsDAO->getUnnamedSubgroupByGroupID($group_id);
-			
+
 			if (is_array($subgroups))
 				$subgroup_id = $subgroups[0]['subgroup_id'];
 			else
 				$subgroup_id = $guidelineSubgroupsDAO->Create($group_id, '','');
-			
+
 			if ($subgroup_id)
 			{
 				$subgroupChecksDAO = new SubgroupChecksDAO();
-				
+
 				if (is_array($cids))
 				{
 					foreach ($cids as $cid) {
 						$cid = intval($cid);
-						
+
 						if ($cid > 0) {
 							$subgroupChecksDAO->Create($subgroup_id, $cid);
 						}
@@ -207,10 +207,10 @@ class GuidelinesDAO extends DAO {
 			else return false;
 		}
 		else return false;
-		
+
 		return true;
 	}
-	
+
 	/**
 	* Delete guideline by ID
 	* @access  public
@@ -222,34 +222,34 @@ class GuidelinesDAO extends DAO {
 	public function Delete($guidelineID)
 	{
 		require_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
-		
+
 		$guidelineID = intval($guidelineID);
-		
+
 		// Delete all subgroups
 		$guidelineGroupsDAO = new GuidelineGroupsDAO();
 		$sql = "SELECT group_id FROM ".TABLE_PREFIX."guideline_groups
 		         WHERE guideline_id = ".$guidelineID;
 		$rows = $this->execute($sql);
-		
+
 		if (is_array($rows))
 		{
 			foreach ($rows as $row)
 				$guidelineGroupsDAO->Delete($row['group_id']);
 		}
-		
+
 		// delete language for long name
-		$sql = "DELETE FROM ".TABLE_PREFIX."language_text 
-		         WHERE variable='_guideline' 
-		           AND term=(SELECT long_name 
+		$sql = "DELETE FROM ".TABLE_PREFIX."language_text
+		         WHERE variable='_guideline'
+		           AND term=(SELECT long_name
 		                       FROM ".TABLE_PREFIX."guidelines
 		                      WHERE guideline_id=".$guidelineID.")";
 		$this->execute($sql);
-		
+
 		$sql = "DELETE FROM ".TABLE_PREFIX."guidelines WHERE guideline_id=".$guidelineID;
-		
+
 		return $this->execute($sql);
 	}
-	
+
 	/**
 	* Return guideline info by given guideline id
 	* @access  public
@@ -266,7 +266,7 @@ class GuidelinesDAO extends DAO {
 		} else {
 			$sanitized_gids_str = intval($guidelineIDs);
 		}
-		
+
 		$sql = "select * from ". TABLE_PREFIX ."guidelines
 						where guideline_id in (" . $sanitized_gids_str . ")
 						order by title";
@@ -283,12 +283,12 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function getGuidelineByAbbr($abbr)
 	{
-		
+
 		$abbr = $this->addSlashes($abbr);
-		
+
 		$sql = "select * from ". TABLE_PREFIX ."guidelines
 						where abbr = '" . $abbr . "'";
-    
+
 		return $this->execute($sql);
   	}
 
@@ -303,7 +303,7 @@ class GuidelinesDAO extends DAO {
 	{
 		include_once(AC_INCLUDE_PATH.'classes/Utility.class.php');
 		$userIDs = Utility::sanitizeIntArray($userIDs);
-		
+
 		$sql = "select *
 				from ". TABLE_PREFIX ."guidelines
 				where user_id in (" . implode(",", $userIDs) . ")
@@ -322,7 +322,7 @@ class GuidelinesDAO extends DAO {
 	public function getClosedEnabledGuidelinesByUserID($userID)
 	{
 		$userID = intval($userID);
-		
+
 		$sql = "select *
 				from ". TABLE_PREFIX ."guidelines
 				where user_id = " . $userID . "
@@ -343,13 +343,13 @@ class GuidelinesDAO extends DAO {
 	public function getEnabledGuidelinesByCheckID($checkID)
 	{
 		$checkID = intval($checkID);
-		
+
 		$sql = "select *
 				from ". TABLE_PREFIX ."guidelines
-				where guideline_id in 
-				     (SELECT distinct gg.guideline_id 
-				        FROM ". TABLE_PREFIX ."guideline_groups gg, 
-								". TABLE_PREFIX ."guideline_subgroups gs, 
+				where guideline_id in
+				     (SELECT distinct gg.guideline_id
+				        FROM ". TABLE_PREFIX ."guideline_groups gg,
+								". TABLE_PREFIX ."guideline_subgroups gs,
 								". TABLE_PREFIX ."subgroup_checks gc,
 								". TABLE_PREFIX ."checks c
 				       WHERE gg.group_id = gs.group_id
@@ -370,12 +370,12 @@ class GuidelinesDAO extends DAO {
 	*/
 	public function getEnabledGuidelinesByAbbr($abbr, $ignoreCase=1)
 	{
-		
+
 		$abbr = $this->addSlashes($abbr);
-		
+
 		if ($ignoreCase) $sql_abbr = "lower(abbr) = '".strtolower($abbr)."'";
 		else $sql_abbr = "abbr = '".$abbr."'";
-		
+
 		$sql = "select *
 				from ". TABLE_PREFIX ."guidelines
 				where ".$sql_abbr."
@@ -448,7 +448,7 @@ class GuidelinesDAO extends DAO {
 	{
 		$guidelineID = intval($guidelineID);
 		$status = intval($status);
-		
+
 		$sql = "update ". TABLE_PREFIX ."guidelines
 				set status = " . $status . "
 				where guideline_id=".$guidelineID;
@@ -469,7 +469,7 @@ class GuidelinesDAO extends DAO {
 	{
 		$guidelineID = intval($guidelineID);
 		$open_to_public = intval($open_to_public);
-		
+
 		$sql = "update ". TABLE_PREFIX ."guidelines
 				set open_to_public = " . $open_to_public . "
 				where guideline_id=".$guidelineID;
@@ -480,7 +480,7 @@ class GuidelinesDAO extends DAO {
 	/**
 	 * Validate fields preparing for insert and update
 	 * @access  private
-	 * @param   $title  
+	 * @param   $title
 	 *          $abbr
 	 *          $create_new: flag to indicate if this is creating new record or update.
 	 *                       true is to create new record, false is update record.
@@ -493,7 +493,7 @@ class GuidelinesDAO extends DAO {
 	private function isFieldsValid($title, $abbr, $create_new, $guidelineID = 0)
 	{
 		global $msg;
-		
+
 		// check missing fields
 		$missing_fields = array();
 
@@ -510,41 +510,41 @@ class GuidelinesDAO extends DAO {
 			$missing_fields = implode(', ', $missing_fields);
 			$msg->addError(array('EMPTY_FIELDS', $missing_fields));
 		}
-		
+
 		if (!$create_new)
 		{
 			$current_grow = $this->getGuidelineByIDs($guidelineID);
 		}
-		
+
 		if ($create_new || (!$create_new && $current_grow[0]['abbr'] <> $abbr))
 		{
 			// abbr must be unique
 			$sql = "SELECT * FROM ".TABLE_PREFIX."guidelines WHERE abbr='".$abbr."'";
-	
+
 			if (is_array($this->execute($sql)))
 			{
 				$msg->addError('ABBR_EXISTS');
 			}
 		}
-			
+
 		if (!$msg->containsErrors())
 			return true;
 		else
 			return false;
 	}
-	
+
 	// Simo: aggiunto per vedere quali check hanno il tag img, per il controllo visivo delle immagini
 	// Restituisce una stringa con tutti gli id dei check, separati da virgola, che riguardano la guideline e l'elemento specificato
 	public function getCheckByTagAndGuideline($tag, $guideline)
 	{
-		
+
 		$tag = $this->addSlashes($tag);
 		$guideline = intval($guideline);
-		
+
 		$sql = "select distinct c.check_id,c.html_tag
-					from ". TABLE_PREFIX ."guidelines g, 
-					     ". TABLE_PREFIX ."guideline_groups gg, 
-					     ". TABLE_PREFIX ."guideline_subgroups gs, 
+					from ". TABLE_PREFIX ."guidelines g,
+					     ". TABLE_PREFIX ."guideline_groups gg,
+					     ". TABLE_PREFIX ."guideline_subgroups gs,
 					     ". TABLE_PREFIX ."subgroup_checks gc,
 					     ". TABLE_PREFIX ."checks c
 					where g.guideline_id = '". $guideline ."'
@@ -555,8 +555,8 @@ class GuidelinesDAO extends DAO {
 					  and c.html_tag = '" . $tag ."'
 					order by c.html_tag";
 		$check = ",";
-		
+
 		return $this->execute($sql);
-	}	
+	}
 }
 ?>

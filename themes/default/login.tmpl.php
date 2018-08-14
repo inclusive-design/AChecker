@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -29,7 +29,7 @@ function encrypt_password() {
 
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="form">
 <input type="hidden" name="form_login_action" value="true" />
-<input type="hidden" name="form_course_id" value="<?php echo $this->course_id; ?>" />
+<input type="hidden" name="form_course_id" value="<?php echo $course_id; ?>" />
 <input type="hidden" name="form_password_hidden" value="" />
 
 	<div class="center-input-form">

@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -57,11 +57,11 @@ class acheckerTFPDF extends tFPDF {
 	* $error_nr_html, $error_nr_css: nr of errors
 	* $css_error: empty if css validation was required with URL input, otherwise string with error msg
 	*/
-	function acheckerTFPDF($known, $likely, $potential, $html, $css, 
+	function __construct($known, $likely, $potential, $html, $css, 
 		$error_nr_known, $error_nr_likely, $error_nr_potential, $error_nr_html, $error_nr_css, $css_error, $html_error)
 	{
 		//Call parent constructor
-		$this->tFPDF('P','mm','A4');
+		parent::__construct('P','mm','A4');
 	
 		$this->known = $known;
 		$this->likely = $likely;

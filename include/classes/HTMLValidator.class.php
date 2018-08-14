@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -43,7 +43,7 @@ class HTMLValidator {
 	* private
     * main process
 	*/
-	function HTMLValidator($type, $content, $return_array = false)
+	function __construct($type, $content, $return_array = false)
 	{
 		$this->validate_type = $type;
 		$this->validate_content = $content;

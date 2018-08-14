@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -34,12 +34,12 @@ class MyownPatchesDependentDAO extends DAO {
 	 */
 	public function Create($myown_patch_id, $dependent_patch_id)
 	{
-		$sql = "INSERT INTO ".TABLE_PREFIX."myown_patches_dependent 
-               (myown_patch_id, 
+		$sql = "INSERT INTO ".TABLE_PREFIX."myown_patches_dependent
+               (myown_patch_id,
                 dependent_patch_id)
-	        VALUES ('".$myown_patch_id."', 
+	        VALUES ('".$myown_patch_id."',
 	                '".$dependent_patch_id."')";
-		
+
 		if (!$this->execute($sql))
 		{
 			$msg->addError('DB_NOT_UPDATED');
@@ -77,9 +77,9 @@ class MyownPatchesDependentDAO extends DAO {
 	public function getByPatchID($patchID)
 	{
 		$sql = "SELECT * from ".TABLE_PREFIX."myown_patches_dependent
-		         WHERE myown_patch_id=". $patchID." 
+		         WHERE myown_patch_id=". $patchID."
 		         ORDER BY dependent_patch_id";
-		
+
 		return $this->execute($sql);
 	}
 

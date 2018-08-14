@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -15,23 +15,23 @@ global $_base_href;
 ?>
 
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-<?php if(isset($this->hidden_vars)): ?>
-	<?php echo $this->hidden_vars; ?>
+<?php if(isset($hidden_vars)): ?>
+	<?php echo $hidden_vars; ?>
 <?php endif; ?>
 
 <div class="input-form">
 	<div class="row">
-		<?php if (is_array($this->item)) : ?>
-			<?php foreach($this->item as $e) : ?>
+		<?php if (is_array($item)) : ?>
+			<?php foreach($item as $e) : ?>
 				<p><?php echo $e; ?></p>
 			<?php endforeach; ?>
 		<?php endif; ?>
 	</div>
 
 	<div class="row buttons">
-		<input type="submit" name="submit_yes" value="<?php echo $this->button_yes_text; ?>" /> 
-<?php if(!$this->hide_button_no): ?>
-		<input type="submit" name="submit_no" value="<?php echo $this->button_no_text; ?>" />
+		<input type="submit" name="submit_yes" value="<?php echo $button_yes_text; ?>" /> 
+<?php if(!$hide_button_no): ?>
+		<input type="submit" name="submit_no" value="<?php echo $button_no_text; ?>" />
 <?php endif; ?>
 	</div>
 </div>

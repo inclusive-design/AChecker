@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -100,13 +100,12 @@ if (isset($_POST['cancel'])) {
 global $onload;
 $onload = 'document.form.login.focus();';
 
-$savant->assign('title', _AC('registration'));
-$savant->assign('submit_button_text', _AC('register'));
-$savant->assign('show_user_group', false);
-$savant->assign('show_status', false);
-$savant->assign('show_password', true);
-$savant->assign('show_captcha', true);
+$plate['title'] = _AC('registration');
+$plate['submit_button_text'] = _AC('register');
+$plate['show_user_group'] = false;
+$plate['show_status'] = false;
+$plate['show_password'] = true;
+$plate['show_captcha'] = true;
 
-$savant->display('register.tmpl.php');
-
+echo $plates->render('register.tmpl.php', $plate);
 ?>

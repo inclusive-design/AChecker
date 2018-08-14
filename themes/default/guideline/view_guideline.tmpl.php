@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -15,7 +15,7 @@ include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineGroupsDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/GuidelineSubgroupsDAO.class.php');
 include_once(AC_INCLUDE_PATH.'classes/DAO/ChecksDAO.class.php');
 
-$gid = $this->gid;
+$gid = $gid;
 
 $guidelineGroupsDAO = new GuidelineGroupsDAO();
 $guidelineSubgroupsDAO = new GuidelineSubgroupsDAO();
@@ -54,38 +54,38 @@ function dispaly_check_table($checks_array)
 include(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 <div class="output-form">
-	<h2><?php echo $this->row["title"]; ?></h2>
+	<h2><?php echo $row["title"]; ?></h2>
 	
 	<table class="form-data">
-	<?php if ($this->row["abbr"] <> "") { ?>
+	<?php if ($row["abbr"] <> "") { ?>
 		<tr>
 			<th align="left"><?php echo _AC("abbr"); ?></th>
-			<td><span class="msg"><?php echo $this->row["abbr"]; ?></span></td>
+			<td><span class="msg"><?php echo $row["abbr"]; ?></span></td>
 		</tr>
 	<?php } ?>
 	
-	<?php if ($this->row["long_name"] <> "") { ?>
+	<?php if ($row["long_name"] <> "") { ?>
 		<tr>
 			<th align="left"><?php echo _AC("long_name"); ?></th>
-			<td><span class="msg"><?php echo _AC($this->row["long_name"]); ?></span></td>
+			<td><span class="msg"><?php echo _AC($row["long_name"]); ?></span></td>
 		</tr>
 	<?php } ?>
 			
-	<?php if ($this->row["published_date"] <> "") { ?>
+	<?php if ($row["published_date"] <> "") { ?>
 		<tr>
 			<th align="left"><?php echo _AC("published_date"); ?></th>
-			<td><span class="msg"><?php echo $this->row["published_date"]; ?></span></td>
+			<td><span class="msg"><?php echo $row["published_date"]; ?></span></td>
 		</tr>
 	<?php } ?>
 
-	<?php if ($this->row["earlid"] <> "") { ?>
+	<?php if ($row["earlid"] <> "") { ?>
 		<tr>
 			<th align="left"><?php echo _AC("earlid"); ?></th>
-			<td><span class="msg"><a href="<?php echo $this->row["earlid"]; ?>"><?php echo $this->row["earlid"]; ?></a></span></td>
+			<td><span class="msg"><a href="<?php echo $row["earlid"]; ?>"><?php echo $row["earlid"]; ?></a></span></td>
 		</tr>
 	<?php } ?>
 			
-	<?php $status = get_status_by_code($this->row['status']);
+	<?php $status = get_status_by_code($row['status']);
 	if ($status <> "") { ?>
 		<tr>
 			<th align="left"><?php echo _AC("status"); ?></th>
@@ -95,7 +95,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			
 		<tr>
 			<th align="left"><?php echo _AC("open_to_public"); ?></th>
-			<td><span class="msg"><?php if ($this->row['open_to_public']) echo _AC('yes'); else echo _AC('no'); ?></span></td>
+			<td><span class="msg"><?php if ($row['open_to_public']) echo _AC('yes'); else echo _AC('no'); ?></span></td>
 		</tr>
 	</table>
 	

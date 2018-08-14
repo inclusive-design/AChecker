@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -87,6 +87,5 @@ if (isset($_POST['submit'])) {
 }
 
 /* template starts here */
-$savant->display('user/user_password.tmpl.php');
-
+echo $plates->render('user/user_password.tmpl.php',$plate);
 ?>

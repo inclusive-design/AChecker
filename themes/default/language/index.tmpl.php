@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -14,7 +14,7 @@
 include(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="form1">
-<h2 align="center"><?php echo $this->title ;?></h2>
+<h2 align="center"><?php echo $title ;?></h2>
 
 <table class="data" summary="" rules="rows">
 
@@ -40,7 +40,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 </tfoot>
 
 <tbody>
-<?php foreach ($this->rows as $row) {?>
+<?php foreach ($rows as $row) {?>
 	<tr onmousedown="document.form1['m<?php echo $row["language_code"]."_".$row["charset"]; ?>'].checked = true; rowselect(this);" 
 	    onkeydown="document.form1['m<?php echo $row["language_code"]."_".$row["charset"]; ?>'].checked = true; rowselect(this);"
 	    id="r_<?php echo $row["language_code"]."_".$row["charset"]; ?>">

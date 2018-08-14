@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -20,7 +20,7 @@ include_once(AC_INCLUDE_PATH.'classes/DAO/UserLinksDAO.class.php');
 
 <?php 
 // display seals
-if (is_array($this->seals))
+if (is_array($seals))
 {
 ?>
 <h3><?php echo _AC('valid_icons');?></h3>
@@ -28,10 +28,10 @@ if (is_array($this->seals))
 <?php 
 	$user_link_url = '';
 	
-	if (isset($this->user_link_id))
-		$user_link_url = '&amp;id='.$this->user_link_id;
-	
-	foreach ($this->seals as $seal)
+	if (isset($user_link_id))
+		$user_link_url = '&amp;id='.$user_link_id;
+
+	foreach ($seals as $seal)
 	{
 ?>
 	<img class="inline-badge" src="<?php echo SEAL_ICON_FOLDER . $seal['seal_icon_name'];?>"
@@ -53,12 +53,12 @@ if (is_array($this->seals))
 <div id="output_div" >
 
 <?php
-if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
+if (isset($aValidator) && $a_rpt->getAllowSetDecisions() == 'true')
 {
 	$sessionID = Utility::getSessionID();
 	
 	$userLinksDAO = new UserLinksDAO();
-	$userLinksDAO->setLastSessionID($this->a_rpt->getUserLinkID(), $sessionID);
+	$userLinksDAO->setLastSessionID($a_rpt->getUserLinkID(), $sessionID);
 	
 	echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'."\n\r";
 	echo '<input type="hidden" name="jsessionid" value="'.$sessionID.'" />'."\n\r";
@@ -68,15 +68,15 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 	echo '<input type="hidden" name="rpt_format" value="'.htmlspecialchars($_POST['rpt_format'], ENT_QUOTES, 'utf-8').'" />'."\n\r";
 
 	// report for referer URI
-	if (isset($this->referer_report))
+	if (isset($referer_report))
 	{
-		echo '<input type="hidden" name="referer_report" value="'.$this->referer_report.'" />'."\n\r";
+		echo '<input type="hidden" name="referer_report" value="'.$referer_report.'" />'."\n\r";
 	} 
 
 	// user_link_id for referer URI is sent in from request, don't need to retrieve
-	if (isset($this->referer_user_link_id))
+	if (isset($referer_user_link_id))
 	{
-		echo '<input type="hidden" name="referer_user_link_id" value="'.$this->referer_user_link_id.'" />'."\n\r";
+		echo '<input type="hidden" name="referer_user_link_id" value="'.$referer_user_link_id.'" />'."\n\r";
 	} 
 	
 	foreach ($_POST as $post_name => $value) {
@@ -92,7 +92,7 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 	<div class="center-input-form">
 	<a name="report" title="<?php echo _AC("report_start"); ?>"></a>
 	<fieldset class="group_form"><legend class="group_form"><?php echo _AC("accessibility_review"); ?></legend>
-	<h3><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$this->guidelines_text. ')'; ?></h3>
+	<h3><?php echo _AC("accessibility_review") . ' ('. _AC("guidelines"). ': '.$guidelines_text. ')'; ?></h3>
 
 	<div class="center">
 		<form name="file_form" enctype="multipart/form-data" method="post" >
@@ -131,21 +131,21 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 
 	<div class="topnavlistcontainer"><br />
 		<ul class="navigation">
-			<li class="navigation"><a href="javascript:void(0);" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="AC_menu_errors" onclick="AChecker.output.onClickTab('AC_errors');"><span class="nav"><?php echo _AC("known_problems"); ?>(<span id="AC_num_of_errors"><?php echo $this->num_of_errors; ?></span>)</span></a></li>
+			<li class="navigation"><a href="javascript:void(0);" accesskey="1" title="<?php echo _AC("known_problems"); ?> Alt+1" id="AC_menu_errors" onclick="AChecker.output.onClickTab('AC_errors');"><span class="nav"><?php echo _AC("known_problems"); ?>(<span id="AC_num_of_errors"><?php echo $num_of_errors; ?></span>)</span></a></li>
 
-			<li class="navigation"><a href="javascript:void(0);" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="AC_menu_likely_problems" onclick="AChecker.output.onClickTab('AC_likely_problems');"><span class="nav"><?php echo _AC("likely_problems"); ?> (<span id="AC_num_of_likely"><?php echo $this->num_of_likely_problems_no_decision; ?></span>)</span></a></li>
+			<li class="navigation"><a href="javascript:void(0);" accesskey="2" title="<?php echo _AC("likely_problems"); ?> Alt+2" id="AC_menu_likely_problems" onclick="AChecker.output.onClickTab('AC_likely_problems');"><span class="nav"><?php echo _AC("likely_problems"); ?> (<span id="AC_num_of_likely"><?php echo $num_of_likely_problems_no_decision; ?></span>)</span></a></li>
 
-			<li class="navigation"><a href="javascript:void(0);" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="AC_menu_potential_problems" onclick="AChecker.output.onClickTab('AC_potential_problems');"><span class="nav"><?php echo _AC("potential_problems"); ?> (<span id="AC_num_of_potential"><?php echo $this->num_of_potential_problems_no_decision; ?></span>)</span></a></li>
+			<li class="navigation"><a href="javascript:void(0);" accesskey="3" title="<?php echo _AC("potential_problems"); ?> Alt+3" id="AC_menu_potential_problems" onclick="AChecker.output.onClickTab('AC_potential_problems');"><span class="nav"><?php echo _AC("potential_problems"); ?> (<span id="AC_num_of_potential"><?php echo $num_of_potential_problems_no_decision; ?></span>)</span></a></li>
 
-			<li class="navigation"><a href="javascript:void(0);" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="AC_menu_html_validation_result" onclick="AChecker.output.onClickTab('AC_html_validation_result');"><span class="nav"><?php echo _AC("html_validation_result"); ?> <?php if (isset($_POST["enable_html_validation"])) echo '(<span id="AC_num_of_html_errors">'.$this->num_of_html_errors."</span>)"; ?></span></a></li>
+			<li class="navigation"><a href="javascript:void(0);" accesskey="4" title="<?php echo _AC("html_validation_result"); ?> Alt+4" id="AC_menu_html_validation_result" onclick="AChecker.output.onClickTab('AC_html_validation_result');"><span class="nav"><?php echo _AC("html_validation_result"); ?> <?php if (isset($_POST["enable_html_validation"])) echo '(<span id="AC_num_of_html_errors">'.$num_of_html_errors."</span>)"; ?></span></a></li>
 
-			<li class="navigation"><a href="javascript:void(0);" accesskey="5" title="<?php echo _AC("css_validation_result"); ?> Alt+5" id="AC_menu_css_validation_result" onclick="AChecker.output.onClickTab('AC_css_validation_result');"><span class="nav"><?php echo _AC("css_validation_result"); ?> <?php if (isset($this->cssValidator)) echo '(<span id="AC_num_of_css_errors">'.$this->num_of_css_errors."</span>)"; ?></span></a></li>
+			<li class="navigation"><a href="javascript:void(0);" accesskey="5" title="<?php echo _AC("css_validation_result"); ?> Alt+5" id="AC_menu_css_validation_result" onclick="AChecker.output.onClickTab('AC_css_validation_result');"><span class="nav"><?php echo _AC("css_validation_result"); ?> <?php if (isset($cssValidator)) echo '(<span id="AC_num_of_css_errors">'.$num_of_css_errors."</span>)"; ?></span></a></li>
 		</ul>
 	</div>
 
 <?php 
 $has_errors = false;
-if (isset($this->aValidator) && $this->num_of_errors > 0) {
+if (isset($aValidator) && $num_of_errors > 0) {
 	$has_errors = true;
 }
 ?>
@@ -160,14 +160,14 @@ if (!$has_errors) {
 	</span>
 <?php
 if ($has_errors) {
-	echo $this->a_rpt->getErrorRpt();
+	echo $a_rpt->getErrorRpt();
 }
 ?>
 	</div>
 
 <?php 
 $resolved_all_likely = false;
-if (isset($this->aValidator) && $this->num_of_likely_problems_no_decision == 0) {
+if (isset($aValidator) && $num_of_likely_problems_no_decision == 0) {
 	$resolved_all_likely = true;
 }
 ?>
@@ -181,15 +181,15 @@ if ($resolved_all_likely) {
 ?>
 	</span>
 <?php
-if (isset($this->aValidator) && $this->num_of_likely_problems > 0) {
-	echo $this->a_rpt->getLikelyProblemRpt();
+if (isset($aValidator) && $num_of_likely_problems > 0) {
+	echo $a_rpt->getLikelyProblemRpt();
 }
 ?>
 	</div>
 
 <?php 
 $resolved_all_potential = false;
-if (isset($this->aValidator) && $this->num_of_potential_problems_no_decision == 0) {
+if (isset($aValidator) && $num_of_potential_problems_no_decision == 0) {
 	$resolved_all_potential = true;
 }
 ?>
@@ -204,8 +204,8 @@ if ($resolved_all_potential) {
 	</span>
 <?php
 
-if (isset($this->aValidator) && $this->num_of_potential_problems > 0) {
-	echo $this->a_rpt->getPotentialProblemRpt();
+if (isset($aValidator) && $num_of_potential_problems > 0) {
+	echo $a_rpt->getPotentialProblemRpt();
 }
 
 ?>
@@ -213,16 +213,16 @@ if (isset($this->aValidator) && $this->num_of_potential_problems > 0) {
 
 	<div id="AC_html_validation_result" style="margin-top:1em; display:none;">
 <?php
-if (isset($this->htmlValidator))
+if (isset($htmlValidator))
 {
 	echo '		<br /><ol><li class="msg_err">'. _AC("html_validator_provided_by") .'</li></ol>'. "\n";
 	
-	if ($this->htmlValidator->containErrors())
-		echo $this->htmlValidator->getErrorMsg();
+	if ($htmlValidator->containErrors())
+		echo $htmlValidator->getErrorMsg();
 	else
 	{
-		if ($this->num_of_html_errors > 0)
-			echo $this->htmlValidator->getValidationRpt();
+		if ($num_of_html_errors > 0)
+			echo $htmlValidator->getValidationRpt();
 		else
 			echo "<br /><span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_html_validation") ."</span>";
 	}
@@ -237,16 +237,16 @@ else
 if (isset($_POST['validate_file']) || isset($_POST['validate_paste'])) {
 	// css validator is only available at validating url, not at validating a uploaded file or pasted html
 	echo '<br /><span class="info_msg"><img src="'.AC_BASE_HREF.'images/info.png" width="15" height="15" alt="'._AC("info").'"/>  '._AC("css_validator_unavailable").'</span>';
-} else if (isset($this->cssValidator)) {
+} else if (isset($cssValidator)) {
 	// validating url -> css validator option is turned ON
 	echo '		<br /><ol><li class="msg_err">'. _AC("css_validator_provided_by") .'</li></ol>'. "\n";
 	
-	if ($this->cssValidator->containErrors())
-		echo $this->cssValidator->getErrorMsg();
+	if ($cssValidator->containErrors())
+		echo $cssValidator->getErrorMsg();
 	else
 	{
-		if ($this->num_of_css_errors > 0)
-			echo $this->cssValidator->getValidationRpt();
+		if ($num_of_css_errors > 0)
+			echo $cssValidator->getValidationRpt();
 		else
 			echo "<br /><span class='congrats_msg'><img src='".AC_BASE_HREF."images/feedback.gif' alt='"._AC("feedback")."' />  ". _AC("congrats_css_validation") ."</span>";
 	}
@@ -259,9 +259,9 @@ if (isset($_POST['validate_file']) || isset($_POST['validate_paste'])) {
 	</fieldset>
 
 <?php 
-if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
+if (isset($aValidator) && $a_rpt->getAllowSetDecisions() == 'true')
 {
-	if ($this->a_rpt->getNumOfNoDecisions() > 0)
+	if ($a_rpt->getNumOfNoDecisions() > 0)
 	{
 		echo '<div align="center"><input type="submit" name="make_decision" id="AC_btn_make_decision_lineNumRpt" value="'._AC('make_decision').'" style="align:center" /></div>';
 	}
@@ -270,12 +270,12 @@ if (isset($this->aValidator) && $this->a_rpt->getAllowSetDecisions() == 'true')
 ?>
 </div>
 
-<?php if (isset($_POST['show_source']) && isset($this->aValidator)) {?>
+<?php if (isset($_POST['show_source']) && isset($aValidator)) {?>
 <div id="source" class="validator-output-form">
 <h3><?php echo _AC('source');?></h3>
 <p><?php echo _AC('source_note');?></p>
 
-<?php echo $this->a_rpt->getSourceRpt();?>
+<?php echo $a_rpt->getSourceRpt();?>
 </div>
 <?php }?>
 </div><br />

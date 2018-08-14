@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -25,7 +25,7 @@ require_once(AT_INCLUDE_PATH.'classes/Language/LanguagesParser.class.php');
 
 class RemoteLanguageManager extends LanguageManager {
 
-	function RemoteLanguageManager() {
+	function __construct() {
 		$version = str_replace('.','_',VERSION);
 		$language_xml = @file_get_contents('http://update.atutor.ca/languages/'.$version.'/languages.xml');
 		if ($language_xml === FALSE) {

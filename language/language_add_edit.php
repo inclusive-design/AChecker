@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -80,10 +80,10 @@ if (isset($lang_code) && isset($charset))
 	$row['lang_code'] = LanguageUtility::getParentCode($row['language_code']);
 	$row['locale'] = LanguageUtility::getLocale($row['language_code']);
 
-	$savant->assign('row', $row);
+	$plate['row'] = $row;
 }
 
-$savant->assign('rows_lang', $langCodesDAO->GetAll());
+$plate['rows_lang'] = $langCodesDAO->GetAll();
 
-$savant->display('language/language_add_edit.tmpl.php');
+echo $plates->render('language/language_add_edit.tmpl.php', $plate);
 ?>

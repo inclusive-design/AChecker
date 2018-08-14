@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -19,8 +19,6 @@ $checksDAO = new ChecksDAO();
 
 $all_html_tags = $checksDAO->getAllHtmlTags();
 
-$savant->assign('all_html_tags', $checksDAO->getAllHtmlTags());
-
-$savant->display('check/html_tag_list.tmpl.php');
-
+$plate['all_html_tags'] = $checksDAO->getAllHtmlTags();
+echo $plates->render('check/html_tag_list.tmpl.php', $plate);
 ?>

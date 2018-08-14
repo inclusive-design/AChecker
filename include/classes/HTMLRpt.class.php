@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -134,10 +134,10 @@ class HTMLRpt extends AccessibilityRpt {
 	* $errors: an array, output of AccessibilityValidator -> getValidationErrorRpt
 	* $type: html
 	*/
-	function HTMLRpt($errors, $user_link_id = '')
+	function __construct($errors, $user_link_id = '')
 	{
 		// run parent constructor
-		parent::AccessibilityRpt($errors, $user_link_id);
+		parent::__construct($errors, $user_link_id);
 		
 		$this->num_of_no_decisions = 0;
 		$this->num_of_made_decisions = 0;

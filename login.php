@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -52,5 +52,6 @@ global $onload;
 $onload = 'document.form.form_login.focus();';
 
 //header('P3P: CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"');
-$savant->display('login.tmpl.php');
+
+echo $plates->render('login.tmpl.php');
 ?>

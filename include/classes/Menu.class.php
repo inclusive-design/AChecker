@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -46,7 +46,7 @@ class Menu {
 	 * @param   None
 	 * @author  Cindy Qi Li
 	 */
-	function Menu()
+	function __construct()
 	{
 		$this->pages[AC_NAV_TOP] = array();        // top tab pages
 
@@ -58,9 +58,9 @@ class Menu {
 		// but not define in user's priviledge pages, re-direct to the first $this->pages[AC_NAV_TOP]
 		$this->setCurrentPage();
 		$this->sub_menus = $this->setSubMenus($this->current_page);   // loop recursively to set $this->submenus to the top parent of $this->current_page
-		$this->root_page = $this->setRootPage($this->current_page);  
+		$this->root_page = $this->setRootPage($this->current_page);
 		$this->path = $this->setPath($this->current_page);
-		$this->back_to_page = $this->setBackToPage();  
+		$this->back_to_page = $this->setBackToPage();
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Menu {
 		// initialize $this->pages
 		$this->pages = $_pages;
 		// end of initializing $this->pages
-		
+
 		$priviledgesDAO = new PrivilegesDAO();
 		$rows = $priviledgesDAO->getPublicPrivileges();
 
@@ -125,7 +125,7 @@ class Menu {
 				// add section pages if it has not been defined in $this->pages
 				if (!isset($this->pages[$row['link']]))
 				{
-					$this->pages = array_merge($this->pages, 
+					$this->pages = array_merge($this->pages,
 				                           array($row['link'] => array('title_var'=>$row['title_var'], 'parent'=>AC_NAV_TOP)));
 				}
 			}
@@ -161,10 +161,10 @@ class Menu {
 				if ($_base_path.$this->current_page != $page['url'])
 				{
 					header('location: '.$page['url']);
-						
+
 					// reset current_page after re-direction
 					$this->current_page = substr($_SERVER['PHP_SELF'], strlen($_base_path));
-						
+
 					// Note: must exit. otherwise, the rest of includeheader.inc.php proceeds and prints out all messages
 					// which is not going to be displayed at re-directed page.
 					exit;
@@ -182,28 +182,28 @@ class Menu {
 	private function setSubMenus($page) {
 		global $_base_path;
 
-		if (isset($page) && defined($page)) 
+		if (isset($page) && defined($page))
 		{
 			// reached the top
 			return array();
-		} 
-		else if (isset($this->pages[$page]['children'])) 
+		}
+		else if (isset($this->pages[$page]['children']))
 		{
 			$sub_menus[] = array('url' => $_base_path . $page, 'title' => $this->getPageTitle($page));
 
-			foreach ($this->pages[$page]['children'] as $child) 
+			foreach ($this->pages[$page]['children'] as $child)
 			{
-				$sub_menus[] = array('url' => $_base_path . $child, 
-				                    'title' => $this->getPageTitle($child), 
+				$sub_menus[] = array('url' => $_base_path . $child,
+				                    'title' => $this->getPageTitle($child),
 				                    'has_children' => isset($this->pages[$child]['children']));
 			}
-		} 
-		else if (isset($this->pages[$page]['parent'])) 
+		}
+		else if (isset($this->pages[$page]['parent']))
 		{
 			// no children
 			return $this->setSubMenus($this->pages[$page]['parent']);
 		}
-		
+
 		return $sub_menus;
 	}
 
@@ -213,7 +213,7 @@ class Menu {
 	* @return  true
 	* @author  Cindy Qi Li
 	*/
-	private function setBackToPage() 
+	private function setBackToPage()
 	{
 		$back_to_page = "";
 		unset($this->path[0]);
@@ -224,10 +224,10 @@ class Menu {
 		} else if (isset($this->path[1])) {
 			$back_to_page = $this->path[1];
 		}
-		
+
 		return $back_to_page;
 	}
-	
+
 	/**
 	 * Check if the given link is a pre-defined public link
 	 * @access  private
@@ -256,18 +256,18 @@ class Menu {
 	 */
 	private function getPageTitle($page)
 	{
-		if (isset($this->pages[$page]['title'])) 
+		if (isset($this->pages[$page]['title']))
 		{
 			$page_title = $this->pages[$page]['title'];
-		} 
-		else 
+		}
+		else
 		{
 			$page_title = _AC($this->pages[$page]['title_var']);
 		}
-		
+
 		return $page_title;
 	}
-	
+
 	/**
 	 * Return all pages array
 	 * @access  public
@@ -322,7 +322,7 @@ class Menu {
 	{
 		return $this->back_to_page;
 	}
-	
+
 	/**
 	 * Set root page relative to the current page
 	 * @access  public
@@ -359,10 +359,10 @@ class Menu {
 	{
 		return $this->root_page;
 	}
-	
+
 	/**
 	 * Return array of all parent items path to current page
-	 * this array is used to determine back to page 
+	 * this array is used to determine back to page
 	 * @access  private
 	 * @return  array of breadcrumb path
 	 * @author  Cindy Qi Li
@@ -400,6 +400,6 @@ class Menu {
 	{
 		return $this->path;
 	}
-	
+
 }
 ?>

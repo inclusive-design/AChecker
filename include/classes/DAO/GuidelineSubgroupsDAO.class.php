@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -37,13 +37,13 @@ class GuidelineSubgroupsDAO extends DAO {
 	*/
 	public function Create($groupID, $name, $abbr)
 	{
-		
+
 		$groupID = intval($groupID);
-		$name = trim($name);	
+		$name = trim($name);
 		$abbr = $this->addSlashes(trim($abbr));
-		
+
 		$sql = "INSERT INTO ".TABLE_PREFIX."guideline_subgroups
-				(`group_id`, `abbr`) 
+				(`group_id`, `abbr`)
 				VALUES
 				(".$groupID.", '".$abbr."')";
 
@@ -58,13 +58,13 @@ class GuidelineSubgroupsDAO extends DAO {
 			if ($name <> '')
 			{
 				$term = LANG_PREFIX_GUIDELINE_SUBGROUPS_NAME.$subgroup_id;
-				
+
 				require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 				$langTextDAO = new LanguageTextDAO();
-				
+
 				if ($langTextDAO->Create($_SESSION['lang'], '_guideline',$term,$name,''))
 				{
-					$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups 
+					$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups
 					           SET name='".$term."' WHERE subgroup_id=".$subgroup_id;
 					$this->execute($sql);
 				}
@@ -72,7 +72,7 @@ class GuidelineSubgroupsDAO extends DAO {
 			return $subgroup_id;
 		}
 	}
-	
+
 	/**
 	* Update an existing guideline subgroup
 	* @access  public
@@ -85,13 +85,13 @@ class GuidelineSubgroupsDAO extends DAO {
 	*/
 	public function Update($subgroupID, $name, $abbr)
 	{
-		
+
 		$subgroupID = intval($subgroupID);
 		$name = trim($name);
 		$abbr = $this->addSlashes(trim($abbr));
-		
+
 		$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups
-				   SET abbr='".$abbr."' 
+				   SET abbr='".$abbr."'
 				 WHERE subgroup_id = ".$subgroupID;
 
 		if (!$this->execute($sql))
@@ -108,7 +108,7 @@ class GuidelineSubgroupsDAO extends DAO {
 			}
 		}
 	}
-	
+
 	/**
 	* Delete all entries of given subgroup ID
 	* @access  public
@@ -120,24 +120,24 @@ class GuidelineSubgroupsDAO extends DAO {
 	public function Delete($subgroupID)
 	{
 		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
-		
+
 		$subgroupID = intval($subgroupID);
-		
+
 		// Delete all checks in this subgroup
 		$subgroupChecksDAO = new SubgroupChecksDAO();
 		if ($subgroupChecksDAO->DeleteBySubgroupID($subgroupID))
 		{
 			// delete language for subgroup name
-			$sql = "DELETE FROM ".TABLE_PREFIX."language_text 
-			         WHERE variable='_guideline' 
-			           AND term=(SELECT name 
+			$sql = "DELETE FROM ".TABLE_PREFIX."language_text
+			         WHERE variable='_guideline'
+			           AND term=(SELECT name
 			                       FROM ".TABLE_PREFIX."guideline_subgroups
 			                      WHERE subgroup_id=".$subgroupID.")";
 			$this->execute($sql);
-				
+
 			// delete guideline_subgroups
 			$sql = "DELETE FROM ".TABLE_PREFIX."guideline_subgroups WHERE subgroup_id=".$subgroupID;
-			
+
 			return $this->execute($sql);
 		}
 		else
@@ -156,19 +156,19 @@ class GuidelineSubgroupsDAO extends DAO {
 	public function addChecks($subgroupID, $cids)
 	{
 		global $msg;
-		
+
 		require_once(AC_INCLUDE_PATH.'classes/DAO/SubgroupChecksDAO.class.php');
-		
+
 		$subgroupID = intval($subgroupID);
-		
+
 		if ($subgroupID == 0)
 		{
 			$msg->addError('MISSING_GID');
 			return false;
 		}
-		
+
 		$subgroupChecksDAO = new SubgroupChecksDAO();
-		
+
 		if (is_array($cids))
 		{
 			foreach ($cids as $cid) {
@@ -178,10 +178,10 @@ class GuidelineSubgroupsDAO extends DAO {
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	* Return subgroup info of the given group id
 	* @access  public
@@ -193,14 +193,14 @@ class GuidelineSubgroupsDAO extends DAO {
 	public function getSubgroupByID($subgroupID)
 	{
 		$subgroupID = intval($subgroupID);
-		
-		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_subgroups 
+
+		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_subgroups
                  WHERE subgroup_id = ".$subgroupID;
 
 		$rows = $this->execute($sql);
 		return $rows[0];
 	}
-	
+
 	/**
 	* Return subgroup info of the given check id and guideline id
 	* @access  public
@@ -214,18 +214,18 @@ class GuidelineSubgroupsDAO extends DAO {
 	{
 		$checkID = intval($checkID);
 		$guidelineID = intval($guidelineID);
-		
-		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_subgroups 
-                 WHERE subgroup_id in (SELECT subgroup_id 
+
+		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_subgroups
+                 WHERE subgroup_id in (SELECT subgroup_id
                                          FROM ".TABLE_PREFIX."subgroup_checks
                                         WHERE check_id=".$checkID.")
-                   AND group_id in (SELECT group_id 
+                   AND group_id in (SELECT group_id
                                            FROM ".TABLE_PREFIX."guideline_groups gg
                                           WHERE gg.guideline_id = ".$guidelineID.")";
 
 		return $this->execute($sql);
 	}
-	
+
 	/**
 	* Return array of subgroups info whose name is NOT null, and belong to the given group id
 	* @access  public
@@ -237,7 +237,7 @@ class GuidelineSubgroupsDAO extends DAO {
 	public function getNamedSubgroupByGroupID($groupID)
 	{
 		$groupID = intval($groupID);
-		
+
 		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_subgroups gs, ".TABLE_PREFIX."language_text l
                  WHERE gs.group_id = ".$groupID."
                    AND gs.name is not NULL
@@ -247,7 +247,7 @@ class GuidelineSubgroupsDAO extends DAO {
 
 		return Utility::sortArrayByNumInField($this->execute($sql), 'text');
 	}
-	
+
 	/**
 	* Return array of subgroups info whose name is null, and belong to the given group id
 	* @access  public
@@ -259,7 +259,7 @@ class GuidelineSubgroupsDAO extends DAO {
 	public function getUnnamedSubgroupByGroupID($groupID)
 	{
 		$groupID = intval($groupID);
-		
+
 		$sql = "SELECT * FROM ".TABLE_PREFIX."guideline_subgroups
                  WHERE group_id = ".$groupID."
                    AND name is NULL";
@@ -280,10 +280,10 @@ class GuidelineSubgroupsDAO extends DAO {
 	 */
 	private function updateLang($subgroupID, $term, $text, $fieldName)
 	{
-		
+
 		require_once(AC_INCLUDE_PATH.'classes/DAO/LanguageTextDAO.class.php');
 		$langTextDAO = new LanguageTextDAO();
-		
+
 		$langs = $langTextDAO->getByTermAndLang($term, $_SESSION['lang']);
 
 		if (is_array($langs))
@@ -293,11 +293,11 @@ class GuidelineSubgroupsDAO extends DAO {
 		else
 		{
 			$langTextDAO->Create($_SESSION['lang'], '_guideline',$term,$text,'');
-			
+
 			$sql = "UPDATE ".TABLE_PREFIX."guideline_subgroups SET ".$fieldName."='".$term."' WHERE subgroup_id=".$subgroupID;
 			$this->execute($sql);
 		}
-		
+
 		return true;
 	}
 }

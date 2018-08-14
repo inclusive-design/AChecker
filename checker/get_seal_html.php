@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -13,7 +13,7 @@
 
 // Called by ajax request from guidelineline view report -> "make decision(s)" buttons
 // @ see checker/js/checker.js
- 
+
 define('AC_INCLUDE_PATH', '../include/');
 
 include(AC_INCLUDE_PATH.'vitals.inc.php');
@@ -35,10 +35,11 @@ $seals = $utility->getSeals($guideline_rows);
 if (is_array($seals)) {
 	$userLinksDAO = new UserLinksDAO();
 	$rows = $userLinksDAO->getByUserIDAndURIAndSession($_SESSION['user_id'], $_POST['uri'], $_POST['jsessionid']);
-	
-	$savant->assign('user_link_id', $rows[0]['user_link_id']);
-	$savant->assign('seals', $seals);
-	$savant->display('checker/seals.tmpl.php');
+
+	$plate['user_link_id'] = $rows[0]['user_link_id'];
+	$plate['seals'] = $seals;
+
+	echo $plates->render('checker/seals.tmpl.php', $plate);
 }
 
 exit;

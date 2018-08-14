@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -35,11 +35,11 @@ class CheckPrerequisitesDAO extends DAO {
 	*/
 	public function Create($checkID, $prerequisiteCheckID)
 	{
-		$sql = "INSERT INTO ".TABLE_PREFIX."check_prerequisites (check_id, prerequisite_check_id) 
+		$sql = "INSERT INTO ".TABLE_PREFIX."check_prerequisites (check_id, prerequisite_check_id)
 		        VALUES (".intval($checkID).", ".intval($prerequisiteCheckID).")";
 		return $this->execute($sql);
 	}
-	
+
 	/**
 	* Delete by primary key
 	* @access  public
@@ -51,11 +51,11 @@ class CheckPrerequisitesDAO extends DAO {
 	*/
 	public function Delete($checkID, $prerequisiteCheckID)
 	{
-		$sql = "DELETE FROM ".TABLE_PREFIX."check_prerequisites 
+		$sql = "DELETE FROM ".TABLE_PREFIX."check_prerequisites
 		         WHERE check_id=".intval($checkID)." AND prerequisite_check_id=".intval($prerequisiteCheckID);
 		return $this->execute($sql);
 	}
-	
+
 	/**
 	* Delete prerequisites by given check ID
 	* @access  public
@@ -69,7 +69,7 @@ class CheckPrerequisitesDAO extends DAO {
 		$sql = "DELETE FROM ".TABLE_PREFIX."check_prerequisites WHERE check_id=".intval($checkID);
 		return $this->execute($sql);
 	}
-	
+
 	/**
 	* Return prerequisite check IDs by given check ID
 	* @access  public
@@ -80,12 +80,12 @@ class CheckPrerequisitesDAO extends DAO {
 	*/
 	public function getPreChecksByCheckID($checkID)
 	{
-		$sql = "SELECT * FROM ".TABLE_PREFIX."checks 
-		         WHERE check_id in (SELECT prerequisite_check_id 
-		                              FROM ".TABLE_PREFIX."check_prerequisites 
+		$sql = "SELECT * FROM ".TABLE_PREFIX."checks
+		         WHERE check_id in (SELECT prerequisite_check_id
+		                              FROM ".TABLE_PREFIX."check_prerequisites
 		                             WHERE check_id=".intval($checkID).")";
 		return $this->execute($sql);
 	}
-	
+
 }
 ?>

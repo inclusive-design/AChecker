@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -37,9 +37,9 @@ class SubgroupChecksDAO extends DAO {
 	{
 		$subgroupID = intval($subgroupID);
 		$checkID = intval($checkID);
-		
+
 		$sql = "INSERT INTO ".TABLE_PREFIX."subgroup_checks
-				(`subgroup_id`, `check_id`) 
+				(`subgroup_id`, `check_id`)
 				VALUES
 				(".$subgroupID.",".$checkID.")";
 
@@ -53,7 +53,7 @@ class SubgroupChecksDAO extends DAO {
 			return true;
 		}
 	}
-	
+
 	/**
 	* Delete given check, identified by check ID, from given guideline
 	* @access  public
@@ -70,39 +70,39 @@ class SubgroupChecksDAO extends DAO {
 	{
 		$typeID = intval($typeID);
 		$checkID = intval($checkID);
-		
+
 		if ($type == "guideline")
 		{
 			$sql = "DELETE FROM ".TABLE_PREFIX."subgroup_checks
-			         WHERE subgroup_id in (SELECT distinct subgroup_id 
+			         WHERE subgroup_id in (SELECT distinct subgroup_id
 			                                 FROM ".TABLE_PREFIX."guideline_groups gg, "
 			                                       .TABLE_PREFIX."guideline_subgroups gs
 			                                 WHERE gg.guideline_id=".$typeID."
 			                                   AND gg.group_id = gs.group_id)
 			           AND check_id = ".$checkID;
 		}
-		
+
 		if ($type == "group")
 		{
 			$sql = "DELETE FROM ".TABLE_PREFIX."subgroup_checks
-			         WHERE subgroup_id in (SELECT distinct subgroup_id 
+			         WHERE subgroup_id in (SELECT distinct subgroup_id
 			                                 FROM ".TABLE_PREFIX."guideline_groups gg, "
 			                                       .TABLE_PREFIX."guideline_subgroups gs
 			                                 WHERE gg.group_id=".$typeID."
 			                                   AND gg.group_id = gs.group_id)
 			           AND check_id = ".$checkID;
 		}
-		
+
 		if ($type == "subgroup")
 		{
 			$sql = "DELETE FROM ".TABLE_PREFIX."subgroup_checks
 		             WHERE subgroup_id = ".$typeID."
 		               AND check_id = ".$checkID;
 		}
-		
+
 		return $this->execute($sql);
 	}
-	
+
 	/**
 	* Delete all entries with given check id
 	* @access  public
@@ -119,25 +119,25 @@ class SubgroupChecksDAO extends DAO {
 
 		return $this->execute($sql);
 	}
-	
+
 	/**
 	* Delete all entries with given subgroup id
 	* @access  public
 	* @param   $subgroupID
 	* @return  no returns
-	*          Note that this function is called by GuidelineGroupsDAO->DeleteByGroupID, 
+	*          Note that this function is called by GuidelineGroupsDAO->DeleteByGroupID,
 	*          return true or false from this function forces the caller return too.
 	* @author  Cindy Qi Li
 	*/
 	public function DeleteBySubgroupID($subgroupID)
 	{
 		$subgroupID = intval($subgroupID);
-		
+
 		$sql = "DELETE FROM ".TABLE_PREFIX."subgroup_checks
 				WHERE subgroup_id = ".$subgroupID;
 
 		return $this->execute($sql);
 	}
-	
+
 }
 ?>

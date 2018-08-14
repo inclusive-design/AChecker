@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -29,7 +29,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 	<th scope="col"><?php echo _AC('last_modified'); ?></th>
 </tr>
 </thead>
-<?php if (!is_array($this->patch_rows)) { ?>
+<?php if (!is_array($patch_rows)) { ?>
 <tbody>
 	<tr>
 		<td colspan="5"><?php echo _AC('none_found'); ?></td>
@@ -47,7 +47,7 @@ require(AC_INCLUDE_PATH.'header.inc.php');
 </tr>
 </tfoot>
 <tbody>
-<?php foreach ($this->patch_rows as $row) { ?>
+<?php foreach ($patch_rows as $row) { ?>
 		<tr onmousedown="document.form['m<?php echo $row['myown_patch_id']; ?>'].checked = true; rowselect(this);" id="r_<?php echo $row['myown_patch_id']; ?>">
 			<td width="10"><input type="radio" name="myown_patch_id" value="<?php echo $row['myown_patch_id']; ?>" id="m<?php echo $row['myown_patch_id']; ?>" <?php if ($row['myown_patch_id']==$_POST['myown_patch_id']) echo 'checked'; ?> /></td>
 			<td><label for="m<?php echo $row['myown_patch_id']; ?>"><?php echo htmlspecialchars($row['achecker_patch_id']); ?></label></td>

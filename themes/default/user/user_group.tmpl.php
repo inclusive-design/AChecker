@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -27,7 +27,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	</tr>
 	
 	</thead>
-<?php if (is_array($this->user_group_rows)): ?>
+<?php if (is_array($user_group_rows)): ?>
 	<tfoot>
 	<tr>
 		<td colspan="4">
@@ -37,10 +37,10 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	</tr>
 	</tfoot>
 	<tbody>
-		<?php foreach ($this->user_group_rows as $row) 
+		<?php foreach ($user_group_rows as $row) 
 			{
 			// get privileges
-			$privileges = $this->privilegesDAO->getUserGroupPrivileges($row['user_group_id']);
+			$privileges = $privilegesDAO->getUserGroupPrivileges($row['user_group_id']);
 			
 			if (is_array($privileges))
 			{

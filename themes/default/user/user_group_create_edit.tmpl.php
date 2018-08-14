@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -18,8 +18,8 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 ?>
 
 <form name="input_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?><?php if (isset($_GET["id"])) echo '?id='.intval($_GET["id"]); ?>" >
-<?php if (isset($this->user_group_row["user_group_id"])) {?>
-<input type="hidden" name="user_group_id" value="<?php echo $this->user_group_row["user_group_id"]; ?>" />
+<?php if (isset($user_group_row["user_group_id"])) {?>
+<input type="hidden" name="user_group_id" value="<?php echo $user_group_row["user_group_id"]; ?>" />
 <?php }?>
 
 <div class="input-form">
@@ -32,26 +32,26 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 
 		<tr>
 			<th align="left"><div class="required" title="<?php echo _AC('required_field'); ?>">*</div><label for="title"><?php echo _AC('title'); ?></label></th>
-			<td><input type="text" name="title" size="100" id="title" value="<?php if (isset($_POST['title'])) echo htmlspecialchars($_POST['title']); else echo htmlspecialchars($this->user_group_row["title"]); ?>" /></td>
+			<td><input type="text" name="title" size="100" id="title" value="<?php if (isset($_POST['title'])) echo htmlspecialchars($_POST['title']); else echo htmlspecialchars($user_group_row["title"]); ?>" /></td>
 		</tr>
 
 		<tr>
 			<th align="left"><label for="description"><?php echo _AC('description'); ?></label></th>
-			<td><textarea rows="3" cols="30" name="description" id="description"><?php if (isset($_POST['description'])) echo htmlspecialchars($_POST['description']); else echo htmlspecialchars($this->user_group_row["description"]); ?></textarea></td>
+			<td><textarea rows="3" cols="30" name="description" id="description"><?php if (isset($_POST['description'])) echo htmlspecialchars($_POST['description']); else echo htmlspecialchars($user_group_row["description"]); ?></textarea></td>
 		</tr>
 
-		<?php if (isset($this->user_group_row['user_group_id'])) {?>
+		<?php if (isset($user_group_row['user_group_id'])) {?>
 		<tr>
 			<th align="left"><?php echo _AC('date_created'); ?></th>
 			<td>
-				<?php echo $this->user_group_row['create_date']; ?>
+				<?php echo $user_group_row['create_date']; ?>
 			</td>
 		</tr>
 
 		<tr>
 			<th align="left"><?php echo _AC('last_update'); ?></th>
 			<td>
-				<?php echo $this->user_group_row['last_update']; ?>
+				<?php echo $user_group_row['last_update']; ?>
 			</td>
 		</tr>
 		<?php }?>
@@ -59,7 +59,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	<br />
 	
 	<!-- section of displaying existing checks in current guideline -->
-	<?php if (is_array($this->privs_rows)) { ?>
+	<?php if (is_array($privs_rows)) { ?>
 		<h2><?php echo _AC('privileges');?></h2>
 		<table class="data" summary="" rules="rows" >
 			<thead>
@@ -78,7 +78,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			</tfoot>
 
 			<tbody>
-	<?php foreach ($this->privs_rows as $privs_row) { ?>
+	<?php foreach ($privs_rows as $privs_row) { ?>
 			<tr onmousedown="document.input_form['del_privileges_<?php echo $privs_row['privilege_id']; ?>'].checked = !document.input_form['del_privileges_<?php echo $privs_row['privilege_id']; ?>'].checked; togglerowhighlight(this, 'del_privileges_<?php echo $privs_row['privilege_id']; ?>');" 
 			    onkeydown="document.input_form['del_privileges_<?php echo $privs_row['privilege_id']; ?>'].checked = !document.input_form['del_privileges_<?php echo $privs_row['privilege_id']; ?>'].checked; togglerowhighlight(this, 'del_privileges_<?php echo $privs_row['privilege_id']; ?>');"
 			    id="rdel_privileges_<?php echo $privs_row['privilege_id']; ?>">
@@ -102,7 +102,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 	
 	<div id="div_add_privs">
 	<?php 
-	if (!is_array($this->privs_to_add_rows)){ 
+	if (!is_array($privs_to_add_rows)){ 
 		echo _AC('none_found');
 	} 
 	else {?>
@@ -115,7 +115,7 @@ include(AC_INCLUDE_PATH.'header.inc.php');
 			</thead>
 			
 			<tbody>
-	<?php foreach ($this->privs_to_add_rows as $privileges_to_add_row) { ?>
+	<?php foreach ($privs_to_add_rows as $privileges_to_add_row) { ?>
 			<tr onmousedown="document.input_form['add_privileges_<?php echo $privileges_to_add_row['privilege_id']; ?>'].checked = !document.input_form['add_privileges_<?php echo $privileges_to_add_row['privilege_id']; ?>'].checked; togglerowhighlight(this, 'add_privileges_<?php echo $privileges_to_add_row['privilege_id']; ?>');" 
 			    onkeydown="document.input_form['add_privileges_<?php echo $privileges_to_add_row['privilege_id']; ?>'].checked = !document.input_form['add_privileges_<?php echo $privileges_to_add_row['privilege_id']; ?>'].checked; togglerowhighlight(this, 'add_privileges_<?php echo $privileges_to_add_row['privilege_id']; ?>');"
 			    id="radd_privileges_<?php echo $privileges_to_add_row['privilege_id']; ?>">

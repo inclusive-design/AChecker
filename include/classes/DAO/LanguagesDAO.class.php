@@ -2,7 +2,7 @@
 /************************************************************************/
 /* AChecker                                                             */
 /************************************************************************/
-/* Copyright (c) 2008 - 2011                                            */
+/* Copyright (c) 2008 - 2018                                            */
 /* Inclusive Design Institute                                           */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or        */
@@ -34,23 +34,23 @@ class LanguagesDAO extends DAO {
 	function Create($langCode, $charset, $regExp, $nativeName, $englishName, $status)
 	{
 		global $languageManager, $msg;
-		
+
 		// check if the required fields are filled
 		if (!$this->ValidateFields($langCode, $charset, $nativeName, $englishName)) return false;
-		
+
 		// check if the language already exists
 		if ($languageManager->exists($langCode)) $msg->addError('LANG_EXISTS');
-		
+
 		if ($msg->containsErrors()) return false;
-		
+
 		$langCode = $this->addSlashes($langCode);
 		$charset = $this->addSlashes($charset);
 		$regExp = $this->addSlashes($regExp);
 		$nativeName = $this->addSlashes($nativeName);
 		$englishName = $this->addSlashes($englishName);
 		$status = intval($status);
-		
-		$sql = "INSERT INTO ".TABLE_PREFIX."languages (language_code, charset, reg_exp, native_name, english_name, status) 
+
+		$sql = "INSERT INTO ".TABLE_PREFIX."languages (language_code, charset, reg_exp, native_name, english_name, status)
 		        VALUES ('".$langCode."', '".$charset."', '".$regExp."', '".$nativeName."', '".$englishName."', ".$status.")";
 		return $this->execute($sql);
 	}
@@ -65,18 +65,18 @@ class LanguagesDAO extends DAO {
 	*/
 	function Update($langCode, $charset, $regExp, $nativeName, $englishName, $status)
 	{
-		
+
 		// check if the required fields are filled
 		if (!$this->ValidateFields($langCode, $charset, $nativeName, $englishName)) return false;
-		
+
 		$langCode = $this->addSlashes($langCode);
 		$charset = $this->addSlashes($charset);
 		$regExp = $this->addSlashes($regExp);
 		$nativeName = $this->addSlashes($nativeName);
 		$englishName = $this->addSlashes($englishName);
 		$status = intval($status);
-		
-		$sql = "UPDATE ".TABLE_PREFIX."languages 
+
+		$sql = "UPDATE ".TABLE_PREFIX."languages
 		           SET reg_exp='".$regExp."',
 		               native_name = '".$nativeName."',
 		               english_name = '".$englishName."',
@@ -97,14 +97,14 @@ class LanguagesDAO extends DAO {
 	function Delete($langCode)
 	{
 		$langCode = $this->addSlashes($langCode);
-		
-		$sql = "DELETE FROM ".TABLE_PREFIX."languages 
+
+		$sql = "DELETE FROM ".TABLE_PREFIX."languages
 		         WHERE language_code = '".$langCode."'";
 		if (!$this->execute($sql)) return false;
 
-		$sql = "DELETE FROM ".TABLE_PREFIX."language_text 
+		$sql = "DELETE FROM ".TABLE_PREFIX."language_text
 	             WHERE language_code = '".$langCode."'";
-		
+
 		return $this->execute($sql);
 	}
 
@@ -149,7 +149,7 @@ class LanguagesDAO extends DAO {
 	{
 		$langCode = $this->addSlashes($langCode);
 		$charset = $this->addSlashes($charset);
-		
+
 	    $sql = "SELECT * FROM ".TABLE_PREFIX."languages l
 	             WHERE l.language_code = '".$langCode."'
 	               AND l.charset='".$charset."'
@@ -162,7 +162,7 @@ class LanguagesDAO extends DAO {
 	}
 
 	/**
-	* Return all languages except the ones with language code in the given string 
+	* Return all languages except the ones with language code in the given string
 	* @access  public
 	* @param   $langCode : one language codes, for example: en
 	* @return  table rows
@@ -170,22 +170,22 @@ class LanguagesDAO extends DAO {
 	*/
 	function getAllExceptLangCode($langCode)
 	{
-		
+
 		if (trim($langCode) == '')
 			return $this->getAll();
 		else
 		{
 			$langCode = $this->addSlashes($langCode);
-			
+
 	    	$sql = "SELECT * FROM ".TABLE_PREFIX."languages
 					 WHERE language_code <> '".$langCode."'
 			         ORDER BY native_name";
 		    return $this->execute($sql);
 		}
 	}
-	
+
 	/**
-	* Return all languages except the ones with language code in the given string 
+	* Return all languages except the ones with language code in the given string
 	* @access  public
 	* @param   $langCode : one language codes, for example: en
 	* @return  table rows
@@ -194,7 +194,7 @@ class LanguagesDAO extends DAO {
 	function ValidateFields($langCode, $charset, $nativeName, $englishName)
 	{
 		global $msg;
-		
+
 		$missing_fields = array();
 
 		if ($langCode == '') {
