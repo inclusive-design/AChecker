@@ -22,6 +22,11 @@ What sets AChecker apart from other automated accessibility checkers?
 ## ChangeLog
 
 See [Changelog](CHANGELOG.md)
+
+
+## Contribution
+ If you are interested in contributing to this project, then follow the [instructions here](CONTRIBUTING.md).
+
 ## Installation
 
 - Clone this repository
@@ -39,3 +44,5 @@ touch include/config.inc.php
 Then follow the instructions above.
 
 For more about using AChecker, see the instructional videos on [YouTube](http://www.youtube.com/watch?v=jtNyF7KuOk8).
+
+
