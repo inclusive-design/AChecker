@@ -49,15 +49,15 @@ if (isset($error)) echo $error;
  * @param: $guideline_rows - array of available guidelines
  *         $num_of_guidelines_per_row
  *         $format: "checkbox" or "radio"
- */ 
+ */
 function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format = "checkbox") {
 	$output = '				<div id="guideline_in_'.$format .'"';
 	if ($format == "checkbox") $output .= ' style="display:none"';
 	$output .= '>'."\n";
 	$output .= '				<table width="100%">'."\n";
-	
+
 	$count_guidelines_in_current_row = 0;
-	
+
 	if (is_array($guideline_rows))
 	{
 		foreach ($guideline_rows as $id => $row)
@@ -70,38 +70,39 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 
 			$output .= '						<td class="one_third_width">'."\n";
 			$output .= '							<input type="';
-			
+
 			if ($format == "checkbox") $output .= "checkbox";
 			else $output .= "radio";
-			
+
 			$output .= '" name="'.$format.'_gid[]" id="'.$format.'_gid_'.$row["guideline_id"].'" value="'. $row["guideline_id"].'"';
-			
+
 			// the name of the array for the selected guidelines in the post value are different.
-			// "radio_gids" at guideline view and "checkbox_gids" at line view. 
+			// "radio_gids" at guideline view and "checkbox_gids" at line view.
 			$gid_name = $format."_gid";
 			foreach($_POST[$gid_name] as $gid) {
 				if ($gid == $row["guideline_id"]) $output .= ' checked="checked"';
-			} 
+			}
 			$output .= ' />'."\n";
-			
+
 			$output .= '							<label for="'.$format.'_gid_'. $row["guideline_id"].'">'. htmlspecialchars($row["title"]).'</label>'."\n";
 			$output .= "						</td>\n";
 			$count_guidelines_in_current_row++;
-		
+
 			if ($count_guidelines_in_current_row == $num_of_guidelines_per_row)
 				$output .= "					</tr>\n";
-		
+
 		}
 	}
 	$output .= "				</table>\n";
 	$output .= "			</div>\n";
-	
+
 	return $output;
 }
 ?>
 <table style="width:100%">
 <tr>
 <td>
+<div style="color:red;margin:auto;font-weight:bold;width:70%;line-height:1.5rem">AChecker website will shut down on April 30, 2021. Please use other accessibility validators such as <a href="https://wave.webaim.org/">WAVE</a>, <a href="https://www.deque.com/axe/browser-extensions/">AXE</a> or refer to <a href="https://www.w3.org/WAI/ER/tools/">W3C Web Accessibility Evaluation Tools List</a> for more tools.</div>
 <div class="center-input-form">
 <form name="input_form" enctype="multipart/form-data" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 
@@ -115,9 +116,9 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 				<li class="navigation"><a href="javascript:void(0)" accesskey="c" title="<?php echo _AC("check_by_paste"); ?> Alt+3" id="AC_menu_by_paste" onclick="return AChecker.input.onClickTab('AC_by_paste');" <?php if (isset($_POST["validate_paste"])) echo 'class="active"'; ?>><span class="nav"><?php echo _AC("check_by_paste"); ?></span></a></li>
 			</ul>
 		</div>
-		
+
 		<div id="AC_by_uri" class="input_tab" style="<?php if (!isset($_POST["validate_file"]) && !isset($_POST["validate_paste"])) echo "display:block"; else echo "display:none"; ?>">
-			<div style="text-align:center;"> 
+			<div style="text-align:center;">
 				<label for="checkuri"><?php echo _AC('URL'); ?>:</label>
 				<input type="text" name="uri" id="checkuri" value="<?php if (isset($_POST['uri'])) echo $_POST['uri']; else $v($default_uri_value); ?>" size="50"   />
 				<div class="validation_submit_div">
@@ -129,13 +130,13 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 				</div>
 			</div>
 		</div>
-		
+
 		<div id="AC_by_upload" class="input_tab" style="<?php if (isset($_POST["validate_file"])) echo "display:block"; else echo "display:none"; ?>">
 			<div style="text-align:center;">
 				<label for="checkfile"><?php echo _AC('file'); ?>:</label>
 				<input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
 				<input type="file" id="checkfile" name="uploadfile" size="47" />
-			
+
 				<div class="validation_submit_div">
 					<div class="spinner_div">
 						<img class="spinner_img" id="AC_spinner_by_upload" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
@@ -145,12 +146,12 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 				</div>
 			</div>
 		</div>
-		
+
 		<div id="AC_by_paste" class="input_tab" style="<?php if (isset($_POST["validate_paste"])) echo "display:block"; else echo "display:none"; ?>">
 			<label for="checkpaste"><?php echo _AC('enter'); ?>:</label>
 			<div style="text-align:center;">
 				<textarea rows="20" cols="75" name="pastehtml" id="checkpaste"><?php if (isset($_POST['pastehtml'])) echo htmlspecialchars($_POST['pastehtml']); ?></textarea>
-		
+
 				<div class="validation_submit_div">
 					<div class="spinner_div">
 						<img class="spinner_img" id="AC_spinner_by_paste" style="display:none" src="<?php echo AC_BASE_HREF.'themes/'.$_SESSION['prefs']['PREF_THEME']; ?>/images/spinner.gif" alt="<?php echo _AC("in_progress"); ?>" />
@@ -160,7 +161,7 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 				</div>
 			</div>
 		</div>
-		
+
 		<div>
 			<h2 align="left">
 				<img src="images/arrow-closed.png" alt="<?php echo _AC("expand_guidelines"); ?>" title="<?php echo _AC("expand_guidelines"); ?>" id="toggle_image" border="0" />
@@ -176,23 +177,23 @@ function get_guideline_div($guideline_rows, $num_of_guidelines_per_row, $format 
 				<input type="checkbox" name="enable_html_validation" id="enable_html_validation" value="1" <?php if (isset($_POST["enable_html_validation"])) echo 'checked="checked"'; ?> />
 				<label for='enable_html_validation'><?php echo _AC("enable_html_validator"); ?></label>
 				</td>
-				
+
 				<td class="one_third_width">
 				<input type="checkbox" name="enable_css_validation" id="enable_css_validation" value="1" <?php if (isset($_POST["enable_css_validation"])) echo 'checked="checked"'; ?> />
 				<label for='enable_css_validation'><?php echo _AC("enable_css_validation"); ?></label>
 				</td>
-				
+
 				<td class="one_third_width">
 				<input type="checkbox" name="show_source" id="show_source" value="1" <?php if (isset($_POST["show_source"])) echo 'checked="checked"'; ?> />
 				<label for='show_source'><?php echo _AC("show_source"); ?></label>
 				</td>
-				
+
 			</tr>
-			
+
 			<tr>
 				<td colspan="3"><h3><?php echo _AC("guidelins_to_check"); ?></h3></td>
 			</tr>
-<!-- 
+<!--
 <?php
 $count_guidelines_in_current_row = 0;
 
@@ -207,34 +208,34 @@ if (is_array($rows))
 		}
 ?>
 				<td>
-					<input type="checkbox" name="gid[]" id='gid_<?php echo $row["guideline_id"]; ?>' value='<?php echo $row["guideline_id"]; ?>' <?php 
-					if (isset($_POST["gid"]) && is_array($_POST["gid"])) {	
+					<input type="checkbox" name="gid[]" id='gid_<?php echo $row["guideline_id"]; ?>' value='<?php echo $row["guideline_id"]; ?>' <?php
+					if (isset($_POST["gid"]) && is_array($_POST["gid"])) {
 						foreach($_POST["gid"] as $gid) {
 							if (intval($gid) == $row["guideline_id"]) echo 'checked="checked"';
 						}
-					} 
+					}
 					?> />
 					<label for='gid_<?php echo $row["guideline_id"]; ?>'><?php echo htmlspecialchars($row["title"]); ?></label>
 				</td>
 <?php
 		$count_guidelines_in_current_row++;
-	
+
 		if ($count_guidelines_in_current_row == $num_of_guidelines_per_row)
 			echo "			</tr>\n";
-	
+
 	}
 }
 ?>
  -->
 			<tr>
 			<td colspan="3">
-<?php 
+<?php
 echo get_guideline_div($rows, $num_of_guidelines_per_row, "radio");  // used at "view by guideline"
 echo get_guideline_div($rows, $num_of_guidelines_per_row, "checkbox");  // used at "view by line"
 ?>
 			</td>
 			</tr>
-			
+
 			<tr>
 				<td colspan="3"><h3><?php echo _AC("report_format"); ?></h3></td>
 			</tr>
@@ -248,7 +249,7 @@ echo get_guideline_div($rows, $num_of_guidelines_per_row, "checkbox");  // used 
 	</div>
 </form>
 <div style="float:right;margin-right:2em;clear:right;width:250px;"><br />
-<a href="checker/index.php#skipads"><img src="images/clr.gif" alt="<?php echo _AC("skip_over_ads"); ?>" border="0"/></a>	
+<a href="checker/index.php#skipads"><img src="images/clr.gif" alt="<?php echo _AC("skip_over_ads"); ?>" border="0"/></a>
   <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <ins class="adsbygoogle"
        style="display:inline-block;width:250px;height:250px"
